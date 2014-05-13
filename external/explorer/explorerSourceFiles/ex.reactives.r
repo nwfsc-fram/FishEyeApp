@@ -10,7 +10,6 @@ dat <- reactive({
 })
 
 #reactives for dataset specific parameters
-
 dat.measure.var <- reactive({
   if(!is.null(dat())){
     if(input$dat.name == "Catcher Vessel Cost Data"){
@@ -30,10 +29,14 @@ dat.sub <- reactive({
         }else if(input$placeUnit == "State"){ d <- dcast(dat(), formula= VESSEL_ID + SURVEY_YEAR + FISHERIES + VSSLNGCLASS + HOMEPT + STATE ~ variable, 
                                                         subset=.(variable == dat.measure.var() & SURVEY_YEAR %in% input$years & FISHERIES %in% input$fishery & VSSLNGCLASS %in% input$length & STATE %in% input$place), fun.aggregate=sum, na.rm=T)       
       }
-      d
+      melt(d, measure.vars= dat.measure.var())
     } else return()
   )
 })
+
+# dat.melt <- reactive({
+#   if(!is.null(dat.sub())) melt(dat.sub(), measure.vars= dat.measure.var())
+# })
 
 # ggplot2 grouping, faceting, pooling
 group.choices <- reactive({
@@ -55,17 +58,16 @@ facet.choices <- reactive({
 })
 
 # Resphaping the data based on plot options
-
-# casting the data for plot/table output
-dat.cast <- reactive({
-  
-  # reactives for cast options
+# reactives for cast options
+byvar <- reactive({
   if(!is.null(input$by.var)){
     byvar <- switch(input$by.var,
                     "Survey year" = "SURVEY_YEAR",
                     "Fishery" = "FISHERIES")
   } else return()
-  
+})
+
+groupvar <- reactive({
   if(!is.null(input$group.var)){
     groupvar <- switch(input$group.var,
                        "Survey year" = "SURVEY_YEAR",
@@ -73,7 +75,9 @@ dat.cast <- reactive({
                        "Vessel length" = "VSSLNGCLASS",
                        "Location" = if(input$placeUnit == "Homeport") "HOMEPT" else "STATE")
   } else return()
-  
+})
+
+facetvar <- reactive({
   if(!is.null(input$facet.var)){
     facetvar <- switch(input$facet.var,
                        "Survey year" = "SURVEY_YEAR",
@@ -81,40 +85,34 @@ dat.cast <- reactive({
                        "Vessel length" = "VSSLNGCLASS",
                        "Location" = if(input$placeUnit == "Homeport") "HOMEPT" else "STATE") 
   } else return()
-  
+})
+
+agg.method <- reactive({
   if(!is.null(input$stat)){
     agg.method <- switch(input$stat,
-                        "sum" = sum,
-                        "mean" = mean,
-                        "N" = length)
+                         "sum" = sum,
+                         "mean" = mean,
+                         "N" = length)
   }else return()
-  
-  
-  # erin suggested to  use DotDcast, which allows naming of value.var column
-  if(!is.null(dat.sub())){        
-    if(input$facet.var == "None"){ d <- dcast(dat.sub(), list(c(byvar[1], groupvar[1]), .()), value.var= dat.measure.var(), fun.aggregate = agg.method)        
-    } else d <- dcast(dat.sub(), list(c(byvar[1], groupvar[1], facetvar[1]), .()), value.var= dat.measure.var(), fun.aggregate = agg.method)
+})
+
+# casting the data for plot/table output
+dat.cast <- reactive({
+  if(!is.null(input$by.var)){        
+    if(input$facet.var == "None"){ d <- dcast(dat.sub(), list(c(byvar()[1], groupvar()[1]), .(variable)), fun.aggregate = agg.method())        
+    } else                         d <- dcast(dat.sub(), list(c(byvar()[1], groupvar()[1], facetvar()[1]), .(variable)), fun.aggregate = agg.method())
     d
-  } else return()
+  } else return()             
 })          
 
 # Reactives for plot output
-
-ggplot.base <- reactive({
-  if(!is.null(dat.cast())){
-    
-    plot.dat <- dat.cast()
-  
-    ggplot(plot.dat, aes(x=byvar, y=DISCOST, fill=groupvar)) 
-    
-  }
-})
-
-ggplot.bar <- reactive({
-  if(!is.null(dat.cast())){
-    geom_bar(stat="identity")
-  }
-})
+# 
+# ggplot.base <- reactive({
+#   if(!is.null(dat.cast())){
+#     plot.dat <- dat.cast()
+#     ggplot(plot.dat, aes(x=byvar(), y=dat.measure.var(), fill=groupvar()) + geom_bar(stat="identity")) 
+#   }
+# })
 
 #staging subsetting
 dataGo <- reactive({

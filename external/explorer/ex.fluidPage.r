@@ -41,11 +41,16 @@ fluidPage(
                ),
                fluidRow(
                  column(4, uiOutput("stat")
+                 ),
+                 column(4, uiOutput("plotType")
+                 ),
+                 br(),
+                 column(4,uiOutput("groupMean"),uiOutput("groupRange")
                  )
-               )          
+               )
              )
            )
-    ), #start second half of page ie. analytical output
+    ), #start second half of page ie. plot/table output
     column(8, 
            fluidRow(
              column(12, plotOutput("plotTest")

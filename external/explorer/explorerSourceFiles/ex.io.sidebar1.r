@@ -62,12 +62,24 @@ output$stat <- renderUI({
     selectInput("stat", "Summary Statistic:", choices= c("sum", "mean", "N"))
   }
 })
-# 
-# output$plotType <- renderUI({
-#   if(!is.null(dat.cast())){
-#     selectInput("plotType", "Plot type:", choices=c("bar", "pie", "line", "point"))
-#   }
-# })
+
+output$plotType <- renderUI({
+  if(!is.null(dat.cast())){
+    radioButtons("plotType", "Plot type:", choices= c("bar", "point"))
+  }
+})
+
+output$groupMean <- renderUI({
+  if(!is.null(dat.cast())){
+    checkboxInput("groupMean", "Group mean CI", value=F)
+  }
+})
+
+output$groupRange <- renderUI({
+  if(!is.null(dat.cast())){
+    checkboxInput("groupRange", "Group Range", value=F)
+  }
+})
 
 # Data subsetting action button
 output$dataGo <- renderUI({
