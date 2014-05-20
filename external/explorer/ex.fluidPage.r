@@ -44,8 +44,11 @@ fluidPage(
                  ),
                  column(4, uiOutput("plotType")
                  ),
-                 br(),
-                 column(4,uiOutput("groupMean"),uiOutput("groupRange")
+                 column(2, uiOutput("dodge")
+                 )                 
+               ),
+               fluidRow(
+                 column(4,uiOutput("groupMean")
                  )
                )
              )
@@ -53,8 +56,12 @@ fluidPage(
     ), #start second half of page ie. plot/table output
     column(8, 
            fluidRow(
-             column(12, plotOutput("plotTest")
+             column(12, plotOutput("plotTest",height="800px")
              )
+           ),
+           fluidRow(
+              column(12, uiOutput("palette")
+              )
            ),
            fluidRow(
              column(12, tableOutput("tableTest") # testing

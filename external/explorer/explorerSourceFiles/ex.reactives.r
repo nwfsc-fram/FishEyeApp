@@ -3,6 +3,8 @@ dat <- reactive({
   if(!is.null(input$dat.name)){
     if(input$dat.name == "Catcher Vessel Cost Data"){
       load("data/fullcosts.RData")
+      fullcosts$SURVEY_YEAR <- factor(fullcosts$SURVEY_YEAR, levels=years.list)
+      fullcosts$VSSLNGCLASS <- factor(fullcosts$VSSLNGCLASS, levels= c("Small vessel ($<$ 60 ft)", "Medium vessel ($>$ 60 ft, $<=$ 80 ft)", "Large vessel ($>$ 80 ft)"))
       dat <- melt(fullcosts, measure.vars="DISCOST")
     }else dat <- NULL
     dat
@@ -34,11 +36,7 @@ dat.sub <- reactive({
   )
 })
 
-# dat.melt <- reactive({
-#   if(!is.null(dat.sub())) melt(dat.sub(), measure.vars= dat.measure.var())
-# })
-
-# ggplot2 grouping, faceting, pooling
+# these next two are only used in the input selection. They can probably be integrated elsewhere
 group.choices <- reactive({
   if(!is.null(input$by.var)){
     if(input$by.var=="Survey year") {
@@ -104,15 +102,6 @@ dat.cast <- reactive({
     d
   } else return()             
 })          
-
-# Reactives for plot output
-# 
-# ggplot.base <- reactive({
-#   if(!is.null(dat.cast())){
-#     plot.dat <- dat.cast()
-#     ggplot(plot.dat, aes(x=byvar(), y=dat.measure.var(), fill=groupvar()) + geom_bar(stat="identity")) 
-#   }
-# })
 
 #staging subsetting
 dataGo <- reactive({

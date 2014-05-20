@@ -11,7 +11,7 @@ output$fishery <- renderUI({
 
 output$years <- renderUI({
   if(!is.null(dat())){
-    selectInput("years", "Years:", choices=c("", unique(dat()$SURVEY_YEAR)), selected="", multiple=T)
+    selectInput("years", "Years:", choices=c("", levels(dat()$SURVEY_YEAR)), selected="", multiple=T)
   }
 })
 
@@ -33,7 +33,7 @@ output$place <- renderUI({
 
 output$length <- renderUI({
   if(!is.null(dat())){
-    selectInput("length", "Vessel length class:", choices=c("", unique(dat()$VSSLNGCLASS)), selected="", multiple=T)
+    selectInput("length", "Vessel length class:", choices=c("", levels(dat()$VSSLNGCLASS)), selected="", multiple=T)
   }
 })
 
@@ -65,7 +65,15 @@ output$stat <- renderUI({
 
 output$plotType <- renderUI({
   if(!is.null(dat.cast())){
-    radioButtons("plotType", "Plot type:", choices= c("bar", "point"))
+    radioButtons("plotType", "Plot type:", choices= c("bar", "point", "line"))
+  }
+})
+
+output$dodge <- renderUI({
+  if(!is.null(input$plotType)){
+    if(input$plotType=="bar"){
+    radioButtons("dodge", "Position:", choices= c("stack", "dodge"))
+    } else return()
   }
 })
 
@@ -75,11 +83,12 @@ output$groupMean <- renderUI({
   }
 })
 
-output$groupRange <- renderUI({
+output$palette <- renderUI({
   if(!is.null(dat.cast())){
-    checkboxInput("groupRange", "Group Range", value=F)
+    selectInput("palette", "Palette:", choices=c("Default", "l45", "Hipster1"))
   }
 })
+
 
 # Data subsetting action button
 output$dataGo <- renderUI({

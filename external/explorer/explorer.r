@@ -6,9 +6,8 @@ source("external/explorer/explorerSourceFiles/ex.io.sidebar1.r",local=T) # sourc
 output$tableTest <- renderTable(dat.cast())
 
 output$plotTest <- renderPlot({
-  if(is.null(input$by.var) | is.null(input$group.var)){ return()
+  if(is.null(input$by.var) | is.null(input$group.var) | is.null(input$plotType)){ return()
   }else{
-    plotBase <- plotBase() 
-    print(plotBase)
+    print(plotBase() + plotGeom() + plotFacet() + plotGroupMean() + plotPalette())
   }
 })
