@@ -1,18 +1,25 @@
+#this page handles all of the reactive expressions for the dynamic user interface
+#this file is getting a bit long, consider splitting into two parts
+
 output$dat.name <- renderUI({
-  selectInput("dat.name", "Data:", choices=c("", "Catcher Vessel Cost Data"), selected="")
+  selectInput("dat.name", "Data:", choices=c("", "Catcher Vessel Cost Data", "Catcher Vessel Revenue Data"), selected="")
+})
+
+output$subsetChoice <- renderUI({
+  checkboxInput("subsetChoice", "View subsetting options", value= TRUE)
 })
 
 # Inputs variables will be pulled at this stage because we are not preloading data via .r files
-output$fishery <- renderUI({
-  if(!is.null(dat())){
-    selectInput("fishery", "Fisheries:", choices=c("", unique(dat()$FISHERIES)),selected="", multiple=T)
-  } 
-})
-
 output$years <- renderUI({
   if(!is.null(dat())){
-    selectInput("years", "Years:", choices=c("", levels(dat()$SURVEY_YEAR)), selected="", multiple=T)
+    selectInput("years", "Years:", choices=c(levels(dat()$SURVEY_YEAR)), selected=c(levels(dat()$SURVEY_YEAR)), multiple=T)
   }
+})
+
+output$fishery <- renderUI({
+  if(!is.null(dat())){
+    selectInput("fishery", "Fisheries:", choices=c(levels(dat()$FISHERIES)),selected=c(levels(dat()$FISHERIES)), multiple=T)
+  } 
 })
 
 output$placeUnit <- renderUI({
@@ -24,8 +31,8 @@ output$placeUnit <- renderUI({
 output$place <- renderUI({
   if(!is.null(input$placeUnit)){
     if(input$placeUnit == "Homeport"){
-      selectInput("place", "Geographic location:", choices=c("", unique(dat()$HOMEPT)), selected="", multiple=T)
-        }else selectInput("place", "Geographic location:", choices=c("", unique(dat()$STATE)), selected="", multiple=T)
+      selectInput("place", "Geographic location:", choices=c(unique(dat()$HOMEPT)), selected=c(unique(dat()$HOMEPT)), multiple=TRUE)
+        }else selectInput("place", "Geographic location:", choices=c(unique(dat()$STATE)), selected=c(unique(dat()$STATE)), multiple=TRUE)
         
   }else return()
 })
@@ -33,8 +40,20 @@ output$place <- renderUI({
 
 output$length <- renderUI({
   if(!is.null(dat())){
-    selectInput("length", "Vessel length class:", choices=c("", levels(dat()$VSSLNGCLASS)), selected="", multiple=T)
+    selectInput("length", "Vessel length class:", choices=c(levels(dat()$VSSLNGCLASS)), selected=c(levels(dat()$VSSLNGCLASS)), multiple=TRUE)
   }
+})
+
+output$costtyp <- renderUI({
+  if(!is.null(dat()) && dat.measure.var()=="DISCOST"){
+    selectInput("costtyp", "Cost type:", choices=c(levels(dat()$COSTTYP)), selected=c(levels(dat()$COSTTYP)), multiple=TRUE)
+  } else return(NULL)
+})
+
+
+# Data subsetting action button
+output$dataGo <- renderUI({
+  if(dataGo()) actionButton("dataGo", "Select Data")
 })
 
 # begin wellPanel2, plot options
@@ -65,7 +84,7 @@ output$stat <- renderUI({
 
 output$plotType <- renderUI({
   if(!is.null(dat.cast())){
-    radioButtons("plotType", "Plot type:", choices= c("bar", "point", "line"))
+    selectInput("plotType", "Plot type:", choices= c("bar", "point", "line"))
   }
 })
 
@@ -85,12 +104,6 @@ output$groupMean <- renderUI({
 
 output$palette <- renderUI({
   if(!is.null(dat.cast())){
-    selectInput("palette", "Palette:", choices=c("Default", "l45", "Hipster1"))
+    selectInput("palette", "Palette:", choices=c("CB-friendly", "Brewer", "Hipster1"))
   }
-})
-
-
-# Data subsetting action button
-output$dataGo <- renderUI({
-  if(dataGo()) actionButton("dataGo", "Select Data")
 })

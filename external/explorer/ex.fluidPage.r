@@ -1,35 +1,52 @@
+#this file handles content page organization for the explorer and is sourced to ui.r
+
 fluidPage(
   title = "Data Explorer",
   
   fluidRow(
     column(4,
-           wellPanel(
-             wellPanel( # begin data subsetting well
+           wellPanel( #left side panel
+             wellPanel( #data select panel
                fluidRow(
                  column(6, uiOutput("dat.name")
-                 ),
-                 column(6, uiOutput("years")
-                 )
-               ),
-               fluidRow(
-                 column(12, uiOutput("fishery")
-                 )
-               ),
-               fluidRow(
-                 column(12, uiOutput("length")
-                 )
-               ),
-               fluidRow(
-                 column(6, uiOutput("place")
-                 ),
-                 column(6, uiOutput("placeUnit")
-                 )
-               ),
-               fluidRow(
-                 column(6, uiOutput("dataGo")
                  )
                )
              ),
+             wellPanel( # begin data subsetting well
+               fluidRow(
+                 column(6, uiOutput("subsetChoice")
+                 )
+               ),
+               
+               conditionalPanel(condition= "input.subsetChoice==true",
+                                fluidRow(
+                                  column(6, uiOutput("years")
+                                  )
+                                ),
+                                fluidRow(
+                                  column(12, uiOutput("fishery")
+                                  )
+                                ),
+                                fluidRow(
+                                  column(12, uiOutput("length")
+                                  )
+                                ),
+                                fluidRow(
+                                  column(6, uiOutput("place")
+                                  ),
+                                  column(6, uiOutput("placeUnit")
+                                  )
+                                ),
+                                fluidRow(
+                                  column(6, uiOutput("costtyp")
+                                  )
+                                ),
+                                fluidRow(
+                                  column(6, uiOutput("dataGo")
+                                  )
+                                )
+               )
+             ),           
              wellPanel( #begin plot options well
                fluidRow(
                  column(4, uiOutput("by.var")
@@ -58,11 +75,11 @@ fluidPage(
            fluidRow(
              column(12, plotOutput("plotTest",height="800px")
              )
-           ),
+           ),           
            fluidRow(
-              column(12, uiOutput("palette")
-              )
-           ),
+             column(2, uiOutput("palette")
+             )
+           ),           
            fluidRow(
              column(12, tableOutput("tableTest") # testing
              )
