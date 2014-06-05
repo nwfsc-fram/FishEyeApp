@@ -1,8 +1,0 @@
-[core]
-	repositoryformatversion = 0
-	filemode = false
-	bare = true
-	ignorecase = true
-	hideDotFiles = dotGitOnly
-[remote "origin"]
-	url = u:/vesselSim/vesselSim_app/vesselSim_app
