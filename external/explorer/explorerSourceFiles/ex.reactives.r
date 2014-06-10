@@ -5,19 +5,21 @@
 
 dat <- reactive({
   if(!is.null(input$dat.name)){
-    if(input$dat.name == "Catcher Vessel Cost Data"){
+    if(input$dat.name == "Disaggregated Cost"){
       load("data/fullcosts.RData")
       fullcosts$SURVEY_YEAR <- factor(fullcosts$SURVEY_YEAR, levels=years.list)
       fullcosts$VSSLNGCLASS <- factor(fullcosts$VSSLNGCLASS, levels= c("Small vessel ($<$ 60 ft)", "Medium vessel ($>$ 60 ft, $<=$ 80 ft)", "Large vessel ($>$ 80 ft)"))
       fullcosts$FISHERIES <- as.factor(fullcosts$FISHERIES)
       fullcosts$COSTTYP <- as.factor(fullcosts$COSTTYP)
       dat <- melt(fullcosts, measure.vars="DISCOST")
-    } else if(input$dat.name == "Catcher Vessel Revenue Data"){
+      #print(names(dat))#debugging
+    } else if(input$dat.name == "Revenue"){
       load("data/fullrev.RData")
       fullrev$SURVEY_YEAR <- factor(fullrev$SURVEY_YEAR, levels=years.list)
       fullrev$VSSLNGCLASS <- factor(fullrev$VSSLNGCLASS, levels= c("Small vessel ($<$ 60 ft)", "Medium vessel ($>$ 60 ft, $<=$ 80 ft)", "Large vessel ($>$ 80 ft)"))
       fullrev$FISHERIES <- as.factor(fullrev$FISHERIES)
       dat <- melt(fullrev, measure.vars=c("LBS", "REV", "MTS", "DAS"))
+      #print(names(dat)) #debugging
     }else dat <- NULL
     dat
   }
@@ -26,9 +28,9 @@ dat <- reactive({
 #reactives for dataset specific parameters
 dat.measure.var <- reactive({
   if(!is.null(dat())){
-    if(input$dat.name == "Catcher Vessel Cost Data"){
+    if(input$dat.name == "Disaggregated Cost"){
       measurevar <- "DISCOST"
-    } else if(input$dat.name == "Catcher Vessel Revenue Data"){
+    } else if(input$dat.name == "Revenue"){
       measurevar <- "REV"
     } else measurevar <- NULL
     measurevar
@@ -45,14 +47,10 @@ dat.sub <- reactive({
       #subseting before variable selection and casting because all of the input variables will still be in the data
       
       subset.args <- function(){  #creating a subset string to be evaluated in subset arg of dcast
-                       prime <- "SURVEY_YEAR %in% input$years & FISHERIES %in% input$fishery & VSSLNGCLASS %in% input$length" #this is our base subset list, these are common to all of the datasets 
-                       
-                       prime <- if(input$placeUnit == "Homeport"){ paste(prime, "& HOMEPT %in% input$place", sep=" ") } else paste(prime, "& STATE %in% input$place", sep=" ")  #adding the geographic location option                                       
-                       
+                       prime <- "SURVEY_YEAR %in% input$years & FISHERIES %in% input$fishery & VSSLNGCLASS %in% input$length" #this is our base subset list, these are common to all of the datasets                        
+                       prime <- if(input$placeUnit == "Homeport"){ paste(prime, "& HOMEPT %in% input$place", sep=" ") } else paste(prime, "& STATE %in% input$place", sep=" ")  #adding the geographic location option                                                              
                        prime <- if(!is.null(input$costtyp)){ paste(prime, "& COSTTYP %in% input$costtyp", sep = "") } else prime                    
-                       
-                       # print(prime) #debugging
-                       
+                       print(prime) #debugging                       
                        prime
                      }
 
@@ -75,7 +73,7 @@ dat.sub <- reactive({
                         if(!is.null(input$costtyp)) "COSTTYP",
                         ifelse(input$placeUnit=="Homeport", "HOMEPT", "STATE"))
       
-      print(paste("formula.args contents", formula.args, sep=": ")) # debugging
+      # print(paste("formula.args contents", formula.args, sep=": ")) # debugging
       
       d.cast1 <- dcast(dat.sub, list(c(formula.args), .(variable)), fun.aggregate=sum, na.rm=TRUE) #casting the dataframe by unique observation (vessel_ID) and the desired variables.
                        
@@ -163,7 +161,7 @@ dat.cast <- reactive({
   if(!is.null(input$by.var)){        
     if(input$facet.var == "None"){ d <- dcast(dat.sub(), list(c(byvar()[1], groupvar()[1]), .(variable)), fun.aggregate = agg.method())        
     } else                         d <- dcast(dat.sub(), list(c(byvar()[1], groupvar()[1], facetvar()[1]), .(variable)), fun.aggregate = agg.method())
-    d
+    d    
   } else return()             
 })          
 
@@ -174,3 +172,8 @@ dataGo <- reactive({
   } else x <- FALSE
   x
 })
+
+#staging plot
+#plotGo <- reactive({
+ # if(!is.null(dat.sub()))
+#})

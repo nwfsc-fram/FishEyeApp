@@ -1,4 +1,4 @@
-6# this file handles all of the reactives for the plot output. Everyhing is entered on the explorer.r file as ggplot elements
+# this file handles all of the reactives for the plot output. Everyhing is entered on the explorer.r file as ggplot elements
 
 plotBase <- reactive({
   if(!is.null(input$plotType)){
@@ -9,9 +9,9 @@ plotBase <- reactive({
 plotGeom <- reactive({
   if(!is.null(input$plotType)){
     if(input$plotType=="point"){
-      geom_point(aes_string(colour=groupvar(), size=4))
+      geom_point(aes_string(color=groupvar(), size=4))
     } else if (input$plotType=="line"){
-      geom_line(aes_string(group=groupvar(), colour=groupvar(), fill=groupvar()), line=4)
+      geom_line(aes_string(group=groupvar(),colour=groupvar()), size=2)
     } else {
       if(input$dodge =="dodge"){
         geom_bar(stat="identity", position="dodge")

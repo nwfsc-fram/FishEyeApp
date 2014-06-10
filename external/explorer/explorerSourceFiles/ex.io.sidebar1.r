@@ -1,12 +1,14 @@
 #this page handles all of the reactive expressions for the dynamic user interface
 #this file is getting a bit long, consider splitting into two parts
 
-output$dat.name <- renderUI({
-  selectInput("dat.name", "Data:", choices=c("", "Catcher Vessel Cost Data", "Catcher Vessel Revenue Data"), selected="")
+output$dat.name <- renderUI({ #data selection. there are two reactives that are dependent on these names in ex.reactives
+  selectInput("dat.name", "Measured variable:", choices=c("", "Disaggregated Cost", "Revenue"), selected="")
 })
 
 output$subsetChoice <- renderUI({
-  checkboxInput("subsetChoice", "View subsetting options", value= TRUE)
+  if(!is.null(dat())){
+    checkboxInput("subsetChoice", "View subsetting options", value= TRUE)
+  }
 })
 
 # Inputs variables will be pulled at this stage because we are not preloading data via .r files
@@ -53,7 +55,7 @@ output$costtyp <- renderUI({
 
 # Data subsetting action button
 output$dataGo <- renderUI({
-  if(dataGo()) actionButton("dataGo", "Select Data")
+  if(dataGo()) actionButton("dataGo",label="Select Data", icon=icon("filter"))
 })
 
 # begin wellPanel2, plot options

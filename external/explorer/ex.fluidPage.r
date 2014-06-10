@@ -1,6 +1,6 @@
 #this file handles content page organization for the explorer and is sourced to ui.r
 
-fluidPage(
+fluidPage(theme="bootstrap.css",
   title = "Data Explorer",
   
   fluidRow(
@@ -8,6 +8,9 @@ fluidPage(
            wellPanel( #left side panel
              wellPanel( #data select panel
                fluidRow(
+                 column(6, HTML("<p>Dataset:</p>
+                                <p><strong>Catcher Vessels</strong></p>")
+                 ),
                  column(6, uiOutput("dat.name")
                  )
                )
@@ -81,7 +84,7 @@ fluidPage(
              )
            ),           
            fluidRow(
-             column(12, tableOutput("tableTest") # testing
+             column(12, dataTableOutput("tableTest") # testing
              )
            )
     )
