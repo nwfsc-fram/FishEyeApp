@@ -3,7 +3,7 @@
 # creating the dat() reactive function that contains the user selected dataset
 # The re-classification of data types can be transfered to the read-in file
 
-dat <- reactive({
+dat <- reactive({ #
   if(!is.null(input$dat.name)){
     if(input$dat.name == "Disaggregated Cost"){
       load("data/fullcosts.RData")
@@ -27,30 +27,34 @@ dat <- reactive({
 
 #reactives for dataset specific parameters
 dat.measure.var <- reactive({
-  if(!is.null(dat())){
-    if(input$dat.name == "Disaggregated Cost"){
-      measurevar <- "DISCOST"
-    } else if(input$dat.name == "Revenue"){
-      measurevar <- "REV"
-    } else measurevar <- NULL
-    measurevar
-  }
+  input$dataButton
+  isolate(
+    if(!is.null(dat())){
+      if(input$dat.name == "Disaggregated Cost"){
+        measurevar <- "DISCOST"
+      } else if(input$dat.name == "Revenue"){
+        measurevar <- "REV"
+      } else measurevar <- NULL
+      measurevar
+    }
+  )
 })
 
 # selecting plot variables, subsetting the data AND casting for individual level ID (fun.agg=sum)
 # build dcast formula using if controls and using the qouted method in dcast
 dat.sub <- reactive({
-  if(is.null(input$dataGo) || input$dataGo==0) return()
+  input$dataButton
   isolate(
     if(!is.null(dat())){
       
       #subseting before variable selection and casting because all of the input variables will still be in the data
       
       subset.args <- function(){  #creating a subset string to be evaluated in subset arg of dcast
+                       prime <- NULL
                        prime <- "SURVEY_YEAR %in% input$years & FISHERIES %in% input$fishery & VSSLNGCLASS %in% input$length" #this is our base subset list, these are common to all of the datasets                        
                        prime <- if(input$placeUnit == "Homeport"){ paste(prime, "& HOMEPT %in% input$place", sep=" ") } else paste(prime, "& STATE %in% input$place", sep=" ")  #adding the geographic location option                                                              
-                       prime <- if(!is.null(input$costtyp)){ paste(prime, "& COSTTYP %in% input$costtyp", sep = "") } else prime                    
-                       print(prime) #debugging                       
+                       prime <- if(input$dat.name=="Disaggregated Cost"){ paste(prime, "& COSTTYP %in% input$costtyp", sep = "") } else prime                    
+                       #print(prime) #debugging                       
                        prime
                      }
 
@@ -70,7 +74,7 @@ dat.sub <- reactive({
                         if(!is.null(input$years)) "SURVEY_YEAR",
                         if(!is.null(input$fishery)) "FISHERIES",
                         if(!is.null(input$length)) "VSSLNGCLASS",
-                        if(!is.null(input$costtyp)) "COSTTYP",
+                        if(input$dat.name=="Disaggregated Cost") "COSTTYP",
                         ifelse(input$placeUnit=="Homeport", "HOMEPT", "STATE"))
       
       # print(paste("formula.args contents", formula.args, sep=": ")) # debugging
@@ -97,7 +101,7 @@ dat.sub <- reactive({
   )
 })
 
-# these next two are only used in the input selection. They can probably be integrated elsewhere
+# these next two are only used in io.sidebar.r, they should be integrated elsewhere
 group.choices <- reactive({
   if(!is.null(input$by.var)){
     if(input$by.var=="Survey year") {
@@ -116,7 +120,7 @@ facet.choices <- reactive({
   } else return()
 })
 
-# Resphaping the data based on plot options
+# THis is the 'second' cast/melt operation. This takes the vessel lvl observations and melts them into the plot output
 # reactives for cast options
 # I am pretty sure you can generalize all of these switch operations...
 byvar <- reactive({
@@ -165,15 +169,23 @@ dat.cast <- reactive({
   } else return()             
 })          
 
-#staging subsetting
+#dataGo is for staging the data subsetting section. "Am I ready to hit the dataButton?"
 dataGo <- reactive({
-  if(!is.null(dat())){
+  if(!is.null(input$dataGo) && !is.null(dat())){
     x <- TRUE
   } else x <- FALSE
+  #print(paste("dataGo=", x)) # debugging
   x
 })
 
-#staging plot
-#plotGo <- reactive({
- # if(!is.null(dat.sub()))
-#})
+
+#plotGo  is for staging the plot section. "Am I ready to hit the plotButton?"
+plotGo <- reactive({
+  if(!is.null(dat.sub())){
+    if(!is.null(dat.sub()) && input$dataButton > 0){
+    x <- TRUE
+    } else x <- FALSE
+  #print(paste("plotGo=", x)) #debugging
+  x
+  } else x <- FALSE
+})

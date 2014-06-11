@@ -45,7 +45,7 @@ fluidPage(theme="bootstrap.css",
                                   )
                                 ),
                                 fluidRow(
-                                  column(6, uiOutput("dataGo")
+                                  column(6, uiOutput("dataButton")
                                   )
                                 )
                )
@@ -70,6 +70,10 @@ fluidPage(theme="bootstrap.css",
                fluidRow(
                  column(4,uiOutput("groupMean")
                  )
+               ),
+               fluidRow(
+                 column(6, uiOutput("plotButton")
+                 )
                )
              )
            )
@@ -82,7 +86,8 @@ fluidPage(theme="bootstrap.css",
            fluidRow(
              column(2, uiOutput("palette")
              )
-           ),           
+           ),
+           fluidRow(HTML("<hr>")),
            fluidRow(
              column(12, dataTableOutput("tableTest") # testing
              )

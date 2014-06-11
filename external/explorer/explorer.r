@@ -5,11 +5,19 @@ source("external/explorer/explorerSourceFiles/ex.reactives.r", local=T)
 source("external/explorer/explorerSourceFiles/ex.plot.reactives.r", local=T)
 source("external/explorer/explorerSourceFiles/ex.io.sidebar1.r",local=T) # source input/output objects associated with sidebar1
 
-output$tableTest <- renderDataTable(dat.cast())
+output$tableTest <- renderDataTable({
+  input$plotButton
+  isolate(
+    dat.cast()
+  )
+})
 
 output$plotTest <- renderPlot({
-  if(is.null(input$by.var) | is.null(input$group.var) | is.null(input$plotType)){ return()
-  }else{
-    print(plotBase() + plotGeom() + plotFacet() + plotGroupMean() + plotPalette() + plotLabels() + plotScales() + plotTheme())
-  }
+  input$plotButton
+  isolate(
+    if(input$plotButton == 0 || is.null(input$by.var) || is.null(input$group.var) || is.null(input$plotType)){ return()
+    }else{
+      print(plotBase() + plotGeom() + plotFacet() + plotGroupMean() + plotPalette() + plotLabels() + plotScales() + plotTheme())
+    }
+  )
 })

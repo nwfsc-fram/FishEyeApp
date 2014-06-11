@@ -25,7 +25,7 @@ fullcosts <- join(costslng, vesselhomeportdata, by = intersect(names(costslng), 
 
 # add cost categories and codes to costs data: method is from EDC report
 
-fullcosts$COSTTYP <- with(fullcosts, 
+fullcosts$COSTTYP <- with(fullcosts ,
                          ifelse(grepl('CX', FULLCODE), 'Fixed costs', 
                                 ifelse(grepl('QP', FULLCODE) | grepl('LEP', FULLCODE) | grepl('QS', FULLCODE) | FULLCODE == 'EXDEPRALL', 'other',  
                                        ifelse(grepl('WC', FULLCODE) & !grepl('FG', FULLCODE), 'Variable costs', 'Fixed costs'))))

@@ -13,7 +13,7 @@ plotGeom <- reactive({
     } else if (input$plotType=="line"){
       geom_line(aes_string(group=groupvar(),colour=groupvar()), size=2)
     } else {
-      if(input$dodge =="dodge"){
+      if(!is.null(input$dodge) && input$dodge =="dodge"){
         geom_bar(stat="identity", position="dodge")
       } else geom_bar(stat="identity", postiion="stack") 
     }
@@ -21,7 +21,7 @@ plotGeom <- reactive({
 })
 
 plotFacet <- reactive({
-  if(!is.null(input$plotType)){
+  if(!is.null(facetvar())){
     if(input$facet.var != "None"){  
       facet_grid(paste(".", "~", facetvar(), sep=""))
     } else return ()

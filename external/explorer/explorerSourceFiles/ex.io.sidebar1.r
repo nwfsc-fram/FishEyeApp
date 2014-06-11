@@ -26,7 +26,7 @@ output$fishery <- renderUI({
 
 output$placeUnit <- renderUI({
   if(!is.null(dat())){
-    selectInput("placeUnit", "Geographic unit", choices=c("Homeport", "State"))
+    selectInput("placeUnit", "Geographic unit", choices=c("State", "Homeport"))
   }
 })
 
@@ -47,45 +47,46 @@ output$length <- renderUI({
 })
 
 output$costtyp <- renderUI({
-  if(!is.null(dat()) && dat.measure.var()=="DISCOST"){
+  if(!is.null(dat()) && input$dat.name=="Disaggregated Cost"){
     selectInput("costtyp", "Cost type:", choices=c(levels(dat()$COSTTYP)), selected=c(levels(dat()$COSTTYP)), multiple=TRUE)
   } else return(NULL)
 })
 
 
-# Data subsetting action button
-output$dataGo <- renderUI({
-  if(dataGo()) actionButton("dataGo",label="Select Data", icon=icon("filter"))
+########################################### Data subsetting action button ################################
+
+output$dataButton <- renderUI({
+  actionButton("dataButton",label=" Select Data", icon=icon("filter"))
 })
 
-# begin wellPanel2, plot options
+########################################### begin wellPanel2, plot options ###############################
 
 output$by.var <- renderUI({
-  if(!is.null(dat.sub())){
+  if(plotGo()){
     selectInput("by.var", "By:", choices=c("Survey year", "Fishery"))
-  }
+  } else return()
 })
 
 output$group.var <- renderUI({
-  if(!is.null(dat.sub())){
+  if(plotGo()){
     selectInput("group.var", "Group/color:", group.choices())
   }
 })
 
 output$facet.var <- renderUI({
-  if(!is.null(dat.sub())){
+  if(plotGo()){
     selectInput("facet.var", "Facet:", c(facet.choices()), selected="None")
   }
 })
 
 output$stat <- renderUI({
-  if(!is.null(dat.sub())){
-    selectInput("stat", "Summary Statistic:", choices= c("sum", "mean", "N"))
+  if(plotGo()){
+    selectInput("stat", "Summary statistic:", choices= c("sum", "mean", "N"))
   }
 })
 
 output$plotType <- renderUI({
-  if(!is.null(dat.cast())){
+  if(plotGo()){
     selectInput("plotType", "Plot type:", choices= c("bar", "point", "line"))
   }
 })
@@ -93,19 +94,25 @@ output$plotType <- renderUI({
 output$dodge <- renderUI({
   if(!is.null(input$plotType)){
     if(input$plotType=="bar"){
-    radioButtons("dodge", "Position:", choices= c("stack", "dodge"))
+      radioButtons("dodge", "Position:", choices= c("stack", "dodge"))
     } else return()
-  }
+  } else return()
 })
 
 output$groupMean <- renderUI({
-  if(!is.null(dat.cast())){
+  if(plotGo()){
     checkboxInput("groupMean", "Group mean CI", value=F)
   }
 })
 
 output$palette <- renderUI({
-  if(!is.null(dat.cast())){
+  if(plotGo()){
     selectInput("palette", "Palette:", choices=c("CB-friendly", "Brewer", "Hipster1"))
   }
+})
+
+############################################## Plotting action button #########################################
+
+output$plotButton <- renderUI({
+  if(!is.null(dat.sub())) actionButton("plotButton", label=" Plot Data", icon=icon("bar-chart-o"))
 })
