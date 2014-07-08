@@ -24,6 +24,7 @@ output$fishery <- renderUI({
   } 
 })
 
+#homeport#
 output$placeUnit <- renderUI({
   if(!is.null(dat())){
     selectInput("placeUnit", "Geographic unit", choices=c("State", "Homeport"))
@@ -39,6 +40,13 @@ output$place <- renderUI({
   }else return()
 })
 
+# #delivery port#
+# output$delivUnit <- renderUI({
+#   if(!is.null(dat()){
+#     selectInput("delivport")
+#   }
+# })
+
 
 output$length <- renderUI({
   if(!is.null(dat())){
@@ -48,7 +56,7 @@ output$length <- renderUI({
 
 output$costtyp <- renderUI({
   if(!is.null(dat()) && input$dat.name=="Disaggregated Cost"){
-    selectInput("costtyp", "Cost type:", choices=c(levels(dat()$COSTTYP)), selected=c(levels(dat()$COSTTYP)), multiple=TRUE)
+    selectInput("costtyp", "Cost type:", choices=c(levels(dat()$COSTTYPCAT)), selected=c(levels(dat()$COSTTYPCAT)), multiple=TRUE)
   } else return(NULL)
 })
 

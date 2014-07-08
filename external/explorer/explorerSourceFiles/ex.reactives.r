@@ -7,20 +7,14 @@ dat <- reactive({ #
   if(!is.null(input$dat.name)){
     if(input$dat.name == "Disaggregated Cost"){
       load("data/fullcosts.RData")
-      fullcosts$SURVEY_YEAR <- factor(fullcosts$SURVEY_YEAR, levels=years.list)
-      fullcosts$VSSLNGCLASS <- factor(fullcosts$VSSLNGCLASS, levels= c("Small vessel ($<$ 60 ft)", "Medium vessel ($>$ 60 ft, $<=$ 80 ft)", "Large vessel ($>$ 80 ft)"))
-      fullcosts$FISHERIES <- as.factor(fullcosts$FISHERIES)
-      fullcosts$COSTTYP <- as.factor(fullcosts$COSTTYP)
       dat <- melt(fullcosts, measure.vars="DISCOST")
-      #print(names(dat))#debugging
+      print(names(dat))#debugging
     } else if(input$dat.name == "Revenue"){
       load("data/fullrev.RData")
-      fullrev$SURVEY_YEAR <- factor(fullrev$SURVEY_YEAR, levels=years.list)
-      fullrev$VSSLNGCLASS <- factor(fullrev$VSSLNGCLASS, levels= c("Small vessel ($<$ 60 ft)", "Medium vessel ($>$ 60 ft, $<=$ 80 ft)", "Large vessel ($>$ 80 ft)"))
-      fullrev$FISHERIES <- as.factor(fullrev$FISHERIES)
       dat <- melt(fullrev, measure.vars=c("LBS", "REV", "MTS", "DAS"))
-      #print(names(dat)) #debugging
+      print(names(dat)) #debugging
     }else dat <- NULL
+    print(str(dat))
     dat
   }
 })
@@ -53,8 +47,8 @@ dat.sub <- reactive({
                        prime <- NULL
                        prime <- "SURVEY_YEAR %in% input$years & FISHERIES %in% input$fishery & VSSLNGCLASS %in% input$length" #this is our base subset list, these are common to all of the datasets                        
                        prime <- if(input$placeUnit == "Homeport"){ paste(prime, "& HOMEPT %in% input$place", sep=" ") } else paste(prime, "& STATE %in% input$place", sep=" ")  #adding the geographic location option                                                              
-                       prime <- if(input$dat.name=="Disaggregated Cost"){ paste(prime, "& COSTTYP %in% input$costtyp", sep = "") } else prime                    
-                       #print(prime) #debugging                       
+                       prime <- if(input$dat.name=="Disaggregated Cost"){ paste(prime, " & COSTTYPCAT %in% input$costtyp", sep = "") } else prime                    
+                       print(prime) #debugging                       
                        prime
                      }
 
@@ -68,7 +62,7 @@ dat.sub <- reactive({
 
       dat.sub <- subset(dat(), eval(parse(text=subset.args()))) # handling subsetting
 
-      # print(paste("prime contents", subset.args, sep=": ")) #debugging
+#       print(paste("prime contents", subset.args, sep=": ")) #debugging
       
       formula.args <- c("VESSEL_ID", #this code puts together the left side of the dcast arg
                         if(!is.null(input$years)) "SURVEY_YEAR",
@@ -82,7 +76,7 @@ dat.sub <- reactive({
       d.cast1 <- dcast(dat.sub, list(c(formula.args), .(variable)), fun.aggregate=sum, na.rm=TRUE) #casting the dataframe by unique observation (vessel_ID) and the desired variables.
                        
       
-      #print(str(d.cast1)) #debugging
+      print(str(d.cast1)) #debugging
       
       # old code
 #       if(input$placeUnit == "Homeport"){ d <- dcast(dat(), formula= VESSEL_ID + SURVEY_YEAR + FISHERIES + VSSLNGCLASS + HOMEPT + STATE ~ variable, 
@@ -93,7 +87,7 @@ dat.sub <- reactive({
 
       d.melt <- melt(d.cast1, measure.vars=dat.measure.var()) #melting the dataframe after each cast is my new SOP for dealing with multiple cast/melt operations
 
-      # print(str(d.melt)) #debugging
+      print(str(d.melt)) #debugging
 
       d.melt
 
