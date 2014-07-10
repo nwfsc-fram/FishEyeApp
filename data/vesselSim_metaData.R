@@ -1,5 +1,4 @@
 # This file has the R code used to derive R data files
-
 library(RODBC)
 source("S:/EDC/blair/connectioninfoBV.R")
 
@@ -8,28 +7,38 @@ source("S:/EDC/blair/connectioninfoBV.R")
 load("data/dbids.RData")
 load("data/vesselgroupings.RData")
 load("data/vesselhomeportdata.RData")
-load("data/deliveryPortRev.RData")
+load("data/deliveryPort.RData") # two boats from the steinerer.costs table are not in the EDCFISH_MV table: 603820 (Alutian Challenger)and 504299 (New Life)
+
+# create fewer fisheries
+load("S:/EDC/RData Files/fewerfisheriesfn.RData") #this is the function to rename fisheries
+
+names(deliveryPort)[names(deliveryPort) %in% "REV"] <- "REVBYDPORT" #this is will differentiate rev from delivery port data from rev in revlbsdas table
+names(deliveryPort)[names(deliveryPort) %in% "YEAR"] <- "SURVEY_YEAR" #consistent with other datasets
+names(deliveryPort)[names(deliveryPort) %in% "RWT_LBS"] <- "LBSBYDPORT" #worst var name ever? constitent with rev var from same dataset
+
+vesselhomeportdata$HOMEPT <- with(vesselhomeportdata, ifelse(HOMEPT == "Alaska", NA, 
+                                                             ifelse(HOMEPT == "Monterey", "Morro Bay", HOMEPT))) # I recoding AK fisheries to NA. Run in conjucntion with rm.na to remove them from plot inputs
+vesselhomeportdata$STATE <- with(vesselhomeportdata, ifelse(STATE == "AK", NA, STATE))
+
 #################################
 # Catcher Vessel Cost Data
 #################################
 
 costdat <- sqlQuery(ifqpub, "select * from steinerer.costs")
-#rename cost to discost to fit with old code
-names(costdat)[4] <- "DISCOST"
+names(costdat)[names(costdat) %in% "COST"] <- "DISCOST" #this is the varname used in the subset coding
 
 fisherycode <- sqlQuery(ifqpub, "select * from steinerer.fisherycodes")
 # vesselgroupings from EDCreport 
 # vesselhomeportdata from EDCreport
 cost.code <- merge(costdat, fisherycode, all.x=TRUE)
-#deliveryports
-costsdlvr <- merge(cost.code, deliveryPortRev, by= c("VESSEL_ID", "SURVEY_YEAR"), all.x=TRUE)
 
 #Join the subsetting variables to the costs data
 #join costs + vessel length
-costslng <- join(costsdlvr, vesselgroupings)
+costslng <- merge(cost.code, vesselgroupings, all.x=TRUE)
+
 #... + homeports
 
-fullcosts <- join(costslng, vesselhomeportdata)
+fullcosts <- merge(costslng, vesselhomeportdata, all.x=TRUE)
 
 # add cost categories and codes to costs data: method is from EDC report
 
@@ -45,8 +54,6 @@ fullcosts$COSTCAT <- with(fullcosts,
                                               ifelse(COSTTYP == 'Variable costs', 'varcost', 
                                                      ifelse(COSTTYP == 'Fixed costs', 'fixedcost', 'depr'))))))
 
-# create fewer fisheries
-load("S:/EDC/RData Files/fewerfisheriesfn.RData") #this is the function to rename fisheries
 # FISHERIES to FEWERFISHERIES
 fullcosts$FISHERIES <- sapply(as.character(fullcosts$FISHERY), fewerfisheriesfn)
 # recode the "fixed-fixed" boats to "other" 
@@ -66,16 +73,17 @@ fullcosts <- fullcosts[, !names(fullcosts) %in% c("EDCSURVEY_DBID", "FULLCODE", 
 save(fullcosts, file="U:/vesselSim/vesselSim_app/data/fullcosts.RData")
 
 
-###########################################
-#Catcher Vessel Revenue, MTS, LBS, DAS data
-###########################################
-
+###########################################################
+#Catcher Vessel Revenue, MTS, LBS, DAS, delivery port data
+###########################################################
 
 revdat <- sqlQuery(ifqpub, "select * from steinerer.REVLBSDAS")
 
 revlng <- merge(revdat, vesselgroupings, all.x=TRUE)
 
-revdelvr<- merge(revlng, deliveryPortRev, by = c("VESSEL_ID", "SURVEY_YEAR"), all.x=TRUE)
+#deliveryports
+
+revdelvr<- merge(revlng, deliveryPort, by = c("VESSEL_ID", "SURVEY_YEAR"), all.x=TRUE)
 
 rev.code <- merge(revdelvr, fisherycode, all.x=TRUE)
 
@@ -83,6 +91,7 @@ fullrev <- merge(rev.code, vesselhomeportdata, all.x=TRUE)
 
 # FISHERIES to FEWERFISHERIES
 fullrev$FISHERIES <- sapply(as.character(fullrev$FISHERY), fewerfisheriesfn)
+
 # recode the "fixed-fixed" boats to "other" 
 fullrev$FISHERIES <- ifelse(fullrev$FISHERIES == "Groundfish fixed gear with fixed gear endorsement", "Other fisheries", fullrev$FISHERIES)
 
@@ -91,7 +100,6 @@ fullrev$FISHERIES <- ifelse(fullrev$FISHERIES == "Groundfish fixed gear with fix
 fullrev$SURVEY_YEAR <- factor(fullrev$SURVEY_YEAR)
 fullrev$VSSLNGCLASS <- factor(fullrev$VSSLNGCLASS, levels= c("Small vessel ($<$ 60 ft)", "Medium vessel ($>$ 60 ft, $<=$ 80 ft)", "Large vessel ($>$ 80 ft)"))
 fullrev$FISHERIES <- factor(fullrev$FISHERIES)
-
 
 
 dropvars <- names(fullrev) %in% c("EDCSURVEY_DBID", "FULLCODE", "FISHERYCODE", "FISHERY", "VSSLNG", "HOMEPTlat", "HOMEPTlong", "HOMECOUNTY")

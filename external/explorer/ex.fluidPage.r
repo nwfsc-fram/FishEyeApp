@@ -41,6 +41,12 @@ fluidPage(theme="bootstrap.css",
                                   )
                                 ),
                                 fluidRow(
+                                  column(6, uiOutput("delivPort")
+                                  ),
+                                  column(6, uiOutput("delivUnit")
+                                  )
+                                ),
+                                fluidRow(
                                   column(6, uiOutput("costtyp")
                                   )
                                 ),

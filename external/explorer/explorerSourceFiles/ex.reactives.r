@@ -11,7 +11,7 @@ dat <- reactive({ #
       print(names(dat))#debugging
     } else if(input$dat.name == "Revenue"){
       load("data/fullrev.RData")
-      dat <- melt(fullrev, measure.vars=c("LBS", "REV", "MTS", "DAS"))
+      dat <- melt(fullrev, measure.vars=c("LBS", "REV", "MTS", "DAS", "REVBYDPORT", "LBSBYDPORT"))
       print(names(dat)) #debugging
     }else dat <- NULL
     print(str(dat))
@@ -46,7 +46,7 @@ dat.sub <- reactive({
       subset.args <- function(){  #creating a subset string to be evaluated in subset arg of dcast
                        prime <- NULL
                        prime <- "SURVEY_YEAR %in% input$years & FISHERIES %in% input$fishery & VSSLNGCLASS %in% input$length" #this is our base subset list, these are common to all of the datasets                        
-                       prime <- if(input$placeUnit == "Homeport"){ paste(prime, "& HOMEPT %in% input$place", sep=" ") } else paste(prime, "& STATE %in% input$place", sep=" ")  #adding the geographic location option                                                              
+                       prime <- if(input$placeUnit == "Port"){ paste(prime, "& HOMEPT %in% input$place", sep=" ") } else paste(prime, "& STATE %in% input$place", sep=" ")  #adding the geographic location option                                                              
                        prime <- if(input$dat.name=="Disaggregated Cost"){ paste(prime, " & COSTTYPCAT %in% input$costtyp", sep = "") } else prime                    
                        print(prime) #debugging                       
                        prime
@@ -69,7 +69,7 @@ dat.sub <- reactive({
                         if(!is.null(input$fishery)) "FISHERIES",
                         if(!is.null(input$length)) "VSSLNGCLASS",
                         if(input$dat.name=="Disaggregated Cost") "COSTTYP",
-                        ifelse(input$placeUnit=="Homeport", "HOMEPT", "STATE"))
+                        ifelse(input$placeUnit=="Port", "HOMEPT", "STATE"))
       
       # print(paste("formula.args contents", formula.args, sep=": ")) # debugging
       
@@ -131,7 +131,7 @@ groupvar <- reactive({
                        "Survey year" = "SURVEY_YEAR",
                        "Fishery" = "FISHERIES",
                        "Vessel length" = "VSSLNGCLASS",
-                       "Location" = if(input$placeUnit == "Homeport") "HOMEPT" else "STATE")
+                       "Location" = if(input$placeUnit == "Port") "HOMEPT" else "STATE")
   } else return()
 })
 
@@ -141,7 +141,7 @@ facetvar <- reactive({
                        "Survey year" = "SURVEY_YEAR",
                        "Fishery" = "FISHERIES",
                        "Vessel length" = "VSSLNGCLASS",
-                       "Location" = if(input$placeUnit == "Homeport") "HOMEPT" else "STATE") 
+                       "Location" = if(input$placeUnit == "Port") "HOMEPT" else "STATE") 
   } else return()
 })
 
@@ -159,6 +159,7 @@ dat.cast <- reactive({
   if(!is.null(input$by.var)){        
     if(input$facet.var == "None"){ d <- dcast(dat.sub(), list(c(byvar()[1], groupvar()[1]), .(variable)), fun.aggregate = agg.method())        
     } else                         d <- dcast(dat.sub(), list(c(byvar()[1], groupvar()[1], facetvar()[1]), .(variable)), fun.aggregate = agg.method())
+    print(str(d))
     d    
   } else return()             
 })          

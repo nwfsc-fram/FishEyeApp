@@ -27,25 +27,33 @@ output$fishery <- renderUI({
 #homeport#
 output$placeUnit <- renderUI({
   if(!is.null(dat())){
-    selectInput("placeUnit", "Geographic unit", choices=c("State", "Homeport"))
+    selectInput("placeUnit", "Homeport unit", choices=c("State", "Port"))
   }
 })
 
 output$place <- renderUI({
   if(!is.null(input$placeUnit)){
-    if(input$placeUnit == "Homeport"){
-      selectInput("place", "Geographic location:", choices=c(unique(dat()$HOMEPT)), selected=c(unique(dat()$HOMEPT)), multiple=TRUE)
-        }else selectInput("place", "Geographic location:", choices=c(unique(dat()$STATE)), selected=c(unique(dat()$STATE)), multiple=TRUE)
+    if(input$placeUnit == "Port"){
+      selectInput("place", "Homeport location:", choices=c(unique(dat()$HOMEPT[!is.na(dat()$HOMEPT)])), selected=c(unique(dat()$HOMEPT[!is.na(dat()$HOMEPT)])), multiple=TRUE)
+        }else selectInput("place", "Homeport location:", choices=c(unique(dat()$STATE[!is.na(dat()$STATE)])), selected=c(unique(dat()$STATE[!is.na(dat()$STATE)])), multiple=TRUE)
         
   }else return()
 })
 
-# #delivery port#
-# output$delivUnit <- renderUI({
-#   if(!is.null(dat()){
-#     selectInput("delivport")
-#   }
-# })
+#delivery port#
+output$delivUnit <- renderUI({
+  if(!is.null(dat()) && input$dat.name=="Revenue"){
+    selectInput("delivUnit", "Delivery port unit", choices=c("State", "Port"))
+  }
+})
+
+output$delivPort <- renderUI({
+  if(!is.null(input$delivUnit) && input$dat.name=="Revenue"){
+    if(input$delivUnit == "Port"){
+      selectInput("delivPort", "Delivery port area:", choices=c(unique(dat()$DELIVERYPT[!is.na(dat()$DELIVERYPT)])), selected=c(unique(dat()$DELIVERYPT[!is.na(dat()$DELIVERYPT)])), multiple=TRUE)
+    }else selectInput("delivPort", "Delivery port area:", choices=c(unique(dat()$DELIVERYST[!is.na(dat()$DELIVERYST)])), selected=c(unique(dat()$DELIVERYST[!is.na(dat()$DELIVERYST)])), multiple=TRUE)    
+  }else return()
+})
 
 
 output$length <- renderUI({
