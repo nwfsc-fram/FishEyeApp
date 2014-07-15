@@ -36,6 +36,12 @@ fluidPage(theme="bootstrap.css",
 #                        column(6, uiOutput("topicVars")
 #                        )
 #                      ),
+                    conditionalPanel(condition = "input.topicSelect != 'Fisheries'",
+                    fluidRow(
+                      column(12, uiOutput("removeAK")
+                      )
+                    )
+                    ),
                      conditionalPanel(condition = "input.topicSelect=='Fisheries'",
                      fluidRow(
                        column(12, uiOutput("fishery")
@@ -71,7 +77,7 @@ fluidPage(theme="bootstrap.css",
                        column(6, uiOutput("costtyp")
                        )
                      )
-                     ),
+                     ),                     
                      fluidRow(
                        column(6, uiOutput("dataButton")
                        )

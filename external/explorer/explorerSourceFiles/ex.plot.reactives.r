@@ -2,7 +2,7 @@
 
 plotBase <- reactive({
   if(!is.null(input$plotType)){
-    ggplot(eval(dat.cast(), envir=parent.frame()), aes_string(x=byvar(), y=dat.measure.var(), fill=groupvar()))
+    ggplot(eval(dat(), envir=parent.frame()), aes_string(x=SURVEY_YEAR, y=REV, fill=FISHERIES))
   }
 })
 
@@ -42,10 +42,6 @@ plotPalette <- reactive({
       if(input$plotType=="bar"){
         scale_fill_brewer(type="qual", palette="Paired")
         } else scale_color_brewer(type="qual", palette = "Paired")
-    } else if(input$palette=="Hipster1"){
-        if(input$plotType=="bar"){
-        scale_fill_manual(values= wes.palette(5, "Cavalcanti"))
-        } else scale_colour_manual(values= wes.palette(5, "Cavalcanti"))
     } else return() 
   }
 })

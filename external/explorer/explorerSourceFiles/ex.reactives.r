@@ -3,20 +3,41 @@
 # creating the dat() reactive function that contains the user selected dataset
 # The re-classification of data types can be transfered to the read-in file
 
-dat <- reactive({ #
-  if(!is.null(input$dat.name)){
-    if(input$dat.name == "Cost"){
-      load("data/fullcosts.RData")
-      
-      print(names(dat))#debugging
-    } else if(input$dat.name == "Revenue"){
-      load("data/fullrev.RData")
-      dat <- melt(fullrev, measure.vars=c("LBS", "REV", "MTS", "DAS"))
-      print(names(dat)) #debugging
-    }else dat <- NULL
-    print(str(dat))
+dat <- reactive({ #data load moved to serverhead
+  input$dataButton
+  isolate(
+  if(!is.null(input$dat.name) && !is.null(input$topicSelect)){
+  
+    data <- switch(input$dat.name,
+                   "Cost" = "cost",
+                   "Revenue" = "rev")
+    
+    year <- "year"
+    
+    topic <- switch(input$topicSelect,
+                    "Fisheries" = "fishery",
+                    "Home-port area" = "homept",
+                    "Vessel length class" = "vsslng",
+                    "Delivery-port area" = "delvpt",
+                    "Cost type" = "costtyp")
+    stat <- "mean"
+#     
+    dat <- eval(as.name(paste(data, year, topic, stat, sep=".")))
+#     
+    
+#     if(input$dat.name == "Cost"){
+#       load("data/fullcosts.RData")
+#       
+#       print(names(dat))#debugging
+#     } else if(input$dat.name == "Revenue"){
+#       load("data/fullrev.RData")
+#       dat <- melt(fullrev, measure.vars=c("LBS", "REV", "MTS", "DAS"))
+#       print(names(dat)) #debugging
+#     }else dat <- NULL
+    print(dat)
     dat
-  }
+  } else return()
+  )
 })
 
 dat.vars <- reactive({
@@ -24,20 +45,20 @@ dat.vars <- reactive({
   dat.vars
 })
 
-#reactives for dataset specific parameters
-dat.measure.var <- reactive({
-  input$dataButton
-  isolate(
-    if(!is.null(dat())){
-      if(input$dat.name == "Cost"){
-        measurevar <- "DISCOST"
-      } else if(input$dat.name == "Revenue"){
-        measurevar <- "REV"
-      } else measurevar <- NULL
-      measurevar
-    }
-  )
-})
+# #reactives for dataset specific parameters
+# dat.measure.var <- reactive({
+#   input$dataButton
+#   isolate(
+#     if(!is.null(dat())){
+#       if(input$dat.name == "Cost"){
+#         measurevar <- "DISCOST"
+#       } else if(input$dat.name == "Revenue"){
+#         measurevar <- "REV"
+#       } else measurevar <- NULL
+#       measurevar
+#     }
+#   )
+# })
 
 # selecting plot variables, subsetting the data AND casting for individual level ID (fun.agg=sum)
 # build dcast formula using if controls and using the qouted method in dcast
@@ -46,55 +67,57 @@ dat.sub <- reactive({
   isolate(
     if(!is.null(dat())){
       
-      #subseting before variable selection and casting because all of the input variables will still be in the data
-      
-      subset.args <- function(){  #creating a subset string to be evaluated in subset arg of dcast
-                       prime <- NULL
-                       prime <- "SURVEY_YEAR %in% input$years" #this is our base subset list, these are common to all of the datasets                        
-                       prime <- if(input$topicSelect == "Fisheries"){ paste(prime, "& FISHERIES %in% input$fishery", sep=" ") } else paste(prime, "& STATE %in% input$place", sep=" ")  #adding the geographic location option                                                              
-                       prime <- if(input$dat.name=="Cost"){ paste(prime, " & COSTTYPCAT %in% input$costtyp", sep = "") } else prime                    
-                       print(prime) #debugging                       
-                       prime
-                     }
-
-#       subset.args <- c(if(!is.null(input$years)) "SURVEY_YEAR %in% input$years",
-#                        if(!is.null(input$fishery)) "FISHERIES %in% input$fishery",
-#                        if(!is.null(input$length)) "VSSLNGCLASS %in% input$length",
-#                        if(!is.null(input$costtyp)) "COSTTYP %in% input$costtyp",
-#                        ifelse(input$placeUnit=="Homeport", "HOMEPT %in% input$place", "STATE %in% input$place"))
-      
-      # txt <- paste(subset.args()) #not necessary
-
-      dat.sub <- subset(dat(), eval(parse(text=subset.args()))) # handling subsetting
-
-#       print(paste("prime contents", subset.args, sep=": ")) #debugging
-      
-      formula.args <- c("VESSEL_ID", #this code puts together the left side of the dcast arg
-                        if(!is.null(input$years)) "SURVEY_YEAR",
-                        if(!is.null(input$fishery)) "FISHERIES",
-                        if(!is.null(input$length)) "VSSLNGCLASS",
-                        if(input$dat.name=="Cost") "COSTTYP",
-                        ifelse(input$placeUnit=="Port", "HOMEPT", "STATE"))
-      
-      # print(paste("formula.args contents", formula.args, sep=": ")) # debugging
-      
-      d.cast1 <- dcast(dat.sub, list(c(formula.args), .(variable)), fun.aggregate=sum, na.rm=TRUE) #casting the dataframe by unique observation (vessel_ID) and the desired variables.
-                       
-      
-      print(str(d.cast1)) #debugging
-      
-      # old code
-#       if(input$placeUnit == "Homeport"){ d <- dcast(dat(), formula= VESSEL_ID + SURVEY_YEAR + FISHERIES + VSSLNGCLASS + HOMEPT + STATE ~ variable, 
-#                                                     subset=.(variable == dat.measure.var() & SURVEY_YEAR %in% input$years & FISHERIES %in% input$fishery & VSSLNGCLASS %in% input$length & COSTTYP %in% input$costtyp & HOMEPT %in% input$place), fun.aggregate=sum, na.rm=T)      
-#         }else if(input$placeUnit == "State"){ d <- dcast(dat(), formula= VESSEL_ID + SURVEY_YEAR + FISHERIES + VSSLNGCLASS + HOMEPT + STATE ~ variable, 
-#                                                         subset=.(variable == dat.measure.var() & SURVEY_YEAR %in% input$years & FISHERIES %in% input$fishery & VSSLNGCLASS %in% input$length & COSTTYP %in% input$costtyp  & STATE %in% input$place), fun.aggregate=sum, na.rm=T)       
-#       }
-
-      d.melt <- melt(d.cast1, measure.vars=dat.measure.var()) #melting the dataframe after each cast is my new SOP for dealing with multiple cast/melt operations
-
-      print(str(d.melt)) #debugging
-
-      d.melt
+        
+        
+#       #subseting before variable selection and casting because all of the input variables will still be in the data
+#       
+#       subset.args <- function(){  #creating a subset string to be evaluated in subset arg of dcast
+#                        prime <- NULL
+#                        prime <- "SURVEY_YEAR %in% input$years" #this is our base subset list, these are common to all of the datasets                        
+#                        prime <- if(input$topicSelect == "Fisheries"){ paste(prime, "& FISHERIES %in% input$fishery", sep=" ") } else paste(prime, "& STATE %in% input$place", sep=" ")  #adding the geographic location option                                                              
+#                        prime <- if(input$dat.name=="Cost"){ paste(prime, " & COSTTYPCAT %in% input$costtyp", sep = "") } else prime                    
+#                        print(prime) #debugging                       
+#                        prime
+#                      }
+# 
+# #       subset.args <- c(if(!is.null(input$years)) "SURVEY_YEAR %in% input$years",
+# #                        if(!is.null(input$fishery)) "FISHERIES %in% input$fishery",
+# #                        if(!is.null(input$length)) "VSSLNGCLASS %in% input$length",
+# #                        if(!is.null(input$costtyp)) "COSTTYP %in% input$costtyp",
+# #                        ifelse(input$placeUnit=="Homeport", "HOMEPT %in% input$place", "STATE %in% input$place"))
+#       
+#       # txt <- paste(subset.args()) #not necessary
+# 
+#       dat.sub <- subset(dat(), eval(parse(text=subset.args()))) # handling subsetting
+# 
+# #       print(paste("prime contents", subset.args, sep=": ")) #debugging
+#       
+#       formula.args <- c("VESSEL_ID", #this code puts together the left side of the dcast arg
+#                         if(!is.null(input$years)) "SURVEY_YEAR",
+#                         if(!is.null(input$fishery)) "FISHERIES",
+#                         if(!is.null(input$length)) "VSSLNGCLASS",
+#                         if(input$dat.name=="Cost") "COSTTYP",
+#                         ifelse(input$placeUnit=="Port", "HOMEPT", "STATE"))
+#       
+#       # print(paste("formula.args contents", formula.args, sep=": ")) # debugging
+#       
+#       d.cast1 <- dcast(dat.sub, list(c(formula.args), .(variable)), fun.aggregate=sum, na.rm=TRUE) #casting the dataframe by unique observation (vessel_ID) and the desired variables.
+#                        
+#       
+#       print(str(d.cast1)) #debugging
+#       
+#       # old code
+# #       if(input$placeUnit == "Homeport"){ d <- dcast(dat(), formula= VESSEL_ID + SURVEY_YEAR + FISHERIES + VSSLNGCLASS + HOMEPT + STATE ~ variable, 
+# #                                                     subset=.(variable == dat.measure.var() & SURVEY_YEAR %in% input$years & FISHERIES %in% input$fishery & VSSLNGCLASS %in% input$length & COSTTYP %in% input$costtyp & HOMEPT %in% input$place), fun.aggregate=sum, na.rm=T)      
+# #         }else if(input$placeUnit == "State"){ d <- dcast(dat(), formula= VESSEL_ID + SURVEY_YEAR + FISHERIES + VSSLNGCLASS + HOMEPT + STATE ~ variable, 
+# #                                                         subset=.(variable == dat.measure.var() & SURVEY_YEAR %in% input$years & FISHERIES %in% input$fishery & VSSLNGCLASS %in% input$length & COSTTYP %in% input$costtyp  & STATE %in% input$place), fun.aggregate=sum, na.rm=T)       
+# #       }
+# 
+#       d.melt <- melt(d.cast1, measure.vars=dat.measure.var()) #melting the dataframe after each cast is my new SOP for dealing with multiple cast/melt operations
+# 
+#       print(str(d.melt)) #debugging
+# 
+#       d.melt
 
     } else return()
   )

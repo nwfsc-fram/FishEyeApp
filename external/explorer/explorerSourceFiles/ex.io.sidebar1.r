@@ -14,14 +14,14 @@ output$dat.name <- renderUI({ #data selection. there are two reactives that are 
 
 # Inputs variables will be pulled at this stage because we are not preloading data via .r files
 output$years <- renderUI({
-  if(!is.null(dat())){
+  if(!is.null(input$dat.name)){
     selectInput("years", "Years (x-axis):", choices=c(levels(dat.vars()$SURVEY_YEAR)), selected=c(levels(dat.vars()$SURVEY_YEAR)), multiple=T)
   }
 })
 
 # 'Topic' or 'Variable' select
 output$topicSelect <- renderUI({
-  if(!is.null(dat())){
+  if(!is.null(input$dat.name)){
     if(input$dat.name == "Cost"){
     selectInput("topicSelect", "Variable of interest (Group/Color):", 
                 choices = c("Fisheries","Vessel length class", "Home-port area", "Cost type" ),
@@ -64,7 +64,7 @@ output$placeUnit <- renderUI({
 })
 
 output$fishery <- renderUI({
-  if(!is.null(dat())){
+  if(!is.null(input$dat.name)){
     checkboxGroupInput("fishery", "", choices = c(levels(dat.vars()$FISHERIES)),selected=c(levels(dat.vars()$FISHERIES)))
   } 
 })
@@ -97,15 +97,23 @@ output$delivPort <- renderUI({
 
 
 output$length <- renderUI({
-  if(!is.null(dat())){
+  if(!is.null(input$dat.name)){
     checkboxGroupInput("length", "", choices=c(levels(dat.vars()$VSSLNGCLASS)), selected=c(levels(dat.vars()$VSSLNGCLASS)))
   }
 })
 
 output$costtyp <- renderUI({
-  if(!is.null(dat()) && input$dat.name=="Cost"){
+  if(!is.null(input$dat.name) && input$dat.name=="Cost"){
     checkboxGroupInput("costtyp", "", choices=c(levels(dat.vars()$COSTTYPCAT)), selected=c(levels(dat.vars()$COSTTYPCAT)))
-  } else return(NULL)
+  } else return()
+})
+
+output$removeAK <- renderUI({
+  if(!is.null(input$topicSelect)){
+    if(input$topicSelect != "Fisheries"){
+      checkboxInput("removeAK", "West Coast fisheries only (exclude AK)", value = T)
+    } else return()
+  }
 })
 
 
