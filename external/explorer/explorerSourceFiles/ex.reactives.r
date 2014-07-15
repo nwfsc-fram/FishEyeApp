@@ -5,13 +5,13 @@
 
 dat <- reactive({ #
   if(!is.null(input$dat.name)){
-    if(input$dat.name == "Disaggregated Cost"){
+    if(input$dat.name == "Cost"){
       load("data/fullcosts.RData")
-      dat <- melt(fullcosts, measure.vars="DISCOST")
+      
       print(names(dat))#debugging
     } else if(input$dat.name == "Revenue"){
       load("data/fullrev.RData")
-      dat <- melt(fullrev, measure.vars=c("LBS", "REV", "MTS", "DAS", "REVBYDPORT", "LBSBYDPORT"))
+      dat <- melt(fullrev, measure.vars=c("LBS", "REV", "MTS", "DAS"))
       print(names(dat)) #debugging
     }else dat <- NULL
     print(str(dat))
@@ -19,12 +19,17 @@ dat <- reactive({ #
   }
 })
 
+dat.vars <- reactive({
+  load("data/dat.vars.RData")
+  dat.vars
+})
+
 #reactives for dataset specific parameters
 dat.measure.var <- reactive({
   input$dataButton
   isolate(
     if(!is.null(dat())){
-      if(input$dat.name == "Disaggregated Cost"){
+      if(input$dat.name == "Cost"){
         measurevar <- "DISCOST"
       } else if(input$dat.name == "Revenue"){
         measurevar <- "REV"
@@ -45,9 +50,9 @@ dat.sub <- reactive({
       
       subset.args <- function(){  #creating a subset string to be evaluated in subset arg of dcast
                        prime <- NULL
-                       prime <- "SURVEY_YEAR %in% input$years & FISHERIES %in% input$fishery & VSSLNGCLASS %in% input$length" #this is our base subset list, these are common to all of the datasets                        
-                       prime <- if(input$placeUnit == "Port"){ paste(prime, "& HOMEPT %in% input$place", sep=" ") } else paste(prime, "& STATE %in% input$place", sep=" ")  #adding the geographic location option                                                              
-                       prime <- if(input$dat.name=="Disaggregated Cost"){ paste(prime, " & COSTTYPCAT %in% input$costtyp", sep = "") } else prime                    
+                       prime <- "SURVEY_YEAR %in% input$years" #this is our base subset list, these are common to all of the datasets                        
+                       prime <- if(input$topicSelect == "Fisheries"){ paste(prime, "& FISHERIES %in% input$fishery", sep=" ") } else paste(prime, "& STATE %in% input$place", sep=" ")  #adding the geographic location option                                                              
+                       prime <- if(input$dat.name=="Cost"){ paste(prime, " & COSTTYPCAT %in% input$costtyp", sep = "") } else prime                    
                        print(prime) #debugging                       
                        prime
                      }
@@ -68,7 +73,7 @@ dat.sub <- reactive({
                         if(!is.null(input$years)) "SURVEY_YEAR",
                         if(!is.null(input$fishery)) "FISHERIES",
                         if(!is.null(input$length)) "VSSLNGCLASS",
-                        if(input$dat.name=="Disaggregated Cost") "COSTTYP",
+                        if(input$dat.name=="Cost") "COSTTYP",
                         ifelse(input$placeUnit=="Port", "HOMEPT", "STATE"))
       
       # print(paste("formula.args contents", formula.args, sep=": ")) # debugging
@@ -164,20 +169,20 @@ dat.cast <- reactive({
   } else return()             
 })          
 
-#dataGo is for staging the data subsetting section. "Am I ready to hit the dataButton?"
-dataGo <- reactive({
-  if(!is.null(input$dataGo) && !is.null(dat())){
-    x <- TRUE
-  } else x <- FALSE
-  #print(paste("dataGo=", x)) # debugging
-  x
-})
-
-
+# #dataGo is for staging the data subsetting section. "Am I ready to hit the dataButton?"
+# dataGo <- reactive({
+#   if(!is.null(input$dataGo) && !is.null(dat())){
+#     x <- TRUE
+#   } else x <- FALSE
+#   #print(paste("dataGo=", x)) # debugging
+#   x
+# })
+# 
+# 
 #plotGo  is for staging the plot section. "Am I ready to hit the plotButton?"
 plotGo <- reactive({
   if(!is.null(dat.sub())){
-    if(!is.null(dat.sub()) && input$dataButton > 0){
+    if(!is.null(dat.sub())){
     x <- TRUE
     } else x <- FALSE
   #print(paste("plotGo=", x)) #debugging

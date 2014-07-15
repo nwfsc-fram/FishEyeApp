@@ -2,69 +2,109 @@
 #this file is getting a bit long, consider splitting into two parts
 
 output$dat.name <- renderUI({ #data selection. there are two reactives that are dependent on these names in ex.reactives
-  selectInput("dat.name", "Measured variable:", choices=c("", "Disaggregated Cost", "Revenue"), selected="")
+  selectInput("dat.name", "Measured variable (y-axis):", choices=c("", "Cost", "Revenue"), selected="")
 })
 
-output$subsetChoice <- renderUI({
-  if(!is.null(dat())){
-    checkboxInput("subsetChoice", "View subsetting options", value= TRUE)
-  }
-})
+#depricated
+# output$subsetChoice <- renderUI({
+#   if(!is.null(dat())){
+#     checkboxInput("subsetChoice", "View subsetting options", value= TRUE)
+#   }
+# })
 
 # Inputs variables will be pulled at this stage because we are not preloading data via .r files
 output$years <- renderUI({
   if(!is.null(dat())){
-    selectInput("years", "Years:", choices=c(levels(dat()$SURVEY_YEAR)), selected=c(levels(dat()$SURVEY_YEAR)), multiple=T)
+    selectInput("years", "Years (x-axis):", choices=c(levels(dat.vars()$SURVEY_YEAR)), selected=c(levels(dat.vars()$SURVEY_YEAR)), multiple=T)
+  }
+})
+
+# 'Topic' or 'Variable' select
+output$topicSelect <- renderUI({
+  if(!is.null(dat())){
+    if(input$dat.name == "Cost"){
+    selectInput("topicSelect", "Variable of interest (Group/Color):", 
+                choices = c("Fisheries","Vessel length class", "Home-port area", "Cost type" ),
+                selected = c("Fisheries"))
+    } else {
+      selectInput("topicSelect", "Variable of interest (Group/Color):", 
+                  choices = c("Fisheries", "Vessel length class", "Home-port area", "Delivery-port area"),
+                  selected = c("Fisheries"))
+    }
+  }
+})
+
+# output$topicVars <- renderUI({
+#   if(!is.null(dat())){
+#     if(input$topicSelect == "Fisheries"){ 
+#           checkboxGroupInput("topicVars", "", choices = c(levels(dat()$FISHERIES)),selected=c(levels(dat()$FISHERIES)))
+#     } else if(input$topicSelect == "Home-port area"){ 
+#           if(input$placeUnit == "State"){ checkboxGroupInput("topicVars", "", choices = c(unique(dat()$STATE[!is.na(dat()$STATE)])), selected = c(unique(dat()$STATE[!is.na(dat()$STATE)])))  
+#           } else checkboxGroupInput("topicVars", "", choices = c(unique(dat()$HOMEPT[!is.na(dat()$HOMEPT)])), selected = c(unique(dat()$HOMEPT[!is.na(dat()$HOMEPT)])))
+#     } else if(input$topicSelect == "Vessel length class"){
+#           checkboxGroupInput("topicVars", "", choices = c(levels(dat()$VSSLNGCLASS)), selected = c(levels(dat()$VSSLNGCLASS)))
+#     } else if(input$topicSelect == "Cost type"){
+#           checkboxGroupInput("topicVars", "", choices = c(levels(dat()$COSTTYPCAT)), selected = c(levels(dat()$COSTTYPCAT)))
+#     } else {
+#           if(input$placeUnit == "State"){ checkboxGroupInput("topicVars", "", choices = c(unique(dat()$DELIVERYST[!is.na(dat()$DELIVERYST)])), selected = c(unique(dat()$DELIVERYST[!is.na(dat()$DELIVERYST)])))  
+#           } else checkboxGroupInput("topicVars", "", choices = c(unique(dat()$DELIVERYPT[!is.na(dat()$DELIVERYPT)])), selected = c(unique(dat()$DELIVERYPT[!is.na(dat()$DELIVERYPT)])))  
+#     }
+#   } 
+# })
+
+#homeport#
+output$placeUnit <- renderUI({
+  if(!is.null(input$topicSelect)){
+    if(input$topicSelect == "Delivery-port area"){
+      selectInput("placeUnit", "Delivery-port unit:", choices = c("State", "Port"))
+    } else if(input$topicSelect == "Home-port area"){
+      selectInput("placeUnit", "Home-port unit:", choices = c("State", "Port"))
+    } else  return()
   }
 })
 
 output$fishery <- renderUI({
   if(!is.null(dat())){
-    selectInput("fishery", "Fisheries:", choices=c(levels(dat()$FISHERIES)),selected=c(levels(dat()$FISHERIES)), multiple=T)
+    checkboxGroupInput("fishery", "", choices = c(levels(dat.vars()$FISHERIES)),selected=c(levels(dat.vars()$FISHERIES)))
   } 
 })
 
-#homeport#
-output$placeUnit <- renderUI({
-  if(!is.null(dat())){
-    selectInput("placeUnit", "Homeport unit", choices=c("State", "Port"))
-  }
-})
+
 
 output$place <- renderUI({
   if(!is.null(input$placeUnit)){
     if(input$placeUnit == "Port"){
-      selectInput("place", "Homeport location:", choices=c(unique(dat()$HOMEPT[!is.na(dat()$HOMEPT)])), selected=c(unique(dat()$HOMEPT[!is.na(dat()$HOMEPT)])), multiple=TRUE)
-        }else selectInput("place", "Homeport location:", choices=c(unique(dat()$STATE[!is.na(dat()$STATE)])), selected=c(unique(dat()$STATE[!is.na(dat()$STATE)])), multiple=TRUE)
+      checkboxGroupInput("place", "", choices=c(unique(dat.vars()$HOMEPT[!is.na(dat.vars()$HOMEPT)])), selected=c(unique(dat.vars()$HOMEPT[!is.na(dat.vars()$HOMEPT)])))
+        }else checkboxGroupInput("place", "", choices=c(unique(dat.vars()$STATE[!is.na(dat.vars()$STATE)])), selected=c(unique(dat.vars()$STATE[!is.na(dat.vars()$STATE)])))
         
   }else return()
 })
-
-#delivery port#
-output$delivUnit <- renderUI({
-  if(!is.null(dat()) && input$dat.name=="Revenue"){
-    selectInput("delivUnit", "Delivery port unit", choices=c("State", "Port"))
-  }
-})
+# 
+# #delivery port#
+# output$delivUnit <- renderUI({
+#   if(!is.null(dat()) && input$dat.name=="Revenue"){
+#     selectInput("delivUnit", "Delivery port unit", choices=c("State", "Port"))
+#   }
+# })
 
 output$delivPort <- renderUI({
-  if(!is.null(input$delivUnit) && input$dat.name=="Revenue"){
-    if(input$delivUnit == "Port"){
-      selectInput("delivPort", "Delivery port area:", choices=c(unique(dat()$DELIVERYPT[!is.na(dat()$DELIVERYPT)])), selected=c(unique(dat()$DELIVERYPT[!is.na(dat()$DELIVERYPT)])), multiple=TRUE)
-    }else selectInput("delivPort", "Delivery port area:", choices=c(unique(dat()$DELIVERYST[!is.na(dat()$DELIVERYST)])), selected=c(unique(dat()$DELIVERYST[!is.na(dat()$DELIVERYST)])), multiple=TRUE)    
+  if(!is.null(input$placeUnit) && input$dat.name=="Revenue"){
+    if(input$placeUnit == "Port"){
+      checkboxGroupInput("delivPort", "", choices=c(unique(dat.vars()$DELIVERYPT[!is.na(dat.vars()$DELIVERYPT)])), selected=c(unique(dat.vars()$DELIVERYPT[!is.na(dat.vars()$DELIVERYPT)])))
+    }else checkboxGroupInput("delivPort", "", choices=c(unique(dat.vars()$STATE[!is.na(dat.vars()$STATE)])), selected=c(unique(dat.vars()$STATE[!is.na(dat.vars()$STATE)])))    
   }else return()
 })
 
 
 output$length <- renderUI({
   if(!is.null(dat())){
-    selectInput("length", "Vessel length class:", choices=c(levels(dat()$VSSLNGCLASS)), selected=c(levels(dat()$VSSLNGCLASS)), multiple=TRUE)
+    checkboxGroupInput("length", "", choices=c(levels(dat.vars()$VSSLNGCLASS)), selected=c(levels(dat.vars()$VSSLNGCLASS)))
   }
 })
 
 output$costtyp <- renderUI({
-  if(!is.null(dat()) && input$dat.name=="Disaggregated Cost"){
-    selectInput("costtyp", "Cost type:", choices=c(levels(dat()$COSTTYPCAT)), selected=c(levels(dat()$COSTTYPCAT)), multiple=TRUE)
+  if(!is.null(dat()) && input$dat.name=="Cost"){
+    checkboxGroupInput("costtyp", "", choices=c(levels(dat.vars()$COSTTYPCAT)), selected=c(levels(dat.vars()$COSTTYPCAT)))
   } else return(NULL)
 })
 
@@ -129,6 +169,6 @@ output$palette <- renderUI({
 
 ############################################## Plotting action button #########################################
 
-output$plotButton <- renderUI({
-  if(!is.null(dat.sub())) actionButton("plotButton", label=" Plot Data", icon=icon("bar-chart-o"))
-})
+# output$plotButton <- renderUI({
+#   if(!is.null(dat.sub())) actionButton("plotButton", label=" Plot Data", icon=icon("bar-chart-o"))
+# })

@@ -83,9 +83,9 @@ revlng <- merge(revdat, vesselgroupings, all.x=TRUE)
 
 #deliveryports
 
-revdelvr<- merge(revlng, deliveryPort, by = c("VESSEL_ID", "SURVEY_YEAR"), all.x=TRUE)
+# revdelvr<- merge(revlng, deliveryPort, by = c("VESSEL_ID", "SURVEY_YEAR"), all.x=TRUE)
 
-rev.code <- merge(revdelvr, fisherycode, all.x=TRUE)
+rev.code <- merge(revlng, fisherycode, all.x=TRUE)
 
 fullrev <- merge(rev.code, vesselhomeportdata, all.x=TRUE)
 
@@ -107,3 +107,72 @@ dropvars <- names(fullrev) %in% c("EDCSURVEY_DBID", "FULLCODE", "FISHERYCODE", "
 fullrev <- fullrev[!dropvars]
 
 save(fullrev, file="U:/vesselSim/vesselSim_app/data/fullrev.RData")
+
+
+####################################################
+
+#make some aggregated tables from the above datasets
+#notes: for the following tables we will probably need a UI selection to include/drop AK fisheries
+
+####################################################
+
+# 1. REVENUE TABLES
+fullrev.melt <- melt(fullrev, measure.vars = c("LBS", "REV", "MTS", "DAS", "CREW"))
+# 1.1 SURVEY_YEAR by FISHERIES
+rev.year.fishery.precast <- dcast(fullrev.melt, SURVEY_YEAR + FISHERIES + VESSEL_ID ~ variable, fun.aggregate = sum, subset = .(variable == 'REV'))
+rev.year.fishery.mean <- dcast(rev.year.fishery.precast, FISHERIES ~ SURVEY_YEAR, fun.aggregate = mean, value.var="REV")  
+rev.year.fishery.mean <- melt(rev.year.fishery.mean, id.var="FISHERIES", value.name = "REV", variable.name = "SURVEY_YEAR") #do this during plotting or now?
+
+# 1.2 SURVEY_YEAR by VESSEL LENGTH
+rev.year.vsslng.precast <- dcast(fullrev.melt, SURVEY_YEAR + VSSLNGCLASS + VESSEL_ID ~ variable, fun.aggregate = sum, subset = .(variable == 'REV'))
+rev.year.vsslng.mean <- dcast(rev.year.vsslng.precast, VSSLNGCLASS ~ SURVEY_YEAR, fun.aggregate = mean, value.var="REV")  
+rev.year.vsslng.mean <- melt(rev.year.vsslng.mean, id.var="VSSLNGCLASS", value.name = "REV", variable.name = "SURVEY_YEAR") #do this during plotting or now?
+
+# 1.3 SURVEY_YEAR by HOMEPORT
+rev.year.homept.precast <- dcast(fullrev.melt, SURVEY_YEAR + HOMEPT + VESSEL_ID ~ variable, fun.aggregate = sum, subset = .(variable == 'REV'))
+rev.year.homept.mean <- dcast(rev.year.homept.precast, HOMEPT ~ SURVEY_YEAR, fun.aggregate = mean, value.var="REV")  
+rev.year.homept.mean <- melt(rev.year.homept.mean, id.var="HOMEPT", value.name = "REV", variable.name = "SURVEY_YEAR") #do this during plotting or now?
+
+
+# 1.4 SURVEY_YEAR by DELIVERY PORT
+deliveryPort.melt <- melt(deliveryPort, measure.vars = c("REVBYDPORT", "LBSBYDPORT"))
+rev.year.delvpt.precast <- dcast(deliveryPort.melt, SURVEY_YEAR + DELIVERYPT + VESSEL_ID ~ variable, fun.aggregate = sum, subset = .(variable == 'REVBYDPORT'))
+rev.year.delvpt.mean <- dcast(rev.year.delvpt.precast, DELIVERYPT ~ SURVEY_YEAR, fun.aggregate = mean, value.var="REVBYDPORT")  
+rev.year.delvpt.mean <- melt(rev.year.delvpt.mean, id.var="DELIVERYPT", value.name = "REVBYDPORT", variable.name = "SURVEY_YEAR") #do this during plotting or now?
+
+# 2. COST TABLES
+fullcost.melt <- melt(fullcosts, measure.vars = c("DISCOST"))
+# 2.1 SURVEY_YEAR by FISHERIES
+cost.year.fishery.precast <- dcast(fullcost.melt, SURVEY_YEAR + FISHERIES + VESSEL_ID ~ variable, fun.aggregate = sum, subset = .(variable == 'DISCOST'))
+cost.year.fishery.mean <- dcast(cost.year.fishery.precast, FISHERIES ~ SURVEY_YEAR, fun.aggregate = mean, value.var="DISCOST")  
+cost.year.fishery.mean <- melt(cost.year.fishery.mean, id.var="FISHERIES", value.name = "DISCOST", variable.name = "SURVEY_YEAR") #do this during plotting or now?
+
+
+# 2.2 SURVEY_YEAR by VESSEL LENGTH
+cost.year.vsslng.precast <- dcast(fullcost.melt, SURVEY_YEAR + VSSLNGCLASS + VESSEL_ID ~ variable, fun.aggregate = sum, subset = .(variable == 'DISCOST'))
+cost.year.vsslng.mean <- dcast(cost.year.vsslng.precast, VSSLNGCLASS ~ SURVEY_YEAR, fun.aggregate = mean, value.var="DISCOST")  
+cost.year.vsslng.mean <- melt(cost.year.vsslng.mean, id.var="VSSLNGCLASS", value.name = "DISCOST", variable.name = "SURVEY_YEAR") #do this during plotting or now?
+
+# 2.3 SURVEY_YEAR by HOME PORT
+cost.year.homept.precast <- dcast(fullcost.melt, SURVEY_YEAR + HOMEPT + VESSEL_ID ~ variable, fun.aggregate = sum, subset = .(variable == 'DISCOST'))
+cost.year.homept.mean <- dcast(cost.year.homept.precast, HOMEPT ~ SURVEY_YEAR, fun.aggregate = mean, value.var="DISCOST")  
+cost.year.homept.mean <- melt(cost.year.homept.mean, id.var="HOMEPT", value.name = "DISCOST", variable.name = "SURVEY_YEAR") #do this during plotting or now?
+
+
+# 2.4 SURVEY_YEAR by COST TYPE
+cost.year.costtyp.precast <- dcast(fullcost.melt, SURVEY_YEAR + COSTTYPCAT + VESSEL_ID ~ variable, fun.aggregate = sum, subset = .(variable == 'DISCOST'))
+cost.year.costtyp.mean <- dcast(cost.year.costtyp.precast, COSTTYPCAT ~ SURVEY_YEAR, fun.aggregate = mean, value.var="DISCOST")  
+cost.year.costtyp.mean <- melt(cost.year.costtyp.mean, id.var="COSTTYPCAT", value.name = "DISCOST", variable.name = "SURVEY_YEAR") #do this during plotting or now?
+
+save(list = c("rev.year.fishery.mean", "rev.year.vsslng.mean", "rev.year.homept.mean", "rev.year.delvpt.mean", "cost.year.fishery.mean", "cost.year.vsslng.mean", "cost.year.homept.mean", "cost.year.costtyp.mean"), file= "U:/vesselSim/vesselSim_app/data/tables.RData")
+
+# save a list of var names
+dat.vars <- list(SURVEY_YEAR = unique(fullrev$SURVEY_YEAR), 
+                 VSSLNGCLASS = unique(fullrev$VSSLNGCLASS), 
+                 HOMEPT = unique(fullrev$HOMEPT), 
+                 STATE = unique(fullrev$STATE), 
+                 FISHERIES = unique(fullrev$FISHERIES),
+                 COSTTYPCAT = unique(fullcosts$COSTTYPCAT),
+                 DELIVERYPT = unique(deliveryPort$DELIVERYPT))
+
+save(dat.vars, file = "U:/vesselSim/vesselSim_app/data/dat.vars.RData")

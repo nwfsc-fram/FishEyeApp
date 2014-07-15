@@ -53,7 +53,7 @@ plotPalette <- reactive({
 plotLabels <- reactive({
   if(!is.null(input$plotType)){
     y.label <- switch(dat.measure.var(),
-                      "DISCOST"="Disaggregated costs",
+                      "DISCOST"="Cost",
                       "REV"="Revenue")
     labs(x= input$by.var, title=paste(y.label, "by", input$by.var, ifelse(input$facet.var=="None", "",paste("and", input$facet.var, sep=" ")), sep=" "))
   }
@@ -62,7 +62,7 @@ plotLabels <- reactive({
 plotScales <- reactive({
   if(!is.null(input$plotType)){
     y.label <- switch(dat.measure.var(),
-                      "DISCOST"="Disaggregated costs",
+                      "DISCOST"="Cost",
                       "REV"="Revenue")
     
     scale_y_continuous(paste(y.label, "(millions $)", sep=" "), labels= function(x)format(x/1e6))
