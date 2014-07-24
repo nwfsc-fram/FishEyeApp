@@ -125,34 +125,34 @@ output$dataButton <- renderUI({
 
 ########################################### begin wellPanel2, plot options ###############################
 
-output$by.var <- renderUI({
-  if(plotGo()){
-    selectInput("by.var", "By:", choices=c("Survey year", "Fishery"))
-  } else return()
-})
-
-output$group.var <- renderUI({
-  if(plotGo()){
-    selectInput("group.var", "Group/color:", group.choices())
-  }
-})
-
-output$facet.var <- renderUI({
-  if(plotGo()){
-    selectInput("facet.var", "Facet:", c(facet.choices()), selected="None")
-  }
-})
+# output$by.var <- renderUI({
+#   if(dat.sub()){
+#     selectInput("by.var", "By:", choices=c("Survey year", "Fishery"))
+#   } else return()
+# })
+# 
+# output$group.var <- renderUI({
+#   if(dat.sub()){
+#     selectInput("group.var", "Group/color:", group.choices())
+#   }
+# })
+# 
+# output$facet.var <- renderUI({
+#   if(dat.sub()){
+#     selectInput("facet.var", "Facet:", c(facet.choices()), selected="None")
+#   }
+# })
 
 output$stat <- renderUI({
-  if(plotGo()){
+  if(dat.sub()){
     selectInput("stat", "Summary statistic:", choices= c("sum", "mean", "N"))
   }
 })
 
 output$plotType <- renderUI({
-  if(plotGo()){
+  if(!is.null(dat.sub())){
     selectInput("plotType", "Plot type:", choices= c("bar", "point", "line"))
-  }
+  } else return()
 })
 
 output$dodge <- renderUI({
@@ -164,13 +164,13 @@ output$dodge <- renderUI({
 })
 
 output$groupMean <- renderUI({
-  if(plotGo()){
+  if(!is.null(dat.sub())){
     checkboxInput("groupMean", "Group mean CI", value=F)
   }
 })
 
 output$palette <- renderUI({
-  if(plotGo()){
+  if(!is.null(dat.sub())){
     selectInput("palette", "Palette:", choices=c("CB-friendly", "Brewer", "Hipster1"))
   }
 })

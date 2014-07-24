@@ -1,8 +1,40 @@
 # this file handles all of the reactives for the plot output. Everyhing is entered on the explorer.r file as ggplot elements
 
+# moved these from ex.reactives page for references in the plot functions
+# this just makes life easier if I change the order/names of vars later 
+
+xvar <- reactive({
+  if(!is.null(dat.sub())){
+    byvar <- "SURVEY_YEAR"
+  } else return()
+})
+
+yvar <- reactive({
+  if(!is.null(dat.sub())){
+    if (input$dat.name == "Revenue" & input$topicSelect == "Delivery-port area"){
+      yvar <- "REVBYDPORT"    
+    } else {
+      yvar <- switch(input$dat.name,
+                     "Revenue" = "REV",
+                     "Cost" = "DISCOST")
+  }
+  }
+})
+
+groupvar <- reactive({
+  if(!is.null(dat.sub())){
+    groupvar <- switch(input$topicSelect,
+                    "Fisheries" = "FISHERIES",
+                    "Home-port area" = "HOMEPT",
+                    "Vessel length class" = "VSSLNGCLASS",
+                    "Delivery-port area" = "DELIVERYPT",
+                    "Cost type" = "COSTTYPCAT")
+  } else return()
+})
+
 plotBase <- reactive({
-  if(!is.null(input$plotType)){
-    ggplot(eval(dat(), envir=parent.frame()), aes_string(x=SURVEY_YEAR, y=REV, fill=FISHERIES))
+  if(!is.null(dat.sub())){
+    ggplot(dat.sub(), aes_string(x=xvar(), y=yvar(), fill=groupvar()))
   }
 })
 
@@ -20,18 +52,18 @@ plotGeom <- reactive({
   }
 })
 
-plotFacet <- reactive({
-  if(!is.null(facetvar())){
-    if(input$facet.var != "None"){  
-      facet_grid(paste(".", "~", facetvar(), sep=""))
-    } else return ()
-  }
-})
+# plotFacet <- reactive({
+#   if(!is.null(facetvar())){
+#     if(input$facet.var != "None"){  
+#       facet_grid(paste(".", "~", facetvar(), sep=""))
+#     } else return ()
+#   }
+# })
 
 plotGroupMean <- reactive({
   if(!is.null(input$plotType)){
     if(input$groupMean == TRUE){
-      geom_boxplot(aes_string(group=byvar(), fill=byvar(), alpha=.5))
+      geom_boxplot(aes_string(group=xvar(), fill=xvar(), alpha=.5))
     }
   }
 })
@@ -48,20 +80,13 @@ plotPalette <- reactive({
 
 plotLabels <- reactive({
   if(!is.null(input$plotType)){
-    y.label <- switch(dat.measure.var(),
-                      "DISCOST"="Cost",
-                      "REV"="Revenue")
-    labs(x= input$by.var, title=paste(y.label, "by", input$by.var, ifelse(input$facet.var=="None", "",paste("and", input$facet.var, sep=" ")), sep=" "))
+    labs(x= input$xvar, title=paste(input$dat.name, "by", "Years", "and", input$topicSelect, sep=" "))
   }
 })
 
 plotScales <- reactive({
   if(!is.null(input$plotType)){
-    y.label <- switch(dat.measure.var(),
-                      "DISCOST"="Cost",
-                      "REV"="Revenue")
-    
-    scale_y_continuous(paste(y.label, "(millions $)", sep=" "), labels= function(x)format(x/1e6))
+    scale_y_continuous(paste(input$dat.name, "(millions $)", sep=" "), labels= function(x)format(x/1e6))
   }
 })
 

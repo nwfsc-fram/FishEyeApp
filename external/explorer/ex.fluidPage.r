@@ -95,16 +95,9 @@ fluidPage(theme="bootstrap.css",
 #                        ),
 #                        fluidRow(
 #                          column(4, uiOutput("stat")
-#                          ),
-#                          column(4, uiOutput("plotType")
-#                          ),
-#                          column(2, uiOutput("dodge")
-#                          )                 
+#                          ),                
 #                        ),
-#                        fluidRow(
-#                          column(4,uiOutput("groupMean")
-#                          )
-#                        ),
+#                        
 #                        fluidRow(
 #                          column(6, uiOutput("plotButton")
 #                          )
@@ -116,8 +109,14 @@ fluidPage(theme="bootstrap.css",
                    fluidRow(
                      column(12, plotOutput("plotTest",height="800px")
                      )
-                   ),           
+                   ),
                    fluidRow(
+                     column(2, uiOutput("plotType")
+                     ),
+                     column(2, uiOutput("dodge")
+                     ),
+                     column(2,uiOutput("groupMean")
+                     ),
                      column(2, uiOutput("palette")
                      )
                    ),

@@ -22,7 +22,7 @@ dat <- reactive({ #data load moved to serverhead
                     "Cost type" = "costtyp")
     stat <- "mean"
 #     
-    dat <- eval(as.name(paste(data, year, topic, stat, sep=".")))
+    dat <- get(paste(data, year, topic, stat, sep="."))
 #     
     
 #     if(input$dat.name == "Cost"){
@@ -34,7 +34,8 @@ dat <- reactive({ #data load moved to serverhead
 #       dat <- melt(fullrev, measure.vars=c("LBS", "REV", "MTS", "DAS"))
 #       print(names(dat)) #debugging
 #     }else dat <- NULL
-    print(dat)
+    print("dat:")
+    print(head(dat))
     dat
   } else return()
   )
@@ -67,8 +68,25 @@ dat.sub <- reactive({
   isolate(
     if(!is.null(dat())){
       
+        dat <- dat()
         
+        selectVars <- c(switch(input$topicSelect,
+                            "Fisheries" = input$fishery,
+                            "Home-port area" = input$place,
+                            "Vessel length class" = input$length,
+                            "Delivery-port area" = input$delivpt,
+                            "Cost type" = input$costtyp))
         
+        #print(paste(selectVars, sep = " ")) #debugging
+        
+        dat.sub <- dat[dat[,1] %in% c(selectVars),]
+        
+        dat.sub[,1] <- reorder(dat.sub[,1], dat.sub[,3])
+        
+        print("dat.sub:")
+        print(head(dat.sub))
+        
+        dat.sub
 #       #subseting before variable selection and casting because all of the input variables will still be in the data
 #       
 #       subset.args <- function(){  #creating a subset string to be evaluated in subset arg of dcast
@@ -123,74 +141,50 @@ dat.sub <- reactive({
   )
 })
 
-# these next two are only used in io.sidebar.r, they should be integrated elsewhere
-group.choices <- reactive({
-  if(!is.null(input$by.var)){
-    if(input$by.var=="Survey year") {
-      choices <- c("Fishery","Vessel length","Location")
-    } else if(input$by.var=="Fishery") {
-      choices <- c("Survey year","Vessel length","Location")
-    }else choices <- NULL
-    choices
-  } else return()
-})
-
-facet.choices <- reactive({
-  if(!is.null(input$group.var)){
-    if(length(group.choices())>1) choices <- c("None", group.choices()[group.choices() != input$group.var]) else choices <- NUll
-    choices  
-  } else return()
-})
+# # these next two are only used in io.sidebar.r, they should be integrated elsewhere
+# group.choices <- reactive({
+#   if(!is.null(input$by.var)){
+#     if(input$by.var=="Survey year") {
+#       choices <- c("Fishery","Vessel length","Location")
+#     } else if(input$by.var=="Fishery") {
+#       choices <- c("Survey year","Vessel length","Location")
+#     }else choices <- NULL
+#     choices
+#   } else return()
+# })
+# 
+# facet.choices <- reactive({
+#   if(!is.null(input$group.var)){
+#     if(length(group.choices())>1) choices <- c("None", group.choices()[group.choices() != input$group.var]) else choices <- NUll
+#     choices  
+#   } else return()
+# })
 
 # THis is the 'second' cast/melt operation. This takes the vessel lvl observations and melts them into the plot output
 # reactives for cast options
 # I am pretty sure you can generalize all of these switch operations...
-byvar <- reactive({
-  if(!is.null(input$by.var)){
-    byvar <- switch(input$by.var,
-                    "Survey year" = "SURVEY_YEAR",
-                    "Fishery" = "FISHERIES")
-  } else return()
-})
 
-groupvar <- reactive({
-  if(!is.null(input$group.var)){
-    groupvar <- switch(input$group.var,
-                       "Survey year" = "SURVEY_YEAR",
-                       "Fishery" = "FISHERIES",
-                       "Vessel length" = "VSSLNGCLASS",
-                       "Location" = if(input$placeUnit == "Port") "HOMEPT" else "STATE")
-  } else return()
-})
+#   } else return()
+# })
 
-facetvar <- reactive({
-  if(!is.null(input$facet.var)){
-    facetvar <- switch(input$facet.var,
-                       "Survey year" = "SURVEY_YEAR",
-                       "Fishery" = "FISHERIES",
-                       "Vessel length" = "VSSLNGCLASS",
-                       "Location" = if(input$placeUnit == "Port") "HOMEPT" else "STATE") 
-  } else return()
-})
-
-agg.method <- reactive({
-  if(!is.null(input$stat)){
-    agg.method <- switch(input$stat,
-                         "sum" = sum,
-                         "mean" = mean,
-                         "N" = length)
-  }else return()
-})
+# agg.method <- reactive({
+#   if(!is.null(input$stat)){
+#     agg.method <- switch(input$stat,
+#                          "sum" = sum,
+#                          "mean" = mean,
+#                          "N" = length)
+#   }else return()
+# })
 
 # casting the data for plot/table output
-dat.cast <- reactive({
-  if(!is.null(input$by.var)){        
-    if(input$facet.var == "None"){ d <- dcast(dat.sub(), list(c(byvar()[1], groupvar()[1]), .(variable)), fun.aggregate = agg.method())        
-    } else                         d <- dcast(dat.sub(), list(c(byvar()[1], groupvar()[1], facetvar()[1]), .(variable)), fun.aggregate = agg.method())
-    print(str(d))
-    d    
-  } else return()             
-})          
+# dat.cast <- reactive({
+#   if(!is.null(input$by.var)){        
+#     if(input$facet.var == "None"){ d <- dcast(dat.sub(), list(c(byvar()[1], groupvar()[1]), .(variable)), fun.aggregate = agg.method())        
+#     } else                         d <- dcast(dat.sub(), list(c(byvar()[1], groupvar()[1], facetvar()[1]), .(variable)), fun.aggregate = agg.method())
+#     print(str(d))
+#     d    
+#   } else return()             
+# })          
 
 # #dataGo is for staging the data subsetting section. "Am I ready to hit the dataButton?"
 # dataGo <- reactive({
@@ -203,12 +197,12 @@ dat.cast <- reactive({
 # 
 # 
 #plotGo  is for staging the plot section. "Am I ready to hit the plotButton?"
-plotGo <- reactive({
-  if(!is.null(dat.sub())){
-    if(!is.null(dat.sub())){
-    x <- TRUE
-    } else x <- FALSE
-  #print(paste("plotGo=", x)) #debugging
-  x
-  } else x <- FALSE
-})
+# plotGo <- reactive({
+#   if(!is.null(dat.sub())){
+#     if(!is.null(dat.sub())){
+#     x <- TRUE
+#     } else x <- FALSE
+#   #print(paste("plotGo=", x)) #debugging
+#   x
+#   } else x <- FALSE
+# })
