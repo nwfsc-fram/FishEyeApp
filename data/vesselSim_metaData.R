@@ -74,12 +74,12 @@ fullcosts$FISHERIES <- ifelse(fullcosts$FISHERIES == "Groundfish fixed gear with
 #clean up a few vars that we are not going to use
 fullcosts <- fullcosts[, !names(fullcosts) %in% c("EDCSURVEY_DBID", "FULLCODE", "FISHERYCODE", "FISHERY", "VSSLNG", "HOMEPTlat", "HOMEPTlong", "HOMECOUNTY")]
 
-
+fullcost.melt <- melt(fullcosts, measure.vars = c("DISCOST"))
 
 
 ###########################################################
 
-#Catcher Vessel Revenue, MTS, LBS, DAS, delivery port data
+#Catcher Vessel Revenue, MTS, LBS, DAS
 
 ###########################################################
 
@@ -111,6 +111,8 @@ fullrev$FISHERIES <- factor(fullrev$FISHERIES)
 keepvars <- names(fullrev) %in% c("SURVEY_YEAR", "VESSEL_ID", "VSSLNGCLASS", "HOMEPT", "STATE", "FISHERIES", "LBS", "REV", "MTS", "DAS", "CREW")
 
 fullrev <- fullrev[keepvars]
+
+fullrev.melt <- melt(fullrev, measure.vars = c("LBS", "REV", "MTS", "DAS", "CREW"))
 
 ###################################################
 
@@ -164,13 +166,22 @@ netrevValuesMelt <- melt(netrevValues, id.vars=c("VESSEL_ID", "SURVEY_YEAR"))
 
 ####################################################
 
+# deliveryPort
+
+####################################################
+
+deliveryPort.melt <- melt(deliveryPort, measure.vars = c("REVBYDPORT", "LBSBYDPORT"))
+
+####################################################
+
 #make some aggregated tables from the above datasets
 #notes: for the following tables we will probably need a UI selection to include/drop AK fisheries
-
+# 
+#depricated! made that tables func to hand this
 # ####################################################
 # 
 # # 1. REVENUE TABLES
- fullrev.melt <- melt(fullrev, measure.vars = c("LBS", "REV", "MTS", "DAS", "CREW"))
+
 # # 1.1 SURVEY_YEAR by FISHERIES
 # rev.year.fishery.precast <- dcast(fullrev.melt, SURVEY_YEAR + FISHERIES + VESSEL_ID ~ variable, fun.aggregate = sum, subset = .(variable == 'REV'))
 # rev.year.fishery.mean <- EDCtable(rev.year.fishery.precast, theformula = FISHERIES ~ SURVEY_YEAR, valvar = "REV", functiontyp= "length", yeardf = data.frame(years=c("2009", "2010", "2011", "2012")),dataORtableORN = "data1conf")  
@@ -188,13 +199,13 @@ netrevValuesMelt <- melt(netrevValues, id.vars=c("VESSEL_ID", "SURVEY_YEAR"))
 # 
 # 
 # # 1.4 SURVEY_YEAR by DELIVERY PORT
- deliveryPort.melt <- melt(deliveryPort, measure.vars = c("REVBYDPORT", "LBSBYDPORT"))
+ 
 # rev.year.delvpt.precast <- dcast(deliveryPort.melt, SURVEY_YEAR + DELIVERYPT + VESSEL_ID ~ variable, fun.aggregate = sum, subset = .(variable == 'REVBYDPORT'))
 # rev.year.delvpt.mean <- EDCtable(rev.year.delvpt.precast, theformula = DELIVERYPT ~ SURVEY_YEAR, valvar = "REVBYDPORT", functiontyp= "mean", dataORtableORN = "data1conf")
 # rev.year.delvpt.mean <- melt(rev.year.delvpt.mean, id.var="DELIVERYPT", value.name = "REVBYDPORT", variable.name = "SURVEY_YEAR") #do this during plotting or now?
 # 
 # # 2. COST TABLES
- fullcost.melt <- melt(fullcosts, measure.vars = c("DISCOST"))
+ 
 # # 2.1 SURVEY_YEAR by FISHERIES
 # cost.year.fishery.precast <- dcast(fullcost.melt, SURVEY_YEAR + FISHERIES + VESSEL_ID ~ variable, fun.aggregate = sum, subset = .(variable == 'DISCOST'))
 # cost.year.fishery.mean <- EDCtable(cost.year.fishery.precast, theformula = FISHERIES ~ SURVEY_YEAR, valvar = "DISCOST", functiontyp= "mean", dataORtableORN = "data1conf")
@@ -221,7 +232,7 @@ netrevValuesMelt <- melt(netrevValues, id.vars=c("VESSEL_ID", "SURVEY_YEAR"))
 
 # save a list of var names, plz update as you add variables
  
-save(dat.vars, file = "U:/vesselSim/vesselSim_app/data/dat.vars.RData")
+# save(dat.vars, file = "U:/vesselSim/vesselSim_app/data/dat.vars.RData")
 
 ## more tables: exlude AK tables, delivery/homept states, netrev. 
 
@@ -234,22 +245,24 @@ save(dat.vars, file = "U:/vesselSim/vesselSim_app/data/dat.vars.RData")
 
 tablesFunc <- function(data, measure.var, topic = c("FISHERIES", "VSSLNGCLASS", "HOMEPT", "STATE", "COSTTYPCAT", "DELIVERYPT"), stat = "mean"){
   
-  #create an error for measure.vars not in the input dataset
+  #create an error for user entered measure.vars not in the input dataset
   if (!measure.var %in% levels(data$variable)) stop("measure.var not in data")
   
   # create some empty lists to be filled with tables and table names
   tables <- list()
   table.name <- list()
   
-  # limit topic variables to those included in the data
+  # limit topic variables to those included in data
   topic.var <- topic[topic %in% names(data)]
   
   for (i in 1:length(topic.var)){
     # fist cast aggregates topic var to the observation level (Vessel level)
     dat <- dcast(data, SURVEY_YEAR + get(topic.var[i]) + VESSEL_ID ~ variable, fun.aggregate = sum, subset = .(variable == measure.var))  
     
-    # change the name of the topic.var because I can't figure out how to make reshape use the var name as the colname (ie get(topic.var[i] prints verbatim, not the variable name))
-    names(dat)[2] <- "TOPIC"
+    # change the name of the topic.var because I can't figure out how to make reshape use the var name as the colname 
+    # (ie things like get(topic.var[i] prints verbatim in the column instead of the var name))
+    # 
+    names(dat)[grep("get", names(dat))] <- "TOPIC"
     
     # confidentialiy rules are put in place (ie, n>3 & 90/10 rule) and data is aggregated to the topic/year level
     dat1 <- EDCtable(dat, theformula = TOPIC ~ SURVEY_YEAR, valvar = measure.var, functiontyp= stat, dataORtableORN = "data1conf")
@@ -260,24 +273,19 @@ tablesFunc <- function(data, measure.var, topic = c("FISHERIES", "VSSLNGCLASS", 
     # the next two steps melt the data so it is nice and tidy for ggplot to use later on
     dat2 <- melt(dat1, id.var= "TOPIC", value.name = measure.var, variable.name = "SURVEY_YEAR") #do this during plotting or now?
     
-    # melt for N's tables
+    # melt for N's table
     datN2 <- melt(datN1, id.var= "TOPIC", value.name = "N", variable.name = "SURVEY_YEAR")
-    # and for NoAK
     
     # merge the N's to the values data
     dat.final <- cbind(dat2, datN2[,3])
     
-    # if(!is.null(dat.final.NoAK)) print(head(dat.final.NoAK)) #debugging
-    
     # change the topic name back to the var name from the input data
     names(dat.final)[1] <- topic.var[i]
-    # for NoAK
     
     # change the name of the N column to "N"
     names(dat.final)[length(dat.final)] <- "N"
-    # for NoAK
     
-    # pasting together the table name. I use this to call specific tables in the Shiny app (general form is: data.xvar.yvar.stat)
+    # pasting together a serialized table name. I use this to call specific tables in the Shiny app (general form is: data.year.measurevar.stat)
     table.name[[i]] <- tolower(paste(measure.var, "year",topic.var[i], stat, sep=".")) # name of the ith table
     # combining the different summary tables into a list
     tables[[i]] <- data.frame(dat.final)
@@ -286,12 +294,12 @@ tablesFunc <- function(data, measure.var, topic = c("FISHERIES", "VSSLNGCLASS", 
     names(tables)[[i]] <- table.name[[i]]
     
     # Same operations as above, but this generates the tables that exclude Alaskan fisheries
-    if (!"FISHERIES" %in% names(data)) next #I only apply this filter on input data that includes a fisheries var (eg, does not work on data like deliveryports, for now)
+    if (!"FISHERIES" %in% names(data)) next #I only create these tables for input data that includes a fisheries var (eg, does not work on data like deliveryport)
       
       datNoAK <- dcast(data, SURVEY_YEAR + get(topic.var[i]) + VESSEL_ID ~ variable, fun.aggregate = sum, subset = .(variable == measure.var & FISHERIES != "Alaska"))
       # if (!is.null(datNoAK)) print(head(datNoAK)) #debugging
     
-      names(datNoAK)[2] <- "TOPIC"
+      names(datNoAK)[grep("get", names(dat))] <- "TOPIC"
     
       dat1NoAK <- EDCtable(datNoAK, theformula = TOPIC ~ SURVEY_YEAR, valvar = measure.var, functiontyp= stat, dataORtableORN = "data1conf")
     
