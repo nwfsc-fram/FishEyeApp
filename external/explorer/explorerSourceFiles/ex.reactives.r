@@ -9,20 +9,23 @@ dat <- reactive({ #data load moved to serverhead
   if(!is.null(input$dat.name) && !is.null(input$topicSelect)){
   
     data <- switch(input$dat.name,
-                   "Cost" = "cost",
-                   "Revenue" = "rev")
+                   "Cost" = "discost",
+                   "Revenue" = "rev",
+                   "Net Revenue" = "netrev")
     
     year <- "year"
     
     topic <- switch(input$topicSelect,
-                    "Fisheries" = "fishery",
+                    "Fisheries" = "fisheries",
                     "Home-port area" = "homept",
-                    "Vessel length class" = "vsslng",
+                    "Vessel length class" = "vsslngclass",
                     "Delivery-port area" = "delvpt",
                     "Cost type" = "costtyp")
     stat <- "mean"
+    
+    noak <- ifelse(input$removeAK == TRUE, "noak", NULL)
 #     
-    dat <- get(paste(data, year, topic, stat, sep="."))
+    dat <- with(tabs.out, get(paste(data, year, topic, stat, sep=".")))
 #     
     
 #     if(input$dat.name == "Cost"){
@@ -43,6 +46,7 @@ dat <- reactive({ #data load moved to serverhead
 
 dat.vars <- reactive({
   load("data/dat.vars.RData")
+  print(str(dat.vars))
   dat.vars
 })
 
@@ -67,9 +71,11 @@ dat.sub <- reactive({
   input$dataButton
   isolate(
     if(!is.null(dat())){
-      
+        
+        # I find it easier to work with non-closure calls
         dat <- dat()
         
+        #translatting input factor names to data.frame factor names
         selectVars <- c(switch(input$topicSelect,
                             "Fisheries" = input$fishery,
                             "Home-port area" = input$place,
@@ -79,9 +85,17 @@ dat.sub <- reactive({
         
         #print(paste(selectVars, sep = " ")) #debugging
         
-        dat.sub <- dat[dat[,1] %in% c(selectVars),]
+        #subsetting
+        if (input$dat.name == "Net Revenue"){
+          dat.sub <- dat
+        } else {
+          dat.sub <- dat[dat[,1] %in% c(selectVars),]
+          #re-ordering values
+          dat.sub[,1] <- reorder(dat.sub[,1], dat.sub[,3])
+          dat.sub
+        } 
         
-        dat.sub[,1] <- reorder(dat.sub[,1], dat.sub[,3])
+        
         
         print("dat.sub:")
         print(head(dat.sub))

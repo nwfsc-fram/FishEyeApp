@@ -239,11 +239,12 @@ tabs.out <- c(costTabs, revTabs, delTabs, netrevTabs)
 # save the objects that we created
 
 ############################################################################
+
 # save var names
-save(dat.vars, file = paste0(getwd(),"/data/dat_vars.RData")) 
+save(dat.vars, file = paste0(getwd(),"/data/dat.vars.RData")) 
 
 # save cost, rev, deliverport and netrev tables
-save(tabs.out, file = paste0(getwd(),"/data/tabs_out.RData")) 
+save(tabs.out, file = paste0(getwd(),"/data/tabs.out.RData")) 
 
 
 ############################################################################

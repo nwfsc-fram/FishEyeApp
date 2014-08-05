@@ -2,7 +2,7 @@
 #this file is getting a bit long, consider splitting into two parts
 
 output$dat.name <- renderUI({ #data selection. there are two reactives that are dependent on these names in ex.reactives
-  selectInput("dat.name", "Measured variable (y-axis):", choices=c("", "Cost", "Revenue"), selected="")
+  selectInput("dat.name", "Measured variable (y-axis):", choices=c("Cost", "Revenue", "Net Revenue"))
 })
 
 #depricated
@@ -15,7 +15,7 @@ output$dat.name <- renderUI({ #data selection. there are two reactives that are 
 # Inputs variables will be pulled at this stage because we are not preloading data via .r files
 output$years <- renderUI({
   if(!is.null(input$dat.name)){
-    selectInput("years", "Years (x-axis):", choices=c(levels(dat.vars()$SURVEY_YEAR)), selected=c(levels(dat.vars()$SURVEY_YEAR)), multiple=T)
+    selectInput("years", "Years (x-axis):", choices=c(unique(dat.vars()$SURVEY_YEAR)), selected=c(unique(dat.vars()$SURVEY_YEAR)), multiple=T)
   }
 })
 
@@ -65,7 +65,7 @@ output$placeUnit <- renderUI({
 
 output$fishery <- renderUI({
   if(!is.null(input$dat.name)){
-    checkboxGroupInput("fishery", "", choices = c(levels(dat.vars()$FISHERIES)),selected=c(levels(dat.vars()$FISHERIES)))
+    checkboxGroupInput("fishery", "", choices = c(unique(dat.vars()$FISHERIES)),selected=c(unique(dat.vars()$FISHERIES)))
   } 
 })
 
@@ -98,13 +98,13 @@ output$delivPort <- renderUI({
 
 output$length <- renderUI({
   if(!is.null(input$dat.name)){
-    checkboxGroupInput("length", "", choices=c(levels(dat.vars()$VSSLNGCLASS)), selected=c(levels(dat.vars()$VSSLNGCLASS)))
+    checkboxGroupInput("length", "", choices=c(unique(dat.vars()$VSSLNGCLASS)), selected=c(unique(dat.vars()$VSSLNGCLASS)))
   }
 })
 
 output$costtyp <- renderUI({
   if(!is.null(input$dat.name) && input$dat.name=="Cost"){
-    checkboxGroupInput("costtyp", "", choices=c(levels(dat.vars()$COSTTYPCAT)), selected=c(levels(dat.vars()$COSTTYPCAT)))
+    checkboxGroupInput("costtyp", "", choices=c(unique(dat.vars()$COSTTYPCAT)), selected=c(unique(dat.vars()$COSTTYPCAT)))
   } else return()
 })
 
@@ -171,7 +171,7 @@ output$groupMean <- renderUI({
 
 output$palette <- renderUI({
   if(!is.null(dat.sub())){
-    selectInput("palette", "Palette:", choices=c("CB-friendly", "Brewer", "Hipster1"))
+    selectInput("palette", "Palette:", choices=c("CB-friendly", "Brewer"), selected = "Brewer")
   }
 })
 

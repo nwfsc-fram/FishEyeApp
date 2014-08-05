@@ -13,6 +13,8 @@ yvar <- reactive({
   if(!is.null(dat.sub())){
     if (input$dat.name == "Revenue" & input$topicSelect == "Delivery-port area"){
       yvar <- "REVBYDPORT"    
+    } else if (input$dat.name == "Net Revenue"){
+      yvar <- "value"
     } else {
       yvar <- switch(input$dat.name,
                      "Revenue" = "REV",
@@ -23,13 +25,17 @@ yvar <- reactive({
 
 groupvar <- reactive({
   if(!is.null(dat.sub())){
-    groupvar <- switch(input$topicSelect,
-                    "Fisheries" = "FISHERIES",
-                    "Home-port area" = "HOMEPT",
-                    "Vessel length class" = "VSSLNGCLASS",
-                    "Delivery-port area" = "DELIVERYPT",
-                    "Cost type" = "COSTTYPCAT")
-  } else return()
+    if(input$dat.name == "Net Revenue"){
+      groupvar <- "variable"
+    } else {
+      groupvar <- switch(input$topicSelect,
+                      "Fisheries" = "FISHERIES",
+                      "Home-port area" = "HOMEPT",
+                      "Vessel length class" = "VSSLNGCLASS",
+                      "Delivery-port area" = "DELIVERYPT",
+                      "Cost type" = "COSTTYPCAT")
+    }
+  }
 })
 
 plotBase <- reactive({
