@@ -4,16 +4,19 @@
 # this just makes life easier if I change the order/names of vars later 
 
 xvar <- reactive({
+  input$dataButton
+  isolate(
   if(!is.null(dat.sub())){
     byvar <- "SURVEY_YEAR"
   } else return()
+)
 })
 
 yvar <- reactive({
-  if(!is.null(dat.sub())){
-    if (input$dat.name == "Revenue" & input$topicSelect == "Delivery-port area"){
-      yvar <- "REVBYDPORT"    
-    } else if (input$dat.name == "Net Revenue"){
+  input$dataButton
+  isolate(
+  if(!is.null(dat.sub())){  
+    if (input$dat.name == "Net Revenue"){
       yvar <- "value"
     } else {
       yvar <- switch(input$dat.name,
@@ -21,50 +24,49 @@ yvar <- reactive({
                      "Cost" = "DISCOST")
   }
   }
+)
 })
 
 groupvar <- reactive({
+  input$dataButton
+  isolate(
   if(!is.null(dat.sub())){
     if(input$dat.name == "Net Revenue"){
       groupvar <- "variable"
     } else {
       groupvar <- switch(input$topicSelect,
                       "Fisheries" = "FISHERIES",
-                      "Home-port area" = "HOMEPT",
+                      "Homeport" = ifelse(input$placeUnit == "Port" , "HOMEPT", "STATE"),
                       "Vessel length class" = "VSSLNGCLASS",
-                      "Delivery-port area" = "DELIVERYPT",
+                      "Delivery port" = ifelse(input$placeUnit == "Port", "DELIVERYPT", "DELIVERYST"),
                       "Cost type" = "COSTTYPCAT")
     }
   }
+)
 })
 
 plotBase <- reactive({
+  input$dataButton
+  isolate(
   if(!is.null(dat.sub())){
     ggplot(dat.sub(), aes_string(x=xvar(), y=yvar(), fill=groupvar()))
   }
+)
 })
 
 plotGeom <- reactive({
   if(!is.null(input$plotType)){
-    if(input$plotType=="point"){
+    if(input$plotType=="Point"){
       geom_point(aes_string(color=groupvar(), size=4))
-    } else if (input$plotType=="line"){
+    } else if (input$plotType=="Line"){
       geom_line(aes_string(group=groupvar(),colour=groupvar()), size=2)
     } else {
-      if(!is.null(input$dodge) && input$dodge =="dodge"){
-        geom_bar(stat="identity", position="dodge")
-      } else geom_bar(stat="identity", postiion="stack") 
+      if(!is.null(input$dodge) && input$dodge =="Stack"){
+        geom_bar(stat="identity", position="stack")
+      } else geom_bar(stat = "identity", position="dodge") 
     }
   }
 })
-
-# plotFacet <- reactive({
-#   if(!is.null(facetvar())){
-#     if(input$facet.var != "None"){  
-#       facet_grid(paste(".", "~", facetvar(), sep=""))
-#     } else return ()
-#   }
-# })
 
 plotGroupMean <- reactive({
   if(!is.null(input$plotType)){
@@ -76,8 +78,8 @@ plotGroupMean <- reactive({
 
 plotPalette <- reactive({
   if(!is.null(input$plotType)){
-    if(input$palette=="Brewer"){
-      if(input$plotType=="bar"){
+    if(input$palette=="Default"){
+      if(input$plotType=="Bar"){
         scale_fill_brewer(type="qual", palette="Paired")
         } else scale_color_brewer(type="qual", palette = "Paired")
     } else return() 
@@ -85,19 +87,25 @@ plotPalette <- reactive({
 })
 
 plotLabels <- reactive({
+  input$dataButton
+  isolate(
   if(!is.null(input$plotType)){
-    labs(x= input$xvar, title=paste(input$dat.name, "by", "Years", "and", input$topicSelect, sep=" "))
+    labs(x= input$xvar, title=paste("Mean Vessel", input$dat.name, "by", "Years", "and", input$topicSelect, sep=" "), color=input$topicSelect, fill=input$topicSelect)
   }
+)
 })
 
 plotScales <- reactive({
+  input$dataButton
+  isolate(
   if(!is.null(input$plotType)){
-    scale_y_continuous(paste(input$dat.name, "(millions $)", sep=" "), labels= function(x)format(x/1e6))
+    scale_y_continuous(paste(input$dat.name, "(thousands $)", sep=" "), labels= function(x) format(x/1e3))
   }
+)
 })
 
 plotTheme <- reactive({
   if(!is.null(input$plotType)){
-  theme(plot.title= element_text(size=rel(2), vjust=1), axis.title= element_text(size=rel(1.5)))
+  theme(plot.title = element_text(size=rel(2), vjust=1, colour="grey25"), axis.title = element_text(size=rel(1.8), colour="grey25", vjust=1), legend.title = element_text(size=rel(1.2), colour="grey25", vjust=1))
   }
 })

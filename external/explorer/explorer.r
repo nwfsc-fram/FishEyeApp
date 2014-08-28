@@ -8,7 +8,7 @@ source("external/explorer/explorerSourceFiles/ex.io.sidebar1.r",local=T) # sourc
 output$tableTest <- renderDataTable({
   if(!is.null(dat.sub())){
     table <- dat.sub()
-    names(table) <- c(input$topicSelect, "Year", input$dat.name)
+    names(table)[1:3] <- c(input$topicSelect, "Year", input$dat.name)
     table
   } else return()
 })

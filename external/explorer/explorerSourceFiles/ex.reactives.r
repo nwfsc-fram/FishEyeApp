@@ -17,28 +17,30 @@ dat <- reactive({ #data load moved to serverhead
     
     topic <- switch(input$topicSelect,
                     "Fisheries" = "fisheries",
-                    "Home-port area" = "homept",
+                    "Homeport" = ifelse(input$placeUnit == "Port","homept","state"),# gotta do this in plot.reactives aslo
                     "Vessel length class" = "vsslngclass",
-                    "Delivery-port area" = "delvpt",
-                    "Cost type" = "costtyp")
+                    "Delivery port" = ifelse(input$placeUnit == "Port", "deliverypt", "deliveryst"),
+                    "Cost type" = "costtypcat")
+    
+    selection <- ifelse(input$topicSelect == "Fisheries", input$fishery, 
+                        ifelse(input$topicSelect == "Homeport", input$place, 
+                               ifelse(input$topicSelect == "Vessel length class", input$length))) 
+    
     stat <- "mean"
     
-    noak <- ifelse(input$removeAK == TRUE, "noak", NULL)
-#     
-    dat <- with(tabs.out, get(paste(data, year, topic, stat, sep=".")))
-#     
+    noak <- switch(input$removeAK,
+                   "All fishery operations" ="ak", 
+                   "West Coast only operations"= "noak")
     
-#     if(input$dat.name == "Cost"){
-#       load("data/fullcosts.RData")
-#       
-#       print(names(dat))#debugging
-#     } else if(input$dat.name == "Revenue"){
-#       load("data/fullrev.RData")
-#       dat <- melt(fullrev, measure.vars=c("LBS", "REV", "MTS", "DAS"))
-#       print(names(dat)) #debugging
-#     }else dat <- NULL
+    print(paste(data, year, topic, selection, stat, sep="."))    
+    
+    dat <- if(input$dat.name == "Net Revenue"){ 
+           with(tabs.out, get(tolower(paste(data, year, topic, selection, stat, sep="."))))
+           } else  with(tabs.out, get(paste(data, year, topic, stat, noak, sep=".")))
+
     print("dat:")
     print(head(dat))
+    print(str(dat))
     dat
   } else return()
   )
@@ -46,6 +48,7 @@ dat <- reactive({ #data load moved to serverhead
 
 dat.vars <- reactive({
   load("data/dat.vars.RData")
+  print("datvars:")
   print(str(dat.vars))
   dat.vars
 })
@@ -72,30 +75,34 @@ dat.sub <- reactive({
   isolate(
     if(!is.null(dat())){
         
-        # I find it easier to work with non-closure calls
         dat <- dat()
         
         #translatting input factor names to data.frame factor names
         selectVars <- c(switch(input$topicSelect,
                             "Fisheries" = input$fishery,
-                            "Home-port area" = input$place,
+                            "Homeport" = input$place,
                             "Vessel length class" = input$length,
-                            "Delivery-port area" = input$delivpt,
+                            "Delivery port" = input$delivPort,
                             "Cost type" = input$costtyp))
         
-        #print(paste(selectVars, sep = " ")) #debugging
+        print("selectVars:")
+        print(paste(selectVars, sep = " ")) #debugging
         
         #subsetting
         if (input$dat.name == "Net Revenue"){
           dat.sub <- dat
         } else {
+          # selected topic vars
           dat.sub <- dat[dat[,1] %in% c(selectVars),]
+          # selected years
+          dat.sub <- dat.sub[dat.sub[,2] %in% c(input$years),]
           #re-ordering values
           dat.sub[,1] <- reorder(dat.sub[,1], dat.sub[,3])
           dat.sub
         } 
         
-        
+        print("input$delivPort:")
+        print(input$delivPort)
         
         print("dat.sub:")
         print(head(dat.sub))
