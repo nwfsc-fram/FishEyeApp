@@ -57,7 +57,7 @@ plotBase <- reactive({
 plotGeom <- reactive({
   if(!is.null(input$plotType)){
     if(input$plotType=="Point"){
-      geom_point(aes_string(color=groupvar(), size=4))
+      geom_point(aes_string(color=groupvar(), size=5))
     } else if (input$plotType=="Line"){
       geom_line(aes_string(group=groupvar(),colour=groupvar()), size=2)
     } else {
@@ -72,25 +72,53 @@ plotGroupMean <- reactive({
   if(!is.null(input$plotType)){
     if(input$groupMean == TRUE){
       geom_boxplot(aes_string(group=xvar(), fill=xvar(), alpha=.5))
-    }
+    } 
   }
 })
 
 plotPalette <- reactive({
+  input$dataButton
+  isolate(
   if(!is.null(input$plotType)){
-    if(input$palette=="Default"){
-      if(input$plotType=="Bar"){
-        scale_fill_brewer(type="qual", palette="Paired")
-        } else scale_color_brewer(type="qual", palette = "Paired")
-    } else return() 
+    if(input$dat.name != "Net Revenue"){
+      
+      if(input$palette=="Default"){
+        if(input$plotType=="Bar"){
+          scale_fill_brewer(type="qual", palette="Paired")
+          } else scale_color_brewer(type="qual", palette = "Paired")
+      } else return()
+      
+    } else {
+      if(input$palette=="Default"){
+        if(input$plotType=="Bar"){
+          scale_fill_manual(values=pal.netrev)
+        } else scale_color_manual(values=pal.netrev)
+      } else return()
+    }
+    
   }
+  )
 })
 
 plotLabels <- reactive({
   input$dataButton
   isolate(
-  if(!is.null(input$plotType)){
-    labs(x= input$xvar, title=paste("Mean Vessel", input$dat.name, "by", "Years", "and", input$topicSelect, sep=" "), color=input$topicSelect, fill=input$topicSelect)
+    if(!is.null(input$plotType)){
+    operations <- switch(input$removeAK,
+                         "West Coast only operations" = "West Coast",
+                         "All fishery operations" = "")
+    
+    selection <- ifelse(input$topicSelect == "Fisheries", input$fishery, 
+                        ifelse(input$topicSelect == "Homeport", input$place, 
+                               ifelse(input$topicSelect == "Vessel length class", input$length,
+                                      ifelse(input$topicSelect == "Delivery port", input$delivPort))))
+  
+    labs(x= input$xvar, title=paste(operations, 
+                                    "Average", input$dat.name, 
+                                    ifelse(input$dat.name == "Net Revenue", "-","by"), 
+                                    ifelse(input$dat.name == "Net Revenue", selection,input$topicSelect), sep=" "), 
+                                    color= input$topicSelect, 
+                                    fill= ifelse(input$dat.name == "Net Revenue", "", input$topicSelect))
   }
 )
 })

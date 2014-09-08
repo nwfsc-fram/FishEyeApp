@@ -24,7 +24,8 @@ dat <- reactive({ #data load moved to serverhead
     
     selection <- ifelse(input$topicSelect == "Fisheries", input$fishery, 
                         ifelse(input$topicSelect == "Homeport", input$place, 
-                               ifelse(input$topicSelect == "Vessel length class", input$length))) 
+                               ifelse(input$topicSelect == "Vessel length class", input$length,
+                                      ifelse(input$topicSelect == "Delivery port", input$delivPort)))) 
     
     stat <- "mean"
     
@@ -37,7 +38,7 @@ dat <- reactive({ #data load moved to serverhead
     dat <- if(input$dat.name == "Net Revenue"){ 
            with(tabs.out, get(tolower(paste(data, year, topic, selection, stat, sep="."))))
            } else  with(tabs.out, get(paste(data, year, topic, stat, noak, sep=".")))
-
+    
     print("dat:")
     print(head(dat))
     print(str(dat))
@@ -90,6 +91,7 @@ dat.sub <- reactive({
         
         #subsetting
         if (input$dat.name == "Net Revenue"){
+#           dat.sub <- dat[!levels(dat[,1]) %in% c("OTHERCOST"),]
           dat.sub <- dat
         } else {
           # selected topic vars
@@ -100,10 +102,7 @@ dat.sub <- reactive({
           dat.sub[,1] <- reorder(dat.sub[,1], dat.sub[,3])
           dat.sub
         } 
-        
-        print("input$delivPort:")
-        print(input$delivPort)
-        
+            
         print("dat.sub:")
         print(head(dat.sub))
         

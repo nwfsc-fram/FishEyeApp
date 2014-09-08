@@ -77,13 +77,13 @@ fluidPage(theme="bootstrap.css",
                        )
                      ),
                      fluidRow(
-                       column(6,uiOutput("palette")
-                       )
+                       column(6, uiOutput("groupMean")                      
+                       )                                           
                      ),
                      fluidRow(
-                       column(6, uiOutput("groupMean")
+                       column(6,uiOutput("palette")
                        )
-                     )                     
+                     )
                    ) #end well panel
                 ), #end left side column
             column(9, 

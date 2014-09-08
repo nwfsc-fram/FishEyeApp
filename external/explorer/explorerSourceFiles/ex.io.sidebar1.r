@@ -55,9 +55,9 @@ output$fishery <- renderUI({
   if(!is.null(input$removeAK)){
     if(input$dat.name != "Net Revenue"){
       if(input$removeAK == "West Coast only operations"){
-        selectInput("fishery", "", choices = c(unique(dat.vars()$FISHERIES)[-1]), selected=c(unique(dat.vars()$FISHERIES)[-1]), multiple = T)
+        checkboxGroupInput("fishery", "", choices = c(unique(dat.vars()$FISHERIES)[-1]), selected=c(unique(dat.vars()$FISHERIES)[-1]))
       } else {
-        selectInput("fishery", "", choices = c(unique(dat.vars()$FISHERIES)), selected=c(unique(dat.vars()$FISHERIES)),multiple = T)
+        checkboxGroupInput("fishery", "", choices = c(unique(dat.vars()$FISHERIES)), selected=c(unique(dat.vars()$FISHERIES)))
       }
     } else {
       if(input$removeAK == "West Coast only operations"){
@@ -73,8 +73,8 @@ output$place <- renderUI({
   if(!is.null(input$placeUnit)){
     if(input$dat.name != "Net Revenue"){
       if(input$placeUnit == "Port"){
-        selectInput("place", "", choices=c(unique(dat.vars()$HOMEPT[!is.na(dat.vars()$HOMEPT)])), selected=c(unique(dat.vars()$HOMEPT[!is.na(dat.vars()$HOMEPT)])), multiple = T)
-      } else selectInput("place", "", choices=c(unique(dat.vars()$STATE[!is.na(dat.vars()$STATE)])), selected=c(unique(dat.vars()$STATE[!is.na(dat.vars()$STATE)])), multiple = T)
+        checkboxGroupInput("place", "", choices=c(unique(dat.vars()$HOMEPT[!is.na(dat.vars()$HOMEPT)])), selected=c(unique(dat.vars()$HOMEPT[!is.na(dat.vars()$HOMEPT)])))
+      } else checkboxGroupInput("place", "", choices=c(unique(dat.vars()$STATE[!is.na(dat.vars()$STATE)])), selected=c(unique(dat.vars()$STATE[!is.na(dat.vars()$STATE)])))
     } else {
       if(input$placeUnit == "Port"){
         selectInput("place", "", choices=c(unique(dat.vars()$HOMEPT[!is.na(dat.vars()$HOMEPT)])), multiple = F)
@@ -86,8 +86,8 @@ output$place <- renderUI({
 output$delivPort <- renderUI({
   if(!is.null(input$placeUnit) && input$dat.name=="Revenue"){
     if(input$placeUnit == "Port"){
-      selectInput("delivPort", "", choices=c(unique(dat.vars()$DELIVERYPT[!is.na(dat.vars()$DELIVERYPT)])), selected=c(unique(dat.vars()$DELIVERYPT[!is.na(dat.vars()$DELIVERYPT)])))
-    }else selectInput("delivPort", "", choices=c(unique(dat.vars()$STATE[!is.na(dat.vars()$STATE)])), selected=c(unique(dat.vars()$STATE[!is.na(dat.vars()$STATE)])))    
+      checkboxGroupInput("delivPort", "", choices=c(unique(dat.vars()$DELIVERYPT[!is.na(dat.vars()$DELIVERYPT)])), selected=c(unique(dat.vars()$DELIVERYPT[!is.na(dat.vars()$DELIVERYPT)])))
+    }else checkboxGroupInput("delivPort", "", choices=c(unique(dat.vars()$STATE[!is.na(dat.vars()$STATE)])), selected=c(unique(dat.vars()$STATE[!is.na(dat.vars()$STATE)])))    
   }else return()
 })
 
@@ -95,7 +95,7 @@ output$delivPort <- renderUI({
 output$length <- renderUI({
   if(!is.null(input$dat.name)){
     if(input$dat.name != "Net Revenue"){
-    selectInput("length", "", choices=c(unique(dat.vars()$VSSLNGCLASS)), selected=c(unique(dat.vars()$VSSLNGCLASS)), multiple = T)
+    checkboxGroupInput("length", "", choices=c(unique(dat.vars()$VSSLNGCLASS)), selected=c(unique(dat.vars()$VSSLNGCLASS)))
     } else {
     selectInput("length", "", choices=c(unique(dat.vars()$VSSLNGCLASS)), multiple = F)  
     }
@@ -116,8 +116,14 @@ output$length <- renderUI({
 
 output$removeAK <- renderUI({
   if(!is.null(input$topicSelect)){
-    selectInput("removeAK", "", choices = c("All fishery operations", "West Coast only operations"))
-    } else return()
+    if(input$dat.name == "Net Revenue") {
+      selectInput("removeAK", "", choices = c("West Coast only operations"))  
+    } else if(input$topicSelect == "Delivery port"){
+      selectInput("removeAK", "", choices = c("All fishery operations"))
+    } else if(input$dat.name == "Revenue"){
+      selectInput("removeAK", "", choices = c("All fishery operations"))  
+    } else selectInput("removeAK", "", choices = c("All fishery operations", "West Coast only operations"))
+  } else return()
 })
 
 ########################################### Data subsetting action button ################################
@@ -151,7 +157,7 @@ output$dodge <- renderUI({
 output$groupMean <- renderUI({
   if(!is.null(dat.sub())){
     checkboxInput("groupMean", "Group mean CI", value=F)
-  }
+  } 
 })
 
 output$palette <- renderUI({
