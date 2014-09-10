@@ -1,5 +1,0 @@
-* 8/12/2014
-
-this folder contains old data that is vessel level - i.e. sensitive. This has all been moved to vesselSim/datasets.
-
-hang on to this while you test new datasets and delete prior to sharing. 

@@ -8,7 +8,7 @@ if(length(new.packages)) install.packages(new.packages)
 # To run app, ctrl + enter the following lines
 ################################################
 
-#Todd's Laptop:
-setwd("C:/todd.lee/Desktop/FISHEYE/vesselSim_app/")
+# Todd's Laptop:
+# setwd("C:/todd.lee/Desktop/FISHEYE/vesselSim_app/")
 shiny::runApp()
 
