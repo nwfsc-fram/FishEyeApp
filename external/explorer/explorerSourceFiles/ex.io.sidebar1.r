@@ -11,7 +11,7 @@ output$years <- renderUI({
 
 # labeled "Topic"
 output$dat.name <- renderUI({ #data selection. there are two reactives that are dependent on these names in ex.reactives
-  selectInput("dat.name", "Topic:", choices=c("Cost", "Revenue", "Net Revenue"))
+  selectInput("dat.name", "Topic:", choices=c("Revenue", "Variable cost", "Fixed cost", "Variable cost net Revenue", "Total cost net Revenue"))
 })
 
 # labeled "Category
