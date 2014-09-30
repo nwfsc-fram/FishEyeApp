@@ -19,20 +19,20 @@ fluidPage(theme="bootstrap.css",
                        column(8, uiOutput("dat.name")
                        )                       
                      ),                     
+                     #                      fluidRow(
+                     #                        column(8, uiOutput("removeAK")
+                     #                        )
+                     #                      ),
                      fluidRow(
-                       column(8, uiOutput("removeAK")
+                       column(8, uiOutput("topicSelect")
                        )
                      ),
-                                      fluidRow(
-                                        column(8, uiOutput("topicSelect")
-                                        )
-                                      ),
-                     conditionalPanel(condition = "input.topicSelect=='Homeport' | input.topicSelect=='Delivery port'",
-                                      fluidRow(
-                                        column(8, uiOutput("placeUnit")
-                                        )
-                                      )
-                     ),
+                     #                      conditionalPanel(condition = "input.topicSelect=='Homeport' | input.topicSelect=='Delivery port'",
+                     #                                       fluidRow(
+                     #                                         column(6, uiOutput("placeUnit"), offset = 2
+                     #                                         )
+                     #                                       )
+                     #                      ),
                      conditionalPanel(condition = "input.topicSelect=='Fisheries'",
                                       fluidRow(
                                         column(12, uiOutput("fishery")
@@ -45,23 +45,27 @@ fluidPage(theme="bootstrap.css",
                                         )
                                       )
                      ),
-                     conditionalPanel(condition = "input.topicSelect=='Homeport'",
+                     conditionalPanel(condition = "input.topicSelect=='Homeport' || input.topicSelect=='State'",
                                       fluidRow(
                                         column(12, uiOutput("place")
                                         )
                                       )
                      ),
-                     conditionalPanel(condition = "input.topicSelect=='Delivery port'",
-                                      fluidRow(
-                                        column(12, uiOutput("delivPort")
-                                        )
-                                      )
-                     ),
+                     #                      conditionalPanel(condition = "input.topicSelect=='Delivery port'",
+                     #                                       fluidRow(
+                     #                                         column(12, uiOutput("delivPort")
+                     #                                         )
+                     #                                       )
+                     #                      ),
                      conditionalPanel(condition = "input.topicSelect=='Cost type'",
                                       fluidRow(
                                         column(12, uiOutput("costtyp")
                                         )
                                       )
+                     ),                     
+                     fluidRow(
+                       column(8, uiOutput("stat")
+                       )
                      ),
                      br(),
                      fluidRow(
@@ -73,29 +77,39 @@ fluidPage(theme="bootstrap.css",
                      fluidRow(
                        column(6, uiOutput("plotType")
                        ),
-                       column(6, uiOutput("dodge")
+                       conditionalPanel(condition = "input.plotType=='Bar'",
+                                        column(6, uiOutput("dodge")
+                                        )
+                       ),
+                       conditionalPanel(condition = "input.plotType=='Point'",
+                                        fluidRow(
+                                          column(6, uiOutput("groupMean")                      
+                                          )                                           
+                                        )
                        )
-                     ),
-                     fluidRow(
-                       column(6, uiOutput("groupMean")                      
-                       )                                           
                      ),
                      fluidRow(
                        column(6,uiOutput("palette")
                        )
                      )
+                     
                    ) #end well panel
-                ), #end left side column
-            column(9, 
-                   fluidRow(
-                     column(12, plotOutput("plotTest",height="800px")
-                     )
-                   ),                   
-                   fluidRow(HTML("<hr>")),
-                   fluidRow(
-                     column(12, dataTableOutput("tableTest") # testing
-                     )
-                   )
+            ), #end left side column
+            column(9,
+                   tabsetPanel(
+                     tabPanel("Output",
+                              fluidRow(
+                                column(12, plotOutput("plotTest",height="800px")
+                                )
+                              ),                   
+                              fluidRow(HTML("<hr>")),
+                              fluidRow(
+                                column(12, dataTableOutput("tableTest") # testing
+                                )
+                              )
+                     ),
+                     tabPanel("Definitions", source("external/explorer/definitions.R"))
+                   ) # end of tabsetPanel
             ) # end right side column
           ) #end the top level fluid row
 ) # end fluid Page

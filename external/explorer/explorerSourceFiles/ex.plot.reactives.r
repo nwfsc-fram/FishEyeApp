@@ -15,16 +15,15 @@ xvar <- reactive({
 yvar <- reactive({
   input$dataButton
   isolate(
-  if(!is.null(dat.sub())){  
-    if (input$dat.name == "Net Revenue"){
-      yvar <- "value"
-    } else {
-      yvar <- switch(input$dat.name,
-                     "Revenue" = "REV",
-                     "Cost" = "DISCOST")
-  }
-  }
-)
+    if(!is.null(dat.sub())){  
+        yvar <- switch(input$dat.name,
+                       "Revenue" = "REV",
+                       "Variable cost" = "VARCOST",
+                       "Fixed cost" = "FIXEDCOST",
+                       "Variable cost net revenue" = "VARNETREV",
+                       "Total cost net revenue" = "TOTALNETREV")
+    }
+  )
 })
 
 groupvar <- reactive({
@@ -36,9 +35,10 @@ groupvar <- reactive({
     } else {
       groupvar <- switch(input$topicSelect,
                       "Fisheries" = "FISHERIES",
-                      "Homeport" = ifelse(input$placeUnit == "Port" , "HOMEPT", "STATE"),
+                      "Homeport" = "HOMEPT",
+                      "State" = "STATE",
                       "Vessel length class" = "VSSLNGCLASS",
-                      "Delivery port" = ifelse(input$placeUnit == "Port", "DELIVERYPT", "DELIVERYST"),
+#                       "Delivery port" = ifelse(input$placeUnit == "Port", "DELIVERYPT", "DELIVERYST"),
                       "Cost type" = "COSTTYPCAT")
     }
   }
@@ -61,7 +61,7 @@ plotGeom <- reactive({
     } else if (input$plotType=="Line"){
       geom_line(aes_string(group=groupvar(),colour=groupvar()), size=2)
     } else {
-      if(!is.null(input$dodge) && input$dodge =="Stack"){
+      if(!is.null(input$dodge) && input$dodge =="Stacked position"){
         geom_bar(stat="identity", position="stack")
       } else geom_bar(stat = "identity", position="dodge") 
     }
@@ -69,7 +69,7 @@ plotGeom <- reactive({
 })
 
 plotGroupMean <- reactive({
-  if(!is.null(input$plotType)){
+  if(!is.null(input$groupMean)){
     if(input$groupMean == TRUE){
       geom_boxplot(aes_string(group=xvar(), fill=xvar(), alpha=.5))
     } 
@@ -79,23 +79,12 @@ plotGroupMean <- reactive({
 plotPalette <- reactive({
   input$dataButton
   isolate(
-  if(!is.null(input$plotType)){
-    if(input$dat.name != "Net Revenue"){
-      
+  if(!is.null(input$palette)){      
       if(input$palette=="Default"){
         if(input$plotType=="Bar"){
           scale_fill_brewer(type="qual", palette="Paired")
           } else scale_color_brewer(type="qual", palette = "Paired")
-      } else return()
-      
-    } else {
-      if(input$palette=="Default"){
-        if(input$plotType=="Bar"){
-          scale_fill_manual(values=pal.netrev)
-        } else scale_color_manual(values=pal.netrev)
-      } else return()
-    }
-    
+      } else return()      
   }
   )
 })
@@ -104,14 +93,12 @@ plotLabels <- reactive({
   input$dataButton
   isolate(
     if(!is.null(input$plotType)){
-    operations <- switch(input$removeAK,
-                         "West Coast only operations" = "West Coast",
-                         "All fishery operations" = "")
+    operations <- "West Coast"
     
     selection <- ifelse(input$topicSelect == "Fisheries", input$fishery, 
                         ifelse(input$topicSelect == "Homeport", input$place, 
                                ifelse(input$topicSelect == "Vessel length class", input$length,
-                                      ifelse(input$topicSelect == "Delivery port", input$delivPort))))
+                                      ifelse(input$topicSelect == "State", input$place))))
   
     labs(x= input$xvar, title=paste(operations, 
                                     "Average", input$dat.name, 
