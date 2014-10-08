@@ -7,7 +7,9 @@ dat <- reactive({ #data load moved to serverhead
   input$dataButton
   isolate(
   if(!is.null(input$dat.name) && !is.null(input$topicSelect)){
-  
+    
+    dat <- function()
+    
     data <- switch(input$dat.name,
                    "Revenue" = "rev",
                    "Variable cost" = "varcost",

@@ -67,6 +67,10 @@ fluidPage(theme="bootstrap.css",
                        column(8, uiOutput("stat")
                        )
                      ),
+                     fluidRow(
+                       column(8, uiOutput("groupBy")
+                       )
+                     ),
                      br(),
                      fluidRow(
                        column(8, uiOutput("dataButton")

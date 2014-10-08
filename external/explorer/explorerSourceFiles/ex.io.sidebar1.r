@@ -12,7 +12,7 @@ output$years <- renderUI({
 
 # labeled "Topic"
 output$dat.name <- renderUI({ #data selection. there are two reactives that are dependent on these names in ex.reactives
-  selectInput("dat.name", "Topic:", choices=c("Revenue", "Variable cost", "Fixed cost", "Variable cost net revenue", "Total cost net revenue"))
+  selectInput("dat.name", "Topic:", choices=c("Revenue", "Variable cost", "Fixed cost", "Variable cost net revenue", "Total cost net revenue"), multiple = TRUE)
 })
 
 # labeled "Category
@@ -42,6 +42,12 @@ output$stat <- renderUI({
 # #       selectInput("placeUnit", "", choices = c("State", "Port"))
 #     } else  return()
 # #   }
+# })
+
+# output$groupBy <- renderUI({
+#   if(!is.null(input$topicSelect)) {
+#     selectInput("groupBy", "Group by:", choices = c("Topics", "Categories"))
+#   }
 # })
 
 #################################
