@@ -16,12 +16,7 @@ yvar <- reactive({
   input$dataButton
   isolate(
     if(!is.null(dat.sub())){  
-        yvar <- switch(input$dat.name,
-                       "Revenue" = "REV",
-                       "Variable cost" = "VARCOST",
-                       "Fixed cost" = "FIXEDCOST",
-                       "Variable cost net revenue" = "VARNETREV",
-                       "Total cost net revenue" = "TOTALNETREV")
+        yvar <- "value"
     }
   )
 })
@@ -30,19 +25,24 @@ groupvar <- reactive({
   input$dataButton
   isolate(
   if(!is.null(dat.sub())){
-    if(input$dat.name == "Net Revenue"){
-      groupvar <- "variable"
+    if(length(input$dat.name) < 2){
+      groupvar <- "category"
     } else {
-      groupvar <- switch(input$topicSelect,
-                      "Fisheries" = "FISHERIES",
-                      "Homeport" = "HOMEPT",
-                      "State" = "STATE",
-                      "Vessel length class" = "VSSLNGCLASS",
-#                       "Delivery port" = ifelse(input$placeUnit == "Port", "DELIVERYPT", "DELIVERYST"),
-                      "Cost type" = "COSTTYPCAT")
+      groupvar <- "variable"
     }
   }
 )
+})
+
+plotFacet <- reactive({
+  input$dataButton
+  isolate(
+    if(!is.null(dat.sub())) {
+      if(length(input$dat.name) > 1) {
+        facet_wrap(~ category, as.table = TRUE)
+      } else NULL
+    }
+  )
 })
 
 plotBase <- reactive({
@@ -79,13 +79,13 @@ plotGroupMean <- reactive({
 plotPalette <- reactive({
   input$dataButton
   isolate(
-  if(!is.null(input$palette)){      
-      if(input$palette=="Default"){
+#   if(!is.null(input$palette)){      
+#       if(input$palette=="Default"){
         if(input$plotType=="Bar"){
           scale_fill_brewer(type="qual", palette="Paired")
-          } else scale_color_brewer(type="qual", palette = "Paired")
-      } else return()      
-  }
+        } else scale_color_brewer(type="qual", palette = "Paired")
+#       } else return()      
+#   }
   )
 })
 
@@ -123,4 +123,9 @@ plotTheme <- reactive({
   if(!is.null(input$plotType)){
   theme(plot.title = element_text(size=rel(2), vjust=1, colour="grey25"), axis.title = element_text(size=rel(1.8), colour="grey25", vjust=1), legend.title = element_text(size=rel(1.2), colour="grey25", vjust=1))
   }
+})
+
+# assemble ggplot components in Voltron like fashion
+plotOut <- reactive({
+  plotBase() + plotGeom() + plotFacet() + plotGroupMean() + plotPalette() + plotLabels() + plotScales() + plotTheme()
 })

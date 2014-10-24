@@ -4,51 +4,35 @@
 
 #labeled "Years"
 output$years <- renderUI({
-  if(!is.null(input$dat.name)){
-    selectizeInput("years", "Years:", choices=c(unique(dat.vars()$SURVEY_YEAR)), 
-                       selected=c(unique(dat.vars()$SURVEY_YEAR)), options = list(plugins = list('remove_button')), multiple = TRUE)
-  }
+#   if(!is.null(input$dat.name)){
+    checkboxGroupInput("years", "Years:", choices=c(unique(dat.vars()$SURVEY_YEAR)), selected="")
+#   }
 })
 
 # labeled "Topic"
 output$dat.name <- renderUI({ #data selection. there are two reactives that are dependent on these names in ex.reactives
-  selectInput("dat.name", "Topic:", choices=c("Revenue", "Variable cost", "Fixed cost", "Variable cost net revenue", "Total cost net revenue"), multiple = TRUE)
+  checkboxGroupInput("dat.name", "Revenue/Cost type:", choices=c("Revenue", "Variable cost", "Fixed cost", "Variable cost net revenue", "Total cost net revenue"), 
+              selected = "")
 })
 
 # labeled "Category
 # these topic names are used all over the rest of the scripts, careful when you change them..
 # in javascript control on ex.fluidPage, reactives in both dat.var and subsetting, plot.reactives
 output$topicSelect <- renderUI({ 
-  if(!is.null(input$dat.name)){
-    selectInput("topicSelect", "Category:", 
-                choices = c("Fisheries","Vessel length class", "Homeport", "State"),
-                selected = c("Fisheries"))
-  } else return()
+#   if(!is.null(input$dat.name)){
+    selectInput("topicSelect", "Summarize by:", 
+                choices = c("", "Fisheries","Vessel length class", "Homeport", "State"),
+                selected = "")
+#   } else return()
 })
 
 # labeled summary satistic
 
 output$stat <- renderUI({
-  if(!is.null(input$topicSelect)){
-    selectInput("stat", "Summary statistc:", c("Total", "Average"), multiple = FALSE)
-  }
-})
-
-# output$placeUnit <- renderUI({
 #   if(!is.null(input$topicSelect)){
-# #     if(input$topicSelect == "Delivery port"){
-#       selectInput("placeUnit", "", choices = c("State", "Port"))
-# #     } else if(input$topicSelect == "Homeport"){
-# #       selectInput("placeUnit", "", choices = c("State", "Port"))
-#     } else  return()
-# #   }
-# })
-
-# output$groupBy <- renderUI({
-#   if(!is.null(input$topicSelect)) {
-#     selectInput("groupBy", "Group by:", choices = c("Topics", "Categories"))
+    selectInput("stat", "Summary statistc:", c("Total", "Average"), multiple = FALSE)
 #   }
-# })
+})
 
 #################################
 
@@ -57,8 +41,8 @@ output$stat <- renderUI({
 #################################
 
 output$fishery <- renderUI({
-  if(!is.null(input$dat.name)){      
-      checkboxGroupInput("fishery", "", choices = c(unique(dat.vars()$FISHERIES)), selected=c(unique(dat.vars()$FISHERIES)))
+  if(!is.null(input$topicSelect)){      
+      checkboxGroupInput("fishery", "", choices = c(unique(dat.vars()$FISHERIES)), selected="")
     }
 })
 
@@ -66,9 +50,9 @@ output$place <- renderUI({
   if(!is.null(input$topicSelect)){
 #     if(input$dat.name != "Net Revenue"){
       if(input$topicSelect == "Homeport"){
-        checkboxGroupInput("place", "", choices=c(unique(dat.vars()$HOMEPT[!is.na(dat.vars()$HOMEPT)])), selected=c(unique(dat.vars()$HOMEPT[!is.na(dat.vars()$HOMEPT)])))
+        checkboxGroupInput("place", "", choices=c(unique(dat.vars()$HOMEPT[!is.na(dat.vars()$HOMEPT)])), selected="")
       } else if(input$topicSelect == "State"){
-        checkboxGroupInput("place", "", choices=c(unique(dat.vars()$STATE[!is.na(dat.vars()$STATE)])), selected=c(unique(dat.vars()$STATE[!is.na(dat.vars()$STATE)])))
+        checkboxGroupInput("place", "", choices=c(unique(dat.vars()$STATE[!is.na(dat.vars()$STATE)])), selected="")
 #     } else {
 #       if(input$placeUnit == "Port"){
 #         selectInput("place", "", choices=c(unique(dat.vars()$HOMEPT[!is.na(dat.vars()$HOMEPT)])), multiple = F)
@@ -88,9 +72,9 @@ output$place <- renderUI({
 
 
 output$length <- renderUI({
-  if(!is.null(input$dat.name)){
+  if(!is.null(input$topicSelect)){
 #     if(input$dat.name != "Net Revenue"){
-    checkboxGroupInput("length", "", choices=c(unique(dat.vars()$VSSLNGCLASS)), selected=c(unique(dat.vars()$VSSLNGCLASS)))
+    checkboxGroupInput("length", "", choices=c(unique(dat.vars()$VSSLNGCLASS)), selected="")
 #     } else {
 #     selectInput("length", "", choices=c(unique(dat.vars()$VSSLNGCLASS)), multiple = F)  
 #     }
@@ -145,7 +129,7 @@ output$plotType <- renderUI({
 output$dodge <- renderUI({
   if(!is.null(input$plotType)){
     if(input$plotType=="Bar"){
-      radioButtons("dodge", "", choices= c("Standard position", "Stacked position"))
+      radioButtons("dodge", "", choices= c("Grouped position", "Stacked position"))
     } else return()
   } else return()
 })
@@ -156,11 +140,12 @@ output$groupMean <- renderUI({
   } 
 })
 
-output$palette <- renderUI({
-  if(!is.null(dat.sub())){
-    selectInput("palette", "Palette:", choices=c("Default", "Color-blind friendly"), selected = "Default")
-  }
-})
+# drop this option for now
+# output$palette <- renderUI({
+#   if(!is.null(dat.sub())){
+#     selectInput("palette", "Palette:", choices=c("Default", "Color-blind friendly"), selected = "Default")
+#   }
+# })
 
 ############################################## Plotting action button #########################################
 

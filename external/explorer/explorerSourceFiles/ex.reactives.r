@@ -6,51 +6,76 @@
 dat <- reactive({ #data load moved to serverhead
   input$dataButton
   isolate(
-  if(!is.null(input$dat.name) && !is.null(input$topicSelect)){
+    if(!is.null(input$dat.name) && !is.null(input$topicSelect)){
     
-    dat <- function()
-    
-    data <- switch(input$dat.name,
-                   "Revenue" = "rev",
-                   "Variable cost" = "varcost",
-                   "Fixed cost" = "fixedcost",
-                   "Variable cost net revenue" = "varnetrev",
-                   "Total cost net revenue" = "totalnetrev")
-    
-    year <- "year"
-    
-    topic <- switch(input$topicSelect,
-                    "Fisheries" = "fisheries",
-                    "Homeport" = "homept",
-                    "State" = "state",# gotta do this in plot.reactives aslo
-                    "Vessel length class" = "vsslngclass",
-#                     "Delivery port" = ifelse(input$placeUnit == "Port", "deliverypt", "deliveryst")
-                    )
-    
-    selection <- ifelse(input$topicSelect == "Fisheries", input$fishery, 
-                        ifelse(input$topicSelect == "Homeport", input$place,
-                               ifelse(input$topicSelect == "State", input$place,
-                                    ifelse(input$topicSelect == "Vessel length class", input$length)))) 
-    
-    stat <- switch(input$stat,
-                   "Total" = "sum",
-                   "Average" = "mean")
-    
-#     noak <- switch(input$removeAK,
-#                    "All fishery operations" ="ak", 
-#                    "West Coast only operations"= "noak")
-    
-    print("data.select:")
-    print(paste(data, year, topic, stat, sep="."))    
-
-    dat <- with(tabs.out, get(paste(data, year, topic, stat, sep=".")))
-    
-    print("dat:")
-    print(dat)
-
-    return(dat)
-
-  } else return()
+    if (input$stat == "Total") {
+      dat <- netrevTabsSum
+    } else {
+      dat <- netrevTabsMean
+    }
+      
+#       year <- "year"
+#       
+#       data <- if (length(input$dat.name) < 2) {
+#                 switch(input$dat.name,
+#                      "Revenue" = "rev",
+#                      "Variable cost" = "varcost",
+#                      "Fixed cost" = "fixedcost",
+#                      "Variable cost net revenue" = "varnetrev",
+#                      "Total cost net revenue" = "totalnetrev")
+#               } else {
+#                 "netrev"
+#               }
+#       
+#       stat <- switch(input$stat,
+#                      "Total" = "sum",
+#                      "Average" = "mean")
+#       
+#       topic <- switch(input$topicSelect,
+#                       "Fisheries" = "fisheries",
+#                       "Homeport" = "homept",
+#                       "State" = "state",
+#                       "Vessel length class" = "vsslngclass")
+#       
+#       
+#       print("data.select:") # debugging to check on the table selection
+#       print(paste(data, year, topic, stat, sep="."))  
+#       
+#       
+#       selection <- ifelse(input$topicSelect == "Fisheries", input$fishery,
+#                           ifelse(input$topicSelect == "Homeport", input$place,
+#                                  ifelse(input$topicSelect == "State", input$place,
+#                                         ifelse(input$topicSelect == "Vessel length class", input$length))))
+#       
+#       print("selection:")
+#       print(selection)
+#       print("input$topicSelect:")
+#       print(input$fishery)
+#       
+#       # this if statement is a conditional to set up the table selection for multiple dat.name inputs
+#       if(length(input$dat.name) < 2) {
+#         
+#         dat <- with(tabs.out, get(paste(data, year, topic, stat, sep=".")))
+# 
+#       } else {
+#         
+#         dat.go <- list()
+#         
+#         for(i in length(selection)) {
+#           
+#           dat.go[i] <- with(tabs.out, get(paste(data, year, topic, stat, sep=".")))
+#           
+#         }
+#         
+#         dat <- rbind(dat.go)
+#       }
+      
+      print("dat:")
+      print(str(dat))
+      
+      return(dat)
+      
+    } else return()
   )
 })
 
@@ -82,34 +107,52 @@ dat.sub <- reactive({
   input$dataButton
   isolate(
     if(!is.null(dat())){
+      
+      dat <- dat()
+      
+      netrev.type <- vector(length=length(input$dat.name))
+      
+      # muahhahaa, I got switch to work for multiple input values! alas, it is probably less efficient than ifelse
+      for (i in 1:length(input$dat.name)) {
+          netrev.type[i] <- switch(input$dat.name[i],
+                                   "Revenue" = "REV",
+                                   "Variable cost" = "VARCOST",
+                                   "Fixed cost" = "FIXEDCOST",
+                                   "Variable cost net revenue" = "VARNETREV",
+                                   "Total cost net revenue" = "TOTALNETREV")         
+                          
+        print(netrev.type[i])
         
-        dat <- dat()
-        
-        #translatting input factor names to data.frame factor names
-        selectVars <- c(switch(input$topicSelect,
-                            "Fisheries" = input$fishery,
-                            "Homeport" = input$place,
-                            "State" = input$place,
-                            "Vessel length class" = input$length))
-        
-        print("selectVars:")
-        print(paste(selectVars, sep = " ")) #debugging
-        
-        #subsetting
-          # selected topic vars
-          dat.sub <- dat[dat[,1] %in% c(selectVars),]
-          # selected years
-          dat.sub <- dat.sub[dat.sub[,2] %in% c(input$years),]
-          #re-ordering values
-          dat.sub[,1] <- reorder(dat.sub[,1], dat.sub[,3])
-          
-         
-            
-        print("dat.sub:")
-        print(dat.sub)
-        
-        return(dat.sub)
-        
+      }
+      
+      print(paste("**", netrev.type, "**", sep=" "))
+                     
+      #translating input factor names to data.frame factor names
+      ifelse(input$topicSelect == "Fisheries", selection <- input$fishery,
+                         ifelse(input$topicSelect == "Homeport", selection <- input$place,
+                               ifelse(input$topicSelect == "State", selection <- input$place,
+                                     ifelse(input$topicSelect == "Vessel length class", selection <- input$length))))
+      
+#       print("selectVars:")
+#       print(paste(selection, sep = " ")) #debugging
+#       
+#       print("input$fishery:")
+#       print(input$fishery)
+
+      
+      #subsetting
+      dat.sub <- subset(dat, SURVEY_YEAR %in% input$years & variable %in% netrev.type & category %in% selection)
+      #re-ordering values
+#       dat.sub[,5] <- reorder(dat.sub[,5], dat.sub[,3])
+      
+      # droping the "topic" var, I don't think we actually need it, ever
+      dat.sub <- dat.sub[!names(dat.sub) %in% "topic"]
+      
+      print("dat.sub:")
+      print(head(dat.sub))
+      
+      return(dat.sub)
+      
     } else return()
   )
 })

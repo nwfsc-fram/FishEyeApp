@@ -11,94 +11,103 @@ fluidPage(theme="bootstrap.css",
                                 <p><strong>Catcher Vessels</strong></p>")
                        )
                      ),
-                     fluidRow(
-                       column(8, uiOutput("years")
-                       )
+                     wellPanelSub(                       
+                               fluidRow(
+                                 column(8, uiOutput("years")
+                                 )
+                               )
                      ),
-                     fluidRow(
-                       column(8, uiOutput("dat.name")
-                       )                       
+                     wellPanelSub(
+                               fluidRow(
+                                 column(8, uiOutput("dat.name")
+                                 )
+                               ) 
                      ),                     
                      #                      fluidRow(
                      #                        column(8, uiOutput("removeAK")
                      #                        )
                      #                      ),
-                     fluidRow(
-                       column(8, uiOutput("topicSelect")
+                     wellPanelSub(
+                               fluidRow(
+                                 column(8, uiOutput("topicSelect")
+                                 )
+                               ),
+                               #                      conditionalPanel(condition = "input.topicSelect=='Homeport' | input.topicSelect=='Delivery port'",
+                               #                                       fluidRow(
+                               #                                         column(6, uiOutput("placeUnit"), offset = 2
+                               #                                         )
+                               #                                       )
+                               #                      ),
+                               conditionalPanel(condition = "input.topicSelect=='Fisheries'",
+                                                fluidRow(
+                                                  column(12, uiOutput("fishery")
+                                                  )
+                                                )
+                               ),
+                               conditionalPanel(condition = "input.topicSelect=='Vessel length class'",
+                                                fluidRow(
+                                                  column(12, uiOutput("length")
+                                                  )
+                                                )
+                               ),
+                               conditionalPanel(condition = "input.topicSelect=='Homeport' || input.topicSelect=='State'",
+                                                fluidRow(
+                                                  column(12, uiOutput("place")
+                                                  )
+                                                )
+                               ),
+                               #                      conditionalPanel(condition = "input.topicSelect=='Delivery port'",
+                               #                                       fluidRow(
+                               #                                         column(12, uiOutput("delivPort")
+                               #                                         )
+                               #                                       )
+                               #                      ),
+                               conditionalPanel(condition = "input.topicSelect=='Cost type'",
+                                                fluidRow(
+                                                  column(12, uiOutput("costtyp")
+                                                  )
+                                                )
+                               )
+                     ),
+                     wellPanelSub(
+                       fluidRow(
+                         column(8, uiOutput("stat")
+                         )
                        )
                      ),
-                     #                      conditionalPanel(condition = "input.topicSelect=='Homeport' | input.topicSelect=='Delivery port'",
-                     #                                       fluidRow(
-                     #                                         column(6, uiOutput("placeUnit"), offset = 2
-                     #                                         )
-                     #                                       )
+                     #                      fluidRow(
+                     #                        column(8, uiOutput("groupBy")
+                     #                        )
                      #                      ),
-                     conditionalPanel(condition = "input.topicSelect=='Fisheries'",
-                                      fluidRow(
-                                        column(12, uiOutput("fishery")
-                                        )
-                                      )
-                     ),
-                     conditionalPanel(condition = "input.topicSelect=='Vessel length class'",
-                                      fluidRow(
-                                        column(12, uiOutput("length")
-                                        )
-                                      )
-                     ),
-                     conditionalPanel(condition = "input.topicSelect=='Homeport' || input.topicSelect=='State'",
-                                      fluidRow(
-                                        column(12, uiOutput("place")
-                                        )
-                                      )
-                     ),
-                     #                      conditionalPanel(condition = "input.topicSelect=='Delivery port'",
-                     #                                       fluidRow(
-                     #                                         column(12, uiOutput("delivPort")
-                     #                                         )
-                     #                                       )
-                     #                      ),
-                     conditionalPanel(condition = "input.topicSelect=='Cost type'",
-                                      fluidRow(
-                                        column(12, uiOutput("costtyp")
-                                        )
-                                      )
-                     ),                     
-                     fluidRow(
-                       column(8, uiOutput("stat")
-                       )
-                     ),
-                     fluidRow(
-                       column(8, uiOutput("groupBy")
-                       )
-                     ),
-                     br(),
+#                      br(),
                      fluidRow(
                        column(8, uiOutput("dataButton")
                        )
                      )
                    ), #end well panel
-                   wellPanel(
-                     fluidRow(
-                       column(6, uiOutput("plotType")
-                       ),
-                       conditionalPanel(condition = "input.plotType=='Bar'",
-                                        column(6, uiOutput("dodge")
+                   conditionalPanel(condition = "input.dataButton > 0",
+                                    wellPanel(
+                                      wellPanelSub(
+                                      fluidRow(
+                                        column(6, uiOutput("plotType")
+                                        ),
+                                        conditionalPanel(condition = "input.plotType=='Bar'",
+                                                         column(6, uiOutput("dodge")
+                                                         )
                                         )
-                       ),
-                       conditionalPanel(condition = "input.plotType=='Point'",
-                                        fluidRow(
-                                          column(6, uiOutput("groupMean")                      
-                                          )                                           
-                                        )
-                       )
-                     ),
-                     fluidRow(
-                       column(6,uiOutput("palette")
-                       )
-                     )
-                     
-                   ) #end well panel
-            ), #end left side column
+                                      )
+                                      ),                     
+                                                                                       
+                                                fluidRow(
+                                                  column(6, downloadButton("dlPlot", label = "Download plot")
+                                                  ),
+                                                  column(6, downloadButton("dlTable", label = "Download table")
+                                                  )
+                                                ) 
+                  
+                                )# end well panel
+                   ) 
+            ), # end left side column
             column(9,
                    tabsetPanel(
                      tabPanel("Output",
