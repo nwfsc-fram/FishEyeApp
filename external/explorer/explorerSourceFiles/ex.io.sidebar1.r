@@ -30,7 +30,7 @@ output$topicSelect <- renderUI({
 
 output$stat <- renderUI({
 #   if(!is.null(input$topicSelect)){
-    selectInput("stat", "Summary statistc:", c("Total", "Average"), multiple = FALSE)
+    selectInput("stat", "Summary statistc:", choices = c("", "Total", "Average"), selected = "", multiple = FALSE)
 #   }
 })
 
@@ -46,18 +46,17 @@ output$fishery <- renderUI({
     }
 })
 
-output$place <- renderUI({
+output$topics <- renderUI({
   if(!is.null(input$topicSelect)){
 #     if(input$dat.name != "Net Revenue"){
       if(input$topicSelect == "Homeport"){
-        checkboxGroupInput("place", "", choices=c(unique(dat.vars()$HOMEPT[!is.na(dat.vars()$HOMEPT)])), selected="")
+        checkboxGroupInput("topics", "", choices=c(unique(dat.vars()$HOMEPT[!is.na(dat.vars()$HOMEPT)])), selected="")
       } else if(input$topicSelect == "State"){
-        checkboxGroupInput("place", "", choices=c(unique(dat.vars()$STATE[!is.na(dat.vars()$STATE)])), selected="")
-#     } else {
-#       if(input$placeUnit == "Port"){
-#         selectInput("place", "", choices=c(unique(dat.vars()$HOMEPT[!is.na(dat.vars()$HOMEPT)])), multiple = F)
-#       } else {
-#         selectInput("place", "", choices=c(unique(dat.vars()$STATE[!is.na(dat.vars()$STATE)])), multiple = F)  
+        checkboxGroupInput("topics", "", choices=c(unique(dat.vars()$STATE[!is.na(dat.vars()$STATE)])), selected="")
+      } else if (input$topicSelect == "Fisheries") {
+        checkboxGroupInput("topics", "", choices = c(unique(dat.vars()$FISHERIES)), selected="")
+      } else if (input$topicSelect == "Vessel length class") {
+        checkboxGroupInput("topics", "", choices=c(unique(dat.vars()$VSSLNGCLASS)), selected="")
       } else return()   
   } else return()
 })
@@ -109,7 +108,9 @@ output$length <- renderUI({
 ########################################### Data subsetting action button ################################
 
 output$dataButton <- renderUI({
-  actionButton("dataButton",label=" Plot Data", icon=icon("bar-chart-o"))
+  if(permitPlot()) {
+    actionButton("dataButton", label=" Plot Data", icon=icon("bar-chart-o"))
+  }
 })
 
 ########################################### begin wellPanel2, plot options ###############################
@@ -121,34 +122,21 @@ output$dataButton <- renderUI({
 # })
 
 output$plotType <- renderUI({
-  if(!is.null(dat.sub())){
+  if(!is.null(input$dataButton) && input$dataButton > 0) {
     selectInput("plotType", "Plot type:", choices= c("Bar", "Point", "Line"))
   } else return()
 })
 
 output$dodge <- renderUI({
-  if(!is.null(input$plotType)){
-    if(input$plotType=="Bar"){
+  if(!is.null(input$dataButton) && input$dataButton > 0 && !is.null(input$plotType)) {
+    if(input$plotType == "Bar") {
       radioButtons("dodge", "", choices= c("Grouped position", "Stacked position"))
     } else return()
   } else return()
 })
 
-output$groupMean <- renderUI({
-  if(!is.null(dat.sub())){
-    checkboxInput("groupMean", "Group mean CI", value = F)
-  } 
-})
-
-# drop this option for now
-# output$palette <- renderUI({
+# output$groupMean <- renderUI({
 #   if(!is.null(dat.sub())){
-#     selectInput("palette", "Palette:", choices=c("Default", "Color-blind friendly"), selected = "Default")
-#   }
-# })
-
-############################################## Plotting action button #########################################
-
-# output$plotButton <- renderUI({
-#   if(!is.null(dat.sub())) actionButton("plotButton", label=" Plot Data", icon=icon("bar-chart-o"))
+#     checkboxInput("groupMean", "Group mean CI", value = F)
+#   } 
 # })

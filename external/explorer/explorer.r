@@ -5,18 +5,21 @@ source("external/explorer/explorerSourceFiles/ex.reactives.r", local=T)
 source("external/explorer/explorerSourceFiles/ex.plot.reactives.r", local=T)
 source("external/explorer/explorerSourceFiles/ex.io.sidebar1.r",local=T) # source input/output objects associated with sidebar1
 
-output$tableTest <- renderDataTable({
-  if(!is.null(dat.sub())){
-    table <- dat.sub()
-    names(table) <- c("Topic", "Year", "Value", "N", input$topicSelect)
-    table
-  } else return()
+output$tableTest <- renderDataTable({  
+  input$dataButton 
+  isolate(
+    if(permitPlot() & !is.null(dat.sub())) {
+      table <- dat.sub()
+      names(table) <- c("Topic", "Year", "Value", "N", input$topicSelect)
+      table
+    }
+  )
 })
 
 output$plotTest <- renderPlot({
-    if(!is.null(dat.sub()) && !is.null(input$plotType)){ 
-      print(plotOut())
-    } else  return()
+    if(!is.null(dat.sub)) { 
+        print(plotOut())
+      } else  return()
 })
 
 output$dlPlot <- downloadHandler( # render plot from  to pdf for download

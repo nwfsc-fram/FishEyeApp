@@ -6,7 +6,7 @@
 dat <- reactive({ #data load moved to serverhead
   input$dataButton
   isolate(
-    if(!is.null(input$dat.name) && !is.null(input$topicSelect)){
+    if(permitPlot()){
     
     if (input$stat == "Total") {
       dat <- netrevTabsSum
@@ -70,8 +70,8 @@ dat <- reactive({ #data load moved to serverhead
 #         dat <- rbind(dat.go)
 #       }
       
-      print("dat:")
-      print(str(dat))
+#       print("dat:")
+#       print(str(dat))
       
       return(dat)
       
@@ -81,8 +81,8 @@ dat <- reactive({ #data load moved to serverhead
 
 dat.vars <- reactive({
   load("data/dat.vars.RData")
-  print("datvars:")
-  print(str(dat.vars))
+#   print("datvars:")
+#   print(str(dat.vars))
   dat.vars
 })
 
@@ -104,15 +104,16 @@ dat.vars <- reactive({
 # selecting plot variables, subsetting the data AND casting for individual level ID (fun.agg=sum)
 # build dcast formula using if controls and using the qouted method in dcast
 dat.sub <- reactive({
-  input$dataButton
+  if(!is.null(input$dataButton) && input$dataButton > 0)
   isolate(
-    if(!is.null(dat())){
+    if(permitPlot()){
+      
+      print(input$dataButton)
       
       dat <- dat()
       
       netrev.type <- vector(length=length(input$dat.name))
       
-      # muahhahaa, I got switch to work for multiple input values! alas, it is probably less efficient than ifelse
       for (i in 1:length(input$dat.name)) {
           netrev.type[i] <- switch(input$dat.name[i],
                                    "Revenue" = "REV",
@@ -121,19 +122,22 @@ dat.sub <- reactive({
                                    "Variable cost net revenue" = "VARNETREV",
                                    "Total cost net revenue" = "TOTALNETREV")         
                           
-        print(netrev.type[i])
+#         print(netrev.type[i])
         
       }
       
-      print(paste("**", netrev.type, "**", sep=" "))
+#       print(paste("**", netrev.type, "**", sep=" "))
                      
-      #translating input factor names to data.frame factor names
-      ifelse(input$topicSelect == "Fisheries", selection <- input$fishery,
-                         ifelse(input$topicSelect == "Homeport", selection <- input$place,
-                               ifelse(input$topicSelect == "State", selection <- input$place,
-                                     ifelse(input$topicSelect == "Vessel length class", selection <- input$length))))
+#       #translating input factor names to data.frame factor names
+#       ifelse(input$topicSelect == "Fisheries", selection <- input$fishery,
+#                          ifelse(input$topicSelect == "Homeport", selection <- input$place,
+#                                ifelse(input$topicSelect == "State", selection <- input$place,
+#                                      ifelse(input$topicSelect == "Vessel length class", selection <- input$length))))
       
+        selection <- input$topics
+
 #       print("selectVars:")
+#       print(input$topics)
 #       print(paste(selection, sep = " ")) #debugging
 #       
 #       print("input$fishery:")
@@ -141,7 +145,7 @@ dat.sub <- reactive({
 
       
       #subsetting
-      dat.sub <- subset(dat, SURVEY_YEAR %in% input$years & variable %in% netrev.type & category %in% selection)
+      dat.sub <- subset(dat, SURVEY_YEAR %in% input$years & variable %in% netrev.type & category %in% input$topics)
       #re-ordering values
 #       dat.sub[,5] <- reorder(dat.sub[,5], dat.sub[,3])
       
@@ -155,4 +159,16 @@ dat.sub <- reactive({
       
     } else return()
   )
+})
+
+# Plotting/staging
+permitPlot <- reactive({
+  if(!(is.null(input$years) | is.null(input$dat.name) | is.null(input$topicSelect) | is.null(input$stat) | is.null(input$topics))){
+    if(!(input$years[1]=="" | input$dat.name[1] == "" | input$topicSelect[1] == "" | input$stat[1] == "" | input$topics[1] == "")){
+      x <- TRUE
+    } else {
+      x <- FALSE
+    }
+  } else x <- FALSE
+  x
 })

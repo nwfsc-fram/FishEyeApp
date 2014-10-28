@@ -46,16 +46,17 @@ plotFacet <- reactive({
 })
 
 plotBase <- reactive({
-  input$dataButton
-  isolate(
-  if(!is.null(dat.sub())){
-    ggplot(dat.sub(), aes_string(x=xvar(), y=yvar(), fill=groupvar()))
-  }
-)
+    if(!is.null(input$dataButton) && input$dataButton > 0) {
+      if(input$plotType == "Bar") {
+        ggplot(dat.sub(), aes_string(x=xvar(), y=yvar(), fill=groupvar()))
+      } else {
+        ggplot(dat.sub(), aes_string(x=xvar(), y=yvar(), color=groupvar()))
+      }  
+    }
 })
 
-plotGeom <- reactive({
-  if(!is.null(input$plotType)){
+plotGeom <- reactive({  
+  if(!is.null(input$dataButton) && input$dataButton > 0 ) {
     if(input$plotType=="Point"){
       geom_point(aes_string(color=groupvar(), size=5))
     } else if (input$plotType=="Line"){
@@ -67,25 +68,21 @@ plotGeom <- reactive({
     }
   }
 })
-
-plotGroupMean <- reactive({
-  if(!is.null(input$groupMean)){
-    if(input$groupMean == TRUE){
-      geom_boxplot(aes_string(group=xvar(), fill=xvar(), alpha=.5))
-    } 
-  }
-})
+# 
+# plotGroupMean <- reactive({
+#   if(!is.null(input$groupMean)){
+#     if(input$groupMean == TRUE){
+#       geom_boxplot(aes_string(group=xvar(), fill=xvar(), alpha=.5))
+#     } 
+#   }
+# })
 
 plotPalette <- reactive({
   input$dataButton
   isolate(
-#   if(!is.null(input$palette)){      
-#       if(input$palette=="Default"){
-        if(input$plotType=="Bar"){
-          scale_fill_brewer(type="qual", palette="Paired")
-        } else scale_color_brewer(type="qual", palette = "Paired")
-#       } else return()      
-#   }
+    if(input$plotType == "Bar") {
+      scale_fill_manual(values = pal.netrev)
+    } else scale_colour_manual(values = pal.netrev)
   )
 })
 
@@ -95,15 +92,15 @@ plotLabels <- reactive({
     if(!is.null(input$plotType)){
     operations <- "West Coast"
     
-    selection <- ifelse(input$topicSelect == "Fisheries", input$fishery, 
-                        ifelse(input$topicSelect == "Homeport", input$place, 
-                               ifelse(input$topicSelect == "Vessel length class", input$length,
-                                      ifelse(input$topicSelect == "State", input$place))))
-  
+    selection <- input$topicSelect
+                     
+    netrevType <- "Net Revenue"
+    
     labs(x= input$xvar, title=paste(operations, 
-                                    "Average", input$dat.name, 
-                                    ifelse(input$dat.name == "Net Revenue", "-","by"), 
-                                    ifelse(input$dat.name == "Net Revenue", selection,input$topicSelect), sep=" "), 
+                                    input$stat, 
+                                    netrevType,
+                                    "by",
+                                    selection, sep=" "), 
                                     color= input$topicSelect, 
                                     fill= ifelse(input$dat.name == "Net Revenue", "", input$topicSelect))
   }
@@ -113,19 +110,28 @@ plotLabels <- reactive({
 plotScales <- reactive({
   input$dataButton
   isolate(
-  if(!is.null(input$plotType)){
-    scale_y_continuous(paste(input$dat.name, "(thousands $)", sep=" "), labels= function(x) format(x/1e3))
+  if(!is.null(input$plotType)){ # pause output until plotType is rendered
+    if(input$stat == "Average") {
+      scale_y_continuous(paste("(thousands $)", sep=" "), labels= function(x) format(x/1e3))
+    } else {
+      scale_y_continuous(paste("(millions $)", sep=" "), labels= function(x) format(x/1e6))
+    }
   }
 )
 })
 
 plotTheme <- reactive({
-  if(!is.null(input$plotType)){
-  theme(plot.title = element_text(size=rel(2), vjust=1, colour="grey25"), axis.title = element_text(size=rel(1.8), colour="grey25", vjust=1), legend.title = element_text(size=rel(1.2), colour="grey25", vjust=1))
-  }
+  input$dataButton
+  isolate(
+    if(!is.null(input$plotType)){
+      theme(plot.title = element_text(size=rel(2), vjust=1, colour="grey25"), axis.title = element_text(size=rel(1.8), colour="grey25", vjust=1), legend.title = element_text(size=rel(1.2), colour="grey25", vjust=1))
+    }
+  )
 })
 
 # assemble ggplot components in Voltron like fashion
 plotOut <- reactive({
-  plotBase() + plotGeom() + plotFacet() + plotGroupMean() + plotPalette() + plotLabels() + plotScales() + plotTheme()
+    if(!is.null(input$dataButton) && input$dataButton > 0) {
+      plotBase() + plotGeom() + plotFacet() + plotPalette() + plotLabels() + plotScales() + plotTheme()
+    }
 })

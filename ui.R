@@ -1,5 +1,8 @@
-#UI
 
+# custom css functions
+source("external/uiHead.R")
+
+#UI
 shinyUI(
   navbarPage(theme="bootstrap.css", #note that you need to change theme both here and in the fluidpage 
              title = "FISHeries Economics Explorer (FISHEyE)",             
