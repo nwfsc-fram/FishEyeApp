@@ -3,7 +3,7 @@
 # creating the dat() reactive function that contains the user selected dataset
 # The re-classification of data types can be transfered to the read-in file
 
-dat <- reactive({ #data load moved to serverhead
+dat <- reactive({ # data load moved to serverhead
   input$dataButton
   isolate(
     if(permitPlot()){
@@ -70,9 +70,18 @@ dat <- reactive({ #data load moved to serverhead
 #         dat <- rbind(dat.go)
 #       }
       
-#       print("dat:")
-#       print(str(dat))
-      
+       print("dat:")
+       print(str(dat))
+       print(labels(dat[,1]))
+              
+       dat[,1] <- factor(dat[,1], labels = c("Revenue", "MTS", "DAS", "Fixed cost", "Variable cost", "Variable cost net revenue", "Total cost net revenue"))        
+               
+       print("dat:")
+       print(str(dat))
+       print(str(dat[,1]))
+
+       print(levels(dat[,1]))
+        
       return(dat)
       
     } else return()
@@ -112,19 +121,19 @@ dat.sub <- reactive({
       
       dat <- dat()
       
-      netrev.type <- vector(length=length(input$dat.name))
+#       netrev.type <- vector(length=length(input$dat.name))
       
-      for (i in 1:length(input$dat.name)) {
-          netrev.type[i] <- switch(input$dat.name[i],
-                                   "Revenue" = "REV",
-                                   "Variable cost" = "VARCOST",
-                                   "Fixed cost" = "FIXEDCOST",
-                                   "Variable cost net revenue" = "VARNETREV",
-                                   "Total cost net revenue" = "TOTALNETREV")         
-                          
+#       for (i in 1:length(input$dat.name)) {
+#           netrev.type[i] <- switch(input$dat.name[i],
+#                                    "Revenue" = "REV",
+#                                    "Variable cost" = "VARCOST",
+#                                    "Fixed cost" = "FIXEDCOST",
+#                                    "Variable cost net revenue" = "VARNETREV",
+#                                    "Total cost net revenue" = "TOTALNETREV")         
+#                           
 #         print(netrev.type[i])
         
-      }
+#       }
       
 #       print(paste("**", netrev.type, "**", sep=" "))
                      
@@ -134,7 +143,7 @@ dat.sub <- reactive({
 #                                ifelse(input$topicSelect == "State", selection <- input$place,
 #                                      ifelse(input$topicSelect == "Vessel length class", selection <- input$length))))
       
-        selection <- input$topics
+#         selection <- input$topics
 
 #       print("selectVars:")
 #       print(input$topics)
@@ -142,10 +151,12 @@ dat.sub <- reactive({
 #       
 #       print("input$fishery:")
 #       print(input$fishery)
+      print("input$dat.name:")
+      print(input$dat.name)
+      print(str(input$dat.name))
 
-      
       #subsetting
-      dat.sub <- subset(dat, SURVEY_YEAR %in% input$years & variable %in% netrev.type & category %in% input$topics)
+      dat.sub <- subset(dat, SURVEY_YEAR %in% input$years & variable %in% input$dat.name & category %in% input$topics)
       #re-ordering values
 #       dat.sub[,5] <- reorder(dat.sub[,5], dat.sub[,3])
       

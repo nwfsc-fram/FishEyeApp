@@ -105,6 +105,19 @@ output$length <- renderUI({
 #   } else return()
 # })
 
+
+output$plotType <- renderUI({
+    selectInput("plotType", "Plot type:", choices= c("", "Bar", "Point", "Line"), selected=c(""))
+})
+
+output$dodge <- renderUI({
+  if(!is.null(input$plotType)) {
+    if(input$plotType == "Bar") {
+      radioButtons("dodge", "", choices= c("Grouped position", "Stacked position"))
+    } else return()
+  } else return()
+})
+
 ########################################### Data subsetting action button ################################
 
 output$dataButton <- renderUI({
@@ -121,19 +134,6 @@ output$dataButton <- renderUI({
 #   }
 # })
 
-output$plotType <- renderUI({
-  if(!is.null(input$dataButton) && input$dataButton > 0) {
-    selectInput("plotType", "Plot type:", choices= c("Bar", "Point", "Line"))
-  } else return()
-})
-
-output$dodge <- renderUI({
-  if(!is.null(input$dataButton) && input$dataButton > 0 && !is.null(input$plotType)) {
-    if(input$plotType == "Bar") {
-      radioButtons("dodge", "", choices= c("Grouped position", "Stacked position"))
-    } else return()
-  } else return()
-})
 
 # output$groupMean <- renderUI({
 #   if(!is.null(dat.sub())){

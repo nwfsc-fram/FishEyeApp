@@ -37,7 +37,7 @@ groupvar <- reactive({
 plotFacet <- reactive({
   input$dataButton
   isolate(
-    if(!is.null(dat.sub())) {
+    if(!is.null(input$plotType)) {
       if(length(input$dat.name) > 1) {
         facet_wrap(~ category, as.table = TRUE)
       } else NULL
@@ -46,43 +46,49 @@ plotFacet <- reactive({
 })
 
 plotBase <- reactive({
-    if(!is.null(input$dataButton) && input$dataButton > 0) {
-      if(input$plotType == "Bar") {
-        ggplot(dat.sub(), aes_string(x=xvar(), y=yvar(), fill=groupvar()))
-      } else {
-        ggplot(dat.sub(), aes_string(x=xvar(), y=yvar(), color=groupvar()))
-      }  
-    }
-})
-
-plotGeom <- reactive({  
-  if(!is.null(input$dataButton) && input$dataButton > 0 ) {
-    if(input$plotType=="Point"){
-      geom_point(aes_string(color=groupvar(), size=5))
-    } else if (input$plotType=="Line"){
-      geom_line(aes_string(group=groupvar(),colour=groupvar()), size=2)
-    } else {
-      if(!is.null(input$dodge) && input$dodge =="Stacked position"){
-        geom_bar(stat="identity", position="stack")
-      } else geom_bar(stat = "identity", position="dodge") 
-    }
-  }
-})
-# 
-# plotGroupMean <- reactive({
-#   if(!is.null(input$groupMean)){
-#     if(input$groupMean == TRUE){
-#       geom_boxplot(aes_string(group=xvar(), fill=xvar(), alpha=.5))
-#     } 
-#   }
-# })
-
-plotPalette <- reactive({
   input$dataButton
   isolate(
-    if(input$plotType == "Bar") {
-      scale_fill_manual(values = pal.netrev)
-    } else scale_colour_manual(values = pal.netrev)
+    if(!is.null(input$plotType)) {
+      ggplot(dat.sub(), aes_string(x=xvar(), y=yvar(), fill=groupvar()))  
+    }
+  )
+})
+
+plotGeom <- reactive({ 
+  input$dataButton
+  isolate(
+    if(!is.null(input$plotType)) {
+      if(input$plotType=="Point"){
+        geom_point(aes_string(color=groupvar(), size=5))
+      } else if (input$plotType=="Line"){
+        geom_line(aes_string(group=groupvar(),colour=groupvar()), size=2)
+      } else {
+        if(!is.null(input$dodge) && input$dodge =="Stacked position"){
+          geom_bar(stat="identity", position="stack")
+        } else geom_bar(stat = "identity", position="dodge") 
+      }
+    }
+  )
+})
+
+plotPalette <- reactive({ # handles palette choices (palettes are defined in serverHead.R)
+  input$dataButton
+  isolate(
+    if(length(input$dat.name) == 1) { # for single rev/cost selections the input$topicSelect is used for groups we use netRev palettes from EDC exec summaries
+      if(input$topicSelect == "Fisheries") { # assinging hardcoded colors for each fishery
+        if(input$plotType == "Bar") {
+          scale_fill_manual(values = pal.fisheries) # for barcharts
+        } else scale_colour_manual(values = pal.fisheries) # for other graphs
+      } else { # for non fishery selections just use the the ggtheme's for now. Can be hardcoded later
+        if(input$plotType == "Bar") {
+          scale_fill_stata("s2color")
+        } else scale_color_stata("s2color")
+      }
+    } else { # if dat.name is greater that one the netrev groups are displayed and netrev palettes are used
+     if(input$plotType == "Bar") {
+       scale_fill_manual(values = pal.netrev)
+     } else scale_colour_manual(values = pal.netrev)
+    }
   )
 })
 
@@ -94,15 +100,15 @@ plotLabels <- reactive({
     
     selection <- input$topicSelect
                      
-    netrevType <- "Net Revenue"
+    netrevType <- ifelse(length(input$dat.name) > 1, "Net Revenue", input$dat.name)
     
     labs(x= input$xvar, title=paste(operations, 
                                     input$stat, 
                                     netrevType,
                                     "by",
                                     selection, sep=" "), 
-                                    color= input$topicSelect, 
-                                    fill= ifelse(input$dat.name == "Net Revenue", "", input$topicSelect))
+                                    color= ifelse(length(input$dat.name > 1), "", input$topicSelect), 
+                                    fill= ifelse(length(input$dat.name > 1), "", input$topicSelect))
   }
 )
 })
@@ -117,7 +123,7 @@ plotScales <- reactive({
       scale_y_continuous(paste("(millions $)", sep=" "), labels= function(x) format(x/1e6))
     }
   }
-)
+  )
 })
 
 plotTheme <- reactive({

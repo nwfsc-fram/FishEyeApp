@@ -10,5 +10,6 @@ if(length(new.packages)) install.packages(new.packages)
 
 # Todd's Laptop:
 # setwd("C:/todd.lee/Desktop/FISHEYE/vesselSim_app/")
-shiny::runApp()
+# these arguements are not necessary
+shiny::runApp(launch.browser = T, port = 5971)
 

@@ -75,6 +75,16 @@ fluidPage(theme="bootstrap.css",
                          )
                        )
                      ),
+                     wellPanelSub(
+                       fluidRow(
+                         column(6, uiOutput("plotType")
+                         ),
+                    #                                           conditionalPanel(condition = "input.plotType=='Bar'",
+                         column(6, uiOutput("dodge")
+                        )
+                    #                                            )
+                       )
+                    ),
                      #                      fluidRow(
                      #                        column(8, uiOutput("groupBy")
                      #                        )
@@ -86,17 +96,7 @@ fluidPage(theme="bootstrap.css",
                      )
                    ), #end well panel
                    conditionalPanel(condition = "if(input.dataButton > 0)",
-                                    wellPanel(
-                                      wellPanelSub(
-                                        fluidRow(
-                                          column(6, uiOutput("plotType")
-                                          ),
-#                                           conditionalPanel(condition = "input.plotType=='Bar'",
-                                                           column(6, uiOutput("dodge")
-                                                           )
-#                                           )
-                                        )
-                                      ),                                                                       
+                                    wellPanel(                                                                       
                                       fluidRow(
                                         column(6, downloadButton("dlPlot", label = "Download plot")
                                         ),
