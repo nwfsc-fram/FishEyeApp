@@ -74,7 +74,7 @@ dat <- reactive({ # data load moved to serverhead
        print(str(dat))
        print(labels(dat[,1]))
               
-       dat[,1] <- factor(dat[,1], labels = c("Revenue", "MTS", "DAS", "Fixed cost", "Variable cost", "Variable cost net revenue", "Total cost net revenue"))        
+       dat[,1] <- ordered(dat[,1], labels = c("Revenue", "MTS", "DAS", "Total cost net revenue", "Fixed cost", "Variable cost", "Variable cost net revenue"))        
                
        print("dat:")
        print(str(dat))
@@ -154,6 +154,8 @@ dat.sub <- reactive({
       print("input$dat.name:")
       print(input$dat.name)
       print(str(input$dat.name))
+
+      
 
       #subsetting
       dat.sub <- subset(dat, SURVEY_YEAR %in% input$years & variable %in% input$dat.name & category %in% input$topics)
