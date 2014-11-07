@@ -1,5 +1,0 @@
-* 4/29/14 DBids file is currently called from local /data folder. The SQl pull to retrieve this table takes too long. Consider creating a dbid table in Oracle database. DBids is a dependency of: Vessel length groupings -- Removed because I am using a pre-merged dataset for now 4/29/14
-
-* 4/29/2014 catcher vessel costs data is obtained from: steiner.costs + vesselgroupings (EDC report, ran 4/29/14) + vesselhomeportdata (EDC report, ran 4/29/2014)
-
-* 8/11/2014 I am using some R scripts to handle data creation and they will serve as my meta data notes for now. I am going to hang on to these notes for reference. I will probably delete them in the future. 

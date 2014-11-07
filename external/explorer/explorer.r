@@ -18,7 +18,7 @@ output$tableTest <- renderDataTable({
 
 output$plotTest <- renderPlot({
     if(!is.null(dat.sub)) { 
-        print(plotOut())
+      print(plotOut())
       } else  return()
 })
 
