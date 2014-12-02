@@ -120,8 +120,9 @@ fluidPage(theme="bootstrap.css",
                                 )
                               )
                      ),
-                     tabPanel("Definitions", source("external/explorer/definitions.R"))
+                     tabPanel("Definitions", source("external/explorer/definitions.R")$value)
                    ) # end of tabsetPanel
             ) # end right side column
-          ) #end the top level fluid row
+          ), #end the top level fluid row
+          fluidRow(source("external/shinyFooter.R", local = TRUE)$value)
 ) # end fluid Page
