@@ -102,13 +102,15 @@ plotLabels <- reactive({
                      
     netrevType <- ifelse(length(input$dat.name) > 1, "Net Revenue", input$dat.name)
     
-    labs(x= input$xvar, title=paste(operations, 
-                                    input$stat, 
-                                    netrevType,
-                                    "by",
-                                    selection, sep=" "), 
-                                    color= ifelse(length(input$dat.name > 1), "", input$topicSelect), 
-                                    fill= ifelse(length(input$dat.name > 1), "", input$topicSelect))
+    labs(x= input$xvar, title= "SAMPLE DATA FOR WEBSITE CONFIGURATION PURPOSES ONLY"
+#            paste(operations, 
+#                                     input$stat, 
+#                                     netrevType,
+#                                     "by",
+#                                     selection, sep=" "), 
+#                                     color= ifelse(length(input$dat.name > 1), "", input$topicSelect), 
+#                                     fill= ifelse(length(input$dat.name > 1), "", input$topicSelect))
+    )
   }
 )
 })

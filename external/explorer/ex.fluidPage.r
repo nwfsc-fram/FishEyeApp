@@ -1,8 +1,6 @@
 #this file handles content page organization for the explorer and is sourced to ui.r
 
-fluidPage(theme="bootstrap.css",
-          title = "Data Explorer",
-          
+fluidPage(      
           fluidRow(
             column(3,
                    wellPanel( #left side panel                    
@@ -123,6 +121,5 @@ fluidPage(theme="bootstrap.css",
                      tabPanel("Definitions", source("external/explorer/definitions.R")$value)
                    ) # end of tabsetPanel
             ) # end right side column
-          ), #end the top level fluid row
-          fluidRow(source("external/shinyFooter.R", local = TRUE)$value)
+          ) #end the top level fluid row
 ) # end fluid Page
