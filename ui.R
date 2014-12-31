@@ -16,10 +16,10 @@ wellPanelSub <- function(...){div(class = "well-sub", ...)} # calls .css selecto
 
 #this file handles content page organization for the explorer and is sourced to ui.r
 
+
 fluidPage(
-  includeCSS("www/bootstrap_nwfsc.css"),
-  fluidRow(source("external/uiComponents/uiHead.R", local = TRUE)$value
-  ),
+  tags$div(source("external/uiComponents/uiHead.R", local = TRUE)$value),
+  includeCSS("www/bootstrap_nwfsc.css"),  
   fluidRow(
     column(3,
            wellPanel( #left side panel                    

@@ -6341,6 +6341,27 @@ button.close {
 
 /*==================================================================================*/
 
+.container-fluid {
+  padding-right: 0px;
+  padding-left: 0px;
+  margin-right: auto;
+  margin-left: auto;
+}
+
+.footer-links-left {
+  margin-top:5px;
+  float:left;
+  padding:0 2px 0 2px;
+  color: #fff;
+}
+
+.footer-links-right {
+  margin-top:5px;
+  float:right;
+  padding:0 5 0 5;
+  color: #fff;
+}
+
 .navbar {
   position: relative;
   min-height: 50px;
@@ -6359,7 +6380,14 @@ button.close {
 }
 
 /*** Footer ***/
-#footer{ background-color: #092866;    height: 115px;  margin: 0;  padding: 0;  position: relative;  width: 978px;}
+#footer{
+  background-color: #092866;    
+  height: 115px;  
+  margin: 0;  
+  padding: 0;  
+  position: relative;  
+  width: 978px;
+}
 #footer-spacer {    display: block;    float: left;    width: 35px;}
 .footer-links-pad {    float: left;    height: auto;    padding: 0 10px 10px 20px;    width: auto;}
 .footer-links {    float: left;    height: auto;    padding: 30px 10px 10px 0;    width: auto;}
