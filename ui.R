@@ -1,3 +1,18 @@
+# specify lib.loc for nwcshiny server or local machine
+appFrame_lib_loc <- function(wd){
+  if (grepl("shiny-server", wd)){
+    library(appFrame, lib.loc = "/usr/lib64/R/shiny_library/")
+  } else {
+    library(appFrame)
+  }      
+}
+
+appFrame_lib_loc(getwd())
+require(shiny)
+require(ggplot2)
+require(reshape2)
+# require(ggthemes)
+
 
 # custom css functions
 wellPanelSub <- function(...){div(class = "well-sub", ...)} # calls .css selector for well-sub
@@ -5,29 +20,29 @@ wellPanelSub <- function(...){div(class = "well-sub", ...)} # calls .css selecto
 # OG UI
 # shinyUI(
 #   navbarPage(title = "FISHeries Economics Explorer (FISHEyE)",
-#              header = source("external/uiComponents/uiHead.R", local = TRUE)$value,                   
-#              tabPanel(title = "Net Revenue", source("external/explorer/ex.fluidPage.r", local = TRUE)$value),
-#              tabPanel(title = "Costs", source("external/costs/costs.fluidPage.R", local = TRUE)$value),
+#              header = appFrameHeaderScrolling(),                   
+#              tabPanel(title = "Net Revenue", 
+#                       source("external/explorer/ex.fluidPage.r", 
+#                              local = TRUE)$value),
 #              theme = "bootstrap_nwfsc.css",
-#              footer = source("external/uiComponentsShin/uiFooter.R", local = TRUE)$value
-#              
+#              footer = appFrameFooterScrolling()           
 #   ) 
 # )
 
 #this file handles content page organization for the explorer and is sourced to ui.r
 
 
+
 fluidPage(
-  tags$div(source("external/uiComponents/uiHead.R", local = TRUE)$value),
-  includeCSS("www/bootstrap_nwfsc.css"),  
+  appFrameHeaderScrolling(),  
   fluidRow(
     column(3,
            wellPanel( #left side panel                    
              fluidRow(
                column(8, HTML("<p>Dataset:</p>
-                              <p><strong>Catcher Vessels</strong></p>")
+                                       <p><strong>Catcher Vessels</strong></p>")
                )
-               ),
+             ),
              wellPanelSub(                       
                fluidRow(
                  column(8, uiOutput("years")
@@ -70,7 +85,7 @@ fluidPage(
                column(8, uiOutput("dataButton")
                )
              )
-             ), #end well panel
+           ), #end well panel
            conditionalPanel(condition = "if(input.dataButton > 0)",
                             wellPanel(                                                                       
                               fluidRow(
@@ -82,23 +97,25 @@ fluidPage(
                               
                             )# end well panel
            ) 
-  ), # end left side column
-  column(9,
-         tabsetPanel(
-           tabPanel("Output",
-                    fluidRow(
-                      column(12, plotOutput("plotTest",height="800px")
+    ), # end left side column
+    column(9,
+           tabsetPanel(
+             tabPanel("Output",
+                      fluidRow(
+                        column(12, plotOutput("plotTest",height="800px")
+                        )
+                      ),                   
+                      fluidRow(HTML("<hr>")),
+                      fluidRow(
+                        column(12, dataTableOutput("tableTest") # testing
+                        )
                       )
-                    ),                   
-                    fluidRow(HTML("<hr>")),
-                    fluidRow(
-                      column(12, dataTableOutput("tableTest") # testing
-                      )
-                    )
-           ),
-           tabPanel("Definitions", source("external/explorer/definitions.R")$value)
-         ) # end of tabsetPanel
-  ) # end right side column
-), #end app level fluid row
-fluidRow(source("external/uiComponents/uiFooter.R", local = TRUE)$value)
+             ),
+             tabPanel("Definitions", source("external/explorer/definitions.R")$value)
+           ) # end of tabsetPanel
+    ) # end right side column
+  ), #end app level fluid row
+  appFrameFooterScrolling()
+  # fluidRow(source("external/uiComponents/uiFooter.R", local = TRUE)$value)
 ) # end fluid Page
+

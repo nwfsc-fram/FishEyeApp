@@ -6341,12 +6341,6 @@ button.close {
 
 /*==================================================================================*/
 
-.container-fluid {
-  padding-right: 0px;
-  padding-left: 0px;
-  margin-right: auto;
-  margin-left: auto;
-}
 
 .footer-links-left {
   margin-top:5px;
@@ -6370,14 +6364,6 @@ button.close {
 }
 
 
-/* Green Seperator, without search and a bit thinner */
-.green_seperator { 
-  background-color: #a7daf5; 
-  clear: both; 
-  height: 8px; 
-  position: relative; 
-  width: 978px;
-}
 
 /*** Footer ***/
 #footer{
