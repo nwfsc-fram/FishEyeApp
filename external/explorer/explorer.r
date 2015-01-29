@@ -1,9 +1,11 @@
 #this is the main content or output page for the explorer app
 
+
 #source reactive expressions and other code
 source("external/explorer/explorerSourceFiles/ex.reactives.r", local=T)
 source("external/explorer/explorerSourceFiles/ex.plot.reactives.r", local=T)
 source("external/explorer/explorerSourceFiles/ex.io.sidebar1.r",local=T) # source input/output objects associated with sidebar1
+
 
 output$tableTest <- renderDataTable({  
   input$dataButton 
@@ -16,26 +18,35 @@ output$tableTest <- renderDataTable({
   )
 })
 
+
 output$plotTest <- renderPlot({
     if(!is.null(dat.sub)) { 
       print(plotOut())
-      } else  return()
+    } else  return()
 })
 
-output$dlPlot <- downloadHandler( # render plot from  to pdf for download
-  filename = 'dataexplorerPlot.pdf',
-  content = function(file){
-    pdf(file = file, width=11, height=8.5)
-    print(plotOut())
-    dev.off()
-  }
+
+# render plot from  to pdf for download
+output$dlPlot <- downloadHandler(
+  if(permitPlot()){
+    filename = 'dataexplorerPlot.pdf',
+    content = function(file){
+      pdf(file = file, width=11, height=8.5)
+      print(plotOut())
+      dev.off()
+    }
+ }
 )
 
-output$dlTable <- downloadHandler( # render table of data subset to csv for download
-  filename = function() { 'dataexplorerTable.csv' },
-  content = function(file) {
-    table <- dat.sub()
-    names(table) <- c("Topic", "Year", "Value", "N", input$topicSelect)
-    write.csv(table, file)
+
+# render table of data subset to csv for download
+output$dlTable <- downloadHandler(
+  if(permitPlot()) {
+    filename = function() { 'dataexplorerTable.csv' },
+    content = function(file) {
+      table <- dat.sub()
+      names(table) <- c("Topic", "Year", "Value", "N", input$topicSelect)
+      write.csv(table, file)
+   }
   }
 )

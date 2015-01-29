@@ -65,15 +65,6 @@ output$topics <- renderUI({
       } else return()   
   } else return()
 })
-# 
-# output$delivPort <- renderUI({
-#   if(!is.null(input$placeUnit) && input$dat.name=="Revenue"){
-#     if(input$placeUnit == "Port"){
-#       checkboxGroupInput("delivPort", "", choices=c(unique(dat.vars()$DELIVERYPT[!is.na(dat.vars()$DELIVERYPT)])), selected=c(unique(dat.vars()$DELIVERYPT[!is.na(dat.vars()$DELIVERYPT)])))
-#     }else checkboxGroupInput("delivPort", "", choices=c(unique(dat.vars()$STATE[!is.na(dat.vars()$STATE)])), selected=c(unique(dat.vars()$STATE[!is.na(dat.vars()$STATE)])))    
-#   }else return()
-# })
-
 
 output$length <- renderUI({
   if(!is.null(input$topicSelect)){
@@ -85,30 +76,6 @@ output$length <- renderUI({
   }
 })
 
-# output$costtyp <- renderUI({
-#   if(!is.null(input$dat.name) && input$dat.name=="Cost"){
-#     selectInput("costtyp", "", choices=c(unique(dat.vars()$COSTTYPCAT)), selected=c(unique(dat.vars()$COSTTYPCAT)))
-#   } else return()
-# })
-
-####################################
-
-# remove ak button to specify WC only
-# taking this out for net rev stuff
-
-####################################
-
-# output$removeAK <- renderUI({
-#   if(!is.null(input$topicSelect)){
-#     if(input$dat.name == "Net Revenue") {
-#       selectInput("removeAK", "", choices = c("West Coast only operations"))  
-#     } else if(input$topicSelect == "Delivery port"){
-#       selectInput("removeAK", "", choices = c("All fishery operations"))
-#     } else if(input$dat.name == "Revenue"){
-#       selectInput("removeAK", "", choices = c("All fishery operations"))  
-#     } else selectInput("removeAK", "", choices = c("All fishery operations", "West Coast only operations"))
-#   } else return()
-# })
 
 
 output$plotType <- renderUI({
@@ -130,18 +97,3 @@ output$dataButton <- renderUI({
     actionButton("dataButton", label=" Plot Data", icon=icon("bar-chart-o"))
   }
 })
-
-########################################### begin wellPanel2, plot options ###############################
-
-# output$stat <- renderUI({
-#   if(dat.sub()){
-#     selectInput("stat", "Summary statistic:", choices= c("sum", "mean", "N"))
-#   }
-# })
-
-
-# output$groupMean <- renderUI({
-#   if(!is.null(dat.sub())){
-#     checkboxInput("groupMean", "Group mean CI", value = F)
-#   } 
-# })
