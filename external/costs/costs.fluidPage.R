@@ -1,1 +1,0 @@
-p("This section is currently under development check 'Economic Indicators' -> 'Net Revenue' for a working demo")

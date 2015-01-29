@@ -1,4 +1,9 @@
-#this page handles all of the reactive expressions for the dynamic user interface
+#======================================
+
+# this page handles all of the reactive 
+  # expressions for the dynamic user interface
+
+#======================================
 
 # Inputs variables will be pulled at this stage because we are not preloading data via .r files
 

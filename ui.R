@@ -17,7 +17,7 @@ require(reshape2)
 # custom css functions
 wellPanelSub <- function(...){div(class = "well-sub", ...)} # calls .css selector for well-sub
 
-# OG UI
+# navbar UI
 # shinyUI(
 #   navbarPage(title = "FISHeries Economics Explorer (FISHEyE)",
 #              header = appFrameHeaderScrolling(),                   
@@ -28,11 +28,6 @@ wellPanelSub <- function(...){div(class = "well-sub", ...)} # calls .css selecto
 #              footer = appFrameFooterScrolling()           
 #   ) 
 # )
-
-#this file handles content page organization for the explorer and is sourced to ui.r
-
-
-
 fluidPage(
   appFrameHeaderScrolling(),  
   fluidRow(
