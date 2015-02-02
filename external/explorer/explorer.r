@@ -11,8 +11,8 @@ output$PlotMain<- renderPlot({
     if(!PermitPlot()) return()
     if(is.null(input$DataButton) || input$DataButton == 0) return()
     #input$[things that i want to update this plot]
-      # ex. input$Plotselect
-    isolate( doPlot(dat = DatSub(), x = input$YearSelect, y = "VALUE"))
+    input$PlotSelect
+    isolate( doPlot(dat = DatSub(), x = "SURVEY_YEAR", y = "VALUE"))
     
 }, height = 700, width = 1200)
 

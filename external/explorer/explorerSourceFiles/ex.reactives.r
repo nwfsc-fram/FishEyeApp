@@ -15,11 +15,11 @@ DatVars <- reactive({
   # create a list of variable names used in the sidebar inputs
   dat <- DatMain()
   datVars <- with(dat, 
-      list(SURVEY_YEAR = unique(SURVEY_YEAR),
-        SHORTDESCR = unique(SHORTDESCR),
-        CATEGORY = unique(CATEGORY),
-        FISHAK = unique(FISHAK),
-        STAT =  unique(STAT)))
+    list(SURVEY_YEAR = unique(SURVEY_YEAR),
+      SHORTDESCR = unique(SHORTDESCR),
+      CATEGORY = unique(CATEGORY),
+      FISHAK = unique(FISHAK),
+      STAT =  unique(STAT)))
 })
 
 
@@ -55,11 +55,10 @@ DatSub <- reactive({
 PermitPlot <- reactive({
   if(!(is.null(input$YearSelect) | is.null(input$ShortdescrSelect) | 
     is.null(input$CategorySelect) | is.null(input$VariableSelect) | 
-    is.null(input$FishAkSelect) | is.null(input$StatSelect) |
-    is.null(input$PlotSelect))){
+    is.null(input$FishAkSelect) | is.null(input$StatSelect))){
     if(!(input$YearSelect[1]=="" | input$ShortdescrSelect[1] == "" | 
       input$CategorySelect[1] == "" | input$StatSelect[1] == "" | 
-      input$VariableSelect[1] == "" | input$PlotSelect[1] == "")){      
+      input$VariableSelect[1] == "")){      
         x <- TRUE
     } else {
       x <- FALSE
