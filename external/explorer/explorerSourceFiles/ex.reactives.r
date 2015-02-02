@@ -3,49 +3,44 @@
 # creating the dat() reactive function that contains the user selected dataset
 # The re-classification of data types can be transfered to the read-in file
 
-dat <- reactive({ # data load moved to serverhead
-  input$dataButton
-  isolate(
-    if(permitPlot()){
-    
-    if (input$stat == "Total") {
-      dat <- netrevTabsSum
-    } else {
-      dat <- netrevTabsMean
-    }
-      
-       dat[,1] <- ordered(dat[,1], labels = c("Revenue", "MTS", "DAS", "Total cost net revenue", "Fixed cost", "Variable cost", "Variable cost net revenue"))        
-      return(dat)
-      
-    } else return()
-  )
+DatMain <- reactive({ # data load moved to serverhead
+      # data is loaded from serverHead.R load call
+      dat <- netrevTable            
 })
 
-dat.vars <- reactive({
-  load("data/dat.vars.RData")
-#   print("datvars:")
-#   print(str(dat.vars))
-  dat.vars
+DatVars <- reactive({
+  # create a list of variable names used in the sidebar inputs
+  dat <- DatMain()
+  datVars <- with(dat, 
+    list(SURVEY_YEAR = unique(SURVEY_YEAR),
+      SHORTDESCR = unique(SHORTDESCR),
+      CATEGORY = unique(CATEGORY),
+      FISHAK = unique(FISHAK),
+      STAT =  unique(STAT)))
+  return(datVars)
+})
+
+Variable <- reactive({
+  dat <- DatMain()
+  subByCategory <- dat[dat$CATEGORY == input$CategorySelect,] 
+  Variable <- unique(subByCategory$VARIABLE)  
+  return(Variable)
 })
 
 # selecting plot variables, subsetting the data AND casting for individual level ID (fun.agg=sum)
 # build dcast formula using if controls and using the qouted method in dcast
-dat.sub <- reactive({
+DatSub <- reactive({
   if(!is.null(input$dataButton) && input$dataButton > 0)
   isolate(
-    if(permitPlot()){
+    if(PermitPlot()){
       
-      print(input$dataButton)
-      
-      dat <- dat()
+      dat <- DatMain()
 
       #subsetting
-      dat.sub <- subset(dat, SURVEY_YEAR %in% input$years & variable %in% input$dat.name & category %in% input$topics)
-      #re-ordering values
-#       dat.sub[,5] <- reorder(dat.sub[,5], dat.sub[,3])
+      datSub <- subset(dat, SURVEY_YEAR %in% input$years & variable %in% input$dat.name & category %in% input$topics)
       
       # droping the "topic" var, I don't think we actually need it, ever
-      dat.sub <- dat.sub[!names(dat.sub) %in% "topic"]
+      datSub <- dat.sub[!names(dat.sub) %in% "topic"]
       return(dat.sub)
       
     } else return()
@@ -53,9 +48,13 @@ dat.sub <- reactive({
 })
 
 # Plotting/staging
-permitPlot <- reactive({
-  if(!(is.null(input$years) | is.null(input$dat.name) | is.null(input$topicSelect) | is.null(input$stat) | is.null(input$topics))){
-    if(!(input$years[1]=="" | input$dat.name[1] == "" | input$topicSelect[1] == "" | input$stat[1] == "" | input$topics[1] == "")){
+PermitPlot <- reactive({
+  if(!(is.null(input$YearSelect) | is.null(input$ShortdescrSelect) | 
+    is.null(input$CategorySelect) | is.null(input$VariableSelect) | 
+    is.null(input$FishAkSelect) | is.null(input$StatSelect))){
+    if(!(input$YearSelect[1]=="" | input$ShortdescrSelect[1] == "" | 
+      input$CategorySelect[1] == "" | input$StatSelect[1] == "" | 
+      input$VariableSelect[1] == "")){      
       x <- TRUE
     } else {
       x <- FALSE

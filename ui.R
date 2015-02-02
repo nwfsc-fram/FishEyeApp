@@ -40,69 +40,71 @@ fluidPage(
              ),
              wellPanelSub(                       
                fluidRow(
-                 column(8, uiOutput("years")
+                 column(8, uiOutput("YearSelect")
                  )
                )
              ),
              wellPanelSub(
                fluidRow(
-                 column(8, uiOutput("dat.name")
+                 column(8, uiOutput("ShortdescrSelect")
                  )
                ) 
              ),                     
              wellPanelSub(
                fluidRow(
-                 column(8, uiOutput("topicSelect")
+                 column(8, uiOutput("CategorySelect")
                  )
                ),
-               conditionalPanel(condition = "if(input.topicSelect)",
+#                conditionalPanel(condition = "if(input.CategorySelect)",
                                 fluidRow(
-                                  column(12, uiOutput("topics")
+                                  column(12, uiOutput("VariableSelect")
                                   )
-                                )
+#                                 )
                )
              ),
              wellPanelSub(
+               fluidRow( 
+                 column(8, uiOutput("FishAkSelect"))
+               ),
                fluidRow(
-                 column(8, uiOutput("stat")
+                 column(8, uiOutput("StatSelect")
                  )
                )
              ),
              wellPanelSub(
                fluidRow(
-                 column(6, uiOutput("plotType")
+                 column(6, uiOutput("PlotSelect")
                  ),
-                 column(6, uiOutput("dodge")
+                 column(6, uiOutput("DodgeSelect")
                  )
                )
              ),
              fluidRow(
-               column(8, uiOutput("dataButton")
+               column(8, uiOutput("DataButton")
                )
              )
            ), #end well panel
            conditionalPanel(condition = "if(input.dataButton > 0)",
-                            wellPanel(                                                                       
-                              fluidRow(
-                                column(6, downloadButton("dlPlot", label = "Download plot")
-                                ),
-                                column(6, downloadButton("dlTable", label = "Download table")
-                                )
-                              ) 
-                              
-                            )# end well panel
+              wellPanel(                                                                       
+                fluidRow(
+                  column(6, downloadButton("dlPlot", label = "Download plot")
+                  ),
+                  column(6, downloadButton("dlTable", label = "Download table")
+                  )
+                ) 
+              )# end well panel
            ) 
     ), # end left side column
     column(9,
            tabsetPanel(
              tabPanel("Output",
                       fluidRow(
-                        column(12, plotOutput("plotTest",height="800px")
+                        column(12, plotOutput("PlotMain",height="800px")
                         )
                       ),                   
                       fluidRow(HTML("<hr>")),
                       fluidRow(
-                        column(12, dataTableOutput("tableTest") # testing
+                        column(12, dataTableOutput("TableMain") # testing
                         )
                       )
              ),

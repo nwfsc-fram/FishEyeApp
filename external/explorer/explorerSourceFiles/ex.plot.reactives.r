@@ -3,6 +3,7 @@
 # moved these from ex.reactives page for references in the plot functions
 # this just makes life easier if I change the order/names of vars later 
 
+
 xvar <- reactive({
   input$dataButton
   isolate(
@@ -12,6 +13,7 @@ xvar <- reactive({
 )
 })
 
+
 yvar <- reactive({
   input$dataButton
   isolate(
@@ -20,6 +22,7 @@ yvar <- reactive({
     }
   )
 })
+
 
 groupvar <- reactive({
   input$dataButton
@@ -34,6 +37,7 @@ groupvar <- reactive({
 )
 })
 
+
 plotFacet <- reactive({
   input$dataButton
   isolate(
@@ -45,6 +49,7 @@ plotFacet <- reactive({
   )
 })
 
+
 plotBase <- reactive({
   input$dataButton
   isolate(
@@ -53,6 +58,7 @@ plotBase <- reactive({
     }
   )
 })
+
 
 plotGeom <- reactive({ 
   input$dataButton
@@ -70,6 +76,7 @@ plotGeom <- reactive({
     }
   )
 })
+
 
 plotPalette <- reactive({ # handles palette choices (palettes are defined in serverHead.R)
   input$dataButton
@@ -92,6 +99,7 @@ plotPalette <- reactive({ # handles palette choices (palettes are defined in ser
   )
 })
 
+
 plotLabels <- reactive({
   input$dataButton
   isolate(
@@ -103,17 +111,11 @@ plotLabels <- reactive({
     netrevType <- ifelse(length(input$dat.name) > 1, "Net Revenue", input$dat.name)
     
     labs(x= input$xvar, title= "SAMPLE DATA FOR WEBSITE CONFIGURATION PURPOSES ONLY"
-#            paste(operations, 
-#                                     input$stat, 
-#                                     netrevType,
-#                                     "by",
-#                                     selection, sep=" "), 
-#                                     color= ifelse(length(input$dat.name > 1), "", input$topicSelect), 
-#                                     fill= ifelse(length(input$dat.name > 1), "", input$topicSelect))
     )
   }
 )
 })
+
 
 plotScales <- reactive({
   input$dataButton
@@ -128,6 +130,7 @@ plotScales <- reactive({
   )
 })
 
+
 plotTheme <- reactive({
   input$dataButton
   isolate(
@@ -136,6 +139,7 @@ plotTheme <- reactive({
     }
   )
 })
+
 
 # assemble ggplot components in Voltron like fashion
 plotOut <- reactive({
