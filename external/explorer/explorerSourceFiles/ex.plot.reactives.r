@@ -5,7 +5,7 @@
 
 
 xvar <- reactive({
-  input$dataButton
+  input$DataButton
   isolate(
   if(!is.null(dat.sub())){
     byvar <- "SURVEY_YEAR"
