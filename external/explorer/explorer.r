@@ -10,9 +10,10 @@ source("external/explorer/explorerSourceFiles/doPlot.r", local = TRUE)
 output$PlotMain<- renderPlot({
     if(!PermitPlot()) return()
     if(is.null(input$DataButton) || input$DataButton == 0) return()
-    #input$[things that i want to update this plot]
     input$PlotSelect
-    isolate( doPlot(dat = DatSub(), x = "SURVEY_YEAR", y = "VALUE"))
+    input$DodgeSelect
+    input$ShortdescrSelect
+    isolate( doPlot(dat = DatSub(), x = "SURVEY_YEAR", y = "VALUE/1000"))
     
 }, height = 700, width = 1200)
 
@@ -20,15 +21,15 @@ output$PlotMain<- renderPlot({
 # output$TableMain <- renderDataTable({  
 #   input$dataButton 
 #   isolate(
-#     if(permitPlot() & !is.null(dat.sub())) {
-#       table <- dat.sub()
-#       names(table) <- c("Topic", "Year", "Value", "N", input$topicSelect)
+#     if(PermitPlot() & !is.null(DatSub())) {
+#       table <- DatSub()
+#       # names(table) <- c("Topic", "Year", "Value", "N", input$topicSelect)
 #       table
 #     }
 #   )
 # })
-# 
-# 
+
+
 # # render plot from  to pdf for download
 # output$dlPlot <- downloadHandler(
 #     filename = function() {'dataexplorerPlot.pdf'},

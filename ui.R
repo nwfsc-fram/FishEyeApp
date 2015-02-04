@@ -11,7 +11,11 @@ appFrame_lib_loc(getwd())
 require(shiny)
 require(ggplot2)
 require(reshape2)
+require(grid)
+require(scales)
 # require(ggthemes)
+
+
 
 
 # custom css functions
@@ -31,11 +35,11 @@ wellPanelSub <- function(...){div(class = "well-sub", ...)} # calls .css selecto
 fluidPage(
   appFrameHeaderScrolling(),  
   fluidRow(
-    column(3,
+    column(2,
            wellPanel( #left side panel                    
              fluidRow(
-               column(8, HTML("<p>Dataset:</p>
-                                       <p><strong>Catcher Vessels</strong></p>")
+               column(3, HTML("<p>Dataset:</p>
+                 <p><strong>Catcher Vessels</strong></p>")
                )
              ),
              wellPanelSub(                       

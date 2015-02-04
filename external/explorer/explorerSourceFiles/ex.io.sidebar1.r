@@ -21,7 +21,7 @@ output$ShortdescrSelect <- renderUI({
 
 output$CategorySelect <- renderUI({ 
   selectInput("CategorySelect", "Summarize by:",
-    choices = DatVars()$CATEGORY, selected = " ")
+    choices = DatVars()$CATEGORY, selected = "")
 })
 
 
@@ -41,7 +41,7 @@ output$FishAkSelect <- renderUI({
 
 output$StatSelect <- renderUI({
   selectInput("StatSelect", "Summary statistc:", 
-    choices = DatVars()$STAT, selected = "", multiple = FALSE)
+    choices = DatVars()$STAT, multiple = FALSE)
 })
 
 
@@ -53,7 +53,7 @@ output$StatSelect <- renderUI({
 
 
 output$PlotSelect <- renderUI({
-  selectInput("PlotSelect", "Plot type:", choices= c("", "Bar", "Point", "Line"), selected=c(""))
+  selectInput("PlotSelect", "Plot type:", choices= c("Bar", "Point", "Line"))
 })
 
 

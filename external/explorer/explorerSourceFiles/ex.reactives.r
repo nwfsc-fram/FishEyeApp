@@ -34,6 +34,7 @@ Variable <- reactive({
 # build dcast formula using if controls and using the qouted method in dcast
 DatSub <- reactive({
   if(is.null(input$DataButton) || input$DataButton == 0) return()
+  input$ShortdescrSelect
   isolate(  
     if(!is.null(DatMain())){
       dat <- DatMain()      
@@ -53,10 +54,10 @@ DatSub <- reactive({
 
 # Plotting/staging
 PermitPlot <- reactive({
-  if(!(is.null(input$YearSelect) | is.null(input$ShortdescrSelect) | 
-    is.null(input$CategorySelect) | is.null(input$VariableSelect) | 
-    is.null(input$FishAkSelect) | is.null(input$StatSelect))){
-    if(!(input$YearSelect[1]=="" | input$ShortdescrSelect[1] == "" | 
+  if(!(is.null(input$YearSelect) | is.null(input$CategorySelect) | 
+    is.null(input$VariableSelect) | is.null(input$FishAkSelect) | 
+    is.null(input$StatSelect))){
+    if(!(input$YearSelect[1]=="" | 
       input$CategorySelect[1] == "" | input$StatSelect[1] == "" | 
       input$VariableSelect[1] == "")){      
         x <- TRUE
