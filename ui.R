@@ -35,7 +35,7 @@ wellPanelSub <- function(...){div(class = "well-sub", ...)} # calls .css selecto
 fluidPage(
   appFrameHeaderScrolling(),  
   fluidRow(
-    column(2,
+    column(3,
            wellPanel( #left side panel                    
              fluidRow(
                column(3, HTML("<p>Dataset:</p>
@@ -47,39 +47,26 @@ fluidPage(
                  column(8, uiOutput("YearSelect")
                  )
                )
-             ),
-             wellPanelSub(
-               fluidRow(
-                 column(8, uiOutput("ShortdescrSelect")
-                 )
-               ) 
              ),                     
              wellPanelSub(
                fluidRow(
                  column(8, uiOutput("CategorySelect")
                  )
                ),
-#                conditionalPanel(condition = "if(input.CategorySelect)",
-                                fluidRow(
-                                  column(12, uiOutput("VariableSelect")
-                                  )
-#                                 )
+               #                conditionalPanel(condition = "if(input.CategorySelect)",
+               fluidRow(
+                 column(12, uiOutput("VariableSelect")
+                 )
+                 #                                 )
                )
              ),
              wellPanelSub(
                fluidRow( 
-                 column(8, uiOutput("FishAkSelect"))
+                 column(8, uiOutput("FishAkSelect")
+                 )
                ),
                fluidRow(
                  column(8, uiOutput("StatSelect")
-                 )
-               )
-             ),
-             wellPanelSub(
-               fluidRow(
-                 column(6, uiOutput("PlotSelect")
-                 ),
-                 column(6, uiOutput("DodgeSelect")
                  )
                )
              ),
@@ -87,17 +74,7 @@ fluidPage(
                column(8, uiOutput("DataButton")
                )
              )
-           ), #end well panel
-           conditionalPanel(condition = "if(input.dataButton > 0)",
-              wellPanel(                                                                       
-                fluidRow(
-                  column(6, downloadButton("dlPlot", label = "Download plot")
-                  ),
-                  column(6, downloadButton("dlTable", label = "Download table")
-                  )
-                ) 
-              )# end well panel
-           ) 
+           ) #end well panel 
     ), # end left side column
     column(9,
            tabsetPanel(
@@ -105,16 +82,42 @@ fluidPage(
                       fluidRow(
                         column(12, plotOutput("PlotMain",height="800px")
                         )
-                      ),                   
-                      fluidRow(HTML("<hr>")),
+                      ),
+                      wellPanel(
+                        fluidRow(
+                          column(12, 
+                                 column(2, 
+                                        uiOutput("ShortdescrSelect") 
+                                 ),
+                                 column(2, 
+                                        fluidRow(
+                                          uiOutput("PlotSelect")
+                                        ),
+                                        fluidRow(
+                                          uiOutput("DodgeSelect")
+                                        )
+                                 ),
+                                 column(2,
+                                        fluidRow(
+                                          downloadButton("dlPlot", label = "Download plot")
+                                        ),
+                                        fluidRow(
+                                          downloadButton("dlTable", label = "Download table")
+                                        )
+                                 )
+                          )
+                        )
+                      ),
+                      fluidRow(HTML("<hr>")
+                      ),
                       fluidRow(
-                        column(12, dataTableOutput("TableMain") # testing
+                        column(12, dataTableOutput("TableMain")
                         )
                       )
              ),
              tabPanel("Definitions", source("external/explorer/definitions.R")$value)
            ) # end of tabsetPanel
-    ) # end right side column
+    ) # end right side column     
   ), #end app level fluid row
   appFrameFooterScrolling()
   # fluidRow(source("external/uiComponents/uiFooter.R", local = TRUE)$value)

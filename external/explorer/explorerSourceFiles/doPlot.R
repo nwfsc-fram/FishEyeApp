@@ -42,6 +42,12 @@ doPlot <- function(dat, x, y){
       g <- g + scale_colour_manual(values = pal.netrev)
     }
     
+    # defien x scale
+#     g <- g +  scale_x_discrete(labels = c("2010" = "", "2011" = ""))
+    
+    # define solid line y=0
+    g <- g + geom_hline(yintercept = 0)
+    
     # define labels
     g <- g + labs(x = "Survey Year", y = "", title = main())
     
