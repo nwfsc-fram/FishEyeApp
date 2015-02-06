@@ -1,5 +1,5 @@
 doPlot <- function(dat, x, y){
-  if(!is.null(DatSub())){
+  if(!is.null(DatSub()) & length(input$ShortdescrSelect) > 0){
     
     groupVar <- "SHORTDESCR"
     facetVar <- "VARIABLE"
@@ -27,9 +27,9 @@ doPlot <- function(dat, x, y){
         }
       } else return()
     } else if(input$PlotSelect == "Point"){
-      g <- g + geom_point(aes_string(, colour = groupVar, size=6))
+      g <- g + geom_point(aes_string(colour = groupVar), size=4)
     } else {
-      g <- g + geom_line(aes_string(colour = groupVar, size=1.5))
+      g <- g + geom_line(aes_string(colour = groupVar), size=1.5)
     }
     
     # define facet
@@ -60,7 +60,8 @@ doPlot <- function(dat, x, y){
       panel.grid.minor = element_line(linetype = "blank"),
       panel.grid.major.x = element_line(linetype = "blank"),
       panel.grid.major.y = element_line(color = "#656C70", linetype = "dotted"),
-      strip.text = element_text(family = "sans", size = 12, face = "bold", color = "black"),
+      strip.text = element_text(family = "sans", 
+        size = 12, face = "bold", color = "black"),
       strip.background = element_rect(fill = "white"),
       axis.ticks = element_blank(),
       axis.title.x = element_blank(),
@@ -68,7 +69,8 @@ doPlot <- function(dat, x, y){
       axis.line.x = element_line(size = 2, colour = "black", linetype = "solid"),
       legend.position = "top",
       legend.key = element_rect(fill = "white"),
-      legend.text = element_text(family = "sans", color = "black", face = "bold", size = 12),
+      legend.text = element_text(family = "sans", 
+        color = "black", face = "bold", size = 12),
       legend.title = element_blank())
     
     print(g)

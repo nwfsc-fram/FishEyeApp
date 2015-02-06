@@ -35,87 +35,109 @@ wellPanelSub <- function(...){div(class = "well-sub", ...)} # calls .css selecto
 fluidPage(
   appFrameHeaderScrolling(),  
   fluidRow(
-    column(3,
+    column(2,
            wellPanel( #left side panel                    
              fluidRow(
-               column(3, HTML("<p>Dataset:</p>
+               column(12, HTML("<p>Dataset:</p>
                  <p><strong>Catcher Vessels</strong></p>")
                )
              ),
              wellPanelSub(                       
                fluidRow(
-                 column(8, uiOutput("YearSelect")
+                 column(12, uiOutput("YearSelect")
                  )
                )
              ),                     
              wellPanelSub(
                fluidRow(
-                 column(8, uiOutput("CategorySelect")
+                 column(12, uiOutput("CategorySelect")
                  )
                ),
-               #                conditionalPanel(condition = "if(input.CategorySelect)",
                fluidRow(
                  column(12, uiOutput("VariableSelect")
                  )
-                 #                                 )
                )
              ),
              wellPanelSub(
                fluidRow( 
-                 column(8, uiOutput("FishAkSelect")
+                 column(12, uiOutput("FishAkSelect")
                  )
                ),
                fluidRow(
-                 column(8, uiOutput("StatSelect")
+                 column(12, uiOutput("StatSelect")
                  )
                )
              ),
              fluidRow(
-               column(8, uiOutput("DataButton")
+               column(12, uiOutput("DataButton")
                )
              )
            ) #end well panel 
     ), # end left side column
     column(9,
            tabsetPanel(
-             tabPanel("Output",
+             tabPanel("Plot",
                       fluidRow(
-                        column(12, plotOutput("PlotMain",height="800px")
+                        column(12, plotOutput("PlotMain",height="auto")
                         )
                       ),
+                      conditionalPanel(condition = "input.DataButton > 0",
                       wellPanel(
                         fluidRow(
                           column(12, 
                                  column(2, 
                                         uiOutput("ShortdescrSelect") 
                                  ),
-                                 column(2, 
+                                 column(2,
+                                        column(11,
                                         fluidRow(
                                           uiOutput("PlotSelect")
+                                        )
                                         ),
+                                        column(11,
                                         fluidRow(
                                           uiOutput("DodgeSelect")
+                                        )
                                         )
                                  ),
                                  column(2,
                                         fluidRow(
-                                          downloadButton("dlPlot", label = "Download plot")
+                                          downloadButton("dlPlotMain", 
+                                            label = "Download plot ")
                                         ),
                                         fluidRow(
-                                          downloadButton("dlTable", label = "Download table")
+                                          column(12, div(style="height:10px")
+                                          )
                                         )
                                  )
                           )
                         )
-                      ),
-                      fluidRow(HTML("<hr>")
-                      ),
-                      fluidRow(
-                        column(12, dataTableOutput("TableMain")
-                        )
+                      )
                       )
              ),
-             tabPanel("Definitions", source("external/explorer/definitions.R")$value)
+             tabPanel("Table",
+               fluidRow(
+                 column(12, div(style="height:10px")
+                 )
+               ),
+               fluidRow(
+                 column(12, dataTableOutput("TableMain")
+                 )
+               ),
+               conditionalPanel(condition = "input.DataButton > 0",
+               wellPanel(
+                  fluidRow(
+                    column(12,
+                      fluidRow(
+                          downloadButton("dlTable", label = "Download table")
+                        )
+                      )
+                    )
+                  )
+                )
+             ),
+             tabPanel("Definitions", source("external/explorer/definitions.R")$value
+             )
            ) # end of tabsetPanel
     ) # end right side column     
   ), #end app level fluid row

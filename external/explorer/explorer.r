@@ -18,35 +18,34 @@ output$PlotMain<- renderPlot({
 }, height = 700, width = 1200)
 
 
-# output$TableMain <- renderDataTable({  
-#   input$dataButton 
-#   isolate(
-#     if(PermitPlot() & !is.null(DatSub())) {
-#       table <- DatSub()
-#       # names(table) <- c("Topic", "Year", "Value", "N", input$topicSelect)
-#       table
-#     }
-#   )
-# })
+output$TableMain <- renderDataTable({  
+  input$DataButton 
+  isolate(
+    if(PermitPlot() & !is.null(DatSub())) {
+      table <- DatSub()
+      # names(table) <- c("Topic", "Year", "Value", "N", input$topicSelect)
+    }
+  )
+})
 
 
-# # render plot from  to pdf for download
-# output$dlPlot <- downloadHandler(
-#     filename = function() {'dataexplorerPlot.pdf'},
-#     content = function(file){
-#       pdf(file = file, width=11, height=8.5)
-#       print(plotOut())
-#       dev.off()
-#     }
-# )
-# 
-# 
-# # render table of data subset to csv for download
-# output$dlTable <- downloadHandler(
-#     filename = function() { 'dataexplorerTable.csv' },
-#     content = function(file) {
-#       table <- dat.sub()
-#       names(table) <- c("Topic", "Year", "Value", "N", input$topicSelect)
-#       write.csv(table, file)
-#    }
-# )
+# render plot from  to pdf for download
+output$dlPlotMain <- downloadHandler(
+    filename = function() {'dataexplorerPlot.pdf'},
+    content = function(file){
+      pdf(file = file, width=11, height=8.5)
+      print(plotOut())
+      dev.off()
+    }
+)
+
+
+# render table of data subset to csv for download
+output$dlTable <- downloadHandler(
+    filename = function() { 'dataexplorerTable.csv' },
+    content = function(file) {
+      table <- dat.sub()
+      names(table) <- c("Topic", "Year", "Value", "N", input$topicSelect)
+      write.csv(table, file)
+   }
+)
