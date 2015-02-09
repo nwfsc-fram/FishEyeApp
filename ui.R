@@ -33,7 +33,9 @@ wellPanelSub <- function(...){div(class = "well-sub", ...)} # calls .css selecto
 #   ) 
 # )
 fluidPage(
-  appFrameHeaderScrolling(),  
+  source("www/shiny_framebuster/framebuster.R")$value,
+  appFrameHeaderScrolling(),
+  ## example R framebusting code
   fluidRow(
     column(2,
            wellPanel( #left side panel                    
