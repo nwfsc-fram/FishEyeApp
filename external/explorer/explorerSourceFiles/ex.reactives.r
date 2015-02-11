@@ -16,7 +16,7 @@ DatVars <- reactive({
   dat <- DatMain()
   datVars <- with(dat, 
     list(SURVEY_YEAR = unique(SURVEY_YEAR),
-      SHORTDESCR = unique(SHORTDESCR),
+      SHORTDESCR = factorOrder$shortdescr,
       CATEGORY = unique(CATEGORY),
       FISHAK = unique(FISHAK),
       STAT =  unique(STAT)))
@@ -25,8 +25,16 @@ DatVars <- reactive({
 
 Variable <- reactive({
   dat <- DatMain()
+  if(input$CategorySelect == "Homeport"){
+    variable = factorOrder$port
+  } else if(input$CategorySelect == "State"){
+    variable = factorOrder$state
+  } else {
   subByCategory <- dat[dat$CATEGORY == input$CategorySelect,] 
-  Variable <- unique(subByCategory$VARIABLE)  
+  variable <- unique(subByCategory$VARIABLE)
+  }
+  variable
+  
 })
 
 
@@ -46,6 +54,18 @@ DatSub <- reactive({
         VARIABLE %in% input$VariableSelect &
         FISHAK == input$FishAkSelect &
         STAT == input$StatSelect)
+      
+      datSub$SHORTDESCR <- factor(datSub$SHORTDESCR, 
+        levels = factorOrder$shortdescr)
+      
+      if(input$CategorySelect == "Homeport"){
+        datSub$VARIABLE <- factor(datSub$VARIABLE, levels = factorOrder$port)
+      } else if(input$CategorySelect == "State"){
+        datSub$VARIABLE <- factor(datSub$VARIABLE, levels = factorOrder$state)
+      }
+      
+      
+      return(datSub)
       
     } else return()
   )

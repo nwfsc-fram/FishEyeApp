@@ -1,18 +1,16 @@
-options(stringsAsFactors = FALSE)
-
 years.list <- c("2009", "2010", "2011", "2012")
 # load("data/tables.RData") #depricated
 
 # load("data/tabs.out.RData") ## this is now the following datatables
-# load("data/netrevTabsMean.RData")
-# load("data/netrevTabsSum.RData")
 load("data/netrevTable.RData")
+load("data/factorOrder.RData")
 
 # custom palettes
 # for net rev figures
 pal.netrev <- c("Revenue" = "#FB9A99", "Fixed costs" = "#A6CEE3",
   "Total cost net revenue" = "#1F78B4", 
   "Variable costs" = "#B2DF8A", "Variable cost net revenue" = "#33A02C")
+
 
 
 # DEPRICATED -- showing categories as facets, not groups
