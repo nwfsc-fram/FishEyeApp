@@ -17,8 +17,6 @@ require(scales)
 # require(ggthemes)
 
 
-
-
 # custom css functions
 wellPanelSub <- function(...){div(class = "well-sub", ...)} # calls .css selector for well-sub
 
@@ -144,8 +142,11 @@ fluidPage(
              tabPanel("Definitions", 
                source("external/explorer/explorerSourceFiles/definitions.R")$value
              ),
+             tabPanel("Help", 
+               source("external/explorer/explorerSourceFiles/help.R")$value
+             ),
              tabPanel("About",
-               source("external/explorer/explorerSourceFiles/about.R")$value
+               source("external/explorer/explorerSourceFiles/about.r")$value
              )
            ) # end of tabsetPanel
     ) # end right side column     

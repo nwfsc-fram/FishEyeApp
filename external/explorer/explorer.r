@@ -14,7 +14,6 @@ output$PlotMain<- renderPlot({
     input$DodgeSelect
     input$ShortdescrSelect
     isolate( doPlot(dat = DatSub(), x = "SURVEY_YEAR", y = "VALUE/1000"))
-    
 }, height = 700, width = 1200)
 
 
