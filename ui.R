@@ -33,6 +33,8 @@ wellPanelSub <- function(...){div(class = "well-sub", ...)} # calls .css selecto
 #              footer = appFrameFooterScrolling()           
 #   ) 
 # )
+
+
 fluidPage(
   source("www/shiny_framebuster/framebuster.R")$value,
   appFrameHeaderScrolling(),
@@ -139,7 +141,11 @@ fluidPage(
                   )
                 )
              ),
-             tabPanel("Definitions", source("external/explorer/definitions.R")$value
+             tabPanel("Definitions", 
+               source("external/explorer/explorerSourceFiles/definitions.R")$value
+             ),
+             tabPanel("About",
+               source("external/explorer/explorerSourceFiles/about.R")$value
              )
            ) # end of tabsetPanel
     ) # end right side column     
