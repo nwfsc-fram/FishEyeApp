@@ -71,7 +71,7 @@ output$DodgeSelect <- renderUI({
 
 output$DataButton <- renderUI({
   if(PermitPlot()) {
-    actionButton("DataButton", label=" Plot Data", icon=icon("bar-chart-o"))
+    actionButton("DataButton", label=" Plot Data")
   }
 })
 

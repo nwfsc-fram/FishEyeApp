@@ -33,7 +33,7 @@ wellPanelSub <- function(...){div(class = "well-sub", ...)} # calls .css selecto
 # )
 
 
-fluidPage(
+fluidPage(title = "FISHEyE",
   source("www/shiny_framebuster/framebuster.R")$value,
   appFrameHeaderScrolling(),
   ## example R framebusting code
@@ -81,7 +81,7 @@ fluidPage(
            tabsetPanel(
              tabPanel("Plot",
                       fluidRow(
-                        column(12, plotOutput("PlotMain",height="auto")
+                        column(12, plotOutput("PlotMain", height = "auto")
                         )
                       ),
                       conditionalPanel(condition = "input.DataButton > 0",

@@ -7,6 +7,7 @@ source("external/explorer/explorerSourceFiles/ex.plot.reactives.r", local = TRUE
 source("external/explorer/explorerSourceFiles/ex.io.sidebar1.r", local = TRUE) 
 source("external/explorer/explorerSourceFiles/doPlot.r", local = TRUE)
 
+
 output$PlotMain<- renderPlot({
     if(!PermitPlot()) return()
     if(is.null(input$DataButton) || input$DataButton == 0) return()
@@ -25,6 +26,22 @@ output$TableMain <- renderDataTable({
       # names(table) <- c("Topic", "Year", "Value", "N", input$topicSelect)
     }
   )
+})
+
+
+output$DefaultPlotText <- renderText({
+source("external/explorer/explorerSourceFiles/defaultPlotText.R")$value
+#   if(!PermitPlot()){
+#     return(text)
+#   }
+#   if("input$DataButton"){
+#     print(input$DataButton)
+#     if((input$DataButton == 0)){
+#       text
+#     } else {
+#       return()
+#     }
+#   }
 })
 
 
