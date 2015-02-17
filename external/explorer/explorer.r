@@ -6,7 +6,7 @@ source("external/explorer/explorerSourceFiles/ex.reactives.r", local = TRUE)
 source("external/explorer/explorerSourceFiles/ex.plot.reactives.r", local = TRUE)
 source("external/explorer/explorerSourceFiles/ex.io.sidebar1.r", local = TRUE) 
 source("external/explorer/explorerSourceFiles/doPlot.r", local = TRUE)
-source("external/explorer/explorerSourceFiles/defaultPlotText.R", local = TRUE)
+source("external/explorer/explorerSourceFiles/defaultText.R", local = TRUE)
 
 output$PlotMain <- renderPlot({
     if(!PermitPlot()) return()

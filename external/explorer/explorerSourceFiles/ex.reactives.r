@@ -76,10 +76,10 @@ DatSub <- reactive({
 PermitPlot <- reactive({
   if(!(is.null(input$YearSelect) | is.null(input$CategorySelect) | 
     is.null(input$VariableSelect) | is.null(input$FishAkSelect) | 
-    is.null(input$StatSelect))){
+    is.null(input$StatSelect) | is.null(input$ShortdescrSelect))){
     if(!(input$YearSelect[1]=="" | 
       input$CategorySelect[1] == "" | input$StatSelect[1] == "" | 
-      input$VariableSelect[1] == "")){      
+      input$VariableSelect[1] == "" | input$ShortdescrSelect[1] == "")){      
         x <- TRUE
     } else {
       x <- FALSE

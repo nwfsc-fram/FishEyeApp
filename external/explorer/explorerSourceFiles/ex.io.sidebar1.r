@@ -14,8 +14,8 @@ output$YearSelect <- renderUI({
 
 output$ShortdescrSelect <- renderUI({ 
   checkboxGroupInput("ShortdescrSelect", "Revenue/Cost type:", 
-    choices=DatVars()$SHORTDESCR, 
-    selected = DatVars()$SHORTDESCR)
+    choices=DatVars()$SHORTDESCR
+    )
 })
 
 
@@ -69,9 +69,9 @@ output$DodgeSelect <- renderUI({
 #==============Data subsetting action button ==================#
 
 
-output$DataButton <- renderUI({
-  if(PermitPlot()) {
-    actionButton("DataButton", label=" Plot Data")
-  }
-})
+# output$DataButton <- renderUI({
+#   if(PermitPlot()) {
+#     actionButton("DataButton", label=" Plot Data")
+#   }
+# })
 
