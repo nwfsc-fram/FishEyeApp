@@ -15,7 +15,9 @@ require(reshape2)
 require(grid)
 require(scales)
 # require(ggthemes)
-
+# 
+# DefaultPlotText <- source(
+#   "external/explorer/explorerSourceFiles/defaultPlotText.R", local = TRUE)$value
 
 # custom css functions
 wellPanelSub <- function(...){div(class = "well-sub", ...)} # calls .css selector for well-sub
@@ -81,10 +83,12 @@ fluidPage(title = "FISHEyE",
            tabsetPanel(
              tabPanel("Plot",
                       fluidRow(
+                        column(12, htmlOutput("DefaultPlotText")
+                        ),
                         column(12, plotOutput("PlotMain", height = "auto")
                         )
                       ),
-                      conditionalPanel(condition = "input.DataButton > 0",
+#                       conditionalPanel(condition = "input.DataButton > 0",
                       wellPanel(
                         fluidRow(
                           column(12, 
@@ -116,7 +120,7 @@ fluidPage(title = "FISHEyE",
                           )
                         )
                       )
-                      )
+#                       )
              ),
              tabPanel("Table",
                fluidRow(
@@ -127,7 +131,7 @@ fluidPage(title = "FISHEyE",
                  column(12, dataTableOutput("TableMain")
                  )
                ),
-               conditionalPanel(condition = "input.DataButton > 0",
+#                conditionalPanel(condition = "input.DataButton > 0",
                wellPanel(
                   fluidRow(
                     column(12,
@@ -137,7 +141,7 @@ fluidPage(title = "FISHEyE",
                       )
                     )
                   )
-                )
+#                 )
              ),
              tabPanel("Definitions", 
                source("external/explorer/explorerSourceFiles/definitions.R")$value

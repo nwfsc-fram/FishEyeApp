@@ -6,42 +6,27 @@ source("external/explorer/explorerSourceFiles/ex.reactives.r", local = TRUE)
 source("external/explorer/explorerSourceFiles/ex.plot.reactives.r", local = TRUE)
 source("external/explorer/explorerSourceFiles/ex.io.sidebar1.r", local = TRUE) 
 source("external/explorer/explorerSourceFiles/doPlot.r", local = TRUE)
+source("external/explorer/explorerSourceFiles/defaultPlotText.R", local = TRUE)
 
-
-output$PlotMain<- renderPlot({
+output$PlotMain <- renderPlot({
     if(!PermitPlot()) return()
-    if(is.null(input$DataButton) || input$DataButton == 0) return()
-    input$PlotSelect
-    input$DodgeSelect
-    input$ShortdescrSelect
-    isolate( doPlot(dat = DatSub(), x = "SURVEY_YEAR", y = "VALUE/1000"))
+#     if(is.null(input$DataButton) || input$DataButton == 0) return()
+#     input$PlotSelect
+#     input$DodgeSelect
+#     input$ShortdescrSelect
+    doPlot(dat = DatSub(), x = "SURVEY_YEAR", y = "VALUE/1000")
 }, height = 700, width = 1200)
 
 
 output$TableMain <- renderDataTable({  
-  input$DataButton 
-  isolate(
+  if(!PermitPlot()) return()
+#   input$DataButton 
+#   isolate(
     if(PermitPlot() & !is.null(DatSub())) {
       table <- DatSub()
       # names(table) <- c("Topic", "Year", "Value", "N", input$topicSelect)
     }
-  )
-})
-
-
-output$DefaultPlotText <- renderText({
-source("external/explorer/explorerSourceFiles/defaultPlotText.R")$value
-#   if(!PermitPlot()){
-#     return(text)
-#   }
-#   if("input$DataButton"){
-#     print(input$DataButton)
-#     if((input$DataButton == 0)){
-#       text
-#     } else {
-#       return()
-#     }
-#   }
+#   )
 })
 
 

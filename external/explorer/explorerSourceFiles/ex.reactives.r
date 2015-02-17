@@ -41,9 +41,9 @@ Variable <- reactive({
 # selecting plot variables, subsetting the data AND casting for individual level ID (fun.agg=sum)
 # build dcast formula using if controls and using the qouted method in dcast
 DatSub <- reactive({
-  if(is.null(input$DataButton) || input$DataButton == 0) return()
-  input$ShortdescrSelect
-  isolate(  
+#   if(is.null(input$DataButton) || input$DataButton == 0) return()
+#   input$ShortdescrSelect
+#   isolate(  
     if(!is.null(DatMain())){
       dat <- DatMain()      
       
@@ -68,7 +68,7 @@ DatSub <- reactive({
       return(datSub)
       
     } else return()
-  )
+#   )
 })
 
 
