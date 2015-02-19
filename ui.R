@@ -77,12 +77,12 @@ fluidPage(title = "FISHEyE",
                        )
                       ),
                       wellPanelSub(
-                       fluidRow(
-                         column(12, uiOutput("StatSelect")
-                         )
-                       )
-                      
-                     )
+                        fluidRow(
+                          column(12, uiOutput("StatSelect")
+                          )
+                        )
+                      )
+                     
                      #              fluidRow(
                      #                column(12, uiOutput("DataButton")
                      #                )
@@ -95,50 +95,41 @@ fluidPage(title = "FISHEyE",
                               fluidRow(
                                 column(12, htmlOutput("DefaultPlotText")
                                 ),
-                                column(12, plotOutput("PlotMain", height = "auto")
+                                column(12, plotOutput("PlotMain", height = "auto")                                  
                                 )
                               ),
 #                              conditionalPanel(condition = "PermitPlot == true",
                               wellPanel(
                                 fluidRow(HTML("<strong>Plot Options: </strong>"),
+                                         style = "padding-bottom: 15px;
+                                                  padding-left: 15px"),
+                                  fluidRow(                                  
                                   column(12,
                                         column(2,
-                                               
-                                                  column(11,
-                                                         
-                                                       fluidRow(
-                                                         uiOutput("PlotSelect")
-                                                       )
-                                                         
-                                                
-                                                ),
-                                                column(11,
-                                                       fluidRow(
-                                                         uiOutput("DodgeSelect")
-                                                       )
-                                                )
-                                          
+                                               wellPanelSub(
+                                                 fluidRow(
+                                                   column(6, uiOutput("PlotSelect")
+                                                   ),
+                                                   column(6, uiOutput("DodgeSelect")
+                                                   )
+                                                 )
+                                               )
                                          ),
                                          column(2,
                                                 fluidRow(
                                                   downloadButton("dlPlotMain", 
-                                                    label = "Download plot ")
-                                                ),
-                                                fluidRow(
-                                                  column(12, div(style="height:10px")
-                                                  )
+                                                    label = "Download plot ",
+                                                    class = "btn btn-info")
                                                 )
                                          )
                                   )
                                 )
-#                               )
-                            )
+                              )
+#                             )
                      ),
                      tabPanel("Table",                      
                               fluidRow(
                                 column(12, htmlOutput("DefaultTableText")
-                                ),
-                                column(12, div(style="height:10px")
                                 )
                               ),
                               fluidRow(
@@ -148,11 +139,11 @@ fluidPage(title = "FISHEyE",
                               #                conditionalPanel(condition = "input.DataButton > 0",
                               wellPanel(
                                 fluidRow(
-                                  column(12,
-                                         fluidRow(
-                                           downloadButton("dlTable", label = "Download table")
-                                         )
+                                  column(2, downloadButton("dlTable", 
+                                            label = "Download table",
+                                            class = "btn btn-info")
                                   )
+                                  
                                 )
                               )
                               #                 )

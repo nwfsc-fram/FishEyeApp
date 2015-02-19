@@ -1,5 +1,5 @@
 doPlot <- function(dat, x, y){
-#   if(!is.null(DatSub()) & length(input$ShortdescrSelect) > 0){
+  if(PermitPlot()){
     
     groupVar <- "SHORTDESCR"
     facetVar <- "VARIABLE"
@@ -76,5 +76,5 @@ doPlot <- function(dat, x, y){
     print(g)
     
   
-#   } else plot(0,0,type="n", axes=F, xlab="", ylab="")
+   } else plot(0,0,type="n", axes=F, xlab="", ylab="")
 }

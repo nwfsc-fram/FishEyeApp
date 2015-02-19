@@ -19,12 +19,16 @@ output$PlotMain <- renderPlot({
 
 
 output$TableMain <- renderDataTable({  
-  if(!PermitPlot()) return()
+  if(!PermitPlot()) return(div(class = "block", height="700px"))
 #   input$DataButton 
 #   isolate(
     if(PermitPlot() & !is.null(DatSub())) {
       table <- DatSub()
-      # names(table) <- c("Topic", "Year", "Value", "N", input$topicSelect)
+#       names(table) <- c("Year", "Type", "Value", "N", "Variable, Category",
+#                          "FishAK", "Stat")
+#       "Year", "Type", "Value", "N", "Variable, Category",
+#       "FishAK", "Stat"
+      table
     }
 #   )
 })

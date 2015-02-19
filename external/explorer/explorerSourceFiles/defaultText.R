@@ -1,8 +1,8 @@
 output$DefaultPlotText <- renderUI({
   if(PermitPlot()) return()
-    tags$div(
+    tags$div(style = "margin-top: 15px",
       p("Plot the Net Revenue summary statistics of the
-    WestCoast Groundfish operations."),
+    West Coast Groundfish fishery"),
         tags$ol(
           tags$li("Choose data in the 'Select Data' pane"),
             tags$ul(tags$i("Multiple Summarize By selections with
@@ -17,12 +17,11 @@ output$DefaultPlotText <- renderUI({
 
 output$DefaultTableText <- renderUI({
   if(PermitPlot()) return()
-  tags$div(
+  tags$div(style = "margin-top: 15px",
     p("Display the summary table for the Net Revenue summary statistics of the
-      WestCoast Groundfish operations."),
+      WestCoast Groundfish fishery."),
     tags$ol(
-      tags$li("Choose data in the Select Data pane"),
-      tags$li("Press the Plot Data button at the bottom of the Select Data pane"),
+      tags$li("Choose data in the 'Select Data' pane"),
       tags$li("Plot and tabular output can be found under their respective tabs"),
       tags$li("Plot options are found in the pane below the output"),
       tags$li("Plot and table download buttons can be found in the Plot Options

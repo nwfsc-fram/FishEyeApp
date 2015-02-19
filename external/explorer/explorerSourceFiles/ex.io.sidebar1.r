@@ -40,7 +40,7 @@ output$FishAkSelect <- renderUI({
 
 
 output$StatSelect <- renderUI({
-  selectInput("StatSelect", "Summary statistc:", 
+  selectInput("StatSelect", "Summary statistic:", 
     choices = DatVars()$STAT, multiple = FALSE)
 })
 
