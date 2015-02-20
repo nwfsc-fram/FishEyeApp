@@ -1,13 +1,11 @@
-tags$div(style = "margin-top: 15px",
-      
+tags$div(style = "margin-top: 15px; width: 60%",    
   tags$div(
     p("The variables and their definitions used in 
       this application are sourced from the 2012 Economic Data Collection (EDC) report. 
       A copy of this and past reports can be found at:",
       tags$a(href="http://www.nwfsc.noaa.gov/research/divisions/fram/economic/economic_data.cfm>",
       "www.nwfsc.noaa.gov/research/divisions/fram/economic/economic_data.cfm")) 
-  ),
-  
+  ),  
   tags$div(style= "margin-top: 15px",
            
     p(tags$strong("Summary Variables")),
@@ -29,8 +27,7 @@ tags$div(style = "margin-top: 15px",
          tags$p("The homeport reported by each vessel on the EDC survey."),
        tags$li("State:"),
          tags$p("The state corresponding to each homeport.")
-      ),
-                 
+      ),               
     p(tags$strong("Revenue/Cost types")),
       tags$ul(
         tags$li("Revenue:"),    
@@ -71,7 +68,6 @@ tags$div(style = "margin-top: 15px",
               financial gain or loss for an entire year, season, or fishery.")
       )  
   ),
-  
   p(tags$strong("Fished in AK")),
   tags$p("Vessels that fished in Alaska can be filtered from the summary data.
          Vessels are removed for those years in which they fished in Alaska.")
