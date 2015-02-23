@@ -38,7 +38,7 @@ fluidPage(title = "FISHEyE",
           source("www/shiny_framebuster/framebuster.R")$value,
           appFrameHeaderScrolling(),
           ## example R framebusting code
-          fluidRow(div(style="paddign-botttom: 15px;"),
+          fluidRow(div(style="padding-botttom: 15px;"),
               tags$h2(style = "margin-left: 15px", tags$strong("Net Revenue Explorer"))  
           ),
           fluidRow(

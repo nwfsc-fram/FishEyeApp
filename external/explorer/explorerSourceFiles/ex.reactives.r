@@ -34,7 +34,6 @@ Variable <- reactive({
   variable <- unique(subByCategory$VARIABLE)
   }
   variable
-  
 })
 
 
@@ -46,6 +45,8 @@ DatSub <- reactive({
 #   isolate(  
     if(!is.null(DatMain())){
       dat <- DatMain()      
+            
+      print(unique(dat$STAT))
       
       #subsetting
       datSub <- subset(dat, SURVEY_YEAR %in% input$YearSelect &  
@@ -55,6 +56,7 @@ DatSub <- reactive({
         FISHAK == input$FishAkSelect &
         STAT == input$StatSelect)
       
+      # order for plotting
       datSub$SHORTDESCR <- factor(datSub$SHORTDESCR, 
         levels = factorOrder$shortdescr)
       
@@ -64,6 +66,9 @@ DatSub <- reactive({
         datSub$VARIABLE <- factor(datSub$VARIABLE, levels = factorOrder$state)
       }
       
+      print(input$StatSelect)
+   
+      print(head(datSub))
       
       return(datSub)
       
