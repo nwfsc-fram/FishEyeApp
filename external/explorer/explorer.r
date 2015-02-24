@@ -37,7 +37,7 @@ output$dlPlotMain <- downloadHandler(
     filename = function() {'dataexplorerPlot.pdf'},
     content = function(file){
       pdf(file = file, width=11, height=8.5)
-      print(plotOut())
+      doPlot(dat = DatSub(), x = "SURVEY_YEAR", y = "VALUE/1000")
       dev.off()
     }
 )
@@ -47,8 +47,9 @@ output$dlPlotMain <- downloadHandler(
 output$dlTable <- downloadHandler(
     filename = function() { 'dataexplorerTable.csv' },
     content = function(file) {
-      table <- dat.sub()
-      names(table) <- c("Topic", "Year", "Value", "N", input$topicSelect)
+      table <- DatSub()
+      names(table) <- c("Year", "Description", "Value", "N", "Variable", 
+                        "Category", "FishAK", "Stat")
       write.csv(table, file)
    }
 )
