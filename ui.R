@@ -105,7 +105,7 @@ fluidPage(title = "FISHEyE",
                                                   padding-left: 15px"),
                                   fluidRow(                                  
                                   column(12,
-                                        column(2,
+                                        column(3,
                                                wellPanelSub(
                                                  fluidRow(
                                                    column(6, uiOutput("PlotSelect")
