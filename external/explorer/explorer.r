@@ -24,10 +24,8 @@ output$TableMain <- renderDataTable({
 #   isolate(
     if(PermitPlot() & !is.null(DatSub())) {
       table <- DatSub()
-#       names(table) <- c("Year", "Type", "Value", "N", "Variable, Category",
-#                          "FishAK", "Stat")
-#       "Year", "Type", "Value", "N", "Variable, Category",
-#       "FishAK", "Stat"
+      names(table) <- c("Year", "Description", "Value", "N", "Variable", 
+        "Category", "FishAK", "Stat")
       table
     }
 #   )

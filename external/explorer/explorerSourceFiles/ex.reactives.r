@@ -66,10 +66,6 @@ DatSub <- reactive({
         datSub$VARIABLE <- factor(datSub$VARIABLE, levels = factorOrder$state)
       }
       
-      print(input$StatSelect)
-   
-      print(head(datSub))
-      
       return(datSub)
       
     } else return()

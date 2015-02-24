@@ -1,4 +1,4 @@
-tags$div(style = "margin-top: 15px; width: 60%",    
+tags$div(style = "margin-top: 15px; margin-bottom: 15px; width: 60%",    
   tags$div(
     p("The variables and their definitions used in 
       this application are sourced from the 2012 Economic Data Collection (EDC) report. 
@@ -69,6 +69,22 @@ tags$div(style = "margin-top: 15px; width: 60%",
       )  
   ),
   p(tags$strong("Fished in AK")),
-  tags$p("Vessels that fished in Alaska can be filtered from the summary data.
-         Vessels are removed for those years in which they fished in Alaska.")
+  tags$ul(
+    tags$li(
+      tags$p("Vessels that fished in Alaska can be filtered from the summary data.
+             If this box is checked then all vessels will be included. If un-checked then
+             vessels will be removed for years in which they participated in an Alaskan fishery.")
+    )
+  ),
+  p(tags$strong("Stat")),
+  tags$ul(
+    tags$li("sum:"),
+      tags$p("Figures are aggregated by summing across all vessel in group"),
+    tags$li("mean:"),
+      tags$p("Figures are aggregated by averaging across vessels in group"),
+    tags$li("mean per day:"),
+      tags$p("Figures are aggregated by averaging across vessels per day figures"),
+    tags$li("mean per ton:"),
+      tags$p("Figures are aggregated by averaging across vessels per metric ton delivered figures")
+  )
 )

@@ -1,6 +1,8 @@
 doPlot <- function(dat, x, y){
   if(PermitPlot()){
     
+    print(head(dat))
+    
     groupVar <- "SHORTDESCR"
     facetVar <- "VARIABLE"
     
@@ -8,7 +10,9 @@ doPlot <- function(dat, x, y){
     main <- function(){
       stat <- switch(input$StatSelect,
       "Average" = "mean",
-      "Total" = "sum")
+      "Total" = "sum",
+      "Per day" = "mean per day",
+      "Per metric ton"= "mean per metric ton")
       paste(stat, "West Coast Operations by", input$CategorySelect, sep=" ")
     }
       
@@ -35,6 +39,14 @@ doPlot <- function(dat, x, y){
     # define facet
     g <- g + facet_wrap(~ VARIABLE, as.table = TRUE)
     
+    
+#     # create annotations for suppressed data
+#     len <- length(levels(as.factor(dat$VARIABLE))
+#     xyPosition <- data.frame(x=rep(as.numeric(inputinput$YearSelect[1]), len), y=rep(2))
+#     g + 
+#       
+#     
+    
     # define scale
     if(input$PlotSelect == "Bar") {
       g <- g + scale_fill_manual(values = pal.netrev)
@@ -49,7 +61,7 @@ doPlot <- function(dat, x, y){
     g <- g + geom_hline(yintercept = 0)
     
     # define labels
-    g <- g + labs(x = "Survey Year", y = "", title = main())
+    g <- g + labs(x = "Survey Year", y = "Thousands ($)", title = main())
     
     # define theme
     g <- g + theme(
@@ -61,20 +73,19 @@ doPlot <- function(dat, x, y){
       panel.grid.major.x = element_line(linetype = "blank"),
       panel.grid.major.y = element_line(color = "#656C70", linetype = "dotted"),
       strip.text = element_text(family = "sans", 
-        size = 12, face = "bold", color = "black"),
+        size = 12, face = "bold", color = "grey25"),
       strip.background = element_rect(fill = "white"),
       axis.ticks = element_blank(),
       axis.title.x = element_blank(),
-      axis.title.y = element_blank(),
+      axis.title.y = element_text(size=rel(1.2), vjust=2, colour="grey25"),
       axis.line.x = element_line(size = 2, colour = "black", linetype = "solid"),
       legend.position = "top",
       legend.key = element_rect(fill = "white"),
       legend.text = element_text(family = "sans", 
-        color = "black", face = "bold", size = 12),
+        color = "grey25", face = "bold", size = 12),
       legend.title = element_blank())
     
     print(g)
-    
-  
+      
    } else plot(0,0,type="n", axes=F, xlab="", ylab="")
 }

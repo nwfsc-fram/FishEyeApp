@@ -20,7 +20,7 @@ output$ShortdescrSelect <- renderUI({
 
 
 output$CategorySelect <- renderUI({ 
-  selectInput("CategorySelect", "Summarize by:",
+  selectInput("CategorySelect", "Summary variable:",
     choices = DatVars()$CATEGORY, selected = "")
 })
 
