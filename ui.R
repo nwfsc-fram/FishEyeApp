@@ -139,6 +139,9 @@ fluidPage(title = "FISHEyE",
                               #                conditionalPanel(condition = "input.DataButton > 0",
                               wellPanel(
                                 fluidRow(
+                                  fluidRow(HTML("<strong>Plot Options: </strong>"),
+                                           style = "padding-bottom: 15px;
+                                                  padding-left: 15px"),
                                   column(2, downloadButton("dlTable", 
                                             label = "Download table",
                                             class = "btn btn-info")
@@ -150,6 +153,10 @@ fluidPage(title = "FISHEyE",
                      ),
                      tabPanel(HTML("Performance <br>
                                    Distribution"),
+                              fluidRow(
+                                column(12, htmlOutput("DefaultThirdsText")
+                                )
+                              ),
                               fluidRow(
                                 column(12, plotOutput("PlotThirds", height = "auto")
                                 )
