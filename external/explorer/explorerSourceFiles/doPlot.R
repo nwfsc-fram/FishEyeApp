@@ -59,7 +59,7 @@ doPlot <- function(dat, x, y){
     g <- g + geom_hline(yintercept = 0)
     
     # define labels
-    g <- g + labs(x = "Survey Year", y = "Thousands ($)", title = main())
+    g <- g + labs(y = "Thousands ($)", title = main())
     
     # define theme
     g <- g + theme(
@@ -77,6 +77,7 @@ doPlot <- function(dat, x, y){
       axis.title.x = element_blank(),
       axis.title.y = element_text(size=rel(1.2), vjust=2, colour="grey25"),
       axis.line.x = element_line(size = 2, colour = "black", linetype = "solid"),
+      axis.text = element_text(size = 12),
       legend.position = "top",
       legend.key = element_rect(fill = "white"),
       legend.text = element_text(family = "sans", 

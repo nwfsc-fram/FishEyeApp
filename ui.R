@@ -148,7 +148,8 @@ fluidPage(title = "FISHEyE",
                               )
                               #                 )
                      ),
-                     tabPanel("Thirds",
+                     tabPanel(HTML("Performance <br>
+                                   Distribution"),
                               fluidRow(
                                 column(12, plotOutput("PlotThirds", height = "auto")
                                 )
