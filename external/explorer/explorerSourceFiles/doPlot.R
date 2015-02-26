@@ -1,8 +1,6 @@
 doPlot <- function(dat, x, y){
   if(PermitPlot()){
     
-    print(head(dat))
-    
     groupVar <- "SHORTDESCR"
     facetVar <- "VARIABLE"
     

@@ -148,6 +148,12 @@ fluidPage(title = "FISHEyE",
                               )
                               #                 )
                      ),
+                     tabPanel("Thirds",
+                              fluidRow(
+                                column(12, plotOutput("PlotThirds", height = "auto")
+                                )
+                              )
+                     ),
                      tabPanel("Definitions", 
                               source("external/explorer/explorerSourceFiles/definitions.R")$value
                      ),

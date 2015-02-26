@@ -7,6 +7,8 @@ source("external/explorer/explorerSourceFiles/ex.plot.reactives.r", local = TRUE
 source("external/explorer/explorerSourceFiles/ex.io.sidebar1.r", local = TRUE) 
 source("external/explorer/explorerSourceFiles/doPlot.r", local = TRUE)
 source("external/explorer/explorerSourceFiles/defaultText.R", local = TRUE)
+source("external/explorer/explorerSourceFiles/doPlotThirds.r", local = TRUE)
+
 
 output$PlotMain <- renderPlot({
     if(!PermitPlot()) return()
@@ -30,6 +32,11 @@ output$TableMain <- renderDataTable({
     }
 #   )
 })
+
+output$PlotThirds <- renderPlot({
+  if(!PermitPlot()) return()
+  doPlotThirds(dat = DatSubThirds(), x = "SURVEY_YEAR", y = "VALUE/100")
+}, height = 700, width = 1200)
 
 
 # render plot from  to pdf for download

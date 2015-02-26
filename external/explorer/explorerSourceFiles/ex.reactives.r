@@ -10,6 +10,9 @@ DatMain <- reactive({ # data load moved to serverhead
   dat <- netrevTable
 })
 
+DatThirds <- reactive({
+  dat <- netrevThirds
+})
 
 DatVars <- reactive({
   # create a list of variable names used in the sidebar inputs
@@ -45,16 +48,15 @@ DatSub <- reactive({
 #   isolate(  
     if(!is.null(DatMain())){
       dat <- DatMain()      
-            
-      print(unique(dat$STAT))
+  
       
       #subsetting
       datSub <- subset(dat, SURVEY_YEAR %in% input$YearSelect &  
-        SHORTDESCR %in% input$ShortdescrSelect & 
-        CATEGORY %in% input$CategorySelect &
-        VARIABLE %in% input$VariableSelect &
-        FISHAK == input$FishAkSelect &
-        STAT == input$StatSelect)
+                            SHORTDESCR %in% input$ShortdescrSelect & 
+                            CATEGORY %in% input$CategorySelect &
+                            VARIABLE %in% input$VariableSelect &
+                            FISHAK == input$FishAkSelect &
+                            STAT == input$StatSelect)
       
       # order for plotting
       datSub$SHORTDESCR <- factor(datSub$SHORTDESCR, 
@@ -70,6 +72,35 @@ DatSub <- reactive({
       
     } else return()
 #   )
+})
+
+# create an additional subset for thirds plot...this is where OO would be handy
+DatSubThirds <- reactive({
+  if(!is.null(DatThirds())){
+    dat <- DatThirds()
+    print(head(dat))
+    
+    #subsetting
+    datSub <- subset(dat, SURVEY_YEAR %in% input$YearSelect &
+                          SHORTDESCR %in% input$ShortdescrSelect &
+                          CATEGORY %in% input$CategorySelect &
+                          VARIABLE %in% input$VariableSelect 
+#                           FISHAK == input$FishakSelect 
+                          # no stat for now  
+                     )
+    
+    datSub$SHORTDESCR <- factor(datSub$SHORTDESCR, 
+                                levels = factorOrder$shortdescr)
+    
+    if(input$CategorySelect == "Homeport"){
+      datSub$VARIABLE <- factor(datSub$VARIABLE, levels = factorOrder$port)
+    } else if(input$CategorySelect == "State"){
+      datSub$VARIABLE <- factor(datSub$VARIABLE, levels = factorOrder$state)
+    }
+    
+    return(datSub)
+    
+  }
 })
 
 
