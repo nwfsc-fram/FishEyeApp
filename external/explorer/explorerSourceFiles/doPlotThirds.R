@@ -1,7 +1,6 @@
 doPlotThirds <- function(dat, x, y){
   if(PermitPlot()){
-    
-    print(DatSubThirds())
+
     
     groupVar <- "THIRDS"
     facetVar <- "SHORDESCR"

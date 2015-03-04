@@ -151,8 +151,8 @@ fluidPage(title = "FISHEyE",
                               )
                               #                 )
                      ),
-                     tabPanel(HTML("Performance <br>
-                                   Distribution"),
+                     tabPanel(HTML("Thirds <br>
+                                   Analysis"),
                               fluidRow(
                                 column(12, htmlOutput("DefaultThirdsText")
                                 )

@@ -78,9 +78,8 @@ DatSub <- reactive({
 DatSubThirds <- reactive({
   if(!is.null(DatThirds())){
     dat <- DatThirds()
-    print(str(dat))
+
     
-    print(input$FishAkSelect)
     #subsetting
     datSub <- subset(dat, SURVEY_YEAR %in% input$YearSelect &
                           SHORTDESCR %in% input$ShortdescrSelect &
@@ -89,6 +88,9 @@ DatSubThirds <- reactive({
                           FISHAK == input$FishAkSelect &
                           STAT == input$StatSelect  
                      )
+    
+    datSub$THIRDS <- factor(datSub$THIRDS,
+                            levels = factorOrder$thirds)
     
     datSub$SHORTDESCR <- factor(datSub$SHORTDESCR, 
                                 levels = factorOrder$shortdescr)
