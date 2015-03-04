@@ -22,7 +22,8 @@ DatVars <- reactive({
       SHORTDESCR = factorOrder$shortdescr,
       CATEGORY = unique(CATEGORY),
       FISHAK = unique(FISHAK),
-      STAT =  unique(STAT)))
+      STAT =  c("Mean", "Total", "Mean (per day)", "Mean (per metric ton)"))
+  )
 })
 
 
@@ -48,15 +49,20 @@ DatSub <- reactive({
 #   isolate(  
     if(!is.null(DatMain())){
       dat <- DatMain()      
-  
       
+      statSwitch <- switch(input$StatSelect,
+        "Mean" = "mean",
+        "Total" = "sum",
+        "Mean (per day)" = "mean per day",
+        "Mean (per metric ton)" = "mean per metric ton")
+
       #subsetting
       datSub <- subset(dat, SURVEY_YEAR %in% input$YearSelect &  
                             SHORTDESCR %in% input$ShortdescrSelect & 
                             CATEGORY %in% input$CategorySelect &
                             VARIABLE %in% input$VariableSelect &
                             FISHAK == input$FishAkSelect &
-                            STAT == input$StatSelect)
+                            STAT == statSwitch)
       
       # order for plotting
       datSub$SHORTDESCR <- factor(datSub$SHORTDESCR, 

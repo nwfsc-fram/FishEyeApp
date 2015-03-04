@@ -13,7 +13,7 @@ output$YearSelect <- renderUI({
 
 
 output$ShortdescrSelect <- renderUI({ 
-  checkboxGroupInput("ShortdescrSelect", "Revenue/Cost type:", 
+  checkboxGroupInput("ShortdescrSelect", "Economic measures:", 
     choices=DatVars()$SHORTDESCR
     )
 })
@@ -41,7 +41,7 @@ output$FishAkSelect <- renderUI({
 
 output$StatSelect <- renderUI({
   selectInput("StatSelect", "Summary statistic:", 
-    choices = DatVars()$STAT, multiple = FALSE)
+    choices = c("", DatVars()$STAT), multiple = FALSE)
 })
 
 
