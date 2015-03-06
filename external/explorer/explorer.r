@@ -33,6 +33,7 @@ output$TableMain <- renderDataTable({
 #   )
 })
 
+
 output$PlotThirds <- renderPlot({
   if(!PermitPlot()) return()
   doPlotThirds(dat = DatSubThirds(), x = "SURVEY_YEAR", y = "VALUE/100")
