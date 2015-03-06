@@ -14,7 +14,7 @@ output$YearSelect <- renderUI({
 
 output$ShortdescrSelect <- renderUI({ 
   checkboxGroupInput("ShortdescrSelect", "Economic measures:", 
-    choices=DatVars()$SHORTDESCR
+    choices = DatVars()$SHORTDESCR
     )
 })
 

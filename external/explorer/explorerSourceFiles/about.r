@@ -1,4 +1,4 @@
-tags$div(style = "margin-top: 15px; width: 60%",
+tags$div(style = "margin: 15px; 15px; 30px; width: 60%",
   tags$p("Welcome to the FISHeries Economics Explorer (FISHEyE) 
       Net Revenue Explorer. This application displays
       net revenue summary statistics for vessels that participated in the",
@@ -37,7 +37,6 @@ tags$div(style = "margin-top: 15px; width: 60%",
     tags$li(style = "list-style-type: none", "Contractor-ECS Federal, Inc."),
     tags$li(style = "list-style-type: none", "In support of NMFS"),
     tags$li(style = "list-style-type: none", "Northwest Fisheries Science Center"),
-    tags$li(style = "list-style-type: none", "Seattle, WA"),
     tags$li(style = "list-style-type: none", "blair.vanderlugt@noaa.gov")
   )
 )

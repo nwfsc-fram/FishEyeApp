@@ -16,6 +16,7 @@ require(grid)
 require(scales)
 # require(ggthemes)
 
+# waitingBlock <- fluidRow((div(style="display: inline-block; width: 1200; height: 700px")))
 
 # custom css functions
 wellPanelSub <- function(...){div(class = "well-sub", ...)} # calls .css selector for well-sub
@@ -45,7 +46,7 @@ fluidPage(title = "FISHEyE",
             column(4,
                    wellPanel( #left side panel                    
                       fluidRow(
-                        column(12, HTML("<p><strong>Select Data: </strong></p>")
+                        column(12, HTML("<p><strong>Select data in each of the panels below: </strong></p>")
                         )
                      ),
                      fluidRow(
@@ -77,11 +78,11 @@ fluidPage(title = "FISHEyE",
             ), # end left side column
             column(8,
                    tabsetPanel(
-                     tabPanel("Plot",
+                     tabPanel(HTML("Summary <br>
+                              Plot"),
                               fluidRow(
                                 column(12, htmlOutput("DefaultPlotText")
-                                ),
-                                
+                                ),                                
                                 column(12, plotOutput("PlotMain", height = "auto")                                  
                                 )
                               ),
@@ -112,7 +113,8 @@ fluidPage(title = "FISHEyE",
                                 )
                               )
                      ),
-                     tabPanel("Table",                      
+                     tabPanel(HTML("Summary <br>
+                              Table"),                      
                               fluidRow(
                                 column(12, htmlOutput("DefaultTableText")
                                 )
@@ -124,14 +126,13 @@ fluidPage(title = "FISHEyE",
                               #                conditionalPanel(condition = "input.DataButton > 0",
                               wellPanel(
                                 fluidRow(
-                                  fluidRow(HTML("<strong>Plot Options: </strong>"),
+                                  fluidRow(HTML("<strong>Table Options: </strong>"),
                                            style = "padding-bottom: 15px;
                                                   padding-left: 15px"),
                                   column(2, downloadButton("dlTable", 
                                                            label = "Download table",
                                                            class = "btn btn-info")
-                                  )
-                                  
+                                  )                                
                                 )
                               )
                               #                 )
@@ -141,9 +142,32 @@ fluidPage(title = "FISHEyE",
                               fluidRow(
                                 column(12, htmlOutput("DefaultThirdsText")
                                 )
-                              ),
+                              ),                             
                               fluidRow(
                                 column(12, plotOutput("PlotThirds", height = "auto")
+                                )  
+                              ),                      
+#                               conditionalPanel(condition = "input.VariableSelect.length > 1",
+#                                 fluidRow(
+#                                   column(12, HTML("<p style='padding:15px;'><strong>This feature is still in development and only
+#                                                   supports one Summary Statistic selection.
+#                                                   <br /> Please select only one Summary Statistic at left
+#                                                   to display Thirds output</strong><p>")
+#                                   )
+#                                 ),
+#                                 fluidRow((div(style="display: inline-block; width: 1200; height: 610px"))
+#                                 )
+#                               ),
+                              wellPanel(
+                                fluidRow(
+                                  fluidRow(HTML("<strong>Plot Options: </strong>"),
+                                           style = "padding-bottom: 15px;
+                                                    padding-left: 15px"),
+                                  column(2, downloadButton("dlPlotThirds", 
+                                                           label = "Download plot",
+                                                           class = "btn btn-info")
+                                  )
+                                  
                                 )
                               )
                      ),
@@ -153,8 +177,8 @@ fluidPage(title = "FISHEyE",
                      #                      tabPanel("Help", 
                      #                               source("external/explorer/explorerSourceFiles/help.R")$value
                      #                      ),
-                     tabPanel("About",
-                              source("external/explorer/explorerSourceFiles/about.r")$value
+                     tabPanel("Instructions",
+                              source("external/explorer/explorerSourceFiles/instructions.r")$value
                      )
                    ) # end of tabsetPanel
             ) # end right side column     

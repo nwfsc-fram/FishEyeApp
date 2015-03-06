@@ -60,3 +60,12 @@ output$dlTable <- downloadHandler(
       write.csv(table, file)
    }
 )
+
+output$dlPlotThirds <- downloadHandler(
+    filename = function() {'ThirdsAnalysis.pdf'},
+    content = function(file){
+      pdf(file = file, width=11, height=8.5)
+      doPlotThirds(dat = DatSubThirds(), x = "SURVEY_YEAR", y = "VALUE/1000")
+      dev.off()
+    }
+)

@@ -1,4 +1,4 @@
-tags$div(style = "margin-top: 15px; margin-bottom: 15px; width: 60%",    
+tags$div(style = "margin: 15px 15px 30px; width: 60%",    
   tags$div(
     p("The variables and their definitions used in 
       this application are sourced from the 2012 Economic Data Collection (EDC) report. 
@@ -6,7 +6,7 @@ tags$div(style = "margin-top: 15px; margin-bottom: 15px; width: 60%",
       tags$a(href="http://www.nwfsc.noaa.gov/research/divisions/fram/economic/economic_data.cfm>",
       "www.nwfsc.noaa.gov/research/divisions/fram/economic/economic_data.cfm")) 
   ),  
-  tags$div(style= "margin-top: 15px",
+  tags$div(style= "margin-top: 15px;",
            
     p(tags$strong("Summary Variables")),
      tags$ul(
@@ -28,7 +28,7 @@ tags$div(style = "margin-top: 15px; margin-bottom: 15px; width: 60%",
        tags$li("State:"),
          tags$p("The state corresponding to each homeport.")
       ),               
-    p(tags$strong("Revenue/Cost types")),
+    p(tags$strong("Economic measures")),
       tags$ul(
         tags$li("Revenue:"),    
           tags$p("There are several sources of earnings for vessels on the West Coast. 
@@ -76,10 +76,10 @@ tags$div(style = "margin-top: 15px; margin-bottom: 15px; width: 60%",
              vessels will be removed for years in which they participated in an Alaskan fishery.")
     )
   ),
-  p(tags$strong("Stat")),
+  p(tags$strong("Summary statistic")),
   tags$ul(
-    tags$li("sum:"),
-      tags$p("Figures are aggregated by summing across all vessel in group"),
+    tags$li("Total:"),
+    tags$p("Figures are aggregated by summing across all vessel in group"),
     tags$li("mean:"),
       tags$p("Figures are aggregated by averaging across vessels in group"),
     tags$li("mean per day:"),

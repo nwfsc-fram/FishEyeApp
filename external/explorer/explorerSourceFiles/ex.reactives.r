@@ -33,6 +33,8 @@ Variable <- reactive({
     variable = factorOrder$port
   } else if(input$CategorySelect == "State"){
     variable = factorOrder$state
+  } else if(input$CategorySelect == "Fisheries"){
+    variable = factorOrder$fisheries
   } else {
   subByCategory <- dat[dat$CATEGORY == input$CategorySelect,] 
   variable <- unique(subByCategory$VARIABLE)
@@ -72,6 +74,8 @@ DatSub <- reactive({
         datSub$VARIABLE <- factor(datSub$VARIABLE, levels = factorOrder$port)
       } else if(input$CategorySelect == "State"){
         datSub$VARIABLE <- factor(datSub$VARIABLE, levels = factorOrder$state)
+      } else if(input$CategorySelect == "Fisheries"){
+        datSub$VARIABLE <- factor(datSub$VARIABLE, levels = factorOrder$fisheries)
       }
       
       return(datSub)
@@ -83,8 +87,22 @@ DatSub <- reactive({
 # create an additional subset for thirds plot...this is where OO would be handy
 DatSubThirds <- reactive({
   if(!is.null(DatThirds())){
+    
+    validate(
+      need(input$StatSelect == "Mean", 'This feature currently supports only the "Mean" Summary Stastic')
+    )
+    
+    validate(
+      need(length(input$VariableSelect) == 1, "This feature currently supports only one Summary Variable selection"))
+    
+    
     dat <- DatThirds()
-
+        
+    statSwitch <- switch(input$StatSelect,
+                         "Mean" = "mean",
+                         "Total" = "sum",
+                         "Mean (per day)" = "mean per day",
+                         "Mean (per metric ton)" = "mean per metric ton")
     
     #subsetting
     datSub <- subset(dat, SURVEY_YEAR %in% input$YearSelect &
@@ -92,7 +110,7 @@ DatSubThirds <- reactive({
                           CATEGORY %in% input$CategorySelect &
                           VARIABLE %in% input$VariableSelect &
                           FISHAK == input$FishAkSelect &
-                          STAT == input$StatSelect  
+                          STAT == statSwitch  
                      )
     
     datSub$THIRDS <- factor(datSub$THIRDS,
@@ -105,6 +123,8 @@ DatSubThirds <- reactive({
       datSub$VARIABLE <- factor(datSub$VARIABLE, levels = factorOrder$port)
     } else if(input$CategorySelect == "State"){
       datSub$VARIABLE <- factor(datSub$VARIABLE, levels = factorOrder$state)
+    } else if(input$CategorySelect == "Fisheries"){
+      datSub$VARIABLE <- factor(datSub$VARIABLE, levels = factorOrder$fisheries)
     }
     
     return(datSub)

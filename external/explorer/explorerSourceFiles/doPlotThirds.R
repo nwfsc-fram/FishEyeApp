@@ -14,15 +14,19 @@ doPlotThirds <- function(dat, x, y){
                      "Total" = "sum",
                      "Per day" = "mean per day",
                      "Per metric ton"= "mean per metric ton")
-      paste(stat, "West Coast Operations by", input$CategorySelect, sep=" ")
+      paste(stat, "West Coast Operations for", input$VariableSelect, sep=" ")
     }
     
     # base plot
     g <- ggplot(dat, 
       aes_string(x = x, y = y , group = groupVar))
-    
+        
     # define geom
-    g <- g + geom_line(aes_string(colour = groupVar), size=1.5)
+    if(length(input$YearSelect) > 1){
+      g <- g + geom_line(aes_string(colour = groupVar), size=1.5)
+    } else {
+      g <- g + geom_point(aes_string(colour = groupVar), size=4)
+    }
 #     if(input$PlotSelect == "Bar"){
 #       if(!is.null(input$DodgeSelect)){
 #         if(input$DodgeSelect == "Grouped position"){
@@ -76,8 +80,8 @@ doPlotThirds <- function(dat, x, y){
       panel.grid.major.x = element_line(linetype = "blank"),
       panel.grid.major.y = element_line(color = "#656C70", linetype = "dotted"),
       strip.text = element_text(family = "sans", 
-                                size = 12, face = "bold", color = "grey25"),
-      strip.background = element_rect(fill = "white"),
+                                size = 16, color = "grey25", vjust=1),
+      strip.background = element_rect(fill = "lightgrey"),
       axis.ticks = element_blank(),
       axis.title.x = element_blank(),
       axis.title.y = element_text(size=rel(1.2), vjust=2, colour="grey25"),
