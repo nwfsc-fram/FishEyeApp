@@ -1,42 +1,80 @@
-doPlot <- function(dat, x, y){
+doPlot <- function(dat, x, y, type){
   if(PermitPlot()){
     
-    groupVar <- "SHORTDESCR"
-    facetVar <- "VARIABLE"
+    print(head(DatSubThirds()))
+    
+    # for(i in VARIABLE){
+      #create list[i] for each variable
+    #}
+    
+    # type = c("summary", "thirds")
+    
+    groupVar <- ifelse(type=="summary", "SHORTDESCR", "THIRDS")
+    facetVar <- ifelse(type== "summary" , "VARIABLE", "SHORTDESCR")
+    
+    print(input$VariableSelect)
     
     # Plot title construction
     main <- function(){
-      stat <- switch(input$StatSelect,
-      "Average" = "mean",
-      "Total" = "sum",
-      "Per day" = "mean per day",
-      "Per metric ton"= "mean per metric ton")
-      paste(stat, "West Coast Operations by", input$CategorySelect, sep=" ")
+      if(type == "summary"){
+        sprintf("%s West Coast Operations by %s", input$StatSelect, input$CategorySelect)
+      } else {
+        sprintf("%s West Coast Operations for %s", input$StatSelect, input$VariableSelect)
+      }
     }
       
-    # base plot
+    
+    # simple scaling for bar charsts based on number of inputs
+    scale_bars <- function(){
+#       a = length(input$ShortdesrSelect)
+      b = length(input$YearSelect)
+      
+      if(b == 1){
+        return(0.25)
+      } else if(b == 2){
+        return(0.375)
+      } else if(b == 3){
+        return(0.5)      
+      } else{
+        return(0.9)
+      }
+    }
+    
     g <- ggplot(dat, aes_string(x = x, y = y , group = groupVar))
     
     # define geom
-    if(input$PlotSelect == "Bar"){
-      if(!is.null(input$DodgeSelect)){
-        if(input$DodgeSelect == "Grouped position"){
-          g <- g + geom_bar(aes_string(fill = groupVar), stat="identity", 
-            position="dodge")
-        } else {
-          g <- g + geom_bar(aes_string(fill = groupVar), stat = "identity", 
-            position = "stack")
-        }
-      } else return()
-    } else if(input$PlotSelect == "Point"){
-      g <- g + geom_point(aes_string(colour = groupVar), size=4)
+    if(type == "summary"){
+      
+      if(input$PlotSelect == "Bar"){
+        if(!is.null(input$DodgeSelect)){
+          if(input$DodgeSelect == "Grouped position"){
+            g <- g + geom_bar(aes_string(fill = groupVar), stat="identity", 
+              position="dodge", width = scale_bars())
+          } else {
+            g <- g + geom_bar(aes_string(fill = groupVar), stat = "identity", 
+              position = "stack", width = scale_bars())
+          }
+        } else return()
+      } else if(input$PlotSelect == "Point"){
+        g <- g + geom_point(aes_string(colour = groupVar), size=4)
+      } else {
+        g <- g + geom_line(aes_string(colour = groupVar), size=1.5)
+      }
+      
     } else {
-      g <- g + geom_line(aes_string(colour = groupVar), size=1.5)
+      if(length(input$YearSelect) > 1){
+        g <- g + geom_line(aes_string(colour = groupVar), size=1.5)
+      } else {
+        g <- g + geom_point(aes_string(colour = groupVar), size=4)
+      }
     }
     
     # define facet
-    g <- g + facet_wrap(~ VARIABLE, as.table = TRUE)
-    
+    if(type =="summary"){
+      g <- g + facet_wrap(~ VARIABLE, as.table = TRUE)
+    } else {
+      g <- g + facet_wrap(~ SHORTDESCR)
+    }
     
 #     # create annotations for suppressed data
 #     len <- length(levels(as.factor(dat$VARIABLE))

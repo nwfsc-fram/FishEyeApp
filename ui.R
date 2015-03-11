@@ -62,14 +62,13 @@ fluidPage(title = "FISHEyE",
                        ),
                        column(6,
                               wellPanelSub(
-                                uiOutput("StatSelect")
-                              ),
-                             
+                                uiOutput("YearSelect")
+                              ),                           
                               wellPanelSub(
                                 uiOutput("ShortdescrSelect") 
                               ),
                               wellPanelSub(
-                                uiOutput("YearSelect")
+                                uiOutput("StatSelect")
                               )
                         ) 
                       )

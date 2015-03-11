@@ -58,6 +58,7 @@ DatSub <- reactive({
         "Mean (per day)" = "mean per day",
         "Mean (per metric ton)" = "mean per metric ton")
 
+      
       #subsetting
       datSub <- subset(dat, SURVEY_YEAR %in% input$YearSelect &  
                             SHORTDESCR %in% input$ShortdescrSelect & 
