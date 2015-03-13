@@ -1,8 +1,6 @@
 doPlot <- function(dat, x, y, type){
   if(PermitPlot()){
     
-    print(head(DatSubThirds()))
-    
     # for(i in VARIABLE){
       #create list[i] for each variable
     #}
@@ -11,8 +9,7 @@ doPlot <- function(dat, x, y, type){
     
     groupVar <- ifelse(type=="summary", "SHORTDESCR", "THIRDS")
     facetVar <- ifelse(type== "summary" , "VARIABLE", "SHORTDESCR")
-    
-    print(input$VariableSelect)
+
     
     # Plot title construction
     main <- function(){
