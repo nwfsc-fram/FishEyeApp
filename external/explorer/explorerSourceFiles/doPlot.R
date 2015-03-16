@@ -16,7 +16,8 @@ doPlot <- function(dat, x, y, type){
       if(type == "summary"){
         sprintf("%s West Coast Operations by %s", input$StatSelect, input$CategorySelect)
       } else {
-        sprintf("%s West Coast Operations for %s", input$StatSelect, input$VariableSelect)
+        sprintf("
+                %s West Coast Operations for %s", input$StatSelect, input$VariableSelect)
       }
     }
       

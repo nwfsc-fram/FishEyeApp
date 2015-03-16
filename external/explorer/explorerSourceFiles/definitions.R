@@ -8,27 +8,36 @@ tags$div(style = "margin: 15px 15px 30px; width: 60%",
   ),  
   tags$div(style= "margin-top: 15px;",
            
-    p(tags$strong("Summary Variables")),
+   h4("Summary Variables"),
      tags$ul(
        tags$li("Fisheries:"),
-         tags$p("Fisheries used for EDC reporting  to characterise 
-                the US West Coast Groudfish fishery. The commercial fishery has 
-                four components: limited entry with a trawl endorsement,
-                limited entry with a fixed gear endorsement, open access, and tribal.
+         tags$p('Fisheries used for EDC reporting to characterise 
+                the US West Coast Groudfish fishery. 
                 The catch share program consists of cooperatives for the at-sea mothership (including
                 catcher vessels and motherships) and catcher-processor fleets, 
                 and an individual fishing quota (IFQ) program for the shorebased trawl fleet.
-                This application only uses data from the Catcher Vessel sector."),
+                This application only uses data from the Catcher Vessel sector.
+                Many vessels that participate in the catch share program also 
+                participate in other fisheries.'),
+         p(tags$i('Catch Share fisheries include'),': At-sea Pacific whiting; 
+                Shoreside Pacific whiting;
+                Groundfish fixed gear with fixed gear endorsement; 
+                Groundfish fixed gear with trawl endorsement;
+                DTS* trawl with trawl endorsement;
+                Non-whiting, Non-DTS* trawl with trawl endorsement.'),
+         p(tags$i('Non-catch share fisheries include:'), 
+                'Groundfish fixed gear with fixed gear endorsement;
+                Crab; Shrimp; Other fisheries.'),
+         p('*DTS = Dover, Thornyhead and Sole')
+        ,
        tags$li("Vessel length class."),
-         tags$p("The distribution of vessel sizes that particicapte in the West Coast
-                Catch Share program were evenly divided into three categories each
-                with an eqaul number of vessels."),
+         tags$p("Three classes of vessel size representing the range of catcher vessel size."),
        tags$li("Homeport:"),
          tags$p("The homeport reported by each vessel on the EDC survey."),
        tags$li("State:"),
          tags$p("The state corresponding to each homeport.")
       ),               
-    p(tags$strong("Economic measures")),
+   h4("Economic measures"),
       tags$ul(
         tags$li("Revenue:"),    
           tags$p("There are several sources of earnings for vessels on the West Coast. 
@@ -68,7 +77,7 @@ tags$div(style = "margin: 15px 15px 30px; width: 60%",
               financial gain or loss for an entire year, season, or fishery.")
       )  
   ),
-  p(tags$strong("Fished in AK")),
+ h4("Fished in AK"),
   tags$ul(
     tags$li(
       tags$p("Vessels that fished in Alaska can be filtered from the summary data.
@@ -76,15 +85,19 @@ tags$div(style = "margin: 15px 15px 30px; width: 60%",
              vessels will be removed for years in which they participated in an Alaskan fishery.")
     )
   ),
-  p(tags$strong("Summary statistic")),
+ h4("Summary statistic"),
   tags$ul(
     tags$li("Total:"),
-    tags$p("Figures are aggregated by summing across all vessel in group"),
+    tags$p("Values are aggregated by summing across all vessels."),
     tags$li("mean:"),
-      tags$p("Figures are aggregated by averaging across vessels in group"),
+      tags$p("Values are aggregated by averaging across vessels."),
     tags$li("mean per day:"),
-      tags$p("Figures are aggregated by averaging across vessels per day figures"),
+      tags$p("Averaging across vessels per day values"),
     tags$li("mean per ton:"),
-      tags$p("Figures are aggregated by averaging across vessels per metric ton delivered figures")
+      tags$p(" are aggregated by averaging across vessels per metric ton delivered figures")
+  ),
+ h4("N"),
+ tags$ul(
+   tags$li("N is the number of observations for each data value.")
   )
 )
