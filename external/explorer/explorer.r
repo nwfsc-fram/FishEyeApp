@@ -55,6 +55,7 @@ output$dlTable <- downloadHandler(
    }
 )
 
+
 output$dlPlotThirds <- downloadHandler(
     filename = function() {'ThirdsAnalysis.pdf'},
     content = function(file){
