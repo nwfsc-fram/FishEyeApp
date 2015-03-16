@@ -19,7 +19,7 @@ tags$div(style = "margin: 15px; 15px; 30px; width: 60%",
             tags$li(tags$h4("Thirds Analysis")),
               tags$p('Create a graph that splits vessels into three groups based on their annual Revenue. These thirds are
                      plotted as lines labeled: "Top Third", "Middle Third" and "Bottom Third". These correspond
-                     to the top revenue earners, the middle revenue earners and the bottom revenue earners. A download option
+                     to the top revenue earners, middle revenue earners and the bottom revenue earners. A download option
                      can be found below the graph'),
                      tags$p(tags$strong("Note:"), "This feature is still in development and has limited functionality.", tags$br(),
                      'The Summary Variable is limited to one selection and the Summary Statistic only supports the "Mean" option.')
