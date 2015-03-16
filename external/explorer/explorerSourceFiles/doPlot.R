@@ -82,10 +82,12 @@ doPlot <- function(dat, x, y, type){
 #     
     
     # define scale
-    if(input$PlotSelect == "Bar") {
-      g <- g + scale_fill_manual(values = pal.netrev)
+    if(type == "summary") {
+      g <- g + scale_fill_manual(values = pal.netrev) + 
+        scale_colour_manual(values = pal.netrev)
     } else {
-      g <- g + scale_colour_manual(values = pal.netrev)
+      g <- g + scale_fill_manual(values = pal.thirds) + 
+        scale_colour_manual(values = pal.thirds)
     }
     
     # defien x scale
