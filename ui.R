@@ -166,7 +166,7 @@ fluidPage(title = "FISHEyE",
                                            column(2,
                                                   fluidRow(
                                                     downloadButton("dlPlotThirds", 
-                                                                   label = "Download table",
+                                                                   label = "Download plot",
                                                                    class = "btn btn-info")
                                                   )
                                            )

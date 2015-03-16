@@ -13,11 +13,13 @@ doPlot <- function(dat, x, y, type){
     
     # Plot title construction
     main <- function(){
+         
       if(type == "summary"){
-        sprintf("%s West Coast Operations by %s", input$StatSelect, input$CategorySelect)
+        sprintf("Summary Economic Measures for West Coast Catcher Vessels: \n %s", 
+                input$CategorySelect)
       } else {
-        sprintf("
-                %s West Coast Operations for %s", input$StatSelect, input$VariableSelect)
+        sprintf("Thirds analysis of West Coast Catcher Vessesls: \n %s", 
+                input$VariableSelect)
       }
     }
       
