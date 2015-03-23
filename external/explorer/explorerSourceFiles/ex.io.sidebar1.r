@@ -19,8 +19,8 @@ output$ShortdescrSelect <- renderUI({
 
 
 output$CategorySelect <- renderUI({ 
-  selectInput("CategorySelect", "Summary variable:",
-    choices = DatVars()$CATEGORY, selected = "")
+  radioButtons("CategorySelect", "Summary variable:",
+    choices = DatVars()$CATEGORY)
 })
 
 
@@ -29,6 +29,12 @@ output$VariableSelect <- renderUI({
       checkboxGroupInput("VariableSelect", "", 
         choices = Variable(), selected = "")
   } else return()
+})
+
+output$FisherySubsetSelect <- renderUI({
+  if(input$CategorySelect != "Fisheries"){
+      radioButtons("fisherySubsetSelect", "", choices = "Include All fisheries")
+  }
 })
 
 

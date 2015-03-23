@@ -36,7 +36,7 @@ wellPanelSub <- function(...){div(class = "well-sub", ...)} # calls .css selecto
 
 fluidPage(title = "FISHEyE",
           theme = "bootstrap_nwfsc.css",
-          source("www/shiny_framebuster/framebuster.R")$value,
+#           source("www/shiny_framebuster/framebuster.R")$value,
           appFrameHeaderScrolling(),
           ## example R framebusting code
           fluidRow(div(style="padding-botttom: 15px;"),
@@ -54,6 +54,9 @@ fluidPage(title = "FISHEyE",
                               wellPanelSub(
                                 uiOutput("CategorySelect"),
                                 uiOutput("VariableSelect")
+                              ),
+                              wellPanelSub(
+                                uiOutput("FisherySubsetSelect")
                               ),
                               wellPanelSub(
                                 uiOutput("FishAkSelect")
