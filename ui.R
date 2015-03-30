@@ -19,7 +19,10 @@ require(scales)
 # waitingBlock <- fluidRow((div(style="display: inline-block; width: 1200; height: 700px")))
 
 # custom css functions
-wellPanelSub <- function(...){div(class = "well-sub", ...)} # calls .css selector for well-sub
+# calls .css selector for well-sub
+wellPanelSub <- function(...){div(class = "well-sub", ...)}
+# calls .css selector for radioButton header
+wellPanelHeading <- function(...){div(class = "well-radioHeading", ...)} 
 
 # navbar UI
 # shinyUI(
@@ -36,7 +39,7 @@ wellPanelSub <- function(...){div(class = "well-sub", ...)} # calls .css selecto
 
 fluidPage(title = "FISHEyE",
           theme = "bootstrap_nwfsc.css",
-          source("/www/shiny_framebuster/framebuster.R")$value,
+#           source("/www/shiny_framebuster/framebuster.R")$value,
           appFrameHeaderScrolling(),
           ## example R framebusting code
           fluidRow(div(style="padding-botttom: 15px;"),
@@ -52,11 +55,20 @@ fluidPage(title = "FISHEyE",
                      fluidRow(
                        column(6,
                               wellPanelSub(
-                                uiOutput("CategorySelect"),
+                                wellPanelHeading(
+                                  uiOutput("CategorySelect")
+                                ),
+                                HTML("<div style='display:inline-block;width:100%; margin-top:10px'>
+                                       <i>Summary variable options:</i>
+                                      </div>"),
+#                                 fluidRow((div(style="padding-left:120%;")),
                                 uiOutput("VariableSelect")
+#                                 )  
                               ),
-                              wellPanelSub(
-                                uiOutput("FisherySubsetSelect")
+                              conditionalPanel(condition = "input.CategorySelect != 'Fisheries'",
+                                wellPanelSub(
+                                  uiOutput("FisherySubsetSelect")
+                                )
                               ),
                               wellPanelSub(
                                 uiOutput("FishAkSelect")
@@ -148,7 +160,7 @@ fluidPage(title = "FISHEyE",
                               )
                               #                 )
                      ),
-                     tabPanel(HTML("Thirds <br>
+                     tabPanel(HTML("Variability<br>
                                    Analysis"),
                               fluidRow(
                                 column(12, htmlOutput("DefaultThirdsText")

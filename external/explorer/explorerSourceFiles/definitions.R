@@ -21,7 +21,6 @@ tags$div(style = "margin: 15px 15px 30px; width: 60%",
                 participate in other fisheries.'),
          p(tags$i('Catch Share fisheries include'),': At-sea Pacific whiting; 
                 Shoreside Pacific whiting;
-                Groundfish fixed gear with fixed gear endorsement; 
                 Groundfish fixed gear with trawl endorsement;
                 DTS* trawl with trawl endorsement;
                 Non-whiting, Non-DTS* trawl with trawl endorsement.'),
