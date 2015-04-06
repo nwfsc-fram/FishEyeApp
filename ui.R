@@ -1,4 +1,5 @@
 # specify lib.loc for nwcshiny server or local machine
+# you have to use a Sys. command here
 appFrame_lib_loc <- function(wd){
   if (grepl("shiny-server", wd)){
     library(appFrame, lib.loc = "/usr/lib64/R/shiny_library/")
