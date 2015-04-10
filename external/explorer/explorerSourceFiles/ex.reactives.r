@@ -29,13 +29,13 @@ DatVars <- reactive({
 Variable <- reactive({
   dat <- DatMain()
     if(input$CategorySelect == "Homeport"){
-      variable = unique(dat[dat$CATEGORY == "Homeport",]$VARIABLE)
+      variable = unique(factorOrder$homeport)
     } else if(input$CategorySelect == "State"){
-      variable = unique(dat[dat$CATEGORY == "State",]$VARIABLE)
+      variable = unique(factorOrder$state)
     } else if(input$CategorySelect == "Fisheries"){
-      variable = unique(dat[dat$CATEGORY == "Fisheries",]$VARIABLE)
+      variable = unique(factorOrder$fisheries)
     } else {
-      variable = unique(dat[dat$CATEGORY == "Vessel length class",]$VARIABLE)
+      variable = unique(factorOrder$lengths)
 #       subByCategory <- dat[dat$CATEGORY == input$CategorySelect,] 
     }
   return(variable)
@@ -64,7 +64,7 @@ DatSub <- reactive({
       print(str(input$YearSelect))
       print(str(input$ShortdescrSelect))
       print(str(input$CategorySelect))
-       print(str(input$VariableSelect))
+      print(str(input$VariableSelect))
       print(str(input$FishAkSelect))
       print(input$StatSelect) 
       
@@ -76,6 +76,8 @@ DatSub <- reactive({
                             FISHAK == input$FishAkSelect &
                             STAT == input$StatSelect)
       
+      droplevels(datSub)
+
       print("I am subset Table!")
       print(str(datSub))
       
@@ -132,6 +134,8 @@ DatSubThirds <- reactive({
                           STAT == input$StatSelect
                      )
     
+    droplevels(datSub)
+
     print("I am subset thirds!")
     print(str(datSub))
     
