@@ -19,28 +19,28 @@ DatVars <- reactive({
   dat <- DatMain()
   datVars <- with(dat, 
     list(SURVEY_YEAR = unique(SURVEY_YEAR),
-      SHORTDESCR = factorOrder$shortdescr,
+      SHORTDESCR = unique(SHORTDESCR),
       CATEGORY = unique(CATEGORY),
       FISHAK = unique(FISHAK),
-      STAT =  c("Mean", "Total", "Mean (per day)", "Mean (per metric ton)"))
-  )
+      STAT =  unique(STAT)))
 })
 
 
 Variable <- reactive({
   dat <- DatMain()
-  if(input$CategorySelect == "Homeport"){
-    variable = factorOrder$port
-  } else if(input$CategorySelect == "State"){
-    variable = factorOrder$state
-  } else if(input$CategorySelect == "Fisheries"){
-    variable = factorOrder$fisheries
-  } else {
-  subByCategory <- dat[dat$CATEGORY == input$CategorySelect,] 
-  variable <- unique(subByCategory$VARIABLE)
-  }
-  variable
+    if(input$CategorySelect == "Homeport"){
+      variable = unique(dat[dat$CATEGORY == "Homeport",]$VARIABLE)
+    } else if(input$CategorySelect == "State"){
+      variable = unique(dat[dat$CATEGORY == "State",]$VARIABLE)
+    } else if(input$CategorySelect == "Fisheries"){
+      variable = unique(dat[dat$CATEGORY == "Fisheries",]$VARIABLE)
+    } else {
+      variable = unique(dat[dat$CATEGORY == "Vessel length class",]$VARIABLE)
+#       subByCategory <- dat[dat$CATEGORY == input$CategorySelect,] 
+    }
+  return(variable)
 })
+
 
 
 # selecting plot variables, subsetting the data AND casting for individual level ID (fun.agg=sum)
@@ -52,12 +52,21 @@ DatSub <- reactive({
     if(!is.null(DatMain())){
       dat <- DatMain()      
       
-      statSwitch <- switch(input$StatSelect,
-        "Mean" = "mean",
-        "Total" = "sum",
-        "Mean (per day)" = "mean per day",
-        "Mean (per metric ton)" = "mean per metric ton")
+      print("I am netrevTable data:")
+      print(str(dat))
+      
+#       statSwitch <- switch(input$StatSelect,
+#         "Mean" = "mean",
+#         "Average" = "sum",
+#         "Average (per day)" = "mean per day",
+#         "Average (per metric ton)" = "mean per metric ton")
 
+      print(str(input$YearSelect))
+      print(str(input$ShortdescrSelect))
+      print(str(input$CategorySelect))
+       print(str(input$VariableSelect))
+      print(str(input$FishAkSelect))
+      print(input$StatSelect) 
       
       #subsetting
       datSub <- subset(dat, SURVEY_YEAR %in% input$YearSelect &  
@@ -65,7 +74,11 @@ DatSub <- reactive({
                             CATEGORY %in% input$CategorySelect &
                             VARIABLE %in% input$VariableSelect &
                             FISHAK == input$FishAkSelect &
-                            STAT == statSwitch)
+                            STAT == input$StatSelect)
+      
+      print("I am subset Table!")
+      print(str(datSub))
+      
       
       # order for plotting
       datSub$SHORTDESCR <- factor(datSub$SHORTDESCR, 
@@ -89,21 +102,26 @@ DatSub <- reactive({
 DatSubThirds <- reactive({
   if(!is.null(DatThirds())){
     
+#     validate(
+#       need(input$StatSelect == "Mean", 
+#           'This feature currently supports only the "Mean" Summary Stastic')
+#     )
+#     
     validate(
-      need(input$StatSelect == "Mean", 'This feature currently supports only the "Mean" Summary Stastic')
-    )
-    
-    validate(
-      need(length(input$VariableSelect) == 1, "This feature currently supports only one Summary Variable selection"))
+      need(length(input$VariableSelect) == 1, 
+        "This feature currently supports only one Summary Variable selection"))
     
     
     dat <- DatThirds()
+    
+    print("I am netrevThirds data:")
+    print(str(dat))
         
-    statSwitch <- switch(input$StatSelect,
-                         "Mean" = "mean",
-                         "Total" = "sum",
-                         "Mean (per day)" = "mean per day",
-                         "Mean (per metric ton)" = "mean per metric ton")
+#     statSwitch <- switch(input$StatSelect,
+#                          "Average" = "mean",
+#                          "Total" = "sum",
+#                          "Average (per day)" = "mean per day",
+#                          "Average (per metric ton)" = "mean per metric ton")
     
     #subsetting
     datSub <- subset(dat, SURVEY_YEAR %in% input$YearSelect &
@@ -111,8 +129,11 @@ DatSubThirds <- reactive({
                           CATEGORY %in% input$CategorySelect &
                           VARIABLE %in% input$VariableSelect &
                           FISHAK == input$FishAkSelect &
-                          STAT == statSwitch  
+                          STAT == input$StatSelect
                      )
+    
+    print("I am subset thirds!")
+    print(str(datSub))
     
     datSub$THIRDS <- factor(datSub$THIRDS,
                             levels = factorOrder$thirds)

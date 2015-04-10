@@ -32,6 +32,7 @@ output$VariableSelect <- renderUI({
 })
 
 output$FisherySubsetSelect <- renderUI({
+  if(is.null(input$CategorySelect)) return()
   if(input$CategorySelect != "Fisheries"){
       radioButtons("fisherySubsetSelect", "", choices = "Include All fisheries")
   }
