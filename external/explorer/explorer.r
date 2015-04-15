@@ -35,6 +35,8 @@ output$PlotThirds <- renderPlot({
 }, height = 700, width = 1200)
 
 
+# download buttons ------------------------------------------------------------
+
 # render plot from  to pdf for download
 output$dlPlotMain <- downloadHandler(
     filename = function() {'dataexplorerPlot.pdf'},

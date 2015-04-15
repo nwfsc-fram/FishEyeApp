@@ -1,6 +1,10 @@
 doPlot <- function(dat, x, y, type){
   if(PermitPlot()){
     
+#     print("And I am the input to the plot!!!")
+#     print(head(dat))
+#     print(str(dat))
+    
     groupVar <- ifelse(type=="summary", "SHORTDESCR", "THIRDS")
     facetVar <- ifelse(type== "summary" , "VARIABLE", "SHORTDESCR")
 
@@ -33,6 +37,7 @@ doPlot <- function(dat, x, y, type){
         return(0.9)
       }
     }
+    print(scale_bars())
     
     g <- ggplot(dat, aes_string(x = x, y = y , group = groupVar))
     

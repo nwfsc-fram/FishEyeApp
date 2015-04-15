@@ -10,7 +10,7 @@
 
 .libPaths(c(.libPaths(),"/usr/lib64/R/shiny_library"))
 # appFrame_lib_loc(wd = getwd())
-library(appFrame)
+require(appFrame)
 require(shiny)
 require(ggplot2)
 require(reshape2)
@@ -33,17 +33,19 @@ fluidPage(title = "FISHEyE",
             # Main css page, downloaded from bootswatch
             tags$link(rel="stylesheet", type="text/css", href="bootstrap.css"),
             # secondary css page with fisheye specific attributes
-            tags$link(rel="stylesheet", type="text/css", href="fisheye.css")
+            tags$link(rel="stylesheet", type="text/css", href="Fisheye.css")
             ),
           
 #           theme = "bootstrap.css",
 #           source("www/shiny_framebuster/framebuster.R")$value,
           appFrameHeaderScrolling(),
           ## example R framebusting code
-          fluidRow(div(style="padding-botttom: 15px;"),
+          fluidRow(div(style = "padding-botttom: 15px;"),
                    tags$h2(style = "margin-left: 15px", 
-                     HTML("<p style='font-size:120%'><strong>Net Revenue Explorer</strong></p> 
-                          <p><i>West Coast Trawl Catch Share Program: Catcher Vessels</i></p>"))  
+                     HTML("<div>
+                             <p style='font-size:120%'><strong>Net Revenue Explorer</strong></p> 
+                             <p><i>West Coast Trawl Catch Share Program: Catcher Vessels</i></p>
+                          </div>"))  
           ),
           fluidRow(
             column(4,
