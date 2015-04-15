@@ -8,9 +8,9 @@
 #   }      
 # }
 
-.libPaths(c(.libPaths(),"/usr/lib64/R/shiny_library"))
+# .libPaths(c(.libPaths(),"/usr/lib64/R/shiny_library"))
 # appFrame_lib_loc(wd = getwd())
-require(appFrame)
+# require(appFrame)
 require(shiny)
 require(ggplot2)
 require(reshape2)
@@ -31,14 +31,14 @@ fluidPage(title = "FISHEyE",
           
           tags$head(
             # Main css page, downloaded from bootswatch
-#             tags$link(rel="stylesheet", type="text/css", href="bootstrap.css"),
+            tags$link(rel="stylesheet", type="text/css", href="bootstrap.css"),
             # secondary css page with fisheye specific attributes
-#             tags$link(rel="stylesheet", type="text/css", href="Fisheye.css")
+            tags$link(rel="stylesheet", type="text/css", href="Fisheye.css")
             ),
           
 #           theme = "bootstrap.css",
 #           source("www/shiny_framebuster/framebuster.R")$value,
-          appFrameHeaderScrolling(),
+#           appFrameHeaderScrolling(),
           ## example R framebusting code
           fluidRow(div(style = "padding-botttom: 15px;"),
                    tags$h2(style = "margin-left: 15px", 
@@ -208,6 +208,5 @@ fluidPage(title = "FISHEyE",
             ) # end right side column     
           ), #end app level fluid row
           appFrameFooterScrolling()
-          # fluidRow(source("external/uiComponents/uiFooter.R", local = TRUE)$value)
 ) # end fluid Page
 
