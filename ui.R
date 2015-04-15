@@ -37,7 +37,7 @@ fluidPage(title = "FISHEyE",
             ),
           
 #           theme = "bootstrap.css",
-          source("www/shiny_framebuster/framebuster.R")$value,
+#           source("www/shiny_framebuster/framebuster.R")$value,
           appFrameHeaderScrolling(),
           ## example R framebusting code
           fluidRow(div(style="padding-botttom: 15px;"),
