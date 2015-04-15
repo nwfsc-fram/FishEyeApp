@@ -31,9 +31,9 @@ fluidPage(title = "FISHEyE",
           
           tags$head(
             # Main css page, downloaded from bootswatch
-            tags$link(rel="stylesheet", type="text/css", href="bootstrap.css"),
+#             tags$link(rel="stylesheet", type="text/css", href="bootstrap.css"),
             # secondary css page with fisheye specific attributes
-            tags$link(rel="stylesheet", type="text/css", href="Fisheye.css")
+#             tags$link(rel="stylesheet", type="text/css", href="Fisheye.css")
             ),
           
 #           theme = "bootstrap.css",
