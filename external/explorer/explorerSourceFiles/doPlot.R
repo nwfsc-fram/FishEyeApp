@@ -1,12 +1,6 @@
 doPlot <- function(dat, x, y, type){
   if(PermitPlot()){
     
-    # for(i in VARIABLE){
-      #create list[i] for each variable
-    #}
-    
-    # type = c("summary", "thirds")
-    
     groupVar <- ifelse(type=="summary", "SHORTDESCR", "THIRDS")
     facetVar <- ifelse(type== "summary" , "VARIABLE", "SHORTDESCR")
 
@@ -24,7 +18,7 @@ doPlot <- function(dat, x, y, type){
     }
       
     
-    # simple scaling for bar charsts based on number of inputs
+    # simple scaling for bar charts based on number of inputs
     scale_bars <- function(){
 #       a = length(input$ShortdesrSelect)
       b = length(input$YearSelect)

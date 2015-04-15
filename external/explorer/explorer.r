@@ -19,9 +19,11 @@ output$PlotMain <- renderPlot({
 output$TableMain <- renderDataTable({  
   if(!PermitPlot()) return(div(class = "block", height="700px"))
     if(PermitPlot() & !is.null(DatSub())) {
-      table <- DatSub()
-      names(table) <- c("Year", "Description", "Value", "N", "Variable", 
-        "Category", "FishAK", "Stat")
+      table <- subset(DatSub(), select = -CATEGORY)
+      table$VALUE <- paste('$', prettyNum(table$VALUE, 
+        big.mark = ",", format = 'f', digits = 5))
+      names(table) <- c("Year", "Summary Variable", "Description", "N",
+                        "Stat", "Value", "FishAK")
       table
     }
 })

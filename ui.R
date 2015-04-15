@@ -1,21 +1,22 @@
 # specify lib.loc for nwcshiny server or local machine
 # you have to use a Sys. command here
-appFrame_lib_loc <- function(wd){
-  if (grepl("shiny-server", wd)){
-    library(appFrame, lib.loc = "/usr/lib64/R/shiny_library/")
-  } else {
-    library(appFrame)
-  }      
-}
+# appFrame_lib_loc <- function(wd){
+#   if (grepl("shiny-server", wd)){
+#     library(appFrame, lib.loc = "/usr/lib64/R/shiny_library/")
+#   } else {
+#     library(appFrame)
+#   }      
+# }
 
-
-appFrame_lib_loc(wd = getwd())
+.libPaths( c( .libPaths(), "/usr/lib64/R/shiny_library/") )
+# appFrame_lib_loc(wd = getwd())
+library(appFrame)
 require(shiny)
 require(ggplot2)
 require(reshape2)
 require(grid)
 require(scales)
-# require(ggthemes)
+
 
 # waitingBlock <- fluidRow((div(style="display: inline-block; width: 1200; height: 700px")))
 
@@ -25,26 +26,16 @@ wellPanelSub <- function(...){div(class = "well-sub", ...)}
 # calls .css selector for radioButton header
 wellPanelHeading <- function(...){div(class = "well-radioHeading", ...)} 
 
-# navbar UI
-# shinyUI(
-#   navbarPage(title = "FISHeries Economics Explorer (FISHEyE)",
-#              header = appFrameHeaderScrolling(),                   
-#              tabPanel(title = "Net Revenue", 
-#                       source("external/explorer/ex.fluidPage.r", 
-#                              local = TRUE)$value),
-#              theme = "bootstrap_nwfsc.css",
-#              footer = appFrameFooterScrolling()           
-#   ) 
-# )
-
 
 fluidPage(title = "FISHEyE",
-          theme = "bootstrap_nwfsc.css",
-#           source("/www/shiny_framebuster/framebuster.R")$value,
+          theme = "bootstrap.css",
+          source("www/shiny_framebuster/framebuster.R")$value,
           appFrameHeaderScrolling(),
           ## example R framebusting code
           fluidRow(div(style="padding-botttom: 15px;"),
-                   tags$h2(style = "margin-left: 15px", tags$strong("Net Revenue Explorer"))  
+                   tags$h2(style = "margin-left: 15px", 
+                     HTML("<p style='font-size:120%'><strong>Net Revenue Explorer</strong></p> 
+                          <p><i>West Coast Trawl Catch Share Program: Catcher Vessels</i></p>"))  
           ),
           fluidRow(
             column(4,
@@ -60,7 +51,7 @@ fluidPage(title = "FISHEyE",
                                   uiOutput("CategorySelect")
                                 ),
                                 HTML("<div style='display:inline-block;width:100%; margin-top:10px'>
-                                       <i>Summary variable options:</i>
+                                       <i>Select one or more of the following:</i>
                                       </div>"),
 #                                 fluidRow((div(style="padding-left:120%;")),
                                 uiOutput("VariableSelect")

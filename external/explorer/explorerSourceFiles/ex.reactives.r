@@ -52,8 +52,8 @@ DatSub <- reactive({
     if(!is.null(DatMain())){
       dat <- DatMain()      
       
-      print("I am netrevTable data:")
-      print(str(dat))
+#       print("I am netrevTable data:")
+#       print(str(dat))
       
 #       statSwitch <- switch(input$StatSelect,
 #         "Mean" = "mean",
@@ -61,12 +61,12 @@ DatSub <- reactive({
 #         "Average (per day)" = "mean per day",
 #         "Average (per metric ton)" = "mean per metric ton")
 
-      print(str(input$YearSelect))
-      print(str(input$ShortdescrSelect))
-      print(str(input$CategorySelect))
-      print(str(input$VariableSelect))
-      print(str(input$FishAkSelect))
-      print(input$StatSelect) 
+#       print(str(input$YearSelect))
+#       print(str(input$ShortdescrSelect))
+#       print(str(input$CategorySelect))
+#       print(str(input$VariableSelect))
+#       print(str(input$FishAkSelect))
+#       print(input$StatSelect) 
       
       #subsetting
       datSub <- subset(dat, SURVEY_YEAR %in% input$YearSelect &  
@@ -76,7 +76,6 @@ DatSub <- reactive({
                             FISHAK == input$FishAkSelect &
                             STAT == input$StatSelect)
       
-      droplevels(datSub)
 
       print("I am subset Table!")
       print(str(datSub))
@@ -116,8 +115,8 @@ DatSubThirds <- reactive({
     
     dat <- DatThirds()
     
-    print("I am netrevThirds data:")
-    print(str(dat))
+#     print("I am netrevThirds data:")
+#     print(str(dat))
         
 #     statSwitch <- switch(input$StatSelect,
 #                          "Average" = "mean",
@@ -133,12 +132,14 @@ DatSubThirds <- reactive({
                           FISHAK == input$FishAkSelect &
                           STAT == input$StatSelect
                      )
-    
-    droplevels(datSub)
 
     print("I am subset thirds!")
     print(str(datSub))
     
+    print("THIRDS???")
+    print(unique(datSub$THIRDS))
+    print(unique(factorOrder$thirds))
+
     datSub$THIRDS <- factor(datSub$THIRDS,
                             levels = factorOrder$thirds)
     
