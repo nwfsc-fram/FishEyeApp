@@ -1,0 +1,81 @@
+/*==================================================================================*/
+
+/* custom css classes for the nwfsc shiny server /*
+
+/*==================================================================================*/
+
+
+.footer-links-left {
+  margin-top:5px;
+  float:left;
+  padding:0 2px 0 2px;
+  color: #fff;
+}
+
+.footer-links-right {
+  margin-top:5px;
+  float:right;
+  padding:0 5 0 5;
+  color: #fff;
+}
+
+.navbar {
+  position: relative;
+  min-height: 50px;
+  margin-bottom: 0;
+  border: 1px solid transparent;
+}
+
+
+
+/*** Footer ***/
+#footer{
+  background-color: #092866;    
+  height: 115px;  
+  margin: 0;  
+  padding: 0;  
+  position: relative;  
+  width: 978px;
+}
+#footer-spacer {    display: block;    float: left;    width: 35px;}
+.footer-links-pad {    float: left;    height: auto;    padding: 0 10px 10px 20px;    width: auto;}
+.footer-links {    float: left;    height: auto;    padding: 30px 10px 10px 0;    width: auto;}
+#footer ul {    list-style: none outside none;    margin: 0;    padding: 10px 8px;}
+#footer a {    color: #FFFFFF;    font-size: 11px;    font-weight: normal; text-decoration:none;}
+#footer a:hover {    color: #FFE090;}
+.footer-links h4, .footer-links-pad h4 {    color: #A7DAF5;    font-size: 100%;    margin: 15px 0 0 8px;    padding: 0;}
+#footer-divider, #footer-spacer, #footer-logos, .footer-links-pad, .footer-links { border: 1px solid #092866;  /* blend in color #092866 */ }
+#footer-divider { float: left; width:18px; height: auto; padding: 30px 0 10px 0;}
+#footer-logos { float: right;   /* float right if footer column 1 is used */ width: auto; text-align: left; padding-right: 50px;}/*** Center Area ***/
+#center { width:771px; margin:0; float: left;  padding: 0; } 
+
+/* Well-panel sub, a nested well panel */
+
+.well-sub {
+  min-height: 10px;
+  padding: 8px;
+  margin-bottom: 10px;
+  background-color: #D2D5D6;
+  border: 1px solid #d7e0e2;
+  -webkit-border-radius: 6px;
+     -moz-border-radius: 6px;
+          border-radius: 6px;
+  -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.05);
+     -moz-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.05);
+          box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.05);
+}
+
+.well-radioHeading {
+  min-height: 10px;
+  padding: 8px;
+  margin-bottom: 0px;
+  background-color: #fff;
+  border: 0px solid #D2D5D6;
+  -webkit-border-radius: 6px;
+     -moz-border-radius: 6px;
+          border-radius: 6px;
+  -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.05);
+     -moz-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.05);
+          box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.05);
+}
+

@@ -8,7 +8,7 @@
 #   }      
 # }
 
-.libPaths( c( .libPaths(), "/usr/lib64/R/shiny_library/") )
+.libPaths(c(.libPaths(),"/usr/lib64/R/shiny_library"))
 # appFrame_lib_loc(wd = getwd())
 library(appFrame)
 require(shiny)
@@ -28,7 +28,15 @@ wellPanelHeading <- function(...){div(class = "well-radioHeading", ...)}
 
 
 fluidPage(title = "FISHEyE",
-          theme = "bootstrap.css",
+          
+          tags$head(
+            # Main css page, downloaded from bootswatch
+            tags$link(rel="stylesheet", type="text/css", href="bootstrap.css"),
+            # secondary css page with fisheye specific attributes
+            tags$link(rel="stylesheet", type="text/css", href="fisheye.css")
+            ),
+          
+#           theme = "bootstrap.css",
           source("www/shiny_framebuster/framebuster.R")$value,
           appFrameHeaderScrolling(),
           ## example R framebusting code
