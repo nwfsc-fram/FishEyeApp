@@ -8,7 +8,7 @@
 #   }      
 # }
 
-setwd("~/srv/shiny-server/fisheye/FisheyeApp")
+# setwd("~/srv/shiny-server/fisheye/FisheyeApp")
 
 .libPaths(c("/usr/lib64/R/shiny_library", .libPaths()))
 # appFrame_lib_loc(wd = getwd())
