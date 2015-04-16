@@ -8,6 +8,8 @@
 #   }      
 # }
 
+setwd("~/srv/shiny-server/fisheye/FisheyeApp")
+
 .libPaths(c("/usr/lib64/R/shiny_library", .libPaths()))
 # appFrame_lib_loc(wd = getwd())
 require(appFrame)
@@ -194,9 +196,6 @@ fluidPage(title = "FISHEyE",
                      tabPanel("Definitions", 
                               source("external/explorer/explorerSourceFiles/definitions.R")$value
                      ),
-                     #                      tabPanel("Help", 
-                     #                               source("external/explorer/explorerSourceFiles/help.R")$value
-                     #                      ),
                      tabPanel("Instructions",
                               source("external/explorer/explorerSourceFiles/instructions.r")$value
                      ),
