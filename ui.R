@@ -8,9 +8,9 @@
 #   }      
 # }
 
-# .libPaths(c(.libPaths(),"/usr/lib64/R/shiny_library"))
+.libPaths(c("/usr/lib64/R/shiny_library", .libPaths()))
 # appFrame_lib_loc(wd = getwd())
-# require(appFrame)
+require(appFrame)
 require(shiny)
 require(ggplot2)
 require(reshape2)
@@ -36,9 +36,8 @@ fluidPage(title = "FISHEyE",
             tags$link(rel="stylesheet", type="text/css", href="Fisheye.css")
             ),
           
-#           theme = "bootstrap.css",
 #           source("www/shiny_framebuster/framebuster.R")$value,
-#           appFrameHeaderScrolling(),
+          appFrameHeaderScrolling(),
           ## example R framebusting code
           fluidRow(div(style = "padding-botttom: 15px;"),
                    tags$h2(style = "margin-left: 15px", 
