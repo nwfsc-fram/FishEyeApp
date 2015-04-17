@@ -14,6 +14,6 @@ source("external/serverHead.R")
 
 shinyServer(
   function(input, output, session) {    
-    source("external/explorer/explorer.r", local = T)    
+    source("external/explorer/explorer.R", local = T)    
   }
 )
