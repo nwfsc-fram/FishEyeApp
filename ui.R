@@ -175,10 +175,10 @@ fluidPage(title = "FISHEyE",
                               source("external/explorer/explorerSourceFiles/definitions.R")$value
                      ),
                      tabPanel("Instructions",
-                              source("external/explorer/explorerSourceFiles/instructions.r")$value
+                              source("external/explorer/explorerSourceFiles/instructions.R")$value
                      ),
                      tabPanel("About",
-                              source("external/explorer/explorerSourceFiles/about.r")$value
+                              source("external/explorer/explorerSourceFiles/about.R")$value
                      )
                    ) # end of tabsetPanel
             ) # end right side column     
