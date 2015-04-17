@@ -1,26 +1,4 @@
-# specify lib.loc for nwcshiny server or local machine
-# you have to use a Sys. command here
-# appFrame_lib_loc <- function(wd){
-#   if (grepl("shiny-server", wd)){
-#     library(appFrame, lib.loc = "/usr/lib64/R/shiny_library/")
-#   } else {
-#     library(appFrame)
-#   }      
-# }
-
-# setwd("~/srv/shiny-server/fisheye/FisheyeApp")
-
 .libPaths(c("/usr/lib64/R/shiny_library", .libPaths()))
-# appFrame_lib_loc(wd = getwd())
-require(appFrame)
-require(shiny)
-require(ggplot2)
-require(reshape2)
-require(grid)
-require(scales)
-
-
-# waitingBlock <- fluidRow((div(style="display: inline-block; width: 1200; height: 700px")))
 
 # custom css functions
 # calls .css selector for well-sub
