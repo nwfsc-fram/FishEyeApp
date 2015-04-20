@@ -16,8 +16,8 @@ fluidPage(title = "FISHEyE",
             tags$link(rel="stylesheet", type="text/css", href="Fisheye.css")
             ),
           
-#           source("www/shiny_framebuster/framebuster.R")$value,
-#           appFrameHeaderScrolling(),
+          source("www/shiny_framebuster/framebuster.R")$value,
+          appFrameHeaderScrolling(),
           ## example R framebusting code
           fluidRow(div(style = "padding-botttom: 15px;"),
                    tags$h2(style = "margin-left: 15px", 
@@ -182,8 +182,7 @@ fluidPage(title = "FISHEyE",
                      )
                    ) # end of tabsetPanel
             ) # end right side column     
-          )
-# , #end app level fluid row
-#           appFrameFooterScrolling()
+          ), #end app level fluid row
+          appFrameFooterScrolling()
 ) # end fluid Page
 
