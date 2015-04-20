@@ -1,4 +1,5 @@
 .libPaths(c("/usr/lib64/R/shiny_library", .libPaths()))
+library(appFrame)
 
 # custom css functions
 # calls .css selector for well-sub
@@ -13,7 +14,7 @@ fluidPage(title = "FISHEyE",
             # Main css page, downloaded from bootswatch
             tags$link(rel="stylesheet", type="text/css", href="bootstrap.css"),
             # secondary css page with fisheye specific attributes
-            tags$link(rel="stylesheet", type="text/css", href="Fisheye.css")
+            tags$link(rel="stylesheet", type="text/css", href="fisheye.css")
             ),
           
           source("www/shiny_framebuster/framebuster.R")$value,
