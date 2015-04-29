@@ -12,7 +12,7 @@ source("external/explorer/explorerSourceFiles/doPlotThirds.R", local = TRUE)
 
 output$PlotMain <- renderPlot({
   if(!PermitPlot()) return()
-  doPlot(dat = DatSub(), x = "SURVEY_YEAR", y = "VALUE/1000", type = "summary")
+  doPlot(dat = DatSub(), x = "YEAR", y = "VALUE/1000", type = "summary")
 }, height = 700, width = 1200)
 
 
@@ -31,7 +31,7 @@ output$TableMain <- renderDataTable({
 
 output$PlotThirds <- renderPlot({
   if(!PermitPlot()) return()
-  doPlot(dat = DatSubThirds(), x = "SURVEY_YEAR", y = "VALUE/100", type = "thirds")
+  doPlot(dat = DatSubThirds(), x = "YEAR", y = "VALUE/100", type = "thirds")
 }, height = 700, width = 1200)
 
 
@@ -42,7 +42,7 @@ output$dlPlotMain <- downloadHandler(
     filename = function() {'dataexplorerPlot.pdf'},
     content = function(file){
       pdf(file = file, width=11, height=8.5)
-      doPlot(dat = DatSub(), x = "SURVEY_YEAR", y = "VALUE/1000", type = "summary")
+      doPlot(dat = DatSub(), x = "YEAR", y = "VALUE/1000", type = "summary")
       dev.off()
     }
 )
@@ -64,7 +64,7 @@ output$dlPlotThirds <- downloadHandler(
     filename = function() {'ThirdsAnalysis.pdf'},
     content = function(file){
       pdf(file = file, width=11, height=8.5)
-      doPlot(dat = DatSubThirds(), x = "SURVEY_YEAR", y = "VALUE/1000", type = "thirds")
+      doPlot(dat = DatSubThirds(), x = "YEAR", y = "VALUE/1000", type = "thirds")
       dev.off()
     }
 )

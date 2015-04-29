@@ -18,7 +18,7 @@ DatVars <- reactive({
   # create a list of variable names used in the sidebar inputs
   dat <- DatMain()
   datVars <- with(dat, 
-    list(SURVEY_YEAR = unique(SURVEY_YEAR),
+    list(YEAR = unique(YEAR),
       SHORTDESCR = factorOrder$shortdescr,
       CATEGORY = unique(CATEGORY),
       FISHAK = unique(FISHAK),
@@ -69,7 +69,7 @@ DatSub <- reactive({
 #       print(input$StatSelect) 
       
       #subsetting
-      datSub <- subset(dat, SURVEY_YEAR %in% input$YearSelect &  
+      datSub <- subset(dat, YEAR %in% input$YearSelect &  
                             SHORTDESCR %in% input$ShortdescrSelect & 
                             CATEGORY %in% input$CategorySelect &
                             VARIABLE %in% input$VariableSelect &
@@ -125,7 +125,7 @@ DatSubThirds <- reactive({
 #                          "Average (per metric ton)" = "mean per metric ton")
     
     #subsetting
-    datSub <- subset(dat, SURVEY_YEAR %in% input$YearSelect &
+    datSub <- subset(dat, YEAR %in% input$YearSelect &
                           SHORTDESCR %in% input$ShortdescrSelect &
                           CATEGORY %in% input$CategorySelect &
                           VARIABLE %in% input$VariableSelect &
@@ -138,7 +138,7 @@ DatSubThirds <- reactive({
 #     
 #     print("THIRDS???")
 #     print(unique(datSub$THIRDS))
-#     print(unique(factorOrder$thirds))
+    print(unique(factorOrder$thirds))
 
     datSub$THIRDS <- factor(datSub$THIRDS,
                             levels = factorOrder$thirds)

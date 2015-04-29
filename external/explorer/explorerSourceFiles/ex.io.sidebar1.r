@@ -8,7 +8,7 @@
 
 output$YearSelect <- renderUI({
   checkboxGroupInput("YearSelect", "Years:", 
-    choices = DatVars()$SURVEY_YEAR, selected = DatVars()$SURVEY_YEAR)
+    choices = DatVars()$YEAR, selected = DatVars()$YEAR)
 })
 
 
@@ -19,10 +19,10 @@ output$ShortdescrSelect <- renderUI({
 
 
 output$CategorySelect <- renderUI({
-  tags$div(title="Hi, I am a sample hover tip",
+#   tags$div(title="Hi, I am a sample hover tip",
     radioButtons("CategorySelect", "Summary variable:",
       choices = DatVars()$CATEGORY)
-  )
+#   )
 })
 
 
