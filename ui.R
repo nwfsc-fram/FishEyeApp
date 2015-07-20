@@ -8,7 +8,7 @@ wellPanelSub <- function(...){div(class = "well-sub", ...)}
 wellPanelHeading <- function(...){div(class = "well-radioHeading", ...)} 
 
 
-fluidPage(title = "FISHEYE",
+fluidPage(title = "FISHEyE",
           
           tags$head(
             # Main css page, downloaded from bootswatch
