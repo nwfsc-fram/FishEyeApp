@@ -77,7 +77,7 @@ fluidPage(title = "FISHEyE",
                               fluidRow(
                                 column(12, htmlOutput("DefaultPlotText")
                                 ),                                
-                                column(12, plotOutput("PlotMain", height = "auto")                                  
+                                column(12, plotOutput("PlotMain", height = "auto", width="auto")                                  
                                 )
                               ),
                               fluidRow(
@@ -111,7 +111,7 @@ fluidPage(title = "FISHEyE",
                                 )
                               )
                      ),
-                     tabPanel(HTML("Summary <br>
+                     tabPanel(HTML("Data <br>
                               Table"),                      
                               fluidRow(
                                 column(12, htmlOutput("DefaultTableText")
@@ -149,7 +149,7 @@ fluidPage(title = "FISHEyE",
                                 )
                               ),                             
                               fluidRow(
-                                column(12, plotOutput("PlotThirds", height = "auto")
+                                column(12, plotOutput("PlotThirds", height = "auto", width="auto")
                                 )  
                               ),
                               fluidRow(

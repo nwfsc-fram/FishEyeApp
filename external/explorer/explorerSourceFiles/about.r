@@ -1,8 +1,8 @@
 tags$div(style = "margin: 15px; 15px; 30px; width: 60%",
          tags$p("Welcome to the FISHeries Economics Explorer (FISHEyE) 
-      Net Revenue Explorer.",
+      Net Revenue Explorer for the ",
                 tags$a(href = "http://www.westcoast.fisheries.noaa.gov/fisheries/groundfish_catch_shares/index.html",
-                       "West Coast Groundfish Trawl Catch Share program."), "This app alows for
+                       "West Coast Groundfish Trawl Catch Share program."), "This app allows for
       the comparison of net revenue figures across different summary variables."),
          
          tags$hr(),
@@ -11,10 +11,10 @@ tags$div(style = "margin: 15px; 15px; 30px; width: 60%",
          limit the availability of some data. Where possible, data that is suppressed
          due to data confidentiality will be indicated with a "Suppressed" message. This
          is to differentiate suppressed confidential data from structurally missing data 
-         (feature in development).More information on data confidentiality requirements 
+         (feature in development). More information on data confidentiality requirements 
          can be found in the',
            tags$a(href = "http://www.nwfsc.noaa.gov/research/divisions/fram/documents/Administration_Operations_Report_2014.pdf",
-                  "EDC Administration and Operations Report")),
+                  "EDC Administration and Operations Report.")),
          
          tags$hr(),
          
@@ -27,10 +27,10 @@ tags$div(style = "margin: 15px; 15px; 30px; width: 60%",
          
          tags$h3("Contact"),
          tags$p(
-           "Blair Vanderlugt", tags$br(), 
+           "Melanie Harsch", tags$br(), 
            "Contractor-ECS Federal, Inc.", tags$br(),
            "In support of NMFS", tags$br(),
            "Northwest Fisheries Science Center", tags$br(),
-           "blair.vanderlugt@noaa.gov")
+           "melanie.harsch@noaa.gov")
 )
 

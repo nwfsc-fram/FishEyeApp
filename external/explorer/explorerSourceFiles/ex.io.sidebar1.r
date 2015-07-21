@@ -20,7 +20,7 @@ output$ShortdescrSelect <- renderUI({
 
 output$CategorySelect <- renderUI({
 #   tags$div(title="Hi, I am a sample hover tip",
-    radioButtons("CategorySelect", "Summary variable:",
+    radioButtons("CategorySelect", "Summarize variable by:",
       choices = DatVars()$CATEGORY)
 #   )
 })
