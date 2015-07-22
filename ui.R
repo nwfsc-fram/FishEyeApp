@@ -16,8 +16,9 @@ fluidPage(title = "FISHEyE",
             # secondary css page with fisheye specific attributes
             tags$link(rel="stylesheet", type="text/css", href="fisheye.css")
             ),
-          
-          source("www/shiny_framebuster/framebuster.R")$value,
+         
+## The following line of code is not currently working correctly 
+       #   source("www/shiny_framebuster/framebuster.R")$value,
           appFrameHeaderScrolling(),
           ## example R framebusting code
           fluidRow(div(style = "padding-botttom: 15px;"),
@@ -142,7 +143,7 @@ fluidPage(title = "FISHEyE",
                               )
                               #                 )
                      ),
-                     tabPanel(HTML("Variability<br>
+                     tabPanel(HTML("Variability <br>
                                    Analysis"),
                               fluidRow(
                                 column(12, htmlOutput("DefaultThirdsText")
