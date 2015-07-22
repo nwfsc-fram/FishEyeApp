@@ -22,8 +22,8 @@ output$TableMain <- renderDataTable({
       table <- subset(DatSub(), select = -CATEGORY)
       table$VALUE <- paste('$', prettyNum(table$VALUE, 
         big.mark = ",", format = 'f', digits = 5))
-      names(table) <- c("Year", "Summary Variable", "Description", "N",
-                        "Stat", "Value", "FishAK")
+      names(table) <- c("Year", "Summary Variable", "Economic measure", "N",
+                        "Summary Statistic", "Value", "FishAK")
       table
     }
 })
@@ -53,8 +53,8 @@ output$dlTable <- downloadHandler(
     filename = function() { 'dataexplorerTable.csv' },
     content = function(file) {
       table <- DatSub()
-      names(table) <- c("Year", "Description", "Value", "N", "Variable", 
-                        "Category", "FishAK", "Stat")
+      names(table) <- c("Year", "Summary variable category","Economic Measure", "N","Summary Statistic",   "Value",
+                        "Summary Variable", "FishAK")
       write.csv(table, file)
    }
 )
