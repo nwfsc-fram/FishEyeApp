@@ -3,11 +3,11 @@
 
 #source reactive expressions and other code
 source("external/explorer/explorerSourceFiles/ex.reactives.R", local = TRUE)
-source("external/explorer/explorerSourceFiles/ex.plot.reactives.R", local = TRUE)
+#source("external/explorer/explorerSourceFiles/ex.plot.reactives.R", local = TRUE)
 source("external/explorer/explorerSourceFiles/ex.io.sidebar1.R", local = TRUE) 
 source("external/explorer/explorerSourceFiles/doPlot.R", local = TRUE)
 source("external/explorer/explorerSourceFiles/defaultText.R", local = TRUE)
-source("external/explorer/explorerSourceFiles/doPlotThirds.R", local = TRUE)
+#source("external/explorer/explorerSourceFiles/doPlotThirds.R", local = TRUE)
 
 
 output$PlotMain <- renderPlot({
