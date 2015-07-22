@@ -29,14 +29,17 @@ output$CategorySelect <- renderUI({
 output$VariableSelect <- renderUI({
   if(!is.null(input$CategorySelect)){
       checkboxGroupInput("VariableSelect", "", 
-        choices = Variable(), selected = "")
+        choices = c("All Catch Share Fisheries","At-sea Pacific whiting","Shoreside Pacific whiting","DTS trawl with trawl endorsement","Non-whiting, non-DTS trawl with trawl endorsement",
+                    "Groundfish fixed gear with trawl endorsement","Groundfish fixed gear with fixed gear endorsement",
+                   "All Non-Catch Share Fisheries", "Crab","Shrimp","Other fisheries"),#Variable(),
+        selected = "")
   } else return()
 })
 
 output$FisherySubsetSelect <- renderUI({
   if(is.null(input$CategorySelect)) return()
   if(input$CategorySelect != "Fisheries"){
-      radioButtons("fisherySubsetSelect", "", choices = "Include All fisheries")
+     return(em("All fisheries included"))# radioButtons("fisherySubsetSelect", "", choices = "Include all fisheries")
   }
 })
 
