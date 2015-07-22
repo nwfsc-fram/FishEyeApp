@@ -41,12 +41,12 @@ tags$div(style = "margin: 15px 15px 30px; width: 60%",
   tags$ul(
     tags$li("Total:"),
     tags$p("Total for all vessels which participated in the catch share fishery."),
-    tags$li("Mean:"),
+    tags$li("Average:"),
       tags$p("Average for all vessels which participated in the catch share fishery."),
-    tags$li("Mean per day:"),
+    tags$li("Average per day:"),
       tags$p("Average per day for all vessels which participated in the catch share fishery."
       ),
-    tags$li("Mean per ton:"),
+    tags$li("Average per ton:"),
       tags$p("Average per metric ton of fish caught for all vessels which participated in the catch share program."
       )
   ),
@@ -71,11 +71,10 @@ tags$div(style = "margin: 15px 15px 30px; width: 60%",
              West Coast fisheries), and Processing Equipment (includes any 
              equipment used to process or head and gut fish on board the vessel)."),
         tags$li("Variable cost net revenue:"),
-           tags$p("Variable cost net 
-             revenue is a measure of the fleet's  operating profit. It is calculated as the revenue minus variable costs. "
+           tags$p("A measure of the fleet's  operating profit. It is calculated as the revenue minus variable costs. "
              ),
         tags$li("Total cost net revenue:"),
-          tags$p("Total cost net revenue is a longer-term measure of 
+          tags$p("A longer-term measure of 
             profitability for the fleet as a whole. It is the revenue minus variable and fixed 
             costs. "
           )

@@ -17,9 +17,9 @@ output$DefaultTableText <- renderUI({
   if(PermitPlot()) return()
   tags$div(style = "margin: 15px 15px 30px; width: 60%",
            tags$h4("Data Table"),
-           tags$p('Viewdata used to create the Summary Plot.', tags$br(),
-                  'After a table has been displayed, the data can be further filtered using the "Filter data by" box, 
-                     or filter within a column using the boxes on the bottom of the table.',tags$br(),
+           tags$p('View data used to create the Summary Plot.', tags$br(),
+                  'After a data table has been displayed, the data can be further filtered using the "Filter data by" box, 
+                     or filter within a column using the boxes on the bottom of the table. ',tags$br(),
                   'A download button can be found beneath the table.'),
            
            tags$p('To view these instructions again at any time visit the "Instructions" tab.')
@@ -37,7 +37,7 @@ output$DefaultThirdsText <- renderUI({
                     #These thirds are plotted as lines labeled: "Top Third", "Middle Third" and "Bottom Third". 
                     'A download option can be found below the graph'),
            tags$p(tags$strong("Note:"), "This feature is still in development and has limited functionality.", tags$br(),
-                  'Please note that only a single class of the selected summary variable may be selected at a time. The summary statistic only supports the "Average" option.'),
+                  'Please note that only a single class of the selected summary variable may be selected at a time. The summary statistic only supports the "Average" summary statistic options.'),
            
            tags$p('To view these instructions again at any time visit the "Instructions" tab.')
   )
