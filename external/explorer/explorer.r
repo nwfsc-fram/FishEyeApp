@@ -12,14 +12,19 @@ source("external/explorer/explorerSourceFiles/defaultText.R", local = TRUE)
 
 output$PlotMain <- renderPlot({
   if(!PermitPlot()) return()
-  doPlot(dat = DatSub(), x = "YEAR", y = "VALUE/1000", type = "summary")
+  if(PermitPlot() & input$DodgeSelect == "Compare economic measures side-by-side"){
+  doPlot(dat = DatSub(), x = "YEAR", y = "VALUE/1000", type = "summary")}
+  if(PermitPlot() & input$DodgeSelect == "Total cost revenue figure"){
+    doPlot(dat = DatSub2(), x = "YEAR", y = "VALUE/1000", type = "summary")}
+  if(PermitPlot() & input$DodgeSelect == "Variable cost revenue figure"){
+    doPlot(dat = DatSub3(), x = "YEAR", y = "VALUE/1000", type = "summary")}
 }, height = 700, width = 1200)
 
 
 output$TableMain <- renderDataTable({  
   if(!PermitPlot()) return(div(class = "block", height="700px"))
-    if(PermitPlot() & !is.null(DatSub())) {
-      table <- subset(DatSub(), select = -CATEGORY)
+    if(PermitPlot() & !is.null(DatSubTable())) {
+      table <- subset(DatSubTable(), select = -CATEGORY)
       table$VALUE <- paste('$', prettyNum(table$VALUE, 
         big.mark = ",", format = 'f', digits = 5))
       names(table) <- c("Year", "Summary Variable", "Economic measure", "N",
@@ -42,7 +47,12 @@ output$dlPlotMain <- downloadHandler(
     filename = function() {'dataexplorerPlot.pdf'},
     content = function(file){
       pdf(file = file, width=11, height=8.5)
-      doPlot(dat = DatSub(), x = "YEAR", y = "VALUE/1000", type = "summary")
+      if(PermitPlot() & input$DodgeSelect == "Compare economic measures side-by-side"){
+        doPlot(dat = DatSub(), x = "YEAR", y = "VALUE/1000", type = "summary")}
+      if(PermitPlot() & input$DodgeSelect == "Total cost revenue figure"){
+        doPlot(dat = DatSub2(), x = "YEAR", y = "VALUE/1000", type = "summary")}
+      if(PermitPlot() & input$DodgeSelect == "Variable cost revenue figure"){
+        doPlot(dat = DatSub3(), x = "YEAR", y = "VALUE/1000", type = "summary")}
       dev.off()
     }
 )
@@ -52,7 +62,7 @@ output$dlPlotMain <- downloadHandler(
 output$dlTable <- downloadHandler(
     filename = function() { 'dataexplorerTable.csv' },
     content = function(file) {
-      table <- DatSub()
+      table <- DatSubTable()
       names(table) <- c("Year", "Summary variable category","Economic Measure", "N","Summary Statistic",   "Value",
                         "Summary Variable", "FishAK")
       write.csv(table, file)

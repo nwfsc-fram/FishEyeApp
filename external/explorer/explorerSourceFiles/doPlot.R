@@ -7,7 +7,7 @@ doPlot <- function(dat, x, y, type){
     
     groupVar <- ifelse(type=="summary", "SHORTDESCR", "THIRDS")
     facetVar <- ifelse(type== "summary" , "VARIABLE", "SHORTDESCR")
-
+   # groupVar2 <-  factor(c("Variable costs","Fixed costs","Total cost net revenue"))
     
     # Plot title construction
     main <- function(){
@@ -41,19 +41,26 @@ doPlot <- function(dat, x, y, type){
     
     g <- ggplot(dat, aes_string(x = x, y = y , group = groupVar))
     
-    # define geom
+        # define geom
     if(type == "summary"){
       
       if(input$PlotSelect == "Bar"){
         if(!is.null(input$DodgeSelect)){
-          if(input$DodgeSelect == "Grouped position"){
-            g <- g + geom_bar(aes_string(fill = groupVar), stat="identity", 
+          if(input$DodgeSelect == "Compare economic measures side-by-side"){
+            g <- g + geom_bar(aes_string(fill = groupVar, order=groupVar), stat="identity", 
               position="dodge", width = scale_bars())
-          } else {
-            g <- g + geom_bar(aes_string(fill = groupVar), stat = "identity", 
-              position = "stack", width = scale_bars())
+          } 
+          if(input$DodgeSelect == "Total cost revenue figure"){
+      #      groupVar <- factor("SHORTDESCR", levels=c("Fixed costs","Variables costs","Total cost net revenue"))
+            g <- ggplot(dat, aes_string(x = x, y = y , group = groupVar, fill=groupVar))+ geom_bar(stat = "identity", 
+                   position = "stack", width = scale_bars())
           }
-        } else return()
+        if(input$DodgeSelect == "Variable cost revenue figure"){
+             g <- g + geom_bar(aes_string(fill = groupVar), stat = "identity", 
+                    position = "stack", width = scale_bars())
+          }
+
+            } else return()
       } else if(input$PlotSelect == "Point"){
         g <- g + geom_point(aes_string(colour = groupVar), size=4)
       } else {

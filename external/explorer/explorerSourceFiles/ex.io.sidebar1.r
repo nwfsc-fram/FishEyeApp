@@ -71,7 +71,7 @@ output$PlotSelect <- renderUI({
 output$DodgeSelect <- renderUI({
   if(!is.null(input$PlotSelect)) {
     if(input$PlotSelect == "Bar") {
-      radioButtons("DodgeSelect", "", choices= c("Grouped position", "Stacked position"))
+      radioButtons("DodgeSelect", "", choices= c("Compare economic measures side-by-side", "Total cost revenue figure","Variable cost revenue figure"))
     } else return()
   } else return()
 })

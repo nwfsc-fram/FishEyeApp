@@ -16,9 +16,8 @@ fluidPage(title = "FISHEyE",
             # secondary css page with fisheye specific attributes
             tags$link(rel="stylesheet", type="text/css", href="fisheye.css")
             ),
-         
-## The following line of code is not currently working correctly 
-       #   source("www/shiny_framebuster/framebuster.R")$value,
+          
+         # source("www/shiny_framebuster/framebuster.R")$value,
           appFrameHeaderScrolling(),
           ## example R framebusting code
           fluidRow(div(style = "padding-botttom: 15px;"),
