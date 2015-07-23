@@ -13,11 +13,20 @@ doPlot <- function(dat, x, y, type){
     main <- function(){
          
       if(type == "summary"){
-        sprintf("Summary Economic Measures for West Coast Catcher Vessels: \n %s", 
-                input$CategorySelect)
+        if(input$DodgeSelect == "Compare economic measures side-by-side"){
+        sprintf(paste("Summary Economic Measures for West Coast Catcher Vessels:", input$CategorySelect,
+                "\nSummary statistic: ", input$StatSelect))
+        } else if(input$DodgeSelect == "Total cost revenue figure"){
+          sprintf(paste("Total cost revenue for West Coast Catcher Vessels:", input$CategorySelect,
+                  "\nSummary statistic: ", input$StatSelect))
+        } else if(input$DodgeSelect == "Variable cost revenue figure"){
+          sprintf(paste("Variable cost revenue for West Coast Catcher Vessels:", input$CategorySelect,
+                  "\nSummary statistic: ", input$StatSelect))
+        }
+        
       } else {
-        sprintf("Thirds analysis of West Coast Catcher Vessesls: \n %s", 
-                input$VariableSelect)
+        sprintf(paste("Thirds analysis of West Coast Catcher Vessesls:",input$VariableSelect, 
+                "\nSummary statistic: ", input$StatSelect))
       }
     }
       
