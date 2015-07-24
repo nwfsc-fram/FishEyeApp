@@ -25,7 +25,7 @@ doPlot <- function(dat, x, y, type){
         }
         
       } else {
-        sprintf(paste("Thirds analysis of West Coast Catcher Vessesls:",input$VariableSelect, 
+        sprintf(paste("Variability analysis of West Coast Catcher Vessesls:",input$VariableSelect, 
                 "\nSummary statistic: ", input$StatSelect))
       }
     }
@@ -80,10 +80,10 @@ doPlot <- function(dat, x, y, type){
             if(length(input$YearSelect)>1 & min(input$YearSelect)<2011 & max(input$YearSelect)>2010){
               if(input$YearSelect[1]==2009&input$YearSelect[2]==2010){
                 g <- ggplot(dat, aes_string(x = x, y = y , group = groupVar, fill=groupVar))+ geom_bar(stat = "identity", 
-                       position = "stack", width = scale_bars())  + geom_segment(aes(x=2.5, y=0, xend=2.5, yend=max(VALUE)/1000), lty=2)  
+                       position = "stack", width = scale_bars())  + geom_segment(aes(x=2.5, y=0, xend=2.5, yend=max(VALUE)/550), lty=2)  
               } else  {
                 g <- ggplot(dat, aes_string(x = x, y = y , group = groupVar, fill=groupVar))+ geom_bar(stat = "identity", 
-                      position = "stack", width = scale_bars())  + geom_segment(aes(x=1.5, y=0, xend=1.5, yend=max(VALUE)/1000), lty=2)  
+                      position = "stack", width = scale_bars())  + geom_segment(aes(x=1.5, y=0, xend=1.5, yend=max(VALUE)/550), lty=2)  
               }}
                 else {
             g <- ggplot(dat, aes_string(x = x, y = y , group = groupVar, fill=groupVar))+ geom_bar(stat = "identity", 
@@ -93,10 +93,10 @@ doPlot <- function(dat, x, y, type){
         if(input$DodgeSelect == "Variable cost revenue figure"){
           if(length(input$YearSelect)>1 & min(input$YearSelect)<2011 & max(input$YearSelect)>2010){
             if(input$YearSelect[1]==2009&input$YearSelect[2]==2010){
-              g <- g + geom_bar(aes_string(fill = groupVar), stat = "identity", 
+              g <- ggplot(dat, aes_string(x = x, y = y , group = groupVar, fill=groupVar)) + geom_bar(aes_string(fill = groupVar), stat = "identity", 
                                 position = "stack", width = scale_bars())+ geom_segment(aes(x=2.5, y=0, xend=2.5, yend=max(VALUE)/550), lty=2)  
             } else  {
-              g <- g + geom_bar(aes_string(fill = groupVar), stat = "identity", 
+              g <- ggplot(dat, aes_string(x = x, y = y , group = groupVar, fill=groupVar)) + geom_bar(aes_string(fill = groupVar), stat = "identity", 
                                 position = "stack", width = scale_bars())+ geom_segment(aes(x=1.5, y=0, xend=1.5, yend=max(VALUE)/550), lty=2)  
             }} 
               else {
@@ -118,6 +118,9 @@ doPlot <- function(dat, x, y, type){
                g <- g + geom_point(aes_string(colour = groupVar), size=4)    
              }
       } else {
+        if(length(input$YearSelect)==1){
+          g <- g + geom_point(aes_string(colour = groupVar), size=4)
+        }
         if(length(input$YearSelect)>1 & min(input$YearSelect)<2011 & max(input$YearSelect)>2010){
           if(input$YearSelect[1]==2009&input$YearSelect[2]==2010){
             g <- g + geom_line(aes_string(colour = groupVar), size=1.5)+ geom_segment(aes(x=2.5, y=0, xend=2.5, yend=max(VALUE)/1000), lty=2)
@@ -139,7 +142,7 @@ doPlot <- function(dat, x, y, type){
             g <- g + geom_line(aes_string(colour = groupVar), size=1.5)+ geom_segment(aes(x=1.5, y=0, xend=1.5, yend=max(VALUE)/100), lty=2)
             }} else {
         g <- g + geom_line(aes_string(colour = groupVar), size=1.5)
-      }} else {
+      }} else{
         g <- g + geom_point(aes_string(colour = groupVar), size=4)
       }
     }

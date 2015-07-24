@@ -65,6 +65,18 @@ fluidPage(title = "FISHEyE",
                               ),
                               wellPanelSub(
                                  uiOutput("ShortdescrSelect")
+                              ),
+                              wellPanelSub( 
+                                downloadButton("", 
+                                                           label = "Download table",
+                                                           class = "btn btn-info")
+                                
+                              ),
+                              wellPanelSub( 
+                                downloadButton("", 
+                                               label = "Download figure",
+                                               class = "btn btn-info")
+                                
                               )
                         )
                        )
@@ -115,10 +127,10 @@ fluidPage(title = "FISHEyE",
                               Table"),                      
                               fluidRow(
                                 column(12, htmlOutput("DefaultTableText")
-                                )
+                              )
                               ),
                               fluidRow(
-                                column(12, dataTableOutput("TableMain")
+                                 column(12, dataTableOutput("TableMain")
                                 )
                               ),
                               fluidRow(
@@ -126,8 +138,7 @@ fluidPage(title = "FISHEyE",
                                        wellPanel(
                                          fluidRow(HTML("<strong>Plot Options: </strong>"),
                                                   style = "padding-bottom: 15px;
-                                                  padding-left: 15px"
-                                         ),
+                                                  padding-left: 15px" ),
                                          fluidRow(
                                            column(2,
                                                   fluidRow(
