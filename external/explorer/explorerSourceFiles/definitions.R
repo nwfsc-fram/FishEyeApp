@@ -13,7 +13,8 @@ tags$div(style = "margin: 15px 15px 30px; width: 60%",
        tags$li("Fisheries:"),
          tags$p('Fisheries used for EDC reporting to characterise 
                 the US West Coast Groudfish fishery. 
-                The catch share program consists of cooperatives for the at-sea mothership (including
+                The catch share program was implemented in 2011. Data prior and after the implementation of the program are included. 
+              The catch share program consists of cooperatives for the at-sea mothership (including
                 catcher vessels and motherships) and catcher-processor fleets, 
                 and an individual fishing quota (IFQ) program for the shorebased trawl fleet.
                 This application only uses data from the Catcher Vessel sector.
