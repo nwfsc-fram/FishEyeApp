@@ -58,8 +58,12 @@ doPlot <- function(dat, x, y, type){
           if(input$DodgeSelect == "Compare economic measures side-by-side"){
             if(length(input$YearSelect)>1 & min(input$YearSelect)<2011 & max(input$YearSelect)>2010){
               if(input$YearSelect[1]==2009&input$YearSelect[2]==2010){
+                
                g <- g + geom_bar(aes_string(fill = groupVar, order=groupVar), stat="identity", 
-                                position="dodge", width = scale_bars()) + geom_segment(aes(x=2.5, y=0, xend=2.5, yend=max(VALUE)/1000), lty=2)
+                                position="dodge", width = scale_bars()) + geom_segment(aes(x=2.5, y=0, xend=2.5, yend=max(VALUE)/1000+150), lty=2)+
+               geom_text(aes(x=1.65,y=(max(VALUE)/1000)+50, label="Pre-inception")) + geom_text(aes(x=3.35,y=(max(VALUE)/1000)+50,label="Post-inception"))+
+                 geom_text(aes(x=2.5,y=(max(VALUE)/1000+150),label="West Coast trawl catch shares program"))+
+                 geom_linerange(aes(ymin=max(VALUE)/1000, ymax=(max(VALUE)/1000+150)),col="white") #added this line to increase range of y-axis and fit the geom_text labels
               } else  {
                 g <- g + geom_bar(aes_string(fill = groupVar, order=groupVar), stat="identity", 
                                   position="dodge", width = scale_bars()) + geom_segment(aes(x=1.5, y=0, xend=1.5, yend=max(VALUE)/1000), lty=2)
@@ -76,10 +80,10 @@ doPlot <- function(dat, x, y, type){
             if(length(input$YearSelect)>1 & min(input$YearSelect)<2011 & max(input$YearSelect)>2010){
               if(input$YearSelect[1]==2009&input$YearSelect[2]==2010){
                 g <- ggplot(dat, aes_string(x = x, y = y , group = groupVar, fill=groupVar))+ geom_bar(stat = "identity", 
-                       position = "stack", width = scale_bars())  + geom_segment(aes(x=2.5, y=0, xend=2.5, yend=max(VALUE)/550), lty=2)  
+                       position = "stack", width = scale_bars())  + geom_segment(aes(x=2.5, y=0, xend=2.5, yend=max(VALUE)/1000), lty=2)  
               } else  {
                 g <- ggplot(dat, aes_string(x = x, y = y , group = groupVar, fill=groupVar))+ geom_bar(stat = "identity", 
-                      position = "stack", width = scale_bars())  + geom_segment(aes(x=1.5, y=0, xend=1.5, yend=max(VALUE)/550), lty=2)  
+                      position = "stack", width = scale_bars())  + geom_segment(aes(x=1.5, y=0, xend=1.5, yend=max(VALUE)/1000), lty=2)  
               }}
                 else {
             g <- ggplot(dat, aes_string(x = x, y = y , group = groupVar, fill=groupVar))+ geom_bar(stat = "identity", 
