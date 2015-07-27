@@ -75,7 +75,8 @@ DatSubTable <- reactive({
                        FISHAK == input$FishAkSelect &
                        STAT == input$StatSelect)
     
-    
+    datSub$YEAR <- as.numeric(datSub$YEAR)
+    datSub$VALUE <- as.numeric(datSub$VALUE)
     #       print("I am subset Table!")
     #       print(str(datSub))
     

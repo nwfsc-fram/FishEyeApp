@@ -22,14 +22,16 @@ output$PlotMain <- renderPlot({
 
 
 output$TableMain <- renderDataTable({  
-  if(!PermitPlot()) return(div(class = "block", height="700px"))
-    if(PermitPlot() & !is.null(DatSubTable())) {
+  if(!PermitPlot()) return()#return(div(class = "block", height="700px"))
+    if(PermitPlot()# & !is.null(DatSubTable())
+       ) {
       table <- subset(DatSubTable(), select = -CATEGORY)
+    #  table$YEAR <- as.numeric(table$YEAR),
       table$VALUE <- paste('$', prettyNum(table$VALUE, 
-        big.mark = ",", format = 'f', digits = 5))
+        big.mark = ",", format = 'f', digits = 5, trim=T))
       names(table) <- c("Year", "Summary Variable", "Economic measure", "N",
                         "Summary Statistic", "Value", "FishAK")
-      table
+      datatable(table, filter="bottom", rownames=F)
     }
 })
 
@@ -49,10 +51,13 @@ output$dlPlotMain <- downloadHandler(
       pdf(file = file, width=11, height=8.5)
       if(PermitPlot() & input$DodgeSelect == "Compare economic measures side-by-side"){
         doPlot(dat = DatSub(), x = "YEAR", y = "VALUE/1000", type = "summary")}
-      if(PermitPlot() & input$DodgeSelect == "Total cost revenue figure"){
+      else if(PermitPlot() & input$DodgeSelect == "Total cost revenue figure"){
         doPlot(dat = DatSub2(), x = "YEAR", y = "VALUE/1000", type = "summary")}
-      if(PermitPlot() & input$DodgeSelect == "Variable cost revenue figure"){
-        doPlot(dat = DatSub3(), x = "YEAR", y = "VALUE/1000", type = "summary")}
+      else if(PermitPlot() & input$DodgeSelect == "Variable cost revenue figure"){
+        doPlot(dat = DatSub3(), x = "YEAR", y = "VALUE/1000", type = "summary")#} 
+   #   else {
+  #      doPlot(dat = DatSubThirds(), x = "YEAR", y = "VALUE/1000", type = "thirds")
+      }
       dev.off()
     }
 )

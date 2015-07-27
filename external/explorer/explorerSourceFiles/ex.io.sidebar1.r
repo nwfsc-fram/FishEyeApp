@@ -20,7 +20,9 @@ output$ShortdescrSelect <- renderUI({
 
 output$CategorySelect <- renderUI({
 #   tags$div(title="Hi, I am a sample hover tip",
+
     radioButtons("CategorySelect", "Summarize variable by:",
+      
       choices = DatVars()$CATEGORY)
 #   )
 })
@@ -28,7 +30,7 @@ output$CategorySelect <- renderUI({
 
 output$VariableSelect <- renderUI({
   if(!is.null(input$CategorySelect)){
-      checkboxGroupInput("VariableSelect", "", 
+         checkboxGroupInput("VariableSelect", "", 
         choices = c("All Catch Share Fisheries","At-sea Pacific whiting","Shoreside Pacific whiting","DTS trawl with trawl endorsement","Non-whiting, non-DTS trawl with trawl endorsement",
                     "Groundfish fixed gear with trawl endorsement","Groundfish fixed gear with fixed gear endorsement",
                    "All Non-Catch Share Fisheries", "Crab","Shrimp","Other fisheries"),#Variable(),
