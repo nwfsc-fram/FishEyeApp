@@ -7,7 +7,6 @@ doPlot <- function(dat, x, y, type){
     
     groupVar <- ifelse(type=="summary", "SHORTDESCR", "THIRDS")
     facetVar <- ifelse(type== "summary" , "VARIABLE", "SHORTDESCR")
-   # groupVar2 <-  factor(c("Variable costs","Fixed costs","Total cost net revenue"))
     
     # Plot title construction
     main <- function(){

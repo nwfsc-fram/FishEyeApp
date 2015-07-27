@@ -240,10 +240,15 @@ DatSubThirds <- reactive({
 #           'This feature currently supports only the "Mean" Summary Stastic')
 #     )
 #     
+#This is the error message that will come up if the requirement of only 1 variable is invalidated
     validate(
+      need(length(input$VariableSelect) == 1, " "),
       need(length(input$VariableSelect) == 1, 
-        "This feature currently supports only one Summary Variable selection"))
-    
+        "Please reduce selections of the Summary Variable."),
+      need(length(input$VariableSelect) ==1, "This feature currently supports only one Summary Variable selection"),
+      need(length(input$VariableSelect) == 1, " " ))
+
+        
     
     dat <- DatThirds()
     
