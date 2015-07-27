@@ -65,15 +65,14 @@ fluidPage(title = "FISHEyE",
                               ),
                               wellPanelSub(
                                  uiOutput("ShortdescrSelect")
-                              ),
+                              )),
+                        column(4,
                               wellPanel( 
                                 downloadButton("",# dlTable
                                                label = "Download table",  
                                                class = "btn btn-info"
-                                             )
-                                
-                              ,
-                              #wellPanel( 
+                                             )  ,
+                                tags$br(),tags$br(),
                                 downloadButton("", 
                                                label = "Download figure",
                                                class = "btn btn-info")
@@ -128,9 +127,9 @@ fluidPage(title = "FISHEyE",
                               Table"),                      
                               fluidRow(
                                 column(12, htmlOutput("DefaultTableText")
-                           #   )
+                              )
                               ),
-                           #   fluidRow(
+                              fluidRow(
                                  column(12, dataTableOutput("TableMain")
                                 )
                               ),
@@ -147,7 +146,7 @@ fluidPage(title = "FISHEyE",
                                                                    label = "Download table",
                                                                    class = "btn btn-info")
                                                 #  )
-                                          # )
+                                           #)
                                          )
                                        )                                     
                                 )
