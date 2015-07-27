@@ -84,14 +84,21 @@ tags$div(style = "margin: 15px 15px 30px; width: 60%",
 h4("Fished in AK"),
   tags$ul(
     tags$li(
-      tags$p("Vessels that fished in Alaska can be filtered from the summary data.
-             If this box is checked, then all vessels will be included. If un-checked, then
+      tags$p("Vessels that fished in Alaska can be filtered from the summary data. Vessels that fished in Alaska tend to be longer (>90') than
+              vessels that only fished off the west coast (65' on average). Vessels that fished in Alaska also tend to participate in different 
+            fisheries than vessles that only fished off the west coast."), 
+      tags$p("If this box is checked, then all vessels will be included. If un-checked, then
              vessels will be removed for years in which they participated in an Alaskan fishery.")
     )
   ),
   h4("Variables in the Data Table"),
  tags$ul(
-   tags$li('N'),
-   tags$p("N is the number of observations for each datum.")
+   tags$li('Year: Calender year over which fisheries activities were observed.'),
+   tags$li('Summary variable: See above for further description of the summary variables'),
+   tags$li('Economic measure: See above for further description of the economic measures'),
+   tags$li('N: the number of observations for each datum.'),
+   tags$li('Summary statistic: see above for further description of the summary statistics'),
+   tags$li('Value: value of the economic measures for the summary statistic'),
+   tags$li('FishAK: Fished in an Alaskan fisheries (TRUE) or not (FALSE).')
   )
 )

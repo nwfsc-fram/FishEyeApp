@@ -1,39 +1,39 @@
-doPlot <- function(dat, x, y, type){
+doPlotDownload <- function(dat, x, y, type){
   if(PermitPlot()){
     
-#     print("And I am the input to the plot!!!")
-#     print(head(dat))
-#     print(str(dat))
+    #     print("And I am the input to the plot!!!")
+    #     print(head(dat))
+    #     print(str(dat))
     
     groupVar <- ifelse(type=="summary", "SHORTDESCR", "THIRDS")
     facetVar <- ifelse(type== "summary" , "VARIABLE", "SHORTDESCR")
-   # groupVar2 <-  factor(c("Variable costs","Fixed costs","Total cost net revenue"))
+    # groupVar2 <-  factor(c("Variable costs","Fixed costs","Total cost net revenue"))
     
     # Plot title construction
     main <- function(){
-         
+      
       if(type == "summary"){
         if(input$DodgeSelect == "Compare economic measures side-by-side"){
-        sprintf(paste("Summary Economic Measures for West Coast Catcher Vessels:", input$CategorySelect,
-                "\nSummary statistic: ", input$StatSelect))
+          sprintf(paste("Summary Economic Measures for West Coast Catcher Vessels:", input$CategorySelect,
+                        "\nSummary statistic: ", input$StatSelect))
         } else if(input$DodgeSelect == "Total cost revenue figure"){
           sprintf(paste("Total cost revenue for West Coast Catcher Vessels:", input$CategorySelect,
-                  "\nSummary statistic: ", input$StatSelect))
+                        "\nSummary statistic: ", input$StatSelect))
         } else if(input$DodgeSelect == "Variable cost revenue figure"){
           sprintf(paste("Variable cost revenue for West Coast Catcher Vessels:", input$CategorySelect,
-                  "\nSummary statistic: ", input$StatSelect))
+                        "\nSummary statistic: ", input$StatSelect))
         }
         
       } else {
         sprintf(paste("Variability analysis of West Coast Catcher Vessesls:",input$VariableSelect, 
-                "\nSummary statistic: ", input$StatSelect))
+                      "\nSummary statistic: ", input$StatSelect))
       }
     }
-      
+    
     
     # simple scaling for bar charts based on number of inputs
     scale_bars <- function(){
-#       a = length(input$ShortdesrSelect)
+      #       a = length(input$ShortdesrSelect)
       b = length(input$YearSelect)
       
       if(b == 1){
@@ -46,11 +46,11 @@ doPlot <- function(dat, x, y, type){
         return(0.9)
       }
     }
-  #  print(scale_bars())
+    print(scale_bars())
     
     g <- ggplot(dat, aes_string(x = x, y = y , group = groupVar))
-   #   DatSub(), x = "YEAR", y = "VALUE/1000"
-        # define geom
+    #   DatSub(), x = "YEAR", y = "VALUE/1000"
+    # define geom
     if(type == "summary"){
       
       if(input$PlotSelect == "Bar"){
@@ -59,64 +59,64 @@ doPlot <- function(dat, x, y, type){
             if(length(input$YearSelect)>1 & min(input$YearSelect)<2011 & max(input$YearSelect)>2010){
               if(input$YearSelect[1]==2009&input$YearSelect[2]==2010){
                 
-               g <- g + geom_bar(aes_string(fill = groupVar, order=groupVar), stat="identity", 
-                                position="dodge", width = scale_bars()) + geom_segment(aes(x=2.5, y=0, xend=2.5, yend=max(VALUE)/1000+150), lty=2)+
-               geom_text(aes(x=1.65,y=(max(VALUE)/1000)+50, label="Pre-inception")) + geom_text(aes(x=3.35,y=(max(VALUE)/1000)+50,label="Post-inception"))+
-                 geom_text(aes(x=2.5,y=(max(VALUE)/1000+150),label="West Coast trawl catch shares program"))+
-                 geom_linerange(aes(ymin=max(VALUE)/1000, ymax=(max(VALUE)/1000+150)),col="white") #added this line to increase range of y-axis and fit the geom_text labels
+                g <- g + geom_bar(aes_string(fill = groupVar, order=groupVar), stat="identity", 
+                                  position="dodge", width = scale_bars()) + geom_segment(aes(x=2.5, y=0, xend=2.5, yend=max(VALUE)/1000+150), lty=2)+
+                  geom_text(aes(x=1.65,y=(max(VALUE)/1000)+50, label="Pre-inception")) + geom_text(aes(x=3.35,y=(max(VALUE)/1000)+50,label="Post-inception"))+
+                  geom_text(aes(x=2.5,y=(max(VALUE)/1000+150),label="West Coast trawl catch shares program"))+
+                  geom_linerange(aes(ymin=max(VALUE)/1000, ymax=(max(VALUE)/1000+150)),col="white") #added this line to increase range of y-axis and fit the geom_text labels
               } else  {
                 g <- g + geom_bar(aes_string(fill = groupVar, order=groupVar), stat="identity", 
                                   position="dodge", width = scale_bars()) + geom_segment(aes(x=1.5, y=0, xend=1.5, yend=max(VALUE)/1000), lty=2)
                 
               }} # end if-else for adding dashed lines or not (pre- and post- catch shares)
-             else {
-               
-            g <- g + geom_bar(aes_string(fill = groupVar, order=groupVar), stat="identity", 
-              position="dodge", width = scale_bars())
+            else {
+              
+              g <- g + geom_bar(aes_string(fill = groupVar, order=groupVar), stat="identity", 
+                                position="dodge", width = scale_bars())
             }} #End if else for side-by-side comparion
           
           if(input$DodgeSelect == "Total cost revenue figure"){
-      #      groupVar <- factor("SHORTDESCR", levels=c("Fixed costs","Variables costs","Total cost net revenue"))
+            #      groupVar <- factor("SHORTDESCR", levels=c("Fixed costs","Variables costs","Total cost net revenue"))
             if(length(input$YearSelect)>1 & min(input$YearSelect)<2011 & max(input$YearSelect)>2010){
               if(input$YearSelect[1]==2009&input$YearSelect[2]==2010){
                 g <- ggplot(dat, aes_string(x = x, y = y , group = groupVar, fill=groupVar))+ geom_bar(stat = "identity", 
-                       position = "stack", width = scale_bars())  + geom_segment(aes(x=2.5, y=0, xend=2.5, yend=max(VALUE)/550), lty=2)  
+                                                                                                       position = "stack", width = scale_bars())  + geom_segment(aes(x=2.5, y=0, xend=2.5, yend=max(VALUE)/550), lty=2)  
               } else  {
                 g <- ggplot(dat, aes_string(x = x, y = y , group = groupVar, fill=groupVar))+ geom_bar(stat = "identity", 
-                      position = "stack", width = scale_bars())  + geom_segment(aes(x=1.5, y=0, xend=1.5, yend=max(VALUE)/550), lty=2)  
+                                                                                                       position = "stack", width = scale_bars())  + geom_segment(aes(x=1.5, y=0, xend=1.5, yend=max(VALUE)/550), lty=2)  
               }}
-                else {
-            g <- ggplot(dat, aes_string(x = x, y = y , group = groupVar, fill=groupVar))+ geom_bar(stat = "identity", 
-                   position = "stack", width = scale_bars())
-          }} #end if statement for total cost revenue figure
+            else {
+              g <- ggplot(dat, aes_string(x = x, y = y , group = groupVar, fill=groupVar))+ geom_bar(stat = "identity", 
+                                                                                                     position = "stack", width = scale_bars())
+            }} #end if statement for total cost revenue figure
           
-        if(input$DodgeSelect == "Variable cost revenue figure"){
-          if(length(input$YearSelect)>1 & min(input$YearSelect)<2011 & max(input$YearSelect)>2010){
-            if(input$YearSelect[1]==2009&input$YearSelect[2]==2010){
-              g <- ggplot(dat, aes_string(x = x, y = y , group = groupVar, fill=groupVar)) + geom_bar(aes_string(fill = groupVar), stat = "identity", 
-                                position = "stack", width = scale_bars())+ geom_segment(aes(x=2.5, y=0, xend=2.5, yend=max(VALUE)/550), lty=2)  
-            } else  {
-              g <- ggplot(dat, aes_string(x = x, y = y , group = groupVar, fill=groupVar)) + geom_bar(aes_string(fill = groupVar), stat = "identity", 
-                                position = "stack", width = scale_bars())+ geom_segment(aes(x=1.5, y=0, xend=1.5, yend=max(VALUE)/550), lty=2)  
-            }} 
-              else {
-             g <- g + geom_bar(aes_string(fill = groupVar), stat = "identity", 
-                    position = "stack", width = scale_bars())
-          }} # end if statement for variable cost revenue figure
-
-            } else return()
-  # Point and line plots 
-         } else if(input$PlotSelect == "Point"){
-           if(length(input$YearSelect)>1 & min(input$YearSelect)<2011 & max(input$YearSelect)>2010){
-             if(input$YearSelect[1]==2009&input$YearSelect[2]==2010){
-               
-        g <- g + geom_point(aes_string(colour = groupVar), size=4)+ geom_segment(aes(x=2.5, y=0, xend=2.5, yend=max(VALUE)/1000), lty=2)
-             } else {
-        g <- g + geom_point(aes_string(colour = groupVar), size=4)+ geom_segment(aes(x=1.5, y=0, xend=1.5, yend=max(VALUE)/1000), lty=2)
-               
-             }} else {
-               g <- g + geom_point(aes_string(colour = groupVar), size=4)    
-             }
+          if(input$DodgeSelect == "Variable cost revenue figure"){
+            if(length(input$YearSelect)>1 & min(input$YearSelect)<2011 & max(input$YearSelect)>2010){
+              if(input$YearSelect[1]==2009&input$YearSelect[2]==2010){
+                g <- ggplot(dat, aes_string(x = x, y = y , group = groupVar, fill=groupVar)) + geom_bar(aes_string(fill = groupVar), stat = "identity", 
+                                                                                                        position = "stack", width = scale_bars())+ geom_segment(aes(x=2.5, y=0, xend=2.5, yend=max(VALUE)/550), lty=2)  
+              } else  {
+                g <- ggplot(dat, aes_string(x = x, y = y , group = groupVar, fill=groupVar)) + geom_bar(aes_string(fill = groupVar), stat = "identity", 
+                                                                                                        position = "stack", width = scale_bars())+ geom_segment(aes(x=1.5, y=0, xend=1.5, yend=max(VALUE)/550), lty=2)  
+              }} 
+            else {
+              g <- g + geom_bar(aes_string(fill = groupVar), stat = "identity", 
+                                position = "stack", width = scale_bars())
+            }} # end if statement for variable cost revenue figure
+          
+        } else return()
+        # Point and line plots 
+      } else if(input$PlotSelect == "Point"){
+        if(length(input$YearSelect)>1 & min(input$YearSelect)<2011 & max(input$YearSelect)>2010){
+          if(input$YearSelect[1]==2009&input$YearSelect[2]==2010){
+            
+            g <- g + geom_point(aes_string(colour = groupVar), size=4)+ geom_segment(aes(x=2.5, y=0, xend=2.5, yend=max(VALUE)/1000), lty=2)
+          } else {
+            g <- g + geom_point(aes_string(colour = groupVar), size=4)+ geom_segment(aes(x=1.5, y=0, xend=1.5, yend=max(VALUE)/1000), lty=2)
+            
+          }} else {
+            g <- g + geom_point(aes_string(colour = groupVar), size=4)    
+          }
       } else {
         if(length(input$YearSelect)==1){
           g <- g + geom_point(aes_string(colour = groupVar), size=4)
@@ -127,8 +127,8 @@ doPlot <- function(dat, x, y, type){
           } else {
             g <- g + geom_line(aes_string(colour = groupVar), size=1.5)+ geom_segment(aes(x=1.5, y=0, xend=1.5, yend=max(VALUE)/1000), lty=2)
           }} else { 
-        g <- g + geom_line(aes_string(colour = groupVar), size=1.5)
-      }}
+            g <- g + geom_line(aes_string(colour = groupVar), size=1.5)
+          }}
       
     }# end Summary loop
     
@@ -138,13 +138,13 @@ doPlot <- function(dat, x, y, type){
         if(length(input$YearSelect)>1 & min(input$YearSelect)<2011 & max(input$YearSelect)>2010){
           if(input$YearSelect[1]==2009&input$YearSelect[2]==2010){
             g <- g + geom_line(aes_string(colour = groupVar), size=1.5)+ geom_segment(aes(x=2.5, y=0, xend=2.5, yend=max(VALUE)/1000), lty=2)
-            }  else {
+          }  else {
             g <- g + geom_line(aes_string(colour = groupVar), size=1.5)+ geom_segment(aes(x=1.5, y=0, xend=1.5, yend=max(VALUE)/1000), lty=2)
-            }} else {
-        g <- g + geom_line(aes_string(colour = groupVar), size=1.5)
-      }} else{
-        g <- g + geom_point(aes_string(colour = groupVar), size=4)
-      }
+          }} else {
+            g <- g + geom_line(aes_string(colour = groupVar), size=1.5)
+          }} else{
+            g <- g + geom_point(aes_string(colour = groupVar), size=4)
+          }
     }
     
     # define facet
@@ -154,12 +154,12 @@ doPlot <- function(dat, x, y, type){
       g <- g + facet_wrap(~ SHORTDESCR)
     }
     
-#     # create annotations for suppressed data
-#     len <- length(levels(as.factor(dat$VARIABLE))
-#     xyPosition <- data.frame(x=rep(as.numeric(inputinput$YearSelect[1]), len), y=rep(2))
-#     g + 
-#       
-#     
+    #     # create annotations for suppressed data
+    #     len <- length(levels(as.factor(dat$VARIABLE))
+    #     xyPosition <- data.frame(x=rep(as.numeric(inputinput$YearSelect[1]), len), y=rep(2))
+    #     g + 
+    #       
+    #     
     
     # define scale
     if(type == "summary") {
@@ -171,7 +171,7 @@ doPlot <- function(dat, x, y, type){
     }
     
     # defien x scale
-#     g <- g +  scale_x_discrete(labels = c("2010" = "", "2011" = ""))
+    #     g <- g +  scale_x_discrete(labels = c("2010" = "", "2011" = ""))
     
     # define solid line y=0
     g <- g + geom_hline(yintercept = 0)
@@ -181,7 +181,7 @@ doPlot <- function(dat, x, y, type){
     
     # define theme
     g <- g + theme(
-      plot.title = element_text(size=rel(1.75), vjust=1, colour="grey25"), 
+      plot.title = element_text(size=rel(1.25), vjust=1, colour="grey25"), 
       plot.title = element_text(family = "sans", face = "bold", vjust = 1),
       panel.background = element_rect(fill = "white"),
       panel.margin = unit(1.2, "lines"),
@@ -199,10 +199,10 @@ doPlot <- function(dat, x, y, type){
       legend.position = "top",
       legend.key = element_rect(fill = "white"),
       legend.text = element_text(family = "sans", 
-        color = "grey25", face = "bold", size = 12),
+                                 color = "grey25", face = "bold", size = 12),
       legend.title = element_blank())
     
     print(g)
-      
-   } else plot(0,0,type="n", axes=F, xlab="", ylab="")
+    
+  } else plot(0,0,type="n", axes=F, xlab="", ylab="")
 }

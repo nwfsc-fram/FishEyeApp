@@ -26,8 +26,8 @@ output$DefaultTableText <- renderUI({
   tags$div(style = "margin: 15px 15px 30px; width: 60%",
            tags$h4("Data Table"),
            tags$p('View data used to create the Summary Plot.', tags$br(),
-                  'After a data table has been displayed, the data can be further filtered using the "Filter data by" box, 
-                     or filter within a column using the boxes on the bottom of the table. '),
+                  'After a data table has been displayed, the data can be further filtered using the "Search" box, 
+                     or filter within a column using the boxes at the bottom of the table. '),
                  tags$p( strong('A button to download the table can be found beneath the table.')),
            
            tags$p('To view these instructions again at any time visit the "Instructions" tab.')

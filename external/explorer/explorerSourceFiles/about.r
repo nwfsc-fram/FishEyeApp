@@ -4,6 +4,8 @@ tags$div(style = "margin: 15px; 15px; 30px; width: 60%",
                 tags$a(href = "http://www.westcoast.fisheries.noaa.gov/fisheries/groundfish_catch_shares/index.html",
                        "West Coast Groundfish Trawl Catch Share program."), "This app allows for
       the comparison of net revenue figures across different summary variables."),
+         tags$p('This app is interactive. Information on how to use this app is available in the "Instructions", tab.  Information on variables in the dataset can
+                be found in the "Definitions" tab.'),
          
          tags$hr(),
          tags$h3("A note on confidentiality"), 
