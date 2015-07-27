@@ -132,14 +132,14 @@ doPlot <- function(dat, x, y, type){
       
     }# end Summary loop
     
-    else {
+    else { # Begin Variability analysis figure
       
       if(length(input$YearSelect) > 1){
         if(length(input$YearSelect)>1 & min(input$YearSelect)<2011 & max(input$YearSelect)>2010){
           if(input$YearSelect[1]==2009&input$YearSelect[2]==2010){
-            g <- g + geom_line(aes_string(colour = groupVar), size=1.5)+ geom_segment(aes(x=2.5, y=0, xend=2.5, yend=max(VALUE)/100), lty=2)
+            g <- g + geom_line(aes_string(colour = groupVar), size=1.5)+ geom_segment(aes(x=2.5, y=0, xend=2.5, yend=max(VALUE)/1000), lty=2)
             }  else {
-            g <- g + geom_line(aes_string(colour = groupVar), size=1.5)+ geom_segment(aes(x=1.5, y=0, xend=1.5, yend=max(VALUE)/100), lty=2)
+            g <- g + geom_line(aes_string(colour = groupVar), size=1.5)+ geom_segment(aes(x=1.5, y=0, xend=1.5, yend=max(VALUE)/1000), lty=2)
             }} else {
         g <- g + geom_line(aes_string(colour = groupVar), size=1.5)
       }} else{
@@ -177,11 +177,11 @@ doPlot <- function(dat, x, y, type){
     g <- g + geom_hline(yintercept = 0)
     
     # define labels
-    g <- g + labs(y = "Thousands ($)", title = main())
+    g <- g + labs(y = "Thousands ($)", title = main()) 
     
     # define theme
     g <- g + theme(
-      plot.title = element_text(size=rel(2), vjust=1, colour="grey25"), 
+      plot.title = element_text(size=rel(1.75), vjust=1, colour="grey25"), 
       plot.title = element_text(family = "sans", face = "bold", vjust = 1),
       panel.background = element_rect(fill = "white"),
       panel.margin = unit(1.2, "lines"),

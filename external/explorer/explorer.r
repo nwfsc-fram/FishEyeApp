@@ -6,6 +6,7 @@ source("external/explorer/explorerSourceFiles/ex.reactives.R", local = TRUE)
 #source("external/explorer/explorerSourceFiles/ex.plot.reactives.R", local = TRUE)
 source("external/explorer/explorerSourceFiles/ex.io.sidebar1.R", local = TRUE) 
 source("external/explorer/explorerSourceFiles/doPlot.R", local = TRUE)
+source("external/explorer/explorerSourceFiles/doPlotDownload.R", local = TRUE)
 source("external/explorer/explorerSourceFiles/defaultText.R", local = TRUE)
 #source("external/explorer/explorerSourceFiles/doPlotThirds.R", local = TRUE)
 
@@ -23,7 +24,7 @@ output$PlotMain <- renderPlot({
 
 output$TableMain <- renderDataTable({  
   if(!PermitPlot()) return()#return(div(class = "block", height="700px"))
-    if(PermitPlot()# & !is.null(DatSubTable())
+    if(PermitPlot() & !is.null(DatSubTable())
        ) {
       table <- subset(DatSubTable(), select = -CATEGORY)
     #  table$YEAR <- as.numeric(table$YEAR),
@@ -38,7 +39,7 @@ output$TableMain <- renderDataTable({
 
 output$PlotThirds <- renderPlot({
   if(!PermitPlot()) return()
-  doPlot(dat = DatSubThirds(), x = "YEAR", y = "VALUE/100", type = "thirds")
+  doPlot(dat = DatSubThirds(), x = "YEAR", y = "VALUE/1000", type = "thirds")
 }, height = 700, width = 1200)
 
 
@@ -50,11 +51,11 @@ output$dlPlotMain <- downloadHandler(
     content = function(file){
       pdf(file = file, width=11, height=8.5)
       if(PermitPlot() & input$DodgeSelect == "Compare economic measures side-by-side"){
-        doPlot(dat = DatSub(), x = "YEAR", y = "VALUE/1000", type = "summary")}
+        doPlotDownload(dat = DatSub(), x = "YEAR", y = "VALUE/1000", type = "summary")}
       else if(PermitPlot() & input$DodgeSelect == "Total cost revenue figure"){
-        doPlot(dat = DatSub2(), x = "YEAR", y = "VALUE/1000", type = "summary")}
+        doPlotDownload(dat = DatSub2(), x = "YEAR", y = "VALUE/1000", type = "summary")}
       else if(PermitPlot() & input$DodgeSelect == "Variable cost revenue figure"){
-        doPlot(dat = DatSub3(), x = "YEAR", y = "VALUE/1000", type = "summary")#} 
+        doPlotDownload(dat = DatSub3(), x = "YEAR", y = "VALUE/1000", type = "summary")#} 
    #   else {
   #      doPlot(dat = DatSubThirds(), x = "YEAR", y = "VALUE/1000", type = "thirds")
       }
@@ -79,7 +80,7 @@ output$dlPlotThirds <- downloadHandler(
     filename = function() {'ThirdsAnalysis.pdf'},
     content = function(file){
       pdf(file = file, width=11, height=8.5)
-      doPlot(dat = DatSubThirds(), x = "YEAR", y = "VALUE/1000", type = "thirds")
+      doPlotDownload(dat = DatSubThirds(), x = "YEAR", y = "VALUE/1000", type = "thirds")
       dev.off()
     }
 )
