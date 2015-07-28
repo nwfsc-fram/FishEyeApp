@@ -33,7 +33,9 @@ Variable <- reactive({
     } else if(input$CategorySelect == "State"){
       variable = factorOrder$state
     } else if(input$CategorySelect == "Fisheries"){
-      variable = factorOrder$fisheries
+      variable = c("All Catch Share Fisheries","At-sea Pacific whiting","Shoreside Pacific whiting","DTS trawl with trawl endorsement","Non-whiting, non-DTS trawl with trawl endorsement",
+                   "Groundfish fixed gear with trawl endorsement","Groundfish fixed gear with fixed gear endorsement",
+                   "All Non-Catch Share Fisheries", "Crab","Shrimp","Other fisheries")
     } else {
       variable = factorOrder$lengths
 #       subByCategory <- dat[dat$CATEGORY == input$CategorySelect,] 
