@@ -180,7 +180,7 @@ DatSub2 <- reactive({
     
     # order for plotting
     datSub2$SHORTDESCR <- factor(datSub2$SHORTDESCR, 
-                                 levels =  c("Variable costs","Fixed costs","Total cost net revenue") )
+                                   c("Total cost net revenue","Fixed costs","Variable costs") )
     
 #    
     if(input$CategorySelect == "Homeport"){
@@ -215,7 +215,7 @@ DatSub3 <- reactive({
     
     # order for plotting
     datSub3$SHORTDESCR <- factor(datSub3$SHORTDESCR, 
-                                 levels =  c("Variable costs","Variable cost net revenue") )
+                                 levels =  c("Variable cost net revenue","Variable costs") )
     
     #    
     if(input$CategorySelect == "Homeport"){
