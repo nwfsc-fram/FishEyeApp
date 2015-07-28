@@ -9,7 +9,8 @@ wellPanelHeading <- function(...){div(class = "well-radioHeading", ...)}
 
 
 fluidPage(title = "FISHEyE",
-          # create a CSS to modify style of validation test error (for Variability analysis)
+         
+           # create a CSS to modify style of validation test error (for Variability analysis)
           tags$head(
             tags$style(HTML("
                             .shiny-output-error-validation {

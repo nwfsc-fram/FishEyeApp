@@ -28,15 +28,32 @@ output$CategorySelect <- renderUI({
 })
 
 
+
 output$VariableSelect <- renderUI({
   if(!is.null(input$CategorySelect)){
-         checkboxGroupInput("VariableSelect", "", 
+    if(input$CategorySelect == "Fisheries"){
+      checkboxGroupInput("VariableSelect", "", 
         choices = c("All Catch Share Fisheries","At-sea Pacific whiting","Shoreside Pacific whiting","DTS trawl with trawl endorsement","Non-whiting, non-DTS trawl with trawl endorsement",
                     "Groundfish fixed gear with trawl endorsement","Groundfish fixed gear with fixed gear endorsement",
                    "All Non-Catch Share Fisheries", "Crab","Shrimp","Other fisheries"),#Variable(),
         selected = "")
-  } else return()
-})
+  } else {
+    if(input$CategorySelect=="Homeport"){
+      checkboxGroupInput("VariableSelect", "",
+                         choices=c("Puget Sound","South and central WA coast", "Astoria" ,"Tillamook", "Newport",                   
+                                   "Coos Bay","Brookings","Crescent City","Eureka","Fort Bragg",                
+                                   "San Francisco","Morro Bay-Monterey" ), selected="")
+    } #else {
+      if(input$CategorySelect=="State"){
+        checkboxGroupInput("VariableSelect", "",
+                           choices=c("Washington","Oregon","California"), selected="")
+      } #else
+    if(input$CategorySelect=="lengths"){
+        checkboxGroupInput("VariableSelect", "",
+                           choices=c("Large vessel (> 80 ft)","Medium vessel (> 60ft, <= 80ft)", "Small vessel (< 60 ft)"  ), selected="")
+    }}       # return()
+}}
+  )
 
 output$FisherySubsetSelect <- renderUI({
   if(is.null(input$CategorySelect)) return()
