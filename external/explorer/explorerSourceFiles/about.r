@@ -13,7 +13,7 @@ tags$div(style = "margin: 15px; 15px; 30px; width: 60%",
          limit the availability of some data. Where possible, data that is suppressed
          due to data confidentiality will be indicated with a "Suppressed" message. This
          is to differentiate suppressed confidential data from structurally missing data 
-         (feature in development). More information on data confidentiality requirements 
+         (data points do not exist). More information on data confidentiality requirements 
          can be found in the',
            tags$a(href = "http://www.nwfsc.noaa.gov/research/divisions/fram/documents/Administration_Operations_Report_2014.pdf",
                   "EDC Administration and Operations Report.")),
