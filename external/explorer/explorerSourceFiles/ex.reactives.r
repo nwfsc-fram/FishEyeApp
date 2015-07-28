@@ -108,7 +108,7 @@ DatSub <- reactive({
 #   if(is.null(input$DataButton) || input$DataButton == 0) return()
 #   input$ShortdescrSelect
 #   isolate(  
-    if(!is.null(DatMain()) & input$DodgeSelect == "Compare economic measures side-by-side"
+    if(!is.null(DatMain())# & input$DodgeSelect == "Compare economic measures side-by-side"
        ){
       dat <- DatMain()      
       
@@ -155,7 +155,7 @@ DatSub <- reactive({
       
       return(datSub)
       
-    } else return()
+    } #else return()
 #   )
 })
 
@@ -165,7 +165,7 @@ DatSub <- reactive({
 # build dcast formula using if controls and using the quoted method in dcast
 DatSub2 <- reactive({
  
-  if(!is.null(DatMain()) & input$DodgeSelect == "Total cost revenue figure"){
+  if(!is.null(DatMain()) & input$PlotSelect =="Bar" & input$DodgeSelect == "Total cost revenue figure"){
     dat <- DatMain()      
     
  
@@ -194,13 +194,13 @@ DatSub2 <- reactive({
     
     return(datSub2)
 
-  } else return()
+  } #else return()
 
 })
 
 DatSub3 <- reactive({
   
-  if(!is.null(DatMain()) & input$DodgeSelect == "Variable cost revenue figure"){
+  if(!is.null(DatMain()) & input$PlotSelect =="Bar" & input$DodgeSelect == "Variable cost revenue figure"){
     dat <- DatMain()      
     
     
@@ -229,7 +229,7 @@ DatSub3 <- reactive({
     
     return(datSub3)
     
-  } else return()
+  } #else return()
   
 })
 

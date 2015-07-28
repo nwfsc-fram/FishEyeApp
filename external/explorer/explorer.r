@@ -13,13 +13,16 @@ source("external/explorer/explorerSourceFiles/defaultText.R", local = TRUE)
 
 output$PlotMain <- renderPlot({
   if(!PermitPlot()) return()
+  if(PermitPlot() & input$PlotSelect != "Bar"){
+    doPlot(dat = DatSub(), x = "YEAR", y = "VALUE/1000", type = "summary")
+  } else {
   if(PermitPlot() & input$DodgeSelect == "Compare economic measures side-by-side"){
   doPlot(dat = DatSub(), x = "YEAR", y = "VALUE/1000", type = "summary")}
   if(PermitPlot() & input$DodgeSelect == "Total cost revenue figure"){
     doPlot(dat = DatSub2(), x = "YEAR", y = "VALUE/1000", type = "summary")}
   if(PermitPlot() & input$DodgeSelect == "Variable cost revenue figure"){
     doPlot(dat = DatSub3(), x = "YEAR", y = "VALUE/1000", type = "summary")}
-}, height = 700, width = 1200)
+}}, height = 700, width = 1200)
 
 
 output$TableMain <- renderDataTable({  
@@ -50,18 +53,21 @@ output$dlPlotMain <- downloadHandler(
     filename = function() {'dataexplorerPlot.pdf'},
     content = function(file){
       pdf(file = file, width=11, height=8.5)
-      if(PermitPlot() & input$DodgeSelect == "Compare economic measures side-by-side"){
+      if(PermitPlot() & input$PlotSelect != "Bar"){
+        doPlot(dat = DatSub(), x = "YEAR", y = "VALUE/1000", type = "summary")
+      } else {
+        
+           if(PermitPlot() & input$DodgeSelect == "Compare economic measures side-by-side"){
         doPlotDownload(dat = DatSub(), x = "YEAR", y = "VALUE/1000", type = "summary")}
       else if(PermitPlot() & input$DodgeSelect == "Total cost revenue figure"){
         doPlotDownload(dat = DatSub2(), x = "YEAR", y = "VALUE/1000", type = "summary")}
       else if(PermitPlot() & input$DodgeSelect == "Variable cost revenue figure"){
         doPlotDownload(dat = DatSub3(), x = "YEAR", y = "VALUE/1000", type = "summary")#} 
-   #   else {
-  #      doPlot(dat = DatSubThirds(), x = "YEAR", y = "VALUE/1000", type = "thirds")
-      }
+ }     }
       dev.off()
     }
 )
+
 
 
 # render table of data subset to csv for download

@@ -12,6 +12,10 @@ doPlot <- function(dat, x, y, type){
     main <- function(){
          
       if(type == "summary"){
+        if(input$PlotSelect!="Bar"){
+          sprintf(paste("Summary Economic Measures for West Coast Catcher Vessels:", input$CategorySelect,
+                        "\nSummary statistic: ", input$StatSelect))  
+        } else {
         if(input$DodgeSelect == "Compare economic measures side-by-side"){
         sprintf(paste("Summary Economic Measures for West Coast Catcher Vessels:", input$CategorySelect,
                 "\nSummary statistic: ", input$StatSelect))
@@ -21,7 +25,7 @@ doPlot <- function(dat, x, y, type){
         } else if(input$DodgeSelect == "Variable cost revenue figure"){
           sprintf(paste("Variable cost revenue for West Coast Catcher Vessels:", input$CategorySelect,
                   "\nSummary statistic: ", input$StatSelect))
-        }
+        }}
         
       } else {
         sprintf(paste("Variability analysis of West Coast Catcher Vessesls:",input$VariableSelect, 
@@ -51,7 +55,31 @@ doPlot <- function(dat, x, y, type){
    #   DatSub(), x = "YEAR", y = "VALUE/1000"
         # define geom
     if(type == "summary"){
-      
+      if(input$PlotSelect!="Bar"){
+      if(input$PlotSelect == "Point"){
+           if(length(input$YearSelect)>1 & min(input$YearSelect)<2011 & max(input$YearSelect)>2010){
+             if(input$YearSelect[1]==2009&input$YearSelect[2]==2010){
+               
+        g <- g + geom_point(aes_string(colour = groupVar), size=4)+ geom_segment(aes(x=2.5, y=0, xend=2.5, yend=Inf), lty=2)
+             } else {
+        g <- g + geom_point(aes_string(colour = groupVar), size=4)+ geom_segment(aes(x=1.5, y=0, xend=1.5, yend=Inf), lty=2)
+               
+             }} else {
+               g <- g + geom_point(aes_string(colour = groupVar), size=4)    
+             }
+      } else {
+        if(length(input$YearSelect)==1){
+          g <- g + geom_point(aes_string(colour = groupVar), size=4)
+        }
+        if(length(input$YearSelect)>1 & min(input$YearSelect)<2011 & max(input$YearSelect)>2010){
+          if(input$YearSelect[1]==2009&input$YearSelect[2]==2010){
+            g <- g + geom_line(aes_string(colour = groupVar), size=1.5)+ geom_segment(aes(x=2.5, y=0, xend=2.5, yend=Inf), lty=2)
+          } else {
+            g <- g + geom_line(aes_string(colour = groupVar), size=1.5)+ geom_segment(aes(x=1.5, y=0, xend=1.5, yend=Inf), lty=2)
+          }} else { 
+        g <- g + geom_line(aes_string(colour = groupVar), size=1.5)
+          }} # end if statement for line figure
+      } 
       if(input$PlotSelect == "Bar"){
         if(!is.null(input$DodgeSelect)){
           if(input$DodgeSelect == "Compare economic measures side-by-side"){
@@ -108,31 +136,9 @@ doPlot <- function(dat, x, y, type){
                     position = "stack", width = scale_bars())
           }} # end if statement for variable cost revenue figure
 
-            } else return()
+            } #else return()
   # Point and line plots 
-         } else if(input$PlotSelect == "Point"){
-           if(length(input$YearSelect)>1 & min(input$YearSelect)<2011 & max(input$YearSelect)>2010){
-             if(input$YearSelect[1]==2009&input$YearSelect[2]==2010){
-               
-        g <- g + geom_point(aes_string(colour = groupVar), size=4)+ geom_segment(aes(x=2.5, y=0, xend=2.5, yend=Inf), lty=2)
-             } else {
-        g <- g + geom_point(aes_string(colour = groupVar), size=4)+ geom_segment(aes(x=1.5, y=0, xend=1.5, yend=Inf), lty=2)
-               
-             }} else {
-               g <- g + geom_point(aes_string(colour = groupVar), size=4)    
-             }
-      } else {
-        if(length(input$YearSelect)==1){
-          g <- g + geom_point(aes_string(colour = groupVar), size=4)
-        }
-        if(length(input$YearSelect)>1 & min(input$YearSelect)<2011 & max(input$YearSelect)>2010){
-          if(input$YearSelect[1]==2009&input$YearSelect[2]==2010){
-            g <- g + geom_line(aes_string(colour = groupVar), size=1.5)+ geom_segment(aes(x=2.5, y=0, xend=2.5, yend=Inf), lty=2)
-          } else {
-            g <- g + geom_line(aes_string(colour = groupVar), size=1.5)+ geom_segment(aes(x=1.5, y=0, xend=1.5, yend=Inf), lty=2)
-          }} else { 
-        g <- g + geom_line(aes_string(colour = groupVar), size=1.5)
-      }}
+         }  
       
     }# end Summary loop
     
@@ -149,7 +155,7 @@ doPlot <- function(dat, x, y, type){
       }} else{
         g <- g + geom_point(aes_string(colour = groupVar), size=4)
       }
-    }
+    } # end variability figure
     
     # define facet
     if(type =="summary"){
