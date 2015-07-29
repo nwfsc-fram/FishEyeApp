@@ -314,3 +314,23 @@ PermitPlot <- reactive({
   } else x <- FALSE
   x
 })
+
+#Download buttons only shows up if PermitPlot()==T
+output$download_Table <- renderUI({
+  if(PermitPlot()) {
+    downloadButton("dlTable", "Download Table",class = "btn btn-info")
+  }
+})
+
+output$download_figure <- renderUI({
+  if(PermitPlot()){# & input$tabs=="Visualize Data"){
+    downloadButton("dlFigure", "Download Figure",class = "btn btn-info")
+  }
+})
+
+#output$download_Thirds<- renderUI({
+#  if(PermitPlot() & input$tabs=="Variability Analaysis"){
+#    downloadButton("dlPlotThirds", "Download Figure",class = "btn btn-info")
+#  }
+#})
+

@@ -47,26 +47,26 @@ output$PlotThirds <- renderPlot({
 
 
 # download buttons ------------------------------------------------------------
-
+#old download button
 # render plot from  to pdf for download
-output$dlPlotMain <- downloadHandler(
-    filename = function() {'dataexplorerPlot.pdf'},
-    content = function(file){
-      pdf(file = file, width=11, height=8.5)
-      if(PermitPlot() & input$PlotSelect != "Bar"){
-        doPlot(dat = DatSub(), x = "YEAR", y = "VALUE/1000", type = "summary")
-      } else {
+#output$dlPlotMain <- downloadHandler(
+#    filename = function() {'dataexplorerPlot.pdf'},
+#    content = function(file){
+#      pdf(file = file, width=11, height=8.5)
+#      if(PermitPlot() & input$PlotSelect != "Bar"){
+#        doPlot(dat = DatSub(), x = "YEAR", y = "VALUE/1000", type = "summary")
+#      } else {
         
-           if(PermitPlot() & input$DodgeSelect == "Compare economic measures side-by-side"){
-        doPlotDownload(dat = DatSub(), x = "YEAR", y = "VALUE/1000", type = "summary")}
-      else if(PermitPlot() & input$DodgeSelect == "Total cost revenue figure"){
-        doPlotDownload(dat = DatSub2(), x = "YEAR", y = "VALUE/1000", type = "summary")}
-      else if(PermitPlot() & input$DodgeSelect == "Variable cost revenue figure"){
-        doPlotDownload(dat = DatSub3(), x = "YEAR", y = "VALUE/1000", type = "summary")#} 
- }     }
-      dev.off()
-    }
-)
+#           if(PermitPlot() & input$DodgeSelect == "Compare economic measures side-by-side"){
+#        doPlotDownload(dat = DatSub(), x = "YEAR", y = "VALUE/1000", type = "summary")}
+#      else if(PermitPlot() & input$DodgeSelect == "Total cost revenue figure"){
+#        doPlotDownload(dat = DatSub2(), x = "YEAR", y = "VALUE/1000", type = "summary")}
+#      else if(PermitPlot() & input$DodgeSelect == "Variable cost revenue figure"){
+#        doPlotDownload(dat = DatSub3(), x = "YEAR", y = "VALUE/1000", type = "summary")#} 
+# }     }
+#      dev.off()
+#    }
+#)
 
 
 
@@ -74,6 +74,7 @@ output$dlPlotMain <- downloadHandler(
 output$dlTable <- downloadHandler(
     filename = function() { 'dataexplorerTable.csv' },
     content = function(file) {
+ #     if(!PermitPlot()) return()
       table <- DatSubTable()
       names(table) <- c("Year", "Summary variable category","Economic Measure", "N","Summary Statistic",   "Value",
                         "Summary Variable", "FishAK")
@@ -90,3 +91,29 @@ output$dlPlotThirds <- downloadHandler(
       dev.off()
     }
 )
+
+
+# render plot from  to pdf for download
+output$dlFigure <- downloadHandler(
+  filename = function() {'dataexplorerPlot.pdf'},
+  content = function(file){
+    pdf(file = file, width=11, height=8.5)
+    if(input$tabs=="Variability <br> Analysis"){ 
+      doPlotDownload(dat = DatSubThirds(), x = "YEAR", y = "VALUE/1000", type = "thirds") }
+    else {
+      if(input$tabs=="Visualize <br> Data"){
+      if(PermitPlot() & input$DodgeSelect == "Compare economic measures side-by-side"){
+        doPlotDownload(dat = DatSub(), x = "YEAR", y = "VALUE/1000", type = "summary")}
+      else if(PermitPlot() & input$DodgeSelect == "Total cost revenue figure"){
+        doPlotDownload(dat = DatSub2(), x = "YEAR", y = "VALUE/1000", type = "summary")}
+      else if(PermitPlot() & input$DodgeSelect == "Variable cost revenue figure"){
+        doPlotDownload(dat = DatSub3(), x = "YEAR", y = "VALUE/1000", type = "summary")#} 
+      }
+        }  
+    }
+    dev.off()
+    
+    
+  }
+)
+

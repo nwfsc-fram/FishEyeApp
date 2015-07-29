@@ -13,22 +13,22 @@ doPlot <- function(dat, x, y, type){
          
       if(type == "summary"){
         if(input$PlotSelect!="Bar"){
-          sprintf(paste("Summary Economic Measures for West Coast Catcher Vessels:", input$CategorySelect,
+          sprintf(paste("Summary Economic Measures for West Coast catcher vessels:", input$CategorySelect,
                         "\nSummary statistic: ", input$StatSelect))  
         } else {
         if(input$DodgeSelect == "Compare economic measures side-by-side"){
-        sprintf(paste("Summary Economic Measures for West Coast Catcher Vessels:", input$CategorySelect,
+        sprintf(paste("Summary Economic Measures for West Coast catcher vessels:", input$CategorySelect,
                 "\nSummary statistic: ", input$StatSelect))
         } else if(input$DodgeSelect == "Total cost revenue figure"){
-          sprintf(paste("Total cost revenue for West Coast Catcher Vessels:", input$CategorySelect,
+          sprintf(paste("Total cost revenue for West Coast catcher vessels:", input$CategorySelect,
                   "\nSummary statistic: ", input$StatSelect))
         } else if(input$DodgeSelect == "Variable cost revenue figure"){
-          sprintf(paste("Variable cost revenue for West Coast Catcher Vessels:", input$CategorySelect,
+          sprintf(paste("Variable cost revenue for West Coast catcher vessels:", input$CategorySelect,
                   "\nSummary statistic: ", input$StatSelect))
         }}
         
       } else {
-        sprintf(paste("Variability analysis of West Coast Catcher Vessesls:",input$VariableSelect, 
+        sprintf(paste("Variability analysis of West Coast catcher vessels:",input$VariableSelect, 
                 "\nSummary statistic: ", input$StatSelect))
       }
     }

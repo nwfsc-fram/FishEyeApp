@@ -42,7 +42,7 @@ fluidPage(title = "FISHEyE",
                       fluidRow(
                         column(12, HTML("<p><strong>Select data in each of the panels below: </strong></p>")
                         )
-                     ),
+                     ),#end fluidRow
                      fluidRow(
                        column(6,
                               wellPanelSub(
@@ -76,31 +76,23 @@ fluidPage(title = "FISHEyE",
                                  uiOutput("ShortdescrSelect")
                               )),
                         column(4,
-                              wellPanel( 
-                                downloadButton("",# dlTable
-                                               label = "Download table",  
-                                               class = "btn btn-info"
-                                             )  ,
-                                tags$br(),tags$br(),
-                                downloadButton("", 
-                                               label = "Download figure",
-                                               class = "btn btn-info")
-                                
+                                wellPanel(uiOutput("download_figure"),
+                                tags$br(),
+                                 uiOutput("download_Table")
                               )
                         )
-                       )
+                       ) #end Fluid row
                    ) #end well panel 
             ), # end left side column
             column(8,
-                   tabsetPanel(
-                     tabPanel(HTML("Summary <br>
-                              Plot"),
+                   tabsetPanel(id = "tabs",
+                     tabPanel(HTML("Visualize <br> Data"),
                               fluidRow(
                                 column(12, htmlOutput("DefaultPlotText")
                                 ),                                
                                 column(12, plotOutput("PlotMain", height = "auto", width="auto")                                  
                                 )
-                              ),
+                              ), #end fluidRow
                               fluidRow(
                                 column(12,
                                        wellPanel(
@@ -118,20 +110,13 @@ fluidPage(title = "FISHEyE",
                                                          )
                                                          )
                                                          )
-                                                  ),
-                                                  column(2,
-                                                         fluidRow(
-                                                           downloadButton("dlPlotMain", 
-                                                                          label = "Download plot",
-                                                                          class = "btn btn-info")
-                                                         )
-                                                  )
                                            )
                                          )
                                        )
                                 )
                               )
-                     ),
+                     ) ),#end fluid row
+                    
                      tabPanel(HTML("Data <br>
                               Table"),                      
                               fluidRow(
@@ -141,55 +126,16 @@ fluidPage(title = "FISHEyE",
                               fluidRow(
                                  column(12, dataTableOutput("TableMain")
                                 )
-                              ),
-                              fluidRow(
-                                column(12,
-                                #       wellPanel(
-                                     #    fluidRow(HTML("<strong>Plot Options: </strong>"),
-                                      #            style = "padding-bottom: 15px;
-                                      #            padding-left: 15px" ),
-                                         fluidRow(
-                                           column(2,
-                                              #    fluidRow(
-                                                    downloadButton("dlTable", 
-                                                                   label = "Download table",
-                                                                   class = "btn btn-info")
-                                                #  )
-                                           #)
-                                         )
-                                       )                                     
-                                )
-                              )
-                              #                 )
-                     ),
-                     tabPanel(HTML("Variability <br>
-                                   Analysis"),
+                     )),
+                     tabPanel(HTML("Variability <br> Analysis"),
                               fluidRow(
                                 column(12, htmlOutput("DefaultThirdsText")
                                 )
                               ),                             
                               fluidRow(
                                 column(12, plotOutput("PlotThirds", height = "auto", width="auto")
-                                )  
-                              ),
-                              fluidRow(
-                                column(12,
-                                       wellPanel(
-                                         fluidRow(HTML("<strong>Plot Options: </strong>"),
-                                                  style = "padding-bottom: 15px;
-                                                  padding-left: 15px" ),
-                                         fluidRow(
-                                           column(2,
-                                                  fluidRow(
-                                                    downloadButton("dlPlotThirds", 
-                                                                   label = "Download plot",
-                                                                   class = "btn btn-info")
-                                                  )
-                                           )
-                                         )
-                                       )
-                                )
-                              )
+                                ) ) 
+              
                      ),
                      tabPanel("Definitions", 
                               source("external/explorer/explorerSourceFiles/definitions.R")$value
