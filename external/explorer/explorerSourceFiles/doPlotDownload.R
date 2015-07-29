@@ -13,19 +13,23 @@ doPlotDownload <- function(dat, x, y, type){
     main <- function(){
       
       if(type == "summary"){
-        if(input$DodgeSelect == "Compare economic measures side-by-side"){
-          sprintf(paste("Summary Economic Measures for West Coast Catcher Vessels:", input$CategorySelect,
-                        "\nSummary statistic: ", input$StatSelect))
-        } else if(input$DodgeSelect == "Total cost revenue figure"){
-          sprintf(paste("Total cost revenue for West Coast Catcher Vessels:", input$CategorySelect,
-                        "\nSummary statistic: ", input$StatSelect))
-        } else if(input$DodgeSelect == "Variable cost revenue figure"){
-          sprintf(paste("Variable cost revenue for West Coast Catcher Vessels:", input$CategorySelect,
-                        "\nSummary statistic: ", input$StatSelect))
-        }
+        if(input$PlotSelect!="Bar"){
+          sprintf(paste("Summary Economic Measures for West Coast catcher vessels:", input$CategorySelect,
+                        "\nSummary statistic: ", input$StatSelect))  
+        } else {
+          if(input$DodgeSelect == "Compare economic measures side-by-side"){
+            sprintf(paste("Summary Economic Measures for West Coast catcher vessels:", input$CategorySelect,
+                          "\nSummary statistic: ", input$StatSelect))
+          } else if(input$DodgeSelect == "Total cost revenue figure"){
+            sprintf(paste("Total cost revenue for West Coast catcher vessels:", input$CategorySelect,
+                          "\nSummary statistic: ", input$StatSelect))
+          } else if(input$DodgeSelect == "Variable cost revenue figure"){
+            sprintf(paste("Variable cost revenue for West Coast catcher vessels:", input$CategorySelect,
+                          "\nSummary statistic: ", input$StatSelect))
+          }}
         
       } else {
-        sprintf(paste("Variability analysis of West Coast Catcher Vessesls:",input$VariableSelect, 
+        sprintf(paste("Variability analysis of West Coast catcher vessels:",input$VariableSelect, 
                       "\nSummary statistic: ", input$StatSelect))
       }
     }
@@ -52,7 +56,31 @@ doPlotDownload <- function(dat, x, y, type){
     #   DatSub(), x = "YEAR", y = "VALUE/1000"
     # define geom
     if(type == "summary"){
-      
+      if(input$PlotSelect!="Bar"){
+        if(input$PlotSelect == "Point"){
+          if(length(input$YearSelect)>1 & min(input$YearSelect)<2011 & max(input$YearSelect)>2010){
+            if(input$YearSelect[1]==2009&input$YearSelect[2]==2010){
+              
+              g <- g + geom_point(aes_string(colour = groupVar), size=4)+ geom_segment(aes(x=2.5, y=0, xend=2.5, yend=Inf), lty=2)
+            } else {
+              g <- g + geom_point(aes_string(colour = groupVar), size=4)+ geom_segment(aes(x=1.5, y=0, xend=1.5, yend=Inf), lty=2)
+              
+            }} else {
+              g <- g + geom_point(aes_string(colour = groupVar), size=4)    
+            }
+        } else {
+          if(length(input$YearSelect)==1){
+            g <- g + geom_point(aes_string(colour = groupVar), size=4)
+          }
+          if(length(input$YearSelect)>1 & min(input$YearSelect)<2011 & max(input$YearSelect)>2010){
+            if(input$YearSelect[1]==2009&input$YearSelect[2]==2010){
+              g <- g + geom_line(aes_string(colour = groupVar), size=1.5)+ geom_segment(aes(x=2.5, y=0, xend=2.5, yend=Inf), lty=2)
+            } else {
+              g <- g + geom_line(aes_string(colour = groupVar), size=1.5)+ geom_segment(aes(x=1.5, y=0, xend=1.5, yend=Inf), lty=2)
+            }} else { 
+              g <- g + geom_line(aes_string(colour = groupVar), size=1.5)
+            }} # end if statement for line figure
+      } 
       if(input$PlotSelect == "Bar"){
         if(!is.null(input$DodgeSelect)){
           if(input$DodgeSelect == "Compare economic measures side-by-side"){
@@ -66,10 +94,11 @@ doPlotDownload <- function(dat, x, y, type){
                   geom_text(aes(x=3.35,y=Inf,label="Post-inception")) +
                   geom_text(aes(x=2.5,y=Inf,label="West Coast trawl catch shares program")) 
                 #  geom_linerange(aes(ymin=Inf, ymax=Inf),col="white") #added this line to increase range of y-axis and fit the geom_text labels
-              
-                } else  {
+                
+                
+              } else  {
                 g <- g + geom_bar(aes_string(fill = groupVar, order=groupVar), stat="identity", 
-                                  position="dodge", width = scale_bars()) + geom_segment(aes(x=1.5, y=-Inf, xend=1.5, yend=Inf), lty=2)
+                                  position="dodge", width = scale_bars()) + geom_segment(aes(x=1.5, y=0, xend=1.5, yend=Inf), lty=2)
                 
               }} # end if-else for adding dashed lines or not (pre- and post- catch shares)
             else {
@@ -82,60 +111,35 @@ doPlotDownload <- function(dat, x, y, type){
             #      groupVar <- factor("SHORTDESCR", levels=c("Fixed costs","Variables costs","Total cost net revenue"))
             if(length(input$YearSelect)>1 & min(input$YearSelect)<2011 & max(input$YearSelect)>2010){
               if(input$YearSelect[1]==2009&input$YearSelect[2]==2010){
-                g <- ggplot(dat, aes_string(x = x, y = y , group = groupVar, fill=groupVar, order=groupVar))+ 
-                      geom_bar(stat = "identity",   position = "stack", width = scale_bars())  + 
+                g <- ggplot(dat, aes_string(x = x, y = y ,group = groupVar, fill=groupVar, order=groupVar))+ # 
+                  geom_bar(stat = "identity", position = "stack", width = scale_bars())  + 
                   geom_segment(aes(x=2.5, y=0, xend=2.5, yend=Inf), lty=2)  
               } else  {
-                g <- ggplot(dat, aes_string(x = x, y = y , group = groupVar, fill=groupVar, order=groupVar))+ 
-                  geom_bar(stat = "identity", position = "stack", width = scale_bars())  + 
-                  geom_segment(aes(x=1.5, y=0, xend=1.5, yend=Inf), lty=2)  
+                g <- ggplot(dat, aes_string(x = x, y = y , group = groupVar, fill=groupVar, order=groupVar))+ geom_bar(stat = "identity", 
+                                                                                                                       position = "stack", width = scale_bars())  + geom_segment(aes(x=1.5, y=0, xend=1.5, yend=Inf), lty=2)  
               }}
             else {
               g <- ggplot(dat, aes_string(x = x, y = y , group = groupVar, fill=groupVar, order=groupVar))+ geom_bar(stat = "identity", 
-                                                                                                     position = "stack", width = scale_bars())
+                                                                                                                     position = "stack", width = scale_bars())
             }} #end if statement for total cost revenue figure
           
           if(input$DodgeSelect == "Variable cost revenue figure"){
             if(length(input$YearSelect)>1 & min(input$YearSelect)<2011 & max(input$YearSelect)>2010){
               if(input$YearSelect[1]==2009&input$YearSelect[2]==2010){
-                g <- ggplot(dat, aes_string(x = x, y = y , group = groupVar, fill=groupVar, order=groupVar)) + 
-                  geom_bar(aes_string(fill = groupVar), stat = "identity", position = "stack", width = scale_bars())+ 
-                  geom_segment(aes(x=2.5, y=-Inf, xend=2.5, yend=Inf), lty=2)  
+                g <- ggplot(dat, aes_string(x = x, y = y , group = groupVar, fill=groupVar, order=groupVar)) + geom_bar(aes_string(fill = groupVar), stat = "identity", 
+                                                                                                                        position = "stack", width = scale_bars())+ geom_segment(aes(x=2.5, y=0, xend=2.5, yend=Inf), lty=2)  
               } else  {
-                g <- ggplot(dat, aes_string(x = x, y = y , group = groupVar, fill=groupVar, order=groupVar)) + 
-                  geom_bar(aes_string(fill = groupVar), stat = "identity", position = "stack", width = scale_bars())+ 
-                  geom_segment(aes(x=1.5, y=-Inf, xend=1.5, yend=Inf), lty=2)  
+                g <- ggplot(dat, aes_string(x = x, y = y , group = groupVar, fill=groupVar, order=groupVar)) + geom_bar(aes_string(fill = groupVar), stat = "identity", 
+                                                                                                                        position = "stack", width = scale_bars())+ geom_segment(aes(x=1.5, y=0, xend=1.5, yend=Inf), lty=2)  
               }} 
             else {
               g <- g + geom_bar(aes_string(fill = groupVar, order=groupVar), stat = "identity", 
                                 position = "stack", width = scale_bars())
             }} # end if statement for variable cost revenue figure
           
-        } else return()
+        } #else return()
         # Point and line plots 
-      } else if(input$PlotSelect == "Point"){
-        if(length(input$YearSelect)>1 & min(input$YearSelect)<2011 & max(input$YearSelect)>2010){
-          if(input$YearSelect[1]==2009&input$YearSelect[2]==2010){
-            
-            g <- g + geom_point(aes_string(colour = groupVar), size=4)+ geom_segment(aes(x=2.5, y=-Inf, xend=2.5, yend=Inf), lty=2)
-          } else {
-            g <- g + geom_point(aes_string(colour = groupVar), size=4)+ geom_segment(aes(x=1.5, y=-Inf, xend=1.5, yend=Inf), lty=2)
-            
-          }} else {
-            g <- g + geom_point(aes_string(colour = groupVar), size=4)    
-          }
-      } else {
-        if(length(input$YearSelect)==1){
-          g <- g + geom_point(aes_string(colour = groupVar), size=4)
-        }
-        if(length(input$YearSelect)>1 & min(input$YearSelect)<2011 & max(input$YearSelect)>2010){
-          if(input$YearSelect[1]==2009&input$YearSelect[2]==2010){
-            g <- g + geom_line(aes_string(colour = groupVar), size=1.5)+ geom_segment(aes(x=2.5, y=-Inf, xend=2.5, yend=Inf), lty=2)
-          } else {
-            g <- g + geom_line(aes_string(colour = groupVar), size=1.5)+ geom_segment(aes(x=1.5, y=-Inf, xend=1.5, yend=Inf), lty=2)
-          }} else { 
-            g <- g + geom_line(aes_string(colour = groupVar), size=1.5)
-          }}
+      }  
       
     }# end Summary loop
     
@@ -144,15 +148,15 @@ doPlotDownload <- function(dat, x, y, type){
       if(length(input$YearSelect) > 1){
         if(length(input$YearSelect)>1 & min(input$YearSelect)<2011 & max(input$YearSelect)>2010){
           if(input$YearSelect[1]==2009&input$YearSelect[2]==2010){
-            g <- g + geom_line(aes_string(colour = groupVar), size=1.5)+ geom_segment(aes(x=2.5, y=-Inf, xend=2.5, yend=Inf), lty=2)
+            g <- g + geom_line(aes_string(colour = groupVar), size=1.5)+ geom_segment(aes(x=2.5, y=0, xend=2.5, yend=Inf), lty=2)
           }  else {
-            g <- g + geom_line(aes_string(colour = groupVar), size=1.5)+ geom_segment(aes(x=1.5, y=-Inf, xend=1.5, yend=Inf), lty=2)
+            g <- g + geom_line(aes_string(colour = groupVar), size=1.5)+ geom_segment(aes(x=1.5, y=0, xend=1.5, yend=Inf), lty=2)
           }} else {
             g <- g + geom_line(aes_string(colour = groupVar), size=1.5)
           }} else{
             g <- g + geom_point(aes_string(colour = groupVar), size=4)
           }
-    }
+    } # end variability figure
     
     # define facet
     if(type =="summary"){
