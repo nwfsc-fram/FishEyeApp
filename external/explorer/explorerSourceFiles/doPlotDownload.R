@@ -14,22 +14,22 @@ doPlotDownload <- function(dat, x, y, type){
       
       if(type == "summary"){
         if(input$PlotSelect!="Bar"){
-          sprintf(paste("Summary Economic Measures for West Coast catcher vessels:", input$CategorySelect,
+          sprintf(paste("Summary Economic Measures for West Coast Catcher Vessels:", input$CategorySelect,
                         "\nSummary statistic: ", input$StatSelect))  
         } else {
           if(input$DodgeSelect == "Compare economic measures side-by-side"){
-            sprintf(paste("Summary Economic Measures for West Coast catcher vessels:", input$CategorySelect,
+            sprintf(paste("Summary Economic Measures for West Coast Catcher Vessels:", input$CategorySelect,
                           "\nSummary statistic: ", input$StatSelect))
           } else if(input$DodgeSelect == "Total cost revenue figure"){
-            sprintf(paste("Total cost revenue for West Coast catcher vessels:", input$CategorySelect,
+            sprintf(paste("Total cost revenue for West Coast Catcher Vessels:", input$CategorySelect,
                           "\nSummary statistic: ", input$StatSelect))
           } else if(input$DodgeSelect == "Variable cost revenue figure"){
-            sprintf(paste("Variable cost revenue for West Coast catcher vessels:", input$CategorySelect,
+            sprintf(paste("Variable cost revenue for West Coast Catcher Vessels:", input$CategorySelect,
                           "\nSummary statistic: ", input$StatSelect))
           }}
         
       } else {
-        sprintf(paste("Variability analysis of West Coast catcher vessels:",input$VariableSelect, 
+        sprintf(paste("Variability analysis of West Coast Catcher Vessels:",input$VariableSelect, 
                       "\nSummary statistic: ", input$StatSelect))
       }
     }
@@ -53,17 +53,25 @@ doPlotDownload <- function(dat, x, y, type){
     print(scale_bars())
     
     g <- ggplot(dat, aes_string(x = x, y = y , group = groupVar))
-    #   DatSub(), x = "YEAR", y = "VALUE/1000"
-    # define geom
     if(type == "summary"){
       if(input$PlotSelect!="Bar"){
         if(input$PlotSelect == "Point"){
           if(length(input$YearSelect)>1 & min(input$YearSelect)<2011 & max(input$YearSelect)>2010){
             if(input$YearSelect[1]==2009&input$YearSelect[2]==2010){
               
-              g <- g + geom_point(aes_string(colour = groupVar), size=4)+ geom_segment(aes(x=2.5, y=0, xend=2.5, yend=Inf), lty=2)
+              g <- g + geom_point(aes_string(colour = groupVar), size=4)+  
+                geom_rect(aes(xmin=.1, xmax=2.5, ymin=-Inf, ymax=Inf), fill="grey20", alpha=.025)+ 
+                geom_text(aes(x=0.5,y=max(VALUE)/1000+max(VALUE)/10000, label="Pre-catch shares"),hjust=0, size=4.25) + 
+                geom_text(aes(x=length(table(as.numeric(YEAR)))+.75,y=max(VALUE)/1000+max(VALUE)/10000,label="Post-catch shares"),hjust=1, size=4.25)# +
+              #geom_text(aes(x=length(table(as.numeric(YEAR)))/1.6,y=(max(VALUE)/1000+max(VALUE)/4000),label="West Coast trawl catch shares program"),hjust=.5, size=4.5) 
+              #    geom_linerange(aes(ymin=Inf, ymax=max(VALUE)/1000+max(VALUE)/4000),col="white") 
             } else {
-              g <- g + geom_point(aes_string(colour = groupVar), size=4)+ geom_segment(aes(x=1.5, y=0, xend=1.5, yend=Inf), lty=2)
+              g <- g + geom_point(aes_string(colour = groupVar), size=4)+  
+                geom_rect(aes(xmin=.1, xmax=1.5, ymin=-Inf, ymax=Inf), fill="grey20", alpha=.025)+ 
+                geom_text(aes(x=0.25,y=max(VALUE)/1000+max(VALUE)/10000, label="Pre-catch shares"), size=4.2, hjust=0) + 
+                geom_text(aes(x=length(table(as.numeric(YEAR)))+.5,y=max(VALUE)/1000+max(VALUE)/10000,label="Post-catch shares"), size=4.25, hjust=1) #+
+              # geom_text(aes(x=length(table(as.numeric(YEAR)))/1.5,y=(max(VALUE)/1000+max(VALUE)/4000),label="West Coast trawl catch shares program"), size=4.5, hjust=.5) 
+              #   geom_linerange(aes(ymin=Inf, ymax=max(VALUE)/1000+max(VALUE)/4000),col="white") 
               
             }} else {
               g <- g + geom_point(aes_string(colour = groupVar), size=4)    
@@ -74,9 +82,19 @@ doPlotDownload <- function(dat, x, y, type){
           }
           if(length(input$YearSelect)>1 & min(input$YearSelect)<2011 & max(input$YearSelect)>2010){
             if(input$YearSelect[1]==2009&input$YearSelect[2]==2010){
-              g <- g + geom_line(aes_string(colour = groupVar), size=1.5)+ geom_segment(aes(x=2.5, y=0, xend=2.5, yend=Inf), lty=2)
+              g <- g + geom_line(aes_string(colour = groupVar), size=1.5)+  
+                geom_rect(aes(xmin=.1, xmax=2.5, ymin=-Inf, ymax=Inf), alpha=.025)+ 
+                geom_text(aes(x=0.5,y=max(VALUE)/1000+max(VALUE)/10000, label="Pre-catch shares"),hjust=0, size=4.25) + 
+                geom_text(aes(x=length(table(as.numeric(YEAR)))+.75,y=max(VALUE)/1000+max(VALUE)/10000,label="Post-catch shares"),hjust=1, size=4.25)# +
+              #geom_text(aes(x=2.5,y=(max(VALUE)/1000+max(VALUE)/4000),label="West Coast trawl catch shares program")) 
+              #geom_linerange(aes(ymin=Inf, ymax=max(VALUE)/1000+max(VALUE)/4000),col="white") 
             } else {
-              g <- g + geom_line(aes_string(colour = groupVar), size=1.5)+ geom_segment(aes(x=1.5, y=0, xend=1.5, yend=Inf), lty=2)
+              g <- g + geom_line(aes_string(colour = groupVar), size=1.5)+ 
+                geom_rect(aes(xmin=.1, xmax=1.5, ymin=-Inf, ymax=Inf), alpha=.025)+ 
+                geom_text(aes(x=.25,y=max(VALUE)/1000+max(VALUE)/10000, label="Pre-catch shares"),hjust=0, size=4.25) + 
+                geom_text(aes(x=length(table(as.numeric(YEAR)))+.5,y=max(VALUE)/1000+max(VALUE)/10000,label="Post-catch shares"),hjust=1, size=4.25) #+
+              # geom_text(aes(x=1.5,y=(max(VALUE)/1000+max(VALUE)/4000),label="West Coast trawl catch shares program")) 
+              # geom_linerange(aes(ymin=Inf, ymax=max(VALUE)/1000+max(VALUE)/4000),col="white") 
             }} else { 
               g <- g + geom_line(aes_string(colour = groupVar), size=1.5)
             }} # end if statement for line figure
@@ -88,23 +106,24 @@ doPlotDownload <- function(dat, x, y, type){
               if(input$YearSelect[1]==2009&input$YearSelect[2]==2010){
                 
                 g <- g + geom_bar(aes_string(fill = groupVar, order=groupVar), stat="identity",position="dodge", width = scale_bars()) +
-                  geom_rect(aes(xmin=.1, xmax=2.5, ymin=-Inf, ymax=Inf), alpha=.005)+ 
-                  #    geom_segment(aes(x=2.5, y=-Inf, xend=2.5, yend=Inf), lty=2) +
-                  geom_text(aes(x=1.65,y=Inf, label="Pre-inception")) + 
-                  geom_text(aes(x=3.35,y=Inf,label="Post-inception")) +
-                  geom_text(aes(x=2.5,y=Inf,label="West Coast trawl catch shares program")) 
-                #  geom_linerange(aes(ymin=Inf, ymax=Inf),col="white") #added this line to increase range of y-axis and fit the geom_text labels
-                
+                  geom_rect(aes(xmin=.1, xmax=2.5, ymin=-Inf, ymax=Inf), fill="grey20", alpha=.02)+ 
+                  geom_text(aes(x=0.5,y=max(VALUE)/1000+max(VALUE)/10000, label="Pre-catch shares"),hjust=0, size=4.25) + 
+                  geom_text(aes(x=length(table(as.numeric(YEAR)))+.75,y=max(VALUE)/1000+max(VALUE)/10000,label="Post-catch shares"),hjust=1, size=4.25)# +
+                #geom_text(aes(x=2.5,y=(max(VALUE)/1000+max(VALUE)/4000),label="West Coast trawl catch shares program")) 
+                #geom_linerange(aes(ymin=Inf, ymax=max(VALUE)/1000+max(VALUE)/4000),col="white") #added this line to increase range of y-axis and fit the geom_text labels
                 
               } else  {
-                g <- g + geom_bar(aes_string(fill = groupVar, order=groupVar), stat="identity", 
-                                  position="dodge", width = scale_bars()) + geom_segment(aes(x=1.5, y=0, xend=1.5, yend=Inf), lty=2)
+                g <- g + geom_bar(aes_string(fill = groupVar, order=groupVar), stat="identity", position="dodge", width = scale_bars()) + 
+                  geom_rect(aes(xmin=.1, xmax=1.5, ymin=-Inf, ymax=Inf), fill="grey20", alpha=.02)+ 
+                  geom_text(aes(x=.25,y=max(VALUE)/1000+max(VALUE)/10000, label="Pre-catch shares"),hjust=0, size=4.25) + 
+                  geom_text(aes(x=length(table(as.numeric(YEAR)))+.5,y=max(VALUE)/1000+max(VALUE)/10000,label="Post-catch shares"),hjust=1, size=4.25) #+
+                #geom_text(aes(x=1.5,y=(max(VALUE)/1000+max(VALUE)/4000),label="West Coast trawl catch shares program")) 
+                # geom_linerange(aes(ymin=Inf, ymax=max(VALUE)/1000+max(VALUE)/4000),col="white") 
                 
               }} # end if-else for adding dashed lines or not (pre- and post- catch shares)
             else {
               
-              g <- g + geom_bar(aes_string(fill = groupVar, order=groupVar), stat="identity", 
-                                position="dodge", width = scale_bars())
+              g <- g + geom_bar(aes_string(fill = groupVar, order=groupVar), stat="identity", position="dodge", width = scale_bars())
             }} #End if else for side-by-side comparion
           
           if(input$DodgeSelect == "Total cost revenue figure"){
@@ -113,10 +132,19 @@ doPlotDownload <- function(dat, x, y, type){
               if(input$YearSelect[1]==2009&input$YearSelect[2]==2010){
                 g <- ggplot(dat, aes_string(x = x, y = y ,group = groupVar, fill=groupVar, order=groupVar))+ # 
                   geom_bar(stat = "identity", position = "stack", width = scale_bars())  + 
-                  geom_segment(aes(x=2.5, y=0, xend=2.5, yend=Inf), lty=2)  
+                  geom_rect(aes(xmin=.1, xmax=2.5, ymin=-Inf, ymax=Inf), fill="grey20", alpha=.04)+ 
+                  geom_text(aes(x=.5,y=max(VALUE)/400, label="Pre-catch shares"),hjust=0, size=4.25) + 
+                  geom_text(aes(x=length(table(as.numeric(YEAR)))+.75,y=max(VALUE)/400,label="Post-catch shares"),hjust=1, size=4.25)# +
+                #  geom_text(aes(x=2.5,y=max(VALUE)/350,label="West Coast trawl catch shares program")) 
+                #  geom_linerange(aes(ymin=Inf, ymax=Inf),col="white")   
               } else  {
-                g <- ggplot(dat, aes_string(x = x, y = y , group = groupVar, fill=groupVar, order=groupVar))+ geom_bar(stat = "identity", 
-                                                                                                                       position = "stack", width = scale_bars())  + geom_segment(aes(x=1.5, y=0, xend=1.5, yend=Inf), lty=2)  
+                g <- ggplot(dat, aes_string(x = x, y = y , group = groupVar, fill=groupVar, order=groupVar))+ 
+                  geom_bar(stat = "identity", position = "stack", width = scale_bars())  + 
+                  geom_rect(aes(xmin=.1, xmax=1.5, ymin=-Inf, ymax=Inf), fill="grey20", alpha=.04)+ 
+                  geom_text(aes(x=.25,y=max(VALUE)/400, label="Pre-catch shares"),hjust=0, size=4.25) + 
+                  geom_text(aes(x=length(table(as.numeric(YEAR)))+.5,y=max(VALUE)/400,label="Post-catch shares"),hjust=1, size=4.25)# +
+                #  geom_text(aes(x=1.5,y=max(VALUE)/350,label="West Coast trawl catch shares program")) 
+                #  geom_linerange(aes(ymin=Inf, ymax=max(VALUE)/1000+max(VALUE)/4000),col="white")  
               }}
             else {
               g <- ggplot(dat, aes_string(x = x, y = y , group = groupVar, fill=groupVar, order=groupVar))+ geom_bar(stat = "identity", 
@@ -126,11 +154,21 @@ doPlotDownload <- function(dat, x, y, type){
           if(input$DodgeSelect == "Variable cost revenue figure"){
             if(length(input$YearSelect)>1 & min(input$YearSelect)<2011 & max(input$YearSelect)>2010){
               if(input$YearSelect[1]==2009&input$YearSelect[2]==2010){
-                g <- ggplot(dat, aes_string(x = x, y = y , group = groupVar, fill=groupVar, order=groupVar)) + geom_bar(aes_string(fill = groupVar), stat = "identity", 
-                                                                                                                        position = "stack", width = scale_bars())+ geom_segment(aes(x=2.5, y=0, xend=2.5, yend=Inf), lty=2)  
+                g <- ggplot(dat, aes_string(x = x, y = y , group = groupVar, fill=groupVar, order=groupVar)) + 
+                  geom_bar(aes_string(fill = groupVar), stat = "identity", position = "stack", width = scale_bars())+  
+                  geom_rect(aes(xmin=.1, xmax=2.5, ymin=-Inf, ymax=Inf), fill="grey20", alpha=.05)+ 
+                  geom_text(aes(x=.5,y=max(VALUE)/400, label="Pre-catch shares"),hjust=0, size=4.25) + 
+                  geom_text(aes(x=length(table(as.numeric(YEAR)))+.75,y=max(VALUE)/400,label="Post-catch shares"),hjust=1, size=4.25)# +
+                #geom_text(aes(x=2.5,y=max(VALUE)/350,label="West Coast trawl catch shares program")) 
+                #geom_linerange(aes(ymin=Inf, ymax=max(VALUE)/1000+max(VALUE)/4000),col="white")   
               } else  {
-                g <- ggplot(dat, aes_string(x = x, y = y , group = groupVar, fill=groupVar, order=groupVar)) + geom_bar(aes_string(fill = groupVar), stat = "identity", 
-                                                                                                                        position = "stack", width = scale_bars())+ geom_segment(aes(x=1.5, y=0, xend=1.5, yend=Inf), lty=2)  
+                g <- ggplot(dat, aes_string(x = x, y = y , group = groupVar, fill=groupVar, order=groupVar)) + 
+                  geom_bar(aes_string(fill = groupVar), stat = "identity", position = "stack", width = scale_bars())+ 
+                  geom_rect(aes(xmin=.1, xmax=1.5, ymin=-Inf, ymax=Inf), fill="grey20", alpha=.075)+ 
+                  geom_text(aes(x=.25,y=max(VALUE)/400, label="Pre-catch shares"),hjust=0, size=4.25) + 
+                  geom_text(aes(x=length(table(as.numeric(YEAR)))+.5,y=max(VALUE)/400,label="Post-catch shares"),hjust=1, size=4.25) #+
+                #geom_text(aes(x=1.5,y=max(VALUE)/350,label="West Coast trawl catch shares program")) 
+                #geom_linerange(aes(ymin=Inf, ymax=max(VALUE)/1000+max(VALUE)/4000),col="white")  
               }} 
             else {
               g <- g + geom_bar(aes_string(fill = groupVar, order=groupVar), stat = "identity", 
@@ -148,15 +186,25 @@ doPlotDownload <- function(dat, x, y, type){
       if(length(input$YearSelect) > 1){
         if(length(input$YearSelect)>1 & min(input$YearSelect)<2011 & max(input$YearSelect)>2010){
           if(input$YearSelect[1]==2009&input$YearSelect[2]==2010){
-            g <- g + geom_line(aes_string(colour = groupVar), size=1.5)+ geom_segment(aes(x=2.5, y=0, xend=2.5, yend=Inf), lty=2)
+            g <- g + geom_line(aes_string(colour = groupVar), size=1.5)+  
+              geom_rect(aes(xmin=.1, xmax=2.5, ymin=-Inf, ymax=Inf),fill="grey20", alpha=.04)+ 
+              geom_text(aes(x=.5,y=max(VALUE)/1000+max(VALUE)/10000, label="Pre-catch shares"),hjust=0, size=4.25) + 
+              geom_text(aes(x=length(table(as.numeric(YEAR)))+.75,y=max(VALUE)/1000+max(VALUE)/10000,label="Post-catch shares"),hjust=1, size=4.25) #+
+            #  geom_text(aes(x=2.5,y=(max(VALUE)/1000+max(VALUE)/4000),label="West Coast trawl catch shares program")) 
+            # geom_linerange(aes(ymin=Inf, ymax=max(VALUE)/1000+max(VALUE)/4000),col="white") 
           }  else {
-            g <- g + geom_line(aes_string(colour = groupVar), size=1.5)+ geom_segment(aes(x=1.5, y=0, xend=1.5, yend=Inf), lty=2)
+            g <- g + geom_line(aes_string(colour = groupVar), size=1.5)+ 
+              geom_rect(aes(xmin=.1, xmax=1.5, ymin=-Inf, ymax=Inf),fill="grey20", alpha=.04)+ 
+              geom_text(aes(x=.25,y=max(VALUE)/1000+max(VALUE)/10000, label="Pre-catch shares"),hjust=0, size=4.25) + 
+              geom_text(aes(x=length(table(as.numeric(YEAR)))+.5,y=max(VALUE)/1000+max(VALUE)/10000,label="Post-catch shares"),hjust=1, size=4.25) #+
+            # geom_text(aes(x=1.5,y=(max(VALUE)/1000+max(VALUE)/4000),label="West Coast trawl catch shares program")) 
+            # geom_linerange(aes(ymin=Inf, ymax=max(VALUE)/1000+max(VALUE)/4000),col="white") 
           }} else {
             g <- g + geom_line(aes_string(colour = groupVar), size=1.5)
           }} else{
             g <- g + geom_point(aes_string(colour = groupVar), size=4)
           }
-    } # end variability figure
+    } # end variability figure   
     
     # define facet
     if(type =="summary"){
