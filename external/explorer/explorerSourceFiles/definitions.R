@@ -38,7 +38,7 @@ tags$div(style = "margin: 15px 15px 30px; width: 60%",
          tags$p("The state corresponding to each homeport.")
       ),               
 
-    h4("Summary statistic"),
+    h4("Statistics"),
   tags$ul(
     tags$li("Total:"),
     tags$p("Total for all vessels which participated in the catch share fishery."),
@@ -84,7 +84,7 @@ tags$div(style = "margin: 15px 15px 30px; width: 60%",
 h4("Fished in AK"),
   tags$ul(
     tags$li(
-      tags$p("Vessels that fished in Alaska can be filtered from the summary data. Vessels that fished in Alaska tend to be longer (>90') than
+      tags$p("Vessels that fished in Alaska (versus vessels that fished solely on the west coast) can be filtered from the data. Vessels that fished in Alaska tend to be longer (>90') than
               vessels that only fished off the west coast (65' on average). Vessels that fished in Alaska also tend to participate in different 
             fisheries than vessles that only fished off the west coast."), 
       tags$p("If this box is checked, then all vessels will be included. If un-checked, then
@@ -97,7 +97,7 @@ h4("Fished in AK"),
    tags$li('Summary variable: See above for further description of the summary variables'),
    tags$li('Economic measure: See above for further description of the economic measures'),
    tags$li('N: the number of observations for each datum.'),
-   tags$li('Summary statistic: see above for further description of the summary statistics'),
+   tags$li('Statistic: see above for further description of the statistics'),
    tags$li('Value: value of the economic measures for the summary statistic'),
    tags$li('FishAK: Fished in an Alaskan fisheries (TRUE) or not (FALSE).')
   )

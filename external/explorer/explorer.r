@@ -34,7 +34,7 @@ output$TableMain <- renderDataTable({
       table$VALUE <- paste('$', prettyNum(table$VALUE, 
         big.mark = ",", format = 'f', digits = 5, trim=T))
       names(table) <- c("Year", "Summary Variable", "Economic measure", "N",
-                        "Summary Statistic", "Value", "FishAK")
+                        "Statistic", "Value", "FishAK")
       datatable(table, filter="bottom", rownames=F)
     }
 })
@@ -54,7 +54,7 @@ output$dlTable <- downloadHandler(
     content = function(file) {
  #     if(!PermitPlot()) return()
       table <- DatSubTable()
-      names(table) <- c("Year", "Summary variable category","Economic Measure", "N","Summary Statistic",   "Value",
+      names(table) <- c("Year", "Summary variable category","Economic Measure", "N","Statistic",   "Value",
                         "Summary Variable", "FishAK")
       write.csv(table, file)
    }

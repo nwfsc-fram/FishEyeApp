@@ -55,7 +55,7 @@ output$FishAkSelect <- renderUI({
 
 
 output$StatSelect <- renderUI({
-  radioButtons("StatSelect", "Summary statistic:", 
+  radioButtons("StatSelect", "Statistic:", 
     choices = c(DatVars()$STAT))
 })
 
