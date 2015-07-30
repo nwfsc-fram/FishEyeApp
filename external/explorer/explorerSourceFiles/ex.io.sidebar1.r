@@ -31,22 +31,38 @@ output$CategorySelect <- renderUI({
 
 output$VariableSelect <- renderUI({
   if(!is.null(input$CategorySelect)){
-    checkboxGroupInput("VariableSelect", "", 
+    tagList(
+      actionButton("selectall", "Select all"),
+      checkboxGroupInput("VariableSelect", "", 
                       # choices = c("All Catch Share Fisheries","At-sea Pacific whiting","Shoreside Pacific whiting","DTS trawl with trawl endorsement","Non-whiting, non-DTS trawl with trawl endorsement",
                       #             "Groundfish fixed gear with trawl endorsement","Groundfish fixed gear with fixed gear endorsement",
                       #             "All Non-Catch Share Fisheries", "Crab","Shrimp","Other fisheries"),#
-                      choices=Variable(),
-                       selected = "")
-  } else return()
+                      choices=Variable()#,
+                       #selected = ""
+                    )
+    
+    )
+  }
+   else return()
 })
+
+observe({
+   if (is.null(input$selectall) || input$selectall == 0) return() 
+  else if (input$selectall%%2 == 0) {
+     updateCheckboxGroupInput(session,"VariableSelect", selected=as.character(0)) } 
+  else {
+    updateCheckboxGroupInput(session,"VariableSelect", selected=Variable())
+  }
+})
+
+
 
 output$FisherySubsetSelect <- renderUI({
   if(is.null(input$CategorySelect)) return()
   if(input$CategorySelect != "Fisheries"){
      return(em("All fisheries included"))# radioButtons("fisherySubsetSelect", "", choices = "Include all fisheries")
-  }
-})
-
+}
+ } )
 
 output$FishAkSelect <- renderUI({
   checkboxInput("FishAkSelect", "Include vessels that fished in AK", 
@@ -57,8 +73,8 @@ output$FishAkSelect <- renderUI({
 output$StatSelect <- renderUI({
   radioButtons("StatSelect", "Statistic:", 
     choices = c(DatVars()$STAT))
+ 
 })
-
 
 #======================================
 
