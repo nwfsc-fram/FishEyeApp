@@ -56,7 +56,7 @@ output$VariableSelect <- renderUI({
         checkboxGroupInput("VariableSelect",  "Vessel length class", choices=factorOrder$lengths, selected="")
       } else if(input$CategorySelect == "Homeport"){
          tagList( 
-        actionButton("selectall", "Select all"),
+        bsButton("selectall", "Select all", style="primary", size="extra-small",block=T, type="action"),
          
         checkboxGroupInput("VariableSelect", "Homeport", choices=factorOrder$port, selected="")
          )
@@ -65,7 +65,7 @@ output$VariableSelect <- renderUI({
         selectInput("fishCatSelect","", c("Catch share fisheries"="CSF", "Non-catch shares fisheries"="NSF", "All fisheries"="AF"), selected="AF"),
         conditionalPanel(
           condition="input.fishCatSelect==AF", 
-         actionButton("selectall2", "Select all")),
+         bsButton("selectall2", "Select all", style="primary", size="extra-small",block=T, type="action")),
         checkboxGroupInput("VariableSelect", "Select one or more fishery", choices=c("All Catch Share Fisheries","At-sea Pacific whiting","Shoreside Pacific whiting","DTS trawl with trawl endorsement","Non-whiting, non-DTS trawl with trawl endorsement",
                                                                     "Groundfish fixed gear with trawl endorsement","Groundfish fixed gear with fixed gear endorsement",
                                                                     "All Non-Catch Share Fisheries", "Crab","Shrimp","Other fisheries"), selected="")
