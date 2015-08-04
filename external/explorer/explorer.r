@@ -22,7 +22,7 @@ output$PlotMain <- renderPlot({
     doPlot(dat = DatSub2(), x = "YEAR", y = "VALUE/1000", type = "summary")}
   if(PermitPlot() & input$DodgeSelect == "Variable cost revenue figure"){
     doPlot(dat = DatSub3(), x = "YEAR", y = "VALUE/1000", type = "summary")}
-}}, height = 700, width = 1100)
+}}, height = 700, width = 1200)
 
 
 output$TableMain <- renderDataTable({  
@@ -41,7 +41,7 @@ output$TableMain <- renderDataTable({
 
 
 output$PlotThirds <- renderPlot({
-  if(!PermitPlot() & is.null(DatSubThirds())) return()
+  if(!PermitPlot()) return()
   doPlot(dat = DatSubThirds(), x = "YEAR", y = "VALUE/1000", type = "thirds")
 }, height = 700, width = 1200)
 
