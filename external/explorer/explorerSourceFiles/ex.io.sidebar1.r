@@ -8,7 +8,7 @@
 
 output$YearSelect <- renderUI({
   checkboxGroupInput("YearSelect", "Years:", 
-    choices = DatVars()$YEAR, selected = DatVars()$YEAR)
+    choices = c("__2009"=2009,"__2010"=2010,2011,2012), selected = DatVars()$YEAR)
 })
 
 
@@ -27,9 +27,9 @@ output$CategorySelect <- renderUI({
 #   )
 })
 
-fish.var <- c("All Catch Share Fisheries","At-sea Pacific whiting","Shoreside Pacific whiting","DTS trawl with trawl endorsement","Non-whiting, non-DTS trawl with trawl endorsement",
-  "Groundfish fixed gear with trawl endorsement","Groundfish fixed gear with fixed gear endorsement",
-  "All Non-Catch Share Fisheries", "Crab","Shrimp","Other fisheries")
+fish.var <- c("ALL CATCH SHARE FISHERIES"="All Catch Share Fisheries","At-sea Pacific whiting","Shoreside Pacific whiting","DTS trawl with trawl endorsement","Non-whiting, non-DTS trawl with trawl endorsement",
+  "Groundfish fixed gear with trawl endorsement",
+  "ALL NON-CATCH SHARE FISHERIES"="All Non-Catch Share Fisheries", "Groundfish fixed gear with fixed gear endorsement","Crab","Shrimp","Other fisheries")
 
 Variable <- reactive({
   dat <- DatMain()
@@ -47,62 +47,79 @@ Variable <- reactive({
 })
 
 
-output$VariableSelect <- renderUI({
-  if(!is.null(input$CategorySelect)){
+    
 
-      if(input$CategorySelect == "State"){
-       checkboxGroupInput("VariableSelect", "State", choices = factorOrder$state, selected="")
-      } else if(input$CategorySelect == "Vessel length class"){
-        checkboxGroupInput("VariableSelect",  "Vessel length class", choices=factorOrder$lengths, selected="")
-      } else if(input$CategorySelect == "Homeport"){
-         tagList( 
-        bsButton("selectall", "Select all", style="primary", size="extra-small",block=T, type="action"),
-         
-        checkboxGroupInput("VariableSelect", "Homeport", choices=factorOrder$port, selected="")
-         )
-      } else if(input$CategorySelect=="Fisheries"){
-        tagList(
-        selectInput("fishCatSelect","", c("Catch share fisheries"="CSF", "Non-catch shares fisheries"="NSF", "All fisheries"="AF"), selected="AF"),
-        conditionalPanel(
-          condition="input.fishCatSelect==AF", 
-         bsButton("selectall2", "Select all", style="primary", size="extra-small",block=T, type="action")),
-        checkboxGroupInput("VariableSelect", "Select one or more fishery", choices=c("All Catch Share Fisheries","At-sea Pacific whiting","Shoreside Pacific whiting","DTS trawl with trawl endorsement","Non-whiting, non-DTS trawl with trawl endorsement",
-                                                                    "Groundfish fixed gear with trawl endorsement","Groundfish fixed gear with fixed gear endorsement",
-                                                                    "All Non-Catch Share Fisheries", "Crab","Shrimp","Other fisheries"), selected="")
-        
-        )
-        }
-      }
-        
-    #   
-        
-#        if(input$CategorySelect == "Fisheries"){
-#      checkboxGroupInput("VariableSelect", "", 
-                      # choices = c("All Catch Share Fisheries","At-sea Pacific whiting","Shoreside Pacific whiting","DTS trawl with trawl endorsement","Non-whiting, non-DTS trawl with trawl endorsement",
-                      #             "Groundfish fixed gear with trawl endorsement","Groundfish fixed gear with fixed gear endorsement",
-                      #             "All Non-Catch Share Fisheries", "Crab","Shrimp","Other fisheries"),#
- #                     choices=Variable()#,
-                       #selected = ""
-#                    )
-#    
-#    )
-#  }
-   else return()
-})
+output$VariableSelect <- renderUI({  
+    if(input$tabs=="Panel1"){
+      if(!is.null(input$CategorySelect)){
+        if(input$CategorySelect == "State"){
+            checkboxGroupInput("VariableSelect", "State", choices = factorOrder$state, selected="")
+        } else if(input$CategorySelect == "Vessel length class"){
+            checkboxGroupInput("VariableSelect",  "Vessel length class", choices=factorOrder$lengths, selected="")
+        } else if(input$CategorySelect == "Homeport"){
+            tagList(           
+              bsButton("selectall", "Select all", style="primary", size="extra-small",block=F, type="action"),
+              checkboxGroupInput("VariableSelect", "Homeport", choices=factorOrder$port, selected="")
+            )
+        } else if(input$CategorySelect=="Fisheries"){
+            tagList(
+              selectInput("fishCatSelect","", c("Catch share fisheries"="CSF", "Non-catch shares fisheries"="NSF", "All fisheries"="AF"), selected="AF"),
+              conditionalPanel(
+                condition="input.fishCatSelect==AF", 
+                bsButton("selectall2", "Select all", style="primary", size="extra-small",block=F, type="action")),
+              checkboxGroupInput("VariableSelect", "Select one or more fishery", choices=fish.var, selected="")
+            )
+          } # end fisheries
+      } else return ()
+    
+   } else if(input$tabs=="Panel2") {
+      if(!is.null(input$CategorySelect)){
+       
+        if(input$CategorySelect == "State"){
+           radioButtons("VariableSelect", "State", choices = c("None selected"="","Washington"="Washington", "Oregon"="Oregon","California"="California"), selected="None selected") 
+        } else if(input$CategorySelect == "Vessel length class"){
+           radioButtons("VariableSelect",  "Vessel length class", choices=c("None selected"="",factorOrder$lengths), selected="None selected")
+        } else if(input$CategorySelect == "Homeport"){
+            radioButtons("VariableSelect", "Homeport", choices=c("None selected"="",factorOrder$port), selected="None selected")
+        } else if(input$CategorySelect=="Fisheries"){
+            tagList(
+               selectInput("fishCatSelect","", c("Catch share fisheries"="CSF", "Non-catch share fisheries"="NSF", "All fisheries"="AF"), selected="AF"),
+               conditionalPanel(
+                 condition="input.fishCatSelect2==AF", 
+                 radioButtons("VariableSelect", "Select one fishery", choices=c("None selected"="",fish.var), selected="None selected"))
+                           )            
+            }#end fisheries
+          } #else return ()
+   } # end Panel 2
+  })
+   
 
 observe({
   if (is.null(input$fishCatSelect)) return()
     else if(input$fishCatSelect=="CSF"){
-      updateCheckboxGroupInput(session,"VariableSelect", choices=fish.var[1:7], selected=NULL)
+      updateCheckboxGroupInput(session,"VariableSelect", choices=fish.var[1:6], selected="")
     } else  if(input$fishCatSelect=="NSF"){
-      updateCheckboxGroupInput(session,"VariableSelect", choices=fish.var[8:11], selected=NULL)
+      updateCheckboxGroupInput(session,"VariableSelect", choices=fish.var[7:11], selected="")
      } else { 
        tagList(
       actionButton("selectall2", "Select all"),
-      updateCheckboxGroupInput(session,"VariableSelect", choices=fish.var, selected=NULL)
+      updateCheckboxGroupInput(session,"VariableSelect", choices=fish.var, selected="")
   )
        }
 #  else return ()
+})
+
+
+observe({
+  if (is.null(input$fishCatSelect2)) return()
+  else if(input$fishCatSelect2=="CSF"){
+    updateRadioButtons(session,"VariableSelect",  choices=fish.var[1:6], selected=character(0))
+  } else  if(input$fishCatSelect2=="NSF"){
+    updateRadioButtons(session,"VariableSelect", choices=fish.var[7:11], selected=character(0))
+  } else { 
+    updateRadioButtons(session,"VariableSelect",  choices=fish.var, selected=character(0))
+  }
+  #  else return ()
 })
 
 observe({
@@ -174,3 +191,13 @@ output$DodgeSelect <- renderUI({
 #   }
 # })
 
+#===============text ==========================================#
+output$SelectText <- renderText ({ 
+  if(input$tabs=="Panel2"){
+HTML("<div style='display:inline-block;width:100%; margin-top:10px'>
+                                       <i>Select one of the following:</i></div>")
+} else  if(input$tabs!="Panel2"){
+  HTML("<div style='display:inline-block;width:100%; margin-top:10px'>
+                                       <i>Select one or more of the following:</i></div>") 
+}
+})
