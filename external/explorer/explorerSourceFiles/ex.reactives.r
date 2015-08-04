@@ -245,8 +245,8 @@ DatSubThirds <- reactive({
     validate(
       need(length(input$VariableSelect) == 1, " "),
       need(length(input$VariableSelect) == 1, 
-        "Please reduce selections of the Summary Variable."),
-      need(length(input$VariableSelect) ==1, "This feature currently supports only one Summary Variable selection"),
+        "Plot will appear once a selection of the summary variable has been chosen."),
+      need(length(input$VariableSelect) ==1, 'Information on the "Variabilty Analysis" can be found in the "Instructions" tab.'),
       need(length(input$VariableSelect) == 1, " " ))
 
         
@@ -301,11 +301,11 @@ DatSubThirds <- reactive({
 # Plotting/staging
 PermitPlot <- reactive({
   if(!(is.null(input$YearSelect) | is.null(input$CategorySelect) | 
-    is.null(input$VariableSelect) | is.null(input$FishAkSelect) | 
+   is.null(input$VariableSelect) |is.null(input$FishAkSelect) | 
     is.null(input$StatSelect) | is.null(input$ShortdescrSelect))){
     if(!(input$YearSelect[1]=="" | 
       input$CategorySelect[1] == "" | input$StatSelect[1] == "" | 
-      input$VariableSelect[1] == "" | input$ShortdescrSelect[1] == "")){      
+      input$VariableSelect[1] == ""  | input$ShortdescrSelect[1] == "")){      
         x <- TRUE
     } else {
       x <- FALSE
@@ -313,6 +313,8 @@ PermitPlot <- reactive({
   } else x <- FALSE
   x
 })
+
+
 
 #Download buttons only shows up if PermitPlot()==T
 output$download_Table <- renderUI({
