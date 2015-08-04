@@ -8,6 +8,8 @@ library(reshape2)
 library(grid)
 library(scales)
 library(DT) #THis may not be needed, depends on how modifying the table goes
+library(shinyBS) # this package is used to modify the size of actionbuttons
+
 
 #options(error=browser) # debugging
 source("external/serverHead.R")
