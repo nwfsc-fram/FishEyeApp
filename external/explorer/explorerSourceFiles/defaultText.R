@@ -11,7 +11,7 @@ output$DefaultPlotText <- renderUI({
                   or view the "Variable Cost Revenue" figure (figure shown; economic measures pre-defined for this graph).  Other options to view the data are point and line graphs.'),
                  
              tags$p('The Catch Shares Program was implemented in 2011.  If years prior to and after the implementation of the catch shares program are chosen, the 
-                  the pre-catch shares years will be shaded.'),
+                   pre-catch shares years will be shaded.'),
                   
              tags$p(strong("To get started, make at least one selection in each of the panels on the left."),tags$br(),
                   "Once selections have been made, a button to download the plot output will appear in the panel on the left. 
@@ -46,7 +46,7 @@ output$DefaultThirdsText <- renderUI({
                     #These thirds are plotted as lines labeled: "Top Third", "Middle Third" and "Bottom Third". 
                   img(src="ExampThirds.png", height=400),
                   tags$p('The Catch Shares Program was implemented in 2011.  If years prior to and after the implementation of the catch shares program are chosen, the 
-                  the pre-catch shares years will be shaded.') ,
+                   pre-catch shares years will be shaded.') ,
                   
            tags$p(strong("To get started, make at least one selection in each of the panels on the left."),tags$br(),
                   "Once selections have been made, a button to download the plot output will appear in the panel on the left."),
