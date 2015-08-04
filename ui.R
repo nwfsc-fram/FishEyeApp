@@ -9,8 +9,7 @@ wellPanelHeading <- function(...){div(class = "well-radioHeading", ...)}
 
 
 fluidPage(title = "FISHEyE",
-         
-           # create a CSS to modify style of validation test error (for Variability analysis)
+            # create a CSS to modify style of validation test error (for Variability analysis)
           tags$head(
             tags$style(HTML("
                             .shiny-output-error-validation {
@@ -49,12 +48,11 @@ fluidPage(title = "FISHEyE",
                                 wellPanelHeading(
                                   uiOutput("CategorySelect")
                                 ),
-                                HTML("<div style='display:inline-block;width:100%; margin-top:10px'>
-                                       <i>Select one or more of the following:</i>
-                                      </div>"),
+                                uiOutput("SelectText"),
+                                
 #                                 fluidRow((div(style="padding-left:120%;")),
-                                uiOutput("VariableSelect")
-#                                 )  
+                                     uiOutput("VariableSelect"),
+ 
                               ),
                               conditionalPanel(condition = "input.CategorySelect != 'Fisheries'",
                                 wellPanelSub(
@@ -86,11 +84,11 @@ fluidPage(title = "FISHEyE",
             ), # end left side column
             column(8,
                    tabsetPanel(id = "tabs",
-                     tabPanel(HTML("Visualize <br> Data"),
+                     tabPanel(title=HTML("Visualize <br> Data"), value="Panel1",
                               fluidRow(
                                 column(12, htmlOutput("DefaultPlotText")
                                 ),                                
-                                column(12, plotOutput("PlotMain", height = "auto", width="auto")                                  
+                                column(12, plotOutput("PlotMain", height="auto",width="auto")                                  
                                 )
                               ), #end fluidRow
                               fluidRow(
@@ -118,7 +116,7 @@ fluidPage(title = "FISHEyE",
                      ) ),#end fluid row
                     
                      tabPanel(HTML("Data <br>
-                              Table"),                      
+                              Table"), value="Panel1",                    
                               fluidRow(
                                 column(12, htmlOutput("DefaultTableText")
                               )
@@ -127,23 +125,23 @@ fluidPage(title = "FISHEyE",
                                  column(12, dataTableOutput("TableMain")
                                 )
                      )),
-                     tabPanel(HTML("Variability <br> Analysis"),
+                     tabPanel(title=HTML("Variability <br> Analysis"),value="Panel2",
                               fluidRow(
                                 column(12, htmlOutput("DefaultThirdsText")
                                 )
                               ),                             
                               fluidRow(
-                                column(12, plotOutput("PlotThirds", height = "auto", width="auto")
+                                column(12, plotOutput("PlotThirds", height="auto", width="auto")
                                 ) ) 
               
                      ),
-                     tabPanel("Definitions", 
+                     tabPanel("Definitions", value="Panel1", 
                               source("external/explorer/explorerSourceFiles/definitions.R")$value
                      ),
-                     tabPanel("Instructions",
+                     tabPanel("Instructions", value="Panel1", 
                               source("external/explorer/explorerSourceFiles/instructions.R")$value
                      ),
-                     tabPanel("About",
+                     tabPanel("About", value="Panel1", 
                               source("external/explorer/explorerSourceFiles/about.R")$value
                      )
                    ) # end of tabsetPanel
