@@ -27,7 +27,8 @@ output$PlotMain <- renderPlot({
 
 output$TableMain <- renderDataTable({  
   if(!PermitPlot()) return()#return(div(class = "block", height="700px"))
-    if(PermitPlot() & !is.null(DatSubTable())
+    if(#PermitPlot() & 
+      !is.null(DatSubTable())
        ) {
       table <- subset(DatSubTable(), select = -CATEGORY)
     #  table$YEAR <- as.numeric(table$YEAR),
@@ -65,13 +66,12 @@ output$dlTable <- downloadHandler(
 output$dlFigure <- downloadHandler(
   filename = function() {'dataexplorerPlot.pdf'},
   content = function(file){
-    pdf(file = file, width=11, height=8.5)
-    if(input$tabs=="Variability <br> Analysis"){ 
+    pdf(file = file, width=10.5, height=8)
+    if(input$tabs=="Panel2"){ 
       doPlotDownload(dat = DatSubThirds(), x = "YEAR", y = "VALUE/1000", type = "thirds") }
     else {
-      if(input$tabs=="Visualize <br> Data"){
         if(PermitPlot() & input$PlotSelect != "Bar"){
-          doPlot(dat = DatSub(), x = "YEAR", y = "VALUE/1000", type = "summary")
+          doPlotDownload(dat = DatSub(), x = "YEAR", y = "VALUE/1000", type = "summary")
         } else {
       if(PermitPlot() & input$DodgeSelect == "Compare economic measures side-by-side"){
         doPlotDownload(dat = DatSub(), x = "YEAR", y = "VALUE/1000", type = "summary")}
@@ -82,7 +82,6 @@ output$dlFigure <- downloadHandler(
       }
         }  
       }
-    }
     dev.off()
     
     

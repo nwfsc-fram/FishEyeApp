@@ -276,7 +276,7 @@ DatSubThirds <- reactive({
 #     
 #     print("THIRDS???")
 #     print(unique(datSub$THIRDS))
-    print(unique(factorOrder$thirds))
+#    print(unique(factorOrder$thirds))
 
     datSub$THIRDS <- factor(datSub$THIRDS,
                             levels = factorOrder$thirds)

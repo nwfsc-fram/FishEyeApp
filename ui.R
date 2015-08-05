@@ -51,8 +51,7 @@ fluidPage(title = "FISHEyE",
                                 uiOutput("SelectText"),
                                 
 #                                 fluidRow((div(style="padding-left:120%;")),
-                                     uiOutput("VariableSelect"),
- 
+                                     uiOutput("VariableSelect")
                               ),
                               conditionalPanel(condition = "input.CategorySelect != 'Fisheries'",
                                 wellPanelSub(

@@ -59,20 +59,16 @@ doPlotDownload <- function(dat, x, y, type){
           if(length(input$YearSelect)>1 & min(input$YearSelect)<2011 & max(input$YearSelect)>2010){
             if(input$YearSelect[1]==2009&input$YearSelect[2]==2010){
               
-              g <- g + geom_point(aes_string(colour = groupVar), size=4)+  
+              g <- g + geom_point(aes_string(colour = groupVar), size=3)+  
                 geom_rect(aes(xmin=.1, xmax=2.5, ymin=-Inf, ymax=Inf), fill="grey20", alpha=.025)+ 
-                geom_text(aes(x=0.5,y=max(VALUE)/1000+max(VALUE)/10000, label="Pre-catch shares"),hjust=0, size=4.25) + 
-                geom_text(aes(x=length(table(as.numeric(YEAR)))+.75,y=max(VALUE)/1000+max(VALUE)/10000,label="Post-catch shares"),hjust=1, size=4.25)# +
-              #geom_text(aes(x=length(table(as.numeric(YEAR)))/1.6,y=(max(VALUE)/1000+max(VALUE)/4000),label="West Coast trawl catch shares program"),hjust=.5, size=4.5) 
-              #    geom_linerange(aes(ymin=Inf, ymax=max(VALUE)/1000+max(VALUE)/4000),col="white") 
-            } else {
-              g <- g + geom_point(aes_string(colour = groupVar), size=4)+  
+                geom_text(aes(x=0.5,y=max(VALUE)/1000+max(VALUE)/10000, label="Pre-catch shares"),hjust=0, size=3.25) + 
+                geom_text(aes(x=length(table(as.numeric(YEAR)))+.75,y=max(VALUE)/1000+max(VALUE)/10000,label="Post-catch shares"),hjust=1, size=3)# +
+             } else {
+              g <- g + geom_point(aes_string(colour = groupVar), size=3)+  
                 geom_rect(aes(xmin=.1, xmax=1.5, ymin=-Inf, ymax=Inf), fill="grey20", alpha=.025)+ 
-                geom_text(aes(x=0.25,y=max(VALUE)/1000+max(VALUE)/10000, label="Pre-catch shares"), size=4.2, hjust=0) + 
-                geom_text(aes(x=length(table(as.numeric(YEAR)))+.5,y=max(VALUE)/1000+max(VALUE)/10000,label="Post-catch shares"), size=4.25, hjust=1) #+
-              # geom_text(aes(x=length(table(as.numeric(YEAR)))/1.5,y=(max(VALUE)/1000+max(VALUE)/4000),label="West Coast trawl catch shares program"), size=4.5, hjust=.5) 
-              #   geom_linerange(aes(ymin=Inf, ymax=max(VALUE)/1000+max(VALUE)/4000),col="white") 
-              
+                geom_text(aes(x=0.25,y=max(VALUE)/1000+max(VALUE)/10000, label="Pre-catch shares"), size=3, hjust=0) + 
+                geom_text(aes(x=length(table(as.numeric(YEAR)))+.5,y=max(VALUE)/1000+max(VALUE)/10000,label="Post-catch shares"), size=3.25, hjust=1) #+
+ 
             }} else {
               g <- g + geom_point(aes_string(colour = groupVar), size=4)    
             }
@@ -84,15 +80,15 @@ doPlotDownload <- function(dat, x, y, type){
             if(input$YearSelect[1]==2009&input$YearSelect[2]==2010){
               g <- g + geom_line(aes_string(colour = groupVar), size=1.5)+  
                 geom_rect(aes(xmin=.1, xmax=2.5, ymin=-Inf, ymax=Inf), alpha=.025)+ 
-                geom_text(aes(x=0.5,y=max(VALUE)/1000+max(VALUE)/10000, label="Pre-catch shares"),hjust=0, size=4.25) + 
-                geom_text(aes(x=length(table(as.numeric(YEAR)))+.75,y=max(VALUE)/1000+max(VALUE)/10000,label="Post-catch shares"),hjust=1, size=4.25)# +
+                geom_text(aes(x=0.5,y=max(VALUE)/1000+max(VALUE)/10000, label="Pre-catch shares"),hjust=0, size=3.25) + 
+                geom_text(aes(x=length(table(as.numeric(YEAR)))+.75,y=max(VALUE)/1000+max(VALUE)/10000,label="Post-catch shares"),hjust=1, size=3.25)# +
               #geom_text(aes(x=2.5,y=(max(VALUE)/1000+max(VALUE)/4000),label="West Coast trawl catch shares program")) 
               #geom_linerange(aes(ymin=Inf, ymax=max(VALUE)/1000+max(VALUE)/4000),col="white") 
             } else {
               g <- g + geom_line(aes_string(colour = groupVar), size=1.5)+ 
                 geom_rect(aes(xmin=.1, xmax=1.5, ymin=-Inf, ymax=Inf), alpha=.025)+ 
-                geom_text(aes(x=.25,y=max(VALUE)/1000+max(VALUE)/10000, label="Pre-catch shares"),hjust=0, size=4.25) + 
-                geom_text(aes(x=length(table(as.numeric(YEAR)))+.5,y=max(VALUE)/1000+max(VALUE)/10000,label="Post-catch shares"),hjust=1, size=4.25) #+
+                geom_text(aes(x=.25,y=max(VALUE)/1000+max(VALUE)/10000, label="Pre-catch shares"),hjust=0, size=3.25) + 
+                geom_text(aes(x=length(table(as.numeric(YEAR)))+.5,y=max(VALUE)/1000+max(VALUE)/10000,label="Post-catch shares"),hjust=1, size=3.25) #+
               # geom_text(aes(x=1.5,y=(max(VALUE)/1000+max(VALUE)/4000),label="West Coast trawl catch shares program")) 
               # geom_linerange(aes(ymin=Inf, ymax=max(VALUE)/1000+max(VALUE)/4000),col="white") 
             }} else { 
@@ -107,16 +103,16 @@ doPlotDownload <- function(dat, x, y, type){
                 
                 g <- g + geom_bar(aes_string(fill = groupVar, order=groupVar), stat="identity",position="dodge", width = scale_bars()) +
                   geom_rect(aes(xmin=.1, xmax=2.5, ymin=-Inf, ymax=Inf), fill="grey20", alpha=.02)+ 
-                  geom_text(aes(x=0.5,y=max(VALUE)/1000+max(VALUE)/10000, label="Pre-catch shares"),hjust=0, size=4.25) + 
-                  geom_text(aes(x=length(table(as.numeric(YEAR)))+.75,y=max(VALUE)/1000+max(VALUE)/10000,label="Post-catch shares"),hjust=1, size=4.25)# +
+                  geom_text(aes(x=0.5,y=max(VALUE)/1000+max(VALUE)/10000, label="Pre-catch shares"),hjust=0, size=3.25) + 
+                  geom_text(aes(x=length(table(as.numeric(YEAR)))+.75,y=max(VALUE)/1000+max(VALUE)/10000,label="Post-catch shares"),hjust=1, size=3.25)# +
                 #geom_text(aes(x=2.5,y=(max(VALUE)/1000+max(VALUE)/4000),label="West Coast trawl catch shares program")) 
                 #geom_linerange(aes(ymin=Inf, ymax=max(VALUE)/1000+max(VALUE)/4000),col="white") #added this line to increase range of y-axis and fit the geom_text labels
                 
               } else  {
                 g <- g + geom_bar(aes_string(fill = groupVar, order=groupVar), stat="identity", position="dodge", width = scale_bars()) + 
                   geom_rect(aes(xmin=.1, xmax=1.5, ymin=-Inf, ymax=Inf), fill="grey20", alpha=.02)+ 
-                  geom_text(aes(x=.25,y=max(VALUE)/1000+max(VALUE)/10000, label="Pre-catch shares"),hjust=0, size=4.25) + 
-                  geom_text(aes(x=length(table(as.numeric(YEAR)))+.5,y=max(VALUE)/1000+max(VALUE)/10000,label="Post-catch shares"),hjust=1, size=4.25) #+
+                  geom_text(aes(x=.25,y=max(VALUE)/1000+max(VALUE)/10000, label="Pre-catch shares"),hjust=0, size=3.25) + 
+                  geom_text(aes(x=length(table(as.numeric(YEAR)))+.5,y=max(VALUE)/1000+max(VALUE)/10000,label="Post-catch shares"),hjust=1, size=3.25) #+
                 #geom_text(aes(x=1.5,y=(max(VALUE)/1000+max(VALUE)/4000),label="West Coast trawl catch shares program")) 
                 # geom_linerange(aes(ymin=Inf, ymax=max(VALUE)/1000+max(VALUE)/4000),col="white") 
                 
@@ -133,16 +129,16 @@ doPlotDownload <- function(dat, x, y, type){
                 g <- ggplot(dat, aes_string(x = x, y = y ,group = groupVar, fill=groupVar, order=groupVar))+ # 
                   geom_bar(stat = "identity", position = "stack", width = scale_bars())  + 
                   geom_rect(aes(xmin=.1, xmax=2.5, ymin=-Inf, ymax=Inf), fill="grey20", alpha=.04)+ 
-                  geom_text(aes(x=.5,y=max(VALUE)/400, label="Pre-catch shares"),hjust=0, size=4.25) + 
-                  geom_text(aes(x=length(table(as.numeric(YEAR)))+.75,y=max(VALUE)/400,label="Post-catch shares"),hjust=1, size=4.25)# +
+                  geom_text(aes(x=.5,y=max(VALUE)/400, label="Pre-catch shares"),hjust=0, size=3.25) + 
+                  geom_text(aes(x=length(table(as.numeric(YEAR)))+.75,y=max(VALUE)/400,label="Post-catch shares"),hjust=1, size=3.25)# +
                 #  geom_text(aes(x=2.5,y=max(VALUE)/350,label="West Coast trawl catch shares program")) 
                 #  geom_linerange(aes(ymin=Inf, ymax=Inf),col="white")   
               } else  {
                 g <- ggplot(dat, aes_string(x = x, y = y , group = groupVar, fill=groupVar, order=groupVar))+ 
                   geom_bar(stat = "identity", position = "stack", width = scale_bars())  + 
                   geom_rect(aes(xmin=.1, xmax=1.5, ymin=-Inf, ymax=Inf), fill="grey20", alpha=.04)+ 
-                  geom_text(aes(x=.25,y=max(VALUE)/400, label="Pre-catch shares"),hjust=0, size=4.25) + 
-                  geom_text(aes(x=length(table(as.numeric(YEAR)))+.5,y=max(VALUE)/400,label="Post-catch shares"),hjust=1, size=4.25)# +
+                  geom_text(aes(x=.25,y=max(VALUE)/400, label="Pre-catch shares"),hjust=0, size=3.25) + 
+                  geom_text(aes(x=length(table(as.numeric(YEAR)))+.5,y=max(VALUE)/400,label="Post-catch shares"),hjust=1, size=3.25)# +
                 #  geom_text(aes(x=1.5,y=max(VALUE)/350,label="West Coast trawl catch shares program")) 
                 #  geom_linerange(aes(ymin=Inf, ymax=max(VALUE)/1000+max(VALUE)/4000),col="white")  
               }}
@@ -157,16 +153,16 @@ doPlotDownload <- function(dat, x, y, type){
                 g <- ggplot(dat, aes_string(x = x, y = y , group = groupVar, fill=groupVar, order=groupVar)) + 
                   geom_bar(aes_string(fill = groupVar), stat = "identity", position = "stack", width = scale_bars())+  
                   geom_rect(aes(xmin=.1, xmax=2.5, ymin=-Inf, ymax=Inf), fill="grey20", alpha=.05)+ 
-                  geom_text(aes(x=.5,y=max(VALUE)/400, label="Pre-catch shares"),hjust=0, size=4.25) + 
-                  geom_text(aes(x=length(table(as.numeric(YEAR)))+.75,y=max(VALUE)/400,label="Post-catch shares"),hjust=1, size=4.25)# +
+                  geom_text(aes(x=.5,y=max(VALUE)/400, label="Pre-catch shares"),hjust=0, size=3.25) + 
+                  geom_text(aes(x=length(table(as.numeric(YEAR)))+.75,y=max(VALUE)/400,label="Post-catch shares"),hjust=1, size=3.25)# +
                 #geom_text(aes(x=2.5,y=max(VALUE)/350,label="West Coast trawl catch shares program")) 
                 #geom_linerange(aes(ymin=Inf, ymax=max(VALUE)/1000+max(VALUE)/4000),col="white")   
               } else  {
                 g <- ggplot(dat, aes_string(x = x, y = y , group = groupVar, fill=groupVar, order=groupVar)) + 
                   geom_bar(aes_string(fill = groupVar), stat = "identity", position = "stack", width = scale_bars())+ 
                   geom_rect(aes(xmin=.1, xmax=1.5, ymin=-Inf, ymax=Inf), fill="grey20", alpha=.075)+ 
-                  geom_text(aes(x=.25,y=max(VALUE)/400, label="Pre-catch shares"),hjust=0, size=4.25) + 
-                  geom_text(aes(x=length(table(as.numeric(YEAR)))+.5,y=max(VALUE)/400,label="Post-catch shares"),hjust=1, size=4.25) #+
+                  geom_text(aes(x=.25,y=max(VALUE)/400, label="Pre-catch shares"),hjust=0, size=3.25) + 
+                  geom_text(aes(x=length(table(as.numeric(YEAR)))+.5,y=max(VALUE)/400,label="Post-catch shares"),hjust=1, size=3.25) #+
                 #geom_text(aes(x=1.5,y=max(VALUE)/350,label="West Coast trawl catch shares program")) 
                 #geom_linerange(aes(ymin=Inf, ymax=max(VALUE)/1000+max(VALUE)/4000),col="white")  
               }} 
@@ -188,15 +184,15 @@ doPlotDownload <- function(dat, x, y, type){
           if(input$YearSelect[1]==2009&input$YearSelect[2]==2010){
             g <- g + geom_line(aes_string(colour = groupVar), size=1.5)+  
               geom_rect(aes(xmin=.1, xmax=2.5, ymin=-Inf, ymax=Inf),fill="grey20", alpha=.04)+ 
-              geom_text(aes(x=.5,y=max(VALUE)/1000+max(VALUE)/10000, label="Pre-catch shares"),hjust=0, size=4.25) + 
-              geom_text(aes(x=length(table(as.numeric(YEAR)))+.75,y=max(VALUE)/1000+max(VALUE)/10000,label="Post-catch shares"),hjust=1, size=4.25) #+
+              geom_text(aes(x=.5,y=max(VALUE)/1000+max(VALUE)/10000, label="Pre-catch shares"),hjust=0, size=3.25) + 
+              geom_text(aes(x=length(table(as.numeric(YEAR)))+.75,y=max(VALUE)/1000+max(VALUE)/10000,label="Post-catch shares"),hjust=1, size=3.25) #+
             #  geom_text(aes(x=2.5,y=(max(VALUE)/1000+max(VALUE)/4000),label="West Coast trawl catch shares program")) 
             # geom_linerange(aes(ymin=Inf, ymax=max(VALUE)/1000+max(VALUE)/4000),col="white") 
           }  else {
             g <- g + geom_line(aes_string(colour = groupVar), size=1.5)+ 
               geom_rect(aes(xmin=.1, xmax=1.5, ymin=-Inf, ymax=Inf),fill="grey20", alpha=.04)+ 
-              geom_text(aes(x=.25,y=max(VALUE)/1000+max(VALUE)/10000, label="Pre-catch shares"),hjust=0, size=4.25) + 
-              geom_text(aes(x=length(table(as.numeric(YEAR)))+.5,y=max(VALUE)/1000+max(VALUE)/10000,label="Post-catch shares"),hjust=1, size=4.25) #+
+              geom_text(aes(x=.25,y=max(VALUE)/1000+max(VALUE)/10000, label="Pre-catch shares"),hjust=0, size=3.25) + 
+              geom_text(aes(x=length(table(as.numeric(YEAR)))+.5,y=max(VALUE)/1000+max(VALUE)/10000,label="Post-catch shares"),hjust=1, size=3.25) #+
             # geom_text(aes(x=1.5,y=(max(VALUE)/1000+max(VALUE)/4000),label="West Coast trawl catch shares program")) 
             # geom_linerange(aes(ymin=Inf, ymax=max(VALUE)/1000+max(VALUE)/4000),col="white") 
           }} else {
@@ -248,7 +244,7 @@ doPlotDownload <- function(dat, x, y, type){
       panel.grid.major.x = element_line(linetype = "blank"),
       panel.grid.major.y = element_line(color = "#656C70", linetype = "dotted"),
       strip.text = element_text(family = "sans", 
-                                size = 16, color = "grey25", vjust=1),
+                                size = 10, color = "grey25", vjust=1),
       strip.background = element_rect(fill = "lightgrey"),
       axis.ticks = element_blank(),
       axis.title.x = element_blank(),
@@ -261,6 +257,86 @@ doPlotDownload <- function(dat, x, y, type){
                                  color = "grey25", face = "bold", size = 12),
       legend.title = element_blank())
     
+    ##function to wrapping facet labels
+    strwrap_strip_text = function(p, pad=0.05) { 
+      # get facet font attributes
+      th = theme_get()
+      if (length(p$theme) > 0L)
+        th = th + p$theme
+      
+      require("grid")
+      grobs <- ggplotGrob(p)
+      
+      # wrap strip x text
+      if ((class(p$facet)[1] == "grid" && !is.null(names(p$facet$cols))) ||
+          class(p$facet)[1] == "wrap")
+      {
+        ps = calc_element("strip.text.x", th)[["size"]]
+        family = calc_element("strip.text.x", th)[["family"]]
+        face = calc_element("strip.text.x", th)[["face"]]
+        
+        if (class(p$facet)[1] == "wrap") {
+          nm = names(p$facet$facets)
+        } else {
+          nm = names(p$facet$cols)
+        }
+        
+        # get number of facet columns
+        levs = levels(factor(p$data[[nm]]))
+        npanels = length(levs)
+        if (class(p$facet)[1] == "wrap") {
+          cols = n2mfrow(npanels)[1]
+        } else {
+          cols = npanels
+        }
+        
+        # get plot width
+        sum = sum(sapply(grobs$width, function(x) convertWidth(x, "in")))
+        panels_width = par("din")[1] - sum  # inches
+        # determine strwrap width
+        panel_width = panels_width / cols
+        mx_ind = which.max(nchar(levs))
+        char_width = strwidth(levs[mx_ind], units="inches", cex=ps / par("ps"), 
+                              family=family, font=gpar(fontface=face)$font) / 
+          nchar(levs[mx_ind])
+        width = floor((panel_width - pad)/ char_width)  # characters
+        
+        # wrap facet text
+        p$data[[nm]] = unlist(lapply(strwrap(p$data[[nm]], width=width, 
+                                             simplify=FALSE), paste, collapse="\n"))
+      }
+      
+      if (class(p$facet)[1] == "grid" && !is.null(names(p$facet$rows))) {  
+        ps = calc_element("strip.text.y", th)[["size"]]
+        family = calc_element("strip.text.y", th)[["family"]]
+        face = calc_element("strip.text.y", th)[["face"]]
+        
+        nm = names(p$facet$rows)
+        
+        # get number of facet columns
+        levs = levels(factor(p$data[[nm]]))
+        rows = length(levs)
+        
+        # get plot height
+        sum = sum(sapply(grobs$height, function(x) convertWidth(x, "in")))
+        panels_height = par("din")[2] - sum  # inches
+        # determine strwrap width
+        panels_height = panels_height / rows
+        mx_ind = which.max(nchar(levs))
+        char_height = strwidth(levs[mx_ind], units="inches", cex=ps / par("ps"), 
+                               family=family, font=gpar(fontface=face)$font) / 
+          nchar(levs[mx_ind])
+        width = floor((panels_height - pad)/ char_height)  # characters
+        
+        # wrap facet text
+        p$data[[nm]] = unlist(lapply(strwrap(p$data[[nm]], width=width, 
+                                             simplify=FALSE), paste, collapse="\n"))
+      }
+      
+      invisible(p)
+    }   
+    #print(g)
+    g <- strwrap_strip_text(g) #use instead of print(g)
     print(g)
     
   } else plot(0,0,type="n", axes=F, xlab="", ylab="")
