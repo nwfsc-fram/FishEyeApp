@@ -27,7 +27,7 @@ output$DefaultTableText <- renderUI({
   tags$div(style = "margin: 15px 15px 30px; width: 60%",
            tags$h4("Data Table"),
            tags$p('View data used to create the Summary Plot.', tags$br(),
-                  'After a data table has been displayed, the data can be further filtered using the "Search" box, 
+                  'To get started, make at least one selection in each of the panels on the left. After a data table has been displayed, the data can be further filtered using the "Search" box, 
                      or filter within a column using the boxes at the bottom of the table. '),
                  tags$p( strong('A button to download the table can be found in the panel to the left.')),
            
@@ -42,7 +42,8 @@ output$DefaultThirdsText <- renderUI({
            tags$h4("Variability Analysis"),
            tags$p('The variability analysis calculates the average (per vessel, vessel/day, or vessel/metric-ton) of the selected economic measure for
                     vessels grouped based on their annual revenue: top revenue earners, middle revenue earners, and the bottom revenue earners.  
-                     Results are plotted as a dot plot if a single year is selected or a line plot if multiple years are selected. '),  
+                     Results are plotted as a dot plot if a single year is selected or a line plot if multiple years are selected. 
+                     To get started, make at least one selection in each of the panels on the left'),  
                     #These thirds are plotted as lines labeled: "Top Third", "Middle Third" and "Bottom Third". 
                   img(src="ExampThirds.png", height=400),
                   tags$p('The Catch Shares Program was implemented in 2011.  If years prior to and after the implementation of the catch shares program are chosen, the 

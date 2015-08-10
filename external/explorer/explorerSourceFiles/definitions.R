@@ -12,7 +12,7 @@ tags$div(style = "margin: 15px 15px 30px; width: 60%",
      tags$ul(
        tags$li("Fisheries:"),
          tags$p('Fisheries used for EDC reporting to characterise 
-                the US West Coast Groudfish fishery. 
+                the US West Coast Groundfish fishery. 
                 The catch share program was implemented in 2011. Data prior and after the implementation of the program are included. 
               The catch share program consists of cooperatives for the at-sea mothership (including
                 catcher vessels and motherships) and catcher-processor fleets, 
