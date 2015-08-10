@@ -8,7 +8,7 @@
 
 output$YearSelect <- renderUI({
   checkboxGroupInput("YearSelect", "Years:", 
-    choices = c("__2009"=2009,"__2010"=2010,2011,2012), selected = DatVars()$YEAR)
+    choices = DatVars()$YEAR, selected = DatVars()$YEAR)
 })
 
 
@@ -145,7 +145,7 @@ observe({
 output$FisherySubsetSelect <- renderUI({
   if(is.null(input$CategorySelect)) return()
   if(input$CategorySelect != "Fisheries"){
-     return(em("All fisheries included"))# radioButtons("fisherySubsetSelect", "", choices = "Include all fisheries")
+     return(em("Economic data from all fisheries are included"))# data from all fisheries
 }
  } )
 
@@ -200,4 +200,9 @@ HTML("<div style='display:inline-block;width:100%; margin-top:10px'>
   HTML("<div style='display:inline-block;width:100%; margin-top:10px'>
                                        <i>Select one or more of the following:</i></div>") 
 }
+})
+
+output$SelectTextYear <- renderText({
+  HTML("<div style='display:inline-block;width:100%; margin-top:10px'>
+                                       <i>The catch shares program was implemented after 2010</i></div>")
 })
