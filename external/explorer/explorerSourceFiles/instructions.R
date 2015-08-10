@@ -1,21 +1,21 @@
 tags$div(style = "margin: 15px; 15px; 30px; width: 60%",
          
-         tags$h3('How to use this app'), 
+         tags$h3('How to use this application'), 
           tags$p('To use this application, make data selections on the left "Select Data" panel.
           Output will be automatically generated when each of the fields in the "Select Data" panel has at least
-          one selection. Several outputs can be found in the tabs located at the top of the app:'),
+          one selection. Several outputs can be found in the tabs located at the top of the application:'),
           tags$p('The ', 
           tags$a(href = "http://www.westcoast.fisheries.noaa.gov/fisheries/groundfish_catch_shares/index.html", "Catch Shares program"),
               'was implemented in 2011.  For all plots (summary plots and variability analysis plots),  
               if years prior to and after the implementation of the catch shares program are chosen, the  pre-catch shares years will be shaded.'),
            tags$ul(style="margin-top:15px;" ,
-           tags$li(tags$h4("Summary Plot")),
+           tags$li(tags$h4("Visualize Data")),
            tags$p('Visualize summary statistics for net revenue of West Coast Catcher Vessels.',tags$br(),
                 # "To get started, make at least one selection in each of the panels on the left.",tags$br(),
                 'Options for changing the chart type (bar, line, or point graphs)can be found below the plot output. 
                 A button to download the plot can be found in the panel to the left.',tags$br(),
           'With the "bar" graph option, you can compare selected economic measures side-by-sde, view the "Total Cost Net Revenue" figure (economic measures pre-defined),
-                 or view the "Variable Cost Revenue" figure (figure shown; economic measures pre-defined for this graph).  Other options to view the data are point and line graphs.'),
+                 or view the "Variable Cost Revenue" figure (economic measures pre-defined for this graph).  Other options to view the data are point and line graphs.'),
           
           
               tags$li(tags$h4("Data Table")),
