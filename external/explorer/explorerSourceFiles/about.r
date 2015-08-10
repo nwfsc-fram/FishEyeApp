@@ -1,10 +1,10 @@
 tags$div(style = "margin: 15px; 15px; 30px; width: 60%",
-         tags$p("Welcome to the FISHeries Economics Explorer (FISHEyE) 
-      Net Revenue Explorer for the ",
+         tags$p("Welcome to the FISHeries Economics Explorer (FISHEyE) Net Revenue Explorer for the ",
                 tags$a(href = "http://www.westcoast.fisheries.noaa.gov/fisheries/groundfish_catch_shares/index.html",
-                       "West Coast Groundfish Trawl Catch Share program."), "This app allows for
-      the comparison of net revenue figures across different summary variables."),
-         tags$p('This app is interactive. Information on how to use this app is available in the "Instructions", tab.  Information on variables in the dataset can
+                       "West Coast Groundfish Trawl Catch Share program."), "This application allows for
+                the comparison of net revenue figures across different summary variables for catcher vessels. Other sectors that 
+                participate in the catch shares program will be added in the future, including motherships, catcher processor fleets, and shorebased trawl fleets."),
+         tags$p('FISHEyE is interactive. Information on how to use FISHEyE is available in the "Instructions", tab.  Information on variables in the dataset can
                 be found in the "Definitions" tab.'),
          
          tags$hr(),
@@ -23,7 +23,7 @@ tags$div(style = "margin: 15px; 15px; 30px; width: 60%",
          tags$h3("Disclaimer"),
          tags$p("This R Shiny application is currently under developement.", tags$br(),
                 "All data used in this application is subject to change and come with no
-      guarantee of being correct."),
+      guarantee of accuracy."),
          
          tags$hr(),
          
