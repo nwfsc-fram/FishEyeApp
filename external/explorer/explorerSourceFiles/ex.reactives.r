@@ -137,10 +137,6 @@ DatSub <- reactive({
                             STAT == input$StatSelect)
       
       
-#       print("I am subset Table!")
-#       print(str(datSub))
-      
-      
       # order for plotting
       datSub$SHORTDESCR <- factor(datSub$SHORTDESCR, 
         levels = factorOrder$shortdescr)
@@ -277,7 +273,7 @@ DatSubThirds <- reactive({
 #     print("THIRDS???")
 #     print(unique(datSub$THIRDS))
 #    print(unique(factorOrder$thirds))
-
+    
     datSub$THIRDS <- factor(datSub$THIRDS,
                             levels = factorOrder$thirds)
     
