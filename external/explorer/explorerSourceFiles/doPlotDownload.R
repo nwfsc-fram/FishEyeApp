@@ -20,11 +20,11 @@ doPlotDownload <- function(dat, x, y, type){
           if(input$DodgeSelect == "Compare economic measures side-by-side"){
             sprintf(paste("Summary Economic Measures for West Coast Catcher Vessels:", input$CategorySelect,
                           "\nSummary statistic: ", input$StatSelect))
-          } else if(input$DodgeSelect == "Total cost revenue figure"){
-            sprintf(paste("Total cost revenue for West Coast Catcher Vessels:", input$CategorySelect,
+          } else if(input$DodgeSelect == "Derivation of total cost revenue"){
+            sprintf(paste("Derivation of total cost revenue for West Coast Catcher Vessels:", input$CategorySelect,
                           "\nSummary statistic: ", input$StatSelect))
-          } else if(input$DodgeSelect == "Variable cost revenue figure"){
-            sprintf(paste("Variable cost revenue for West Coast Catcher Vessels:", input$CategorySelect,
+          } else if(input$DodgeSelect == "Derivation of variable cost revenue"){
+            sprintf(paste("Derivation of variable cost revenue for West Coast Catcher Vessels:", input$CategorySelect,
                           "\nSummary statistic: ", input$StatSelect))
           }}
         
@@ -122,7 +122,7 @@ doPlotDownload <- function(dat, x, y, type){
               g <- g + geom_bar(aes_string(fill = groupVar, order=groupVar), stat="identity", position="dodge", width = scale_bars())
             }} #End if else for side-by-side comparion
           
-          if(input$DodgeSelect == "Total cost revenue figure"){
+          if(input$DodgeSelect == "Derivation of total cost revenue"){
             #      groupVar <- factor("SHORTDESCR", levels=c("Fixed costs","Variables costs","Total cost net revenue"))
             if(length(input$YearSelect)>1 & min(input$YearSelect)<2011 & max(input$YearSelect)>2010){
               if(input$YearSelect[1]==2009&input$YearSelect[2]==2010){
@@ -147,7 +147,7 @@ doPlotDownload <- function(dat, x, y, type){
                                                                                                                      position = "stack", width = scale_bars())
             }} #end if statement for total cost revenue figure
           
-          if(input$DodgeSelect == "Variable cost revenue figure"){
+          if(input$DodgeSelect == "Derivation of variable cost revenue"){
             if(length(input$YearSelect)>1 & min(input$YearSelect)<2011 & max(input$YearSelect)>2010){
               if(input$YearSelect[1]==2009&input$YearSelect[2]==2010){
                 g <- ggplot(dat, aes_string(x = x, y = y , group = groupVar, fill=groupVar, order=groupVar)) + 
