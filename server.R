@@ -7,8 +7,8 @@ library(ggplot2)
 library(reshape2)
 library(grid)
 library(scales)
-library(DT) #THis may not be needed, depends on how modifying the table goes
-library(shinyBS) # this package is used to modify the size of actionbuttons
+library(DT,lib.loc="/usr/lib64/R/shiny_library") #THis may not be needed, depends on how modifying the table goes
+library(shinyBS,lib.loc="/usr/lib64/R/shiny_library") # this package is used to modify the size of actionbuttons
 
 
 #options(error=browser) # debugging
