@@ -169,14 +169,14 @@ output$StatSelect <- renderUI({
 
 
 output$PlotSelect <- renderUI({
-  selectInput("PlotSelect", "Plot type:", choices= c("Bar", "Point", "Line"))
+  selectInput("PlotSelect", "Plot Options:", choices= c("Bar", "Point", "Line"))
 })
 
 
 output$DodgeSelect <- renderUI({
-  if(!is.null(input$PlotSelect)) {
+    if(!is.null(input$PlotSelect)) {
     if(input$PlotSelect == "Bar") {
-      radioButtons("DodgeSelect", "", choices= c("Compare economic measures side-by-side", "Total cost revenue figure","Variable cost revenue figure"))
+      radioButtons("DodgeSelect", "", choices= c("Compare economic measures side-by-side", "Derivation of total cost revenue","Derivation of variable cost revenue"))
     } else return()
   } else return()
 })
