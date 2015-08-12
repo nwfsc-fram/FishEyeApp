@@ -35,11 +35,19 @@ fluidPage(title = "FISHEyE",
                              <p><i>West Coast Trawl Catch Share Program: Catcher Vessels</i></p>
                           </div>"))  
           ),
-          fluidRow(
-            column(4,
+          navbarPage(
+            title=HTML("<div> <p style='color:#2fa4e7'>_________________________________________________________________________________________</p></div>"), #inverse=T, 
+            collapsible=T,
+           
+         
+         tabPanel("Results", value="results",             
+         # fluidRow(
+            sidebarLayout(
+              sidebarPanel(
+     #         column(12,
                    wellPanel( #left side panel                    
                       fluidRow(
-                        column(12, HTML("<p><strong>Select data in each of the panels below: </strong></p>")
+                        column(8, HTML("<p><strong>Select data in each of the panels below: </strong></p>")
                         )
                      ),#end fluidRow
                      fluidRow(
@@ -80,10 +88,13 @@ fluidPage(title = "FISHEyE",
                               )
                         )
                        ) #end Fluid row
-                   ) #end well panel 
-            ), # end left side column
-            column(8,
-                   tabsetPanel(id = "tabs",
+                  # ) #end well panel 
+            )
+               ,       style = "padding: 0px;"), # end left side column
+
+
+                mainPanel(           
+                  tabsetPanel(id = "tabs",
                      tabPanel(title=HTML("Visualize <br> Data"), value="Panel1",
                               fluidRow(
                                 column(12, htmlOutput("DefaultPlotText")
@@ -91,28 +102,28 @@ fluidPage(title = "FISHEyE",
                                 column(12, plotOutput("PlotMain", height="auto",width="auto")                                  
                                 )
                               ), #end fluidRow
-                              fluidRow(
-                                column(12,
-                                       wellPanel(
-                                         fluidRow(HTML("<strong>Plot Options: </strong>"),
-                                                  style = "padding-bottom: 15px;
-                                                  padding-left: 15px"),
+                             # fluidRow(
+                               # column(12,
+                                      # DwellPanel(
+                                        # fluidRow(HTML("<strong>Plot Options: </strong>"),
+                                        #          style = "padding-bottom: 15px;
+                                        #          padding-left: 15px"),
                                          fluidRow(                                  
-                                           column(12,  
-                                                column(4,
+                                           #column(12,  
+                                                column(5,
                                                     wellPanelSub(
                                                        fluidRow(
-                                                         column(6, uiOutput("PlotSelect")
+                                                         column(3, uiOutput("PlotSelect")
                                                          ),
-                                                         column(6, uiOutput("DodgeSelect")
+                                                         column(8, uiOutput("DodgeSelect")
                                                          )
                                                          )
                                                          )
-                                           )
-                                         )
-                                       )
-                                )
-                              )
+                                                        ) #end column
+                                       #  )
+                                     #  )
+                              # )
+                           #   )
                      ) ),#end fluid row
                     
                      tabPanel(HTML("Data <br>
@@ -134,7 +145,9 @@ fluidPage(title = "FISHEyE",
                                 column(12, plotOutput("PlotThirds", height="auto", width="auto")
                                 ) ) 
               
-                     ),
+                     ))#)
+                     ))),
+        navbarMenu("About",             #      conditionalPanel("input.tsp=='about'",
                      tabPanel("Definitions", value="Panel1", 
                               source("external/explorer/explorerSourceFiles/definitions.R")$value
                      ),
@@ -144,7 +157,7 @@ fluidPage(title = "FISHEyE",
                      tabPanel("About", value="Panel1", 
                               source("external/explorer/explorerSourceFiles/about.R")$value
                      )
-                   ) # end of tabsetPanel
+                #   ) # end of tabsetPanel
             ) # end right side column     
           ), #end app level fluid row
           appFrameFooterScrolling()
