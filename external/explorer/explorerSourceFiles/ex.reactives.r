@@ -150,7 +150,7 @@ DatSub <- reactive({
       }
       
       return(datSub)
-    } #else return()
+    } else return()
 #   )
 })
 
@@ -160,7 +160,7 @@ DatSub <- reactive({
 # build dcast formula using if controls and using the quoted method in dcast
 DatSub2 <- reactive({
  
-  if(!is.null(DatMain()) & input$PlotSelect =="Bar" & input$DodgeSelect == "Total cost revenue figure"){
+  if(!is.null(DatMain()) & input$PlotSelect =="Bar" & input$DodgeSelect == "Derivation of total cost revenue"){
     dat <- DatMain()      
     
  
@@ -189,13 +189,13 @@ DatSub2 <- reactive({
     
     return(datSub2)
 
-  } #else return()
+  } else return()
 
 })
 
 DatSub3 <- reactive({
   
-  if(!is.null(DatMain()) & input$PlotSelect =="Bar" & input$DodgeSelect == "Variable cost revenue figure"){
+  if(!is.null(DatMain()) & input$PlotSelect =="Bar" & input$DodgeSelect == "Derivation of variable cost revenue"){
     dat <- DatMain()      
     
     
@@ -224,7 +224,7 @@ DatSub3 <- reactive({
     
     return(datSub3)
     
-  } #else return()
+  } else return()
   
 })
 
@@ -245,7 +245,6 @@ DatSubThirds <- reactive({
       need(length(input$VariableSelect) ==1, 'Information on the "Variabilty Analysis" can be found in the "Instructions" tab.'),
       need(length(input$VariableSelect) == 1, " " ))
 
-        
     
     dat <- DatThirds()
     
@@ -287,6 +286,11 @@ DatSubThirds <- reactive({
     } else if(input$CategorySelect == "Fisheries"){
       datSub$VARIABLE <- factor(datSub$VARIABLE, levels = factorOrder$fisheries)
     }
+   
+    validate(
+      need(max(datSub$N)>2,
+           'Less than 3 observations per category. No figure available.')
+    ) 
     
     return(datSub)
     

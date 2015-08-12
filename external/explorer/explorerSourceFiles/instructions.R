@@ -12,28 +12,35 @@ tags$div(style = "margin: 15px; 15px; 30px; width: 60%",
            tags$li(tags$h4("Visualize Data")),
            tags$p('Visualize summary statistics for net revenue of West Coast Catcher Vessels.',tags$br(),
                 # "To get started, make at least one selection in each of the panels on the left.",tags$br(),
-                'Options for changing the chart type (bar, line, or point graphs)can be found below the plot output. 
-                A button to download the plot can be found in the panel to the left.',tags$br(),
-          'With the "bar" graph option, you can compare selected economic measures side-by-sde, view the "Total Cost Net Revenue" figure (economic measures pre-defined),
-                 or view the "Variable Cost Revenue" figure (economic measures pre-defined for this graph).  Other options to view the data are point and line graphs.'),
+                'A button to download the plot can be found in the panel to the left.  
+                Options for changing the plot type (bar, line, or point graphs) can be found below the plot output. 
+                ',tags$br(),
+                 'With the "bar" graph option, you can compare selected economic measures side-by-side 
+                or view the net economic benefits of the catch shares program. The net economic benefits are the variable cost net revenue 
+                (revenue minus variable costs) and total cost net revenue (revenue minus variable and fixed costs). 
+                A figure demonstrating how these two economic measures are derived is located on the "Visualize Data" page under the "Results" tab.
+                Click the "derivation of total cost net revenue" or the "derivation of variable cost net revenue" choice in the panel at the bottom of the page to see these figures.'),
           
           
               tags$li(tags$h4("Data Table")),
-              tags$p('View data used to create the Summary Plot.', tags$br(),
+              tags$p('View data used to create the plot generated on the "Visualize Data" page.', tags$br(),
                   #   "To get started, make at least one selection in each of the panels on the left.
+                     'A button to download the data table can be found in the panel on the left.', tags$br(),
                      'After a table has been displayed, the data can be further filtered using the "Search" box, 
-                     or filter within a column using the boxes at the bottom of the table.',tags$br(),
-                     'A button to download the data table can be found in the panel on teh left.'),
+                     or filter within a column using the boxes at the bottom of the table.'
+                     ),
           
               tags$li(tags$h4("Variability Analysis")),
-              tags$p('The variability analysis calculates the average (per vessel, vessel/day, or vessel/metric-ton) of the selected economic measure for   
-                    vessels grouped based on their annual revenue: top revenue earners, middle revenue earners, and the bottom revenue earners.  
-                     Results are plotted as a dot plot if a single year is selected or a line plot if multiple years are selected.', tags$br(),
+              tags$p('The variability analysis is useful for comparing changes in an economic measure over time between vessels with high and low revenue.
+                      Vessels are grouped into one of three classes based on their annual revenue: top revenue earners, middle revenue earners, and 
+                      bottom revenue earners.  For each group, we then calculate the average (per vessel, vessel/day, or vessel/metric-ton) of 
+                      the selected economic measure. Results are plotted as a dot plot if a single year is selected or a line plot if multiple years are selected.', tags$br(),
                     #'These thirds are plotted as lines labeled: "Top Third", "Middle Third" and "Bottom Third".' 
                    'A button to download the plot can be found in the panel on the left.'),
                      tags$p(tags$strong("Note:"), "This feature is still in development and has limited functionality.", tags$br(),
                     # 'The Summary Variable is limited to one selection and the Summary Statistic only supports the "Average" option.'
-                    'Please note that only a single class of the selected summary variable may be selected at a time. Only the "Average" statistic option is supported.')
+                    'Choices are currently limited to a single class of the selected summary variable and to
+                     "Average" statistic options.')
           )
 
 )
