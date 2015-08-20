@@ -5,10 +5,10 @@ library(appFrame)
 library(shiny)
 library(ggplot2)
 library(reshape2)
-library(grid)
+#library(grid)
 library(scales)
-library(DT,lib.loc="/usr/lib64/R/shiny_library") #THis may not be needed, depends on how modifying the table goes
-library(shinyBS,lib.loc="/usr/lib64/R/shiny_library") # this package is used to modify the size of actionbuttons
+#library(DT) #This package is good for filtering data but not compatible with current version of shiny on the server
+library(shinyBS) # this package is used to modify the size of actionbuttons
 
 
 #options(error=browser) # debugging
@@ -17,6 +17,6 @@ source("external/serverHead.R")
 
 shinyServer(
   function(input, output, session) {    
-    source("external/explorer/explorer.R", local = T)    
+    source("external/explorer/explorer.R", local=T)    
   }
 )
