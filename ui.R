@@ -36,7 +36,7 @@ fluidPage(title = "FISHEyE",
                           </div>"))  
           ),
           navbarPage(
-            title=HTML("<div> <p style='color:#2fa4e7'>_________________________________________________________________________________________</p></div>"), #inverse=T, 
+            title=HTML("<div> <p style='color:#2fa4e7'>_________________________________</p></div>"), #inverse=T, 
             collapsible=T,
            
          
