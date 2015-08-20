@@ -4,15 +4,16 @@
 # creating the dat() reactive function that contains the user selected dataset
 # The re-classification of data types can be transfered to the read-in file
 
-
 DatMain <- reactive({ # data load moved to serverhead
   # data is loaded from serverHead.R load call
   dat <- netrevTable
+
 })
 
 DatThirds <- reactive({
   dat <- netrevThirds
 })
+
 
 DatVars <- reactive({
   # create a list of variable names used in the sidebar inputs
@@ -50,7 +51,7 @@ DatSubTable <- reactive({
   #   if(is.null(input$DataButton) || input$DataButton == 0) return()
   #   input$ShortdescrSelect
   #   isolate(  
-  if(!is.null(DatMain())  ){
+#  if(!is.null(DatMain())  ){
     dat <- DatMain()      
     
     #       print("I am netrevTable data:")
@@ -62,13 +63,6 @@ DatSubTable <- reactive({
     #         "Average (per day)" = "mean per day",
     #         "Average (per metric ton)" = "mean per metric ton")
     
-    #       print(str(input$YearSelect))
-    #       print(str(input$ShortdescrSelect))
-    #       print(str(input$CategorySelect))
-    #       print(str(input$VariableSelect))
-    #       print(str(input$FishAkSelect))
-    #       print(input$StatSelect) 
-    
     #subsetting
     datSub <- subset(dat, YEAR %in% input$YearSelect &  
                        SHORTDESCR %in% input$ShortdescrSelect & 
@@ -77,16 +71,12 @@ DatSubTable <- reactive({
                        FISHAK == input$FishAkSelect &
                        STAT == input$StatSelect)
     
-    datSub$YEAR <- as.numeric(datSub$YEAR)
-    datSub$VALUE <- as.numeric(datSub$VALUE)
-    #       print("I am subset Table!")
-    #       print(str(datSub))
-    
+     datSub$VALUE <- as.numeric(datSub$VALUE)
     
     # order for plotting
     datSub$SHORTDESCR <- factor(datSub$SHORTDESCR, 
                                 levels = factorOrder$shortdescr)
-    
+ 
     if(input$CategorySelect == "Homeport"){
       datSub$VARIABLE <- factor(datSub$VARIABLE, levels = factorOrder$port)
     } else if(input$CategorySelect == "State"){
@@ -97,7 +87,7 @@ DatSubTable <- reactive({
     
     return(datSub)
     
-  } else return()
+#  } else return()
   #   )
 })
 
@@ -108,25 +98,15 @@ DatSub <- reactive({
 #   if(is.null(input$DataButton) || input$DataButton == 0) return()
 #   input$ShortdescrSelect
 #   isolate(  
-    if(!is.null(DatMain())# & input$DodgeSelect == "Compare economic measures side-by-side"
-       ){
+  #  if(!is.null(DatMain())# & input$DodgeSelect == "Compare economic measures side-by-side"
+    #   ){
       dat <- DatMain()      
-      
-#       print("I am netrevTable data:")
-#       print(str(dat))
       
 #       statSwitch <- switch(input$StatSelect,
 #         "Mean" = "mean",
 #         "Average" = "sum",
 #         "Average (per day)" = "mean per day",
 #         "Average (per metric ton)" = "mean per metric ton")
-
-#       print(str(input$YearSelect))
-#       print(str(input$ShortdescrSelect))
-#       print(str(input$CategorySelect))
-#       print(str(input$VariableSelect))
-#       print(str(input$FishAkSelect))
-#       print(input$StatSelect) 
 
       #subsetting
       datSub <- subset(dat, YEAR %in% input$YearSelect &  
@@ -136,6 +116,7 @@ DatSub <- reactive({
                             FISHAK == input$FishAkSelect &
                             STAT == input$StatSelect)
       
+      datSub$VALUE <- as.numeric(datSub$VALUE)
       
       # order for plotting
       datSub$SHORTDESCR <- factor(datSub$SHORTDESCR, 
@@ -150,7 +131,7 @@ DatSub <- reactive({
       }
       
       return(datSub)
-    } else return()
+   # } else return()
 #   )
 })
 
@@ -159,8 +140,8 @@ DatSub <- reactive({
 # This is only for when we choose the stacked plots
 # build dcast formula using if controls and using the quoted method in dcast
 DatSub2 <- reactive({
- 
-  if(!is.null(DatMain()) & input$PlotSelect =="Bar" & input$DodgeSelect == "Derivation of total cost revenue"){
+ #!is.null(DatMain()) & 
+  if(input$PlotSelect =="Bar" & input$DodgeSelect == "Derivation of total cost revenue"){
     dat <- DatMain()      
     
  
@@ -195,7 +176,7 @@ DatSub2 <- reactive({
 
 DatSub3 <- reactive({
   
-  if(!is.null(DatMain()) & input$PlotSelect =="Bar" & input$DodgeSelect == "Derivation of variable cost revenue"){
+  if(input$PlotSelect =="Bar" & input$DodgeSelect == "Derivation of variable cost revenue"){#!is.null(DatMain()) & 
     dat <- DatMain()      
     
     
@@ -230,7 +211,7 @@ DatSub3 <- reactive({
 
 # create an additional subset for thirds plot...this is where OO would be handy
 DatSubThirds <- reactive({
-  if(!is.null(DatThirds())){
+  #if(!is.null(DatThirds())){
     
 #     validate(
 #       need(input$StatSelect == "Mean", 
@@ -288,13 +269,13 @@ DatSubThirds <- reactive({
     }
    
     validate(
-      need(max(datSub$N)>2,
+      need(min(datSub$N)>2,
            'Less than 3 observations per category. No figure available.')
     ) 
     
     return(datSub)
     
-  }
+ # }
 })
 
 
