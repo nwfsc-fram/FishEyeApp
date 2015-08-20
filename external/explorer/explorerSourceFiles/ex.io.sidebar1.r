@@ -6,10 +6,6 @@
 #======================================
 
 
-output$YearSelect <- renderUI({
-  checkboxGroupInput("YearSelect", "Years:", 
-    choices = DatVars()$YEAR, selected = DatVars()$YEAR)
-})
 
 
 output$ShortdescrSelect <- renderUI({ 
@@ -17,6 +13,10 @@ output$ShortdescrSelect <- renderUI({
     choices = DatVars()$SHORTDESCR, selected = DatVars()$SHORTDESCR)
 })
 
+output$YearSelect <- renderUI({
+  checkboxGroupInput("YearSelect", "Years:", 
+    choices = DatVars()$YEAR, selected = DatVars()$YEAR)
+})
 
 output$CategorySelect <- renderUI({
 #   tags$div(title="Hi, I am a sample hover tip",
@@ -64,10 +64,9 @@ output$VariableSelect <- renderUI({
         } else if(input$CategorySelect=="Fisheries"){
             tagList(
               selectInput("fishCatSelect","", c("Catch share fisheries"="CSF", "Non-catch shares fisheries"="NSF", "All fisheries"="AF"), selected="AF"),
-              conditionalPanel(
-                condition="input.fishCatSelect==AF", 
-                bsButton("selectall2", "Select all", style="primary", size="extra-small",block=F, type="action")),
-              checkboxGroupInput("VariableSelect", "Select one or more fishery", choices=fish.var, selected="")
+                 bsButton("selectall2", "Select all", style="primary", size="extra-small",block=F, type="action"),
+           #  conditionalPanel("input.fishCatSelect==AF", 
+              checkboxGroupInput("VariableSelect", "Select one or more fishery", choices=fish.var, selected="")#)
             )
           } # end fisheries
       } else return ()
@@ -83,10 +82,10 @@ output$VariableSelect <- renderUI({
             radioButtons("VariableSelect", "Homeport", choices=c("None selected"="",factorOrder$port), selected="None selected")
         } else if(input$CategorySelect=="Fisheries"){
             tagList(
-               selectInput("fishCatSelect","", c("Catch share fisheries"="CSF", "Non-catch share fisheries"="NSF", "All fisheries"="AF"), selected="AF"),
-               conditionalPanel(
-                 condition="input.fishCatSelect2==AF", 
-                 radioButtons("VariableSelect", "Select one fishery", choices=c("None selected"="",fish.var), selected="None selected"))
+               selectInput("fishCatSelect2","", c("Catch share fisheries"="CSF", "Non-catch share fisheries"="NSF", "All fisheries"="AF"), selected="AF"),
+              # conditionalPanel(
+             #    condition="input.fishCatSelect2==AF", 
+                 radioButtons("VariableSelect", "Select one fishery", choices=c("None selected"="",fish.var), selected="None selected")#)
                            )            
             }#end fisheries
           } #else return ()
@@ -102,7 +101,7 @@ observe({
       updateCheckboxGroupInput(session,"VariableSelect", choices=fish.var[7:11], selected="")
      } else { 
        tagList(
-      actionButton("selectall2", "Select all"),
+         actionButton("selectall2", "Select all"),
       updateCheckboxGroupInput(session,"VariableSelect", choices=fish.var, selected="")
   )
        }
@@ -113,11 +112,11 @@ observe({
 observe({
   if (is.null(input$fishCatSelect2)) return()
   else if(input$fishCatSelect2=="CSF"){
-    updateRadioButtons(session,"VariableSelect",  choices=fish.var[1:6], selected=character(0))
+    updateRadioButtons(session,"VariableSelect",  choices=c("None selected"="",fish.var[1:6]), selected="None selected")
   } else  if(input$fishCatSelect2=="NSF"){
-    updateRadioButtons(session,"VariableSelect", choices=fish.var[7:11], selected=character(0))
+    updateRadioButtons(session,"VariableSelect", choices=c("None selected"="",fish.var[7:11]), selected="None selected")
   } else { 
-    updateRadioButtons(session,"VariableSelect",  choices=fish.var, selected=character(0))
+    updateRadioButtons(session,"VariableSelect",  choices=c("None selected"="",fish.var), selected="None selected")
   }
   #  else return ()
 })
