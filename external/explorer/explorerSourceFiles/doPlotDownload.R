@@ -8,7 +8,14 @@ doPlotDownload <- function(dat, x, y, type){
     groupVar <- ifelse(type=="summary", "SHORTDESCR", "THIRDS")
     facetVar <- ifelse(type== "summary" , "VARIABLE", "SHORTDESCR")
     # groupVar2 <-  factor(c("Variable costs","Fixed costs","Total cost net revenue"))
+
+    ## Change color palette to printer-friendly colors that are color-blind friendly. Want consistent colors with what Erin is using
+    #  colourList <- c("#d73027","#fee090","#91bfdb","#fc8d59", "#4575b4")
+    colourList <- c(Revenue="#d73027",'Variable costs'="#fee090", 'Total cost net revenue'="#4575b4",'Variable cost net revenue'="#fc8d59",'Fixed costs'="#91bfdb")
+    colourThirds <- c('Top third'="#253494",'Middle third'="#41b6c4",'Bottom third'="#a1dab4")
     
+    
+        
     # Plot title construction
     main <- function(){
       
@@ -218,11 +225,11 @@ doPlotDownload <- function(dat, x, y, type){
     
     # define scale
     if(type == "summary") {
-      g <- g + scale_fill_manual(values = pal.netrev, guide=guide_legend(reverse=T)) + 
-        scale_colour_manual(values = pal.netrev, guide=guide_legend(reverse=T))
+      g <- g + scale_fill_manual(values = colourList, guide=guide_legend(reverse=T)) + 
+        scale_colour_manual(values = colourList, guide=guide_legend(reverse=T))
     } else {
-      g <- g + scale_fill_manual(values = pal.thirds) + 
-        scale_colour_manual(values = pal.thirds)
+      g <- g + scale_fill_manual(values = colourThirds) + 
+        scale_colour_manual(values = colourThirds)
     }
     
     # defien x scale
