@@ -36,7 +36,8 @@ output$TableMain <- renderDataTable({
         big.mark = ",", format = 'f', digits = 5, trim=T))
       names(table) <- c("Year", "Summary Variable", "Economic measure", "N",
                         "Statistic", "Value", "FishAK")
-      datatable(table, filter="bottom", rownames=F)
+   #   datatable(table, filter="bottom", rownames=F)
+      table
     }
 })
 
