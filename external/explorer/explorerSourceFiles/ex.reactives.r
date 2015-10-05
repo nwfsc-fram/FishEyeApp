@@ -1,6 +1,5 @@
 #This file handles the reactive expressions for data management and statistical operations.
 
-
 # creating the dat() reactive function that contains the user selected dataset
 # The re-classification of data types can be transfered to the read-in file
 
@@ -21,22 +20,24 @@ DatVars <- reactive({
   datVars <- with(dat, 
     list(YEAR = unique(YEAR),
       SHORTDESCR = factorOrder$shortdescr,
-       CATEGORY = unique(CATEGORY),
+       CATEGORY = c("Fisheries","Homeport","State","Vessel length class"),
       FISHAK = unique(FISHAK),
-      STAT =  factorOrder$stat))
+      STAT =  c("Average per vessel","Average per vessel/day","Average per vessel/metric-ton","Summed over all vessels" ),
+      CS = unique(CS)
+  ))
 })
 
 
 Variable <- reactive({
   dat <- DatMain()
-    if(input$CategorySelect == "Homeport"){
-      variable = factorOrder$port
-    } else if(input$CategorySelect == "State"){
-      variable = factorOrder$state
-    } else if(input$CategorySelect == "Fisheries"){
+    if(input$CategorySelect == "Fisheries"){
       variable = c("All Catch Share Fisheries","At-sea Pacific whiting","Shoreside Pacific whiting","DTS trawl with trawl endorsement","Non-whiting, non-DTS trawl with trawl endorsement",
                    "Groundfish fixed gear with trawl endorsement","Groundfish fixed gear with fixed gear endorsement",
                    "All Non-Catch Share Fisheries", "Crab","Shrimp","Other fisheries")
+    } else if(input$CategorySelect == "State"){
+      variable = factorOrder$state
+    } else if(input$CategorySelect == "Homeport"){
+      variable = factorOrder$port
     } else {
       variable = factorOrder$lengths
 #       subByCategory <- dat[dat$CATEGORY == input$CategorySelect,] 
@@ -54,15 +55,7 @@ DatSubTable <- reactive({
 #  if(!is.null(DatMain())  ){
     dat <- DatMain()      
     
-    #       print("I am netrevTable data:")
-    #       print(str(dat))
-    
-    #       statSwitch <- switch(input$StatSelect,
-    #         "Mean" = "mean",
-    #         "Average" = "sum",
-    #         "Average (per day)" = "mean per day",
-    #         "Average (per metric ton)" = "mean per metric ton")
-    
+      
     #subsetting
     datSub <- subset(dat, YEAR %in% input$YearSelect &  
                        SHORTDESCR %in% input$ShortdescrSelect & 
@@ -76,6 +69,10 @@ DatSubTable <- reactive({
     # order for plotting
     datSub$SHORTDESCR <- factor(datSub$SHORTDESCR, 
                                 levels = factorOrder$shortdescr)
+  
+      if(input$CategorySelect != "Fisheries") {
+        datSub <- subset(datSub, CS == input$inSelect)
+        }
  
     if(input$CategorySelect == "Homeport"){
       datSub$VARIABLE <- factor(datSub$VARIABLE, levels = factorOrder$port)
@@ -116,6 +113,10 @@ DatSub <- reactive({
                             FISHAK == input$FishAkSelect &
                             STAT == input$StatSelect)
       
+      if(input$CategorySelect != "Fisheries") {
+        datSub <- subset(datSub, CS == input$inSelect)
+      }
+
       datSub$VALUE <- as.numeric(datSub$VALUE)
       
       # order for plotting
@@ -129,6 +130,17 @@ DatSub <- reactive({
       } else if(input$CategorySelect == "Fisheries"){
         datSub$VARIABLE <- factor(datSub$VARIABLE, levels = factorOrder$fisheries)
       }
+ 
+      validate(
+        need(min(datSub$N)>2,
+             '  
+              Sorry, this figure could not be generated as data were suppressed to protect confidentiality. 
+              Data are suppressed when there are not enough observations to protect confidentiality. 
+              Often, this error can be removed by clicking on the "Include vessels that fished in AK" button.
+              There are less vessels that fished solely off the west coast than off the west coast and in Alaska.
+              If this does not resolve the issue, please try a different selection of your summary variable (fishery, vessel length, homeport, state) or year.')
+      ) 
+      
       
       return(datSub)
    # } else return()
@@ -141,7 +153,7 @@ DatSub <- reactive({
 # build dcast formula using if controls and using the quoted method in dcast
 DatSub2 <- reactive({
  #!is.null(DatMain()) & 
-  if(input$PlotSelect =="Bar" & input$DodgeSelect == "Derivation of total cost revenue"){
+  if(input$DodgeSelect == "Derivation of total cost revenue"){
     dat <- DatMain()      
     
  
@@ -153,6 +165,9 @@ DatSub2 <- reactive({
                         FISHAK == input$FishAkSelect &
                         STAT == input$StatSelect)
     
+    if(input$CategorySelect != "Fisheries") {
+      datSub2 <- subset(datSub2, CS == input$inSelect)
+    }
     
     # order for plotting
     datSub2$SHORTDESCR <- factor(datSub2$SHORTDESCR, 
@@ -167,16 +182,26 @@ DatSub2 <- reactive({
     } else if(input$CategorySelect == "Fisheries"){
       datSub2$VARIABLE <- factor(datSub2$VARIABLE, levels = factorOrder$fisheries)
     }
+   
+    validate(
+      need(min(datSub2$N)>2,
+           '  
+              Sorry, this figure could not be generated as data were suppressed to protect confidentiality. 
+              Data are suppressed when there are not enough observations to protect confidentiality. 
+              Often, this error can be removed by clicking on the "Include vessels that fished in AK" button.
+              There are less vessels that fished solely off the west coast than off the west coast and in Alaska.
+              If this does not resolve the issue, please try a different selection of your summary variable (fishery, vessel length, homeport, state) or year.')
+      ) 
     
     return(datSub2)
 
-  } else return()
+  } 
 
 })
 
 DatSub3 <- reactive({
   
-  if(input$PlotSelect =="Bar" & input$DodgeSelect == "Derivation of variable cost revenue"){#!is.null(DatMain()) & 
+  if(input$DodgeSelect == "Derivation of variable cost revenue"){#!is.null(DatMain()) & 
     dat <- DatMain()      
     
     
@@ -188,6 +213,9 @@ DatSub3 <- reactive({
                         FISHAK == input$FishAkSelect &
                         STAT == input$StatSelect)
     
+    if(input$CategorySelect != "Fisheries") {
+      datSub3 <- subset(datSub3, CS == input$inSelect)
+    }
     
     # order for plotting
     datSub3$SHORTDESCR <- factor(datSub3$SHORTDESCR, 
@@ -202,6 +230,16 @@ DatSub3 <- reactive({
     } else if(input$CategorySelect == "Fisheries"){
       datSub3$VARIABLE <- factor(datSub3$VARIABLE, levels = factorOrder$fisheries)
     }
+    
+    validate(
+      need(min(datSub3$N)>2,
+           '  
+              Sorry, this figure could not be generated as data were suppressed to protect confidentiality. 
+              Data are suppressed when there are not enough observations to protect confidentiality. 
+              Often, this error can be removed by clicking on the "Include vessels that fished in AK" button.
+              There are less vessels that fished solely off the west coast than off the west coast and in Alaska.
+              If this does not resolve the issue, please try a different selection of your summary variable (fishery, vessel length, homeport, state) or year.')
+    ) 
     
     return(datSub3)
     
@@ -229,15 +267,6 @@ DatSubThirds <- reactive({
     
     dat <- DatThirds()
     
-#     print("I am netrevThirds data:")
-#     print(str(dat))
-        
-#     statSwitch <- switch(input$StatSelect,
-#                          "Average" = "mean",
-#                          "Total" = "sum",
-#                          "Average (per day)" = "mean per day",
-#                          "Average (per metric ton)" = "mean per metric ton")
-    
     #subsetting
     datSub <- subset(dat, YEAR %in% input$YearSelect &
                           SHORTDESCR %in% input$ShortdescrSelect &
@@ -246,8 +275,6 @@ DatSubThirds <- reactive({
                           FISHAK == input$FishAkSelect &
                           STAT == input$StatSelect
                      )
-# 
-#     print("I am subset thirds!")
 #     print(str(datSub))
 #     
 #     print("THIRDS???")
@@ -270,7 +297,10 @@ DatSubThirds <- reactive({
    
     validate(
       need(min(datSub$N)>2,
-           'Less than 3 observations per category. No figure available.')
+           '  
+              Sorry, this figure could not be generated as data were suppressed to protect confidentiality. 
+              Data are suppressed when there are not enough observations to protect confidentiality. 
+              Please try a different selection of your summary variable (fishery, vessel length, homeport, state) or year.')
     ) 
     
     return(datSub)
@@ -300,13 +330,13 @@ PermitPlot <- reactive({
 #Download buttons only shows up if PermitPlot()==T
 output$download_Table <- renderUI({
   if(PermitPlot()) {
-    downloadButton("dlTable", "Download Table",class = "btn btn-info")
+    downloadButton("dlTable", "Download Data Table",class = "btn btn-info")
   }
 })
 
 output$download_figure <- renderUI({
   if(PermitPlot()){# & input$tabs=="Visualize Data"){
-    downloadButton("dlFigure", "Download Figure",class = "btn btn-info")
+    downloadButton("dlFigure", "Download Figure(s)",class = "btn btn-info")
   }
 })
 
