@@ -1,4 +1,5 @@
 .libPaths(c("/usr/lib64/R/shiny_library", .libPaths()))
+
 library(appFrame)
 
 # custom css functions
@@ -14,86 +15,40 @@ fluidPage(title = "FISHEyE",
             tags$style(HTML("
                             .shiny-output-error-validation {
                             color: red;
+                            font-size: 120%;
+                            padding: 50px;
                             }
-                            "))
+                            ")),
+            tags$style(HTML(".select {margin-top:-20px}"),
+                       tags$textarea(id="message", rows=3, cols=40, "Default value"))
             ),
           
           tags$head(
             # Main css page, downloaded from bootswatch
             tags$link(rel="stylesheet", type="text/css", href="bootstrap.css"),
             # secondary css page with fisheye specific attributes
-            tags$link(rel="stylesheet", type="text/css", href="fisheye.css")
+            tags$link(rel="stylesheet", type="text/css", href="fisheye.css"),
+            tags$style(type="text/css", ".tab-content {overflow: visible;}")         
             ),
           
          # source("www/shiny_framebuster/framebuster.R")$value,
           appFrameHeaderScrolling(),
           ## example R framebusting code
-          fluidRow(div(style = "padding-botttom: 15px;"),
+          fluidRow(div(style = "padding-bottom: 15px;"),
                    tags$h2(style = "margin-left: 15px", 
                      HTML("<div>
                              <p style='font-size:120%'><strong>Net Revenue Explorer</strong></p> 
                              <p><i>West Coast Trawl Catch Share Program: Catcher Vessels</i></p>
                           </div>"))  
           ),
-          navbarPage(
-            title=HTML("<div> <p style='color:#2fa4e7'>_________________________________</p></div>"), #inverse=T, 
-            collapsible=T,
-           
-         
-         tabPanel("Results", value="results",             
+          navbarPage(id="page", collapsible=TRUE, inverse=FALSE,
+            title="",#HTML("<div> <p style='color:#2fa4e7'>_</p></div>"), #inverse=T, 
+          #  collapsible=T,
+
+         tabPanel("Explore the data", value="results",    
          # fluidRow(
             sidebarLayout(
-              sidebarPanel(
-     #         column(12,
-                   wellPanel( #left side panel                    
-                      fluidRow(
-                        column(8, HTML("<p><strong>Select data in each of the panels below: </strong></p>")
-                        )
-                     ),#end fluidRow
-                     fluidRow(
-                       column(6,
-                              wellPanelSub(
-                                wellPanelHeading(
-                                  uiOutput("CategorySelect")
-                                ),
-                                uiOutput("SelectText"),
-                                
-#                                 fluidRow((div(style="padding-left:120%;")),
-                                     uiOutput("VariableSelect")
-                              ),
-                              conditionalPanel(condition = "input.CategorySelect != 'Fisheries'",
-                                wellPanelSub(
-                                  uiOutput("FisherySubsetSelect")
-                                )
-                              ),
-                              wellPanelSub(
-                                uiOutput("FishAkSelect")
-                              )
-                       ),
-                       column(6,
-                              wellPanelSub(
-                                uiOutput("StatSelect")
-                              ),
-                              wellPanelSub(
-                                 uiOutput("YearSelect"),
-                                 uiOutput("SelectTextYear")
-                              ),
-                              wellPanelSub(
-                                 uiOutput("ShortdescrSelect")
-                              )),
-                        column(4,
-                                wellPanel(uiOutput("download_figure"),
-                                tags$br(),
-                                 uiOutput("download_Table")
-                              )
-                        )
-                       ) #end Fluid row
-                  # ) #end well panel 
-            )
-               ,       style = "padding: 0px;"), # end left side column
-
-
-                mainPanel(           
+                 mainPanel(         
                   tabsetPanel(id = "tabs",
                      tabPanel(title=HTML("Visualize <br> Data"), value="Panel1",
                               fluidRow(
@@ -101,33 +56,29 @@ fluidPage(title = "FISHEyE",
                                 ),                                
                                 column(12, plotOutput("PlotMain", height="auto",width="auto")                                  
                                 )
-                              ), #end fluidRow
+                              )#, #end fluidRow
                              # fluidRow(
                                # column(12,
                                       # DwellPanel(
                                         # fluidRow(HTML("<strong>Plot Options: </strong>"),
                                         #          style = "padding-bottom: 15px;
                                         #          padding-left: 15px"),
-                                         fluidRow(                                  
+                                        #fluidRow(                                  
                                            #column(12,  
-                                                column(5,
-                                                    wellPanelSub(
-                                                       fluidRow(
-                                                         column(3, uiOutput("PlotSelect")
-                                                         ),
-                                                         column(8, uiOutput("DodgeSelect")
-                                                         )
-                                                         )
-                                                         )
-                                                        ) #end column
+                                              #  column(5,
+                                              #     wellPanelSub(
+                                              #        fluidRow(
+                                              #          column(3, uiOutput("PlotSelect")
+                                              #          ),
+                                              #          column(8, uiOutput("DodgeSelect")
+                                              #          )))) #end column
                                        #  )
                                      #  )
                               # )
-                           #   )
-                     ) ),#end fluid row
+                           #  ) )
+                      ),#end fluid row
                     
-                     tabPanel(HTML("Data <br>
-                              Table"), value="Panel1",                    
+                     tabPanel(HTML("Data <br> Table"), value="Panel1",                    
                               fluidRow(
                                 column(12, htmlOutput("DefaultTableText")
                               )
@@ -146,20 +97,98 @@ fluidPage(title = "FISHEyE",
                                 ) ) 
               
                      ))#)
-                     ))),
-        navbarMenu("About",             #      conditionalPanel("input.tsp=='about'",
-                     tabPanel("Definitions", value="Panel1", 
-                              source("external/explorer/explorerSourceFiles/definitions.R")$value
+                     ),
+                
+                  sidebarPanel( 
+     #         column(12,
+                   wellPanel( #left side panel                    
+                      fluidRow(
+                        column(8, HTML("<p style = 'font-size: 120%'><strong>Select data in each of the panels below: </strong></p>")
+                        )
+                     ),#end fluidRow
+                     fluidRow(
+                       column(6,
+                              wellPanelSub(
+                                wellPanelHeading(
+                                  uiOutput("CategorySelect")
+                                ),
+                                uiOutput("SelectText"),
+                                
+#                                 fluidRow((div(style="padding-left:120%;")),
+                                     uiOutput("VariableSelect")
+                              ),
+                            #  conditionalPanel(condition = "input.CategorySelect != 'Fisheries'",
+                            #    wellPanelSub(
+                            #      uiOutput("FisherySubsetSelect")
+                             #   )
+                           #   ),
+                              wellPanelSub(
+                                uiOutput("FishAkSelect")
+                              )
+                       ),
+                       column(6,
+                              wellPanelSub(
+                                uiOutput("StatSelect")
+                              ),
+                              wellPanelSub(
+                                 uiOutput("YearSelect")#,
+                                # uiOutput("SelectTextYear")
+                              ),
+                              conditionalPanel(condition ="input.tabs == 'Panel2'|| input.tabs== 'Panel1' & input.DodgeSelect == 'Compare economic measures side-by-side'",
+                              wellPanelSub(
+                                 uiOutput("ShortdescrSelect")
+                              ))
+                              ),
+                        column(6,
+                               wellPanel(
+                                 uiOutput("DodgeSelect"),
+                                 uiOutput("PlotSelect"))
+                               ),
+                        column(4,
+                                wellPanel(uiOutput("download_figure"),
+                                tags$br(),
+                                 uiOutput("download_Table")
+                              )
+                        )
+                       ) #end Fluid row
+                  # ) #end well panel 
+            )
+               ,       style = "padding: 0px;") # end left side column
+
+
+
+)),
+        navbarMenu("About, Instructions, Definitions",
+          #HTML("<div> <p style= 'color:black; margin-bottom:-65px; margin-top:-15px; padding:19px; border-left: 1px solid black;border-right: 1px solid black; width:250px'>About, Instructions, Definitions</p></div>"),
+                     tabPanel("About", value="Panel1", 
+                              source("external/explorer/explorerSourceFiles/about.R")$value
                      ),
                      tabPanel("Instructions", value="Panel1", 
                               source("external/explorer/explorerSourceFiles/instructions.R")$value
                      ),
-                     tabPanel("About", value="Panel1", 
-                              source("external/explorer/explorerSourceFiles/about.R")$value
+                     tabPanel("Definitions", value="Panel1", 
+                              source("external/explorer/explorerSourceFiles/definitions.R")$value
                      )
-                #   ) # end of tabsetPanel
-            ) # end right side column     
-          ), #end app level fluid row
+            ), # end right side column     
+          tabPanel("Contact us",
+                   
+                              textInput("from", "From:", value="From"),
+                              textInput("to", "To:", value="nwfsc.fisheye@noaa.gov"),
+                               textInput("subject", "Subject:", value="Subject"),
+                   tags$style(type="text/css", "textarea {width:100%}"),
+                   tags$textarea(id = 'message', placeholder = 'Write your message here. Please press "Submit" only once; a confirmation notice will not appear', rows = 8, ""),
+                #   verbatimTextOutput("output_text")
+                   
+                               #aceEditor("message", "Body:", value="Function currently not working.  Do not use. 
+                              ##           In future message will state: Write message here"),
+                          #    textInput("message", "Body:", "type message here"),
+                               actionButton("send",label = "Send mail")
+                   ),
+          tabPanel(HTML('<a href="http://devdataexplorer.nwfsc.noaa.gov/fisheye/"style="display: inline-block; padding-bottom:0"> 
+                        <img src="homebutton.png" style="height:40px;margin: -40px -20px 0px 50px; float:top; border:0"/></a>')) 
+#
+                        
+          ), #end app level fluid row#, target="_blank"
           appFrameFooterScrolling()
 ) # end fluid Page
 
