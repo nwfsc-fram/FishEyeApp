@@ -5,11 +5,16 @@ output$DefaultPlotText <- renderUI({
   if(PermitPlot()) return()
   tags$div(style = "margin: 15px 15px 30px; width: 60%",
            tags$h4("Plot data"),
-           tags$p("Visualize summary statistics for net revenue of West Coast Catcher Vessels. The Catch Shares Program was implemented in 2011. 
+           tags$p("Visualize summary statistics for net revenue of West Coast Catcher Vessels.",tags$br(),  tags$strong("To get started, make at least one selection in each of the panels on the left."),tags$br(),
+                  "Once selections have been made, a button to download the plot output will appear in the panel on the left. 
+                  Options for changing the chart type can be found beneath the plot."),
+           
+           tags$p("The Catch Shares Program began in 2011. 
                   In all figures, we distinguish beween pre- and post- implementation of the catch shares program with shading."),
                   # img(src="Example.png", height=400),
-           
-           tags$p('Data can be viewed as a dot plot, line plot, or bar plot. With the "bar" graph option, you can compare selected economic measures side-by-side 
+
+          
+           tags$p(strong('Data plotting options.'),'Data can be viewed as a dot plot, line plot, or bar plot. With the "bar" graph option, you can compare selected economic measures side-by-side 
             or view the net economic benefits of the catch shares program. The economic benefits are the variable cost net revenue (revenue minus variable costs) and 
             total cost net revenue (revenue minus variable and fixed costs). The derivation of these economic measures are shown in the figure below.  Click the  "derivation of total cost net revenue" or
                   the "derivation of variable cost net revenue" choice in the panel at the bottom of the page to see these figures.'),  
@@ -17,9 +22,6 @@ output$DefaultPlotText <- renderUI({
                 #   p('Other options to view the data are point and line graphs.'),
           img(src="EconInd3.png", height=350),  #  img(src="EconInd4.png", height=350),       
                    
-             tags$p(strong("To get started, make at least one selection in each of the panels on the left."),tags$br(),
-                  "Once selections have been made, a button to download the plot output will appear in the panel on the left. 
-                  Options for changing the chart type can be found beneath the plot."),
            
            tags$p('To view these instructions again at any time visit the "Instructions" tab.')
   )
