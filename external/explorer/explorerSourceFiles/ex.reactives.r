@@ -22,7 +22,7 @@ DatVars <- reactive({
       SHORTDESCR = factorOrder$shortdescr,
        CATEGORY = c("Fisheries","Homeport","State","Vessel length class"),
       FISHAK = unique(FISHAK),
-      STAT =  c("Average per vessel","Average per vessel/day","Average per vessel/metric-ton","Summed over all vessels" ),
+      STAT =  c("Average per vessel","Average per vessel/day","Average per vessel/metric-ton","Summed over all vessels"="Total" ),
       CS = unique(CS)
   ))
 })
@@ -95,8 +95,7 @@ DatSub <- reactive({
 #   if(is.null(input$DataButton) || input$DataButton == 0) return()
 #   input$ShortdescrSelect
 #   isolate(  
-  #  if(!is.null(DatMain())# & input$DodgeSelect == "Compare economic measures side-by-side"
-    #   ){
+    if(input$DodgeSelect == "Compare economic measures side-by-side"){
       dat <- DatMain()      
       
 #       statSwitch <- switch(input$StatSelect,
@@ -143,7 +142,7 @@ DatSub <- reactive({
       
       
       return(datSub)
-   # } else return()
+    } else return()
 #   )
 })
 
@@ -153,7 +152,7 @@ DatSub <- reactive({
 # build dcast formula using if controls and using the quoted method in dcast
 DatSub2 <- reactive({
  #!is.null(DatMain()) & 
-  if(input$DodgeSelect == "Derivation of total cost revenue"){
+  if(input$DodgeSelect == "Derivation of total cost net revenue"){
     dat <- DatMain()      
     
  
@@ -201,7 +200,7 @@ DatSub2 <- reactive({
 
 DatSub3 <- reactive({
   
-  if(input$DodgeSelect == "Derivation of variable cost revenue"){#!is.null(DatMain()) & 
+  if(input$DodgeSelect == "Derivation of variable cost net revenue"){#!is.null(DatMain()) & 
     dat <- DatMain()      
     
     
@@ -251,20 +250,6 @@ DatSub3 <- reactive({
 DatSubThirds <- reactive({
   #if(!is.null(DatThirds())){
     
-#     validate(
-#       need(input$StatSelect == "Mean", 
-#           'This feature currently supports only the "Mean" Summary Stastic')
-#     )
-#     
-#This is the error message that will come up if the requirement of only 1 variable is invalidated
-    validate(
-      need(length(input$VariableSelect) == 1, " "),
-      need(length(input$VariableSelect) == 1, 
-        "Plot will appear once a selection of the summary variable has been chosen."),
-      need(length(input$VariableSelect) ==1, 'Information on the "Variabilty Analysis" can be found in the "Instructions" tab.'),
-      need(length(input$VariableSelect) == 1, " " ))
-
-    
     dat <- DatThirds()
     
     #subsetting
@@ -275,12 +260,12 @@ DatSubThirds <- reactive({
                           FISHAK == input$FishAkSelect &
                           STAT == input$StatSelect
                      )
-#     print(str(datSub))
 #     
-#     print("THIRDS???")
-#     print(unique(datSub$THIRDS))
-#    print(unique(factorOrder$thirds))
+    if(input$CategorySelect != "Fisheries") {
+      datSub <- subset(datSub, CS == input$inSelect)
+    }
     
+    datsub <- subset(datSub, is.na(datSub$N)==F)
     datSub$THIRDS <- factor(datSub$THIRDS,
                             levels = factorOrder$thirds)
     
@@ -303,6 +288,13 @@ DatSubThirds <- reactive({
               Please try a different selection of your summary variable (fishery, vessel length, homeport, state) or year.')
     ) 
     
+     validate(
+       need(input$StatSelect != "Summed over all vessels", 
+           '
+
+            Sorry, the variability analysis does not support the "summed over all vessels" stastic.
+            Please select a different statistic.')
+     )
     return(datSub)
     
  # }

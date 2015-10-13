@@ -21,7 +21,7 @@ output$ShortdescrSelect <- renderUI({
 })
 
 output$YearSelect <- renderUI({
-  checkboxGroupInput("YearSelect", "Years (note that the Catch Share Program began in 2011):", 
+  checkboxGroupInput("YearSelect", "Years (The Catch Share Program began in 2011):", 
     choices = DatVars()$YEAR, selected = DatVars()$YEAR)
 })
 
@@ -65,7 +65,7 @@ output$VariableSelect <- renderUI({
                         c("All fisheries" = "All Fisheries",
                           "All catch share fisheries" = "All Catch Share Fisheries",
                           "All non-catch shares fisheries" = "All Non-Catch Share Fisheries"))),
-            checkboxGroupInput("VariableSelect", "Select one or more:", choices = factorOrder$state, selected="")
+            checkboxGroupInput("VariableSelect", "Select one or more state:", choices = factorOrder$state, selected="")
           )
         } else if(input$CategorySelect == "Vessel length class"){
           tagList(           
@@ -73,7 +73,7 @@ output$VariableSelect <- renderUI({
                         c("All fisheries" = "All Fisheries",
                           "All catch share fisheries" = "All Catch Share Fisheries",
                           "All non-catch shares fisheries" = "All Non-Catch Share Fisheries"))),
-            checkboxGroupInput("VariableSelect",  "Select one or more:", choices=factorOrder$lengths, selected="")
+            checkboxGroupInput("VariableSelect",  "Select one or more vessel length class:", choices=factorOrder$lengths, selected="")
           )
         } else if(input$CategorySelect == "Homeport"){
             tagList(           
@@ -82,7 +82,7 @@ output$VariableSelect <- renderUI({
                             "All catch share fisheries" = "All Catch Share Fisheries",
                             "All non-catch shares fisheries" = "All Non-Catch Share Fisheries"))),
               #$bsButton("selectall", "Select all", style="primary", size="extra-small",block=F, type="action"),
-              checkboxGroupInput("VariableSelect", "Select one or more:", choices=factorOrder$port, selected="")
+              checkboxGroupInput("VariableSelect", "Select one or more homeport:", choices=factorOrder$port, selected="")
             )
         } else if(input$CategorySelect=="Fisheries"){
             tagList(
@@ -91,7 +91,7 @@ output$VariableSelect <- renderUI({
                  bsButton("selectallcs", "All catch share fisheries", style="default",size="extra-small", block=F, type="action"),
                  bsButton("selectallncs", "All non-catch shares fisheries", style="default", size="extra-small", block=F, type="action"),
            #  conditionalPanel("input.fishCatSelect==AF", 
-              checkboxGroupInput("VariableSelect", tags$h5(tags$i("Select fishery individually:")), choices=fish.var, selected="")
+              tags$div(class="ckbox", checkboxGroupInput("VariableSelect", tags$h5(tags$i("or select fishery individually:")), choices=fish.var, selected=""))
               
             )
           } # end fisheries
@@ -101,12 +101,30 @@ output$VariableSelect <- renderUI({
       if(!is.null(input$CategorySelect)){
        
         if(input$CategorySelect == "State"){
-           radioButtons("VariableSelect", "Select ONE state", choices = c("None selected"="","Washington"="Washington", "Oregon"="Oregon","California"="California"), selected="None selected") 
-        } else if(input$CategorySelect == "Vessel length class"){
-           radioButtons("VariableSelect",  "Select ONE vessel length class", choices=c("None selected"="",factorOrder$lengths), selected="None selected")
-        } else if(input$CategorySelect == "Homeport"){
+          tagList(           
+            tags$div(class="select", selectInput("inSelect","",
+                                                 c("All fisheries" = "All fisheries",
+                                                   "All catch share fisheries" = "All Catch Share Fisheries",
+                                                   "All non-catch shares fisheries" = "All Non-Catch Share Fisheries"))),
+            radioButtons("VariableSelect", "Select ONE state", choices = c("None selected"="","Washington"="Washington", "Oregon"="Oregon","California"="California"), selected="None selected") 
+          )
+            } else if(input$CategorySelect == "Vessel length class"){
+          tagList(           
+            tags$div(class="select", selectInput("inSelect","",
+                                                 c("All fisheries" = "All fisheries",
+                                                   "All catch share fisheries" = "All Catch Share Fisheries",
+                                                   "All non-catch shares fisheries" = "All Non-Catch Share Fisheries"))),
+            radioButtons("VariableSelect",  "Select ONE vessel length class", choices=c("None selected"="",factorOrder$lengths), selected="None selected")
+          )
+            } else if(input$CategorySelect == "Homeport"){
+          tagList(           
+            tags$div(class="select", selectInput("inSelect","",
+                                                 c("All fisheries" = "All fisheries",
+                                                   "All catch share fisheries" = "All Catch Share Fisheries",
+                                                   "All non-catch shares fisheries" = "All Non-Catch Share Fisheries"))),
             radioButtons("VariableSelect", "Select ONE homeport", choices=c("None selected"="",factorOrder$port), selected="None selected")
-        } else if(input$CategorySelect=="Fisheries"){
+          )
+            } else if(input$CategorySelect=="Fisheries"){
            # tagList(
               # selectInput("fishCatSelect2","", c("Catch share fisheries"="CSF", "Non-catch share fisheries"="NSF", "All fisheries"="AF"), selected="AF"),
               # conditionalPanel(
@@ -193,7 +211,7 @@ observe({
 # } )
 
 output$FishAkSelect <- renderUI({
-  checkboxInput("FishAkSelect", "Include vessels that fished in AK", 
+  checkboxInput("FishAkSelect", "Include vessels that fished in AK. By clicking this, you are selecting to include vessels that also participated in an Alaskan fishery. Data from their activities in the Alaskan fishery are not included.", 
     value = TRUE)
 })
 
@@ -251,21 +269,18 @@ output$PlotSelect <- renderUI({
 
 #===============text ==========================================#
 output$SelectText <- renderText ({ 
-  if(input$tabs!="Panel2"){
   if(input$CategorySelect!="Fisheries"){
 HTML("<div style='display:inline-block;width:100%; margin-top:10px'>
                                        <b>Show data summed across these fisheries:</b></div>")
-} else  if(input$CategorySelect=="Fisheries"){
-  HTML("<div style='display:inline-block;width:100%; margin-top:11px'>
+} else  if(input$tabs!="Panel2" & input$CategorySelect=="Fisheries"){
+  HTML("<div style='display:inline-block;width:100%; padding:0; margin-top:0px; margin-bottom:-5px;'>
                                        <b>Select data for these fisheries:</b> <br>
-                                       <h5><i>Select fishery groups:</i></h5></div>")#,
+                                       <h5><i>Select fishery groups,</i></h5></div>")#,
  # HTML("<div style='display:inline-block;width:100%; margin-top:10px'>
  #                                      <i>Select fishery groups:</i></div>") 
 
 }
-  } else {
-    return()
-  }
+ 
 })
 
 #output$SelectTextYear <- renderText({
