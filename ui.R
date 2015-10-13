@@ -20,8 +20,10 @@ fluidPage(title = "FISHEyE",
                             }
                             ")),
             tags$style(HTML(".select {margin-top:-20px}"),
-                       tags$textarea(id="message", rows=3, cols=40, "Default value"))
+                       tags$textarea(id="message", rows=3, cols=40, "Default value")),
+            tags$style(HTML(".ckbox {margin-top: -5px; padding:0}"))
             ),
+          
           
           tags$head(
             # Main css page, downloaded from bootswatch
@@ -184,8 +186,8 @@ fluidPage(title = "FISHEyE",
                           #    textInput("message", "Body:", "type message here"),
                                actionButton("send",label = "Send mail")
                    ),
-          tabPanel(HTML('<a href="http://devdataexplorer.nwfsc.noaa.gov/fisheye/"style="display: inline-block; padding-bottom:0"> 
-                        <img src="homebutton.png" style="height:40px;margin: -40px -20px 0px 50px; float:top; border:0"/></a>')) 
+          tabPanel(HTML('<a href="http://devdataexplorer.nwfsc.noaa.gov/fisheye/"style="display: padding-bottom:100;margin: -30px -50px 0px 380px;color:blue"> 
+                        Return to FISHEyE homepage </a>'))# style="height:40px;margin: -40px -20px 0px 50px; float:top; border:0"/>
 #
                         
           ), #end app level fluid row#, target="_blank"
