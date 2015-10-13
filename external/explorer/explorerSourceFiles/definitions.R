@@ -2,9 +2,9 @@ tags$div(style = "margin: 15px 15px 30px; width: 60%",
   tags$div(
     p("The variables and their definitions used in 
       this application are sourced from the 2012 Economic Data Collection (EDC) report. 
-      A copy of this and past reports can be found at:",
+      A copy of this and past reports can be found on the",
       tags$a(href="http://www.nwfsc.noaa.gov/research/divisions/fram/economic/economic_data.cfm>",
-      "www.nwfsc.noaa.gov/research/divisions/fram/economic/economic_data.cfm")) 
+      "EDC reports webpage.")) 
   ),  
   tags$div(style= "margin-top: 15px;",
            
@@ -12,14 +12,13 @@ tags$div(style = "margin: 15px 15px 30px; width: 60%",
      tags$ul(
        tags$li("Fisheries:"),
          tags$p('Fisheries used for EDC reporting to characterise 
-                the US West Coast Groundfish fishery. 
-                The catch share program was implemented in 2011. Data prior and after the implementation of the program are included. 
+                the', tags$a(href="http://www.westcoast.fisheries.noaa.gov/fisheries/groundfish/", 'US West Coast Groundfish fishery.'), 
+                'The', tags$a(href="http://www.westcoast.fisheries.noaa.gov/fisheries/groundfish_catch_shares/", 'West Coast Groundfish Trawl Catch Share program'), 'was implemented in 2011. 
+              Data prior and after the implementation of the program are included. 
               The catch share program consists of cooperatives for the at-sea mothership (including
                 catcher vessels and motherships) and catcher-processor fleets, 
                 and an individual fishing quota (IFQ) program for the shorebased trawl fleet.
-                This application only uses data from the Catcher Vessel sector.
-                Many vessels that participate in the catch share program also 
-                participate in other fisheries.'),
+                The Net Revenue Explorer currently provides data from the Catcher Vessel sector. We are working to add other sectors. Many vessels that participate in the catch share program also participate in other fisheries.'),
          p(tags$i('Catch Share fisheries include'),': At-sea Pacific whiting; 
                 Shoreside Pacific whiting;
                 Groundfish fixed gear with trawl endorsement;
@@ -33,7 +32,7 @@ tags$div(style = "margin: 15px 15px 30px; width: 60%",
        tags$li("Vessel length class."),
          tags$p("Three classes of vessel size representing the range of catcher vessel size."),
        tags$li("Homeport:"),
-         tags$p("The homeport reported by each vessel on the EDC survey."),
+         tags$p("The homeport reported by each vessel on the", tags$a(href="http://www.nwfsc.noaa.gov/research/divisions/fram/economic/economic_data_forms.cfm", "EDC survey."),
        tags$li("State:"),
          tags$p("The state corresponding to each homeport.")
       ),               
@@ -41,11 +40,11 @@ tags$div(style = "margin: 15px 15px 30px; width: 60%",
     h4("Statistics"),
   tags$ul(
     tags$li("Total:"),
-    tags$p("Total for all vessels which participated in the catch share fishery."),
+    tags$p("Total for all vessels which participated in the catch share program."),
     tags$li("Average:"),
-      tags$p("Average for all vessels which participated in the catch share fishery."),
+      tags$p("Average for all vessels which participated in the catch share program."),
     tags$li("Average per day:"),
-      tags$p("Average per day for all vessels which participated in the catch share fishery."
+      tags$p("Average per day for all vessels which participated in the catch share program."
       ),
     tags$li("Average per ton:"),
       tags$p("Average per metric ton of fish caught for all vessels which participated in the catch share program."
@@ -61,7 +60,7 @@ tags$div(style = "margin: 15px 15px 30px; width: 60%",
         tags$li("Variable cost:"),
           tags$p("Costs which vary with the the level of participation
              in a fishery and generally include items such as fuel and crew payments. 
-             See Table 9.1 of the 2012 EDC report for the full listing of 
+             See Table 9.1 of the", tags$a(href="http://www.nwfsc.noaa.gov/research/divisions/fram/documents/EDC_Catcher_Vessel_Report_2015.pdf", '2012 EDC report'), "for the full listing of 
              variable cost categories."),
         tags$li("Fixed cost:"),
            tags$p("Costs that do not vary with the level of fishing participation. 
@@ -86,19 +85,23 @@ h4("Fished in AK"),
     tags$li(
       tags$p("Vessels that fished in Alaska (versus vessels that fished solely on the west coast) can be filtered from the data. Vessels that fished in Alaska tend to be longer (>90') than
               vessels that only fished off the west coast (65' on average). Vessels that fished in Alaska also tend to participate in different 
-            fisheries than vessles that only fished off the west coast."), 
-      tags$p("If this box is checked, then all vessels will be included. If un-checked, then
-             vessels will be removed for years in which they participated in an Alaskan fishery.")
+            fisheries than vessels that only fished off the west coast."), 
+      tags$p("If this box is not checked, then only vessels that participated solely in the West Coast fishery will be included. If this box is checked, then all vessels, including those that 
+             participated in an Alaskan fishery will be included. Data from their activity in an Alaskan fishery will not be included.")
     )
   ),
   h4("Variables in the Data Table"),
  tags$ul(
    tags$li('Year: Calender year over which fisheries activities were observed.'),
-   tags$li('Summary variable: See above for further description of the summary variables'),
-   tags$li('Economic measure: See above for further description of the economic measures'),
+   tags$li('Summary variable:  Summary variables (fisheries, homeport, state, vessel length class) are used to group vessels. See above for further description of the summary 
+          variables. Economic measure: See above for further description of the economic measures.'),
+   tags$li('Economic measure: See above for further description of the economic measures.'),
    tags$li('N: the number of observations for each datum.'),
-   tags$li('Statistic: see above for further description of the statistics'),
-   tags$li('Value: value of the economic measures for the summary statistic'),
-   tags$li('FishAK: Fished in an Alaskan fisheries (TRUE) or not (FALSE).')
+   tags$li('Statistic: see above for further description of the statistics.'),
+   tags$li('Value: value of the economic measures for the summary statistic.'),
+   tags$li('FishAK: Fished in an Alaskan fisheries (TRUE or FALSE).'),
+   tags$li('Fisheries Category: This variable is relevant for when vessels are grouped by homeport, state, or vessel length class. It indicates whether the reported value of the selected economic 
+           measure includes activity in all fisheries or only in the catch share fisheries or the non-catch share fisheries.')
   )
+)
 )
