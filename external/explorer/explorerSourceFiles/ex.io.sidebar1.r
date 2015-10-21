@@ -7,36 +7,35 @@
 observe({
   if(is.null(input$send) || input$send==0) return(NULL)
   from <- isolate(input$from)
-  to <- isolate(input$to)
+  to <- "nwfsc.fisheye@noaa.gov"
   subject <- isolate(input$subject)
   msg <- paste(isolate(input$from), isolate(input$message))
-  sendmail(to, subject, msg, password="rmail")
+  sendmail("melanie.harsch@noaa.gov", subject, msg, password="rmail")
 })
-
 
 
 output$ShortdescrSelect <- renderUI({ 
-  checkboxGroupInput("ShortdescrSelect", "Economic measures:", 
-    choices = DatVars()$SHORTDESCR, selected = DatVars()$SHORTDESCR)
+  tags$div(class="ckbox", checkboxGroupInput("ShortdescrSelect", "Economic measures:", 
+    choices = DatVars()$SHORTDESCR, selected = DatVars()$SHORTDESCR))
 })
 
 output$YearSelect <- renderUI({
-  checkboxGroupInput("YearSelect", "Years (The Catch Share Program began in 2011):", 
-    choices = DatVars()$YEAR, selected = DatVars()$YEAR)
+  tags$div(class="ckbox", checkboxGroupInput( "YearSelect", p("Years:", span(tags$br(), "(The Catch Share Program began in 2011)", style="font-style:italic;font-size:10.5pt; font-weight:normal;"), style="margin-bottom:-2px"), 
+    choices = DatVars()$YEAR, selected = DatVars()$YEAR))
 })
 
 output$CategorySelect <- renderUI({
 #   tags$div(title="Hi, I am a sample hover tip",
 
-    radioButtons("CategorySelect", "Group vessels according to:", #"Summarize variable by:",
+  tags$div(class="ckbox", radioButtons("CategorySelect", "Group vessels according to:", 
       
-      choices = DatVars()$CATEGORY)
+      choices = DatVars()$CATEGORY))
 #   )
 })
 
-fish.var <- c("The aggregate of all catch share fisheries"="All Catch Share Fisheries","At-sea Pacific whiting","Shoreside Pacific whiting","DTS trawl with trawl endorsement","Non-whiting, non-DTS trawl with trawl endorsement",
+fish.var <- c("All fisheries combined"="All Fisheries"," All catch share fisheries combined"="All Catch Share Fisheries","At-sea Pacific whiting","Shoreside Pacific whiting","DTS trawl with trawl endorsement","Non-whiting, non-DTS trawl with trawl endorsement",
   "Groundfish fixed gear with trawl endorsement",
-  "The aggregate of all non-catch share fisheries"="All Non-Catch Share Fisheries", "Groundfish fixed gear with fixed gear endorsement","Crab","Shrimp","Other fisheries")
+  "All non-catch share fisheries combined"="All Non-Catch Share Fisheries", "Groundfish fixed gear with fixed gear endorsement","Crab","Shrimp","Other fisheries")
 
 Variable <- reactive({
   dat <- DatMain()
@@ -52,7 +51,6 @@ Variable <- reactive({
   }
   return(variable)
 })
-
 
     
 
@@ -91,7 +89,7 @@ output$VariableSelect <- renderUI({
                  bsButton("selectallcs", "All catch share fisheries", style="default",size="extra-small", block=F, type="action"),
                  bsButton("selectallncs", "All non-catch shares fisheries", style="default", size="extra-small", block=F, type="action"),
            #  conditionalPanel("input.fishCatSelect==AF", 
-              tags$div(class="ckbox", checkboxGroupInput("VariableSelect", tags$h5(tags$i("or select fishery individually:")), choices=fish.var, selected=""))
+              tags$div(class="ckbox", checkboxGroupInput("VariableSelect", div("or select fisheries individually:", style="font-style:italic; font-size:10.87pt; font-weight:normal; margin-bottom:-7.5pt"), choices=fish.var, selected=""))
               
             )
           } # end fisheries
@@ -189,7 +187,7 @@ observe({
   else if (input$selectallcs%%2 == 0) {
     updateCheckboxGroupInput(session,"VariableSelect", selected=as.character(0)) } 
   else {
-    updateCheckboxGroupInput(session,"VariableSelect", selected=fish.var[1:6])
+    updateCheckboxGroupInput(session,"VariableSelect", selected=fish.var[2:7])
   }
 })
 
@@ -198,7 +196,7 @@ observe({
   else if (input$selectallncs%%2 == 0) {
     updateCheckboxGroupInput(session,"VariableSelect", selected=as.character(0)) } 
   else {
-    updateCheckboxGroupInput(session,"VariableSelect", selected=fish.var[7:11])
+    updateCheckboxGroupInput(session,"VariableSelect", selected=fish.var[8:12])
   }
 })
 
@@ -211,14 +209,14 @@ observe({
 # } )
 
 output$FishAkSelect <- renderUI({
-  checkboxInput("FishAkSelect", "Include vessels that fished in AK. By clicking this, you are selecting to include vessels that also participated in an Alaskan fishery. Data from their activities in the Alaskan fishery are not included.", 
-    value = TRUE)
+  tags$div(class="ckbox", checkboxInput("FishAkSelect", p("Include vessels that fished in AK.", span("By selecting this, you will include vessels that also participated in an Alaskan fisheries. Data from their activities in Alaska are not included.", style="font-style:italic;font-size:10pt")), 
+    value = TRUE))
 })
 
 
 output$StatSelect <- renderUI({
-  radioButtons("StatSelect", "Statistic:", 
-    choices = c(DatVars()$STAT))
+  tags$div(class="ckbox", radioButtons("StatSelect", "Statistic:", 
+    choices = c(DatVars()$STAT)))
  
 })
 
@@ -230,7 +228,7 @@ output$StatSelect <- renderUI({
 output$DodgeSelect <- renderUI({
   if(input$tabs!="Panel2"){
   radioButtons("DodgeSelect", "Plot Options:", 
-               choices= c("Compare economic measures side-by-side","Derivation of total cost net revenue", "Derivation of variable cost net revenue"))
+               choices= c("Compare economic measures side-by-side","Composition of total cost net revenue", "Composition of variable cost net revenue"))
 } else return()
   })
 
@@ -238,7 +236,7 @@ output$DodgeSelect <- renderUI({
 output$PlotSelect <- renderUI({
   if(input$tabs!="Panel2"){
     if(input$DodgeSelect == "Compare economic measures side-by-side") {
-  selectInput("PlotSelect", "", choices= c("Bar", "Point", "Line"))
+      tags$div(class="ckbox", selectInput("PlotSelect", "", choices= c("Bar", "Point", "Line")))
     } else return()
   } else return()
 })
@@ -252,7 +250,7 @@ output$PlotSelect <- renderUI({
 #output$DodgeSelect <- renderUI({
 #    if(!is.null(input$PlotSelect)) {
 #    if(input$PlotSelect == "Bar") {
-#      radioButtons("DodgeSelect", "", choices= c("Derivation of total cost revenue", "Derivation of variable cost revenue","Compare economic measures side-by-side"))
+#      radioButtons("DodgeSelect", "", choices= c("Composition of total cost revenue", "Composition of variable cost revenue","Compare economic measures side-by-side"))
 #    } else return()
 #  } else return()
 #})
@@ -273,9 +271,9 @@ output$SelectText <- renderText ({
 HTML("<div style='display:inline-block;width:100%; margin-top:10px'>
                                        <b>Show data summed across these fisheries:</b></div>")
 } else  if(input$tabs!="Panel2" & input$CategorySelect=="Fisheries"){
-  HTML("<div style='display:inline-block;width:100%; padding:0; margin-top:0px; margin-bottom:-5px;'>
-                                       <b>Select data for these fisheries:</b> <br>
-                                       <h5><i>Select fishery groups,</i></h5></div>")#,
+  HTML("<div style='display:inline-block;width:100%;padding:0;line-height: 0.72em; margin-top:20px; margin-bottom:-25px;'>
+                                       <b>Select fisheries:</b> 
+                                       <h5><i>Select a fishery group,</i></h5></div>")#,
  # HTML("<div style='display:inline-block;width:100%; margin-top:10px'>
  #                                      <i>Select fishery groups:</i></div>") 
 
