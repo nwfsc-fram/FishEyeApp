@@ -23,11 +23,11 @@ doPlotDownload <- function(dat, x, y, type){
           if(input$DodgeSelect == "Compare economic measures side-by-side"){
             sprintf(paste("Summary Economic Measures for West Coast Catcher Vessels:", input$CategorySelect,
                           "\nSummary statistic: ", input$StatSelect))
-          } else if(input$DodgeSelect == "Derivation of total cost revenue"){
-            sprintf(paste("Derivation of total cost revenue for West Coast Catcher Vessels:", input$CategorySelect,
+          } else if(input$DodgeSelect == "Composition of total cost revenue"){
+            sprintf(paste("Composition of total cost revenue for West Coast Catcher Vessels:", input$CategorySelect,
                           "\nSummary statistic: ", input$StatSelect))
-          } else if(input$DodgeSelect == "Derivation of variable cost revenue"){
-            sprintf(paste("Derivation of variable cost revenue for West Coast Catcher Vessels:", input$CategorySelect,
+          } else if(input$DodgeSelect == "Composition of variable cost revenue"){
+            sprintf(paste("Composition of variable cost revenue for West Coast Catcher Vessels:", input$CategorySelect,
                           "\nSummary statistic: ", input$StatSelect))
           }#}
         
@@ -65,16 +65,10 @@ doPlotDownload <- function(dat, x, y, type){
         return(1.4)
       } else if(b<5 | b==12){
         return(1.75)
-      } 
-      if(input$CategorySelect =="Fisheries") {
-        if(b ==11) {
-          return(1.75)
-        }
-      } else {
-        if(input$CategorySelect == "Homeport"){
+      }   else {
           if(b==11) {
             return(1)
-          }}
+          }
       }
       } else {
         return(1.3)
@@ -242,8 +236,14 @@ doPlotDownload <- function(dat, x, y, type){
     g <- g + geom_hline(yintercept = 0)
     
     # define labels
+    if(type != "summary"){
+      g <- g + labs(y = "Thousands ($)", x= paste("Sourced from the FISHEyE application (http://devdataexplorer.nwfsc.noaa.gov/fisheye/FisheyeApp/) maintained by NOAA's NWFSC on ",format(Sys.Date(), format="%B %d %Y")), title = main()) 
+    } else {
+    if(PermitMessage()){
+      g <- g + labs(y = "Thousands ($)", x= paste("Sourced from the FISHEyE application (http://devdataexplorer.nwfsc.noaa.gov/fisheye/FisheyeApp/) maintained by NOAA's NWFSC on ",format(Sys.Date(), format="%B %d %Y"),"\n",                                                   "Note that if the Groundfish fixed gear with trawl endorsement fishery has been selected, data from 2009 has been suppressed as there are not enough observations to protect confidentiality."), title = main()) 
+    } else {
     g <- g + labs(y = "Thousands ($)", x= paste("Sourced from the FISHEyE application (http://devdataexplorer.nwfsc.noaa.gov/fisheye/FisheyeApp/) maintained by NOAA's NWFSC on ",format(Sys.Date(), format="%B %d %Y")), title = main()) 
-    
+  } }
 
 
     # define theme
