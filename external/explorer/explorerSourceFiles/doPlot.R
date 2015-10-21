@@ -10,9 +10,8 @@ doPlot <- function(dat, x, y, type){
 
 ## Change color palette to printer-friendly colors that are color-blind friendly. Want consistent colors with what Erin is using
       #  colourList <- c("#d73027","#fee090","#91bfdb","#fc8d59", "#4575b4")
-    colourList <- c('Revenue'="#d73027",'Variable costs'="#fee090", 'Total cost net revenue'="#4575b4",'Variable cost net revenue'="#fc8d59",'Fixed costs'="#91bfdb")
+    colourList <- c('Revenue'="#d73027",'Variable costs'="#fee090",'Fixed costs'="#91bfdb",'Variable cost net revenue'="#fc8d59", 'Total cost net revenue'="#4575b4")
     colourThirds <- c('Top third'="#253494",'Middle third'="#41b6c4",'Bottom third'="#a1dab4")
- 
            # Plot title construction
     main <- function(){
          
@@ -24,11 +23,11 @@ doPlot <- function(dat, x, y, type){
         if(input$DodgeSelect == "Compare economic measures side-by-side"){
         sprintf(paste("Summary Economic Measures for West Coast Catcher Vessels:", input$CategorySelect,
                 "\nStatistic: ", input$StatSelect))
-        } else if(input$DodgeSelect == "Derivation of total cost revenue"){
-          sprintf(paste("Derivation of total cost net revenue for West Coast Catcher Vessels:", input$CategorySelect,
+        } else if(input$DodgeSelect == "Composition of total cost revenue"){
+          sprintf(paste("Composition of total cost net revenue for West Coast Catcher Vessels:", input$CategorySelect,
                   "\nStatistic: ", input$StatSelect))
-        } else if(input$DodgeSelect == "Derivation of variable cost revenue"){
-          sprintf(paste("Derivation of variable cost net revenue for West Coast Catcher Vessels:", input$CategorySelect,
+        } else if(input$DodgeSelect == "Composition of variable cost revenue"){
+          sprintf(paste("Composition of variable cost net revenue for West Coast Catcher Vessels:", input$CategorySelect,
                   "\nStatistic: ", input$StatSelect))
         }#}
         
@@ -55,6 +54,7 @@ doPlot <- function(dat, x, y, type){
       }
     }
     
+    
  scale_text <- function() {
    if(input$CategorySelect =="Fisheries" | input$CategorySelect == "Homeport") {
     b <- table(table(dat$VARIABLE)>1)[[1]]
@@ -66,16 +66,10 @@ doPlot <- function(dat, x, y, type){
       return(1.3)
     } else if(b<5 | b == 12){
       return(1.65)
-    } 
-      if(input$CategorySelect =="Fisheries") {
-          if(b ==11) {
-          return(1.65)
-        }
     } else {
-      if(input$CategorySelect == "Homeport"){
-          if(b==11) {
+         if(b==11) {
           return(1)
-        }}
+        }
       }
    } else {
           return(1.2)
@@ -209,18 +203,18 @@ doPlot <- function(dat, x, y, type){
         g <- g + geom_point(aes_string(colour =groupVar), size=4)
       }
     } # end variability figure
-      
-    # define facet
+ 
+        # define facet
     if(type =="summary"){
-      g <- g + facet_wrap(~ VARIABLE, as.table = TRUE)
+      g <- g + facet_wrap(~ VARIABLE)#, ncol=2, as.table = TRUE
     } else {
-      g <- g + facet_wrap(~ SHORTDESCR)
+      g <- g + facet_wrap(~titles)
     }
 
     # define scale
     if(type == "summary") {
-      g <- g + scale_fill_manual(values = colourList, guide=guide_legend(reverse=T)) + 
-        scale_colour_manual(values = colourList, guide=guide_legend(reverse=T))
+      g <- g + scale_fill_manual(values = colourList, guide=guide_legend(reverse=F)) + 
+        scale_colour_manual(values = colourList, guide=guide_legend(reverse=F))
     } else {
       g <- g + scale_fill_manual(values = colourThirds) + 
         scale_colour_manual(values = colourThirds)
@@ -234,9 +228,13 @@ doPlot <- function(dat, x, y, type){
     
     # define labels
     if(type!="summary"){
-    g <- g + labs(y = "Thousands ($)", x="Vessels are sorted annually into top, middle, and bottom earners based on variable cost net revenue", title = main()) 
+    g <- g + labs(y = "Thousands ($)", x="Vessels are sorted annually into top, middle, and bottom earners based on revenue", title = main()) 
     } else {
+      if(PermitMessage()){
+        g <- g + labs(y = "Thousands ($)", x="NOTE: Data from the Groundfish fixed gear with trawl endorsement fishery in 2009 has been suppressed as there are not enough observations to protect confidentiality", title = main())   
+      }else{
      g <- g + labs(y = "Thousands ($)", x="", title = main())       
+      }
     }
     
     # define theme
@@ -252,7 +250,7 @@ doPlot <- function(dat, x, y, type){
                                 size = 18, color = "grey25", vjust=1),
       strip.background = element_rect(fill = "lightgrey"),
       axis.ticks = element_blank(),
-      axis.title.x = element_text(size=rel(1.2),  face="italic", vjust=0, colour="grey25"),
+      axis.title.x = element_text(size=rel(1.2),  face="italic", vjust=-1, hjust=-.05, colour="grey25"),
       axis.title.y = element_text(size=rel(1.2), vjust=2, colour="grey25"),
       axis.line.x = element_line(size = 2, colour = "black", linetype = "solid"),
       axis.text = element_text(size = 12),
