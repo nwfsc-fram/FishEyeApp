@@ -10,7 +10,12 @@ source("external/explorer/explorerSourceFiles/doPlotDownload.R", local = TRUE)
 source("external/explorer/explorerSourceFiles/defaultText.R", local = TRUE)
 #source("external/explorer/explorerSourceFiles/doPlotThirds.R", local = TRUE)
 
+observeEvent(input$send, {
+  session$sendCustomMessage(type = 'testmessage',
+                            message = 'Your message has been sent')
+})
 
+  
 #output$PlotMain <- renderPlot({
 #  if(!PermitPlot()) return()
 #  if(PermitPlot() & input$PlotSelect != "Bar"){
@@ -18,22 +23,24 @@ source("external/explorer/explorerSourceFiles/defaultText.R", local = TRUE)
 #  } else {
 #  if(PermitPlot() & input$PlotSelect=="Bar" & input$DodgeSelect == "Compare economic measures side-by-side"){
 #  doPlot(dat = DatSub(), x = "YEAR", y = "VALUE/1000", type = "summary")}
-#  if(PermitPlot() & input$PlotSelect=="Bar" & input$DodgeSelect == "Derivation of total cost revenue"){
+#  if(PermitPlot() & input$PlotSelect=="Bar" & input$DodgeSelect == "Composition of total cost revenue"){
 #    doPlot(dat = DatSub2(), x = "YEAR", y = "VALUE/1000", type = "summary")}
-#  if(PermitPlot() & input$PlotSelect=="Bar" & input$DodgeSelect == "Derivation of variable cost revenue"){
+#  if(PermitPlot() & input$PlotSelect=="Bar" & input$DodgeSelect == "Composition of variable cost revenue"){
 #    doPlot(dat = DatSub3(), x = "YEAR", y = "VALUE/1000", type = "summary")}
 #}}, height = 700, width = 1200)
 
 output$PlotMain <- renderPlot({
   if(!PermitPlot()) return()
-    if(PermitPlot() &  input$DodgeSelect == "Compare economic measures side-by-side"){
+   
+ if(PermitPlot() &  input$DodgeSelect == "Compare economic measures side-by-side"){
       doPlot(dat = DatSub(), x = "YEAR", y = "VALUE/1000", type = "summary")}
-    if(PermitPlot() & input$DodgeSelect == "Derivation of total cost net revenue"){
+    if(PermitPlot() & input$DodgeSelect == "Composition of total cost net revenue"){
       doPlot(dat = DatSub2(), x = "YEAR", y = "VALUE/1000", type = "summary")}
-    if(PermitPlot() & input$DodgeSelect == "Derivation of variable cost net revenue"){
+    if(PermitPlot() & input$DodgeSelect == "Composition of variable cost net revenue"){
       doPlot(dat = DatSub3(), x = "YEAR", y = "VALUE/1000", type = "summary")}
- }, height = 700, width = 1200)
+ },  height=(700+50*1), width = 1200)
 
+#print(length(input$VariableSelect))
 
 output$TableMain <- renderDataTable({  
   if(!PermitPlot()) return()#return(div(class = "block", height="700px"))
@@ -101,9 +108,9 @@ output$dlFigure <- downloadHandler(
       #  } else {
       if(input$DodgeSelect == "Compare economic measures side-by-side"){
         doPlotDownload(dat = DatSub(), x = "YEAR", y = "VALUE/1000", type = "summary")}
-      else if(input$DodgeSelect == "Derivation of total cost net revenue"){
+      else if(input$DodgeSelect == "Composition of total cost net revenue"){
         doPlotDownload(dat = DatSub2(), x = "YEAR", y = "VALUE/1000", type = "summary")}
-      else if(input$DodgeSelect == "Derivation of variable cost net revenue"){
+      else if(input$DodgeSelect == "Composition of variable cost net revenue"){
         doPlotDownload(dat = DatSub3(), x = "YEAR", y = "VALUE/1000", type = "summary")#} 
       }
         }  
