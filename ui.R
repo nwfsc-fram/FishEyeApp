@@ -21,11 +21,12 @@ fluidPage(title = "FISHEyE",
                             ")),
             tags$style(HTML(".select {margin-top:-20px}"),
                        tags$textarea(id="message", rows=3, cols=40, "Default value")),
-            tags$style(HTML(".ckbox {margin-top: -5px; padding:0}"))
+            tags$style(HTML(".ckbox {margin-top: 5px; margin-bottom: -15px}"))
             ),
+           tags$head(includeScript("google-analytics.js")),
+           tags$head(tags$script(src = "message-handler.js")),
           
-          
-          tags$head(
+           tags$head(
             # Main css page, downloaded from bootswatch
             tags$link(rel="stylesheet", type="text/css", href="bootstrap.css"),
             # secondary css page with fisheye specific attributes
@@ -52,16 +53,18 @@ fluidPage(title = "FISHEyE",
             sidebarLayout(
                  mainPanel(         
                   tabsetPanel(id = "tabs",
-                     tabPanel(title=HTML("Visualize <br> Data"), value="Panel1",
+                     tabPanel(title=HTML("Visualize Data <br> with Plots"), value="Panel1",
                               fluidRow(
                                 column(12, htmlOutput("DefaultPlotText")
                                 ),                                
+                              #   column(4, bsAlert("alert")),
                                 column(12, plotOutput("PlotMain", height="auto",width="auto")                                  
                                 )
+                               
                               )#, #end fluidRow
                              # fluidRow(
                                # column(12,
-                                      # DwellPanel(
+                                      # wellPanel(
                                         # fluidRow(HTML("<strong>Plot Options: </strong>"),
                                         #          style = "padding-bottom: 15px;
                                         #          padding-left: 15px"),
@@ -95,7 +98,8 @@ fluidPage(title = "FISHEyE",
                                 )
                               ),                             
                               fluidRow(
-                                column(12, plotOutput("PlotThirds", height="auto", width="auto")
+                                  column(12, plotOutput("PlotThirds", height="auto", width="auto")
+                                     
                                 ) ) 
               
                      ))#)
@@ -105,7 +109,7 @@ fluidPage(title = "FISHEyE",
      #         column(12,
                    wellPanel( #left side panel                    
                       fluidRow(
-                        column(8, HTML("<p style = 'font-size: 120%'><strong>Select data in each of the panels below: </strong></p>")
+                        column(8, HTML("<p style = 'font-size: 120%'><strong>Make selections in each of the panels below </strong></p>")
                         )
                      ),#end fluidRow
                      fluidRow(
@@ -178,7 +182,7 @@ fluidPage(title = "FISHEyE",
                               textInput("to", "To:", value="nwfsc.fisheye@noaa.gov"),
                                textInput("subject", "Subject:", value="Subject"),
                    tags$style(type="text/css", "textarea {width:100%}"),
-                   tags$textarea(id = 'message', placeholder = 'Write your message here. Please press "Submit" only once; a confirmation notice will not appear', rows = 8, ""),
+                   tags$textarea(id = 'message', placeholder = 'Write your message here. Please press "Send mail" only once.', rows = 8, ""),
                 #   verbatimTextOutput("output_text")
                    
                                #aceEditor("message", "Body:", value="Function currently not working.  Do not use. 
@@ -186,6 +190,9 @@ fluidPage(title = "FISHEyE",
                           #    textInput("message", "Body:", "type message here"),
                                actionButton("send",label = "Send mail")
                    ),
+          tabPanel("Blog",
+                    fluidRow(
+                      column(12, htmlOutput("BlogText")))),
           tabPanel(HTML('<a href="http://devdataexplorer.nwfsc.noaa.gov/fisheye/"style="display: padding-bottom:100;margin: -30px -50px 0px 380px;color:blue"> 
                         Return to FISHEyE homepage </a>'))# style="height:40px;margin: -40px -20px 0px 50px; float:top; border:0"/>
 #
