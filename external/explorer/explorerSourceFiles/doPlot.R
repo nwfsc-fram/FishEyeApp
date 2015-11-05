@@ -1,40 +1,70 @@
 doPlot <- function(dat, x, y, type){
   if(PermitPlot()){
     
-#     print("And I am the input to the plot!!!")
-#     print(head(dat))
-#     print(str(dat))
-    
+
     groupVar <- ifelse(type=="summary", "SHORTDESCR", "THIRDS")
     facetVar <- ifelse(type== "summary" , "VARIABLE", "SHORTDESCR")
 
 ## Change color palette to printer-friendly colors that are color-blind friendly. Want consistent colors with what Erin is using
       #  colourList <- c("#d73027","#fee090","#91bfdb","#fc8d59", "#4575b4")
-    colourList <- c('Revenue'="#d73027",'Variable costs'="#fee090",'Fixed costs'="#91bfdb",'Variable cost net revenue'="#fc8d59", 'Total cost net revenue'="#4575b4")
-    colourThirds <- c('Top third'="#253494",'Middle third'="#41b6c4",'Bottom third'="#a1dab4")
+#    colourList <- c('Revenue'="#d73027",'Variable costs'="#fee090",'Fixed costs'="#91bfdb",'Variable cost net revenue'="#fc8d59", 'Total cost net revenue'="#4575b4")
+    colourList <- c('Revenue'="#256D36",'Variable costs'="#FEE090",'Fixed costs'="#FDBE68",'Variable cost net revenue'="#54A69D", 'Total cost net revenue'="#4575B4")
+#    colourList <- c('Revenue'="#256D36",'Variable costs'="#BCD8D4",'Fixed costs'="#FDBE68",'Variable cost net revenue'="#59AEA5", 'Total cost net revenue'="#4575B4")
+    
+        colourThirds <- c('Top third'="#253494",'Middle third'="#41b6c4",'Bottom third'="#a1dab4")
            # Plot title construction
-    main <- function(){
-         
+
+    plot.title <- function(){
       if(type == "summary"){
-      #  if(input$PlotSelect!="Bar"){
-      #    sprintf(paste("Summary Economic Measures for West Coast Catcher Vessels:", input$CategorySelect,
-      #                  "\nStatistic: ", input$StatSelect))  
-    #    } else {
-        if(input$DodgeSelect == "Compare economic measures side-by-side"){
-        sprintf(paste("Summary Economic Measures for West Coast Catcher Vessels:", input$CategorySelect,
-                "\nStatistic: ", input$StatSelect))
-        } else if(input$DodgeSelect == "Composition of total cost revenue"){
-          sprintf(paste("Composition of total cost net revenue for West Coast Catcher Vessels:", input$CategorySelect,
-                  "\nStatistic: ", input$StatSelect))
-        } else if(input$DodgeSelect == "Composition of variable cost revenue"){
-          sprintf(paste("Composition of variable cost net revenue for West Coast Catcher Vessels:", input$CategorySelect,
-                  "\nStatistic: ", input$StatSelect))
+        if(input$DodgeSelect == "Economic measures side-by-side"){
+         return("Summary Economic Measures for West Coast Catcher Vessels")
+        } else if(input$DodgeSelect == "Composition of total cost net revenue"){
+          return("Composition of Total Cost Net Revenue for West Coast Catcher Vessels")
+        } else if(input$DodgeSelect == "Composition of variable cost net revenue"){
+         return("Composition of Variable Cost Net Revenue for West Coast Catcher Vessels")
         }#}
-        
-      } else {
-        sprintf(paste("Variability analysis of West Coast Catcher Vessels:",input$VariableSelect, 
-                "\nStatistic: ", input$StatSelect))
+        } else {
+          return("Variability Analysis of West Coast Catcher Vessels")
+        }}
+
+    gv <- function(){
+      sprintf(paste("Group variable:", input$CategorySelect, "     Statistic: ", input$StatSelect))
+    }
+ #   sv <- function(){
+ #    sprintf(paste())
+ #   } 
+   sv <- function(){
+     if(type == "summary"){
+        if(input$DodgeSelect == "Composition of total cost net revenue"){
+          return("Total cost net revenue = Revenue - Variable costs - Fixed costs")
+        } else if(input$DodgeSelect == "Composition of variable cost net revenue"){
+          return("Variable cost net revenue = Revenue - Variable costs")
+        } else {
+          return()
       }
+    } else {
+      return()
+    }
+   }
+        
+    main <- function(){
+       bquote(atop(.(plot.title()), atop(.(gv()), .(sv()))))
+  #    if(type == "summary"){
+  #      if(input$DodgeSelect == "Economic measures side-by-side"){
+  #      sprintf(paste("Summary Economic Measures for West Coast Catcher Vessels\n Group variable:", input$CategorySelect,
+  #              "\nStatistic: ", input$StatSelect))
+  #      } else if(input$DodgeSelect == "Composition of total cost net revenue"){
+  #        sprintf(paste("Composition of Total Cost Net Revenue for West Coast Catcher Vessels\n Group variable:", input$CategorySelect,
+  #                "\nStatistic: ", input$StatSelect, "\n Total cost net revenue = Revenue - Variable costs - Fixed costs"))
+  #      } else if(input$DodgeSelect == "Composition of variable cost net revenue"){
+  #        sprintf(paste("Composition of Variable Cost Net Revenue for West Coast Catcher Vessels\n Group variable:", input$CategorySelect,
+  #                "\nStatistic: ", input$StatSelect, "\n Variable cost net revenue = Revenue - Variable costs"))
+  #      }#}
+        
+  #    } else {
+  #      sprintf(paste("Variability Analysis of West Coast Catcher Vessels\n Variable:",input$VariableSelect, 
+  #              "\nStatistic: ", input$StatSelect))
+  #    }
     }
       
      
@@ -90,7 +120,7 @@ doPlot <- function(dat, x, y, type){
     g <- ggplot(dat, aes_string(x = x, y = y , group = groupVar), environment=environment())
 
         if(type == "summary"){    
-     if(input$DodgeSelect == "Compare economic measures side-by-side"){
+     if(input$DodgeSelect == "Economic measures side-by-side"){
        if(input$PlotSelect!="Bar"){
       if(input$PlotSelect == "Point"){
            
@@ -110,25 +140,25 @@ doPlot <- function(dat, x, y, type){
       if(input$YearSelect[1]==2009&input$YearSelect[2]==2010){
         if(length(input$YearSelect[input$YearSelect>2010])==1){
           g <- g + geom_rect(aes_string(xmin=.1, xmax=2.35, ymin=-Inf, ymax=Inf), fill="grey50", alpha=.05/length(input$YearSelect))+ 
-            geom_text(aes(x=0.4,y=max(VALUE)/1000+max(VALUE)/10000, label="Pre-catch shares"),hjust=0, family="sans",color = "grey20", size=7/scale_text()) + 
+            geom_text(aes(x=0.4,y=max(VALUE)/1000+max(VALUE)/10000, label="Pre-catch shares", family="sans"),hjust=0, color = "grey20", size=7/scale_text()) + 
             geom_text(aes(x=2.35,y=max(VALUE)/1000+max(VALUE)/10000,label="Post-catch shares"), hjust=0, 
                     fontface=1, family = "sans", color = "grey20", size=7/scale_text())  
         
         } else { 
           g <- g + geom_rect(aes_string(xmin=.1, xmax=2.5, ymin=-Inf, ymax=Inf), fill="grey50", alpha=.05/length(input$YearSelect))+ 
-            geom_text(aes(x=0.3,y=max(VALUE)/1000+max(VALUE)/10000, label="Pre-catch shares"),hjust=0, family="sans",color = "grey20", size=7/scale_text()) + 
+            geom_text(aes(x=0.3,y=max(VALUE)/1000+max(VALUE)/10000, label="Pre-catch shares", family="sans"),hjust=0,color = "grey20", size=7/scale_text()) + 
             geom_text(aes(x=2.65,y=max(VALUE)/1000+max(VALUE)/10000,label="Post-catch shares"),hjust=0, 
                      fontface=1, family = "sans", color = "grey20", size=7/scale_text())  
          # +
       }} else {
         if(length(input$YearSelect[input$YearSelect>2010])==1){
             g <- g +  geom_rect(aes(xmin=.1, xmax=1.5, ymin=-Inf, ymax=Inf), fill="grey50", alpha=.05/length(input$YearSelect))+
-              geom_text(aes(x=0.25,y=max(VALUE)/1000+max(VALUE)/10000, label="Pre-catch shares"), hjust=0, family="sans",color = "grey20", size=7/scale_text()) + 
+              geom_text(aes(x=0.25,y=max(VALUE)/1000+max(VALUE)/10000, label="Pre-catch shares", family="sans"), hjust=0,color = "grey20", size=7/scale_text()) + 
                geom_text(aes(x=length(table(YEAR))+.5,y=max(VALUE)/1000+max(VALUE)/10000,label="Post-catch shares"),hjust=1,  
                    family="sans",color = "grey20", size=7/scale_text()) 
         } else {
           g <- g +  geom_rect(aes(xmin=.1, xmax=1.5, ymin=-Inf, ymax=Inf), fill="grey50", alpha=.05/length(input$YearSelect))+
-            geom_text(aes(x=0.15,y=max(VALUE)/1000+max(VALUE)/10000, label="Pre-catch shares"), hjust=0, family="sans",color = "grey20", size=7/scale_text()) + 
+            geom_text(aes(x=0.15,y=max(VALUE)/1000+max(VALUE)/10000, label="Pre-catch shares", family="sans"), hjust=0,color = "grey20", size=7/scale_text()) + 
             geom_text(aes(x=1.8,y=max(VALUE)/1000+max(VALUE)/10000,label="Post-catch shares"), hjust=0, 
                       family="sans",color = "grey20", size=7/scale_text()) 
         }
@@ -139,7 +169,7 @@ doPlot <- function(dat, x, y, type){
         }}
 
     if(type == "summary"){    
-              if(input$DodgeSelect != "Compare economic measures side-by-side"){          
+              if(input$DodgeSelect != "Economic measures side-by-side"){          
               g <- ggplot(dat, aes_string(x = x, y = y ,group = groupVar, fill=groupVar, order=groupVar))+ # 
                   geom_bar(stat = "identity", position = "stack", width = scale_bars())
           
@@ -147,7 +177,7 @@ doPlot <- function(dat, x, y, type){
               if(input$YearSelect[1]==2009&input$YearSelect[2]==2010){
                 if(length(input$YearSelect[input$YearSelect>2010])==1){
                   g <- g+  geom_rect(aes(xmin=.1, xmax=2.35, ymin=-Inf, ymax=Inf), fill="grey50", alpha=.05/length(input$YearSelect))+ 
-                    geom_text(aes(x=.4,y=max(VALUE)/400, label="Pre-catch shares"),hjust=0, family="sans",color = "grey20", size=7/scale_text()) + 
+                    geom_text(aes(x=.4,y=max(VALUE)/400, label="Pre-catch shares", family="sans"),hjust=0,color = "grey20", size=7/scale_text()) + 
                     geom_text(aes(x=2.35,y=max(VALUE)/400,label="Post-catch shares"),hjust=0, family="sans",color = "grey20", size=7/scale_text())# +
                   } else { 
                   g <- g+  geom_rect(aes(xmin=.1, xmax=2.5, ymin=-Inf, ymax=Inf), fill="grey50", alpha=.05/length(input$YearSelect))+ 
@@ -177,24 +207,24 @@ doPlot <- function(dat, x, y, type){
             if(length(input$YearSelect[input$YearSelect>2010])==1){
             g <- g + geom_line(aes_string(colour = groupVar), size=1.5)+  
                   geom_rect(aes(xmin=.1, xmax=2.5, ymin=-Inf, ymax=Inf),fill="grey50", alpha=.05/length(input$YearSelect))+ 
-                  geom_text(aes(x=.5,y=max(VALUE)/1000+max(VALUE)/10000, label="Pre-catch shares"),hjust=0, family="sans",color = "grey20", size=7/scale_text2()) + 
+                  geom_text(aes(x=.5,y=max(VALUE)/1000+max(VALUE)/10000, label="Pre-catch shares", family="sans"),hjust=0,color = "grey20", size=7/scale_text2()) + 
                   geom_text(aes(x=2.35,y=max(VALUE)/1000+max(VALUE)/10000,label="Post-catch shares"),hjust=0, family="sans",color = "grey20", size=7/scale_text2()) #+
            } else {
               g <- g + geom_line(aes_string(colour = groupVar), size=1.5)+  
                geom_rect(aes(xmin=.1, xmax=2.5, ymin=-Inf, ymax=Inf),fill="grey50", alpha=.05/length(input$YearSelect))+ 
-               geom_text(aes(x=.5,y=max(VALUE)/1000+max(VALUE)/10000, label="Pre-catch shares"),hjust=0, family="sans",color = "grey20", size=7/scale_text2()) + 
+               geom_text(aes(x=.5,y=max(VALUE)/1000+max(VALUE)/10000, label="Pre-catch shares", family="sans"),hjust=0,color = "grey20", size=7/scale_text2()) + 
                geom_text(aes(x=2.55,y=max(VALUE)/1000+max(VALUE)/10000,label="Post-catch shares"),hjust=0, family="sans",color = "grey20", size=7/scale_text2()) #+
              
            } }  else {
              if(length(input$YearSelect[input$YearSelect>2010])==1){
             g <- g + geom_line(aes_string(colour = groupVar), size=1.5)+ 
                   geom_rect(aes(xmin=.1, xmax=1.5, ymin=-Inf, ymax=Inf),fill="grey50", alpha=.05/length(input$YearSelect))+ 
-                  geom_text(aes(x=.25,y=max(VALUE)/1000+max(VALUE)/10000, label="Pre-catch shares"),hjust=0, family="sans",color = "grey20", size=7/scale_text2()) + 
+                  geom_text(aes(x=.25,y=max(VALUE)/1000+max(VALUE)/10000, label="Pre-catch shares", family="sans"),hjust=0,color = "grey20", size=7/scale_text2()) + 
                   geom_text(aes(x=length(table(YEAR))+.5,y=max(VALUE)/1000+max(VALUE)/10000,label="Post-catch shares"),hjust=1, family="sans",color = "grey20", size=7/scale_text2()) #+
             } else {
                 g <- g + geom_line(aes_string(colour = groupVar), size=1.5)+ 
                   geom_rect(aes(xmin=.1, xmax=1.5, ymin=-Inf, ymax=Inf),fill="grey50", alpha=.05/length(input$YearSelect))+ 
-                  geom_text(aes(x=.25,y=max(VALUE)/1000+max(VALUE)/10000, label="Pre-catch shares"),hjust=0, family="sans",color = "grey20", size=7/scale_text2()) + 
+                  geom_text(aes(x=.25,y=max(VALUE)/1000+max(VALUE)/10000, label="Pre-catch shares", family="sans"),hjust=0,color = "grey20", size=7/scale_text2()) + 
                   geom_text(aes(x=1.8,y=max(VALUE)/1000+max(VALUE)/10000,label="Post-catch shares"),hjust=0, family="sans",color = "grey20", size=7/scale_text2()) #+
             }
               }} else {
@@ -204,25 +234,30 @@ doPlot <- function(dat, x, y, type){
       }
     } # end variability figure
  
+   
         # define facet
     if(type =="summary"){
-      g <- g + facet_wrap(~ VARIABLE)#, ncol=2, as.table = TRUE
-    } else {
-      g <- g + facet_wrap(~titles)
+       g <- g + facet_wrap(~ sort, ncol=2, as.table = TRUE)#
+     } else {
+      g <- g + facet_wrap(~sort)#(~SHORTDESCR)
     }
+    
+    
 
     # define scale
     if(type == "summary") {
-      g <- g + scale_fill_manual(values = colourList, guide=guide_legend(reverse=F)) + 
-        scale_colour_manual(values = colourList, guide=guide_legend(reverse=F))
+      if(input$DodgeSelect == "Economic measures side-by-side"){
+            g <- g + scale_fill_manual(values = colourList, guide=guide_legend(reverse=F)) + 
+            scale_colour_manual(values = colourList, guide=guide_legend(reverse=F))}
+     else {
+            g <- g + scale_fill_manual(values = colourList, guide=guide_legend(reverse=T)) + 
+            scale_colour_manual(values = colourList)}
+      
     } else {
-      g <- g + scale_fill_manual(values = colourThirds) + 
-        scale_colour_manual(values = colourThirds)
+      g <- g + scale_fill_manual(values = colourThirds) + scale_colour_manual(values = colourThirds)
     }
     
-    # define x scale
-#     g <- g +  scale_x_discrete(labels = c("2010" = "", "2011" = ""))
-    
+
     # define solid line y=0
     g <- g + geom_hline(yintercept = 0)
     
@@ -261,7 +296,7 @@ doPlot <- function(dat, x, y, type){
       legend.title = element_blank()
     #  text = element_text(family="sans", color = "red", size=rel(1.3))
     )
- 
+ ############################################################################################################
  ##function to wrapping facet labels
     strwrap_strip_text = function(p, pad=0.05) { 
       # get facet font attributes
@@ -273,28 +308,17 @@ doPlot <- function(dat, x, y, type){
       grobs <- ggplotGrob(p)
       
       # wrap strip x text
-      if ((class(p$facet)[1] == "grid" && !is.null(names(p$facet$cols))) ||
-          class(p$facet)[1] == "wrap")
-      {
         ps = calc_element("strip.text.x", th)[["size"]]
         family = calc_element("strip.text.x", th)[["family"]]
         face = calc_element("strip.text.x", th)[["face"]]
         
-        if (class(p$facet)[1] == "wrap") {
           nm = names(p$facet$facets)
-        } else {
-          nm = names(p$facet$cols)
-        }
-        
+      
         # get number of facet columns
         levs = levels(factor(p$data[[nm]]))
         npanels = length(levs)
-        if (class(p$facet)[1] == "wrap") {
           cols = n2mfrow(npanels)[1]
-        } else {
-          cols = npanels
-        }
-        
+
         # get plot width
         sum = sum(sapply(grobs$width, function(x) convertWidth(x, "in")))
         panels_width = par("din")[1] - sum  # inches
@@ -309,40 +333,13 @@ doPlot <- function(dat, x, y, type){
         # wrap facet text
         p$data[[nm]] = unlist(lapply(strwrap(p$data[[nm]], width=width, 
                                              simplify=FALSE), paste, collapse="\n"))
-      }
-      
-      if (class(p$facet)[1] == "grid" && !is.null(names(p$facet$rows))) {  
-        ps = calc_element("strip.text.y", th)[["size"]]
-        family = calc_element("strip.text.y", th)[["family"]]
-        face = calc_element("strip.text.y", th)[["face"]]
-        
-        nm = names(p$facet$rows)
-        
-        # get number of facet columns
-        levs = levels(factor(p$data[[nm]]))
-        rows = length(levs)
-        
-        # get plot height
-        sum = sum(sapply(grobs$height, function(x) convertWidth(x, "in")))
-        panels_height = par("din")[2] - sum  # inches
-        # determine strwrap width
-        panels_height = panels_height / rows
-        mx_ind = which.max(nchar(levs))
-        char_height = strwidth(levs[mx_ind], units="inches", cex=ps / par("ps"), 
-                               family=family, font=gpar(fontface=face)$font) / 
-          nchar(levs[mx_ind])
-        width = floor((panels_height - pad)/ char_height)  # characters
-        
-        # wrap facet text
-        p$data[[nm]] = unlist(lapply(strwrap(p$data[[nm]], width=width, 
-                                             simplify=FALSE), paste, collapse="\n"))
-      }
-      
+        p$data[[nm]] = gsub("([.])", "\\ ", p$data[[nm]]) 
       invisible(p)
     }   
-    #print(g)
+#################################################################################################################################
     g <- strwrap_strip_text(g) #use instead of print(g)
-    print(g)
-      
+    
+   print(g)
+   
    } else plot(0,0,type="n", axes=F, xlab="", ylab="")
 }

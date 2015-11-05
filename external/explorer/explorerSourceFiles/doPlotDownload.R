@@ -7,36 +7,64 @@ doPlotDownload <- function(dat, x, y, type){
 
     ## Change color palette to printer-friendly colors that are color-blind friendly. Want consistent colors with what Erin is using
     #  colourList <- c("#d73027","#fee090","#91bfdb","#fc8d59", "#4575b4")
-    colourList <- c(Revenue="#d73027",'Variable costs'="#fee090", 'Total cost net revenue'="#4575b4",'Variable cost net revenue'="#fc8d59",'Fixed costs'="#91bfdb")
+ #   colourList <- c(Revenue="#d73027",'Variable costs'="#fee090", 'Total cost net revenue'="#4575b4",'Variable cost net revenue'="#fc8d59",'Fixed costs'="#91bfdb")
     colourThirds <- c('Top third'="#253494",'Middle third'="#41b6c4",'Bottom third'="#a1dab4")
+    colourList <- c('Revenue'="#256D36",'Variable costs'="#FEE090",'Fixed costs'="#FDBE68",'Variable cost net revenue'="#54A69D", 'Total cost net revenue'="#4575B4")
     
     
-        
-    # Plot title construction
-    main <- function(){
-      
+    plot.title <- function(){
       if(type == "summary"){
-       # if(input$PlotSelect!="Bar"){
-       #   sprintf(paste("Summary Economic Measures for West Coast Catcher Vessels:", input$CategorySelect,
-       #                 "\nSummary statistic: ", input$StatSelect))  
-       # } else {
-          if(input$DodgeSelect == "Compare economic measures side-by-side"){
-            sprintf(paste("Summary Economic Measures for West Coast Catcher Vessels:", input$CategorySelect,
-                          "\nSummary statistic: ", input$StatSelect))
-          } else if(input$DodgeSelect == "Composition of total cost revenue"){
-            sprintf(paste("Composition of total cost revenue for West Coast Catcher Vessels:", input$CategorySelect,
-                          "\nSummary statistic: ", input$StatSelect))
-          } else if(input$DodgeSelect == "Composition of variable cost revenue"){
-            sprintf(paste("Composition of variable cost revenue for West Coast Catcher Vessels:", input$CategorySelect,
-                          "\nSummary statistic: ", input$StatSelect))
-          }#}
-        
+        if(input$DodgeSelect == "Economic measures side-by-side"){
+          return("Summary Economic Measures for West Coast Catcher Vessels")
+        } else if(input$DodgeSelect == "Composition of total cost net revenue"){
+          return("Composition of Total Cost Net Revenue for West Coast Catcher Vessels")
+        } else if(input$DodgeSelect == "Composition of variable cost net revenue"){
+          return("Composition of Variable Cost Net Revenue for West Coast Catcher Vessels")
+        }#}
       } else {
-        sprintf(paste("Variability analysis of West Coast Catcher Vessels:",input$VariableSelect, 
-                      "\nSummary statistic: ", input$StatSelect))
+        return("Variability Analysis of West Coast Catcher Vessels")
+      }}
+    gv <- function(){
+      sprintf(paste("Group variable:", input$CategorySelect, "     Statistic: ", input$StatSelect))
+    }
+    #   sv <- function(){
+    #    sprintf(paste())
+    #   } 
+    sv <- function(){
+      if(type == "summary"){
+        if(input$DodgeSelect == "Composition of total cost net revenue"){
+          return("Total cost net revenue = Revenue - Variable costs - Fixed costs")
+        } else if(input$DodgeSelect == "Composition of variable cost net revenue"){
+          return("Variable cost net revenue = Revenue - Variable costs")
+        } else {
+          return()
+        }
+      } else {
+        return()
       }
     }
     
+    main <- function(){
+      bquote(atop(.(plot.title()), atop(.(gv()), .(sv()))))
+      #    if(type == "summary"){
+      #      if(input$DodgeSelect == "Economic measures side-by-side"){
+      #      sprintf(paste("Summary Economic Measures for West Coast Catcher Vessels\n Group variable:", input$CategorySelect,
+      #              "\nStatistic: ", input$StatSelect))
+      #      } else if(input$DodgeSelect == "Composition of total cost net revenue"){
+      #        sprintf(paste("Composition of Total Cost Net Revenue for West Coast Catcher Vessels\n Group variable:", input$CategorySelect,
+      #                "\nStatistic: ", input$StatSelect, "\n Total cost net revenue = Revenue - Variable costs - Fixed costs"))
+      #      } else if(input$DodgeSelect == "Composition of variable cost net revenue"){
+      #        sprintf(paste("Composition of Variable Cost Net Revenue for West Coast Catcher Vessels\n Group variable:", input$CategorySelect,
+      #                "\nStatistic: ", input$StatSelect, "\n Variable cost net revenue = Revenue - Variable costs"))
+      #      }#}
+      
+      #    } else {
+      #      sprintf(paste("Variability Analysis of West Coast Catcher Vessels\n Variable:",input$VariableSelect, 
+      #              "\nStatistic: ", input$StatSelect))
+      #    }
+    }
+    
+ 
     
     # simple scaling for bar charts based on number of inputs
     scale_bars <- function(){
@@ -89,7 +117,7 @@ doPlotDownload <- function(dat, x, y, type){
     g <- ggplot(dat, aes_string(x = x, y = y , group = groupVar), environment=environment()) 
 
         if(type == "summary"){
-          if(input$DodgeSelect == "Compare economic measures side-by-side"){
+          if(input$DodgeSelect == "Economic measures side-by-side"){
             if(input$PlotSelect!="Bar"){
         if(input$PlotSelect == "Point"){
           
@@ -100,7 +128,7 @@ doPlotDownload <- function(dat, x, y, type){
           
         if(input$PlotSelect == "Bar"){
            # if(!is.null(input$DodgeSelect)){
-            #  if(input$DodgeSelect == "Compare economic measures side-by-side"){
+            #  if(input$DodgeSelect == "Economic measures side-by-side"){
                 g <- g + geom_bar(aes_string(fill = groupVar, order=groupVar), stat="identity", position="dodge", width = scale_bars())
               } #End if else for side-by-side comparion
            # }}     
@@ -138,7 +166,7 @@ doPlotDownload <- function(dat, x, y, type){
     if(type == "summary"){    
       #if(input$PlotSelect!="Bar"){
        # if(!is.null(input$DodgeSelect)){          
-          if(input$DodgeSelect != "Compare economic measures side-by-side"){          
+          if(input$DodgeSelect != "Economic measures side-by-side"){          
                 g <- ggplot(dat, aes_string(x = x, y = y , group = groupVar, fill=groupVar, order=groupVar)) + 
                   geom_bar(aes_string(fill = groupVar), stat = "identity", position = "stack", width = scale_bars())
           #    }  
@@ -181,7 +209,7 @@ doPlotDownload <- function(dat, x, y, type){
             g <- g + geom_line(aes_string(colour = groupVar), size=1.5)+  
               geom_rect(aes(xmin=.1, xmax=2.5, ymin=-Inf, ymax=Inf),fill="grey50", alpha=.05/length(input$YearSelect))+ 
               geom_text(aes(x=.5,y=max(VALUE)/1000+max(VALUE)/10000, label="Pre-catch shares"),hjust=0, size=4.5/scale_text2(), color="grey20",family="sans") + 
-              geom_text(aes(x=length(table(as.numeric(YEAR)))+.5,y=max(VALUE)/1000+max(VALUE)/10000,label="Post-catch shares"),hjust=1, size=4.5/scale_text2(), color="grey20",family="sans") #+
+              geom_text(aes(x=length(table(as.numeric(YEAR)))+.7,y=max(VALUE)/1000+max(VALUE)/10000,label="Post-catch shares"),hjust=1, size=4.5/scale_text2(), color="grey20",family="sans") #+
             #  geom_text(aes(x=2.5,y=(max(VALUE)/1000+max(VALUE)/4000),label="West Coast trawl catch shares program")) 
             # geom_linerange(aes(ymin=Inf, ymax=max(VALUE)/1000+max(VALUE)/4000),col="white") 
             } else {
@@ -212,9 +240,9 @@ doPlotDownload <- function(dat, x, y, type){
     
     # define facet
     if(type =="summary"){
-      g <- g + facet_wrap(~ VARIABLE, as.table = TRUE)
+      g <- g + facet_wrap(~ sort, as.table = TRUE)
     } else {
-      g <- g + facet_wrap(~ SHORTDESCR)
+      g <- g + facet_wrap(~ sort)
     }
     
    #       
@@ -222,13 +250,19 @@ doPlotDownload <- function(dat, x, y, type){
     
     # define scale
     if(type == "summary") {
-      g <- g + scale_fill_manual(values = colourList, guide=guide_legend(reverse=T)) + 
-        scale_colour_manual(values = colourList, guide=guide_legend(reverse=T))
+      if(input$DodgeSelect == "Economic measures side-by-side"){
+        g <- g + scale_fill_manual(values = colourList, guide=guide_legend(reverse=F)) + 
+          scale_colour_manual(values = colourList, guide=guide_legend(reverse=F))}
+      else {
+        g <- g + scale_fill_manual(values = colourList, guide=guide_legend(reverse=T)) + 
+          scale_colour_manual(values = colourList)}
+      
     } else {
       g <- g + scale_fill_manual(values = colourThirds) + 
         scale_colour_manual(values = colourThirds)
     }
-    
+
+        
     # defien x scale
     #     g <- g +  scale_x_discrete(labels = c("2010" = "", "2011" = ""))
     
@@ -237,12 +271,12 @@ doPlotDownload <- function(dat, x, y, type){
     
     # define labels
     if(type != "summary"){
-      g <- g + labs(y = "Thousands ($)", x= paste("Sourced from the FISHEyE application (http://devdataexplorer.nwfsc.noaa.gov/fisheye/FisheyeApp/) maintained by NOAA's NWFSC on ",format(Sys.Date(), format="%B %d %Y")), title = main()) 
+      g <- g + labs(y = "Thousands ($)", x= paste("Sourced from the FISHEyE application (http://devdataexplorer.nwfsc.noaa.gov/fisheye/FisheyeApp/) maintained by NOAA Fisheries NWFSC on ",format(Sys.Date(), format="%B %d %Y")), title = main()) 
     } else {
     if(PermitMessage()){
-      g <- g + labs(y = "Thousands ($)", x= paste("Sourced from the FISHEyE application (http://devdataexplorer.nwfsc.noaa.gov/fisheye/FisheyeApp/) maintained by NOAA's NWFSC on ",format(Sys.Date(), format="%B %d %Y"),"\n",                                                   "Note that if the Groundfish fixed gear with trawl endorsement fishery has been selected, data from 2009 has been suppressed as there are not enough observations to protect confidentiality."), title = main()) 
+      g <- g + labs(y = "Thousands ($)", x= paste("Sourced from the FISHEyE application (http://devdataexplorer.nwfsc.noaa.gov/fisheye/FisheyeApp/) maintained by NOAA Fisheries NWFSC on ",format(Sys.Date(), format="%B %d %Y"),"\n",                                                   "Note that if the Groundfish fixed gear with trawl endorsement fishery has been selected, data from 2009 has been suppressed as there are not enough observations to protect confidentiality."), title = main()) 
     } else {
-    g <- g + labs(y = "Thousands ($)", x= paste("Sourced from the FISHEyE application (http://devdataexplorer.nwfsc.noaa.gov/fisheye/FisheyeApp/) maintained by NOAA's NWFSC on ",format(Sys.Date(), format="%B %d %Y")), title = main()) 
+    g <- g + labs(y = "Thousands ($)", x= paste("Sourced from the FISHEyE application (http://devdataexplorer.nwfsc.noaa.gov/fisheye/FisheyeApp/) maintained by NOAA Fisheries NWFSC on ",format(Sys.Date(), format="%B %d %Y")), title = main()) 
   } }
 
 
@@ -280,74 +314,35 @@ doPlotDownload <- function(dat, x, y, type){
       grobs <- ggplotGrob(p)
       
       # wrap strip x text
-      if ((class(p$facet)[1] == "grid" && !is.null(names(p$facet$cols))) ||
-          class(p$facet)[1] == "wrap")
-      {
-        ps = calc_element("strip.text.x", th)[["size"]]
-        family = calc_element("strip.text.x", th)[["family"]]
-        face = calc_element("strip.text.x", th)[["face"]]
-        
-        if (class(p$facet)[1] == "wrap") {
-          nm = names(p$facet$facets)
-        } else {
-          nm = names(p$facet$cols)
-        }
-        
-        # get number of facet columns
-        levs = levels(factor(p$data[[nm]]))
-        npanels = length(levs)
-        if (class(p$facet)[1] == "wrap") {
-          cols = n2mfrow(npanels)[1]
-        } else {
-          cols = npanels
-        }
-        
-        # get plot width
-        sum = sum(sapply(grobs$width, function(x) convertWidth(x, "in")))
-        panels_width = par("din")[1] - sum  # inches
-        # determine strwrap width
-        panel_width = panels_width / cols
-        mx_ind = which.max(nchar(levs))
-        char_width = strwidth(levs[mx_ind], units="inches", cex=ps / par("ps"), 
-                              family=family, font=gpar(fontface=face)$font) / 
-          nchar(levs[mx_ind])
-        width = floor((panel_width - pad)/ char_width)  # characters
-        
-        # wrap facet text
-        p$data[[nm]] = unlist(lapply(strwrap(p$data[[nm]], width=width, 
-                                             simplify=FALSE), paste, collapse="\n"))
-      }
+      ps = calc_element("strip.text.x", th)[["size"]]
+      family = calc_element("strip.text.x", th)[["family"]]
+      face = calc_element("strip.text.x", th)[["face"]]
       
-      if (class(p$facet)[1] == "grid" && !is.null(names(p$facet$rows))) {  
-        ps = calc_element("strip.text.y", th)[["size"]]
-        family = calc_element("strip.text.y", th)[["family"]]
-        face = calc_element("strip.text.y", th)[["face"]]
-        
-        nm = names(p$facet$rows)
-        
-        # get number of facet columns
-        levs = levels(factor(p$data[[nm]]))
-        rows = length(levs)
-        
-        # get plot height
-        sum = sum(sapply(grobs$height, function(x) convertWidth(x, "in")))
-        panels_height = par("din")[2] - sum  # inches
-        # determine strwrap width
-        panels_height = panels_height / rows
-        mx_ind = which.max(nchar(levs))
-        char_height = strwidth(levs[mx_ind], units="inches", cex=ps / par("ps"), 
-                               family=family, font=gpar(fontface=face)$font) / 
-          nchar(levs[mx_ind])
-        width = floor((panels_height - pad)/ char_height)  # characters
-        
-        # wrap facet text
-        p$data[[nm]] = unlist(lapply(strwrap(p$data[[nm]], width=width, 
-                                             simplify=FALSE), paste, collapse="\n"))
-      }
+      nm = names(p$facet$facets)
       
+      # get number of facet columns
+      levs = levels(factor(p$data[[nm]]))
+      npanels = length(levs)
+      cols = n2mfrow(npanels)[1]
+      
+      # get plot width
+      sum = sum(sapply(grobs$width, function(x) convertWidth(x, "in")))
+      panels_width = par("din")[1] - sum  # inches
+      # determine strwrap width
+      panel_width = panels_width / cols
+      mx_ind = which.max(nchar(levs))
+      char_width = strwidth(levs[mx_ind], units="inches", cex=ps / par("ps"), 
+                            family=family, font=gpar(fontface=face)$font) / 
+        nchar(levs[mx_ind])
+      width = floor((panel_width - pad)/ char_width)  # characters
+      
+      # wrap facet text
+      p$data[[nm]] = unlist(lapply(strwrap(p$data[[nm]], width=width, 
+                                           simplify=FALSE), paste, collapse="\n"))
+      p$data[[nm]] = gsub("([.])", "\\ ", p$data[[nm]]) 
       invisible(p)
     }   
-#    print(g)
+    #    print(g)
     g <- strwrap_strip_text(g) #use instead of print(g)
     print(g)
     
