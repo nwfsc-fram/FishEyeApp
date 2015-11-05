@@ -45,6 +45,7 @@ Variable <- reactive({
   return(variable)
 })
 
+
 # Subset data for table
 # selecting plot variables, subsetting the data AND casting for individual level ID (fun.agg=sum)
 # build dcast formula using if controls and using the quoted method in dcast
@@ -72,16 +73,9 @@ DatSubTable <- reactive({
   
       if(input$CategorySelect != "Fisheries") {
         datSub <- subset(datSub, CS == input$inSelect)
-        }
- 
-    if(input$CategorySelect == "Homeport"){
-      datSub$VARIABLE <- factor(datSub$VARIABLE, levels = factorOrder$port)
-    } else if(input$CategorySelect == "State"){
-      datSub$VARIABLE <- factor(datSub$VARIABLE, levels = factorOrder$state)
-    } else if(input$CategorySelect == "Fisheries"){
-      datSub$VARIABLE <- factor(datSub$VARIABLE, levels = c("All Fisheries",factorOrder$fisheries))
-    }
-    
+      }
+    datSub$N <- ifelse(datSub$N<3, NA, datSub$N)
+    datSub$FISHAK <- ifelse(datSub$FISHAK=="TRUE", "Vessels included", "Vessels not included")
     return(datSub)
     
 #  } else return()
@@ -95,7 +89,7 @@ DatSub <- reactive({
 #   if(is.null(input$DataButton) || input$DataButton == 0) return()
 #   input$ShortdescrSelect
 #   isolate(  
-    if(input$DodgeSelect == "Compare economic measures side-by-side"){
+    if(input$DodgeSelect == "Economic measures side-by-side"){
       dat <- DatMain()      
       
 #       statSwitch <- switch(input$StatSelect,
@@ -133,7 +127,38 @@ DatSub <- reactive({
       if(input$CategorySelect=="Fisheries" & length(input$VariableSelect)>1){
         datSub <- subset(datSub, datSub$VARIABLE!="Groundfish fixed gear with trawl endorsement"|datSub$YEAR!=2009)
       }
- 
+      
+      if(input$CategorySelect=="Fisheries"){
+        datSub$sort <- ifelse(datSub$VARIABLE=="All Fisheries", ".....All Fisheries", as.character(datSub$VARIABLE))
+        datSub$sort <- ifelse(datSub$VARIABLE=="All Catch Share Fisheries", "....All Catch Share Fisheries", as.character(datSub$sort))
+        datSub$sort <- ifelse(datSub$VARIABLE=="All Non-Catch Share Fisheries", "....All Non-Catch Share Fisheries",  as.character(datSub$sort))
+        datSub$sort <- ifelse(datSub$VARIABLE=="At-sea Pacific whiting", "....At-sea Pacific whiting",  as.character(datSub$sort))
+        datSub$sort <- ifelse(datSub$VARIABLE=="Shoreside Pacific whiting", "....Shoreside Pacific whiting",  as.character(datSub$sort))
+        datSub$sort <- ifelse(datSub$VARIABLE=="DTS trawl with trawl endorsement", "....DTS trawl with trawl endorsement",  as.character(datSub$sort))
+        datSub$sort <- ifelse(datSub$VARIABLE=="Non-whiting, non-DTS trawl with trawl endorsement", "....Non-whiting, non-DTS trawl with trawl endorsement",  as.character(datSub$sort))
+        datSub$sort <- ifelse(datSub$VARIABLE=="Groundfish fixed gear with trawl endorsement", "...Groundfish fixed gear with trawl endorsement",  as.character(datSub$sort))
+        datSub$sort <- ifelse(datSub$VARIABLE=="Groundfish fixed gear with fixed gear endorsement", "..Groundfish fixed gear with fixed gear endorsement",  as.character(datSub$sort))
+        datSub$sort <- ifelse(datSub$VARIABLE=="Crab", ".Crab",  as.character(datSub$sort))
+        datSub$sort <- ifelse(datSub$VARIABLE=="Shrimp", ".Shrimp",  as.character(datSub$sort))
+      } else if(input$CategorySelect == "Homeport") {
+        datSub$sort <- ifelse(datSub$VARIABLE=="Puget Sound", ".....Puget Sound", as.character(datSub$VARIABLE))                
+        datSub$sort <- ifelse(datSub$VARIABLE=="South and central WA coast", ".....South and central WA coast", as.character(datSub$sort)) 
+        datSub$sort <- ifelse(datSub$VARIABLE=="Astoria", "....Astoria", as.character(datSub$sort))                    
+        datSub$sort <- ifelse(datSub$VARIABLE=="Tillamook", "....Tillamook", as.character(datSub$sort))                  
+        datSub$sort <- ifelse(datSub$VARIABLE=="Newport", "...Newport", as.character(datSub$sort))                   
+        datSub$sort <- ifelse(datSub$VARIABLE=="Coos Bay","..Coos Bay", as.character(datSub$sort))                   
+        datSub$sort <- ifelse(datSub$VARIABLE=="Brookings", ".Brookings", as.character(datSub$sort))                  
+        datSub$sort <- ifelse(datSub$VARIABLE=="Crescent City", ".Crescent City", as.character(datSub$sort))              
+        datSub$sort <- ifelse(datSub$VARIABLE=="Eureka", ".Eureka", as.character(datSub$sort))                     
+        datSub$sort <- ifelse(datSub$VARIABLE=="Fort Bragg", ".Fort Brag", as.character(datSub$sort))                
+        datSub$sort <- ifelse(datSub$VARIABLE=="San Francisco", ".San Francisco", as.character(datSub$sort))              
+      }
+      else {
+        datSub$sort <- datSub$VARIABLE 
+      }
+      
+      
+      
       validate(
         need(min(datSub$N)>2,
              '  
@@ -188,6 +213,35 @@ DatSub2 <- reactive({
 
         if(input$CategorySelect=="Fisheries" & length(input$VariableSelect)>1){
       datSub2 <- subset(datSub2, datSub2$VARIABLE!="Groundfish fixed gear with trawl endorsement"|datSub2$YEAR!=2009)
+        }
+ 
+    if(input$CategorySelect=="Fisheries"){
+    datSub2$sort <- ifelse(datSub2$VARIABLE=="All Fisheries", ".....All Fisheries", as.character(datSub2$VARIABLE))
+    datSub2$sort <- ifelse(datSub2$VARIABLE=="All Catch Share Fisheries", "....All Catch Share Fisheries", as.character(datSub2$sort))
+    datSub2$sort <- ifelse(datSub2$VARIABLE=="All Non-Catch Share Fisheries", "....All Non-Catch Share Fisheries",  as.character(datSub2$sort))
+    datSub2$sort <- ifelse(datSub2$VARIABLE=="At-sea Pacific whiting", "....At-sea Pacific whiting",  as.character(datSub2$sort))
+    datSub2$sort <- ifelse(datSub2$VARIABLE=="Shoreside Pacific whiting", "....Shoreside Pacific whiting",  as.character(datSub2$sort))
+    datSub2$sort <- ifelse(datSub2$VARIABLE=="DTS trawl with trawl endorsement", "....DTS trawl with trawl endorsement",  as.character(datSub2$sort))
+    datSub2$sort <- ifelse(datSub2$VARIABLE=="Non-whiting, non-DTS trawl with trawl endorsement", "....Non-whiting, non-DTS trawl with trawl endorsement",  as.character(datSub2$sort))
+    datSub2$sort <- ifelse(datSub2$VARIABLE=="Groundfish fixed gear with trawl endorsement", "...Groundfish fixed gear with trawl endorsement",  as.character(datSub2$sort))
+    datSub2$sort <- ifelse(datSub2$VARIABLE=="Groundfish fixed gear with fixed gear endorsement", "..Groundfish fixed gear with fixed gear endorsement",  as.character(datSub2$sort))
+    datSub2$sort <- ifelse(datSub2$VARIABLE=="Crab", ".Crab",  as.character(datSub2$sort))
+    datSub2$sort <- ifelse(datSub2$VARIABLE=="Shrimp", ".Shrimp",  as.character(datSub2$sort))
+    } else if(input$CategorySelect == "Homeport") {
+      datSub2$sort <- ifelse(datSub2$VARIABLE=="Puget Sound", ".....Puget Sound", as.character(datSub2$VARIABLE))                
+      datSub2$sort <- ifelse(datSub2$VARIABLE=="South and central WA coast", ".....South and central WA coast", as.character(datSub2$sort)) 
+      datSub2$sort <- ifelse(datSub2$VARIABLE=="Astoria", "....Astoria", as.character(datSub2$sort))                    
+      datSub2$sort <- ifelse(datSub2$VARIABLE=="Tillamook", "....Tillamook", as.character(datSub2$sort))                  
+      datSub2$sort <- ifelse(datSub2$VARIABLE=="Newport", "...Newport", as.character(datSub2$sort))                   
+      datSub2$sort <- ifelse(datSub2$VARIABLE=="Coos Bay","..Coos Bay", as.character(datSub2$sort))                   
+      datSub2$sort <- ifelse(datSub2$VARIABLE=="Brookings", ".Brookings", as.character(datSub2$sort))                  
+      datSub2$sort <- ifelse(datSub2$VARIABLE=="Crescent City", ".Crescent City", as.character(datSub2$sort))              
+      datSub2$sort <- ifelse(datSub2$VARIABLE=="Eureka", ".Eureka", as.character(datSub2$sort))                     
+      datSub2$sort <- ifelse(datSub2$VARIABLE=="Fort Bragg", ".Fort Brag", as.character(datSub2$sort))                
+       datSub2$sort <- ifelse(datSub2$VARIABLE=="San Francisco", ".San Francisco", as.character(datSub2$sort))              
+    }
+    else {
+     datSub2$sort <- datSub2$VARIABLE 
     }
     
     validate(
@@ -241,6 +295,34 @@ DatSub3 <- reactive({
     if(input$CategorySelect=="Fisheries" & length(input$VariableSelect)>1){
       datSub3 <- subset(datSub3, datSub3$VARIABLE!="Groundfish fixed gear with trawl endorsement"|datSub3$YEAR!=2009)
     }
+    if(input$CategorySelect=="Fisheries"){
+      datSub3$sort <- ifelse(datSub3$VARIABLE=="All Fisheries", ".....All Fisheries", as.character(datSub3$VARIABLE))
+      datSub3$sort <- ifelse(datSub3$VARIABLE=="All Catch Share Fisheries", "....All Catch Share Fisheries", as.character(datSub3$sort))
+      datSub3$sort <- ifelse(datSub3$VARIABLE=="All Non-Catch Share Fisheries", "....All Non-Catch Share Fisheries",  as.character(datSub3$sort))
+      datSub3$sort <- ifelse(datSub3$VARIABLE=="At-sea Pacific whiting", "....At-sea Pacific whiting",  as.character(datSub3$sort))
+      datSub3$sort <- ifelse(datSub3$VARIABLE=="Shoreside Pacific whiting", "....Shoreside Pacific whiting",  as.character(datSub3$sort))
+      datSub3$sort <- ifelse(datSub3$VARIABLE=="DTS trawl with trawl endorsement", "....DTS trawl with trawl endorsement",  as.character(datSub3$sort))
+      datSub3$sort <- ifelse(datSub3$VARIABLE=="Non-whiting, non-DTS trawl with trawl endorsement", "....Non-whiting, non-DTS trawl with trawl endorsement",  as.character(datSub3$sort))
+      datSub3$sort <- ifelse(datSub3$VARIABLE=="Groundfish fixed gear with trawl endorsement", "...Groundfish fixed gear with trawl endorsement",  as.character(datSub3$sort))
+      datSub3$sort <- ifelse(datSub3$VARIABLE=="Groundfish fixed gear with fixed gear endorsement", "..Groundfish fixed gear with fixed gear endorsement",  as.character(datSub3$sort))
+      datSub3$sort <- ifelse(datSub3$VARIABLE=="Crab", ".Crab",  as.character(datSub3$sort))
+      datSub3$sort <- ifelse(datSub3$VARIABLE=="Shrimp", ".Shrimp",  as.character(datSub3$sort))
+    } else if(input$CategorySelect == "Homeport") {
+      datSub3$sort <- ifelse(datSub3$VARIABLE=="Puget Sound", ".....Puget Sound", as.character(datSub3$VARIABLE))                
+      datSub3$sort <- ifelse(datSub3$VARIABLE=="South and central WA coast", ".....South and central WA coast", as.character(datSub3$sort)) 
+      datSub3$sort <- ifelse(datSub3$VARIABLE=="Astoria", "....Astoria", as.character(datSub3$sort))                    
+      datSub3$sort <- ifelse(datSub3$VARIABLE=="Tillamook", "....Tillamook", as.character(datSub3$sort))                  
+      datSub3$sort <- ifelse(datSub3$VARIABLE=="Newport", "...Newport", as.character(datSub3$sort))                   
+      datSub3$sort <- ifelse(datSub3$VARIABLE=="Coos Bay","..Coos Bay", as.character(datSub3$sort))                   
+      datSub3$sort <- ifelse(datSub3$VARIABLE=="Brookings", ".Brookings", as.character(datSub3$sort))                  
+      datSub3$sort <- ifelse(datSub3$VARIABLE=="Crescent City", ".Crescent City", as.character(datSub3$sort))              
+      datSub3$sort <- ifelse(datSub3$VARIABLE=="Eureka", ".Eureka", as.character(datSub3$sort))                     
+      datSub3$sort <- ifelse(datSub3$VARIABLE=="Fort Bragg", ".Fort Brag", as.character(datSub3$sort))                
+      datSub3$sort <- ifelse(datSub3$VARIABLE=="San Francisco", ".San Francisco", as.character(datSub3$sort))              
+    }
+    else {
+      datSub3$sort <- datSub3$VARIABLE 
+    }
     
     
     validate(
@@ -282,14 +364,14 @@ DatSubThirds <- reactive({
     datSub$THIRDS <- factor(datSub$THIRDS,
                             levels = factorOrder$thirds)
     
-   # datSub$SHORTDESCR <- factor(datSub$SHORTDESCR, 
-    #                            levels = c("Revenue","Variable costs","Fixed costs","Variable cost net revenue","Total cost net revenue"))
-    datSub$class <- ifelse(datSub$SHORTDESCR=="Revenue", 1,2)
-    datSub$class <- ifelse(datSub$SHORTDESCR=="Fixed costs", 3, datSub$class)
-    datSub$class <- ifelse(datSub$SHORTDESCR=="Variable cost net revenue", 4, datSub$class)
-    datSub$class <- ifelse(datSub$SHORTDESCR=="Total cost net revenue", 5, datSub$class)
-    datSub$titles <-ordered(datSub$class, levels=c(1,2,3,4,5), labels=c("Revenue","Variable costs","Fixed costs", "Variable cost net revenue", "Total cost net revenue")) 
-    
+    datSub$SHORTDESCR <- factor(datSub$SHORTDESCR, 
+                                levels =  factorOrder$shortdescr)
+    datSub$sort <- ifelse(datSub$SHORTDESCR=="Revenue", "...Revenue", as.character(datSub$SHORTDESCR))
+    datSub$sort <- ifelse(datSub$SHORTDESCR=="Variable costs", "..Variable costs", as.character(datSub$sort))
+    datSub$sort <- ifelse(datSub$SHORTDESCR=="Fixed costs", ".Fixed costs",  as.character(datSub$sort))
+    datSub$sort <- ifelse(datSub$SHORTDESCR=="Variable cost net revenue", ".Variable cost net revenue",  as.character(datSub$sort))
+
+
     if(input$CategorySelect == "Homeport"){
       datSub$VARIABLE <- factor(datSub$VARIABLE, levels = factorOrder$port)
     } else if(input$CategorySelect == "State"){
@@ -319,6 +401,7 @@ DatSubThirds <- reactive({
     
  # }
 })
+
 
 
 # Plotting/staging
@@ -357,15 +440,34 @@ PermitMessage <- reactive({
 #Download buttons only shows up if PermitPlot()==T
 output$download_Table <- renderUI({
   if(PermitPlot()) {
-    downloadButton("dlTable", "Download Data Table",class = "btn btn-info")
+    if(input$tabs=="Panel1"){
+    tags$div(class="actbutton",downloadButton("dlTable", "Download Data Table",class = "btn btn-info"))
+    }
   }
 })
 
 output$download_figure <- renderUI({
   if(PermitPlot()){# & input$tabs=="Visualize Data"){
-    downloadButton("dlFigure", "Download Figure(s)",class = "btn btn-info")
+    tags$div(class="actbutton",downloadButton("dlFigure", "Download Figure(s)",class = "btn btn-info"))
   }
 })
+
+output$resetButton <- renderUI({
+  if(PermitPlot()){
+    tags$div(class="actbutton",actionButton("reset_input", "Clear selections", class="btn btn-primary"))
+  }
+})
+
+output$VCNRButton <- renderUI({
+  if(PermitPlot()){
+    if(input$DodgeSelect == "Composition of total cost net revenue"){
+    HTML('<a class="btn btn-primary", href="TCNRGraphic.png" target="_blank" style="height:37px;margin: -24px -50px -20px 1000px"> Explanation of this figure</a>')
+      } else     if(input$DodgeSelect == "Composition of variable cost net revenue"){
+    HTML('<a class="btn btn-primary", href="VCNRGraphic.png" target="_blank" style="height:37px;margin: -24px -50px -20px 1000px"> Explanation of this figure</a>')
+    }  
+    }
+})
+
 
 #output$download_Thirds<- renderUI({
 #  if(PermitPlot() & input$tabs=="Variability Analaysis"){
