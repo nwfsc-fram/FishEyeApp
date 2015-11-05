@@ -5,12 +5,12 @@ library(appFrame)
 library(shiny)
 library(ggplot2)
 library(reshape2)
+#library(gridExtra)
 #library(grid)
 library(scales)
 #library(DT) #This package is good for filtering data but not compatible with current version of shiny on the server
 library(shinyBS) # this package is used to modify the size of actionbuttons
-library(mail) #for sending email
-library(shinyAce) # for the message box in the email function
+#library(mail) #for sending email
 
 
 #options(error=browser) # debugging
