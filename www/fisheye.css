@@ -29,6 +29,9 @@
 .navbar-nav {
   margin: 0;
 }
+li:not(:last-child) {
+    margin-bottom: 7px;
+}
 
 /*** Footer ***/
 #footer{
@@ -123,6 +126,7 @@
     color: #222222;
   }
   .navbar .dropdown-menu a {
+
     color: #222222;
   }
 }
@@ -136,20 +140,36 @@ border-left: 1px solid black;
 height:50px;
 }
 
-
-.well {
-  min-height: 20px;
-  padding-top: 1px;
-  padding-left: 19px;
-  margin-top: 60px;
-  background-color: #ecf0f1;
-  border: 1px solid transparent;
-  border-radius: 4px;
-  -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.05);
-  box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.05);
+.navbar {
+   height: 50px;
+   min-height: 50px;
 }
+/#input[tupe="ckbox2" checkbox label:first-child{/
+/    font-weight:bold;/
+/}/
 
-#wrap {
- padding-top: 0 !important;
- margin-top: 0 !important;
+/.ckbox2 checkbox label:first-child{font-weight:bold;}/
+/.rbutton .radio label:first-child{font-weight:bold:"))/
+
+.date {
+    height:45px;
+    width:30px;
+    font-family:Arial;
+    font-weight:bold;
+    background-color:#ffee99;
+    text-align:center;
+     position:absolute;
+    z-index:3;
+    line-height: 13px;
+}
+.year {
+    line-height: 10px;
+     font-size:11px;
+}
+.month {
+    line-height: 11px;
+    font-size:11px;
+}
+.day {
+    font-size: 16px;
 }

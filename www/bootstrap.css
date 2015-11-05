@@ -3539,7 +3539,7 @@ tbody.collapse.in {
 .navbar-fixed-bottom .dropdown .dropdown-menu {
   top: auto;
   bottom: 100%;
-  margin-bottom: 2px;
+  margin-bottom: -2px;
 }
 @media (min-width: 768px) {
   .navbar-right .dropdown-menu {
@@ -4067,8 +4067,8 @@ select[multiple].input-group-sm > .input-group-btn > .btn {
 }
 .navbar {
   position: left;
-  min-height: 60px;
-  margin-bottom: 21px;
+  min-height: 20px;
+  margin-bottom: 1px;
   border: 1px solid transparent;
 }
 @media (min-width: 768px) {
@@ -4118,7 +4118,7 @@ select[multiple].input-group-sm > .input-group-btn > .btn {
 }
 .navbar-fixed-top .navbar-collapse,
 .navbar-fixed-bottom .navbar-collapse {
-  max-height: 340px;
+  max-height: 140px;
 }
 @media (max-device-width: 480px) and (orientation: landscape) {
   .navbar-fixed-top .navbar-collapse,
@@ -4177,8 +4177,8 @@ select[multiple].input-group-sm > .input-group-btn > .btn {
   float: left;
   padding: 19.5px 15px;
   font-size: 19px;
-  line-height: 21px;
-  height: 60px;
+  line-height: 19px;
+  height: 40px;
 }
 .navbar-brand:hover,
 .navbar-brand:focus {
@@ -4247,7 +4247,7 @@ select[multiple].input-group-sm > .input-group-btn > .btn {
     padding: 5px 15px 5px 25px;
   }
   .navbar-nav .open .dropdown-menu > li > a {
-    line-height: 21px;
+    line-height: 15px;
   }
   .navbar-nav .open .dropdown-menu > li > a:hover,
   .navbar-nav .open .dropdown-menu > li > a:focus {
