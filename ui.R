@@ -21,8 +21,8 @@ fluidPage(title = "FISHEyE",
                             ")),
             tags$style(HTML(".select {margin-top:-20px}"),
                        tags$textarea(id="message", rows=3, cols=40, "Default value")),
-            tags$style(HTML(".ckbox {margin-top: 5px; margin-bottom: -15px}")),
-           #  tags$style(HTML(".ckbox2:first-child label{font-weight:bold;}")),
+            tags$style(HTML(".ckbox {margin-top: 0px; margin-bottom: -15px}")),
+            tags$style(HTML(".statbox {margin-top: -30px; margin-bottom: -15px}")),
             tags$style(HTML(".ckbox2 .checkbox:first-child label{font-weight:bold;}")),
            tags$style(HTML(".ckbox2 .checkbox:nth-child(2) label{font-weight:bold;}")),
            tags$style(HTML(".ckbox2 .checkbox:nth-child(8) label{font-weight:bold;}")),
@@ -34,14 +34,17 @@ fluidPage(title = "FISHEyE",
            
             tags$style(HTML(".actbutton {margin-bottom:5px}")),
             tags$style(HTML(".rbutton {margin-top:15px}")),
+          
            tags$style(HTML(".rbutton .radio:nth-child(2) label{font-weight:bold")),
            tags$style(HTML(".rbutton .radio:nth-child(3) label{font-weight:bold")),
            tags$style(HTML(".rbutton .radio:nth-child(4) label{margin-left:17px;")), tags$style(HTML(".rbutton .radio:nth-child(5) label{margin-left:17px;")), tags$style(HTML(".rbutton .radio:nth-child(6) label{margin-left:17px;")),
            tags$style(HTML(".rbutton .radio:nth-child(7) label{margin-left:17px;")), tags$style(HTML(".rbutton .radio:nth-child(7) label{margin-left:17px;")),tags$style(HTML(".rbutton .radio:nth-child(8) label{margin-left:17px;")),
            tags$style(HTML(".rbutton .radio:nth-child(9) label{font-weight:bold")),
            tags$style(HTML(".rbutton .radio:nth-child(10) label{margin-left:17px;")), tags$style(HTML(".rbutton .radio:nth-child(11) label{margin-left:17px;")),tags$style(HTML(".rbutton .radio:nth-child(12) label{margin-left:17px;")),
-           tags$style(HTML(".rbutton .radio:nth-child(13) label{margin-left:17px;"))
-            ),
+           tags$style(HTML(".rbutton .radio:nth-child(13) label{margin-left:17px;")),
+             tags$style(HTML(".rbutton .radio:nth-child(1) label{font-style:italic")),
+           tags$style(HTML(".rbutton2 .radio:nth-child(1) label{font-style:italic"))
+           ),
            tags$head(includeScript("google-analytics.js")),
            tags$head(tags$script(src = "message-handler.js")),
           
@@ -63,15 +66,18 @@ fluidPage(title = "FISHEyE",
                              <p><i>West Coast Trawl Catch Share Program: Catcher Vessels</i></p>
                           </div>"))  
           ),
-          navbarPage(id="page", collapsible=TRUE, inverse=FALSE,
+          navbarPage(id="page", collapsible=TRUE, inverse=F,
             title="",#HTML("<div> <p style='color:#2fa4e7'>_</p></div>"), #inverse=T, 
           #  collapsible=T,
 
-         tabPanel("Explore the data", value="results",    
+ 
+ 
+          
+          tabPanel("Explore the data", value="results",    
          # fluidRow(
             sidebarLayout(
                  mainPanel(         
-                  tabsetPanel(id = "tabs",
+                  tabsetPanel(id = "tabs", 
                      tabPanel(title=HTML("Visualize Data <br> with Plots"), value="Panel1",
                               fluidRow(
                                 column(12, htmlOutput("DefaultPlotText")
@@ -112,7 +118,7 @@ fluidPage(title = "FISHEyE",
                                  column(12, dataTableOutput("TableMain")
                                 )
                      )),
-                     tabPanel(title=HTML("Variability <br> Analysis"),value="Panel2",
+                     tabPanel(title=HTML("Fleetwide <br> Variability Analysis"),value="Panel2",
                               fluidRow(
                                 column(12, htmlOutput("DefaultThirdsText")
                                 )
@@ -129,12 +135,13 @@ fluidPage(title = "FISHEyE",
      #         column(12,
                    wellPanel( #left side panel                    
                       fluidRow(
-                        column(8, HTML("<p style = 'font-size: 120%'><strong>Make selections in each of the panels below </strong></p>")),
-                        column(2, uiOutput("resetButton")
-                        )
+                        column(8, HTML("<p style = 'font-size: 120%'><strong>Make selections in each of the panels below </strong></p>"))#,
+                       # column(2, uiOutput("resetButton")
+                       # )
                      ),#end fluidRow
                      fluidRow(
                        column(6,
+                              uiOutput("resetButton"),
                               wellPanelSub(
                                 wellPanelHeading(
                                   uiOutput("CategorySelect")
@@ -190,7 +197,7 @@ fluidPage(title = "FISHEyE",
 )),
         navbarMenu("About, Instructions, Definitions",
           #HTML("<div> <p style= 'color:black; margin-bottom:-65px; margin-top:-15px; padding:19px; border-left: 1px solid black;border-right: 1px solid black; width:250px'>About, Instructions, Definitions</p></div>"),
-                     tabPanel("About", value="Panel1", 
+                     tabPanel("About", value="Panel1",
                               source("external/explorer/explorerSourceFiles/about.R")$value
                      ),
                      tabPanel("Instructions", value="Panel1", 
@@ -200,7 +207,13 @@ fluidPage(title = "FISHEyE",
                               source("external/explorer/explorerSourceFiles/definitions.R")$value
                      )
             ), # end right side column     
-          tabPanel("Contact us",
+          tabPanel("Bulletin Board", 
+                              fluidRow(
+                                column(12, htmlOutput("BlogText")),
+                                     column(5,  htmlOutput("BlogUpdates")),
+                                     column(1),
+                                column(5,  htmlOutput("BlogResponses")))),
+           tabPanel("Contact us",
                    fluidRow(
                      column(12, htmlOutput("Email")))
                         #      textInput("from", "From:", value="From"),
@@ -215,13 +228,7 @@ fluidPage(title = "FISHEyE",
                           #    textInput("message", "Body:", "type message here"),
                          #      actionButton("send",label = "Send mail")
                    ),
-          tabPanel("Bulletin Board",
-                    fluidRow(
-                      column(12, htmlOutput("BlogText")),
-                      column(5,  htmlOutput("BlogUpdates")),
-                      column(1),
-                      column(5,  htmlOutput("BlogResponses")))),
-          tabPanel(HTML('<a class="btn btn-warning", href="http://devdataexplorer.nwfsc.noaa.gov/fisheye/"style="height:37px;margin: -24px -50px; position:absolute;right:-200px;"> FISHEyE Homepage</a>'))
+          tabPanel(HTML('<a class="btn btn-warning", href="http://devdataexplorer.nwfsc.noaa.gov/fisheye/"style="height:37px;margin: -24px -50px; float:top;position:absolute;right:-200px;font-familiy: Arial, Helvetica, sans-serif;font-size: 12pt; padding-top:7px;padding-bottom:10px"> FISHEyE Homepage</a>'))
           # HTML('<a href="http://devdataexplorer.nwfsc.noaa.gov/fisheye/"style="display: padding-bottom:100;margin: -30px -50px 0px 300px;color:blue"> 
           #Return to FISHEyE homepage </a>'))# style="height:40px;margin: -40px -20px 0px 50px; float:top; border:0"/>
 

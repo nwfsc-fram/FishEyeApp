@@ -6,7 +6,7 @@ library(shiny)
 library(ggplot2)
 library(reshape2)
 #library(gridExtra)
-#library(grid)
+library(grid)
 library(scales)
 #library(DT) #This package is good for filtering data but not compatible with current version of shiny on the server
 library(shinyBS) # this package is used to modify the size of actionbuttons
@@ -15,7 +15,6 @@ library(shinyBS) # this package is used to modify the size of actionbuttons
 
 #options(error=browser) # debugging
 source("external/serverHead.R")
-
 
 shinyServer(
   function(input, output, session) {    
