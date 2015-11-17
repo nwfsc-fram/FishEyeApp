@@ -140,17 +140,17 @@ border-left: 1px solid black;
 height:50px;
 }
 
+.nav-tabs > li {
+    border-left: 1px solid #ddd;
+    border-right: 1px solid #ddd;
+    padding: 0px;
+}
+
+
 .navbar {
    height: 50px;
    min-height: 50px;
 }
-/#input[tupe="ckbox2" checkbox label:first-child{/
-/    font-weight:bold;/
-/}/
-
-/.ckbox2 checkbox label:first-child{font-weight:bold;}/
-/.rbutton .radio label:first-child{font-weight:bold:"))/
-
 .date {
     height:45px;
     width:30px;
