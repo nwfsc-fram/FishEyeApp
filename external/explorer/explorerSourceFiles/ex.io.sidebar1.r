@@ -113,7 +113,7 @@ output$VariableSelect <- renderUI({
                                                  c("All fisheries" = "All Fisheries",
                                                    "All catch share fisheries" = "All Catch Share Fisheries",
                                                    "All non-catch shares fisheries" = "All Non-Catch Share Fisheries")), style="margin-bottom:-10px"),
-            radioButtons("VariableSelect", "Select ONE state", choices = c("None selected"="","Washington"="Washington", "Oregon"="Oregon","California"="California"), selected="") 
+            tags$div(class="rbutton2",  radioButtons("VariableSelect", "Select ONE state", choices = c("No state selected"="","Washington"="Washington", "Oregon"="Oregon","California"="California"), selected="")) 
           )
             } else if(input$CategorySelect == "Vessel length class"){
           tagList(           
@@ -121,7 +121,7 @@ output$VariableSelect <- renderUI({
                                                  c("All fisheries" = "All Fisheries",
                                                    "All catch share fisheries" = "All Catch Share Fisheries",
                                                    "All non-catch shares fisheries" = "All Non-Catch Share Fisheries")), style="margin-bottom:-10px"),
-            radioButtons("VariableSelect",  "Select ONE vessel length class", choices=c("None selected"="",factorOrder$lengths), selected="")
+            tags$div(class="rbutton2", radioButtons("VariableSelect",  "Select ONE vessel length class", choices=c("No vessel length selected"="",factorOrder$lengths), selected=""))
           )
             } else if(input$CategorySelect == "Homeport"){
           tagList(           
@@ -129,14 +129,14 @@ output$VariableSelect <- renderUI({
                                                  c("All fisheries" = "All Fisheries",
                                                    "All catch share fisheries" = "All Catch Share Fisheries",
                                                    "All non-catch shares fisheries" = "All Non-Catch Share Fisheries")), style="margin-bottom:-10px"),
-            radioButtons("VariableSelect", "Select ONE homeport", choices=c("None selected"="",factorOrder$port), selected="")
+            tags$div(class="rbutton2", radioButtons("VariableSelect", "Select ONE homeport", choices=c("No homeport selected"="",factorOrder$port), selected=""))
           )
             } else if(input$CategorySelect=="Fisheries"){
            # tagList(
               # selectInput("fishCatSelect2","", c("Catch share fisheries"="CSF", "Non-catch share fisheries"="NSF", "All fisheries"="AF"), selected="AF"),
               # conditionalPanel(
              #    condition="input.fishCatSelect2==AF", 
-                 tags$div(class="rbutton", radioButtons("VariableSelect", "Select ONE fishery", choices=c("None selected"="",fish.var), selected=""))
+                 tags$div(class="rbutton", radioButtons("VariableSelect", "Select ONE fishery", choices=c("No fishery selected"="",fish.var), selected=""))
                    #        )            
             }#end fisheries
           } #else return ()
@@ -184,16 +184,16 @@ observe({
 
 observe({
   if (is.null(input$selectall2) || input$selectall2 == 0) return() 
-#  else if (input$selectall2%%2 == 0) {
-#    updateCheckboxGroupInput(session,"VariableSelect", selected=as.character(0)) } 
+  else if (input$selectall2%%2 == 0) {
+    updateCheckboxGroupInput(session,"VariableSelect", selected=as.character(0)) } 
   else {
     updateCheckboxGroupInput(session,"VariableSelect", selected=fish.var)  }
 })
 
 observe({
   if (is.null(input$selectallcs) || input$selectallcs == 0) return() 
-#  else if (input$selectallcs%%2 == 0) {
-#    updateCheckboxGroupInput(session,"VariableSelect", selected=as.character(0)) } 
+  else if (input$selectallcs%%2 == 0) {
+    updateCheckboxGroupInput(session,"VariableSelect", selected=as.character(0)) } 
   else {
     updateCheckboxGroupInput(session,"VariableSelect", selected=fish.var[2:7])
   }
@@ -201,8 +201,8 @@ observe({
 
 observe({
   if (is.null(input$selectallncs) || input$selectallncs == 0) return() 
-#  else if (input$selectallncs%%2 == 0) {
-#    updateCheckboxGroupInput(session,"VariableSelect", selected=as.character(0)) } 
+  else if (input$selectallncs%%2 == 0) {
+    updateCheckboxGroupInput(session,"VariableSelect", selected=as.character(0)) } 
   else {
     updateCheckboxGroupInput(session,"VariableSelect", selected=fish.var[8:12])
   }
@@ -222,10 +222,32 @@ output$FishAkSelect <- renderUI({
 })
 
 
+
+
 output$StatSelect <- renderUI({
-  tags$div(class="ckbox", radioButtons("StatSelect", "Statistic:", 
-    choices = c(DatVars()$STAT)))
- 
+  tagList(
+    selectInput("AVE_MED", "Statistic:", c('Median, Average, or Total values'="", Average="A", Median="M", Total="T"), selectize=F),
+#    actionButton("MED", "Median", style="default",size="extra-small", block=F, type="action"),
+#    if(input$AVE_MED!="A"){
+      tags$div(class="statbox", radioButtons("StatSelect","",  choices = c(DatVars()$STAT[4:6])))#"Statistic:",
+#    }
+#   else #if(input$AVE_MED=="M")
+#     {
+#    tags$div(class="ckbox", radioButtons("StatSelect", "", 
+#                                         choices = c(DatVars()$STAT[4:7])))
+#  }
+  )
+})
+
+observe({
+  if (is.null(input$AVE_MED)) return()
+ else  if(input$AVE_MED=="M"){
+    updateRadioButtons(session,"StatSelect", choices = c(DatVars()$STAT[4:6]))
+  }  else if(input$AVE_MED=="A"){
+    updateRadioButtons(session,"StatSelect",   choices = c(DatVars()$STAT[1:3]))
+  } else  if(input$AVE_MED=="T"){
+    updateRadioButtons(session,"StatSelect", choices = c(DatVars()$STAT[7]))
+  } 
 })
 
 #======================================
