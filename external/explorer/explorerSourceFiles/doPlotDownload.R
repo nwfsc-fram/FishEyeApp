@@ -9,8 +9,11 @@ doPlotDownload <- function(dat, x, y, type){
     #  colourList <- c("#d73027","#fee090","#91bfdb","#fc8d59", "#4575b4")
  #   colourList <- c(Revenue="#d73027",'Variable costs'="#fee090", 'Total cost net revenue'="#4575b4",'Variable cost net revenue'="#fc8d59",'Fixed costs'="#91bfdb")
     colourThirds <- c('Top third'="#253494",'Middle third'="#41b6c4",'Bottom third'="#a1dab4")
-    colourList <- c('Revenue'="#256D36",'Variable costs'="#FEE090",'Fixed costs'="#FDBE68",'Variable cost net revenue'="#54A69D", 'Total cost net revenue'="#4575B4")
-    
+#    colourList <- c('Revenue'="#256D36",'Variable costs'="#FEE090",'Fixed costs'="#FDBE68",'Variable cost net revenue'="#54A69D", 'Total cost net revenue'="#4575B4")
+#    colourList <- c('Revenue'="#256D36",'Variable costs'="#FEE090",'Fixed costs'="#FDBE68",'Variable cost net revenue'="#4B958D", 'Total cost net revenue'="#4575B4")
+#colourList <- c('Revenue'="#256D36",'Variable costs'="#fed977",'Fixed costs'="#fdb34f",'Variable cost net revenue'="#4B958D", 'Total cost net revenue'="#4575B4")
+colourList <- c('Revenue'="#256D36",'Variable costs'="#fed25d",'Fixed costs'="#fca836",'Variable cost net revenue'="#4B958D", 'Total cost net revenue'="#4575B4")
+
     
     plot.title <- function(){
       if(type == "summary"){
@@ -269,14 +272,77 @@ doPlotDownload <- function(dat, x, y, type){
     # define solid line y=0
     g <- g + geom_hline(yintercept = 0)
     
+ 
+    
     # define labels
+#    if(type!="summary"){
+ #     if(max(dat$flag)>0){#input$CategorySelect == "Homeport" & 
+#        g <- g + labs(y = paste("Thousands ($)", "(",input$StatSelect, ")"), x="Vessels are sorted annually into top, middle, and lower earners based on revenue. 
+ #                 \nSome of the data selected may not be shown. These data have been suppressed as there are not enough observations to protect confidentiality", title = main()) 
+ #     } else {
+ #       g <- g + labs(y = paste("Thousands ($)", "(",input$StatSelect, ")"), x="Vessels are sorted annually into top, middle, and lower earners based on revenue.", title = main()) 
+#      }
+#    } else {
+#      if(PermitMessage()){
+#        g <- g + labs(y = paste("Thousands ($)","(",input$StatSelect, ")"), x="NOTE: Data from the Groundfish fixed gear with trawl endorsement fishery in 2009 has been suppressed as there are not enough observations to protect confidentiality", title = main())   
+#      }else{
+#        g <- g + labs(y = paste("Thousands ($)", "(",input$StatSelect, ")"), x="", title = main())       
+#      }
+#    }
+    
+    # define labels
+    if(type!="summary"){
+      if(max(dat$flag)>0){
+        if(max(dat$AK_FLAG)==0){#input$CategorySelect == "Homeport" & 
+          g <- g + labs(y = paste("Thousands ($)", "(",input$StatSelect, ")"), x="     Vessels are sorted annually into top, middle, and lower earners based on revenue. 
+                  \nSome of the data selected may not be shown. These data have been suppressed as there are not enough observations to protect confidentiality.", title = main()) 
+        } else {
+          g <- g + labs(y = paste("Thousands ($)", "(",input$StatSelect, ")"), x="     Vessels are sorted annually into top, middle, and lower earners based on revenue. 
+                  \nSome of the data selected may not be shown. These data have been suppressed as there are not enough observations to protect confidentiality.
+                    \nFor at least one of the selected grouping variables and years, less than three vessels participated in an Alaskan fisheries. To protect confidentiality, we do not differentiate  
+                    \nbetween vessels that fished solely off the West Coast and vessels that also participated in an Alaskan fisheries.", title = main()) 
+        } 
+      } else {
+        if(max(dat$AK_FLAG)==0){
+          g <- g + labs(y = paste("Thousands ($)", "(",input$StatSelect, ")"), x="    Vessels are sorted annually into top, middle, and lower earners based on revenue.", title = main()) 
+        } else {
+          g <- g + labs(y = paste("Thousands ($)", "(",input$StatSelect, ")"), x="    Vessels are sorted annually into top, middle, and lower earners based on revenue.
+                    \nFor at least one of the selected grouping variables and years, less than three vessels participated in an Alaskan fisheries. To protect confidentiality, we do not differentiate  
+                    \nbetween vessels that fished solely off the West Coast and vessels that also participated in an Alaskan fisheries.", title = main())        
+        } }
+    } else {
+      if(PermitMessage()){
+        if(max(dat$AK_FLAG)==0){
+          g <- g + labs(y = paste("Thousands ($)","(",input$StatSelect, ")"), x="NOTE: Data from the Groundfish fixed gear with trawl endorsement fishery in 2009 has been suppressed as there are not enough observations to protect confidentiality.", title = main())   
+        } else {
+          g <- g + labs(y = paste("Thousands ($)","(",input$StatSelect, ")"), x="NOTE: Data from the Groundfish fixed gear with trawl endorsement fishery in 2009 has been suppressed as there are not enough observations to protect confidentiality.
+                    \nFor at least one of the selected grouping variables and years, less than three vessels participated in an Alaskan fisheries. To protect confidentiality, we do not differentiate  
+                    \nbetween vessels that fished solely off the West Coast and vessels that also participated in an Alaskan fisheries.", title = main())                  
+        }
+      }else{
+        #   if(max(dat$AK_FLAG)==0){
+        g <- g + labs(y = paste("Thousands ($)", "(",input$StatSelect, ")"), x="", title = main())       
+        #    } else {
+        #     g <- g + labs(y = paste("Thousands ($)", "(",input$StatSelect, ")",
+        #                             x=" Less than three vessels participated in an Alaskan fishery. To protect confidentiality, we do not differentiate  
+        #                              \nbetween vessels that fished solely off the West Coast and vessels that also participated in an Alaskan fisheries.", title = main())                  
+        #    }
+      }
+    }
+    
+    
+       # define labels
     if(type != "summary"){
-      g <- g + labs(y = "Thousands ($)", x= paste("Sourced from the FISHEyE application (http://devdataexplorer.nwfsc.noaa.gov/fisheye/FisheyeApp/) maintained by NOAA Fisheries NWFSC on ",format(Sys.Date(), format="%B %d %Y")), title = main()) 
-    } else {
+      if(max(dat$flag)>0){
+        g <- g + labs(y = paste("Thousands ($)", "(",input$StatSelect, ")"), x= paste("Some of the data selected may not be shown. These data have been suppressed as there are not enough observations to protect confidentiality. \nSourced from the FISHEyE application (http://devdataexplorer.nwfsc.noaa.gov/fisheye/FisheyeApp/) maintained by NOAA Fisheries NWFSC on ",format(Sys.Date(), format="%B %d %Y")), title = main()) 
+        } else {
+          g <- g + labs(y = paste("Thousands ($)", "(",input$StatSelect, ")"), x= paste("Sourced from the FISHEyE application (http://devdataexplorer.nwfsc.noaa.gov/fisheye/FisheyeApp/) maintained by NOAA Fisheries NWFSC on ",format(Sys.Date(), format="%B %d %Y")), title = main()) 
+    } 
+      }else {
     if(PermitMessage()){
-      g <- g + labs(y = "Thousands ($)", x= paste("Sourced from the FISHEyE application (http://devdataexplorer.nwfsc.noaa.gov/fisheye/FisheyeApp/) maintained by NOAA Fisheries NWFSC on ",format(Sys.Date(), format="%B %d %Y"),"\n",                                                   "Note that if the Groundfish fixed gear with trawl endorsement fishery has been selected, data from 2009 has been suppressed as there are not enough observations to protect confidentiality."), title = main()) 
+      g <- g + labs(y = paste("Thousands ($)", "(",input$StatSelect, ")"), x= paste("Sourced from the FISHEyE application (http://devdataexplorer.nwfsc.noaa.gov/fisheye/FisheyeApp/) maintained by NOAA Fisheries NWFSC on ",format(Sys.Date(), format="%B %d %Y"),"\n",                                                   "Note that if the Groundfish fixed gear with trawl endorsement fishery has been selected, data from 2009 has been suppressed as there are not enough observations to protect confidentiality."), title = main()) 
     } else {
-    g <- g + labs(y = "Thousands ($)", x= paste("Sourced from the FISHEyE application (http://devdataexplorer.nwfsc.noaa.gov/fisheye/FisheyeApp/) maintained by NOAA Fisheries NWFSC on ",format(Sys.Date(), format="%B %d %Y")), title = main()) 
+    g <- g + labs(y = paste("Thousands ($)", "(",input$StatSelect, ")"), x= paste("Sourced from the FISHEyE application (http://devdataexplorer.nwfsc.noaa.gov/fisheye/FisheyeApp/) maintained by NOAA Fisheries NWFSC on ",format(Sys.Date(), format="%B %d %Y")), title = main()) 
   } }
 
 
@@ -284,6 +350,7 @@ doPlotDownload <- function(dat, x, y, type){
     g <- g + theme(
       plot.title = element_text(size=rel(1.25), vjust=1, colour="grey25"), 
       plot.title = element_text(family = "sans", face = "bold", vjust = 1),
+      plot.margin = unit(c(0.5, 0.5, 1, 0.5), "cm"),
       panel.background = element_rect(fill = "white"),
       panel.margin = unit(1.2, "lines"),
       panel.grid.minor = element_line(linetype = "blank"),

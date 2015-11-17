@@ -8,9 +8,11 @@ doPlot <- function(dat, x, y, type){
 ## Change color palette to printer-friendly colors that are color-blind friendly. Want consistent colors with what Erin is using
       #  colourList <- c("#d73027","#fee090","#91bfdb","#fc8d59", "#4575b4")
 #    colourList <- c('Revenue'="#d73027",'Variable costs'="#fee090",'Fixed costs'="#91bfdb",'Variable cost net revenue'="#fc8d59", 'Total cost net revenue'="#4575b4")
-    colourList <- c('Revenue'="#256D36",'Variable costs'="#FEE090",'Fixed costs'="#FDBE68",'Variable cost net revenue'="#54A69D", 'Total cost net revenue'="#4575B4")
+#    colourList <- c('Revenue'="#256D36",'Variable costs'="#FEE090",'Fixed costs'="#FDBE68",'Variable cost net revenue'="#4B958D", 'Total cost net revenue'="#4575B4")
 #    colourList <- c('Revenue'="#256D36",'Variable costs'="#BCD8D4",'Fixed costs'="#FDBE68",'Variable cost net revenue'="#59AEA5", 'Total cost net revenue'="#4575B4")
-    
+#colourList <- c('Revenue'="#256D36",'Variable costs'="#fed977",'Fixed costs'="#fdb34f",'Variable cost net revenue'="#4B958D", 'Total cost net revenue'="#4575B4")
+colourList <- c('Revenue'="#256D36",'Variable costs'="#fed25d",'Fixed costs'="#fca836",'Variable cost net revenue'="#4B958D", 'Total cost net revenue'="#4575B4")
+
         colourThirds <- c('Top third'="#253494",'Middle third'="#41b6c4",'Bottom third'="#a1dab4")
            # Plot title construction
 
@@ -237,13 +239,12 @@ doPlot <- function(dat, x, y, type){
    
         # define facet
     if(type =="summary"){
-       g <- g + facet_wrap(~ sort, ncol=2, as.table = TRUE)#
+       g <- g + facet_wrap(~ sort, ncol=2, as.table = TRUE, scales="free_x")#
      } else {
-      g <- g + facet_wrap(~sort)#(~SHORTDESCR)
+      g <- g + facet_wrap(~sort, scales="free_x")#(~SHORTDESCR)
     }
     
-    
-
+  
     # define scale
     if(type == "summary") {
       if(input$DodgeSelect == "Economic measures side-by-side"){
@@ -263,21 +264,51 @@ doPlot <- function(dat, x, y, type){
     
     # define labels
     if(type!="summary"){
-    g <- g + labs(y = "Thousands ($)", x="Vessels are sorted annually into top, middle, and bottom earners based on revenue", title = main()) 
+      if(max(dat$flag)>0){
+        if(max(dat$AK_FLAG)==0){#input$CategorySelect == "Homeport" & 
+    g <- g + labs(y = paste("Thousands ($)", "(",input$StatSelect, ")"), x="     Vessels are sorted annually into top, middle, and lower earners based on revenue. 
+              \nSome of the data selected may not be shown. These data have been suppressed as there are not enough observations to protect confidentiality.", title = main()) 
     } else {
+      g <- g + labs(y = paste("Thousands ($)", "(",input$StatSelect, ")"), x="     Vessels are sorted annually into top, middle, and lower earners based on revenue. 
+                  \nSome of the data selected may not be shown. These data have been suppressed as there are not enough observations to protect confidentiality.
+                  \nFor at least one of the selected grouping variables and years, less than three vessels participated in an Alaskan fisheries. To protect confidentiality, we do not differentiate  
+                    \n    between vessels that fished solely off the West Coast and vessels that also participated in an Alaskan fisheries.", title = main()) 
+    } 
+    } else {
+      if(max(dat$AK_FLAG)==0){
+        g <- g + labs(y = paste("Thousands ($)", "(",input$StatSelect, ")"), x="    Vessels are sorted annually into top, middle, and lower earners based on revenue.", title = main()) 
+     } else {
+       g <- g + labs(y = paste("Thousands ($)", "(",input$StatSelect, ")"), x="    Vessels are sorted annually into top, middle, and lower earners based on revenue.
+              \nFor at least one of the selected grouping variables and years, less than three vessels participated in an Alaskan fisheries. To protect confidentiality, we do not differentiate  
+                  \n    between vessels that fished solely off the West Coast and vessels that also participated in an Alaskan fisheries.", title = main())        
+     } }
+      } else {
       if(PermitMessage()){
-        g <- g + labs(y = "Thousands ($)", x="NOTE: Data from the Groundfish fixed gear with trawl endorsement fishery in 2009 has been suppressed as there are not enough observations to protect confidentiality", title = main())   
-      }else{
-     g <- g + labs(y = "Thousands ($)", x="", title = main())       
-      }
+        if(max(dat$AK_FLAG)==0){
+        g <- g + labs(y = paste("Thousands ($)","(",input$StatSelect, ")"), x="NOTE: Data from the Groundfish fixed gear with trawl endorsement fishery in 2009 has been suppressed as there are not enough observations to protect confidentiality.", title = main())   
+        } else {
+          g <- g + labs(y = paste("Thousands ($)","(",input$StatSelect, ")"), x="NOTE: Data from the Groundfish fixed gear with trawl endorsement fishery in 2009 has been suppressed as there are not enough observations to protect confidentiality.
+                \nFor at least one of the selected grouping variables and years, less than three vessels participated in an Alaskan fisheries. To protect confidentiality, we do not differentiate  
+                    \n    between vessels that fished solely off the West Coast and vessels that also participated in an Alaskan fisheries.", title = main())                  
+        }
+        }else{
+       #   if(max(dat$AK_FLAG)==0){
+     g <- g + labs(y = paste("Thousands ($)", "(",input$StatSelect, ")"), x="", title = main())       
+      #    } else {
+       #     g <- g + labs(y = paste("Thousands ($)", "(",input$StatSelect, ")",
+      #                             x=" Less than three vessels participated in an Alaskan fishery. To protect confidentiality, we do not differentiate  
+      #                              \nbetween vessels that fished solely off the West Coast and vessels that also participated in an Alaskan fisheries.", title = main())                  
+      #    }
+          }
     }
     
     # define theme
     g <- g + theme(
-      plot.title = element_text(size=rel(1.75), vjust=1, colour="grey25"), 
-      plot.title = element_text(family = "sans", face = "bold", vjust = 1),
+      plot.title = element_text( vjust=1, size=rel(1.75), colour="grey25", family = "sans", face = "bold"),# 
+     # plot.title = element_text(, vjust = 1),
       panel.background = element_rect(fill = "white"),
-    #  panel.margin = unit(1.2, "lines"),
+      #panel.margin = unit(1.2, "lines"),
+      plot.margin = unit(c(0.5, 0.5, 1, 0.5), "cm"),
       panel.grid.minor = element_line(linetype = "blank"),
       panel.grid.major.x = element_line(linetype = "blank"),
       panel.grid.major.y = element_line(color = "#656C70", linetype = "dotted"),
@@ -285,7 +316,7 @@ doPlot <- function(dat, x, y, type){
                                 size = 18, color = "grey25", vjust=1),
       strip.background = element_rect(fill = "lightgrey"),
       axis.ticks = element_blank(),
-      axis.title.x = element_text(size=rel(1.2),  face="italic", vjust=-1, hjust=-.05, colour="grey25"),
+      axis.title.x = element_text(size=rel(1.1),  face="italic", vjust=-1, hjust=-.05, colour="grey25"),
       axis.title.y = element_text(size=rel(1.2), vjust=2, colour="grey25"),
       axis.line.x = element_line(size = 2, colour = "black", linetype = "solid"),
       axis.text = element_text(size = 12),
@@ -337,8 +368,9 @@ doPlot <- function(dat, x, y, type){
       invisible(p)
     }   
 #################################################################################################################################
-    g <- strwrap_strip_text(g) #use instead of print(g)
     
+    g <- strwrap_strip_text(g) #use instead of print(g)
+
    print(g)
    
    } else plot(0,0,type="n", axes=F, xlab="", ylab="")
