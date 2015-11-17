@@ -4,9 +4,10 @@ output$Email <- renderUI({
   
   tags$div(style = "margin: 15px 15px 30px; width: 60%",
            h3("Contact us"),
-           tags$p("We look forward to receiving feedback and questions.", tags$br(), "You can send comments and questions directly to us by clicking",
-                  tags$a(href="mailto:nwfsc.fisheye@noaa.gov?subject=FISHEyE", 'contact us'), 'or by copying our email address', 
-                  tags$em('nwfsc.fisheye@noaa.gov'), 'and using your favorite email program.',
+           tags$p("We look forward to receiving feedback and questions.", tags$br(),'Send comments and questions to', tags$strong('nwfsc.fisheye@noaa.gov'),
+                  # "You can send comments and questions directly to us by clicking",
+ #                 tags$a(href="mailto:nwfsc.fisheye@noaa.gov?subject=FISHEyE", 'contact us'), 'or by copying our email address', 
+ #                 tags$em('nwfsc.fisheye@noaa.gov'), 'and using your favorite email program.',
                   tags$br(),
                   tags$br()) 
   )
@@ -81,7 +82,8 @@ output$DefaultPlotText <- renderUI({
            tags$h3("Visualize Data with Plots"),
            tags$p('Visualize', tags$a(href="http://www.nwfsc.noaa.gov/research/divisions/fram/economic/overview.cfm", 'Economic Data Collection (EDC)', target="_blank"), 
                   'summary statistics for revenue, costs and net revenue of', tags$a(href="2012CatcherVessel.jpg","catcher vessels", target="_blank"), 
-                  'that participate in the', tags$a(href="http://www.westcoast.fisheries.noaa.gov/fisheries/groundfish_catch_shares/index.html", 'West Coast Groundfish Trawl Catch Share Program.', target="_blank")),
+                  '(both at-sea and shoreside) that participate in the', tags$a(href="http://www.westcoast.fisheries.noaa.gov/fisheries/groundfish_catch_shares/index.html", 'West Coast Groundfish Trawl Catch Share Program.', target="_blank"), 
+                  'To generate plots and analyses beyond what is provided in the Net Revenue Explorer, please download the data and analyze externally.'),
             tags$p(strong("To get started, make at least one selection in each of the fields in the panel on the right.")),
           # tags$br(),
            HTML("<div style='display:inline-block;width:100%;padding:0;line-height: 0.8em; margin-top:15px; margin-bottom:-2px;font-size:12pt'>
@@ -118,7 +120,8 @@ output$DefaultTableText <- renderUI({
            tags$p('View data used to generate the plot(s) created in the', tags$em('Visualize Data with Plots'), 'tab.'),
                   tags$p(strong('To get started, make at least one selection in each of the fields in the panel on the right.')), 
             tags$p('After a data table has been displayed, the data can be further filtered using the ',tags$em('Search'), 'box, 
-                     or filtered within a column using the boxes at the bottom of the table. Data used in the', tags$em('Variability Analysis'), 'tab are not available at this time.'),
+                     or filtered within a column using the boxes at the bottom of the table. Data used in the', tags$em('Fleetwide Variability Analysis'), 'tab are not shown but can be downloaded from the', 
+            tags$em("Fleetwide Variability Analysis"), 'tab.'),
                  tags$p( strong('Download Data: '), 'Once selections have been made, a button to download the data table appears at the bottom of the panel to the right.'),
            tags$br(),
            tags$p(strong('To view these instructions'), 'at any time visit the ', tags$em('Instructions'), 'tab under the ', tags$em('About, Instructions, Definitions'), 'page.')
@@ -129,29 +132,30 @@ output$DefaultTableText <- renderUI({
 output$DefaultThirdsText <- renderUI({
   if(PermitPlot()) return()
   tags$div(style = "margin: 15px 15px 30px; width: 60%",
-           tags$h3("Variability Analysis"),
+           tags$h3("Fleetwide Variability Analysis"),
            tags$p('In order to explore the variability within the catcher vessel fleet, we group vessels into three tiers based on the amount of revenue they earn.
                Statistics and measures are then shown for each of the three tiers.'),
             tags$p(strong("To get started, make at least one selection in each of fields in the panel on the right.")),
             tags$p(strong('Background:'), 'Catcher vessels that participate in the', 
                   tags$a(href="http://www.nwfsc.noaa.gov/research/divisions/fram/catch_shares.cfm", target="_blank", "West Coast Groundfish Trawl Catch Share Program"), 
                     'span a very broad range in term of the scale of their operations. 
-                   For instance, the revenue earned ranges from around $10,000 to well over $1,500,000.  The purpose of the', tags$em('Variability Analysis'), 'is to show how this heterogeneity 
+                   For instance, the revenue earned ranges from around $10,000 to well over $1,500,000.  The purpose of the', tags$em('Fleetwide Variability Analysis'), 'is to show how this heterogeneity 
                    relates to their economic performance. We cannot show the economic performance for each individual vessel due to',
                    tags$a(href = "http://www.nwfsc.noaa.gov/research/divisions/fram/documents/Administration_Operations_Report_2014.pdf",'confidentiality rules', target="_blank"),
-                    'so we group the vessels into three tiered categories: top, middle, and lower revenue earners. We then calculate the average of 
+                    'so we group the vessels into three tiered categories: top, middle, and lower revenue earners. We then calculate the median or average of 
                     the selected statistic (per vessel, vessel/day, or vessel/metric-ton) for vessels within each tiered category.'), 
          
-              tags$p(strong('Plot output:'), 'Results are shown if there are at least three vessels in each group. Results are plotted as a dot plot if a single year is selected or a line plot if multiple years are selected.',tags$br(), 
-                                                'The Catch Share program was implemented in 2011. In all plots, we distinguish between pre- and post- implementation of the Catch Share program with shading.'), 
-              tags$br(),
+                                                
+           tags$p(strong('Download Plots and Data:'),'Once selections have been made and a plot is visible, a button to download the plot(s) and data used to generate the plot(s) appears at the bottom of the panel on the right.
+                  Results are shown if there are at least three vessels in each group. Results are plotted as a dot plot if a single year is selected or a line plot if multiple years are selected.',
+           tags$br(),'The Catch Share program was implemented in 2011. In all plots, we distinguish between pre- and post- implementation of the Catch Share program with shading.'), 
               img(src="ExampThirds.png", height=350, width=700),tags$br(),tags$br(),tags$br(),
-              tags$p(strong('Download Plots:'), 'Once selections have been made and a plot if visible, a button to download the plot(s) appears at the bottom of the panel on the right.'),
+             # tags$p(strong('Download Plots:'), 'Once selections have been made and a plot if visible, a button to download the plot(s) appears at the bottom of the panel on the right.'),
 
                     #These thirds are plotted as lines labeled: "Top Third", "Middle Third" and "Bottom Third". 
                  
 
-           tags$p(strong("Note:"), 'Only a single class of the selected summary variable (fisheries, homeport, state, vessel length class) may be selected at a time. The', tags$em('Summed over all vessels'), 'statistic is not currently supported.'),
+           tags$p(strong("Note:"), 'Only a single class of the selected summary variable (fisheries, homeport, state, vessel length class) may be selected at a time.'),
            
            tags$p(strong('To view these instructions'), 'at any time, click the', tags$em('Instructions'), 'tab under the ', tags$em('About, Instructions, Definitions'), 'page.')
   )

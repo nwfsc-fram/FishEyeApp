@@ -30,13 +30,12 @@ tags$div(style = "margin: 15px 15px 30px; width: 60%",
          p(tags$i('Catch Share fisheries:'),' At-sea Pacific whiting; 
                 Shoreside Pacific whiting;
                 Groundfish fixed gear with trawl endorsement;
-                DTS* trawl with trawl endorsement;
-                Non-whiting, Non-DTS* trawl with trawl endorsement.'),
+                DTS (Dover, Thornyhead, and Sablefish) trawl with trawl endorsement;
+                Non-whiting, Non-DTS trawl with trawl endorsement.'),
          p(tags$i('Non-catch share fisheries:'), 
                 'Groundfish fixed gear with fixed gear endorsement;
-                Crab; Shrimp; Other fisheries (e.g., tuna, salmon, and halibut.'),
-         p('*DTS = Dover, Thornyhead and Sole')
-        ,
+                Crab; Shrimp; Other fisheries (e.g., tuna, salmon, and halibut.)'),
+        
        tags$li("Vessel length class:"),
          tags$p("Three categories of vessel length representing the range of catcher vessel length. 
                 The categories are large vessels (> 80 ft), medium vessels (> 60 ft, <= 80 ft), and small vessel (< 60 ft)."),
@@ -49,16 +48,18 @@ tags$div(style = "margin: 15px 15px 30px; width: 60%",
     h4("Statistics"),
   tags$ul(
     
-    tags$li("Average:"),
-      tags$p("Average for all vessels that participated in the Catch Share program."),
-    tags$li("Average per day:"),
-      tags$p("Average per day for all vessels that participated in the Catch Share program."
+    tags$li("Median or Average"),
+    tags$ul(
+      tags$li("Per vessel:"),
+      tags$p("Median or Average for all vessels that participated in the Catch Share program."),
+    tags$li("Per vessel per day:"),
+      tags$p("Median or Average per day for all vessels that participated in the Catch Share program."
       ),
-    tags$li("Average per ton:"),
-      tags$p("Average per metric ton of fish caught for all vessels that participated in the Catch Share program."),
+    tags$li("Per vessel per metric-ton:"),
+      tags$p("Median or Average per metric ton of fish caught for all vessels that participated in the Catch Share program."),
     tags$li("Summed over all vessels:"),
     tags$p("Total for all vessels that participated in the Catch Share program.")
-  ),tags$br(),
+  )),tags$br(),
 
       h4("Economic measures"),
       tags$ul(
@@ -103,7 +104,7 @@ h4("Fished in AK"),
    tags$li('N: The number of observations for each displayed statistic.'),
    tags$li('Statistic: See above for further description of the statistics.'),
    tags$li('Value: Value of the economic measures for the statistic.'),
-   tags$li('FishAK: Fished in an Alaskan fisheries (TRUE or FALSE).'),
+   tags$li('FishAK: Fished in an Alaskan fisheries (Vessels included or Vessels not included).'),
    tags$li('Fisheries Category: This variable is relevant for when vessels are grouped by homeport, state, or vessel length class. It indicates whether the reported value of the selected economic 
            measure includes activity in all fisheries or only in the catch share fisheries or the non-catch share fisheries.'),
    tags$p(tags$br(),

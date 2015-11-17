@@ -19,7 +19,7 @@ tags$div(style = "margin: 15px; 15px;30px; 30px; width: 60%",
                   metrics to assess the effectiveness and outcomes of the catch share program are also in development.'),
          tags$p('FISHEyE is user driven and interactive. Information on how to use FISHEyE is available in the', tags$em("Instructions"), 'tab.
                 Information on the variables in the dataset and definitions of the statistics and measures used are 
-                found in the', tags$em("Definitions"), 'tab.'),
+                found in the', tags$em("Definitions"), 'tab. Further analyses can be done by downloading the data table.'),
          
          tags$hr(),
          tags$h3("A note about confidentiality"), 
@@ -28,7 +28,11 @@ tags$div(style = "margin: 15px; 15px;30px; 30px; width: 60%",
           In some cases, this limits our ability to show certain statistics or measures. 
          Data queries that would display confidential data are not plotted or made available to download. In these cases, a message will be appear that indicates which data are suppressed
          due to confidentiality. This
-         is to differentiate suppressed confidential data from data points that do not exist. More information on data confidentiality requirements can be found in the',
+         is to differentiate suppressed confidential data from data points that do not exist. In the case where less than three vessels participated in an Alaskan fisheries, we do not 
+          differentiate between vessels that fished solely off the West Coast and vessels that also participated in an Alaskan fisheries. In this situation, we show results for vessels that
+        fished solely off the West Coast and vessels that also participated in an Alaskan fisheries, regardless of whether the', tags$em('Include vessels that fished in AK'), 'button is clicked or not.
+        If this occurs, a note below the plot output will appear.
+           More information on data confidentiality requirements can be found in the',
            tags$a(href = "http://www.nwfsc.noaa.gov/research/divisions/fram/documents/Administration_Operations_Report_2014.pdf",
                   "EDC Administration and Operations Report.", target="_blank")),
          
@@ -59,8 +63,8 @@ tags$div(style = "margin: 15px; 15px;30px; 30px; width: 60%",
          tags$hr(),
          
          tags$h3("Contact"),
-         tags$p("Please email us at ",
-         tags$a(href="mailto:nwfsc.fisheye@noaa.gov?subject=FISHEyE", 'nwfsc.fisheye@noaa.gov'),
+         tags$p("Please email us at", strong("nwfsc.fisheye@noaa.gov"),
+        # tags$a(href="mailto:nwfsc.fisheye@noaa.gov?subject=FISHEyE", 'nwfsc.fisheye@noaa.gov'),
          tags$br()),
          
          tags$p(
