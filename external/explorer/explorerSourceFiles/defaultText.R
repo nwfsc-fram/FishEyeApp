@@ -27,12 +27,17 @@ output$BlogUpdates <- renderUI({
          tags$h3("Updates"),
          tags$div( class='date', style='height:45px;width:30px;font-family:Arial;font-weight:bold;background-color:#ffffff;text-align:center;border-top:1px solid #c0c0c0;
                    border-left:1px solid #c0c0c0;border-right:1px solid #c0c0c0;position:absolute;z-index:3;line-height: 13px;',
-                  HTML("<span class='month' style='text-transform:uppercase;font-size:11px;'>Oct</span><br />
-                        <span class='day' style='font-size:16px;'>29</span><br />
+                  HTML("<span class='month' style='text-transform:uppercase;font-size:11px;'>Nov</span><br />
+                        <span class='day' style='font-size:16px;'>18</span><br />
                         <span class='year' style='font-size:11px;line-height: 10px;'>2015</span>")
          ),
-         tags$p(HTML("<span style='margin-left:60px;font-size:18px;font-weight:bold'>The Net Revenue Explorer is in it's final rough draft</span>")), 
-         tags$p(tags$br(),"This is the final draft of the Net Revenue Explorer. We appreciate any feedback you have on improving the accessibility of FISHEyE.",
+         tags$p(HTML("<span style='margin-left:60px;font-size:18px;font-weight:bold'>2015 Update for the Catch Shares Program</span>")), 
+         tags$p(tags$br(),
+                "Three years into the Catch Shares Program for the West Coast groundfish fishery, fishermen continue to benefit 
+                from increased flexibility while reduced bycatch of overfished species helps rebuild stocks. 
+                Fishermen are keeping more of the fish they catch, as well as landing more fish and earning more revenue for each fishing trip. NOAA 
+                Fisheries continues to work with the groundfish fleet to assure the program operates costeffectively. 
+                Read the full update", tags$a(href="http://www.nwfsc.noaa.gov/news/documents/CatchSharesUpdate2015.pdf", target="_blank", "here."),
                 tags$br()),
         tags$hr(), 
        tags$div( class='date', style='height:45px;width:30px; font-family:Arial; font-weight:bold;background-color:#ffffff;text-align:center; border-top:1px solid #c0c0c0;
@@ -61,7 +66,7 @@ output$BlogResponses <- renderUI({
   tags$div(style = "background-color:#F8F8E9",
          tags$h3("Responses to questions"),
          tags$ul(
-           tags$li("We look forward to receiving feedback and questions. Please send questions and feedback to", tags$a(href="mailto:nwfsc.fisheye@noaa.gov?subject=FISHEyE", 'nwfsc.fisheye@noaa.gov.'))
+           tags$li("We look forward to receiving feedback and questions. Please send questions and feedback to", tags$strong('nwfsc.fisheye@noaa.gov.'))
          ),
          tags$hr(),
          tags$br(),
@@ -81,7 +86,7 @@ output$DefaultPlotText <- renderUI({
   tags$div(style = "margin: 15px 15px 30px; width: 60%",
            tags$h3("Visualize Data with Plots"),
            tags$p('Visualize', tags$a(href="http://www.nwfsc.noaa.gov/research/divisions/fram/economic/overview.cfm", 'Economic Data Collection (EDC)', target="_blank"), 
-                  'summary statistics for revenue, costs and net revenue of', tags$a(href="2012CatcherVessel.jpg","catcher vessels", target="_blank"), 
+                  'summary statistics for revenue, costs, and net revenue of', tags$a(href="2012CatcherVessel.jpg","catcher vessels", target="_blank"), 
                   '(both at-sea and shoreside) that participate in the', tags$a(href="http://www.westcoast.fisheries.noaa.gov/fisheries/groundfish_catch_shares/index.html", 'West Coast Groundfish Trawl Catch Share Program.', target="_blank"), 
                   'To generate plots and analyses beyond what is provided in the Net Revenue Explorer, please download the data and analyze externally.'),
             tags$p(strong("To get started, make at least one selection in each of the fields in the panel on the right.")),
@@ -90,7 +95,7 @@ output$DefaultPlotText <- renderUI({
                      <b>Plotting Options:</b></div>"),
            
           # tags$p(strong('Plotting Options:', style="padding-bottom:0")),
-           tags$ul(tags$li('Economic measures side-by-side: these plots show economic measures (revenue, costs, and/or net revenue) across years and fisheries. Click the', 
+           tags$ul(tags$li('Economic measures side-by-side: these plots show economic measures (revenue, costs, and/or net revenue) across years for different summary statistics. Click the', 
                       tags$em('Economic measures side-by-side'), 'option in the', tags$em('Plot Options'), 'field in the panel on the right. A drop-down menu below', tags$em('Plot Options'), 'allows you 
                       to switch between bar, point, and line plots.'), 
             tags$li('Composition of net revenue: these plots show revenue, costs, and net revenue (revenue minus costs). You can examine either Variable Cost Net Revenue (VCNR) 
@@ -120,9 +125,24 @@ output$DefaultTableText <- renderUI({
            tags$p('View data used to generate the plot(s) created in the', tags$em('Visualize Data with Plots'), 'tab.'),
                   tags$p(strong('To get started, make at least one selection in each of the fields in the panel on the right.')), 
             tags$p('After a data table has been displayed, the data can be further filtered using the ',tags$em('Search'), 'box, 
-                     or filtered within a column using the boxes at the bottom of the table. Data used in the', tags$em('Fleetwide Variability Analysis'), 'tab are not shown but can be downloaded from the', 
-            tags$em("Fleetwide Variability Analysis"), 'tab.'),
+                     or filtered within a column using the boxes at the bottom of the table.'),
+           tags$p('We provide a measure of the variance around the average and median values. For average values, we report the standard deviation. For median values, we report the median absolute deviation.'),
                  tags$p( strong('Download Data: '), 'Once selections have been made, a button to download the data table appears at the bottom of the panel to the right.'),
+           tags$br(),
+           tags$p(strong('To view these instructions'), 'at any time visit the ', tags$em('Instructions'), 'tab under the ', tags$em('About, Instructions, Definitions'), 'page.')
+  )    
+})
+
+output$DefaultTableTextThirds <- renderUI({
+  if(PermitPlot()) return()
+  tags$div(style = "margin: 15px 15px 30px; width: 60%",
+           tags$h3("Data Table"),
+           tags$p('View data used to generate the plot(s) created in the', tags$em('Fleetwide Variability Analysis'), 'tab.'),
+           tags$p(strong('To get started, make one selection in each of the fields in the panel on the right.')), 
+           tags$p('After a data table has been displayed, the data can be further filtered using the ',tags$em('Search'), 'box, 
+                     or filtered within a column using the boxes at the bottom of the table.'),
+           tags$p('We provide a measure of the variance around the average and median values. For average values, we report the standard deviation. For median values, we report the median absolute deviation.'),
+           tags$p( strong('Download Data: '), 'Once selections have been made, a button to download the data table appears at the bottom of the panel to the right.'),
            tags$br(),
            tags$p(strong('To view these instructions'), 'at any time visit the ', tags$em('Instructions'), 'tab under the ', tags$em('About, Instructions, Definitions'), 'page.')
   )    
@@ -133,6 +153,7 @@ output$DefaultThirdsText <- renderUI({
   if(PermitPlot()) return()
   tags$div(style = "margin: 15px 15px 30px; width: 60%",
            tags$h3("Fleetwide Variability Analysis"),
+           tags$p(em('Explore the variability within the catcher vessel fleet.')),
            tags$p('In order to explore the variability within the catcher vessel fleet, we group vessels into three tiers based on the amount of revenue they earn.
                Statistics and measures are then shown for each of the three tiers.'),
             tags$p(strong("To get started, make at least one selection in each of fields in the panel on the right.")),
@@ -140,16 +161,16 @@ output$DefaultThirdsText <- renderUI({
                   tags$a(href="http://www.nwfsc.noaa.gov/research/divisions/fram/catch_shares.cfm", target="_blank", "West Coast Groundfish Trawl Catch Share Program"), 
                     'span a very broad range in term of the scale of their operations. 
                    For instance, the revenue earned ranges from around $10,000 to well over $1,500,000.  The purpose of the', tags$em('Fleetwide Variability Analysis'), 'is to show how this heterogeneity 
-                   relates to their economic performance. We cannot show the economic performance for each individual vessel due to',
-                   tags$a(href = "http://www.nwfsc.noaa.gov/research/divisions/fram/documents/Administration_Operations_Report_2014.pdf",'confidentiality rules', target="_blank"),
-                    'so we group the vessels into three tiered categories: top, middle, and lower revenue earners. We then calculate the median or average of 
-                    the selected statistic (per vessel, vessel/day, or vessel/metric-ton) for vessels within each tiered category.'), 
+                   relates to their economic performance. We cannot show the economic performance for each individual vessel due to confidentiality rules, 
+                    so we group the vessels into three tiered categories: top, middle, and lower revenue earners. We then calculate the median or average of  
+                    the selected statistic (per vessel, vessel/day, or vessel/metric-ton) for vessels within each tiered category. This is done for each year seperately.'), 
          
                                                 
            tags$p(strong('Download Plots and Data:'),'Once selections have been made and a plot is visible, a button to download the plot(s) and data used to generate the plot(s) appears at the bottom of the panel on the right.
-                  Results are shown if there are at least three vessels in each group. Results are plotted as a dot plot if a single year is selected or a line plot if multiple years are selected.',
-           tags$br(),'The Catch Share program was implemented in 2011. In all plots, we distinguish between pre- and post- implementation of the Catch Share program with shading.'), 
-              img(src="ExampThirds.png", height=350, width=700),tags$br(),tags$br(),tags$br(),
+                  Results are shown if there are at least three vessels in a group. Results are plotted as a dot plot if a single year is selected or a line plot if multiple years are selected.',
+           tags$br(),tags$br(),'The Catch Share program was implemented in 2011. In all plots, we distinguish between pre- and post- implementation of the Catch Share program with shading.'),
+           tags$br(),
+              img(src="ExampThirds.png", height=375, width=750),tags$br(),tags$br(),tags$br(),tags$br(),
              # tags$p(strong('Download Plots:'), 'Once selections have been made and a plot if visible, a button to download the plot(s) appears at the bottom of the panel on the right.'),
 
                     #These thirds are plotted as lines labeled: "Top Third", "Middle Third" and "Bottom Third". 
