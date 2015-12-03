@@ -59,14 +59,14 @@ output$TableMain <- renderDataTable({
        ) {
       if(input$CategorySelect == "Fisheries"){
       table <- subset(DatSubTable(), select = -c(CATEGORY, CS))
-      table$VALUE <- paste('$', prettyNum(table$VALUE, 
-        big.mark = ",", format = 'f', digits = 5, trim=T))
-      names(table) <- c("Year", "Summary Variable", "Statistic", "Economic measure","Fished in Alaska", "Value", "Number of vessels")
+      table$VALUE <- paste('$', prettyNum(table$VALUE, big.mark = ",", format = 'f', digits = 5, trim=T))
+      table$VARIANCE <- paste('$', prettyNum(table$VARIANCE, big.mark = ",", format = 'f', digits = 5, trim=T))
+      names(table) <- c("Year", "Summary Variable", "Statistic", "Economic measure","Fished in Alaska", "Number of vessels","Value",  "Variance \n\n(MAD, SD)")
       } else {
       table <- subset(DatSubTable(), select = -CATEGORY)  
       table$VALUE <- paste('$', prettyNum(table$VALUE, 
                                           big.mark = ",", format = 'f', digits = 5, trim=T))
-      names(table) <- c("Year", "Summary Variable","Fisheries Category", "Statistic", "Economic measure","Fished in Alaska", "Value", "Number of vessels")
+      names(table) <- c("Year", "Summary Variable","Fisheries Category", "Statistic", "Economic measure","Fished in Alaska", "Number of vessels", "Value", "Variance \n(MAD, SD)")
       }
     #  table$YEAR <- as.numeric(table$YEAR),
       #names(table) <- c("Year", "Summary Variable", "FishAK", "Value","Statistic", "N", "Economic measure","")
@@ -75,6 +75,28 @@ output$TableMain <- renderDataTable({
     }
 })
 
+output$TableThirds <- renderDataTable({  
+  if(!PermitPlot()) return()#return(div(class = "block", height="700px"))
+  if(#PermitPlot() & 
+    !is.null(DatThirdsTable())
+  ) {
+    if(input$CategorySelect == "Fisheries"){
+      table <- subset(DatThirdsTable(), select = -c(CATEGORY, CS))
+      table$VALUE <- paste('$', prettyNum(table$VALUE, big.mark = ",", format = 'f', digits = 5, trim=T))
+      table$VARIANCE <- paste('$', prettyNum(table$VARIANCE, big.mark = ",", format = 'f', digits = 5, trim=T))
+      names(table) <- c("Year", "Summary Variable", "Statistic", "Economic measure","Thirds", "Fished in Alaska", "Number of vessels", "Value","Variance \n(MAD, SD)")
+    } else {
+      table <- subset(DatThirdsTable(), select = -CATEGORY)  
+      table$VALUE <- paste('$', prettyNum(table$VALUE, big.mark = ",", format = 'f', digits = 5, trim=T))
+      table$VARIANCE <- paste('$', prettyNum(table$VARIANCE, big.mark = ",", format = 'f', digits = 5, trim=T))
+      names(table) <- c("Year", "Summary Variable","Fisheries Category", "Statistic","Economic measure","Thirds", "Fished in Alaska", "Number of vessels", "Value","Variance \n(MAD, SD)")
+    }
+    #  table$YEAR <- as.numeric(table$YEAR),
+    #names(table) <- c("Year", "Summary Variable", "FishAK", "Value","Statistic", "N", "Economic measure","")
+    #   datatable(table, filter="bottom", rownames=F)
+    table
+  }
+})
 
 #############################################
 #ADDED
@@ -124,19 +146,19 @@ output$dlTable <- downloadHandler(
         table <- DatThirdsTable()
         
         # some wonky code to insert a timestamp. xtable has a more straightfoward approach but not supported with current RStudio version on the server
-       names(table) <- c(4,1,3,2,"a "," b","c ","d "," e","f")##c("Year", "Summary variable","FishAK", "Summary Variable category","Fisheries Category", "Value","Statistic",  "N", "Economic Measure")
-        temp <-    data.frame("Year", "Summary variable","Summary Variable category","Fisheries Category","Statistic", "Economic Measure", "Thirds", "Fished in Alaska", "Value",  "Number of vessels")
+       names(table) <- c(4,1,3,2,"a "," b","c ","d "," e","f","g")##c("Year", "Summary variable","FishAK", "Summary Variable category","Fisheries Category", "Value","Statistic",  "N", "Economic Measure")
+        temp <-    data.frame("Year", "Summary variable","Summary Variable category","Fisheries Category","Statistic", "Economic Measure", "Thirds", "Fished in Alaska",  "Number of vessels", "Value","Variance (MAD,SD)")
         colnames(temp)=colnames(table)
         table <- rbindCommonCols(temp, table) 
         names(table) <- c(paste("Sourced from the FISHEyE application (http://devdataexplorer.nwfsc.noaa.gov/fisheye/FisheyeApp/) maintained by NOAA Fisheriess NWFSC on ",
-                                format(Sys.Date(), format="%B %d %Y")),"","","","","","","","")
+                                format(Sys.Date(), format="%B %d %Y")),"","","","","","","","","","")
       }
       else {
          table <- DatSubTable()
       
       # some wonky code to insert a timestamp. xtable has a more straightfoward approach but not supported with current RStudio version on the server
-      names(table) <- c(4,1,3,2,"a "," b","c ","d "," e")##c("Year", "Summary variable","FishAK", "Summary Variable category","Fisheries Category", "Value","Statistic",  "N", "Economic Measure")
-      temp <-    data.frame("Year", "Summary variable","Summary Variable category", "Fisheries Category","Statistic", "Economic Measure", "Fished in Alaska","Value", "Number of vessels")
+      names(table) <- c(4,1,3,2,"a "," b","c ","d "," e","g")##c("Year", "Summary variable","FishAK", "Summary Variable category","Fisheries Category", "Value","Statistic",  "N", "Economic Measure")
+      temp <-    data.frame("Year", "Summary variable","Summary Variable category", "Fisheries Category","Statistic", "Economic Measure", "Fished in Alaska", "Number of vessels","Value", "Variance (MAD, SD)")
       colnames(temp)=colnames(table)
       table <- rbindCommonCols(temp, table) 
       names(table) <- c(paste("Sourced from the FISHEyE application (http://devdataexplorer.nwfsc.noaa.gov/fisheye/FisheyeApp/) maintained by NOAA Fisheriess NWFSC on ",
