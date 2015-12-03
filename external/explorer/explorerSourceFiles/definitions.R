@@ -7,7 +7,7 @@ tags$div(style = "margin: 15px 15px 30px; width: 60%",
          tags$div(
     p("The variables and their definitions used in 
       this application are from the", tags$a(href="http://www.nwfsc.noaa.gov/research/divisions/fram/documents/EDC_Catcher_Vessel_Report_2015.pdf", '2012 Economic Data Collection (EDC) report. ', target="_blank"), 
-      " A copy of this and past reports can be found on the", tags$a(href="http://www.nwfsc.noaa.gov/research/divisions/fram/economic/economic_data_reports.cfm", "EDC reports webpage. ", target="_blank"), 
+      " A copy of this report and reports from other years can be found on the", tags$a(href="http://www.nwfsc.noaa.gov/research/divisions/fram/economic/economic_data_reports.cfm", "EDC reports webpage. ", target="_blank"), 
       " Updated EDC reports that include the 2013 and 2014 data will be available in early 2016. For an overview of catcher vessels activities, vessel characteristics, and vessel economic
       performance measures, please visit this ",
       tags$a(href="2012CatcherVessel.jpg", 'infographic.', target="_blank")) 
@@ -38,7 +38,7 @@ tags$div(style = "margin: 15px 15px 30px; width: 60%",
         
        tags$li("Vessel length class:"),
          tags$p("Three categories of vessel length representing the range of catcher vessel length. 
-                The categories are large vessels (> 80 ft), medium vessels (> 60 ft, <= 80 ft), and small vessel (< 60 ft)."),
+                The categories are large vessels (> 80 ft), medium vessels (> 60 ft, <= 80 ft), and small vessels (< 60 ft)."),
        tags$li("Homeport:"),
          tags$p("The", tags$a(href="map.pdf", "homeport", target="_blank"), "reported by each vessel on the", tags$a(href="http://www.nwfsc.noaa.gov/research/divisions/fram/economic/economic_data_forms.cfm", "EDC survey form", target="_blank"), "aggregated to point groups.", 
        tags$li("State:"),
@@ -53,13 +53,17 @@ tags$div(style = "margin: 15px 15px 30px; width: 60%",
       tags$li("Per vessel:"),
       tags$p("Median or Average for all vessels that participated in the Catch Share program."),
     tags$li("Per vessel per day:"),
-      tags$p("Median or Average per day for all vessels that participated in the Catch Share program."
-      ),
+      tags$p("Median or Average per day for all vessels that participated in the Catch Share program."),
     tags$li("Per vessel per metric-ton:"),
-      tags$p("Median or Average per metric ton of fish caught for all vessels that participated in the Catch Share program."),
-    tags$li("Summed over all vessels:"),
-    tags$p("Total for all vessels that participated in the Catch Share program.")
-  )),tags$br(),
+      tags$p("Median or Average per metric ton of fish caught for all vessels that participated in the Catch Share program.")),
+    tags$li("Fleet-wide total:"),
+    tags$ul(tags$p("Total for all vessels that participated in the Catch Share program.")),
+    tags$p("What is the purpose of using median, average, and fleet-wide total values when looking at the data? The median and average both attempt to provide information about the results for a representative vessel, 
+           however they do it in different ways.  The",  tags$strong("median"), "means that half of the vessels have a larger result than the median, and half are smaller.  The", tags$strong("average,"),"or mean, 
+           is the sum of the values divided by the number of responses.  If the data do not have many extreme responses in a particular direction, the median and mean will be very similar.  However, if the data are", 
+           tags$em('skewed'), "by extreme responses, then the median is a better measure of the result for a typical vessel.  The total provides a measure of the fleet as a whole.  The", tags$strong("fleet-wide total"), "is used to measure 
+           how the entire fleet is doing, rather than a representative vessel.")
+    ),tags$br(),
 
       h4("Economic measures"),
       tags$ul(
@@ -92,8 +96,10 @@ h4("Fished in AK"),
          tags$p("Vessels that fished in Alaska (versus vessels that fished solely off the West Coast) can be filtered from the data. Vessels that fished in Alaska tend to be longer (>90') than
               vessels that only fished off the West Coast (65' on average). Vessels that fished in Alaska also tend to participate in different 
             fisheries than vessels that fished solely off the West Coast."), 
-      tags$p("If this box is not selected, then only vessels that participated solely in the West Coast fishery will be included. If this box is selected, then all vessels, including those that 
-             participated in an Alaskan fisheries will be included.", tags$strong("Data from their activity in an Alaskan fishery is never included."))
+      tags$p("If this box", tags$strong('is not selected,'), "then only vessels that participated solely in the West Coast fishery will be included. If this box", tags$strong('is selected,'), 
+              "then all vessels, including those that participated in Alaskan fisheries, will be included.", tags$strong("Data from their activity in Alaskan fisheries are never included."),
+             "Please note that there are some cases where there are not enough observations of vessels that either 1) fished solely in the West Coast fisheries or
+      2) also fished in Alaska. When this occurs, we show results for both groups combined, regardless of whether or not you selected the", tags$em("Include vessels that fished in AK"), "button.")
   ), tags$br(),
   h4("Variables in the Data Table"),
  tags$ul(
@@ -104,9 +110,11 @@ h4("Fished in AK"),
    tags$li('N: The number of observations for each displayed statistic.'),
    tags$li('Statistic: See above for further description of the statistics.'),
    tags$li('Value: Value of the economic measures for the statistic.'),
-   tags$li('FishAK: Fished in an Alaskan fisheries (Vessels included or Vessels not included).'),
+   tags$li('FishAK: Fished in Alaskan fisheries (Vessels included or Vessels not included).'),
    tags$li('Fisheries Category: This variable is relevant for when vessels are grouped by homeport, state, or vessel length class. It indicates whether the reported value of the selected economic 
            measure includes activity in all fisheries or only in the catch share fisheries or the non-catch share fisheries.'),
+   tags$li('Variance: A measure of the spread of values. We report the standard deviation when vessel averages are selected and the median absolute deviation when vessel medians are selected.'),
+   tags$li('Thirds: This variable is only relevant for the', tags$em('Fleetwide Variability Analysis.'), 'Vessels are grouped into three tiered categories based on revenue: top, middle, and lower revenue earners. This is done for each year separately.'),
    tags$p(tags$br(),
           tags$br(),
           tags$br(),
