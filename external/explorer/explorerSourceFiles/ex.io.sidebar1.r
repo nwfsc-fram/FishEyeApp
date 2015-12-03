@@ -92,9 +92,9 @@ output$VariableSelect <- renderUI({
         } else if(input$CategorySelect=="Fisheries"){
             tagList(
 #              selectInput("fishCatSelect","", c("Catch share fisheries"="CSF", "Non-catch shares fisheries"="NSF", "All fisheries"="AF"), selected="AF"),
-                 bsButton("selectall2", "All fisheries", style="default", size="extra-small",block=F, type="action"),
-                 bsButton("selectallcs", "All catch share fisheries", style="default",size="extra-small", block=F, type="action"),
-                 bsButton("selectallncs", "All non-catch shares fisheries", style="default", size="extra-small", block=F, type="action"),
+                 actionButton("selectall2", "All fisheries", style="default", size="extra-small",block=F, type="action"),
+                 actionButton("selectallcs", "All catch share fisheries", style="default",size="extra-small", block=F, type="action"),
+                 actionButton("selectallncs", "All non-catch shares fisheries", style="default", size="extra-small", block=F, type="action"),
            #  conditionalPanel("input.fishCatSelect==AF", 
               tags$div(class="ckbox2", checkboxGroupInput("VariableSelect", div("or select fisheries individually:", style="font-style:italic; font-size:10.87pt; font-weight:normal; margin-bottom:-7.5pt"), 
                                                          choices=c("All fisheries combined"="All Fisheries"," All catch share fisheries combined"="All Catch Share Fisheries",fish.var[3:7],fish.var[8],fish.var[9:12])#div(fish.var, stlye="font-style:bold")#fish.var
@@ -217,7 +217,9 @@ observe({
 # } )
 
 output$FishAkSelect <- renderUI({
-  tags$div(class="ckbox", checkboxInput("FishAkSelect", p("Include vessels that fished in AK", span("By selecting this, you will include vessels that also participated in an Alaskan fisheries. Data from their activities in Alaska are not included.", style="font-style:italic;font-size:10pt")), 
+  tags$div(class="ckbox", checkboxInput("FishAkSelect", p("Include vessels that fished in AK", 
+                                                          span("By selecting this, you will include vessels that also participated in Alaskan fisheries. 
+                                                               Data from their activities in Alaska are not included.", style="font-style:italic;font-size:10pt")), 
     value = TRUE))
 })
 
