@@ -6,11 +6,12 @@
 DatMain <- reactive({ # data load moved to serverhead
   # data is loaded from serverHead.R load call
   dat <- netrevTable
-
+  dat <- subset(dat, YEAR<2014)
 })
 
 DatThirds <- reactive({
   dat <- netrevThirds
+  dat <- subset(dat, YEAR<2014)
 })
 
 
@@ -22,7 +23,7 @@ DatVars <- reactive({
       SHORTDESCR = c("Revenue","Variable costs","Fixed costs","Variable cost net revenue","Total cost net revenue"),
        CATEGORY = c("Fisheries","Homeport","State","Vessel length class"),
       FISHAK = unique(FISHAK),
-      STAT =  c("Average per vessel","Average per vessel/day","Average per vessel/metric-ton","Median per vessel","Median per vessel/day","Median per vessel/metric-ton","Summed over all vessels"="Total" )
+      STAT =  c("Average per vessel","Average per vessel/day","Average per vessel/metric-ton","Median per vessel","Median per vessel/day","Median per vessel/metric-ton","Fleet-wide total")#="Total"
      
   ))
 })
@@ -66,7 +67,8 @@ DatSubTable <- reactive({
                        STAT == input$StatSelect)
     
      datSub$VALUE <- as.numeric(datSub$VALUE)
-    
+     datSub$VARIANCE <- as.numeric(datSub$VARIANCE)
+     
     # order for plotting
     datSub$SHORTDESCR <- factor(datSub$SHORTDESCR, 
                                 levels = c("Revenue","Variable costs","Fixed costs","Variable cost net revenue","Total cost net revenue"))
@@ -83,11 +85,6 @@ DatSubTable <- reactive({
 })
 
 
-###############################################################################################################################
-##############################################################################################################################
-#Modified
-###############################################################################################################################
-##############################################################################################################################
 # Subset data for table
 # selecting plot variables, subsetting the data AND casting for individual level ID (fun.agg=sum)
 # build dcast formula using if controls and using the quoted method in dcast
@@ -108,10 +105,12 @@ DatThirdsTable <- reactive({
                      STAT == input$StatSelect)
   
   datSub$VALUE <- as.numeric(datSub$VALUE)
+  datSub$VARIANCE <- as.numeric(datSub$VARIANCE)
   
   # order for plotting
   datSub$SHORTDESCR <- factor(datSub$SHORTDESCR, 
                               levels = c("Revenue","Variable costs","Fixed costs","Variable cost net revenue","Total cost net revenue"))
+  datSub$THIRDS <- ifelse(datSub$THIRDS=="Bottom third", "Lower third", as.character(datSub$THIRDS))
   
   if(input$CategorySelect != "Fisheries") {
     datSub <- subset(datSub, CS == input$inSelect)
@@ -204,20 +203,31 @@ DatSub <- reactive({
       }
       
       
-      
       validate(
         need(min(datSub$N)>2,
-             message=paste('
-             
-Sorry, this figure could not be generated as data from', datSub$VARIABLE[which(datSub$N<3&datSub$SHORTDESCR==datSub$SHORTDESCR[1])],
-                                                         datSub$YEAR[which(datSub$N<3&datSub$SHORTDESCR==datSub$SHORTDESCR[1])],
-            'were suppressed to protect confidentiality. 
+             paste('Sorry, this plot could not be generated as data from the following', datSub$CATEGORY[1],  '(s) and year(s) were suppressed:\n')),#grouping variable(s)
+        need(min(datSub$N)>2,
+             paste(datSub$VARIABLE[which(datSub$N<3&datSub$SHORTDESCR==datSub$SHORTDESCR[1])],datSub$YEAR[which(datSub$N<3&datSub$SHORTDESCR==datSub$SHORTDESCR[1])])),
+        need(min(datSub$N)>2,
+            message=paste('
 Data are suppressed when there are not enough observations to protect confidentiality. 
-Try unclicking either the grouping variable (fishery, homeport, state, vessel length class) or year indicated on the first line of this message. 
-If no grouping variable or year is provided, try clickng the box to include all vessels that fished in AK.
-There are less vessels that fished solely off the west coast than off the west coast and in Alaska.
-              '))
-      ) 
+Try unclicking the indicated', datSub$CATEGORY[1], '(s) or year(s). If a', datSub$CATEGORY[1], 'or year is not provided, try clicking the box to include all vessels that fished in AK. There are less vessels that fished solely off the west coast than off the west coast and in Alaska.
+              ')))
+
+      
+#      validate(
+#        need(min(datSub$N)>2,
+#             message=paste('
+#             
+#Sorry, this plot could not be generated as data from \n', 
+#                           datSub$VARIABLE[which(datSub$N<3&datSub$SHORTDESCR==datSub$SHORTDESCR[1])],datSub$YEAR[which(datSub$N<3&datSub$SHORTDESCR==datSub$SHORTDESCR[1])],
+#            '\nwere suppressed to protect confidentiality. 
+#Data are suppressed when there are not enough observations to protect confidentiality. 
+#Try unclicking either the grouping variable (fishery, homeport, state, vessel length class) or year indicated on the first line of this message. 
+#If no grouping variable or year is provided, try clickng the box to include all vessels that fished in AK.
+#There are less vessels that fished solely off the west coast than off the west coast and in Alaska.
+#              '))
+#      ) 
       
       
       return(datSub)
@@ -296,16 +306,15 @@ DatSub2 <- reactive({
     
     validate(
       need(min(datSub2$N)>2,
+           paste('Sorry, this plot could not be generated as data from the following', datSub2$CATEGORY[1],  '(s) and year(s) were suppressed:\n')),#grouping variable(s)
+      need(min(datSub2$N)>2,
+           paste(datSub2$VARIABLE[which(datSub2$N<3&datSub2$SHORTDESCR==datSub2$SHORTDESCR[1])],datSub2$YEAR[which(datSub2$N<3&datSub2$SHORTDESCR==datSub2$SHORTDESCR[1])])),
+      need(min(datSub2$N)>2,
            message=paste('
-Sorry, this figure could not be generated as data from', datSub2$VARIABLE[which(datSub2$N<3&datSub2$SHORTDESCR==datSub2$SHORTDESCR[1])],
-datSub2$YEAR[which(datSub2$N<3&datSub2$SHORTDESCR==datSub2$SHORTDESCR[1])],'were suppressed to protect confidentiality. 
 Data are suppressed when there are not enough observations to protect confidentiality. 
-Try unclicking either the grouping variable (fishery, homeport, state, vessel length class) or year indicated on the first line of this message. 
-If no grouping variable or year is provided, try clickng the box to include all vessels that fished in AK.
-There are less vessels that fished solely off the west coast than off the west coast and in Alaska.
-              '))
-    )
-      
+Try unclicking the indicated', datSub2$CATEGORY[1], '(s) or year(s). If a', datSub2$CATEGORY[1], 'or year is not provided, try clicking the box to include all vessels that fished in AK. There are less vessels that fished solely off the west coast than off the west coast and in Alaska.
+                         ')))
+    
     return(datSub2)
 
   } 
@@ -379,15 +388,14 @@ DatSub3 <- reactive({
     
     validate(
       need(min(datSub3$N)>2,
+           paste('Sorry, this plot could not be generated as data from the following', datSub3$CATEGORY[1],  '(s) and year(s) were suppressed:\n')),#grouping variable(s)
+      need(min(datSub3$N)>2,
+           paste(datSub3$VARIABLE[which(datSub3$N<3&datSub3$SHORTDESCR==datSub3$SHORTDESCR[1])],datSub3$YEAR[which(datSub3$N<3&datSub3$SHORTDESCR==datSub3$SHORTDESCR[1])])),
+      need(min(datSub3$N)>2,
            message=paste('
-Sorry, this figure could not be generated as data from', datSub3$VARIABLE[which(datSub3$N<3&datSub3$SHORTDESCR==datSub3$SHORTDESCR[1])],
-datSub3$YEAR[which(datSub3$N<3&datSub3$SHORTDESCR==datSub3$SHORTDESCR[1])],'were suppressed to protect confidentiality. 
 Data are suppressed when there are not enough observations to protect confidentiality. 
-Try unclicking either the grouping variable (fishery, homeport, state, vessel length class) or year indicated on the first line of this message. 
-If no grouping variable or year is provided, try clickng the box to include all vessels that fished in AK.
-There are less vessels that fished solely off the west coast than off the west coast and in Alaska.
-                      '))
-           ) 
+Try unclicking the indicated', datSub3$CATEGORY[1], '(s) or year(s). If a', datSub3$CATEGORY[1], 'or year is not provided, try clicking the box to include all vessels that fished in AK. There are less vessels that fished solely off the west coast than off the west coast and in Alaska.
+              ')))
     
     return(datSub3)
     
@@ -418,6 +426,7 @@ DatSubThirds <- reactive({
     datsub <- subset(datSub, is.na(datSub$N)==F)
     datSub$THIRDS <- factor(datSub$THIRDS,
                             levels = factorOrder$thirds)
+    datSub$THIRDS <- ifelse(datSub$THIRDS=="Bottom third", "Lower third", as.character(datSub$THIRDS))
     
     datSub$SHORTDESCR <- factor(datSub$SHORTDESCR, 
                                 levels =  factorOrder$shortdescr)
@@ -452,15 +461,15 @@ DatSubThirds <- reactive({
    
     validate(
       need(min(datSub$N)>2,
+           paste('Sorry, this plot could not be generated as data from the following', datSub$CATEGORY[1],  '(s) and year(s) were suppressed:\n')),#grouping variable(s)
+      need(min(datSub$N)>2,
+           paste(datSub$VARIABLE[which(datSub$N<3&datSub$SHORTDESCR==datSub$SHORTDESCR[1]&datSub$THIRDS==datSub$THIRDS[1])],
+                 datSub$YEAR[which(datSub$N<3&datSub$SHORTDESCR==datSub$SHORTDESCR[1]&datSub$THIRDS==datSub$THIRDS[1])])),
+      need(min(datSub$N)>2,
            message=paste('
-Sorry, this plot could not be generated as data from', datSub$VARIABLE[which(datSub$N<3&datSub$SHORTDESCR==datSub$SHORTDESCR[1]&datSub$THIRDS==datSub$THIRDS[1])],
-datSub$YEAR[which(datSub$N<3&datSub$SHORTDESCR==datSub$SHORTDESCR[1]&datSub$THIRDS==datSub$THIRDS[1])],'were suppressed to protect confidentiality. 
 Data are suppressed when there are not enough observations to protect confidentiality. 
-Try unclicking either the grouping variable (fishery, homeport, state, vessel length class) or year indicated on the first line of this message. 
-If no grouping variable or year is provided, try clickng the box to include all vessels that fished in AK.
-There are less vessels that fished solely off the west coast than off the west coast and in Alaska.
-                         '))
-           ) 
+Try unclicking the indicated', datSub$CATEGORY[1], '(s) or year(s). If a', datSub$CATEGORY[1], 'or year is not provided, try clicking the box to include all vessels that fished in AK. There are less vessels that fished solely off the west coast than off the west coast and in Alaska.
+                         ')))
     
 #     validate(
 #       need(input$StatSelect != "Total", 
@@ -520,7 +529,7 @@ output$download_Table <- renderUI({
 
 output$download_figure <- renderUI({
   if(PermitPlot()){# & input$tabs=="Visualize Data"){
-    tags$div(class="actbutton",downloadButton("dlFigure", "Download Figure(s)",class = "btn btn-info"))
+    tags$div(class="actbutton",downloadButton("dlFigure", "Download Plot(s)",class = "btn btn-info"))
   }
 })
 
@@ -533,9 +542,9 @@ output$resetButton <- renderUI({
 output$VCNRButton <- renderUI({
   if(PermitPlot()){
     if(input$DodgeSelect == "Composition of total cost net revenue"){
-    HTML('<a class="btn btn-primary", href="TCNRGraphic.png" target="_blank" style="height:37px;margin: -24px -50px -20px 1000px"> Explanation of this figure</a>')
+    HTML('<a class="btn btn-primary", href="TCNRGraphic.png" target="_blank" style="height:37px;margin: -24px -50px -20px 1000px"> Explanation of this plot</a>')
       } else     if(input$DodgeSelect == "Composition of variable cost net revenue"){
-    HTML('<a class="btn btn-primary", href="VCNRGraphic.png" target="_blank" style="height:37px;margin: -24px -50px -20px 1000px"> Explanation of this figure</a>')
+    HTML('<a class="btn btn-primary", href="VCNRGraphic.png" target="_blank" style="height:37px;margin: -24px -50px -20px 1000px"> Explanation of this plot</a>')
     }  
     }
 })
