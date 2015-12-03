@@ -13,7 +13,7 @@ doPlot <- function(dat, x, y, type){
 #colourList <- c('Revenue'="#256D36",'Variable costs'="#fed977",'Fixed costs'="#fdb34f",'Variable cost net revenue'="#4B958D", 'Total cost net revenue'="#4575B4")
 colourList <- c('Revenue'="#256D36",'Variable costs'="#fed25d",'Fixed costs'="#fca836",'Variable cost net revenue'="#4B958D", 'Total cost net revenue'="#4575B4")
 
-        colourThirds <- c('Top third'="#253494",'Middle third'="#41b6c4",'Bottom third'="#a1dab4")
+        colourThirds <- c('Top third'="#253494",'Middle third'="#41b6c4",'Lower third'="#a1dab4")
            # Plot title construction
 
     plot.title <- function(){
@@ -30,9 +30,21 @@ colourList <- c('Revenue'="#256D36",'Variable costs'="#fed25d",'Fixed costs'="#f
         }}
 
     gv <- function(){
-      sprintf(paste("Group variable:", input$CategorySelect, "     Statistic: ", input$StatSelect))
+      if(type == "summary"){
+        if(input$CategorySelect=="Fisheries"){
+          sprintf(paste("Group variable:", input$CategorySelect, "     Statistic: ", input$StatSelect, "    Fished in AK included:", input$FishAkSelect))
+        } else {
+          sprintf(paste("Group variable:", input$CategorySelect, "     Statistic: ", input$StatSelect, "    Fished in AK included:", input$FishAkSelect,"    Summed across:", input$inSelect))
+        }
+      } else {
+        if(input$CategorySelect=="Fisheries"){
+        sprintf(paste(input$CategorySelect, ":", input$VariableSelect, "     Statistic: ", input$StatSelect, "    Fished in AK included:", input$FishAkSelect))
+        } else {
+          sprintf(paste(input$CategorySelect, ":", input$VariableSelect, "     Statistic: ", input$StatSelect, "    Fished in AK included:", input$FishAkSelect,"    Summed across:", input$inSelect))   
+        }
+      }
     }
- #   sv <- function(){
+    #   sv <- function(){
  #    sprintf(paste())
  #   } 
    sv <- function(){
@@ -266,30 +278,28 @@ colourList <- c('Revenue'="#256D36",'Variable costs'="#fed25d",'Fixed costs'="#f
     if(type!="summary"){
       if(max(dat$flag)>0){
         if(max(dat$AK_FLAG)==0){#input$CategorySelect == "Homeport" & 
-    g <- g + labs(y = paste("Thousands ($)", "(",input$StatSelect, ")"), x="     Vessels are sorted annually into top, middle, and lower earners based on revenue. 
-              \nSome of the data selected may not be shown. These data have been suppressed as there are not enough observations to protect confidentiality.", title = main()) 
+    g <- g + labs(y = paste("Thousands ($)", "(",input$StatSelect, ")"), x="  Vessels are grouped into three tiered categories: top, middle, and lower earners based on revenue. This is done for each year seperately. 
+              \n       Some of the data selected may not be shown. \n  These data have been suppressed as there are not enough observations to protect confidentiality.", title = main()) 
     } else {
-      g <- g + labs(y = paste("Thousands ($)", "(",input$StatSelect, ")"), x="     Vessels are sorted annually into top, middle, and lower earners based on revenue. 
-                  \nSome of the data selected may not be shown. These data have been suppressed as there are not enough observations to protect confidentiality.
-                  \nFor at least one of the selected grouping variables and years, less than three vessels participated in an Alaskan fisheries. To protect confidentiality, we do not differentiate  
-                    \n    between vessels that fished solely off the West Coast and vessels that also participated in an Alaskan fisheries.", title = main()) 
+      g <- g + labs(y = paste("Thousands ($)", "(",input$StatSelect, ")"), x=" Vessels are grouped into three tiered categories: top, middle, and lower earners based on revenue. This is done for each year seperately.  
+                  \n       Some of the data selected may not be shown. \n  These data have been suppressed as there are not enough observations to protect confidentiality.
+              \nNOTE: There are some cases where there are not enough observations of vessels that either 1) fished solely in the West Coast fisheries or 2) also \n fished in AK. When this occurs, we show results for both groups combined, regardless of whether or not you selected the   \n     INCLUDE VESSELS THAT FISHED IN AK button.", title = main())        
     } 
     } else {
       if(max(dat$AK_FLAG)==0){
-        g <- g + labs(y = paste("Thousands ($)", "(",input$StatSelect, ")"), x="    Vessels are sorted annually into top, middle, and lower earners based on revenue.", title = main()) 
+        g <- g + labs(y = paste("Thousands ($)", "(",input$StatSelect, ")"), x="Vessels are grouped into three tiered categories: top, middle, and lower earners based on revenue. This is done for each year seperately. ", title = main()) 
      } else {
-       g <- g + labs(y = paste("Thousands ($)", "(",input$StatSelect, ")"), x="    Vessels are sorted annually into top, middle, and lower earners based on revenue.
-              \nFor at least one of the selected grouping variables and years, less than three vessels participated in an Alaskan fisheries. To protect confidentiality, we do not differentiate  
-                  \n    between vessels that fished solely off the West Coast and vessels that also participated in an Alaskan fisheries.", title = main())        
+       g <- g + labs(y = paste("Thousands ($)", "(",input$StatSelect, ")"), x=" Vessels are grouped into three tiered categories: top, middle, and lower earners based on revenue. This is done for each year seperately. 
+              \nNOTE: There are some cases where there are not enough observations of vessels that either 1) fished solely in the West Coast fisheries or 2) also \n fished in AK. When this occurs, we show results for both groups combined, regardless of whether or not you selected the   \n     INCLUDE VESSELS THAT FISHED IN AK button.", title = main())        
      } }
       } else {
       if(PermitMessage()){
         if(max(dat$AK_FLAG)==0){
         g <- g + labs(y = paste("Thousands ($)","(",input$StatSelect, ")"), x="NOTE: Data from the Groundfish fixed gear with trawl endorsement fishery in 2009 has been suppressed as there are not enough observations to protect confidentiality.", title = main())   
         } else {
-          g <- g + labs(y = paste("Thousands ($)","(",input$StatSelect, ")"), x="NOTE: Data from the Groundfish fixed gear with trawl endorsement fishery in 2009 has been suppressed as there are not enough observations to protect confidentiality.
-                \nFor at least one of the selected grouping variables and years, less than three vessels participated in an Alaskan fisheries. To protect confidentiality, we do not differentiate  
-                    \n    between vessels that fished solely off the West Coast and vessels that also participated in an Alaskan fisheries.", title = main())                  
+          g <- g + labs(y = paste("Thousands ($)","(",input$StatSelect, ")"), x=
+              "NOTE: Data from the Groundfish fixed gear with trawl endorsement fishery in 2009 has been suppressed as there are not enough observations    \n       to protect confidentiality.
+              \nNOTE: There are some cases where there are not enough observations of vessels that either 1) fished solely in the West Coast fisheries or 2) also \n fished in AK. When this occurs, we show results for both groups combined, regardless of whether or not you selected the   \n     INCLUDE VESSELS THAT FISHED IN AK button.", title = main())        
         }
         }else{
        #   if(max(dat$AK_FLAG)==0){
