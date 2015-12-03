@@ -9,7 +9,7 @@ library(reshape2)
 library(grid)
 library(scales)
 #library(DT) #This package is good for filtering data but not compatible with current version of shiny on the server
-library(shinyBS) # this package is used to modify the size of actionbuttons
+#library(shinyBS) # this package is used to modify the size of actionbuttons
 #library(mail) #for sending email
 
 

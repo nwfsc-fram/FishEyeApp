@@ -118,6 +118,7 @@ fluidPage(title = "FISHEyE",
                                  column(12, dataTableOutput("TableMain")
                                 )
                      )),
+                     tabPanel(" "),
                      tabPanel(title=HTML("Fleetwide <br> Variability Analysis"),value="Panel2",
                               fluidRow(
                                 column(12, htmlOutput("DefaultThirdsText")
@@ -126,10 +127,19 @@ fluidPage(title = "FISHEyE",
                               fluidRow(
                                   column(12, plotOutput("PlotThirds", height="auto", width="auto")
                                      
-                                ) ) 
-              
-                     ))#)
-                     ),
+                                ) ) ),
+                     tabPanel(HTML("Data <br> Table"), value="Panel2",                    
+                              fluidRow(
+                                column(12, htmlOutput("DefaultTableTextThirds")
+                                )
+                              ),
+                              fluidRow(
+                                
+                                column(12, dataTableOutput("TableThirds")
+                                )
+                              )#)
+                     ))
+                     ), #end main panel
                 
                   sidebarPanel( 
      #         column(12,
@@ -197,10 +207,10 @@ fluidPage(title = "FISHEyE",
 )),
         navbarMenu("About, Instructions, Definitions",
           #HTML("<div> <p style= 'color:black; margin-bottom:-65px; margin-top:-15px; padding:19px; border-left: 1px solid black;border-right: 1px solid black; width:250px'>About, Instructions, Definitions</p></div>"),
-                     tabPanel("About", value="Panel1",
+                     tabPanel("About", 
                               source("external/explorer/explorerSourceFiles/about.R")$value
                      ),
-                     tabPanel("Instructions", value="Panel1", 
+                     tabPanel("Instructions", 
                               source("external/explorer/explorerSourceFiles/instructions.R")$value
                      ),
                      tabPanel("Definitions", 
@@ -228,7 +238,7 @@ fluidPage(title = "FISHEyE",
                           #    textInput("message", "Body:", "type message here"),
                          #      actionButton("send",label = "Send mail")
                    ),
-          tabPanel(HTML('<a class="btn btn-warning", href="http://devdataexplorer.nwfsc.noaa.gov/fisheye/"style="height:37px;margin: -24px -50px; float:top;position:absolute;right:-200px;font-familiy: Arial, Helvetica, sans-serif;font-size: 12pt; padding-top:7px;padding-bottom:10px"> FISHEyE Homepage</a>'))
+          tabPanel(HTML('<a class="btn btn-warning", href="http://dataexplorer.northwestscience.fisheries.noaa.gov/fisheye/"style="height:37px;margin: -24px -50px; float:top;position:absolute;right:-200px;font-familiy: Arial, Helvetica, sans-serif;font-size: 12pt; padding-top:7px;padding-bottom:10px"> FISHEyE Homepage</a>'))
           # HTML('<a href="http://devdataexplorer.nwfsc.noaa.gov/fisheye/"style="display: padding-bottom:100;margin: -30px -50px 0px 300px;color:blue"> 
           #Return to FISHEyE homepage </a>'))# style="height:40px;margin: -40px -20px 0px 50px; float:top; border:0"/>
 
