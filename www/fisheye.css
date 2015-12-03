@@ -145,8 +145,9 @@ height:50px;
     border-right: 1px solid #ddd;
     padding: 0px;
 }
-
-
+.nav-tabs > .active > a, .nav-tabs > .active > a:hover {
+  outline:none;
+}
 .navbar {
    height: 50px;
    min-height: 50px;
