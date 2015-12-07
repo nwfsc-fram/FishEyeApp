@@ -1,0 +1,176 @@
+/*==================================================================================*/
+
+/* custom css classes for the nwfsc shiny server /*
+
+/*==================================================================================*/
+
+
+.footer-links-left {
+  margin-top:5px;
+  float:left;
+  padding:0 2px 0 2px;
+  color: #fff;
+}
+
+.footer-links-right {
+  margin-top:5px;
+  float:right;
+  padding:0 5 0 5;
+  color: #fff;
+}
+
+.navbar {
+  float: left;
+  min-height: 20px;
+  margin-bottom: 0;
+  border: 0px solid transparent;
+}
+
+.navbar-nav {
+  margin: 0;
+}
+li:not(:last-child) {
+    margin-bottom: 7px;
+}
+
+/*** Footer ***/
+#footer{
+  background-color: #092866;    
+  height: 115px;  
+  margin: 0;  
+  padding: 0;  
+  position: relative;  
+  width: 978px;
+}
+#footer-spacer {    display: block;    float: left;    width: 35px;}
+.footer-links-pad {    float: left;    height: auto;    padding: 0 10px 10px 20px;    width: auto;}
+.footer-links {    float: left;    height: auto;    padding: 30px 10px 10px 0;    width: auto;}
+#footer ul {    list-style: none outside none;    margin: 0;    padding: 10px 8px;}
+#footer a {    color: #FFFFFF;    font-size: 11px;    font-weight: normal; text-decoration:none;}
+#footer a:hover {    color: #FFE090;}
+.footer-links h4, .footer-links-pad h4 {    color: #A7DAF5;    font-size: 100%;    margin: 15px 0 0 8px;    padding: 0;}
+#footer-divider, #footer-spacer, #footer-logos, .footer-links-pad, .footer-links { border: 1px solid #092866;  /* blend in color #092866 */ }
+#footer-divider { float: left; width:18px; height: auto; padding: 30px 0 10px 0;}
+#footer-logos { float: right;   /* float right if footer column 1 is used */ width: auto; text-align: left; padding-right: 50px;}/*** Center Area ***/
+#center { width:771px; margin:0; float: left;  padding: 0; } 
+
+/* Well-panel sub, a nested well panel */
+
+.well-sub {
+  min-height: 10px;
+  padding: 8px;
+  margin-bottom: 10px;
+  background-color: #D2D5D6;
+  border: 1px solid #d7e0e2;
+  -webkit-border-radius: 6px;
+     -moz-border-radius: 6px;
+          border-radius: 6px;
+  -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.05);
+     -moz-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.05);
+          box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.05);
+}
+
+.well-radioHeading {
+  min-height: 10px;
+  padding: 8px;
+  background-color: #fff;
+  border: 0px solid #D2D5D6;
+  -webkit-border-radius: 6px;
+     -moz-border-radius: 6px;
+          border-radius: 6px;
+  -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.05);
+     -moz-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.05);
+          box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.05);
+}
+
+
+/* navbar */
+.navbar {
+  background-image: -webkit-linear-gradient(#54b4eb, #2fa4e7 60%, #1d9ce5);
+  background-image: -o-linear-gradient(#54b4eb, #2fa4e7 60%, #1d9ce5);
+  background-image: -webkit-gradient(linear, left top, left bottom, from(#54b4eb), color-stop(60%, #2fa4e7), to(#1d9ce5));
+  background-image: linear-gradient(#54b4eb, #2fa4e7 60%, #1d9ce5);
+  background-repeat: no-repeat;
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ff54b4eb', endColorstr='#ff1d9ce5', GradientType=0);
+  border-bottom: 1px solid #178acc;
+  -webkit-filter: none;
+          filter: none;
+  -webkit-box-shadow: 0 1px 10px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 1px 10px rgba(0, 0, 0, 0.1);
+}
+.navbar-default .badge {
+  background-color: #fff;
+  color: #2fa4e7;
+}
+.navbar-inverse {
+  background-image: -webkit-linear-gradient(#04519b, #044687 60%, #033769);
+  background-image: -o-linear-gradient(#04519b, #044687 60%, #033769);
+  background-image: -webkit-gradient(linear, left top, left bottom, from(#04519b), color-stop(60%, #044687), to(#033769));
+  background-image: linear-gradient(#04519b, #044687 60%, #033769);
+  background-repeat: no-repeat;
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ff04519b', endColorstr='#ff033769', GradientType=0);
+  -webkit-filter: none;
+          filter: none;
+  border-bottom: 1px solid #022241;
+}
+.navbar-inverse .badge {
+  background-color: #fff;
+  color: #033c73;
+}
+.navbar .navbar-nav > li > a,
+.navbar-brand {
+  text-shadow: 0 1px 0 rgba(0, 0, 0, 0);
+}
+@media (max-width: 767px) {
+  .navbar .dropdown-header {
+    color: #222222;
+  }
+  .navbar .dropdown-menu a {
+
+    color: #222222;
+  }
+}
+.navbar .nav > li > a, .navbar .nav > li > 
+.navbar .nav > li.current-menu-ancestor > a {
+color:          black;                        
+}
+.navbar .nav > li~li {
+border-left: 1px solid black;
+/border-right: 1px solid black;
+height:50px;
+}
+
+.nav-tabs > li {
+    border-left: 1px solid #ddd;
+    border-right: 1px solid #ddd;
+    padding: 0px;
+}
+.nav-tabs > .active > a, .nav-tabs > .active > a:hover {
+  outline:none;
+}
+.navbar {
+   height: 50px;
+   min-height: 50px;
+}
+.date {
+    height:45px;
+    width:30px;
+    font-family:Arial;
+    font-weight:bold;
+    background-color:#ffee99;
+    text-align:center;
+     position:absolute;
+    z-index:3;
+    line-height: 13px;
+}
+.year {
+    line-height: 10px;
+     font-size:11px;
+}
+.month {
+    line-height: 11px;
+    font-size:11px;
+}
+.day {
+    font-size: 16px;
+}

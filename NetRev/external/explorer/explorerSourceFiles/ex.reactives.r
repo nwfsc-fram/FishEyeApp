@@ -6,12 +6,12 @@
 DatMain <- reactive({ # data load moved to serverhead
   # data is loaded from serverHead.R load call
   dat <- netrevTable
-  dat <- subset(dat, YEAR<2014)
+  #dat <- subset(dat, YEAR<2014)
 })
 
 DatThirds <- reactive({
   dat <- netrevThirds
-  dat <- subset(dat, YEAR<2014)
+  #dat <- subset(dat, YEAR<2014)
 })
 
 
