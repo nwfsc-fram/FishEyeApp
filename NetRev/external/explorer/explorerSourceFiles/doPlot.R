@@ -32,15 +32,15 @@ colourList <- c('Revenue'="#256D36",'Variable costs'="#fed25d",'Fixed costs'="#f
     gv <- function(){
       if(type == "summary"){
         if(input$CategorySelect=="Fisheries"){
-          sprintf(paste("Group variable:", input$CategorySelect, "     Statistic: ", input$StatSelect, "    Fished in AK included:", input$FishAkSelect))
+          sprintf(paste("Group variable:", input$CategorySelect, "     Statistic: ", input$StatSelect, "    Fished in AK included:", input$FishAkSelect, "    Fished for whiting included:", input$FishWhitingSelect))
         } else {
-          sprintf(paste("Group variable:", input$CategorySelect, "     Statistic: ", input$StatSelect, "    Fished in AK included:", input$FishAkSelect,"    Summed across:", input$inSelect))
+          sprintf(paste("Group variable:", input$CategorySelect, "     Statistic: ", input$StatSelect, "    Fished in AK included:", input$FishAkSelect,"    Fished for whiting included:", input$FishWhitingSelect,"    Summed across:", input$inSelect))
         }
       } else {
         if(input$CategorySelect=="Fisheries"){
-        sprintf(paste(input$CategorySelect, ":", input$VariableSelect, "     Statistic: ", input$StatSelect, "    Fished in AK included:", input$FishAkSelect))
+        sprintf(paste(input$CategorySelect, ":", input$VariableSelect, "     Statistic: ", input$StatSelect, "    Fished in AK included:", input$FishAkSelect,"    Fished for whiting included:", input$FishWhitingSelect))
         } else {
-          sprintf(paste(input$CategorySelect, ":", input$VariableSelect, "     Statistic: ", input$StatSelect, "    Fished in AK included:", input$FishAkSelect,"    Summed across:", input$inSelect))   
+          sprintf(paste(input$CategorySelect, ":", input$VariableSelect, "     Statistic: ", input$StatSelect, "    Fished in AK included:", input$FishAkSelect,"    Fished for whiting included:", input$FishWhitingSelect,"    Summed across:", input$inSelect))   
         }
       }
     }
@@ -124,9 +124,9 @@ colourList <- c('Revenue'="#256D36",'Variable costs'="#fed25d",'Fixed costs'="#f
    
    b <- table(table(dat$SHORTDESCR)>1)[[1]]
    if(b == 2 | b ==5) {
-     return(1.3)
+     return(1.8)
    } else {
-     return(1.2)
+     return(1.4)
    } 
  }   
  
@@ -190,24 +190,47 @@ colourList <- c('Revenue'="#256D36",'Variable costs'="#fed25d",'Fixed costs'="#f
             if(length(input$YearSelect)>1 & min(input$YearSelect)<2011 & max(input$YearSelect)>2010){
               if(input$YearSelect[1]==2009&input$YearSelect[2]==2010){
                 if(length(input$YearSelect[input$YearSelect>2010])==1){
-                  g <- g+  geom_rect(aes(xmin=.1, xmax=2.35, ymin=-Inf, ymax=Inf), fill="grey50", alpha=.05/length(input$YearSelect))+ 
-                    geom_text(aes(x=.4,y=max(VALUE)/400, label="Pre-catch shares", family="sans"),hjust=0,color = "grey20", size=7/scale_text()) + 
+                  g <- g+  geom_rect(aes(xmin=.1, xmax=2.35, ymin=-Inf, ymax=Inf), fill="grey50", alpha=.05/length(input$YearSelect))
+                  if(input$VariableSelect=="Shrimp"|input$VariableSelect=="Other fisheries"){
+                    g <- g+ geom_text(aes(x=.4,y=max(VALUE)/300+max(VALUE[VALUE!=max(VALUE)])/200, label="Pre-catch shares", family="sans"),hjust=0,color = "grey20", size=7/scale_text()) + 
+                    geom_text(aes(x=2.35,y=max(VALUE)/300+max(VALUE[VALUE!=max(VALUE)])/200,label="Post-catch shares"),hjust=0, family="sans",color = "grey20", size=7/scale_text())# +
+                  } else {
+                    g <- g+ geom_text(aes(x=.4,y=max(VALUE)/400, label="Pre-catch shares", family="sans"),hjust=0,color = "grey20", size=7/scale_text()) + 
                     geom_text(aes(x=2.35,y=max(VALUE)/400,label="Post-catch shares"),hjust=0, family="sans",color = "grey20", size=7/scale_text())# +
-                  } else { 
-                  g <- g+  geom_rect(aes(xmin=.1, xmax=2.5, ymin=-Inf, ymax=Inf), fill="grey50", alpha=.05/length(input$YearSelect))+ 
-                    geom_text(aes(x=.3,y=max(VALUE)/400, label="Pre-catch shares"),hjust=0, family="sans",color = "grey20", size=7/scale_text()) + 
-                    geom_text(aes(x=2.65,y=max(VALUE)/400,label="Post-catch shares"),hjust=0, family="sans",color = "grey20", size=7/scale_text())# +
-                  
+                    
+                  }
+                    } else { 
+                  g <- g+  geom_rect(aes(xmin=.1, xmax=2.5, ymin=-Inf, ymax=Inf), fill="grey50", alpha=.05/length(input$YearSelect)) 
+                  if(input$VariableSelect=="Shrimp"|input$VariableSelect=="Other fisheries"){
+                    g <- g+ geom_text(aes(x=.3,y=max(VALUE)/400+max(VALUE[VALUE!=max(VALUE)])/400, label="Pre-catch shares"),hjust=0, family="sans",color = "grey20", size=7/scale_text()) + 
+                    geom_text(aes(x=2.65,y=max(VALUE)/400+max(VALUE[VALUE!=max(VALUE)])/400,label="Post-catch shares"),hjust=0, family="sans",color = "grey20", size=7/scale_text())# +
+                  } else {
+                    g <- g+ geom_text(aes(x=.3,y=max(VALUE)/500, label="Pre-catch shares"),hjust=0, family="sans",color = "grey20", size=7/scale_text()) + 
+                      geom_text(aes(x=2.65,y=max(VALUE)/500,label="Post-catch shares"),hjust=0, family="sans",color = "grey20", size=7/scale_text())
+                    
+                  }
                   
                 } } else  {
                    if(length(input$YearSelect[input$YearSelect>2010])==1){
-                  g <- g+ geom_rect(aes(xmin=.1, xmax=1.5, ymin=-Inf, ymax=Inf), fill="grey50", alpha=.05/length(input$YearSelect))+ 
-                    geom_text(aes(x=.25,y=max(VALUE)/400, label="Pre-catch shares"),hjust=0, family="sans",color = "grey20", size=7/scale_text()) + 
-                    geom_text(aes(x=length(table(as.numeric(YEAR)))+.5,y=max(VALUE)/400,label="Post-catch shares"),color = "grey20", hjust=1, family="sans", size=7/scale_text())# +
-                } else {
-                  g <- g+ geom_rect(aes(xmin=.1, xmax=1.5, ymin=-Inf, ymax=Inf), fill="grey50", alpha=.05/length(input$YearSelect))+ 
-                    geom_text(aes(x=.15,y=max(VALUE)/400, label="Pre-catch shares"),hjust=0, family="sans",color = "grey20", size=7/scale_text()) + 
-                    geom_text(aes(x=1.8,y=max(VALUE)/400,label="Post-catch shares"),hjust=0, family="sans",color = "grey20", size=7/scale_text())# +
+                  g <- g+ geom_rect(aes(xmin=.1, xmax=1.5, ymin=-Inf, ymax=Inf), fill="grey50", alpha=.05/length(input$YearSelect))
+                  if(input$VariableSelect=="Shrimp"|input$VariableSelect=="Other fisheries"){
+                   g <- g+ geom_text(aes(x=.25,y=max(VALUE)/300+max(VALUE[VALUE!=max(VALUE)])/250, label="Pre-catch shares"),hjust=0, family="sans",color = "grey20", size=7/scale_text()) + 
+                    geom_text(aes(x=1.9,y=max(VALUE)/300+max(VALUE[VALUE!=max(VALUE)])/250,label="Post-catch shares"),color = "grey20", hjust=0, family="sans", size=7/scale_text())# +
+                  } else {
+                    g <- g+geom_text(aes(x=.25,y=max(VALUE)/400, label="Pre-catch shares"),hjust=0, family="sans",color = "grey20", size=7/scale_text()) + 
+                    geom_text(aes(x=1.9,y=max(VALUE)/400,label="Post-catch shares"),color = "grey20", hjust=1, family="sans", size=7/scale_text())# +
+                    
+                  }
+                    } else {
+                  g <- g+ geom_rect(aes(xmin=.1, xmax=1.5, ymin=-Inf, ymax=Inf), fill="grey50", alpha=.05/length(input$YearSelect))
+                  if(input$VariableSelect=="Shrimp"|input$VariableSelect=="Other fisheries"){
+                   g <- g + geom_text(aes(x=.15,y=max(VALUE)/400+max(VALUE[VALUE!=max(VALUE)])/300, label="Pre-catch shares"),hjust=0, family="sans",color = "grey20", size=7/scale_text()) + 
+                    geom_text(aes(x=1.8,y=max(VALUE)/400+max(VALUE[VALUE!=max(VALUE)])/300,label="Post-catch shares"),hjust=0, family="sans",color = "grey20", size=7/scale_text())# +
+                  } else {
+                    g <- g+ geom_text(aes(x=.15,y=max(VALUE)/400, label="Pre-catch shares"),hjust=0, family="sans",color = "grey20", size=7/scale_text()) + 
+                     geom_text(aes(x=1.8,y=max(VALUE)/400,label="Post-catch shares"),hjust=0, family="sans",color = "grey20", size=7/scale_text())# +
+                    
+                  }
                  }
               }} else {
               g <- g
@@ -226,20 +249,20 @@ colourList <- c('Revenue'="#256D36",'Variable costs'="#fed25d",'Fixed costs'="#f
            } else {
               g <- g + geom_line(aes_string(colour = groupVar), size=1.5)+  
                geom_rect(aes(xmin=.1, xmax=2.5, ymin=-Inf, ymax=Inf),fill="grey50", alpha=.05/length(input$YearSelect))+ 
-               geom_text(aes(x=.5,y=max(VALUE)/1000+max(VALUE)/10000, label="Pre-catch shares", family="sans"),hjust=0,color = "grey20", size=7/scale_text2()) + 
-               geom_text(aes(x=2.55,y=max(VALUE)/1000+max(VALUE)/10000,label="Post-catch shares"),hjust=0, family="sans",color = "grey20", size=7/scale_text2()) #+
+               geom_text(aes(x=.25,y=max(VALUE)/1000+max(VALUE)/10000, label="Pre-catch shares", family="sans"),hjust=0,color = "grey20", size=7/scale_text2()) + 
+               geom_text(aes(x=2.85,y=max(VALUE)/1000+max(VALUE)/10000,label="Post-catch shares"),hjust=0, family="sans",color = "grey20", size=7/scale_text2()) #+
              
            } }  else {
              if(length(input$YearSelect[input$YearSelect>2010])==1){
             g <- g + geom_line(aes_string(colour = groupVar), size=1.5)+ 
                   geom_rect(aes(xmin=.1, xmax=1.5, ymin=-Inf, ymax=Inf),fill="grey50", alpha=.05/length(input$YearSelect))+ 
                   geom_text(aes(x=.25,y=max(VALUE)/1000+max(VALUE)/10000, label="Pre-catch shares", family="sans"),hjust=0,color = "grey20", size=7/scale_text2()) + 
-                  geom_text(aes(x=length(table(YEAR))+.5,y=max(VALUE)/1000+max(VALUE)/10000,label="Post-catch shares"),hjust=1, family="sans",color = "grey20", size=7/scale_text2()) #+
+                  geom_text(aes(x=2.5,y=max(VALUE)/1000+max(VALUE)/10000,label="Post-catch shares"),hjust=1, family="sans",color = "grey20", size=7/scale_text2()) #+
             } else {
                 g <- g + geom_line(aes_string(colour = groupVar), size=1.5)+ 
                   geom_rect(aes(xmin=.1, xmax=1.5, ymin=-Inf, ymax=Inf),fill="grey50", alpha=.05/length(input$YearSelect))+ 
                   geom_text(aes(x=.25,y=max(VALUE)/1000+max(VALUE)/10000, label="Pre-catch shares", family="sans"),hjust=0,color = "grey20", size=7/scale_text2()) + 
-                  geom_text(aes(x=1.8,y=max(VALUE)/1000+max(VALUE)/10000,label="Post-catch shares"),hjust=0, family="sans",color = "grey20", size=7/scale_text2()) #+
+                  geom_text(aes(x=2.2,y=max(VALUE)/1000+max(VALUE)/10000,label="Post-catch shares"),hjust=0, family="sans",color = "grey20", size=7/scale_text2()) #+
             }
               }} else {
         g <- g + geom_line(aes_string(colour = groupVar), size=1.5)
@@ -276,30 +299,29 @@ colourList <- c('Revenue'="#256D36",'Variable costs'="#fed25d",'Fixed costs'="#f
     
     # define labels
     if(type!="summary"){
-      if(max(dat$flag)>0){
-        if(max(dat$AK_FLAG)==0){#input$CategorySelect == "Homeport" & 
+     
+        if(max(dat$AK_FLAG, na.rm=T)==0){#input$CategorySelect == "Homeport" & 
     g <- g + labs(y = paste("Thousands ($)", "(",input$StatSelect, ")"), x="  Vessels are grouped into three tiered categories: top, middle, and lower earners based on revenue. This is done for each year seperately. 
               \n       Some of the data selected may not be shown. \n  These data have been suppressed as there are not enough observations to protect confidentiality.", title = main()) 
     } else {
       g <- g + labs(y = paste("Thousands ($)", "(",input$StatSelect, ")"), x=" Vessels are grouped into three tiered categories: top, middle, and lower earners based on revenue. This is done for each year seperately.  
                   \n       Some of the data selected may not be shown. \n  These data have been suppressed as there are not enough observations to protect confidentiality.
-              \nNOTE: There are some cases where there are not enough observations of vessels that either 1) fished solely in the West Coast fisheries or 2) also \n fished in AK. When this occurs, we show results for both groups combined, regardless of whether or not you selected the   \n     INCLUDE VESSELS THAT FISHED IN AK button.", title = main())        
-    } 
-    } else {
-      if(max(dat$AK_FLAG)==0){
-        g <- g + labs(y = paste("Thousands ($)", "(",input$StatSelect, ")"), x="Vessels are grouped into three tiered categories: top, middle, and lower earners based on revenue. This is done for each year seperately. ", title = main()) 
-     } else {
-       g <- g + labs(y = paste("Thousands ($)", "(",input$StatSelect, ")"), x=" Vessels are grouped into three tiered categories: top, middle, and lower earners based on revenue. This is done for each year seperately. 
-              \nNOTE: There are some cases where there are not enough observations of vessels that either 1) fished solely in the West Coast fisheries or 2) also \n fished in AK. When this occurs, we show results for both groups combined, regardless of whether or not you selected the   \n     INCLUDE VESSELS THAT FISHED IN AK button.", title = main())        
-     } }
+              \nNOTE: There are some cases where there are not enough observations of vessels that either 1) fished solely in the West Coast fisheries, 2) also fished in AK \nor 3) fished for whiting. When this occurs, we show results for groups combined, regardless of whether or not you selected the   \n     INCLUDE VESSELS THAT FISHED IN AK or the INCLUDE VESSELS THAT FISHED FOR WHITING buttons.", title = main())        
+    } #else {
+     # if(max(dat$AK_FLAG, na.rm=T)==0){
+    #    g <- g + labs(y = paste("Thousands ($)", "(",input$StatSelect, ")"), x="Vessels are grouped into three tiered categories: top, middle, and lower earners based on revenue. This is done for each year seperately. ", title = main()) 
+    # } else {
+    #   g <- g + labs(y = paste("Thousands ($)", "(",input$StatSelect, ")"), x=" Vessels are grouped into three tiered categories: top, middle, and lower earners based on revenue. This is done for each year seperately. 
+     #         \nNOTE: There are some cases where there are not enough observations of vessels that either 1) fished solely in the West Coast fisheries, 2) also fished in AK \nor 3) fished for whiting. When this occurs, we show results for both groups combined, regardless of whether or not you selected the   \n     INCLUDE VESSELS THAT FISHED IN AK button.", title = main())        
+    # } }
       } else {
       if(PermitMessage()){
-        if(max(dat$AK_FLAG)==0){
+        if(max(dat$AK_FLAG, na.rm=T)==0){
         g <- g + labs(y = paste("Thousands ($)","(",input$StatSelect, ")"), x="NOTE: Data from the Groundfish fixed gear with trawl endorsement fishery in 2009 has been suppressed as there are not enough observations to protect confidentiality.", title = main())   
         } else {
           g <- g + labs(y = paste("Thousands ($)","(",input$StatSelect, ")"), x=
               "NOTE: Data from the Groundfish fixed gear with trawl endorsement fishery in 2009 has been suppressed as there are not enough observations    \n       to protect confidentiality.
-              \nNOTE: There are some cases where there are not enough observations of vessels that either 1) fished solely in the West Coast fisheries or 2) also \n fished in AK. When this occurs, we show results for both groups combined, regardless of whether or not you selected the   \n     INCLUDE VESSELS THAT FISHED IN AK button.", title = main())        
+              \nNOTE: There are some cases where there are not enough observations of vessels that either 1) fished solely in the West Coast fisheries, 2) also  fished in AK \nor 3) fished for whiting. When this occurs, we show results for groups combined, regardless of whether or not you selected the   \n     INCLUDE VESSELS THAT FISHED IN AK or the INCLUDE VESSELS THAT FISHED FOR WHITING buttons.", title = main())        
         }
         }else{
        #   if(max(dat$AK_FLAG)==0){
@@ -314,7 +336,7 @@ colourList <- c('Revenue'="#256D36",'Variable costs'="#fed25d",'Fixed costs'="#f
     
     # define theme
     g <- g + theme(
-      plot.title = element_text( vjust=1, size=rel(1.75), colour="grey25", family = "sans", face = "bold"),# 
+      plot.title = element_text( vjust=1, size=rel(1.5), colour="grey25", family = "sans", face = "bold"),# 
      # plot.title = element_text(, vjust = 1),
       panel.background = element_rect(fill = "white"),
       #panel.margin = unit(1.2, "lines"),
