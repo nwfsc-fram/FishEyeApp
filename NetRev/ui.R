@@ -1,5 +1,6 @@
 .libPaths(c("/usr/lib64/R/shiny_library", .libPaths()))
 
+#library(shinyjs) # to toggle between showing plots and data table
 library(appFrame)
 
 # custom css functions
@@ -11,6 +12,7 @@ wellPanelHeading <- function(...){div(class = "well-radioHeading", ...)}
 
 fluidPage(title = "FISHEyE",
             # create a CSS to modify style of validation test error (for Variability analysis)
+          
           tags$head(
             tags$style(HTML("
                             .shiny-output-error-validation {
@@ -43,16 +45,29 @@ fluidPage(title = "FISHEyE",
            tags$style(HTML(".rbutton .radio:nth-child(10) label{margin-left:17px;")), tags$style(HTML(".rbutton .radio:nth-child(11) label{margin-left:17px;")),tags$style(HTML(".rbutton .radio:nth-child(12) label{margin-left:17px;")),
            tags$style(HTML(".rbutton .radio:nth-child(13) label{margin-left:17px;")),
              tags$style(HTML(".rbutton .radio:nth-child(1) label{font-style:italic")),
-           tags$style(HTML(".rbutton2 .radio:nth-child(1) label{font-style:italic"))
-           ),
-           tags$head(includeScript("google-analytics.js")),
-           tags$head(tags$script(src = "message-handler.js")),
+           tags$style(HTML(".rbutton2 .radio:nth-child(1) label{font-style:italic")),
+           #stylize information icons
+            tags$style(HTML('#iof{width:20px; height:19px; margin:0px;border:none; padding:0px;border-radius:25px;background-color:transparent;font-size:12px; color:RoyalBlue}')),
+            tags$style(HTML('#isummed{width:20px; height:19px; margin:0px;border:none; padding:0px;border-radius:25px;background-color:transparent;font-size:12px; color:RoyalBlue}')),
+            tags$style(HTML('#ifg{width:20px; height:19px; margin:0px;border:none; padding:0px;border-radius:25px;background-color:transparent;font-size:12px; color:RoyalBlue}')),
+            tags$style(HTML('#istat{width:20px; height:19px; margin:0px;border:none; padding:0px;border-radius:25px;background-color:transparent;font-size:12px; color:RoyalBlue}')),
+            tags$style(HTML('#ipo{width:20px; height:19px; margin:0px;border:none; padding:0px;border-radius:25px;background-color:transparent;font-size:12px; color:RoyalBlue}')),
+            tags$style(HTML('#ivs{width:20px; height:19px; margin:0px;border:none; padding:0px;border-radius:25px;background-color:transparent;font-size:12px; color:RoyalBlue}')),
+            tags$style(HTML('#iem{width:20px; height:19px; margin:0px;border:none; padding:0px;border-radius:25px;background-color:transparent;font-size:12px; color:RoyalBlue}'))),
+          # java script 
+          tags$style(type='text/css', "#data2 { background-color:RoyalBlue; color:white; height:37px;margin: -40px -40px 50px 875px; }"),
+          tags$style(type='text/css', "#data { background-color:RoyalBlue; color:white; height:37px;margin: -40px -40px 50px 770px; }"),
+          
+          tags$head(includeScript("google-analytics.js")),
+          tags$head(tags$script(src = "message-handler.js")),
           
            tags$head(
             # Main css page, downloaded from bootswatch
             tags$link(rel="stylesheet", type="text/css", href="bootstrap.css"),
             # secondary css page with fisheye specific attributes
             tags$link(rel="stylesheet", type="text/css", href="fisheye.css"),
+            tags$link(rel="stylesheet", href="http://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.4.0/css/font-awesome.min.css"),
+              
             tags$style(type="text/css", ".tab-content {overflow: visible;}")         
             ),
           
@@ -62,15 +77,14 @@ fluidPage(title = "FISHEyE",
           fluidRow(div(style = "padding-bottom: 5px;margin-bottom:0"),
                    tags$h2(style = "margin-left: 15px", 
                      HTML("<div>
-                             <p style='font-size:120%'><strong>Net Revenue Explorer</strong></p> 
+                      
+                             <p style='font-size:120%'><strong><a style='color:white; background-color:#1a5d99;  font-family:Cambria; border-radius:25px; padding:5px' href='https://dataexplorer.northwestscience.fisheries.noaa.gov/fisheye/'> FISHEyE</a> - Net Revenue Explorer</strong></p> 
                              <p><i>West Coast Trawl Catch Share Program: Catcher Vessels</i></p>
                           </div>"))  
           ),
           navbarPage(id="page", collapsible=TRUE, inverse=F,
             title="",#HTML("<div> <p style='color:#2fa4e7'>_</p></div>"), #inverse=T, 
           #  collapsible=T,
-
- 
  
           
           tabPanel("Explore the data", value="results",    
@@ -78,80 +92,49 @@ fluidPage(title = "FISHEyE",
             sidebarLayout(
                  mainPanel(         
                   tabsetPanel(id = "tabs", 
-                     tabPanel(title=HTML("Visualize Data <br> with Plots"), value="Panel1",
+                     tabPanel(title=HTML("Summary Plots <br> and Data"), value="Panel1",
                               fluidRow(
-                                column(12, htmlOutput("DefaultPlotText")
-                                ),                                
-                               column(2, uiOutput("VCNRButton")), #  column(4, bsAlert("alert")),
-                                column(12, plotOutput("PlotMain", height="auto",width="auto")                                  
-                                )
-                               
-                              )#, #end fluidRow
-                             # fluidRow(
-                               # column(12,
-                                      # wellPanel(
-                                        # fluidRow(HTML("<strong>Plot Options: </strong>"),
-                                        #          style = "padding-bottom: 15px;
-                                        #          padding-left: 15px"),
-                                        #fluidRow(                                  
-                                           #column(12,  
-                                              #  column(5,
-                                              #     wellPanelSub(
-                                              #        fluidRow(
-                                              #          column(3, uiOutput("PlotSelect")
-                                              #          ),
-                                              #          column(8, uiOutput("DodgeSelect")
-                                              #          )))) #end column
-                                       #  )
-                                     #  )
-                              # )
-                           #  ) )
-                      ),#end fluid row
-                    
-                     tabPanel(HTML("Data <br> Table"), value="Panel1",                    
+                                column(12, htmlOutput("DefaultPlotText")),                                
+                                column(2, uiOutput("DataButton")),  
+                                column(2, uiOutput("VCNRButton")), 
+                                column(12, dataTableOutput("TableMain"), plotOutput("PlotMain", height="auto",width="auto"))
+                              #column(12, #end fluidRow
+                             # fluidRow(# column(12,# wellPanel(
+                                        # fluidRow(HTML("<strong>Plot Options: </strong>"),style = "padding-bottom: 15px;padding-left: 15px"),
+                                        #fluidRow(column(12, column(5, wellPanelSub(
+                                              #        fluidRow(column(3, uiOutput("PlotSelect")),column(8, uiOutput("DodgeSelect")
+                                              #          ))))))) ) #end column
+                              )),#end fluid row
+                     #tabPanel(HTML("Data <br> Table"), value="Panel1",                    
+                     #         fluidRow(column(12, htmlOutput("DefaultTableText"))),
+                     #         fluidRow(column(12, dataTableOutput("TableMain")))),
+                    # tabPanel(" "),
+                     tabPanel(title=HTML("<div> Fleet-wide <br> Variability Analysis</div>"),value="Panel2",
                               fluidRow(
-                                column(12, htmlOutput("DefaultTableText")
-                              )
-                              ),
-                              fluidRow(
-                                
-                                 column(12, dataTableOutput("TableMain")
-                                )
-                     )),
-                     tabPanel(" "),
-                     tabPanel(title=HTML("Fleetwide <br> Variability Analysis"),value="Panel2",
-                              fluidRow(
-                                column(12, htmlOutput("DefaultThirdsText")
-                                )
-                              ),                             
-                              fluidRow(
-                                  column(12, plotOutput("PlotThirds", height="auto", width="auto")
-                                     
-                                ) ) ),
-                     tabPanel(HTML("Data <br> Table"), value="Panel2",                    
-                              fluidRow(
-                                column(12, htmlOutput("DefaultTableTextThirds")
-                                )
-                              ),
-                              fluidRow(
-                                
-                                column(12, dataTableOutput("TableThirds")
-                                )
-                              )#)
-                     ))
+                                column(12, htmlOutput("DefaultThirdsText")),                             
+                                column(2, uiOutput("DataButton2")),
+                                column(12, dataTableOutput("TableThirds"),plotOutput("PlotThirds", height="auto", width="auto"))))#,
+#                     tabPanel(HTML("Data <br> Table"), value="Panel2",                    
+#                              fluidRow(column(12, htmlOutput("DefaultTableTextThirds"))),
+#                              fluidRow(column(12, )))
+                     )#)
                      ), #end main panel
-                
                   sidebarPanel( 
      #         column(12,
-                   wellPanel( #left side panel                    
+                   wellPanel( #left side panel  
+                     tags$head(
+                      tags$style(type="text/css", ".well{border: 0px transparent;}"
+                    )),
+                   
                       fluidRow(
-                        column(8, HTML("<p style = 'font-size: 120%'><strong>Make selections in each of the panels below </strong></p>"))#,
+                        column(8, HTML("<p style = 'font-size: 160%'><strong>Control Panel </strong></p> <p style='font-size: 110%'><strong>Make selections in each of the panels below </strong></p>"))#,
                        # column(2, uiOutput("resetButton")
                        # )
                      ),#end fluidRow
                      fluidRow(
                        column(6,
                               uiOutput("resetButton"),
+                              uiOutput('Button'),
                               wellPanelSub(
                                 wellPanelHeading(
                                   uiOutput("CategorySelect")
@@ -167,7 +150,8 @@ fluidPage(title = "FISHEyE",
                              #   )
                            #   ),
                               wellPanelSub(
-                                uiOutput("FishAkSelect")
+                                uiOutput("FishAkSelect"),
+                                uiOutput("FishWhitingSelect")
                               )
                        ),
                        column(6,
@@ -200,12 +184,12 @@ fluidPage(title = "FISHEyE",
                        ) #end Fluid row
                   # ) #end well panel 
             )
-               ,       style = "padding: 0px;") # end left side column
+               ,       style = "padding: 0px;border: 1px solid #000000;") # end left side column
 
 
 
 )),
-        navbarMenu("About, Instructions, Definitions",
+        navbarMenu("About",
           #HTML("<div> <p style= 'color:black; margin-bottom:-65px; margin-top:-15px; padding:19px; border-left: 1px solid black;border-right: 1px solid black; width:250px'>About, Instructions, Definitions</p></div>"),
                      tabPanel("About", 
                               source("external/explorer/explorerSourceFiles/about.R")$value
@@ -223,7 +207,7 @@ fluidPage(title = "FISHEyE",
                                      column(5,  htmlOutput("BlogUpdates")),
                                      column(1),
                                 column(5,  htmlOutput("BlogResponses")))),
-           tabPanel("Contact us",
+             tabPanel("Contact us",
                    fluidRow(
                      column(12, htmlOutput("Email")))
                         #      textInput("from", "From:", value="From"),
@@ -238,11 +222,13 @@ fluidPage(title = "FISHEyE",
                           #    textInput("message", "Body:", "type message here"),
                          #      actionButton("send",label = "Send mail")
                    ),
-          tabPanel(HTML('<a class="btn btn-warning", href="http://dataexplorer.northwestscience.fisheries.noaa.gov/fisheye/"style="height:37px;margin: -24px -50px; float:top;position:absolute;right:-200px;font-familiy: Arial, Helvetica, sans-serif;font-size: 12pt; padding-top:7px;padding-bottom:10px"> FISHEyE Homepage</a>'))
           # HTML('<a href="http://devdataexplorer.nwfsc.noaa.gov/fisheye/"style="display: padding-bottom:100;margin: -30px -50px 0px 300px;color:blue"> 
           #Return to FISHEyE homepage </a>'))# style="height:40px;margin: -40px -20px 0px 50px; float:top; border:0"/>
 
-                        
+                             tabPanel(HTML('<a class="btn btn-warning", href="http://dataexplorer.northwestscience.fisheries.noaa.gov/fisheye/"
+                        style="height:37px;margin: -24px -50px; float:top;position:absolute;right:-100px;font-familiy: Arial, Helvetica, sans-serif;font-size: 12pt; padding-top:7px;
+                        padding-bottom:10px"> FISHEyE Homepage</a>' ),style='width:1000px')
+   
           ), #end app level fluid row#, target="_blank"
           appFrameFooterScrolling()
 ) # end fluid Page

@@ -23,6 +23,7 @@ DatVars <- reactive({
       SHORTDESCR = c("Revenue","Variable costs","Fixed costs","Variable cost net revenue","Total cost net revenue"),
        CATEGORY = c("Fisheries","Homeport","State","Vessel length class"),
       FISHAK = unique(FISHAK),
+      whitingv = unique(whitingv),
       STAT =  c("Average per vessel","Average per vessel/day","Average per vessel/metric-ton","Median per vessel","Median per vessel/day","Median per vessel/metric-ton","Fleet-wide total")#="Total"
      
   ))
@@ -56,14 +57,15 @@ DatSubTable <- reactive({
   #   isolate(  
 #  if(!is.null(DatMain())  ){
     dat <- DatMain()      
-    dat <- dat[-which(colnames(dat)=="AK_FLAG")]
-      
+    dat <- dat[-c(which(colnames(dat)=="AK_FLAG"),which(colnames(dat)=="con_flag"),which(colnames(dat)=="repFISHAK"),which(colnames(dat)=="repwhitingv"))]
+    
     #subsetting
     datSub <- subset(dat, YEAR %in% input$YearSelect &  
                        SHORTDESCR %in% input$ShortdescrSelect & 
                        CATEGORY %in% input$CategorySelect &
                        VARIABLE %in% input$VariableSelect &
                        FISHAK == input$FishAkSelect &
+                       whitingv == input$FishWhitingSelect &
                        STAT == input$StatSelect)
     
      datSub$VALUE <- as.numeric(datSub$VALUE)
@@ -77,10 +79,21 @@ DatSubTable <- reactive({
         datSub <- subset(datSub, CS == input$inSelect)
       }
     datSub$N <- ifelse(datSub$N<3, NA, datSub$N)
+    datSub$N <- ifelse(datSub$N>2&is.na(datSub$VALUE)==T, NA, datSub$N)
+    datSub$VARIANCE <- ifelse(datSub$N>2&is.na(datSub$VALUE)==T, NA, datSub$VARIANCE)
     datSub$FISHAK <- ifelse(datSub$FISHAK=="TRUE", "Vessels included", "Vessels not included")
+    datSub$whitingv <- ifelse(datSub$whitingv=="TRUE", "Vessels included", "Vessels not included") 
+    datSub <- datSub[,c(which(colnames(datSub)=="YEAR"),which(colnames(datSub)=="VARIABLE"),which(colnames(datSub)=="CATEGORY"),which(colnames(datSub)=="CS"),which(colnames(datSub)=="STAT"),
+                        which(colnames(datSub)=="SHORTDESCR"),which(colnames(datSub)=="FISHAK"),which(colnames(datSub)=="whitingv"),
+                        which(colnames(datSub)=="N"),which(colnames(datSub)=="VALUE"),which(colnames(datSub)=="VARIANCE"))]
+    validate(
+      need(dim(datSub)[1]>0, #min(datSub$N)>2,
+           paste('Sorry, this plot could not be generated as no vessels matched your selections. 
+Try clicking the box to include all vessels that fished in AK or include all vessels that fished for whiting. 
+              ')))
     return(datSub)
     
-#  } else return()
+    #  } else return()
   #   )
 })
 
@@ -94,7 +107,7 @@ DatThirdsTable <- reactive({
   #   isolate(  
   #  if(!is.null(DatMain())  ){
   dat <- DatThirds()      
-  dat <- dat[-which(colnames(dat)=="AK_FLAG")]
+  dat <- dat[,-c(which(colnames(dat)=="AK_FLAG"),which(colnames(dat)=="con_flag"))]
   
   #subsetting
   datSub <- subset(dat, YEAR %in% input$YearSelect &  
@@ -102,6 +115,7 @@ DatThirdsTable <- reactive({
                      CATEGORY %in% input$CategorySelect &
                      VARIABLE %in% input$VariableSelect &
                      FISHAK == input$FishAkSelect &
+                     whitingv == input$FishWhitingSelect &
                      STAT == input$StatSelect)
   
   datSub$VALUE <- as.numeric(datSub$VALUE)
@@ -116,11 +130,23 @@ DatThirdsTable <- reactive({
     datSub <- subset(datSub, CS == input$inSelect)
   }
   datSub$N <- ifelse(datSub$N<3, NA, datSub$N)
-  datSub$FISHAK <- ifelse(datSub$FISHAK=="TRUE", "Vessels included", "Vessels not included")
-  return(datSub)
+  datSub$N <- ifelse(datSub$N>2&is.na(datSub$VALUE)==T, NA, datSub$N)
+  datSub$VARIANCE <- ifelse(datSub$N>2&is.na(datSub$VALUE)==T, NA, datSub$VARIANCE)
   
-  #  } else return()
-  #   )
+  datSub$FISHAK <- ifelse(datSub$FISHAK=="TRUE", "Vessels included", "Vessels not included")
+  datSub$whitingv <- ifelse(datSub$whitingv=="TRUE", "Vessels included", "Vessels not included") 
+  datSub <- datSub[,c(which(colnames(datSub)=="YEAR"),which(colnames(datSub)=="VARIABLE"),which(colnames(datSub)=="CATEGORY"),which(colnames(datSub)=="CS"),which(colnames(datSub)=="STAT"),
+                      which(colnames(datSub)=="SHORTDESCR"),which(colnames(datSub)=="THIRDS"),which(colnames(datSub)=="FISHAK"),which(colnames(datSub)=="whitingv"),
+                      which(colnames(datSub)=="N"),which(colnames(datSub)=="VALUE"),which(colnames(datSub)=="VARIANCE"))]
+  
+  validate(
+    need(dim(datSub)[1]>0, #min(datSub$N)>2,
+         paste('Sorry, this plot could not be generated as no vessels matched your selections. 
+Try clicking the box to include all vessels that fished in AK or include all vessels that fished for whiting. 
+              ')))
+  
+   return(datSub)
+  
 })
 ###############################################################################################################################
 ##############################################################################################################################
@@ -149,6 +175,7 @@ DatSub <- reactive({
                             CATEGORY %in% input$CategorySelect &
                             VARIABLE %in% input$VariableSelect &
                             FISHAK == input$FishAkSelect &
+                            whitingv == input$FishWhitingSelect &
                             STAT == input$StatSelect)
       
       if(input$CategorySelect != "Fisheries") {
@@ -171,7 +198,7 @@ DatSub <- reactive({
       
       if(input$CategorySelect=="Fisheries" & length(input$VariableSelect)>1){
         datSub <- subset(datSub, datSub$VARIABLE!="Groundfish fixed gear with trawl endorsement"|datSub$YEAR!=2009)
-      }
+      } 
       
       if(input$CategorySelect=="Fisheries"){
         datSub$sort <- ifelse(datSub$VARIABLE=="All Fisheries", ".....All Fisheries", as.character(datSub$VARIABLE))
@@ -204,16 +231,22 @@ DatSub <- reactive({
       
       
       validate(
-        need(min(datSub$N)>2,
+        need(max(datSub$con_flag)<1, #min(datSub$N)>2,
              paste('Sorry, this plot could not be generated as data from the following', datSub$CATEGORY[1],  '(s) and year(s) were suppressed:\n')),#grouping variable(s)
-        need(min(datSub$N)>2,
-             paste(datSub$VARIABLE[which(datSub$N<3&datSub$SHORTDESCR==datSub$SHORTDESCR[1])],datSub$YEAR[which(datSub$N<3&datSub$SHORTDESCR==datSub$SHORTDESCR[1])])),
-        need(min(datSub$N)>2,
+        need(max(datSub$con_flag)<1,
+             paste(datSub$VARIABLE[which(datSub$con_flag==1&datSub$SHORTDESCR==datSub$SHORTDESCR[1])],
+                   datSub$YEAR[which(datSub$con_flag==1&datSub$SHORTDESCR==datSub$SHORTDESCR[1])])),
+        need(max(datSub$con_flag)<1, #need(min(datSub$N)>2,
             message=paste('
 Data are suppressed when there are not enough observations to protect confidentiality. 
 Try unclicking the indicated', datSub$CATEGORY[1], '(s) or year(s). If a', datSub$CATEGORY[1], 'or year is not provided, try clicking the box to include all vessels that fished in AK. There are less vessels that fished solely off the west coast than off the west coast and in Alaska.
               ')))
 
+      validate(
+        need(dim(datSub)[1]>0, #min(datSub$N)>2,
+             paste('Sorry, this plot could not be generated as no vessels matched your selections. 
+Try clicking the box to include all vessels that fished in AK or include all vessels that fished for whiting. 
+              ')))
       
 #      validate(
 #        need(min(datSub$N)>2,
@@ -251,6 +284,7 @@ DatSub2 <- reactive({
                         CATEGORY %in% input$CategorySelect &
                        VARIABLE %in% input$VariableSelect &
                         FISHAK == input$FishAkSelect &
+                        whitingv == input$FishWhitingSelect &
                         STAT == input$StatSelect)
     
     if(input$CategorySelect != "Fisheries") {
@@ -305,16 +339,21 @@ DatSub2 <- reactive({
     }
     
     validate(
-      need(min(datSub2$N)>2,
+      need(max(datSub2$con_flag)<1,
            paste('Sorry, this plot could not be generated as data from the following', datSub2$CATEGORY[1],  '(s) and year(s) were suppressed:\n')),#grouping variable(s)
-      need(min(datSub2$N)>2,
-           paste(datSub2$VARIABLE[which(datSub2$N<3&datSub2$SHORTDESCR==datSub2$SHORTDESCR[1])],datSub2$YEAR[which(datSub2$N<3&datSub2$SHORTDESCR==datSub2$SHORTDESCR[1])])),
-      need(min(datSub2$N)>2,
+      need(max(datSub2$con_flag)<1,
+           paste(datSub2$VARIABLE[which(datSub2$con_flag==1&datSub2$SHORTDESCR==datSub2$SHORTDESCR[1])],datSub2$YEAR[which(datSub2$con_flag==1&datSub2$SHORTDESCR==datSub2$SHORTDESCR[1])])),
+      need(max(datSub2$con_flag)<1,
            message=paste('
 Data are suppressed when there are not enough observations to protect confidentiality. 
 Try unclicking the indicated', datSub2$CATEGORY[1], '(s) or year(s). If a', datSub2$CATEGORY[1], 'or year is not provided, try clicking the box to include all vessels that fished in AK. There are less vessels that fished solely off the west coast than off the west coast and in Alaska.
                          ')))
     
+    validate(
+      need(dim(datSub2)[1]>0, #min(datSub$N)>2,
+           paste('Sorry, this plot could not be generated as no vessels matched your selections. 
+Try clicking the box to include all vessels that fished in AK or include all vessels that fished for whiting. 
+              ')))
     return(datSub2)
 
   } 
@@ -333,6 +372,7 @@ DatSub3 <- reactive({
                         CATEGORY %in% input$CategorySelect &
                         VARIABLE %in% input$VariableSelect &
                         FISHAK == input$FishAkSelect &
+                        whitingv == input$FishWhitingSelect &
                         STAT == input$StatSelect)
     
     if(input$CategorySelect != "Fisheries") {
@@ -387,16 +427,21 @@ DatSub3 <- reactive({
     
     
     validate(
-      need(min(datSub3$N)>2,
+      need(max(datSub3$con_flag)<1,
            paste('Sorry, this plot could not be generated as data from the following', datSub3$CATEGORY[1],  '(s) and year(s) were suppressed:\n')),#grouping variable(s)
-      need(min(datSub3$N)>2,
-           paste(datSub3$VARIABLE[which(datSub3$N<3&datSub3$SHORTDESCR==datSub3$SHORTDESCR[1])],datSub3$YEAR[which(datSub3$N<3&datSub3$SHORTDESCR==datSub3$SHORTDESCR[1])])),
-      need(min(datSub3$N)>2,
+      need(max(datSub3$con_flag)<1,
+           paste(datSub3$VARIABLE[which(datSub3$con_flag==1&datSub3$SHORTDESCR==datSub3$SHORTDESCR[1])],datSub3$YEAR[which(datSub3$con_flag==1&datSub3$SHORTDESCR==datSub3$SHORTDESCR[1])])),
+      need(max(datSub3$con_flag)<1,
            message=paste('
 Data are suppressed when there are not enough observations to protect confidentiality. 
 Try unclicking the indicated', datSub3$CATEGORY[1], '(s) or year(s). If a', datSub3$CATEGORY[1], 'or year is not provided, try clicking the box to include all vessels that fished in AK. There are less vessels that fished solely off the west coast than off the west coast and in Alaska.
               ')))
     
+    validate(
+      need(dim(datSub3)[1]>0, #min(datSub$N)>2,
+           paste('Sorry, this plot could not be generated as no vessels matched your selections. 
+Try clicking the box to include all vessels that fished in AK or include all vessels that fished for whiting. 
+              ')))
     return(datSub3)
     
   } else return()
@@ -415,15 +460,16 @@ DatSubThirds <- reactive({
                           CATEGORY %in% input$CategorySelect &
                           VARIABLE %in% input$VariableSelect &
                           FISHAK == input$FishAkSelect &
+                          whitingv == input$FishWhitingSelect &
                           STAT == input$StatSelect
                      )
 #     
-    datSub$flag <- 0 
+#    datSub$flag <- 0 
     if(input$CategorySelect != "Fisheries") {
       datSub <- subset(datSub, CS == input$inSelect)
     }
     
-    datsub <- subset(datSub, is.na(datSub$N)==F)
+    #datSub <- subset(datSub, is.na(datSub$N)==F)
     datSub$THIRDS <- factor(datSub$THIRDS,
                             levels = factorOrder$thirds)
     datSub$THIRDS <- ifelse(datSub$THIRDS=="Bottom third", "Lower third", as.character(datSub$THIRDS))
@@ -445,40 +491,28 @@ DatSubThirds <- reactive({
     }
     
         
-      if(input$CategorySelect=="Homeport" & length(input$YearSelect)>1){
-      if(max(datSub$N)<3){#datSub$VARIABLE=="South and central WA coast"|datSub$VARIABLE=="Tillamook"){
-        datSub <- datSub
-        
-      } else if(min(datSub$N)<3){
-      datSub <- subset(datSub, datSub$N>2)
-      datSub$flag <- 1
-      } else {
-        datSub <- datSub
-      }
-      }
 
+   validate(
+      need(dim(datSub)[1]>0, 
+           paste('Sorry, this plot could not be generated as no vessels matched your selections. 
+Try clicking the box to include all vessels that fished in AK or include all vessels that fished for whiting. 
+                 ')))
+    
     
    
     validate(
-      need(min(datSub$N)>2,
+      need(max(datSub$con_flag)<1,
            paste('Sorry, this plot could not be generated as data from the following', datSub$CATEGORY[1],  '(s) and year(s) were suppressed:\n')),#grouping variable(s)
-      need(min(datSub$N)>2,
-           paste(datSub$VARIABLE[which(datSub$N<3&datSub$SHORTDESCR==datSub$SHORTDESCR[1]&datSub$THIRDS==datSub$THIRDS[1])],
-                 datSub$YEAR[which(datSub$N<3&datSub$SHORTDESCR==datSub$SHORTDESCR[1]&datSub$THIRDS==datSub$THIRDS[1])])),
-      need(min(datSub$N)>2,
+      need(max(datSub$con_flag)<1,
+           paste(datSub$VARIABLE[which(datSub$con_flag==1&datSub$SHORTDESCR==datSub$SHORTDESCR[1]&datSub$THIRDS==datSub$THIRDS[1])],
+                 datSub$YEAR[which(datSub$con_flag==1&datSub$SHORTDESCR==datSub$SHORTDESCR[1]&datSub$THIRDS==datSub$THIRDS[1])])),
+      need(max(datSub$con_flag)<1,
            message=paste('
 Data are suppressed when there are not enough observations to protect confidentiality. 
 Try unclicking the indicated', datSub$CATEGORY[1], '(s) or year(s). If a', datSub$CATEGORY[1], 'or year is not provided, try clicking the box to include all vessels that fished in AK. There are less vessels that fished solely off the west coast than off the west coast and in Alaska.
                          ')))
     
-#     validate(
-#       need(input$StatSelect != "Total", 
-#           '
-#
-#            We are very sorry, but the variability analysis does not support the "summed over all vessels" stastic.
-#            Please select a different statistic.')
-#     )
-    return(datSub)
+     return(datSub)
     
  # }
 })
@@ -488,7 +522,7 @@ Try unclicking the indicated', datSub$CATEGORY[1], '(s) or year(s). If a', datSu
 # Plotting/staging
 PermitPlot <- reactive({
   if(!(is.null(input$YearSelect) | is.null(input$CategorySelect) | 
-   is.null(input$VariableSelect) |is.null(input$FishAkSelect) | 
+   is.null(input$VariableSelect) |
     is.null(input$StatSelect) | is.null(input$ShortdescrSelect))){
     if(!(input$YearSelect[1]=="" | 
       input$CategorySelect[1] == "" | input$StatSelect[1] == "" | 
@@ -503,7 +537,7 @@ PermitPlot <- reactive({
 
 PermitMessage <- reactive({
   if(!(is.null(input$YearSelect) | is.null(input$CategorySelect) | 
-       is.null(input$VariableSelect) |is.null(input$FishAkSelect) | 
+       is.null(input$VariableSelect) |
        is.null(input$StatSelect) | is.null(input$ShortdescrSelect))){
     if(any(grepl(2009, input$YearSelect))){
     if(any(grepl("Groundfish fixed gear with trawl endorsement",input$VariableSelect)) #input$selectall2!=0 & input$selectall2%%2==1 input$YearSelect[1]==2009 &
@@ -542,13 +576,59 @@ output$resetButton <- renderUI({
 output$VCNRButton <- renderUI({
   if(PermitPlot()){
     if(input$DodgeSelect == "Composition of total cost net revenue"){
-    HTML('<a class="btn btn-primary", href="TCNRGraphic.png" target="_blank" style="height:37px;margin: -24px -50px -20px 1000px"> Explanation of this plot</a>')
+    HTML('<a class="btn btn-primary", href="TCNRGraphic.png" target="_blank" style="height:37px;position:absolute;top:100%;left:90%; background-color:RoyalBlue"> Explanation of this plot</a>')
       } else     if(input$DodgeSelect == "Composition of variable cost net revenue"){
-    HTML('<a class="btn btn-primary", href="VCNRGraphic.png" target="_blank" style="height:37px;margin: -24px -50px -20px 1000px"> Explanation of this plot</a>')
+    HTML('<a class="btn btn-primary", href="VCNRGraphic.png" target="_blank" style="height:37px;margin: -40px -50px 60px 670px; background-color:RoyalBlue"> Explanation of this plot</a>')
     }  
     }
 })
 
+vars = reactiveValues(counter = 0.5)
+output$DataButton <- renderUI({
+  if(PermitPlot()){
+    actionButton("data", label = label()) }
+})
+
+observe({
+  if(!is.null(input$data)){
+    input$data
+    isolate({
+      vars$counter <- vars$counter + .5
+    })
+  }
+})
+
+label <- reactive({
+  if(!is.null(input$data)){
+    if(vars$counter%%2 != 0) label <- "Show Data"
+    else label <- "Show Plot(s)"
+  }
+})
+
+
+
+vars2 = reactiveValues(counter = 0.5)
+output$DataButton2 <- renderUI({
+  if(PermitPlot()){
+    actionButton("data2", label = label2())
+  }
+})
+
+observe({
+  if(!is.null(input$data2)){
+    input$data2
+    isolate({
+      vars2$counter <- vars2$counter + .5
+    })
+  }
+})
+
+label2 <- reactive({
+  if(!is.null(input$data2)){
+    if(vars2$counter%%2 != 0) label2 <- "Show Data"
+    else label2 <- "Show Plot(s)"
+  }
+})
 
 #output$download_Thirds<- renderUI({
 #  if(PermitPlot() & input$tabs=="Variability Analaysis"){
