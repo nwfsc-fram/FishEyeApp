@@ -7,17 +7,17 @@ tags$div(style = "margin: 15px; 15px; 30px; width: 60%",
           tags$p('To use Net Revenue Explorer, make data selections in each of the fields in the panel on the right 
           (this panel will only appear when you are on the',tags$em('Explore the data'), 'page).
           Output will be automatically generated when each of the fields in the panel has at least one selection.', tags$br(), 
-          'A button to download the plot(s) and data table can be found at the bottom of the panel. To generate plots and analyses beyond what is provided in the Net Revenue Explorer, please download the data and analyze externally.'),
-          tags$p('The ', 
+          'A button to download the plot(s) and data table can be found at the bottom of the panel. To generate plots and analyses beyond what is provided in the Net Revenue Explorer, please download the data and analyze externally.',
+          tags$br(),'To switch between viewing plots and data table, use the button above the plot or data output.'),tags$p('The ', 
           tags$a(href = "http://www.westcoast.fisheries.noaa.gov/fisheries/groundfish_catch_shares/index.html", "West Coast Groundfish Trawl Catch Share Program ", target="_blank"),
               'was implemented in 2011.  In all plots, we distinguish between pre- and post-implementation of the Catch Share program with shading.'),
            tags$ul(style="margin-top:15px;" ,
                    
-           tags$li(tags$h4("Visualize Data with Plots")),
+           tags$li(tags$h4("Summary Plots and Data")),
            tags$p('Visualize', tags$a(href="http://www.nwfsc.noaa.gov/research/divisions/fram/economic/overview.cfm",'Economic Data Collection (EDC)', target="_blank"), 'summary statistics for revenue, costs, and net revenue of catcher vessels (both at-sea and shoreside) that participate in the',
-                  tags$a(href="http://www.nwfsc.noaa.gov/research/divisions/fram/catch_shares.cfm", 'Catch Share program. ', target="_blank"),tags$br(),tags$br(),
-                
-                'Plotting options can be found at the bottom of the panel on the right (panel only shown when on the', tags$em('Explore the Data'), 'page).
+                  tags$a(href="http://www.nwfsc.noaa.gov/research/divisions/fram/catch_shares.cfm", 'Catch Share program. ', target="_blank")),
+                 
+                tags$strong('Plots'),tags$p('Plotting options can be found at the bottom of the panel on the right (panel only shown when on the', tags$em('Explore the Data'), 'page).
                 There are three plot options: 1) economic measures side-by-side, 2) composition of total cost net revenue, and 3) composition of variable cost net revenue. 
                 The', tags$em('Economic measures side-by-side'), 'option is useful for comparing economic measures (revenue, costs, net revenue) across years for different summary statistics. 
                 Click the', tags$em('Economic measures side-by-side'), 'option under',  tags$em('Plot Options'), 'in the right-hand panel that will appear when you are on the',
@@ -27,24 +27,33 @@ tags$div(style = "margin: 15px; 15px; 30px; width: 60%",
                 To see these plots, click the', tags$em('Composition of total cost net revenue'), 'or the', tags$em('Composition of variable cost net revenue'), 
                 'choice under', tags$em('Plot Options'), 'in the right-hand panel that will appear when you are on the', tags$em('Explore the Data'), 'page.
                 A figure demonstrating how VCNR and TCNR are derived is located on the', tags$em('Explore the Data'), 'page under the', tags$em('Visualize Data with Plots'), 'tab.'),
-                tags$p(strong('A note about net revenue:'),  'The', tags$a(href="http://www.nwfsc.noaa.gov/research/divisions/fram/economic/economic_data_forms.cfm", 'EDC survey forms', target="_blank"), 
-            'attempt to capture only costs that are directly related to vessel fishing operations. Other expenses 
-            such as vehicles or office costs that may be related to the fishing business are not included. Therefore, the net revenue reported here is an overestimate of the true net revenue.'),
-              tags$br(),
-     
-                    tags$li(tags$h4("Data Table")),
-              tags$p('View data used to generate the plots created in the', tags$em('Visualize Data with Plots'), 'tab and', tags$em('Fleetwide Variability Analysis'), 'tab.', tags$br(),
+                tags$strong("Data Table"),
+              tags$p('View data used to generate the plots.', tags$br(),
                   'We provide a measure of the variance around the average and median values. For average values, we report the standard deviation. For median values, we report the median absolute deviation.', tags$br(),
               'After a table has been displayed, the data can be further filtered using the', tags$em('Search'), 'box, or filtered within a column using the boxes at the bottom of the table.'),
               tags$br(),
-      
-                   tags$li(tags$h4("Fleetwide Variability Analysis")),
+           
+                tags$p(strong('A note about net revenue:'),  'The', tags$a(href="http://www.nwfsc.noaa.gov/research/divisions/fram/economic/economic_data_forms.cfm", 'EDC survey forms', target="_blank"), 
+            'attempt to capture only costs that are directly related to vessel fishing operations. Other expenses 
+            such as vehicles or office costs that may be related to the fishing business are not included. Therefore, the net revenue reported here is an overestimate of the true net revenue.'),
+               tags$p(strong('A note about the timing that data become available:'), 'EDC forms are submitted by September 1 each year for the previous fiscal year (FY2011 data were received in September 2012), 
+                allowing companies to', tags$em('close their books'), 'and file taxes before completing their EDC forms. The QA/QC process requires approximately 6 months. This means that 2011 EDC data were available in March 2013; 
+                however, there is one addition complication. Participants submit data by fiscal year which varies by company and many not completely overlap by calendar year.
+                Although data are uploaded into FISHEyE after the QA/QC process has been completed, the data are not considered finalized until the following year once the complete set of data have been received and processed. 
+                As a result, calendar year 2014 are not finalized until Spring 2017.'),
+              tags$br(),
+     
+       
+                   tags$li(tags$h4("Fleet-wide Variability Analysis")),
               tags$em('Visualize the variability within the catcher vessel fleet.'),
               tags$p('Catcher vessels that participate in the Catch Share program span a very broad range in term of the scale of their operations. For instance, the revenue earned ranges from around $10,000 to well over $1,500,000.  
-                  The purpose of the', tags$em('Fleetwide Variability Analysis'), 'is to show how this heterogeneity relates to their economic performance. We cannot show the economic performance for each individual vessel due to confidentiality rules
+                  The purpose of the', tags$em('Fleet-wide Variability Analysis'), 'is to show how this heterogeneity relates to their economic performance. We do not show the economic performance for each individual vessel due to confidentiality rules
                   so we group the vessels into three tiered categories: top, middle, and lower revenue earners.  
-                      We then calculate the median or average of the selected statistic (per vessel, vessel/day, or vessel/metric-ton) for vessels within each tiered category. This is done for each year separately.', tags$br(),tags$br(), 
-                  'Results are shown if there are at least three vessels in a group. Results are plotted as a dot plot if a single year is selected or a line plot if multiple years are selected.', tags$br(),tags$br(),
+                      We then calculate the median or average of the selected statistic (per vessel, vessel/day, or vessel/metric-ton) for vessels within each tiered category. This is done for each year separately.', tags$br()),
+                tags$strong('Plots'), tags$p('Results are shown if there are at least three vessels in a group. Results are plotted as a dot plot if a single year is selected or a line plot if multiple years are selected.'),
+                tags$strong('Data Table'),tags$p('View data used to generate the plots.', tags$br(),
+                                                 'We provide a measure of the variance around the average and median values. For average values, we report the standard deviation. For median values, we report the median absolute deviation.', tags$br(),
+                                                 'After a table has been displayed, the data can be further filtered using the', tags$em('Search'), 'box, or filtered within a column using the boxes at the bottom of the table.', tags$br(),tags$br(),
 
                   tags$strong("Note:"), 'Only a single class of the selected summary variable (fisheries, homeport, state, vessel length class) may be selected at a time.',
               tags$br(),

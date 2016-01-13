@@ -490,16 +490,12 @@ DatSubThirds <- reactive({
       datSub$VARIABLE <- factor(datSub$VARIABLE, levels = c("All Fisheries",factorOrder$fisheries))
     }
     
-        
-
    validate(
       need(dim(datSub)[1]>0, 
            paste('Sorry, this plot could not be generated as no vessels matched your selections. 
 Try clicking the box to include all vessels that fished in AK or include all vessels that fished for whiting. 
                  ')))
-    
-    
-   
+
     validate(
       need(max(datSub$con_flag)<1,
            paste('Sorry, this plot could not be generated as data from the following', datSub$CATEGORY[1],  '(s) and year(s) were suppressed:\n')),#grouping variable(s)
@@ -576,9 +572,9 @@ output$resetButton <- renderUI({
 output$VCNRButton <- renderUI({
   if(PermitPlot()){
     if(input$DodgeSelect == "Composition of total cost net revenue"){
-    HTML('<a class="btn btn-primary", href="TCNRGraphic.png" target="_blank" style="height:37px;position:absolute;top:100%;left:90%; background-color:RoyalBlue"> Explanation of this plot</a>')
+    HTML('<a class="btn btn-primary", href="TCNRGraphic.png" target="_blank" style="height:37px;position:absolute;bottom:170%;left:390%; background-color:RoyalBlue"> Explanation of this plot</a>')
       } else     if(input$DodgeSelect == "Composition of variable cost net revenue"){
-    HTML('<a class="btn btn-primary", href="VCNRGraphic.png" target="_blank" style="height:37px;margin: -40px -50px 60px 670px; background-color:RoyalBlue"> Explanation of this plot</a>')
+    HTML('<a class="btn btn-primary", href="VCNRGraphic.png" target="_blank" style="height:37px;position:absolute;bottom:170%;left:390%; background-color:RoyalBlue"> Explanation of this plot</a>')
     }  
     }
 })
