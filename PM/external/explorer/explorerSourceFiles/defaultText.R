@@ -10,21 +10,16 @@ output$Email <- renderUI({
                          tags$br()),
                   
                   tags$p(
+                    "Lisa Pfeiffer", tags$br(),
+                    "Economist", tags$br(),
+                    "Northwest Fisheries Science Center", tags$br(),
+
+                    tags$br(),tags$br(),
                     "Melanie Harsch", tags$br(), 
                     "Contractor-ECS Federal, Inc.", tags$br(),
                     "In support of NMFS", tags$br(),
                     "Northwest Fisheries Science Center", tags$br(),
-                    "nwfsc.fisheye@noaa.gov", tags$br(),
-                    tags$br(),
-                    "Lisa Pfeiffer", tags$br(),
-                    "Economist", tags$br(),
-                    "Northwest Fisheries Science Center", tags$br(),
-                    "nwfsc.fisheye@noaa.gov", tags$br(),
-                    tags$br(),tags$br(),
-                    "Todd Lee", tags$br(),
-                    "ESSR Program Manager", tags$br(),
-                    "Northwest Fisheries Science Center", tags$br(),
-                    "nwfsc.fisheye@noaa.gov", tags$br()),
+
                   tags$hr(),
                   
                   # "You can send comments and questions directly to us by clicking",
@@ -32,7 +27,7 @@ output$Email <- renderUI({
  #                 tags$em('nwfsc.fisheye@noaa.gov'), 'and using your favorite email program.',
                   tags$br(),
                   tags$br()
-  )
+  ))
 })
 
 output$BlogText <- renderUI({
@@ -53,26 +48,13 @@ output$BlogUpdates <- renderUI({
                         <span class='day' style='font-size:16px;'>12</span><br />
                         <span class='year' style='font-size:11px;line-height: 10px;'>2016</span>")
          ),
-         tags$p(HTML("<span style='margin-left:60px;font-size:18px;font-weight:bold'>Welcome to the Net Revenue Explorer!</span>")), 
+         tags$p(HTML("<span style='margin-left:60px;font-size:18px;font-weight:bold'>Welcome to the Performance Metrics page!</span>")), 
          tags$p(tags$br(),
-                "Welcome to the first application of FISHEyE, the Net Revenue Explorer. If you have any difficulties accessing or using this application, please contact us at nwfsc.fisheye@noaa.gov. 
+                "Welcome to the Performance Metrics page. If you have any difficulties accessing or using this application, please contact us at nwfsc.fisheye@noaa.gov. 
                 Your comments will help us improve performance of this application."),
                 tags$br(),
          
-         tags$div( class='date', style='height:45px;width:30px;font-family:Arial;font-weight:bold;background-color:#ffffff;text-align:center;border-top:1px solid #c0c0c0;
-                   border-left:1px solid #c0c0c0;border-right:1px solid #c0c0c0;position:absolute;z-index:3;line-height: 13px;',
-                  HTML("<span class='month' style='text-transform:uppercase;font-size:11px;'>Nov</span><br />
-                        <span class='day' style='font-size:16px;'>18</span><br />
-                        <span class='year' style='font-size:11px;line-height: 10px;'>2015</span>")
-         ),
-         tags$p(HTML("<span style='margin-left:60px;font-size:18px;font-weight:bold'>2015 Update for the Catch Shares Program</span>")), 
-         tags$p(tags$br(),
-                "Three years into the Catch Shares Program for the West Coast groundfish fishery, fishermen continue to benefit 
-                from increased flexibility while reduced bycatch of overfished species helps rebuild stocks. 
-                Fishermen are keeping more of the fish they catch, as well as landing more fish and earning more revenue for each fishing trip. NOAA 
-                Fisheries continues to work with the groundfish fleet to assure the program operates costeffectively. 
-                Read the full update", tags$a(href="http://www.nwfsc.noaa.gov/news/documents/CatchSharesUpdate2015.pdf", target="_blank", "here."),
-                tags$br()),
+
         tags$hr()#, 
      #  tags$div( class='date', style='height:45px;width:30px; font-family:Arial; font-weight:bold;background-color:#ffffff;text-align:center; border-top:1px solid #c0c0c0;
      #            border-left:1px solid #c0c0c0;border-right:1px solid #c0c0c0;position:absolute;z-index:3;line-height: 13px;',
@@ -108,17 +90,28 @@ output$BlogResponses <- renderUI({
                         <span class='day' style='font-size:16px;'>15</span><br />
                         <span class='year' style='font-size:11px;line-height: 10px;'>2016</span>")
  ),
- tags$p(HTML("<span style='margin-left:60px;font-size:18px;font-weight:bold'>When will other sectors be added to the Net Revenue Explorer?</span>")), 
+ tags$p(HTML("<span style='margin-left:60px;font-size:18px;font-weight:bold'>Place holder?</span>")), 
  tags$p(tags$br(),
-        "We are currently working on adding other sectors to the Net Revenue Explorer. We will provide an update on this page when the data and necessary changes 
-        to the Net Revenue Explorer are complete. We are also working on adding additional metrics to assess the effectiveness and outcomes of the catch share program.
-        These metrics will be available from the Performance Metrics application accessed through the", tags$a(href="http://devdataexplorer.nwfsc.noaa.gov/fisheye/", 'FISHEyE homepage'),'.',
+        "Place holder.",
         tags$br()),
  
          tags$hr())
         
    
 })
+
+
+output$ApplicationsText <- renderUI({
+  
+  tags$div(style = "margin-top: 15px;margin-bottom:0; width: 80%; ",
+           h3("FISHEyE Applications"),br(),
+           HTML("<div>
+                <p style='font-size:150%'><strong><a style='color:white; background-color:#1a5d99;  font-family:Cambria; border-radius:25px; padding:5px;' 
+                href='https://dataexplorer.northwestscience.fisheries.noaa.gov/fisheye/NetRevExplorer'> Net Revenue Explorer</a></strong></div>"),
+           tags$p("Explore and download economic data pre- and post-Catch Share management."),
+           tags$hr()
+  )
+}) #        tags$br(),
 
 
 output$DefaultPlotText <- renderUI({

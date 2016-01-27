@@ -46,6 +46,11 @@ observeEvent(input$iacross, {
                             West Coast fisheries. ')
 })
 
+observeEvent(input$iVesSum, {
+  session$sendCustomMessage(type = 'testmessage',
+                            message = 'For all vessels that fished within selected fisheries, show data for activities either within the selected fisheries, across all Catch Share fisheries, or across all West Coast fisheries. ')
+})
+
 scale_height <- function(){
  if(length(input$VariableSelect)<=2){ 
    700 }  else if(length(input$VariableSelect)>2 & length(input$VariableSelect)<=4) { 

@@ -21,23 +21,30 @@ fluidPage(title = "FISHEyE",
                             ")),
             tags$style(HTML(".select {margin-top:-20px}"),
                        tags$textarea(id="message", rows=3, cols=40, "Default value")),
+          #  tags$style(HTML(".navbar .nav > li { position:relative; z-index: 10000;}")),
+            tags$style(HTML(".navbar {position:static}")),
             tags$style(HTML(".ckbox {margin-top: 0px; margin-bottom: -15px}")),
             tags$style(HTML(".statbox {margin-top: -30px; margin-bottom: -15px}")),
             tags$style(HTML(".ckbox2 .checkbox:first-child label{font-weight:bold;}")),
-           tags$style(HTML(".ckbox2 .checkbox:nth-child(2) label{font-weight:bold;}")),
-           tags$style(HTML(".ckbox2 .checkbox:nth-child(8) label{font-weight:bold;}")),
-           tags$style(HTML(".ckbox2 .checkbox:nth-child(3) label{margin-left:17px;}")),
-           tags$style(HTML(".ckbox2 .checkbox:nth-child(4) label{margin-left:17px;}")),tags$style(HTML(".ckbox2 .checkbox:nth-child(5) label{margin-left:17px;}")),
-           tags$style(HTML(".ckbox2 .checkbox:nth-child(6) label{margin-left:17px;}")),tags$style(HTML(".ckbox2 .checkbox:nth-child(7) label{margin-left:17px;}")),
-           tags$style(HTML(".ckbox2 .checkbox:nth-child(9) label{margin-left:17px;}")),tags$style(HTML(".ckbox2 .checkbox:nth-child(10) label{margin-left:17px;}")),
-           tags$style(HTML(".ckbox2 .checkbox:nth-child(11) label{margin-left:17px;}")),tags$style(HTML(".ckbox2 .checkbox:nth-child(12) label{margin-left:17px;}")),
-           
+            tags$style(HTML(".ckbox2 .checkbox:nth-child(2) label{font-weight:bold;}")),
+            tags$style(HTML(".ckbox2 .checkbox:nth-child(8) label{font-weight:bold;}")),
+            tags$style(HTML(".ckbox2 .checkbox:nth-child(3) label{margin-left:17px;}")),
+            tags$style(HTML(".ckbox2 .checkbox:nth-child(4) label{margin-left:17px;}")),tags$style(HTML(".ckbox2 .checkbox:nth-child(5) label{margin-left:17px;}")),
+            tags$style(HTML(".ckbox2 .checkbox:nth-child(6) label{margin-left:17px;}")),tags$style(HTML(".ckbox2 .checkbox:nth-child(7) label{margin-left:17px;}")),
+            tags$style(HTML(".ckbox2 .checkbox:nth-child(9) label{margin-left:17px;}")),tags$style(HTML(".ckbox2 .checkbox:nth-child(10) label{margin-left:17px;}")),
+            tags$style(HTML(".ckbox2 .checkbox:nth-child(11) label{margin-left:17px;}")),tags$style(HTML(".ckbox2 .checkbox:nth-child(12) label{margin-left:17px;}")),
+
+            tags$style(HTML(".sectselect >li{position:relative; z-index:10000; background-color:black !important; display:inline-block; vertical-align:middle}")),
+#            tags$style(HTML(".sectselect label{display:inline-block; vertical-align:middle; float:left; width:95%}")),
+#            tags$style(HTML(".sectselect select{display:inline-block; vertical-align:middle; float:right; width:35%}")),
+            tags$style(HTML(".sectselect{font-size:28px; line-height:28px;}")),
+          
             tags$style(HTML(".actbutton {margin-bottom:5px}")),
             tags$style(HTML(".rbutton {margin-top:15px}")),
           
-           tags$style(HTML(".rbutton .radio:nth-child(2) label{font-weight:bold")),
-           tags$style(HTML(".rbutton .radio:nth-child(3) label{font-weight:bold")),
-           tags$style(HTML(".rbutton .radio:nth-child(4) label{margin-left:17px;")), tags$style(HTML(".rbutton .radio:nth-child(5) label{margin-left:17px;")), tags$style(HTML(".rbutton .radio:nth-child(6) label{margin-left:17px;")),
+            tags$style(HTML(".rbutton .radio:nth-child(2) label{font-weight:bold")),
+            tags$style(HTML(".rbutton .radio:nth-child(3) label{font-weight:bold")),
+            tags$style(HTML(".rbutton .radio:nth-child(4) label{margin-left:17px;")), tags$style(HTML(".rbutton .radio:nth-child(5) label{margin-left:17px;")), tags$style(HTML(".rbutton .radio:nth-child(6) label{margin-left:17px;")),
            tags$style(HTML(".rbutton .radio:nth-child(7) label{margin-left:17px;")), tags$style(HTML(".rbutton .radio:nth-child(7) label{margin-left:17px;")),tags$style(HTML(".rbutton .radio:nth-child(8) label{margin-left:17px;")),
            tags$style(HTML(".rbutton .radio:nth-child(9) label{font-weight:bold")),
            tags$style(HTML(".rbutton .radio:nth-child(10) label{margin-left:17px;")), tags$style(HTML(".rbutton .radio:nth-child(11) label{margin-left:17px;")),tags$style(HTML(".rbutton .radio:nth-child(12) label{margin-left:17px;")),
@@ -50,8 +57,9 @@ fluidPage(title = "FISHEyE",
            tags$style(HTML('#istat{width:20px; height:19px; margin:0px;border:none; padding:0px;border-radius:25px;background-color:transparent;font-size:12px; color:RoyalBlue}')),
            tags$style(HTML('#ipo{width:20px; height:19px; margin:0px;border:none; padding:0px;border-radius:25px;background-color:transparent;font-size:12px; color:RoyalBlue}')),
            tags$style(HTML('#ivs{width:20px; height:19px; margin:0px;border:none; padding:0px;border-radius:25px;background-color:transparent;font-size:12px; color:RoyalBlue}')),
-           tags$style(HTML('#iem{width:20px; height:19px; margin:0px;border:none; padding:0px;border-radius:25px;background-color:transparent;font-size:12px; color:RoyalBlue}'))),
-          # java script 
+           tags$style(HTML('#iem{width:20px; height:19px; margin:0px;border:none; padding:0px;border-radius:25px;background-color:transparent;font-size:12px; color:RoyalBlue}')),
+           tags$style(HTML('#iVesSum{width:20px; height:19px; margin:0px;border:none; padding:0px;border-radius:25px;background-color:transparent;font-size:12px; color:RoyalBlue}'))),
+# java script 
           tags$style(type='text/css', "#data2 { background-color:RoyalBlue; color:white; height:37px;position:absolute;bottom:170%;left:425%;}"),
           tags$style(type='text/css', "#data { background-color:RoyalBlue; color:white; height:37px;position:absolute;bottom:170%;left:425%;}"),
           
@@ -75,9 +83,9 @@ fluidPage(title = "FISHEyE",
                      HTML("<div>
 <p style='font-size:120%'><strong><a style='color:white; background-color:#1a5d99;  font-family:Cambria; border-radius:25px; padding:5px' href='https://dataexplorer.northwestscience.fisheries.noaa.gov/fisheye/'> FISHEyE</a>
                              - Performance Metrics</strong></p> 
-                             <p><i>West Coast Trawl Catch Share Program:</i></p>     
+                            
                           </div>")), uiOutput("SectorSelect")  
-          ),
+          ),# <p><i>West Coast Trawl Catch Share Program:</i></p>     
           navbarPage(id="page", collapsible=TRUE, inverse=F,
             title="",
 
@@ -115,18 +123,13 @@ fluidPage(title = "FISHEyE",
                                 wellPanelHeading(
                                   uiOutput("CategorySelect")
                                 ),
-                                uiOutput("SelectText"),
-                                uiOutput("VariableSelect")
-                              ),
-                              wellPanelSub(
-                                uiOutput("FishAkSelect"),
-                                uiOutput("FishWhitingSelect")
+                                uiOutput("VesSumSelect"),uiOutput("SelectText"),
+                                 uiOutput("VariableSelect")
+                               
                               )
+                            
                        ),
-                       column(6,
-                              wellPanelSub(
-                                uiOutput("VesSumSelect")
-                              )),
+                  
                       column(6,
                               wellPanelSub(
                                 uiOutput("IndicatorSelect"),
@@ -136,8 +139,12 @@ fluidPage(title = "FISHEyE",
                               ),
                               wellPanelSub(
                                  uiOutput("YearSelect")#,
-                               )#,
-                              ),
+                               ),
+                             
+                      wellPanelSub(
+                                uiOutput("FishAkSelect"),
+                                uiOutput("FishWhitingSelect")
+                              ) ), 
                         column(6,
                                wellPanel(
 #                                 uiOutput("DodgeSelect"),
@@ -154,7 +161,7 @@ fluidPage(title = "FISHEyE",
 
 
 )),
-        navbarMenu("About",
+        navbarMenu("Instructions",
                      tabPanel("About", 
                               source("external/explorer/explorerSourceFiles/about.R")$value
                      ),
@@ -175,8 +182,12 @@ fluidPage(title = "FISHEyE",
                    fluidRow(
                      column(12, htmlOutput("Email")))
                    ),
+          tabPanel("FISHEyE Applications",
+                   fluidRow(
+                     column(12, htmlOutput("ApplicationsText"))
+                   )),
           tabPanel(HTML('<a class="btn btn-warning", href="http://dataexplorer.northwestscience.fisheries.noaa.gov/fisheye/"
-                        style="height:37px;margin: -24px -50px; float:top;position:absolute;right:-100px;font-familiy: Arial, Helvetica, sans-serif;font-size: 12pt; padding-top:7px;
+                        style="height:37px;border-radius:25px;margin: -24px -50px; float:top;position:absolute;right:-100px;font-familiy: Arial, Helvetica, sans-serif;font-size: 12pt; padding-top:7px;
                         padding-bottom:10px"> FISHEyE Homepage</a>' ),style='width:1000px')
           ), #end app level fluid row#, target="_blank"
           appFrameFooterScrolling()

@@ -3,9 +3,9 @@
 library(appFrame)
 library(shiny)
 library(ggplot2)
-library(reshape2)
+#library(reshape2)
 library(grid)
-library(scales)
+#library(scales)
 
 #options(error=browser) # debugging
 source("external/serverHead.R")

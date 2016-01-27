@@ -20,8 +20,8 @@ output$ShortdescrSelect <- renderUI({
 })
 #HTML("<div> Statistic:<i class='fa fa-info fa-fw' style='font-size:12px; color:blue'></i></div>")
 output$YearSelect <- renderUI({
-  tags$div(class="ckbox", checkboxGroupInput( "YearSelect", p("Years:", # p(HTML("<div title=This is a tooltip> Years:<i class='fa fa-info-circle fa-fw' style='font-size:12px; color:blue'></i></div>"), 
-                                                              span(tags$br(), "(The Catch Share program began in 2011)", style="font-style:italic;font-size:10.5pt; font-weight:normal;"), style="margin-bottom:-2px"), 
+  tags$div(class="ckbox", checkboxGroupInput( "YearSelect","Years:",# p("Years:", # p(HTML("<div title=This is a tooltip> Years:<i class='fa fa-info-circle fa-fw' style='font-size:12px; color:blue'></i></div>"), 
+                                                              #span(tags$br(), "(The Catch Share program began in 2011)", style="font-style:italic;font-size:10.5pt; font-weight:normal;"), style="margin-bottom:-2px"), 
                                               choices = DatVars()$YEAR, selected = DatVars()$YEAR))
 })
 
@@ -30,9 +30,9 @@ output$CategorySelect <- renderUI({
       choices = DatVars()$CATEGORY))
 })
 
-fish.var <- c("All fisheries combined"="All Fisheries"," All catch share fisheries combined"="All Catch Share Fisheries","At-sea Pacific whiting","Shoreside Pacific whiting",
+fish.var <- c("All fisheries combined"="All Fisheries"," All Catch Share fisheries combined"="All Catch Share Fisheries","At-sea Pacific whiting","Shoreside Pacific whiting",
               "DTS trawl with trawl endorsement","Non-whiting, non-DTS trawl with trawl endorsement",  "Groundfish fixed gear with trawl endorsement",
-  "All non-catch share fisheries combined"="All Non-Catch Share Fisheries", "Groundfish fixed gear with fixed gear endorsement","Crab","Shrimp","Other fisheries")
+  "All non-Catch Share fisheries combined"="All Non-Catch Share Fisheries", "Groundfish fixed gear with fixed gear endorsement","Crab","Shrimp","Other fisheries")
 
 Variable <- reactive({
   dat <- DatMain()
@@ -163,20 +163,18 @@ observe({
 
 
 output$FishAkSelect <- renderUI({
-  tags$div(class="ckbox", checkboxInput("FishAkSelect", p("Include vessels that fished in AK: ", 
-                                                          span("By selecting this, you will include vessels that also participated in Alaskan fisheries. 
-                                                               Data from their activities in Alaska are not included.", style="font-style:italic;font-size:10pt")), value = TRUE))
+  tags$div(class="ckbox", checkboxInput("FishAkSelect", p("Include vessels that fished in Alaska: ", 
+                                                          span("By selecting this, you will include vessels that also participated in Alaskan fisheries. Data from their activities in Alaska are not included.", style="font-style:italic;font-size:10pt")), value = TRUE))
 })
 
 output$FishWhitingSelect <- renderUI({
-  tags$div(class="ckbox", checkboxInput("FishWhitingSelect", p("Include vessels that fished for whiting: ", 
-                                                               span("By selecting this, you will include vessels that also fished for whiting. 
-                                                                    Data from their activities in are included if this box is selected.", style="font-style:italic;font-size:10pt")), value = TRUE))
+  tags$div(class="ckbox", checkboxInput("FishWhitingSelect", p("Include vessels that fished for Pacific whiting: ", 
+                                                               span("By selecting this, you will include vessels that also fished for Pacific whiting. Data from their activities are included if this box is selected.", style="font-style:italic;font-size:10pt")), value = TRUE))
 })
 
 output$IndicatorSelect <- renderUI({
   tagList(
-    selectInput("Ind_sel", "Select an indicator category", c('Demographic'="Demographic", 'Economic'="Economic", 'Regional'="Regional"), selectize=T),
+    selectInput("Ind_sel", "Select an indicator category:", c('Demographic'="Demographic", 'Economic'="Economic", 'Regional'="Regional"), selectize=T),
     tags$div(class="statbox", radioButtons("MetricSelect","", choices=c(DatVars()$METRIC[1:8])))
   )
 })
@@ -195,16 +193,22 @@ observe({
 })
 
 output$SectorSelect <- renderUI({
-  selectInput("Sect_sel", "", c('Catcher Vessel'="CV", 'Mothership vessels'="M", 'Catcher Processor vessels'="CP", 'First Receivers and Shorebased processors'="FR"), selectize=T)
-})
+  tags$div(class="sectselect", selectInput("Sect_sel", span("West Coast Trawl Catch Share Program:", style="font-size:110%;font-style:italic; padding:5px; display:inline-block;vertical-align:middle"), c('Catcher Vessels'="CV", 'Mothership Vessels'="M", 'Catcher Processor Vessels'="CP", 'First Receivers and Shorebased Processors'="FR"), width='35%')
+)
+  })
 
 
 output$VesSumSelect <- renderUI({
+  if(PermitPlot()){
+  if(input$VariableSelect!="All Fisheries"&input$VariableSelect!="All Catch Share Fisheries"&input$VariableSelect!="All Non-Catch Share Fisheries") {
+ 
   tagList(
-    tags$div(class="ckbox", radioButtons("VesSum",span("For all vessels that fished within selected fisheries, show data for activities:", style="font-size:11pt; font-weight:bold;"), #font-style:italic;
-                                           choices=c("only within selected fisheries"="within","across all catch share fisheries"="acrossCS","across all West Coast fisheries"="acrossWC")))
-  )
+    tags$div(class="ckbox", radioButtons("VesSum", HTML("<div> Show data summed: <button id='iVesSum' type='button' class='btn btn-default action-button shiny-bound-input'> <i class='fa fa-info-circle fa-fw' ></i></button> </div>"),
+                                           choices=c("within selected fisheries"="within","across all Catch Share fisheries"="acrossCS","across all West Coast fisheries"="acrossWC")))
+  )} else {return()}
+    } else {return()}
 })
+#span("For all vessels that fished within selected fisheries, show data for activities:", style="font-size:11pt; font-weight:bold;"), #font-style:italic;
 
 output$StatSelect <- renderUI({
   tagList(
@@ -240,7 +244,7 @@ observe({
 output$PlotSelect <- renderUI({
   if(input$tabs!="Panel2"){
 #    if(input$DodgeSelect == "Economic measures side-by-side") {
-      tags$div(class="ckbox", selectInput("PlotSelect", "", choices= c("Bar", "Point", "Line")))
+      tags$div(class="ckbox", selectInput("PlotSelect", "Plot options:", choices= c("Bar", "Point", "Line")))
 #    } else return()
   } else return()
 })
@@ -259,11 +263,11 @@ output$SelectText <- renderText ({
    }
 })
 
-attr(input, "readonly") <- FALSE
-input$ActionButtonMemory <- 0
-observe({
-  if(length(input$data)>0){
-    if((input$data-input$ActionButtonMemory)>0){
-      input$ActionButtonMemory<- input$data # Equalize
-    }}
-})
+#attr(input, "readonly") <- FALSE
+#input$ActionButtonMemory <- 0
+#observe({
+#  if(length(input$data)>0){
+#    if((input$data-input$ActionButtonMemory)>0){
+#      input$ActionButtonMemory<- input$data # Equalize
+#    }}
+#})

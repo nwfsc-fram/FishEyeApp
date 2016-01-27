@@ -271,7 +271,7 @@ doPlotDownload <- function(dat, x, y, type){
       cols = n2mfrow(npanels)[1]
       
       # get plot width
-      sum = sum(sapply(grobs$width, function(x) convertWidth(x, "in")))
+      sum = .5#sum(sapply(grobs$width, function(x) convertWidth(x, "in")))
       panels_width = par("din")[1] - sum  # inches
       # determine strwrap width
       panel_width = panels_width / cols
