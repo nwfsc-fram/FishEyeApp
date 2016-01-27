@@ -3,21 +3,25 @@ tags$div(style = "margin: 15px; 15px;30px; 30px; width: 60%",
                      <h3>About</h3></div>"),
        #  tags$h3('About Net Revenue Explorer', style="border-top:10px; padding-top:10px; margin-top:10px"),
          tags$p(tags$br(),"Welcome to FISHeries Economics Explorer (FISHEyE) Net Revenue Explorer for the ",
-                tags$a(href = "http://www.westcoast.fisheries.noaa.gov/fisheries/groundfish_catch_shares/index.html",
-                       "West Coast Groundfish Trawl Catch Share Program,", target="_blank"), 'which began in 2011.  
-                FISHEyE allows you to explore economic data pre- and post-catch share management. As part of the Catch Share program, participants of the fishery are required to complete', 
-                tags$a(href='http://www.nwfsc.noaa.gov/research/divisions/fram/economic/economic_data_forms.cfm', 'EDC survey forms', target="_blank"), 'as stated in', 
-                tags$a(href="http://www.ecfr.gov/cgi-bin/text-idx?SID=06f0c396e52e564ce22a048aa910f49f&node=50:13.0.1.1.1.4.1.5&rgn=div8",'regulation 50 CFR 660.114.', target="_blank"), 
-                'Data collection began in 2009, two years prior to implementing the Catch Share program. All vessels that participate in the Catch Share program must report 
-                data for all fisheries they participate in, including non-catch share fisheries. Data used in FISHEyE come from these forms and
-                Pacific Fisheries Information Network', tags$a(href="http://pacfin.psmfc.org/",'(PacFIN).', target="_blank")), 
+                tags$a(href = "http://www.westcoast.fisheries.noaa.gov/fisheries/groundfish_catch_shares/index.html","West Coast Groundfish Trawl Catch Share Program,", target="_blank"), 'which began in 2011.  
+                       The Catch Share program consists of cooperatives for the at-sea mothership (including catcher vessels and motherships) and catcher-processor fleets, and an individual 
+                      fishing quota (IFQ) program for the shorebased trawl fleet (catcher vessels, and first receivers and shorebased processors). FISHEyE allows you to explore economic data pre- and post-Catch Share management.'),
                
-          tags$p('FISHEyE Net Revenue Explorer allows for the comparison of revenue, costs, and net revenue across years for different summary statistics. Net Revenue Explorer currently focuses on', 
-                 tags$a(href="2012CatcherVessel.jpg","catcher vessels.", target="_blank"), 
+                tags$p('Data used in FISHEyE comes from', 
+                tags$a(href='http://www.nwfsc.noaa.gov/research/divisions/fram/economic/economic_data_forms.cfm', 'EDC survey forms', target="_blank"),'and
+                Pacific Fisheries Information Network', tags$a(href="http://pacfin.psmfc.org/",'(PacFIN).', target="_blank"),
+                'As part of the Catch Share program, participants of the fishery are required to complete', tags$a(href='http://www.nwfsc.noaa.gov/research/divisions/fram/economic/economic_data_forms.cfm', 'EDC survey forms', target="_blank"),
+                'as stated in', 
+                tags$a(href="http://www.ecfr.gov/cgi-bin/text-idx?SID=06f0c396e52e564ce22a048aa910f49f&node=50:13.0.1.1.1.4.1.5&rgn=div8",'regulation 50 CFR 660.114', target="_blank"), 
+                'for all fisheries they participate in, including non-Catch Share fisheries. Data collection began in 2009, two years prior to implementing the Catch Share program. 
+                FISHEyE Net Revenue Explorer allows for the comparison of revenue, costs, and net revenue across years for several summary statistics. Net Revenue Explorer currently includes',
+                  tags$a(href="2012CatcherVessel.jpg","catcher vessels.", target="_blank"), 
                   'Other sectors that participate in the Catch Share program', tags$a(href="2012CatcherProcessor.jpg", '(catcher-processors,', target="_blank"), 
                   tags$a(href="2012Mothership.jpg", 'motherships,', target="_blank"), 'and ', 
                   tags$a(href="2012FirstRecieversShorebasedProcessors.jpg",'first receivers and shorebased processors)', target="_blank"),
-                  ' will be added in the future. Additional metrics to assess the effectiveness and outcomes of the catch share program are also in development.'),
+                  ' will be added. Additional metrics to assess the effectiveness and outcomes of the Catch Share program are also in development.'),
+               
+                 
          tags$p('FISHEyE Net Revenue Explorer is user driven and interactive. Information on how to use FISHEyE Net Revenue Explorer is available in the', tags$em("Instructions"), 'tab.
                 Information on the variables in the dataset and definitions of the statistics and measures used are 
                 found in the', tags$em("Definitions"), 'tab. The plots and analyses are provided to aid exploration of the data. Further analyses can be done by downloading the data.'),
@@ -25,18 +29,22 @@ tags$div(style = "margin: 15px; 15px;30px; 30px; width: 60%",
          tags$hr(),
          tags$h3("A note about confidentiality"), 
          p('Data confidentiality requirements do not allow us to show individual observations.
-         We therefore aggregate or summarize the data to protect individual confidentiality.  
+         Therefore, we aggregate or summarize the data to protect individual confidentiality.  
          In some cases, this limits our ability to show certain statistics or measures. 
-         Data queries that would display confidential data are not plotted or made available to download. In these cases, a message will be appear that indicates which data are suppressed
-         due to confidentiality. This is to differentiate suppressed confidential data from data points that do not exist. 
-         Please note that there are some cases where there are not enough observations of vessels to differentiate between vessles 1) fished solely in the West Coast fisheries or 2) also fished 
-         in Alaska or 3) did not fish for whting or 4) also fished for whiting. When this occurs, we show results for groups combined, regardless of whether or not you selected the', tags$em('Include vessels that fished in AK'), 'button
-          or the', tags$em('Include vessels that fished for whiting'), 'button. 
-         More information on data confidentiality requirements can be found in the',
+         Data queries that would display confidential data are not plotted or made available to download. In these cases, a message will appear that indicates which data are suppressed
+         due to confidentiality. This message will help you to differentiate suppressed confidential data from data points that do not exist. Please note there are some cases where results cannot be presented 
+          after selecting the box for either 1) vessels that fished in Alaska or 2) vessels that fished for Pacific whiting. This is because there are not enough vessels to differentiate between selections. 
+           When this happens, we show results for when the box is selected.  More information on data confidentiality requirements can be found in the',
          tags$a(href = "http://www.nwfsc.noaa.gov/research/divisions/fram/documents/Administration_Operations_Report_2014.pdf",
          "EDC Administration and Operations Report.", target="_blank")),
-         
          tags$hr(),
+          tags$h3('A note about the timing that data become available:'), 
+          p('EDC forms are submitted by September 1st each year for the previous fiscal year of the participant (i.e., FY2011 data were received in September 2012), 
+                allowing participants to', tags$em('close their books'), 'and file taxes before completing their EDC forms. The QA/QC process requires approximately 6 months. This means that 2011 EDC data were available in March 2013; 
+              however, there is one additional complication. Participants submit data by fiscal year which varies by company and may not correspond exactly to calendar year.
+              Although data are uploaded into FISHEyE after the QA/QC process has been completed, the data are not considered finalized until the following year once the complete set of data have been received and processed. 
+              As a result, calendar year 2014 are not finalized until Spring 2017.'),
+      tags$hr(),
          tags$h3("Please visit the following websites for more information on:"),
            # tags$p("General information about West Coast Groundfish Management"),
             HTML("<div style='display:inline-block;width:100%;padding:0;line-height: 2.35em; margin-top:5px; margin-bottom:10px;'>
@@ -54,7 +62,8 @@ tags$div(style = "margin: 15px; 15px;30px; 30px; width: 60%",
             
             tags$a(href="http://pacfin.psmfc.org/","Pacific Fisheries Information Network (PacFIN)", target="_blank"),tags$br(),
 
-
+       tags$br(),
+       
          tags$hr(),
          tags$h3("Disclaimer"),
          tags$p("The data used in this application are periodically updated and subject to change."),
@@ -79,10 +88,10 @@ tags$div(style = "margin: 15px; 15px;30px; 30px; width: 60%",
 #           "nwfsc.fisheye@noaa.gov", tags$br()),
 #       tags$hr(),
        tags$h3("Acknowledgements"),
-       tags$p("There are numerous individuals to thank for their contributions in developing FISHEyE. We thank the Northwest Fisheries Science Center (NWFSC) 
+       tags$p("There are numerous individuals to thank for their contributions in developing FISHEyE. We thank Dr. Todd Lee for realizing FISHEyE. We thank the Northwest Fisheries Science Center (NWFSC) 
               economists and application developers, Scientific Data Management staff, and Information Technology staff. We thank PacFIN for providing landings
               information. NMFS Office of Science and Technology and NMFS Office of Sustainable Fisheries provided support. Numerous individuals reviewed the application 
-              and we thank them for their helpful comments and suggestions. Finally and very importantly, we thank the members of the West Coast fishing industry who 
+              and we thank them for their helpful comments and suggestions. Finally, and very importantly, we thank the members of the West Coast fishing industry who 
               have supplied information to the EDC Program.",
          tags$br(),
          tags$br(),

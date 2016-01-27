@@ -8,9 +8,6 @@ library(reshape2)
 #library(gridExtra)
 library(grid)
 library(scales)
-#library(shinyjs) # to toggle between showing plots and data table
-#library(DT) #This package is good for filtering data but not compatible with current version of shiny on the server
-#library(shinyBS) # this package is used to modify the size of actionbuttons
 #library(mail) #for sending email
 
 
