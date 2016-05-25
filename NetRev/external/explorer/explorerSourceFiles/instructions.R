@@ -1,3 +1,5 @@
+#Code in this file is for instructions page.
+
 tags$div(style = "margin: 15px; 15px; 30px; width: 60%",
          HTML("<div style='display:inline-block;width:100%;padding:0;line-height: 0.72em; margin-top:5px; margin-bottom:5px;'>
                      <h3>Instructions</h3></div>",

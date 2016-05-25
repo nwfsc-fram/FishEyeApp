@@ -1,9 +1,12 @@
+#
 #======================================
 
 # this page handles all of the reactive 
 # expressions for the dynamic user interface
-
+# These reactive expressions are then called in ex.reactives.R 
 #======================================
+
+
 #observe({
 #  if(is.null(input$send) || input$send==0) return(NULL)
 #  from <- isolate(input$from)
@@ -23,47 +26,25 @@ observeEvent(input$reset_input, {
 
 
 output$ShortdescrSelect <- renderUI({ 
-  tags$div(class="ckbox", checkboxGroupInput("ShortdescrSelect", HTML("<div> Economic measures:<button id='iem' type='button' class='btn btn-default action-button shiny-bound-input'> <i class='fa fa-info-circle fa-fw' ></i> 
-                                                                      </button></div>"), 
-                                             choices = c("Revenue" = "Revenue", "Variable costs" = "Variable costs", 
-                                             "Fixed costs" = "Fixed costs", "Variable Cost Net Revenue"= "Variable cost net revenue",
-                                             "Total Cost Net Revenue" = "Total cost net revenue"), selected = c("Revenue", "Variable costs", 
-                                                                                                                "Fixed costs", "Variable cost net revenue","Total cost net revenue")))
+  tags$div(class="ckbox", checkboxGroupInput("ShortdescrSelect", HTML("<div> Economic measures:<button id='iem' type='button' class='btn btn-default action-button shiny-bound-input'> 
+                                                                      <i class='fa fa-info-circle fa-fw' ></i> </button></div>"), 
+                                             choices = c("Revenue","Variable costs", "Fixed costs", "Variable Cost Net Revenue", "Total Cost Net Revenue"),
+                                              selected = c("Revenue", "Variable costs",  "Fixed costs", "Variable Cost Net Revenue","Total Cost Net Revenue")))
 })
 #HTML("<div> Statistic:<i class='fa fa-info fa-fw' style='font-size:12px; color:blue'></i></div>")
 output$YearSelect <- renderUI({
-  tags$div(class="ckbox", checkboxGroupInput( "YearSelect", "Years:",#p("Years:", # p(HTML("<div title=This is a tooltip> Years:<i class='fa fa-info-circle fa-fw' style='font-size:12px; color:blue'></i></div>"), 
-                                                            #  span(tags$br(), "(The Catch Share program began in 2011)", style="font-style:italic;font-size:10.5pt; font-weight:normal;"), style="margin-bottom:-2px"), 
-                                              choices = DatVars()$YEAR, selected = DatVars()$YEAR))
+  tags$div(class="ckbox", checkboxGroupInput( "YearSelect", "Years:", choices = DatVars()$YEAR, selected = DatVars()$YEAR))
 })
 
 output$CategorySelect <- renderUI({
   #   tags$div(title="Hi, I am a sample hover tip",
-  
-  tags$div(class="ckbox", radioButtons("CategorySelect", "Group vessels according to:", 
-                                       
-                                       choices = DatVars()$CATEGORY))
-  #   )
+  tags$div(class="ckbox", radioButtons("CategorySelect", "Group vessels according to:", choices = DatVars()$CATEGORY))
 })
 
-fish.var <- c("All fisheries combined"="All Fisheries"," All catch share fisheries combined"="All Catch Share Fisheries","At-sea Pacific whiting","Shoreside Pacific whiting",
-              "DTS trawl with trawl endorsement","Non-whiting, non-DTS trawl with trawl endorsement",  "Groundfish fixed gear with trawl endorsement",
-              "All non-catch share fisheries combined"="All Non-Catch Share Fisheries", "Groundfish fixed gear with fixed gear endorsement","Crab","Shrimp","Other fisheries")
+fish.var <- c("All fisheries combined"="All Fisheries"," All Catch Share fisheries combined"="All Catch Share Fisheries","At-sea Pacific whiting","Shoreside Pacific whiting",
+              "DTS trawl with trawl endorsement","Non-whiting, non-DTS trawl with trawl endorsement",  "Non-whiting midwater trawl","Groundfish fixed gear with trawl endorsement",
+              "All non-Catch Share fisheries combined"="All Non-Catch Share Fisheries", "Groundfish fixed gear with fixed gear endorsement","Crab","Shrimp")
 
-Variable <- reactive({
-  dat <- DatMain()
-  if(input$CategorySelect == "Fisheries"){
-    variable = fish.var
-  } else if(input$CategorySelect == "Homeport"){
-    variable = factorOrder$port
-  } else if(input$CategorySelect == "State"){
-    variable = factorOrder$state
-  } else {
-    variable = factorOrder$lengths
-    #       subByCategory <- dat[dat$CATEGORY == input$CategorySelect,] 
-  }
-  return(variable)
-})
 
 
 
@@ -74,37 +55,37 @@ output$VariableSelect <- renderUI({
         tagList(           
           tags$div(class="select", selectInput("inSelect","",
                                                c("All fisheries" = "All Fisheries",
-                                                 "All catch share fisheries" = "All Catch Share Fisheries",
-                                                 "All non-catch share fisheries" = "All Non-Catch Share Fisheries")), style="margin-bottom:-10px"),
+                                                 "All Catch Share fisheries" = "All Catch Share Fisheries",
+                                                 "All non-Catch Share fisheries" = "All Non-Catch Share Fisheries")), style="margin-bottom:-10px"),
           checkboxGroupInput("VariableSelect", "Select one or more state:", choices = factorOrder$state, selected="")
         )
       } else if(input$CategorySelect == "Vessel length class"){
         tagList(           
           tags$div(class="select", selectInput("inSelect","",
                                                c("All fisheries" = "All Fisheries",
-                                                 "All catch share fisheries" = "All Catch Share Fisheries",
-                                                 "All non-catch share fisheries" = "All Non-Catch Share Fisheries")), style="margin-bottom:-10px"),
+                                                 "All Catch Share fisheries" = "All Catch Share Fisheries",
+                                                 "All non-Catch Share fisheries" = "All Non-Catch Share Fisheries")), style="margin-bottom:-10px"),
           checkboxGroupInput("VariableSelect",  "Select one or more vessel length class:", choices=factorOrder$lengths, selected="")
         )
       } else if(input$CategorySelect == "Homeport"){
         tagList(           
           tags$div(class="select", selectInput("inSelect","",
                                                c("All fisheries" = "All Fisheries",
-                                                 "All catch share fisheries" = "All Catch Share Fisheries",
-                                                 "All non-catch share fisheries" = "All Non-Catch Share Fisheries")), style="margin-bottom:-10px"),
+                                                 "All Catch Share fisheries" = "All Catch Share Fisheries",
+                                                 "All non-Catch Share fisheries" = "All Non-Catch Share Fisheries")), style="margin-bottom:-10px"),
           #$bsButton("selectall", "Select all", style="primary", size="extra-small",block=F, type="action"),
           tags$div(checkboxGroupInput("VariableSelect", div("Select one or more homeport:", style="margin-top:0; padding:-10px"), choices=factorOrder$port, selected=""))
         )
       } else if(input$CategorySelect=="Fisheries"){
         tagList(
-          #              selectInput("fishCatSelect","", c("Catch share fisheries"="CSF", "Non-catch shares fisheries"="NSF", "All fisheries"="AF"), selected="AF"),
+          #              selectInput("fishCatSelect","", c("Catch share fisheries"="CSF", "Non-Catch Shares fisheries"="NSF", "All fisheries"="AF"), selected="AF"),
           actionButton("selectall2", "All fisheries", style="default", size="extra-small",block=F, type="action"),
-          actionButton("selectallcs", "All catch share fisheries", style="default",size="extra-small", block=F, type="action"),
-          actionButton("selectallncs", "All non-catch share fisheries", style="default", size="extra-small", block=F, type="action"),
+          actionButton("selectallcs", "All Catch Share fisheries", style="default",size="extra-small", block=F, type="action"),
+          actionButton("selectallncs", "All non-Catch Share fisheries", style="default", size="extra-small", block=F, type="action"),
           #  conditionalPanel("input.fishCatSelect==AF", 
           tags$div(class="ckbox2", checkboxGroupInput("VariableSelect", HTML("<div style='font-style:italic; font-size:10.87pt; font-weight:normal; margin-top:8.5pt'> 
                                                                              or select fisheries individually:  <button id='ivs' type='button' class='btn btn-default action-button shiny-bound-input'> <i class='fa fa-info-circle fa-fw' ></i></button> </div>"), 
-                                                      choices=c("All fisheries combined"="All Fisheries"," All catch share fisheries combined"="All Catch Share Fisheries",fish.var[3:12])#div(fish.var, stlye="font-style:bold")#fish.var
+                                                      choices=c("All fisheries combined"="All Fisheries"," All Catch Share fisheries combined"="All Catch Share Fisheries",fish.var[3:12])#div(fish.var, stlye="font-style:bold")#fish.var
                                                       , selected=""))
           #tags$div(class="ckbox", checkboxGroupInput("ShortdescrSelect", HTML("<div> Economic measures:<button id='iem' type='button' class='btn btn-default action-button shiny-bound-input'> <i class='fa fa-info-circle fa-fw' ></i> 
           
@@ -119,29 +100,29 @@ output$VariableSelect <- renderUI({
         tagList(           
           tags$div(class="select", selectInput("inSelect","",
                                                c("All fisheries" = "All Fisheries",
-                                                 "All catch share fisheries" = "All Catch Share Fisheries",
-                                                 "All non-catch share fisheries" = "All Non-Catch Share Fisheries")), style="margin-bottom:-10px"),
+                                                 "All Catch Share fisheries" = "All Catch Share Fisheries",
+                                                 "All non-Catch Share fisheries" = "All Non-Catch Share Fisheries")), style="margin-bottom:-10px"),
           tags$div(class="rbutton2",  radioButtons("VariableSelect", "Select ONE state", choices = c("No state selected"="","Washington"="Washington", "Oregon"="Oregon","California"="California"), selected="")) 
         )
       } else if(input$CategorySelect == "Vessel length class"){
         tagList(           
           tags$div(class="select", selectInput("inSelect","",
                                                c("All fisheries" = "All Fisheries",
-                                                 "All catch share fisheries" = "All Catch Share Fisheries",
-                                                 "All non-catch share fisheries" = "All Non-Catch Share Fisheries")), style="margin-bottom:-10px"),
+                                                 "All Catch Share fisheries" = "All Catch Share Fisheries",
+                                                 "All non-Catch Share fisheries" = "All Non-Catch Share Fisheries")), style="margin-bottom:-10px"),
           tags$div(class="rbutton2", radioButtons("VariableSelect",  "Select ONE vessel length class", choices=c("No vessel length selected"="",factorOrder$lengths), selected=""))
         )
       } else if(input$CategorySelect == "Homeport"){
         tagList(           
           tags$div(class="select", selectInput("inSelect","",
                                                c("All fisheries" = "All Fisheries",
-                                                 "All catch share fisheries" = "All Catch Share Fisheries",
-                                                 "All non-catch share fisheries" = "All Non-Catch Share Fisheries")), style="margin-bottom:-10px"),
+                                                 "All Catch Share fisheries" = "All Catch Share Fisheries",
+                                                 "All non-Catch Share fisheries" = "All Non-Catch Share Fisheries")), style="margin-bottom:-10px"),
           tags$div(class="rbutton2", radioButtons("VariableSelect", "Select ONE homeport", choices=c("No homeport selected"="",factorOrder$port), selected=""))
         )
       } else if(input$CategorySelect=="Fisheries"){
         # tagList(
-        # selectInput("fishCatSelect2","", c("Catch share fisheries"="CSF", "Non-catch share fisheries"="NSF", "All fisheries"="AF"), selected="AF"),
+        # selectInput("fishCatSelect2","", c("Catch share fisheries"="CSF", "Non-Catch Share fisheries"="NSF", "All fisheries"="AF"), selected="AF"),
         # conditionalPanel(
         #    condition="input.fishCatSelect2==AF", 
         tags$div(class="rbutton", radioButtons("VariableSelect", HTML("<div> Select ONE fishery <button id='iof' type='button' class='btn btn-default action-button shiny-bound-input'> <i class='fa fa-info-circle fa-fw' ></i></button> </div>"), 
@@ -204,7 +185,7 @@ observe({
   else if (input$selectallcs%%2 == 0) {
     updateCheckboxGroupInput(session,"VariableSelect", selected=as.character(0)) } 
   else {
-    updateCheckboxGroupInput(session,"VariableSelect", selected=fish.var[2:7])
+    updateCheckboxGroupInput(session,"VariableSelect", selected=fish.var[2:8])
   }
 })
 
@@ -213,7 +194,7 @@ observe({
   else if (input$selectallncs%%2 == 0) {
     updateCheckboxGroupInput(session,"VariableSelect", selected=as.character(0)) } 
   else {
-    updateCheckboxGroupInput(session,"VariableSelect", selected=fish.var[8:12])
+    updateCheckboxGroupInput(session,"VariableSelect", selected=fish.var[9:12])
   }
 })
 
@@ -281,9 +262,10 @@ output$DodgeSelect <- renderUI({
 
 
 output$PlotSelect <- renderUI({
+  if(input$tabs!="Panel2"){
     if(input$DodgeSelect == "Economic measures side-by-side") {
       tags$div(class="ckbox", selectInput("PlotSelect", "", choices= c("Bar", "Point", "Line")))
-    } else return()
+    }} else return()
 })
 
 #output$PlotSelect <- renderUI({
@@ -328,7 +310,7 @@ output$SelectText <- renderText ({
 
 #output$SelectTextYear <- renderText({
 #  HTML("<div style='display:inline-block;width:100%; margin-top:10px'>
-#                                       <i>The catch share program was implemented after 2010</i></div>")
+#                                       <i>The Catch Share program was implemented after 2010</i></div>")
 #})
 #attr(input, "readonly") <- FALSE
 #input$ActionButtonMemory <- 0

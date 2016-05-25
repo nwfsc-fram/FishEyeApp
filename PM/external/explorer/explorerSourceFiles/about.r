@@ -2,39 +2,47 @@ tags$div(style = "margin: 15px; 15px;30px; 30px; width: 60%",
          HTML("<div style='display:inline-block;width:100%;padding:0;line-height: 0.72em; margin-top:5px; margin-bottom:5px;'>
                      <h3>About</h3></div>"),
        #  tags$h3('About Net Revenue Explorer', style="border-top:10px; padding-top:10px; margin-top:10px"),
-         tags$p(tags$br(),"Welcome to FISHeries Economics Explorer (FISHEyE) Net Revenue Explorer for the ",
-                tags$a(href = "http://www.westcoast.fisheries.noaa.gov/fisheries/groundfish_catch_shares/index.html",
-                       "West Coast Groundfish Trawl Catch Share Program,", target="_blank"), 'which began in 2011.  
-                FISHEyE allows you to explore economic data pre- and post-catch share management. As part of the Catch Share program, participants of the fishery are required to complete', 
+         tags$p(tags$br(),"Welcome to FISHeries Economics Explorer (FISHEyE) Performance Metrics page for the ",
+                tags$a(href = "http://www.westcoast.fisheries.noaa.gov/fisheries/groundfish_catch_shares/index.html", "West Coast Groundfish Trawl Catch Share Program,", target="_blank"),
+               'which began in 2011. The Catch Share program consists of cooperatives for the at-sea mothership (including catcher vessels and motherships) and catcher-processor fleets,
+                and an individual fishing quota (IFQ) program for the shorebased trawl fleet (catcher vessels, and first receivers and shorebased processors).'),
+       tags$br(),
+       
+            tags$p('The Catch Share program was instituted with several goals, including:'),
+       tags$ul(tags$li('Provide for a viable, profitable, and efficient groundfish fishery;'),
+               tags$li('Increase operational flexibility;'), 
+               tags$li('Minimize adverse effects on fishing communities and other fisheries to the extent practical;'), 
+               tags$li('Promote measurable economic and employment benefits through the seafood catching, processing, distribution, and support sectors of the industry;'), 
+               tags$li('Provide quality product for the consumer; and,'),
+               tags$li('Increase safety in the fishery.')),  
+tags$p('FISHEyE Performance Metrics provides metrics to assess the effectiveness and outcomes of the Catch Share program. The metrics are not intended to be interpreted as causal (i.e., X caused Y change), 
+       directional (i.e., "up is good, down is bad"), nor normative (i.e., a particular trend is "good" or "bad"), but, rather, to facilitate the examination of trends and changes.'),
+                
+               tags$br(),
+                
+                tags$p('Data used in FISHEyE comes from',tags$a(href='http://www.nwfsc.noaa.gov/research/divisions/fram/economic/economic_data_forms.cfm', 'EDC survey forms', target="_blank"),
+                       'and Pacific Fisheries Information Network', tags$a(href="http://pacfin.psmfc.org/",'(PacFIN).', target="_blank"), 
+                       'As part of the Catch Share program, participants of the fishery are required to complete', 
                 tags$a(href='http://www.nwfsc.noaa.gov/research/divisions/fram/economic/economic_data_forms.cfm', 'EDC survey forms', target="_blank"), 'as stated in', 
                 tags$a(href="http://www.ecfr.gov/cgi-bin/text-idx?SID=06f0c396e52e564ce22a048aa910f49f&node=50:13.0.1.1.1.4.1.5&rgn=div8",'regulation 50 CFR 660.114.', target="_blank"), 
                 'Data collection began in 2009, two years prior to implementing the Catch Share program. All vessels that participate in the Catch Share program must report 
-                data for all fisheries they participate in, including non-catch share fisheries. Data used in FISHEyE come from these forms and
-                Pacific Fisheries Information Network', tags$a(href="http://pacfin.psmfc.org/",'(PacFIN).', target="_blank")), 
+                data for all fisheries they participate in, including non-catch share fisheries.'), 
                
-          tags$p('FISHEyE Net Revenue Explorer allows for the comparison of revenue, costs, and net revenue across years for different summary statistics. Net Revenue Explorer currently focuses on', 
-                 tags$a(href="2012CatcherVessel.jpg","catcher vessels.", target="_blank"), 
-                  'Other sectors that participate in the Catch Share program', tags$a(href="2012CatcherProcessor.jpg", '(catcher-processors,', target="_blank"), 
-                  tags$a(href="2012Mothership.jpg", 'motherships,', target="_blank"), 'and ', 
-                  tags$a(href="2012FirstRecieversShorebasedProcessors.jpg",'first receivers and shorebased processors)', target="_blank"),
-                  ' will be added in the future. Additional metrics to assess the effectiveness and outcomes of the catch share program are also in development.'),
-         tags$p('FISHEyE Net Revenue Explorer is user driven and interactive. Information on how to use FISHEyE Net Revenue Explorer is available in the', tags$em("Instructions"), 'tab.
-                Information on the variables in the dataset and definitions of the statistics and measures used are 
-                found in the', tags$em("Definitions"), 'tab. The plots and analyses are provided to aid exploration of the data. Further analyses can be done by downloading the data.'),
+         tags$p('FISHEyE Performance Metrics is user driven and interactive. Information on how to use FISHEyE Performance Metrics is available in the', tags$em("Instructions"), 'tab.
+                Information on the variables in the dataset and definitions of the statistics and metrics used are found in the', tags$em("Definitions"), 'tab.'),
+         tags$p('The metrics provided are not an exhaustive list of potential performance metrics. They were chosen based on their ability to present meaningful information about the fishery 
+                that can be tracked over time, as well as data availability. Further metrics can be developed using the summary data available from',
+                tags$a(href='https://dataexplorer.northwestscience.fisheries.noaa.gov/fisheye/NetRevExplorer/', 'FISHEyE Net Revenue Explorer.', target="_blank")),
          
          tags$hr(),
          tags$h3("A note about confidentiality"), 
-         p('Data confidentiality requirements do not allow us to show individual observations.
-         We therefore aggregate or summarize the data to protect individual confidentiality.  
-         In some cases, this limits our ability to show certain statistics or measures. 
-         Data queries that would display confidential data are not plotted or made available to download. In these cases, a message will be appear that indicates which data are suppressed
-         due to confidentiality. This is to differentiate suppressed confidential data from data points that do not exist. 
-         Please note that there are some cases where there are not enough observations of vessels to differentiate between vessles 1) fished solely in the West Coast fisheries or 2) also fished 
-         in Alaska or 3) did not fish for whting or 4) also fished for whiting. When this occurs, we show results for groups combined, regardless of whether or not you selected the', tags$em('Include vessels that fished in AK'), 'button
-          or the', tags$em('Include vessels that fished for whiting'), 'button. 
-         More information on data confidentiality requirements can be found in the',
-         tags$a(href = "http://www.nwfsc.noaa.gov/research/divisions/fram/documents/Administration_Operations_Report_2014.pdf",
-         "EDC Administration and Operations Report.", target="_blank")),
+         p('Data confidentiality requirements do not allow us to show individual observations. Therefore, we aggregate or summarize the data to protect individual confidentiality.'),
+         p('Data queries that would display confidential data are not plotted or made available to download. In these cases, a message will appear below the figure to indicate that data 
+           are suppressed due to confidentiality. This message will help you to differentiate suppressed confidential data from data points that do not exist.'),
+         p("There are some cases where there are not enough vessels to differentiate between results summed across all vessels, whiting vessels, and non-whiting vessels. This occurs when there 
+           is less than three vessels at either the whiting or non-whiting level. When this happens, we show data for the", tags$em("all vessels"), "level and indicate that we have done so in a 
+           message below the plot and in the data table. More information on data confidentiality requirements can be found in the",
+         tags$a(href = "http://www.nwfsc.noaa.gov/research/divisions/fram/documents/Administration_Operations_Report_2014.pdf","EDC Administration and Operations Report.", target="_blank")),
          
          tags$hr(),
          tags$h3("Please visit the following websites for more information on:"),
@@ -57,7 +65,7 @@ tags$div(style = "margin: 15px; 15px;30px; 30px; width: 60%",
 
          tags$hr(),
          tags$h3("Disclaimer"),
-         tags$p("The data used in this application are periodically updated and subject to change."),
+         tags$p("The data used in this application are periodically updated and subject to change.See the blog post for information on when data were last updated."),
          
          tags$hr(),
          

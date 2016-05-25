@@ -1,14 +1,15 @@
-#this is the main content or output page for the explorer app
+#This page 
+#  1. calls the different R files needed
+#  2. calls java script for the information icons
+#  3. calls functions for plotting and data tables
 
 
 #source reactive expressions and other code
 source("external/explorer/explorerSourceFiles/ex.reactives.R", local = TRUE)
-#source("external/explorer/explorerSourceFiles/ex.plot.reactives.R", local = TRUE)
 source("external/explorer/explorerSourceFiles/ex.io.sidebar1.R", local = TRUE) 
 source("external/explorer/explorerSourceFiles/doPlot.R", local = TRUE)
 source("external/explorer/explorerSourceFiles/doPlotDownload.R", local = TRUE)
 source("external/explorer/explorerSourceFiles/defaultText.R", local = TRUE)
-#source("external/explorer/explorerSourceFiles/doPlotThirds.R", local = TRUE)
 
 observeEvent(input$istat, {
   session$sendCustomMessage(type = 'testmessage',
@@ -42,18 +43,6 @@ observeEvent(input$ivs, {
                             message = 'Select individual fisheries or activities combined over a group of fisheries. For example, the option ALL CATCH SHARE FISHERIES shows the combined activities across the five catch share fisheries.')
 })
 
-#output$PlotMain <- renderPlot({
-#  if(!PermitPlot()) return()
-#  if(PermitPlot() & input$PlotSelect != "Bar"){
-#    doPlot(dat = DatSub(), x = "YEAR", y = "VALUE/1000", type = "summary")
-#  } else {
-#  if(PermitPlot() & input$PlotSelect=="Bar" & input$DodgeSelect == "Economic measures side-by-side"){
-#  doPlot(dat = DatSub(), x = "YEAR", y = "VALUE/1000", type = "summary")}
-#  if(PermitPlot() & input$PlotSelect=="Bar" & input$DodgeSelect == "Composition of total cost revenue"){
-#    doPlot(dat = DatSub2(), x = "YEAR", y = "VALUE/1000", type = "summary")}
-#  if(PermitPlot() & input$PlotSelect=="Bar" & input$DodgeSelect == "Composition of variable cost revenue"){
-#    doPlot(dat = DatSub3(), x = "YEAR", y = "VALUE/1000", type = "summary")}
-#}}, height = 700, width = 1200)
 
 scale_height <- function(){
   if(length(input$VariableSelect)<=2){ 
@@ -76,9 +65,9 @@ output$PlotMain <- renderPlot({
   if(PermitPlot() &  input$DodgeSelect == "Economic measures side-by-side"){
     doPlot(dat = DatSub(), x = "YEAR", y = "VALUE/1000", type = "summary")}
   if(PermitPlot() & input$DodgeSelect == "Composition of Total Cost Net Revenue"){
-    doPlot(dat = DatSub2(), x = "YEAR", y = "VALUE/1000", type = "summary")}
+    doPlot(dat = DatSub(), x = "YEAR", y = "VALUE/1000", type = "summary")}
   if(PermitPlot() & input$DodgeSelect == "Composition of Variable Cost Net Revenue"){
-    doPlot(dat = DatSub3(), x = "YEAR", y = "VALUE/1000", type = "summary")}
+    doPlot(dat = DatSub(), x = "YEAR", y = "VALUE/1000", type = "summary")}
   #  })
 },  height=scale_height, width = "auto")
 
@@ -109,7 +98,7 @@ output$TableMain <- renderDataTable({
     table
   }
   #  })
-})
+}, options = list(autoWidth=FALSE))
 
 output$TableThirds <- renderDataTable({ 
   input$data2
@@ -138,7 +127,7 @@ output$TableThirds <- renderDataTable({
     table
   }
   #  })
-})
+}, options = list(autoWidth=FALSE))
 
 #############################################
 
@@ -155,9 +144,6 @@ output$PlotThirds <- renderPlot({
 
 
 # download buttons ------------------------------------------------------------
-################################################################
-##MODIFIED
-#################################################################
 # render table of data subset to csv for download
 output$dlTable <- downloadHandler(
   filename = function() { 'dataexplorerTable.csv' },
@@ -171,7 +157,7 @@ output$dlTable <- downloadHandler(
       temp <-    data.frame("Year", "Summary variable","Summary Variable category","Fisheries Category","Statistic", "Economic Measure", "Thirds", "Fished in Alaska","Fished for whiting",  "Number of vessels", "Value","Variance (MAD,SD)")
       colnames(temp)=colnames(table)
       table <- rbindCommonCols(temp, table) 
-      names(table) <- c(paste("Sourced from the FISHEyE application (http://devdataexplorer.nwfsc.noaa.gov/fisheye/FisheyeApp/) maintained by NOAA Fisheriess NWFSC on ",
+      names(table) <- c(paste("Sourced from the FISHEyE application (http://dataexplorer.northwestscience.fisheries.noaa.gov/fisheye/NetRevExplorer/) maintained by NOAA Fisheriess NWFSC on ",
                               format(Sys.Date(), format="%B %d %Y")),"","","","","","","","","","")
     }
     else {
@@ -182,15 +168,12 @@ output$dlTable <- downloadHandler(
       temp <-    data.frame("Year", "Summary variable","Summary Variable category", "Fisheries Category","Statistic", "Economic Measure", "Fished in Alaska", "Fished for whiting","Number of vessels","Value", "Variance (MAD, SD)")
       colnames(temp)=colnames(table)
       table <- rbindCommonCols(temp, table) 
-      names(table) <- c(paste("Sourced from the FISHEyE application (http://devdataexplorer.nwfsc.noaa.gov/fisheye/FisheyeApp/) maintained by NOAA Fisheriess NWFSC on ",
-                              format(Sys.Date(), format="%B %d %Y")),"","","","","","","","")
+      names(table) <- c(paste("Sourced from the FISHEyE application (http://dataexplorer.northwestscience.fisheries.noaa.gov/fisheye/NetRevExplorer/) maintained by NOAA Fisheriess NWFSC on ",
+                              format(Sys.Date(), format="%B %d %Y")),"","","","","","","","","")
     } 
     write.csv(table, file)
   }
 )
-################################################################
-##MODIFIED
-#################################################################
 
 
 # render plot from  to pdf for download
@@ -202,53 +185,9 @@ output$dlFigure <- downloadHandler(
     if(input$tabs=="Panel2"){ 
       doPlotDownload(dat = DatSubThirds(), x = "YEAR", y = "VALUE/1000", type = "thirds")}
     else {
-      ## if(input$PlotSelect != "Bar"){
-      #   doPlotDownload(dat = DatSub(), x = "YEAR", y = "VALUE/1000", type = "summary")
-      #  } else {
-      if(input$DodgeSelect == "Economic measures side-by-side"){
-        doPlotDownload(dat = DatSub(), x = "YEAR", y = "VALUE/1000", type = "summary")}
-      else if(input$DodgeSelect == "Composition of Total Cost Net Revenue"){
-        doPlotDownload(dat = DatSub2(), x = "YEAR", y = "VALUE/1000", type = "summary")}
-      else if(input$DodgeSelect == "Composition of Variable Cost Net Revenue"){
-        doPlotDownload(dat = DatSub3(), x = "YEAR", y = "VALUE/1000", type = "summary")#} 
-      }
-    }  
+         doPlotDownload(dat = DatSub(), x = "YEAR", y = "VALUE/1000", type = "summary")}
     #  }
     dev.off()
-    
-    
   }
 )
 
-
-
-
-#old download button
-# render plot from  to pdf for download
-#output$dlPlotMain <- downloadHandler(
-#    filename = function() {'dataexplorerPlot.pdf'},
-#    content = function(file){
-#      pdf(file = file, width=11, height=8.5)
-#      if(PermitPlot() & input$PlotSelect != "Bar"){
-#        doPlot(dat = DatSub(), x = "YEAR", y = "VALUE/1000", type = "summary")
-#      } else {
-
-#           if(PermitPlot() & input$DodgeSelect == "Economic measures side-by-side"){
-#        doPlotDownload(dat = DatSub(), x = "YEAR", y = "VALUE/1000", type = "summary")}
-#      else if(PermitPlot() & input$DodgeSelect == "Total cost revenue figure"){
-#        doPlotDownload(dat = DatSub2(), x = "YEAR", y = "VALUE/1000", type = "summary")}
-#      else if(PermitPlot() & input$DodgeSelect == "Variable cost revenue figure"){
-#        doPlotDownload(dat = DatSub3(), x = "YEAR", y = "VALUE/1000", type = "summary")#} 
-# }     }
-#      dev.off()
-#    }
-#)
-
-#output$dlPlotThirds <- downloadHandler(
-#    filename = function() {'ThirdsAnalysis.pdf'},
-#    content = function(file){
-#      pdf(file = file, width=11, height=8.5)
-#      doPlotDownload(dat = DatSubThirds(), x = "YEAR", y = "VALUE/1000", type = "thirds")
-#      dev.off()
-#    }
-#)

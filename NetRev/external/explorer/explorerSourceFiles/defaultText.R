@@ -43,10 +43,20 @@ tags$div(style = "margin-top: 15px;margin-bottom:0; width: 80%; ",
 output$BlogUpdates <- renderUI({  
   tags$div(style = "margin-top:0; padding-top:0;background-color:#F8F8E9;",
          tags$h3("Updates"),
+       tags$div( class='date', style='height:45px;width:30px; font-family:Arial; font-weight:bold;background-color:#ffffff;text-align:center; border-top:1px solid #c0c0c0;
+                 border-left:1px solid #c0c0c0;border-right:1px solid #c0c0c0;position:absolute;z-index:3;line-height: 13px;',
+                 HTML("<span class='month' style='text-transform:uppercase;font-size:11px;'>May</span><br />
+                      <span class='day' style='font-size:16px;'>25</span><br />
+                      <span class='year' style='font-size:11px;line-height: 10px;'>2016</span>")
+                 ),
+       tags$p(HTML("<span style='margin-left:60px;font-size:18px;font-weight:bold'>Data updated</span>")), 
+       tags$p(tags$br(),"Data are periodically updated. We uploaded an updated dataset today. Data were previously updated 4/25/16, 3/7/16, 2/24/16, 2/15/16. On February 24th, we added vessels that reported Alaska as their homeport. 
+              These vessels are grouped into the Puget Sound port. Only their activities in a West Coast fishery are included; activities in Alaskan fisheries are not included."),
+              tags$hr(),
          tags$div( class='date', style='height:45px;width:30px;font-family:Arial;font-weight:bold;background-color:#ffffff;text-align:center;border-top:1px solid #c0c0c0;
                    border-left:1px solid #c0c0c0;border-right:1px solid #c0c0c0;position:absolute;z-index:3;line-height: 13px;',
-                   HTML("<span class='month' style='text-transform:uppercase;font-size:11px;'>Jan</span><br />
-                        <span class='day' style='font-size:16px;'>12</span><br />
+                   HTML("<span class='month' style='text-transform:uppercase;font-size:11px;'>Feb</span><br />
+                        <span class='day' style='font-size:16px;'>8</span><br />
                         <span class='year' style='font-size:11px;line-height: 10px;'>2016</span>")
          ),
          tags$p(HTML("<span style='margin-left:60px;font-size:18px;font-weight:bold'>Welcome to the Net Revenue Explorer!</span>")), 
@@ -56,17 +66,6 @@ output$BlogUpdates <- renderUI({
                 tags$br(),
         
         tags$hr()#, 
-     #  tags$div( class='date', style='height:45px;width:30px; font-family:Arial; font-weight:bold;background-color:#ffffff;text-align:center; border-top:1px solid #c0c0c0;
-     #            border-left:1px solid #c0c0c0;border-right:1px solid #c0c0c0;position:absolute;z-index:3;line-height: 13px;',
-     #            HTML("<span class='month' style='text-transform:uppercase;font-size:11px;'>Oct</span><br />
-     #                 <span class='day' style='font-size:16px;'>28</span><br />
-     #                 <span class='year' style='font-size:11px;line-height: 10px;'>2015</span>")
-     #            ),
-       
-     #  tags$p(HTML("<span style='margin-left:60px;font-size:18px;font-weight:bold'>What are we currently working on?</span>")), 
-     #  tags$p(tags$br(),"We are working on adding other sectors to the Net Revenue Explorer. We are also working on adding 
-     #         additional metrics to assess the effectiveness and outcomes of the catch share program.",
-     #         tags$hr())
               
        )#,
 })
@@ -84,10 +83,21 @@ output$BlogResponses <- renderUI({
   #       tags$ul(
  #          tags$li("We look forward to receiving feedback and questions. Please send questions and feedback to", tags$strong('nwfsc.fisheye@noaa.gov.'))
   #       ),
-      tags$div( class='date', style='height:45px;width:30px;font-family:Arial;font-weight:bold;background-color:#ffffff;text-align:center;border-top:1px solid #c0c0c0;
+ tags$div( class='date', style='height:45px;width:30px;font-family:Arial;font-weight:bold;background-color:#ffffff;text-align:center;border-top:1px solid #c0c0c0;
                    border-left:1px solid #c0c0c0;border-right:1px solid #c0c0c0;position:absolute;z-index:3;line-height: 13px;',
-                  HTML("<span class='month' style='text-transform:uppercase;font-size:11px;'>Jan</span><br />
-                        <span class='day' style='font-size:16px;'>15</span><br />
+           HTML("<span class='month' style='text-transform:uppercase;font-size:11px;'>Feb</span><br />
+                <span class='day' style='font-size:16px;'>17</span><br />
+                <span class='year' style='font-size:11px;line-height: 10px;'>2016</span>")
+           ),
+ tags$p(HTML("<span style='margin-left:60px;font-size:18px;font-weight:bold'>Have port groups been combined?</span>")), 
+ tags$p(tags$br(),
+        'For many homeports, there are relatively few vessels that fish for groundfish. To maximize the amount of data we can display while retaining geographic variation, we have aggregated vessles into port groups.  For instance, vessels that reported Morro Bay and Monterey ports as their homeports have been grouped in a single homeport.',
+        tags$br()),
+ 
+tags$div( class='date', style='height:45px;width:30px;font-family:Arial;font-weight:bold;background-color:#ffffff;text-align:center;border-top:1px solid #c0c0c0;
+                   border-left:1px solid #c0c0c0;border-right:1px solid #c0c0c0;position:absolute;z-index:3;line-height: 13px;',
+                  HTML("<span class='month' style='text-transform:uppercase;font-size:11px;'>Feb</span><br />
+                        <span class='day' style='font-size:16px;'>8</span><br />
                         <span class='year' style='font-size:11px;line-height: 10px;'>2016</span>")
  ),
  tags$p(HTML("<span style='margin-left:60px;font-size:18px;font-weight:bold'>When will other sectors be added to the Net Revenue Explorer?</span>")), 

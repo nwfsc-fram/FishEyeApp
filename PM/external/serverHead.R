@@ -1,17 +1,10 @@
-years.list <- c("2009", "2010", "2011", "2012")
-
 # load("data/tabs.out.RData") ## this is now the following datatables
-load("data/netrevTable.RData")
+load("data/CVperfmetrics.RData")
 load("data/factorOrder.RData")
-load("data/netrevThirds.RData")
+#load("data/Mperfmetrics.RData")
+#load("data/CPperfmetrics.RData")
+#load("data/FRperfmetrics.RData")
 
-# custom palettes
-# for net rev figures
-pal.netrev <- c("Revenue" = "#66a61e", "Fixed costs" = "#e41a1c",
-  "Total cost net revenue" = "#7570b3", 
-  "Variable costs" = "#d95f02", "Variable cost net revenue" = "#1b9e77")
-
-pal.thirds <- c("#1b9e77", "#d95f02", "#7570b3")
 
 
 #======================function to help create table with date===================================#

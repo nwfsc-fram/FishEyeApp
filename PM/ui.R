@@ -16,7 +16,6 @@ fluidPage(title = "FISHEyE",
                             .shiny-output-error-validation {
                             color: red;
                             font-size: 120%;
-                            padding: 50px;
                             }
                             ")),
             tags$style(HTML(".select {margin-top:-20px}"),
@@ -27,16 +26,14 @@ fluidPage(title = "FISHEyE",
             tags$style(HTML(".statbox {margin-top: -30px; margin-bottom: -15px}")),
             tags$style(HTML(".ckbox2 .checkbox:first-child label{font-weight:bold;}")),
             tags$style(HTML(".ckbox2 .checkbox:nth-child(2) label{font-weight:bold;}")),
-            tags$style(HTML(".ckbox2 .checkbox:nth-child(8) label{font-weight:bold;}")),
-            tags$style(HTML(".ckbox2 .checkbox:nth-child(3) label{margin-left:17px;}")),
-            tags$style(HTML(".ckbox2 .checkbox:nth-child(4) label{margin-left:17px;}")),tags$style(HTML(".ckbox2 .checkbox:nth-child(5) label{margin-left:17px;}")),
-            tags$style(HTML(".ckbox2 .checkbox:nth-child(6) label{margin-left:17px;}")),tags$style(HTML(".ckbox2 .checkbox:nth-child(7) label{margin-left:17px;}")),
-            tags$style(HTML(".ckbox2 .checkbox:nth-child(9) label{margin-left:17px;}")),tags$style(HTML(".ckbox2 .checkbox:nth-child(10) label{margin-left:17px;}")),
-            tags$style(HTML(".ckbox2 .checkbox:nth-child(11) label{margin-left:17px;}")),tags$style(HTML(".ckbox2 .checkbox:nth-child(12) label{margin-left:17px;}")),
+            tags$style(HTML(".ckbox2 .checkbox:nth-child(9) label{font-weight:bold;}")),
+            tags$style(HTML(".ckbox2 .checkbox:nth-child(3) label{margin-left:17px;}")), tags$style(HTML(".ckbox2 .checkbox:nth-child(4) label{margin-left:17px;}")),
+           tags$style(HTML(".ckbox2 .checkbox:nth-child(5) label{margin-left:17px;}")),tags$style(HTML(".ckbox2 .checkbox:nth-child(6) label{margin-left:17px;}")),
+            tags$style(HTML(".ckbox2 .checkbox:nth-child(7) label{margin-left:17px;}")),tags$style(HTML(".ckbox2 .checkbox:nth-child(8) label{margin-left:17px;}")),
+            tags$style(HTML(".ckbox2 .checkbox:nth-child(10) label{margin-left:17px;}")),tags$style(HTML(".ckbox2 .checkbox:nth-child(11) label{margin-left:17px;}")),
+            tags$style(HTML(".ckbox2 .checkbox:nth-child(12) label{margin-left:17px;}")),tags$style(HTML(".ckbox2 .checkbox:nth-child(13) label{margin-left:17px;}")),
 
             tags$style(HTML(".sectselect >li{position:relative; z-index:10000; background-color:black !important; display:inline-block; vertical-align:middle}")),
-#            tags$style(HTML(".sectselect label{display:inline-block; vertical-align:middle; float:left; width:95%}")),
-#            tags$style(HTML(".sectselect select{display:inline-block; vertical-align:middle; float:right; width:35%}")),
             tags$style(HTML(".sectselect{font-size:28px; line-height:28px;}")),
           
             tags$style(HTML(".actbutton {margin-bottom:5px}")),
@@ -46,9 +43,9 @@ fluidPage(title = "FISHEyE",
             tags$style(HTML(".rbutton .radio:nth-child(3) label{font-weight:bold")),
             tags$style(HTML(".rbutton .radio:nth-child(4) label{margin-left:17px;")), tags$style(HTML(".rbutton .radio:nth-child(5) label{margin-left:17px;")), tags$style(HTML(".rbutton .radio:nth-child(6) label{margin-left:17px;")),
            tags$style(HTML(".rbutton .radio:nth-child(7) label{margin-left:17px;")), tags$style(HTML(".rbutton .radio:nth-child(7) label{margin-left:17px;")),tags$style(HTML(".rbutton .radio:nth-child(8) label{margin-left:17px;")),
-           tags$style(HTML(".rbutton .radio:nth-child(9) label{font-weight:bold")),
-           tags$style(HTML(".rbutton .radio:nth-child(10) label{margin-left:17px;")), tags$style(HTML(".rbutton .radio:nth-child(11) label{margin-left:17px;")),tags$style(HTML(".rbutton .radio:nth-child(12) label{margin-left:17px;")),
-           tags$style(HTML(".rbutton .radio:nth-child(13) label{margin-left:17px;")),
+           tags$style(HTML(".rbutton .radio:nth-child(10) label{font-weight:bold")),
+           tags$style(HTML(".rbutton .radio:nth-child(9) label{margin-left:17px;")), tags$style(HTML(".rbutton .radio:nth-child(11) label{margin-left:17px;")),tags$style(HTML(".rbutton .radio:nth-child(12) label{margin-left:17px;")),
+           tags$style(HTML(".rbutton .radio:nth-child(13) label{margin-left:17px;")),tags$style(HTML(".rbutton .radio:nth-child(14) label{margin-left:17px;")),
            tags$style(HTML(".rbutton .radio:nth-child(1) label{font-style:italic")),
            tags$style(HTML(".rbutton2 .radio:nth-child(1) label{font-style:italic")),
            tags$style(HTML('#iof{width:20px; height:19px; margin:0px;border:none; padding:0px;border-radius:25px;background-color:transparent;font-size:12px; color:RoyalBlue}')),
@@ -57,13 +54,13 @@ fluidPage(title = "FISHEyE",
            tags$style(HTML('#istat{width:20px; height:19px; margin:0px;border:none; padding:0px;border-radius:25px;background-color:transparent;font-size:12px; color:RoyalBlue}')),
            tags$style(HTML('#ipo{width:20px; height:19px; margin:0px;border:none; padding:0px;border-radius:25px;background-color:transparent;font-size:12px; color:RoyalBlue}')),
            tags$style(HTML('#ivs{width:20px; height:19px; margin:0px;border:none; padding:0px;border-radius:25px;background-color:transparent;font-size:12px; color:RoyalBlue}')),
-           tags$style(HTML('#iem{width:20px; height:19px; margin:0px;border:none; padding:0px;border-radius:25px;background-color:transparent;font-size:12px; color:RoyalBlue}')),
-           tags$style(HTML('#iVesSum{width:20px; height:19px; margin:0px;border:none; padding:0px;border-radius:25px;background-color:transparent;font-size:12px; color:RoyalBlue}'))),
+           tags$style(HTML('#iem{width:20px; height:19px; margin:0px;border:none; padding:0px;border-radius:25px;background-color:transparent;font-size:12px; color:RoyalBlue}'))),
+#           tags$style(HTML('#iVesSum{width:20px; height:19px; margin:0px;border:none; padding:0px;border-radius:25px;background-color:transparent;font-size:12px; color:RoyalBlue}'))),
 # java script 
-          tags$style(type='text/css', "#data2 { background-color:RoyalBlue; color:white; height:37px;position:absolute;bottom:170%;left:425%;}"),
-          tags$style(type='text/css', "#data { background-color:RoyalBlue; color:white; height:37px;position:absolute;bottom:170%;left:425%;}"),
+          tags$style(type='text/css', "#data2 { background-color:RoyalBlue; color:white; height:37px;position:absolute;bottom:170%;left:425%;}
+                                       #data  { background-color:RoyalBlue; color:white; height:37px;position:absolute;bottom:170%;left:425%;}"),
           
-           tags$head(includeScript("google-analytics.js")),
+#           tags$head(includeScript("google-analytics.js")),
            tags$head(tags$script(src = "message-handler.js")),
           
            tags$head(
@@ -100,12 +97,7 @@ fluidPage(title = "FISHEyE",
                                        column(2, uiOutput("DataButton")),  
                                      #  column(2, uiOutput("VCNRButton")), 
                                        column(12, dataTableOutput("TableMain"), plotOutput("PlotMain", height="auto",width="auto"))
-                                     )),#end fluid row
-                            tabPanel(title=HTML("<div> Fleet-wide <br> Variability Analysis</div>"),value="Panel2",
-                                     fluidRow(
-                                       column(12, htmlOutput("DefaultThirdsText")),                             
-                                       column(2, uiOutput("DataButton2")),
-                                       column(12, dataTableOutput("TableThirds"),plotOutput("PlotThirds", height="auto", width="auto")))))),
+                                     )))),
                             
                   sidebarPanel( 
                    wellPanel( 
@@ -123,7 +115,8 @@ fluidPage(title = "FISHEyE",
                                 wellPanelHeading(
                                   uiOutput("CategorySelect")
                                 ),
-                                uiOutput("VesSumSelect"),uiOutput("SelectText"),
+                          #      uiOutput("VesSumSelect"),
+                                 uiOutput("SelectText"),
                                  uiOutput("VariableSelect")
                                
                               )
@@ -135,21 +128,31 @@ fluidPage(title = "FISHEyE",
                                 uiOutput("IndicatorSelect"),
                               conditionalPanel(condition="input.Ind_sel=='Economic'",
                                 uiOutput("ShortdescrSelect"),
-                                uiOutput("StatSelect"))
+                                uiOutput("StatSelect")),
+                              conditionalPanel(condition="input.Ind_sel!='Economic'",
+                                               uiOutput("StatSelect2"))
                               ),
-                              wellPanelSub(
-                                 uiOutput("YearSelect")#,
-                               ),
+                             
                              
                       wellPanelSub(
-                                uiOutput("FishAkSelect"),
-                                uiOutput("FishWhitingSelect")
-                              ) ), 
-                        column(6,
-                               wellPanel(
-#                                 uiOutput("DodgeSelect"),
-                                 uiOutput("PlotSelect"))
-                               ),
+                                uiOutput("FishWhitingSelect"),
+                                wellPanelSub(conditionalPanel(condition="input.MetricSelect=='Exponential Shannon Index'||input.MetricSelect=='Proportion of revenue from CS fishery'||input.MetricSelect=='Fishery participation'||input.MetricSelect=='Days at sea'", 
+                                                 uiOutput("FishAkSelect"))),
+                                wellPanelSub(
+                                  conditionalPanel(condition="input.AVE_MED2!=''&&input.AVE_MED2!='Total'&&input.AVE_MED!='T'",
+                                                   uiOutput("PlotSelect"))
+                                )
+                              ) , 
+                        wellPanelSub(
+                                
+                                 uiOutput("YearSelect"),
+                                 wellPanelSub(
+                                    conditionalPanel(condition="input.Ind_sel=='Economic'||input.MetricSelect=='Gini coefficient'||input.MetricSelect=='Number of vessels'||
+                                                      input.MetricSelect=='Vessel length'||input.MetricSelect=='Date 50 percent of total catch landed'||input.MetricSelect=='Share of landings by state'",
+                                   uiOutput('moreOptions'))#,
+                                   #conditionalPanel(condition="",uiOutput('moreOptions'))#&&input.ShortdescrSelect=='Revenue'
+                                                    )       
+                               )),
                         column(4,
                                 wellPanel(uiOutput("download_figure"),
                                 #tags$br(),
@@ -165,7 +168,8 @@ fluidPage(title = "FISHEyE",
                      tabPanel("About", 
                               source("external/explorer/explorerSourceFiles/about.R")$value
                      ),
-                     tabPanel("Instructions", 
+                  
+                      tabPanel("Instructions", 
                               source("external/explorer/explorerSourceFiles/instructions.R")$value
                      ),
                      tabPanel("Definitions", 

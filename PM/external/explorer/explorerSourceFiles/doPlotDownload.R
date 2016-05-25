@@ -1,46 +1,191 @@
-doPlotDownload <- function(dat, x, y, type){
+doPlotDownload <- function(dat, x, y){
   if(PermitPlot()){
+    dat <- subset(dat, is.na(dat$VALUE)==FALSE)
     
-    groupVar <- ifelse(type=="summary", "SHORTDESCR", "THIRDS")
-    facetVar <- ifelse(type== "summary" , "VARIABLE", "SHORTDESCR")
-
-    colourThirds <- c('Top third'="#253494",'Middle third'="#41b6c4",'Lower third'="#a1dab4")
-    colourList <- c('Revenue'="#256D36",'Variable costs'="#fed25d",'Fixed costs'="#fca836",'Variable cost net revenue'="#4B958D", 'Total cost net revenue'="#4575B4")
-
+    ######################################################
+    if(min(input$YearSelect)<=2010 & max(input$YearSelect>=2011)){
+      if(input$Ind_sel=="Economic"){
+        temp <-unique(merge(data.frame(dat %>% group_by(SHORTDESCR,whitingv) %>% 
+                                         transmute(y=as.numeric(VALUE[YEAR==max(YEAR)]),VALUE=mean(as.numeric(VALUE[YEAR<2011]), na.rm=T),YEAR=max(YEAR))), 
+                            data.frame(dat %>% group_by(SHORTDESCR,whitingv) %>% summarise(VALUE=mean(as.numeric(VALUE[YEAR>=2011]), na.rm=T))), by=c("SHORTDESCR","whitingv")))
+        temp$pchange <- (temp$VALUE.y-temp$VALUE.x)/temp$VALUE.x
+        temp$y <- ifelse(temp$whitingv=="All vessels", max(dat$VALUE), min(dat$VALUE))
+        temp$y <- ifelse(temp$whitingv=="Non-whiting vessels", (max(dat$VALUE)+min(dat$VALUE))/2, temp$y)
+        dat <- unique(merge(dat, temp[,c("SHORTDESCR","whitingv",'pchange','y','YEAR')], by=c("SHORTDESCR",'whitingv','YEAR'), all.x=T))
+        dat$pchange <- ifelse(is.na(dat$pchange)==T, "", paste(round(dat$pchange,2)*100,'%', sep=""))
+      } else if(input$Ind_sel!="Economic"){
+        if(input$MetricSelect=="Share of landings by state"){
+          temp <-unique(merge(data.frame(dat %>% group_by(agid,whitingv) %>% transmute(y=as.numeric(VALUE[YEAR==max(YEAR)]),VALUE=mean(as.numeric(VALUE[YEAR<2011]), na.rm=T),YEAR=max(YEAR))), 
+                              data.frame(dat %>% group_by(agid,whitingv) %>% summarise(VALUE=mean(as.numeric(VALUE[YEAR>=2011]), na.rm=T))), by=c("agid","whitingv")))
+          temp$pchange <- (temp$VALUE.y-temp$VALUE.x)/temp$VALUE.x
+          temp$y <- ifelse(temp$whitingv=="All vessels", max(dat$VALUE), min(dat$VALUE))
+          temp$y <- ifelse(temp$whitingv=="Non-whiting vessels", (max(dat$VALUE)+min(dat$VALUE))/2, temp$y)
+          dat <- unique(merge(dat, temp[,c("agid","whitingv",'pchange','y','YEAR')], by=c("agid",'whitingv','YEAR'), all.x=T))
+          dat$pchange <- ifelse(is.na(dat$pchange)==T, "", paste(round(dat$pchange,2)*100,'%', sep=""))
+        } else {
+          temp <-unique(merge(data.frame(dat %>% group_by(VARIABLE,whitingv) %>% transmute(y=as.numeric(VALUE[YEAR==max(YEAR)]),VALUE=mean(as.numeric(VALUE[YEAR<2011]), na.rm=T),YEAR=max(YEAR))), data.frame(dat %>% group_by(VARIABLE,whitingv) %>% summarise(VALUE=mean(as.numeric(VALUE[YEAR>=2011]), na.rm=T))), by=c("VARIABLE","whitingv")))
+          temp$pchange <- (temp$VALUE.y-temp$VALUE.x)/temp$VALUE.x
+          temp$y <- ifelse(temp$whitingv=="All vessels", max(dat$VALUE), min(dat$VALUE))
+          temp$y <- ifelse(temp$whitingv=="Non-whiting vessels", (max(dat$VALUE)+min(dat$VALUE))/2, temp$y)
+          dat <- unique(merge(dat, temp[,c("VARIABLE","whitingv",'pchange','y','YEAR')], by=c("VARIABLE",'whitingv','YEAR'), all.x=T))
+          dat$pchange <- ifelse(is.na(dat$pchange)==T, "", paste(round(dat$pchange,2)*100,'%', sep=""))
+          
+        }}} else {
+          dat$pchange <- ''
+        }
+    
+    if(input$Ind_sel=="Economic"){   
+      dat$thresh <- data.frame(dat %>% group_by(SHORTDESCR,whitingv) %>% transmute(threshold=length(table(YEAR[YEAR<=2010]))))[,3]
+    }
+    
+    groupVar <- "whitingv"
+    
+#    colourThirds <- c('Non-whiting vessels'="#253494",'Whiting vessels'="#41b6c4",'All vessels'="#a1dab4")
+    colourThirds <- c('Non-whiting vessels'="#d7191c",'Whiting vessels'="#2b83ba",'All vessels'="#000000")
+    # Plot title construction
     
     plot.title <- function(){
-      if(type == "summary"){
-          return("Summary Economic Measures for West Coast Catcher Vessels")
-      } else {
-        return("Variability Analysis of West Coast Catcher Vessels")
+      if(input$Sect_sel == "CV"){
+        return("Performance Metrics for West Coast Catcher Vessels")
+      } else if(input$Sect_sel == "M"){
+        return("Performance Metrics for West Coast Motherships")
+      } else if(input$Sect_sel == "CP"){
+        return("Performance Metrics for West Coast Catcher Processors")
+      }else if (input$Sect_sel == "FR"){
+        return("Performance Metrics for West Coast First Receivers")
       }}
- 
+    
     gv <- function(){
-      if(type == "summary"){
+      if(input$Ind_sel=="Economic"){
         if(input$CategorySelect=="Fisheries"){
-          sprintf(paste("Group variable:", input$CategorySelect, " Statistic: ", input$StatSelect, " Fished in AK included:", input$FishAkSelect, " Fished for whiting included:", input$FishWhitingSelect))
+          sprintf(paste(input$CategorySelect, ":", input$VariableSelect, "     Statistic: ", input$StatSelect))
         } else {
-          sprintf(paste("Group variable:", input$CategorySelect, "Statistic: ", input$StatSelect, "Fished in AK included:", input$FishAkSelect, "Fished for whiting included:", input$FishWhitingSelect,"Summed across:", input$inSelect))
+          sprintf(paste(input$CategorySelect, ":", input$VariableSelect, "     Statistic: ", input$StatSelect,"    Summed across:", input$inSelect))
         }
       } else {
         if(input$CategorySelect=="Fisheries"){
-          sprintf(paste(input$CategorySelect, ":", input$VariableSelect, " Statistic: ", input$StatSelect, "Fished in AK included:", input$FishAkSelect, " Fished for whiting included:", input$FishWhitingSelect))
+          sprintf(paste(input$CategorySelect, ":", input$VariableSelect, "     Metric: ", input$MetricSelect))
         } else {
-          sprintf(paste(input$CategorySelect, ":", input$VariableSelect, " Statistic: ", input$StatSelect, " Fished in AK included:", input$FishAkSelect, " Fished for whiting included:", input$FishWhitingSelect," Summed across:", input$inSelect))   
-        }}}
-    
-
-    
-    main <- function(){
-      bquote(atop(.(plot.title()), atop(.(gv()))))
+          sprintf(paste(input$CategorySelect, ":", input$VariableSelect, "     Metric: ", input$MetricSelect,"    Summed across:", input$inSelect))   
+        }
+      }
     }
     
- 
+    main <- function(){
+      bquote(atop(.(plot.title()), .(gv())))
+    }
     
+    
+    ylab <- function(){
+      if(input$Ind_sel=="Economic") {
+        paste("Thousands of 2014 $","(",input$StatSelect, ")")   
+        
+      } else if(input$Ind_sel!="Economic") {
+        if(input$MetricSelect=="Crew wage"|input$MetricSelect=="Revenue per crew day"){
+          paste("Thousands of 2014 $","(",input$AVE_MED2, ")")
+          
+        } else if(input$MetricSelect=="Proportion of revenue from CS fishery"){
+          "Proportional of revenue from catch share fishery"  
+        }  else if(input$MetricSelect=="Gini coefficient"){
+          "Gini coefficient"
+        } else if(input$MetricSelect=="Date 50 percent of total catch landed"){
+          "Day of year when 50% of catch was landed"
+        }  else if(input$MetricSelect=="Share of landings by state"){
+          "Share of landings (% of revenue)"
+        }  else {
+          input$MetricSelect         
+        }
+      }
+    }
+    
+    xlab <- function(){
+      if(input$MetricSelect=="Fishery participation"|input$MetricSelect=="Proportion of revenue from CS fishery"){
+        if(max(dat$conf)==0) {
+          if(max(dat$flag)==0){
+            if(input$CategorySelect=="Fisheries"){
+              paste("For individual fisheries and the", input$MetricSelect, "metric, we show all activities for vessels that fished in the selected fisheries, not just their activity in the selected fishery, \nFor example, the", if(length(input$VariableSelect)>2){input$VariableSelect[3]} else if(length(input$VariableSelect)==2) {input$VariableSelect[2]} else {""},"plot above shows the", input$AVE_MED2, input$MetricSelect,"for all vessels that fished for", if(length(input$VariableSelect)>2){input$VariableSelect[3]} else if(length(input$VariableSelect)==2) {input$VariableSelect[2]} else {input$VariableSelect[1]},".")
+            } else {
+              "" 
+            }}else {
+              if(input$CategorySelect=="Fisheries"){
+                paste("For individual fisheries and the", input$MetricSelect, "metric, we show all activities for vessels that fished in the selected fisheries, not just their activity in the selected fishery, \nFor example, the", if(length(input$VariableSelect)>2){input$VariableSelect[3]} else if(length(input$VariableSelect)==2) {input$VariableSelect[2]} else {""},"plot above shows the", input$AVE_MED2, input$MetricSelect,"for all vessels that fished for", if(length(input$VariableSelect)>2){input$VariableSelect[3]} else if(length(input$VariableSelect)==2) {input$VariableSelect[2]} else {input$VariableSelect[1]},".
+                      \nData have been suppressed for years that are not plotted as there are not enough observations to protect confidentiality.") 
+              } else {
+                "Data have been sueppressed for years that are not plotted as there are not enough observations to protect confidentiality."        
+              }}} else {
+                if(max(dat$flag)==0){
+                  if(input$CategorySelect=="Fisheries"){
+                    paste("For individual fisheries and the", input$MetricSelect, "metric, we show all activities for vessels that fished in the selected fisheries, not just their activity in the selected fishery, \nFor example, the", if(length(input$VariableSelect)>2){input$VariableSelect[3]} else if(length(input$VariableSelect)==2) {input$VariableSelect[2]} else {""},"plot above shows the", input$AVE_MED2, input$MetricSelect,"for all vessels that fished for", if(length(input$VariableSelect)>2){input$VariableSelect[3]} else if(length(input$VariableSelect)==2) {input$VariableSelect[2]} else {input$VariableSelect[1]},".
+                          \nYour selection would reveal confidential data for years with sufficient observations. Only results for 'All vessels' are shown. 
+                          \nSee the confidentiality section under the ABOUT tab for more information.")
+                  } else{
+                    "Your selection would reveal confidential data for years with sufficient observations. Only results for 'All vessels' are shown. 
+                    \nSee the confidentiality section under the ABOUT tab for more information."
+                  }} else {
+                    if(input$CategorySelect=="Fisheries"){
+                      paste("For individual fisheries and the", input$MetricSelect, "metric, we show all activities for vessels that fished in the selected fisheries, not just their activity in the selected fishery, \nFor example, the", if(length(input$VariableSelect)>2){input$VariableSelect[3]} else if(length(input$VariableSelect)==2) {input$VariableSelect[2]} else {""},"plot above shows the", input$AVE_MED2, input$MetricSelect,"for all vessels that fished for", if(length(input$VariableSelect)>2){input$VariableSelect[3]} else if(length(input$VariableSelect)==2) {input$VariableSelect[2]} else {input$VariableSelect[1]},".
+                            \nData have been suppressed for years that are not plotted as there are not enough observations to protect confidentiality. 
+                            \nIn addition, your selection would reveal confidential data for years with sufficient observations. Only results for 'All vessels' are shown. 
+                            \nSee the confidentiality section under the ABOUT tab for more information.")
+                    } else {
+                      "Data have been suppressed for years that are not plotted as there are not enough observations to protect confidentiality. 
+                      \nIn addition, your selection would reveal confidential data for years with sufficient observations. Only results for 'All vessels' are shown. 
+                      \nSee the confidentiality section under the ABOUT tab for more information."
+                    } }}
+                    } 
+      else if(input$MetricSelect=="Share of landings by state"){
+        if(max(dat$conf)==0) {
+          if(max(dat$flag)==0){
+            if(input$CategorySelect=="State"|input$CategorySelect=="Homeport"){
+              paste("For the", input$MetricSelect, "metric, we show all activities for vessels that homeported in the selected",input$CategorySelect,", not just their activity in the selected",input$CategorySelect,".\nFor example, the plots above show the", input$MetricSelect,"for vessels that homeported in", input$VariableSelect,".")
+            } else {
+              ""
+            }} else {
+              if(input$CategorySelect=="State"|input$CategorySelect=="Homeport"){
+                paste("For the", input$MetricSelect, "metric, we show all activities for vessels that homeported in the selected",input$CategorySelect,", not just their activity in the selected",input$CategorySelect,".\nFor example, the plots above show the", input$MetricSelect,"for vessels that homeported in", input$VariableSelect,".
+                      \nData have been suppressed for years that are not plotted as there are not enough observations to protect confidentiality." )
+              } else {
+                "Data have been suppressed for years that are not plotted as there are not enough observations to protect confidentiality." 
+              }}
+        } else {
+          if(max(dat$flag)==0){
+            if(input$CategorySelect=="State"|input$CategorySelect=="Homeport"){
+              paste("For the", input$MetricSelect, "metric, we show all activities for vessels that homeported in the selected",input$CategorySelect,", not just their activity in the selected",input$CategorySelect,"\nFor example, the plots above show the", input$MetricSelect,"for vessels that homeported in", input$VariableSelect,".
+                    \nYour selection would reveal confidential data for years with sufficient observations.  Only results for 'All vessels' have been shown. 
+                    \nSee the confidentiality section under the ABOUT tab for more information.")
+            } else {
+              "Your selection would reveal confidential data for years with sufficient observations.  Only results for 'All vessels' have been shown. 
+              \nSee the confidentiality section under the ABOUT tab for more information."
+            }}  else {
+              if(input$CategorySelect=="State"|input$CategorySelect=="Homeport"){
+                paste("For the", input$MetricSelect, "metric, we show all activities for vessels that homeported in the selected",input$CategorySelect,", not just their activity in the selected",input$CategorySelect,".\nFor example, the plots above show the", input$MetricSelect,"for vessels that homeported in", input$VariableSelect,".
+                      \nData have been suppressed for years that are not plotted as there are not enough observations to protect confidentiality. 
+                      \nIn addition, your selection would reveal confidential data for years with sufficient observations. Only results for 'All vessels' have been shown. 
+                      \nSee the confidentiality section under the ABOUT tab for more information.")
+              } else {
+                "Data have been suppressed for years that are not plotted as there are not enough observations to protect confidentiality. 
+                \nIn addition, your selection would reveal confidential data for years with sufficient observations. Only results for 'All vessels' have been shown. 
+                \nSee the confidentiality section under the ABOUT tab for more information."
+              }} }
+              } else {
+                if(max(dat$conf)==0) {
+                  if(max(dat$flag)==0){
+                    ""
+                  } else {
+                    "Data have been suppressed for years that are not plotted as there are not enough observations to protect confidentiality." 
+                  }} else {
+                    if(max(dat$flag)==0){
+                      "Your selection would reveal confidential data for years with sufficient observations. Only results for 'All vessels' are shown. 
+                      \nSee the confidentiality section under the ABOUT tab for more information."
+                    }  else {
+                      "Data have been suppressed for years that are not plotted as there are not enough observations to protect confidentiality. 
+                      \nIn addition, your selection would reveal confidential data for years with sufficient observations. Only results for 'All vessels' are shown. 
+                      \nSee the confidentiality section under the ABOUT tab for more information."
+                    }}}
+                    } #end x label function
     # simple scaling for bar charts based on number of inputs
     scale_bars <- function(){
       b = length(input$YearSelect)
-      
       if(b == 1){
         return(0.25)
       } else if(b == 2){
@@ -51,177 +196,125 @@ doPlotDownload <- function(dat, x, y, type){
         return(0.9)
       }
     }
- 
+    
+    
     scale_text <- function() {
-      if(input$CategorySelect =="Fisheries" | input$CategorySelect == "Homeport") {
-      b <- table(table(dat$VARIABLE)>1)[[1]]
-      if(b == 10 | b ==9) {
-        return(1)
-      } else if(b == 8){
-        return(1.2)
-      } else if(b >= 5 & b < 8){
-        return(1.4)
-      } else if(b<5 | b==12){
-        return(1.75)
-      }   else {
-          if(b==11) {
-            return(1)
-          }
-      }
-      } else {
-        return(1.3)
-      }
-    }   
-    
-    scale_text2 <- function() {
-      
-      b <- table(table(dat$SHORTDESCR)>1)[[1]]
-      if(b == 2 | b ==5) {
-        return(1.7)
-      } else {
-        return(1.3)
-      } 
-    }   
-    
-    
-    g <- ggplot(dat, aes_string(x = x, y = y , group = groupVar), environment=environment()) 
-
-        if(type == "summary"){
-          if(input$DodgeSelect == "Economic measures side-by-side"){
-            if(input$PlotSelect!="Bar"){
-        if(input$PlotSelect == "Point"){
-          
-           g <- g + geom_point(aes_string(colour = groupVar), size=4)   
-             } else {
-           g <- g + geom_line(aes_string(colour = groupVar), size=1.5)
-        }} # end if statement for line figure
-          
-        if(input$PlotSelect == "Bar"){
-                g <- g + geom_bar(aes_string(fill = groupVar, order=groupVar), stat="identity", position="dodge", width = scale_bars())
-              } #End if else for side-by-side comparion
-          
-            if(length(input$YearSelect)>1 & min(input$YearSelect)<2011 & max(input$YearSelect)>2010){
-              if(input$YearSelect[1]==2009&input$YearSelect[2]==2010){
-                if(length(input$YearSelect[input$YearSelect>2010])==1){
-                  g <- g + geom_rect(aes_string(xmin=.1, xmax=2.35, ymin=-Inf, ymax=Inf), fill="grey50", alpha=.05/length(input$YearSelect))+ 
-                  geom_text(aes(x=0.4,y=max(VALUE)/1000+max(VALUE)/10000, label="Pre-catch shares", family="sans"),hjust=0, color="grey20", size=4.5/scale_text()) + 
-                  geom_text(aes(x=length(table(as.numeric(YEAR)))+.6,y=max(VALUE)/1000+max(VALUE)/10000,label="Post-catch shares", family="sans"),hjust=1, size=4.5/scale_text(), color="grey20")# +
- 
-              } else {
-                g <- g + geom_rect(aes_string(xmin=.1, xmax=2.5, ymin=-Inf, ymax=Inf), fill="grey50", alpha=.05/length(input$YearSelect))+ 
-                  geom_text(aes(x=0.3,y=max(VALUE)/1000+max(VALUE)/10000, label="Pre-catch shares", family="sans"),hjust=0, color="grey20", size=4.5/scale_text()) + 
-                  geom_text(aes(x=2.65,y=max(VALUE)/1000+max(VALUE)/10000,label="Post-catch shares", family="sans"),hjust=0, size=4.5/scale_text(), color="grey20")# +
-                
-              }} else  {
-                if(length(input$YearSelect[input$YearSelect>2010])==1){
-                  g <- g + geom_rect(aes(xmin=.1, xmax=1.5, ymin=-Inf, ymax=Inf), fill="grey50", alpha=.05/length(input$YearSelect))+ 
-                  geom_text(aes(x=.25,y=max(VALUE)/1000+max(VALUE)/10000, label="Pre-catch shares", family="sans"),hjust=0, size=4.5/scale_text(), color="grey20") + 
-                  geom_text(aes(x=length(table(as.numeric(YEAR)))+.6,y=max(VALUE)/1000+max(VALUE)/10000,label="Post-catch shares", family="sans"),hjust=1, size=4.5/scale_text(), color="grey20") #+
-                } else {
-                  g <- g + geom_rect(aes(xmin=.1, xmax=1.5, ymin=-Inf, ymax=Inf), fill="grey50", alpha=.05/length(input$YearSelect))+ 
-                    geom_text(aes(x=.15,y=max(VALUE)/1000+max(VALUE)/10000, label="Pre-catch shares", family="sans"),hjust=0, size=4.5/scale_text(), color="grey20") + 
-                    geom_text(aes(x=1.9,y=max(VALUE)/1000+max(VALUE)/10000,label="Post-catch shares", family="sans"),hjust=0, size=4.5/scale_text(), color="grey20") #+
-                }
-              }} # end if-else for adding dashed lines or not (pre- and post- catch shares)
-            else {
-              g <- g
+      if(input$Ind_sel!="Economic"){
+        if (min(input$YearSelect)<2009) {
+          return(1.65)
+        }  else {
+          if(input$CategorySelect =="Fisheries" | input$CategorySelect == "Homeport") {
+            b <- table(table(dat$VARIABLE)>1)[[1]]
+            if(b == 10 | b ==9 ) {
+              return(1.3)
+            } else if(b == 8){
+              return(1.3)
+            } else if(b >= 5 & b < 8){
+              return(1.3)
+            } else if(b<5 | b == 12){
+              return(1.65)
+            } else  {
+              return(1.3)
             }
-            }} #End standard plots
-
-# Begin Variability analysis figure
-      if(type!="summary"){
-      if(length(input$YearSelect) > 1){
-        if(length(input$YearSelect)>1 & min(input$YearSelect)<2011 & max(input$YearSelect)>2010){
-          if(input$YearSelect[1]==2009&input$YearSelect[2]==2010){
-            if(length(input$YearSelect[input$YearSelect>2010])==1){
-            g <- g + geom_line(aes_string(colour = groupVar), size=1.5)+  
-              geom_rect(aes(xmin=.1, xmax=2.5, ymin=-Inf, ymax=Inf),fill="grey50", alpha=.05/length(input$YearSelect))+ 
-              geom_text(aes(x=.5,y=max(VALUE)/1000+max(VALUE)/10000, label="Pre-catch shares"),hjust=0, size=4.5/scale_text2(), color="grey20",family="sans") + 
-              geom_text(aes(x=length(table(as.numeric(YEAR)))+.7,y=max(VALUE)/1000+max(VALUE)/10000,label="Post-catch shares"),hjust=1, size=4.5/scale_text2(), color="grey20",family="sans") #+
-            #  geom_text(aes(x=2.5,y=(max(VALUE)/1000+max(VALUE)/4000),label="West Coast trawl catch shares program")) 
-            # geom_linerange(aes(ymin=Inf, ymax=max(VALUE)/1000+max(VALUE)/4000),col="white") 
-            } else {
-              g <- g + geom_line(aes_string(colour = groupVar), size=1.5)+  
-                geom_rect(aes(xmin=.1, xmax=2.5, ymin=-Inf, ymax=Inf),fill="grey50", alpha=.05/length(input$YearSelect))+ 
-                geom_text(aes(x=.25,y=max(VALUE)/1000+max(VALUE)/10000, label="Pre-catch shares"),hjust=0, size=4.5/scale_text2(), color="grey20",family="sans") + 
-                geom_text(aes(x=length(table(as.numeric(YEAR)))-1.5,y=max(VALUE)/1000+max(VALUE)/10000,label="Post-catch shares"),hjust=0, size=4.5/scale_text2(), color="grey20",family="sans") #+
-            }  }  else {
-              if(length(input$YearSelect[input$YearSelect>2010])==1){              
-            g <- g + geom_line(aes_string(colour = groupVar), size=1.5)+ 
-              geom_rect(aes(xmin=.1, xmax=1.5, ymin=-Inf, ymax=Inf),fill="grey50", alpha=.05/length(input$YearSelect))+ 
-              geom_text(aes(x=.25,y=max(VALUE)/1000+max(VALUE)/10000, label="Pre-catch shares"),hjust=0, size=4.5/scale_text2(), color="grey20",family="sans") + 
-              geom_text(aes(x=2.5,y=max(VALUE)/1000+max(VALUE)/10000,label="Post-catch shares"),hjust=1, size=4.5/scale_text2(), color="grey20",family="sans") #+
-            # geom_text(aes(x=1.5,y=(max(VALUE)/1000+max(VALUE)/4000),label="West Coast trawl catch shares program")) 
-            # geom_linerange(aes(ymin=Inf, ymax=max(VALUE)/1000+max(VALUE)/4000),col="white") 
-              } else {
-                g <- g + geom_line(aes_string(colour = groupVar), size=1.5)+ 
-                  geom_rect(aes(xmin=.1, xmax=1.5, ymin=-Inf, ymax=Inf),fill="grey50", alpha=.05/length(input$YearSelect))+ 
-                  geom_text(aes(x=.25,y=max(VALUE)/1000+max(VALUE)/10000, label="Pre-catch shares"),hjust=0, size=4.5/scale_text2(), color="grey20",family="sans") + 
-                  geom_text(aes(x=2.2,y=max(VALUE)/1000+max(VALUE)/10000,label="Post-catch shares"),hjust=0, size=4.5/scale_text2(), color="grey20",family="sans") #+
-              }
-            }} else {
-            g <- g + geom_line(aes_string(colour = groupVar), size=1.5)
-          }} else{
-            g <- g + geom_point(aes_string(colour = groupVar), size=4)
+          } else {
+            return(1.3)
           }
-    } # end variability figure   
+        }} else { 
+          b <- table(table(dat$SHORTDESCR)>1)[[1]]
+          if(b == 1 | b ==3) {
+            return(1.8)
+          } else {
+            return(1.4)
+          } 
+        }}   
+    
+    g <- ggplot(dat, aes_string(x = x, y = y , group = groupVar, order='sort'), environment=environment()) #+coord_cartesian(xlim = c(0, length(table(dat$YEAR))+1))
+    if(length(input$YearSelect)>1){
+        g <- g + geom_line(aes_string(colour = groupVar), size=1.5)
+    } else {
+      g <- g
+    }
+    
+    if(input$PlotSelect==T&dat$STAT[1]!="Fleet-wide total"&is.na(max(dat$VARIANCE))==F) { 
+      g <- g + geom_ribbon(aes(ymax=VALUE+VARIANCE, ymin=VALUE-VARIANCE, fill=whitingv), alpha=.25)#show.legend = FALSE, 
+    } else {
+      g <- g
+    }
+    
+    
+    
+    # Define rectangles and labels
+    if(length(input$YearSelect)>1 & min(input$YearSelect)<2011 & max(input$YearSelect)>2010){
+      if(input$Ind_sel=="Economic"){
+        g <- g + geom_rect(aes(xmin=-Inf, xmax=dat$thresh+.5, ymin=-Inf, ymax=Inf),fill="grey50", alpha=.02)
+        if(input$PlotSelect==T&dat$STAT[1]!="Fleet-wide total"&is.na(max(dat$VARIANCE))==F) {  
+          g <- g + geom_text(aes(x=dat$thresh/3,y=max(VALUE+VARIANCE)+max(VALUE)/10, label="Pre-Catch shares", family="sans"),hjust=0,color = "grey20", size=3/scale_text()) 
+          if(length(table(dat$YEAR[dat$YEAR<2010]))==6){
+            g <- g + geom_text(aes(x=dat$thresh+length(table(dat$YEAR[dat$YEAR>2010]))/2,y=max(VALUE+VARIANCE)+max(VALUE)/10,label="Post-Catch"),hjust=0, family="sans",color = "grey20", size=3/scale_text())+
+              geom_text(aes(x=dat$thresh+length(table(dat$YEAR[dat$YEAR>2010]))/2,y=max(VALUE+VARIANCE)-max(VALUE+VARIANCE)/80,label="shares"),hjust=0, family="sans",color = "grey20", size=3/scale_text())
+          } else {
+            g <- g + geom_text(aes(x=dat$thresh+length(table(dat$YEAR[dat$YEAR>2010]))/2,y=max(VALUE+VARIANCE)+max(VALUE)/10,label="Post-Catch shares"),hjust=0, family="sans",color = "grey20", size=3/scale_text())
+          }
+        } else {
+          g <- g + geom_text(aes(x=dat$thresh/3,y=max(VALUE+0)+max(VALUE)/10, label="Pre-Catch shares", family="sans"),hjust=0,color = "grey20", size=3/scale_text()) 
+          if(length(table(dat$YEAR[dat$YEAR<2010]))==6){
+            g <- g + geom_text(aes(x=dat$thresh+length(table(dat$YEAR[dat$YEAR>2010]))/2,y=max(VALUE+0)+max(VALUE)/10,label="Post-Catch"),hjust=0, family="sans",color = "grey20", size=3/scale_text())+
+              geom_text(aes(x=dat$thresh+length(table(dat$YEAR[dat$YEAR>2010]))/2,y=max(VALUE+0)-max(VALUE)/80,label="shares"),hjust=0, family="sans",color = "grey20", size=3/scale_text())
+          } else {
+            g <- g + geom_text(aes(x=dat$thresh+length(table(dat$YEAR[dat$YEAR>2010]))/2,y=max(VALUE+0)+max(VALUE)/10,label="Post-Catch shares"),hjust=0, family="sans",color = "grey20", size=3/scale_text())
+          }}
+      } 
+      else {
+        g <- g + geom_rect(aes(xmin=-Inf, xmax=length(table(dat$YEAR[dat$YEAR<=2010]))+.5, ymin=-Inf, ymax=Inf),fill="grey50", alpha=.02)
+        if(input$PlotSelect==T&dat$STAT[1]!="Fleet-wide total"&is.na(max(dat$VARIANCE))==F) {  
+          g <- g + geom_text(aes(x=length(table(dat$YEAR[dat$YEAR<2011]))/3,y=max(VALUE+VARIANCE)+max(VALUE)/10, label="Pre-Catch shares", family="sans"),hjust=0,color = "grey20", size=3/scale_text())  
+          if(length(table(dat$YEAR[dat$YEAR<2010]))==6){
+            g <- g + geom_text(aes(x=length(table(dat$YEAR[dat$YEAR<2011]))+length(table(dat$YEAR[dat$YEAR>2010]))/2,y=max(VALUE+VARIANCE)+max(VALUE)/10,label="Post-Catch"),hjust=0, family="sans",color = "grey20", size=3/scale_text())+
+              geom_text(aes(x=length(table(dat$YEAR[dat$YEAR<2011]))+length(table(dat$YEAR[dat$YEAR>2010]))/2,y=max(VALUE+VARIANCE)-max(VALUE+VARIANCE)/50,label="shares"),hjust=0, family="sans",color = "grey20", size=3/scale_text())
+          } else {
+            g <- g + geom_text(aes(x=length(table(dat$YEAR[dat$YEAR<2011]))+length(table(dat$YEAR[dat$YEAR>2010]))/2,y=max(VALUE+VARIANCE)+max(VALUE)/10,label="Post-Catch shares"),hjust=0, family="sans",color = "grey20", size=3/scale_text())
+          }
+        } else {
+          g <- g + geom_text(aes(x=length(table(dat$YEAR[dat$YEAR<2011]))/3,y=max(VALUE+0)+max(VALUE)/10, label="Pre-Catch shares", family="sans"),hjust=0,color = "grey20", size=3/scale_text())  
+          if(length(table(dat$YEAR[dat$YEAR<2010]))==6) {
+            g <- g + geom_text(aes(x=length(table(dat$YEAR[dat$YEAR<2011]))+length(table(dat$YEAR[dat$YEAR>2010]))/2,y=max(VALUE+0)+max(VALUE)/10,label="Post-Catch"),hjust=0, family="sans",color = "grey20", size=3/scale_text())+
+              geom_text(aes(x=length(table(dat$YEAR[dat$YEAR<2011]))+length(table(dat$YEAR[dat$YEAR>2010]))/2,y=max(VALUE+0)-max(VALUE)/50,label="shares"),hjust=0, family="sans",color = "grey20", size=3/scale_text())
+          } else {
+            g <- g + geom_text(aes(x=length(table(dat$YEAR[dat$YEAR<2011]))+length(table(dat$YEAR[dat$YEAR>2010]))/2,y=max(VALUE+0)+max(VALUE)/10,label="Post-Catch shares"),hjust=0, family="sans",color = "grey20", size=3/scale_text())
+          }
+        } 
+      }} else {
+        g <- g  
+      }
+    g <- g + geom_text(aes(label=star), colour="black", vjust=0, size=3)
     
     # define facet
-    if(type =="summary"){
-      g <- g + facet_wrap(~ sort, as.table = TRUE)
-    } else {
-      g <- g + facet_wrap(~ sort)
-    }
-     
-    
+    if(input$Ind_sel!="Economic"){
+      if(input$MetricSelect=="Share of landings by state"){
+        g <- g + facet_wrap(~ agid, as.table = TRUE)#, scales="free_x"
+      } else { g <- g + facet_wrap(~ sort, as.table = TRUE)#, scales="free_x"
+      }} else {
+        g <- g + facet_wrap(~SHORTDESCR, scales="free_x")#(~), sortsortas.table=TRUE,
+      }
     # define scale
-    if(type == "summary") {
-        g <- g + scale_fill_manual(values = colourList, guide=guide_legend(reverse=F)) + 
-          scale_colour_manual(values = colourList, guide=guide_legend(reverse=F))
-    } else {
-      g <- g + scale_fill_manual(values = colourThirds) + 
-        scale_colour_manual(values = colourThirds)
-    }
+    g <- g + scale_fill_manual(values = colourThirds) + scale_colour_manual(values = colourThirds)
 
+        #Pchange labels
+    if(length(input$YearSelect)>1 & min(input$YearSelect)<2011 & max(input$YearSelect)>2010){
+      if(input$Ind_sel!="Economic"){
+        g <- g+geom_text(aes(length(table(input$YearSelect))+.4,y,label=pchange, group=whitingv, color=factor(whitingv)), size=2,fontface="bold")#length(table(YEAR))+
+      } else {
+        g <- g+geom_text(aes(.8,y,label=pchange, group=whitingv, color=factor(whitingv)), size=2,fontface="bold")#length(table(YEAR))+
+      }
+     } else {
+      g <- g
+    }
+    
+    # define solid line y=0
     g <- g + geom_hline(yintercept = 0)
     
- 
     # define labels
-    if(type!="summary"){
-      if(max(dat$flag)>0){
-        if(max(dat$AK_FLAG, na.rm=T)==0){
-          g <- g + labs(y = paste("Thousands ($)", "(",input$StatSelect, ")"), x=paste("Sourced from the FISHEyE application (http://devdataexplorer.nwfsc.noaa.gov/fisheye/FisheyeApp/) maintained by NOAA Fisheries NWFSC on ",format(Sys.Date(), format="%B %d %Y"),     
-             "\nVessels are sorted annually into top, middle, and lower earners based on revenue. 
-             \nSome of the data selected may not be shown. These data have been suppressed as there are not enough observations to protect confidentiality."), title = main()) 
-        } else {
-          g <- g + labs(y = paste("Thousands ($)", "(",input$StatSelect, ")"), x=paste("Sourced from the FISHEyE application (http://devdataexplorer.nwfsc.noaa.gov/fisheye/FisheyeApp/) maintained by NOAA Fisheries NWFSC on ",format(Sys.Date(), format="%B %d %Y"),     
-             "\nVessels are sorted annually into top, middle, and lower earners based on revenue. 
-             \nSome of the data selected may not be shown. These data have been suppressed as there are not enough observations to protect confidentiality.
-             \nNOTE: There are some cases where there are not enough observations of vessels that either 1) fished solely in the West Coast fisheries, 2) also also fished in AK \nor 3) fished for whiting. When this occurs, we show results for groups combined, regardless of whether you selected the INCLUDE VESSELS THAT FISHED IN AK or \nIthe NCLUDE VESSELS THAT FISHED FOR WHITING buttons."), title = main())        
-        } 
-      } else {
-        if(max(dat$AK_FLAG, na.rm=T)==0){
-          g <- g + labs(y = paste("Thousands ($)", "(",input$StatSelect, ")"), x=paste("Sourced from the FISHEyE application (http://devdataexplorer.nwfsc.noaa.gov/fisheye/FisheyeApp/) maintained by NOAA Fisheries NWFSC on ",format(Sys.Date(), format="%B %d %Y"),     
-         "\nVessels are sorted annually into top, middle, and lower earners based on revenue."), title = main()) 
-        } else {
-          g <- g + labs(y = paste("Thousands ($)", "(",input$StatSelect, ")"), x=paste("Sourced from the FISHEyE application (http://devdataexplorer.nwfsc.noaa.gov/fisheye/FisheyeApp/) maintained by NOAA Fisheries NWFSC on ",format(Sys.Date(), format="%B %d %Y"),     
-            "\nVessels are sorted annually into top, middle, and lower earners based on revenue.
-             \nNOTE: There are some cases where there are not enough observations of vessels that either 1) fished solely in the West Coast fisheries, 2) also also fished in AK \n or 3) fished for whiting. When this occurs, we show results for groups combined, regardless of whether you selected the INCLUDE VESSELS THAT FISHED IN AK or \nthe INCLUDE VESSELS THAT FISHED FOR WHITING buttons."), title = main())        
-        } }
-    } else {
-      if(PermitMessage()){
-        if(max(dat$AK_FLAG, na.rm=T)==0){
-          g <- g + labs(y = paste("Thousands ($)","(",input$StatSelect, ")"), x=paste("Sourced from the FISHEyE application (http://devdataexplorer.nwfsc.noaa.gov/fisheye/FisheyeApp/) maintained by NOAA Fisheries NWFSC on ",format(Sys.Date(), format="%B %d %Y"),     
-             "\nNOTE: Data from the Groundfish fixed gear with trawl endorsement fishery in 2009 has been suppressed as there are not enough observations to protect confidentiality."), title = main())   
-        } else {
-          g <- g + labs(y = paste("Thousands ($)","(",input$StatSelect, ")"), x=paste("Sourced from the FISHEyE application (http://devdataexplorer.nwfsc.noaa.gov/fisheye/FisheyeApp/) maintained by NOAA Fisheries NWFSC on ",format(Sys.Date(), format="%B %d %Y"),     
-            "\nNOTE: Data from the Groundfish fixed gear with trawl endorsement fishery in 2009 has been suppressed as there are not enough observations to protect confidentiality.
-             \nNOTE: There are some cases where there are not enough observations of vessels that either 1) fished solely in the West Coast fisheries, 2) also also fished in AK \nor 3) fished for whiting. When this occurs, we show results for groups combined, regardless of whether you selected the INCLUDE VESSELS THAT FISHED IN AK or \nthe INCLUDE VESSELS THAT FISHED FOR WHITING buttons."), title = main())        
-        }
-      }else{
-        g <- g + labs(y = paste("Thousands ($)", "(",input$StatSelect, ")"), x=paste("Sourced from the FISHEyE application (http://devdataexplorer.nwfsc.noaa.gov/fisheye/FisheyeApp/) maintained by NOAA Fisheries NWFSC on ",format(Sys.Date(), format="%B %d %Y")), title = main())       
-      }
-    }
+    g <- g + labs(y = ylab(), x=xlab(), title = main())   
     
     
     # define theme
@@ -230,22 +323,21 @@ doPlotDownload <- function(dat, x, y, type){
       plot.title = element_text(family = "sans", face = "bold", vjust = 1),
       plot.margin = unit(c(0.5, 0.5, 1, 0.5), "cm"),
       panel.background = element_rect(fill = "white"),
-      panel.margin = unit(1.2, "lines"),
+      panel.margin = unit(1, "lines"),
       panel.grid.minor = element_line(linetype = "blank"),
       panel.grid.major.x = element_line(linetype = "blank"),
       panel.grid.major.y = element_line(color = "#656C70", linetype = "dotted"),
-      strip.text = element_text(family = "sans", 
-                                size = 11, color = "grey25", vjust=1),
+      strip.text = element_text(family = "sans", size = 9, color = "grey25", vjust=1),
       strip.background = element_rect(fill = "lightgrey"),
       axis.ticks = element_blank(),
       axis.title.x = element_text(size=rel(.7), face="italic", vjust=0, colour="grey25"),
       axis.title.y = element_text(size=rel(1.2), vjust=2, colour="grey25"),
       axis.line.x = element_line(size = 2, colour = "black", linetype = "solid"),
-      axis.text = element_text(size = 9.5),
+      axis.text = element_text(size = 6),
       legend.position = "top",
       legend.key = element_rect(fill = "white"),
       legend.text = element_text(family = "sans", 
-                                 color = "grey25", face = "bold", size = 12),
+                                 color = "grey25", face = "bold", size = 8),
       legend.title = element_blank())
     
     ##function to wrapping facet labels
@@ -285,8 +377,10 @@ doPlotDownload <- function(dat, x, y, type){
       p$data[[nm]] = unlist(lapply(strwrap(p$data[[nm]], width=width, 
                                            simplify=FALSE), paste, collapse="\n"))
       p$data[[nm]] = gsub("([.])", "\\ ", p$data[[nm]]) 
+      
       invisible(p)
     }   
+    
     #    print(g)
     g <- strwrap_strip_text(g) #use instead of print(g)
     print(g)

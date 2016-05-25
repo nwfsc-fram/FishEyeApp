@@ -6,9 +6,10 @@ wellPanelSub <- function(...){div(class = "well-sub", ...)}
 # calls .css selector for radioButton header
 wellPanelHeading <- function(...){div(class = "well-radioHeading", ...)} 
 
-
-fluidPage(title = "FISHEyE",
+fluidPage(
+title = "FISHEyE",
           #stylize the appearance of different aspects of the website
+tags$head(tags$body(includeHTML("google-analytics.noaa.js"))),
           tags$head(
             tags$style(HTML(".shiny-output-error-validation {color: red; font-size: 120%;}")), #validation error
            # modify spacing of labels for specified widgits
@@ -26,8 +27,8 @@ fluidPage(title = "FISHEyE",
                              .ckbox2 .checkbox:nth-child(5) label{margin-left:17px;}
                              .ckbox2 .checkbox:nth-child(6) label{margin-left:17px;}
                              .ckbox2 .checkbox:nth-child(7) label{margin-left:17px;}
-                             .ckbox2 .checkbox:nth-child(8) label{font-weight:bold;}
-                             .ckbox2 .checkbox:nth-child(9) label{margin-left:17px;}
+                             .ckbox2 .checkbox:nth-child(9) label{font-weight:bold;}
+                             .ckbox2 .checkbox:nth-child(8) label{margin-left:17px;}
                              .ckbox2 .checkbox:nth-child(10) label{margin-left:17px;}
                              .ckbox2 .checkbox:nth-child(11) label{margin-left:17px;}
                              .ckbox2 .checkbox:nth-child(12) label{margin-left:17px;}")),
@@ -39,8 +40,8 @@ fluidPage(title = "FISHEyE",
                              .rbutton .radio:nth-child(6) label{margin-left:17px;}
                              .rbutton .radio:nth-child(7) label{margin-left:17px;}
                              .rbutton .radio:nth-child(8) label{margin-left:17px;}
-                             .rbutton .radio:nth-child(9) label{font-weight:bold;}
-                             .rbutton .radio:nth-child(10) label{margin-left:17px;}
+                             .rbutton .radio:nth-child(10) label{font-weight:bold;}
+                             .rbutton .radio:nth-child(9) label{margin-left:17px;}
                              .rbutton .radio:nth-child(11) label{margin-left:17px;}
                              .rbutton .radio:nth-child(12) label{margin-left:17px;}
                              .rbutton .radio:nth-child(13) label{margin-left:17px;}"
@@ -56,13 +57,16 @@ fluidPage(title = "FISHEyE",
                              #ivs{width:20px; height:19px; margin:0px;border:none; padding:0px;border-radius:25px;background-color:transparent;font-size:12px; color:RoyalBlue}
                              #iem{width:20px; height:19px; margin:0px;border:none; padding:0px;border-radius:25px;background-color:transparent;font-size:12px; color:RoyalBlue}'))),
           # stylize show data and show plots buttons
+   
           tags$style(type='text/css', "#data2 { background-color:RoyalBlue; color:white; height:37px;position:absolute;bottom:170%;left:425%;}
                                        #data { background-color:RoyalBlue; color:white; height:37px;position:absolute;bottom:170%;left:425%;}"),
           
           #java script code to run google analytics and display messages for information icons. 
           tags$head(includeScript("google-analytics.js"),
+                    
                     tags$script(src = "message-handler.js")),
-          
+              
+     
           tags$head(
             # Main css page, downloaded from bootswatch
             tags$link(rel="stylesheet", type="text/css", href="bootstrap.css"),
@@ -71,8 +75,7 @@ fluidPage(title = "FISHEyE",
             tags$link(rel="stylesheet", href="http://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.4.0/css/font-awesome.min.css"),
             tags$style(type="text/css", ".tab-content {overflow: visible;}")         
           ),
-          
-        #   source("www/shiny_framebuster/framebuster.R")$value,
+         #   source("www/shiny_framebuster/framebuster.R")$value,
           appFrameHeaderScrolling(),
           ## example R framebusting code
           fluidRow(div(style = "padding-bottom: 5px;margin-bottom:0"),
@@ -99,29 +102,15 @@ fluidPage(title = "FISHEyE",
                                                          column(2, uiOutput("DataButton")),  
                                                          column(2, uiOutput("VCNRButton")), 
                                                          column(12, dataTableOutput("TableMain"), plotOutput("PlotMain", height="auto",width="auto"))
-                                                         #column(12, #end fluidRow
-                                                         # fluidRow(# column(12,# wellPanel(
-                                                         # fluidRow(HTML("<strong>Plot Options: </strong>"),style = "padding-bottom: 15px;padding-left: 15px"),
-                                                         #fluidRow(column(12, column(5, wellPanelSub(
-                                                         #        fluidRow(column(3, uiOutput("PlotSelect")),column(8, uiOutput("DodgeSelect")
-                                                         #          ))))))) ) #end column
                                                        )),#end fluid row
-                                              #tabPanel(HTML("Data <br> Table"), value="Panel1",                    
-                                              #         fluidRow(column(12, htmlOutput("DefaultTableText"))),
-                                              #         fluidRow(column(12, dataTableOutput("TableMain")))),
-                                              # tabPanel(" "),
                                               tabPanel(title=HTML("<div> Fleet-wide <br> Variability Analysis</div>"),value="Panel2",
                                                        fluidRow(
                                                          column(12, htmlOutput("DefaultThirdsText")),                             
                                                          column(2, uiOutput("DataButton2")),
                                                          column(12, dataTableOutput("TableThirds"),plotOutput("PlotThirds", height="auto", width="auto"))))#,
-                                              #                     tabPanel(HTML("Data <br> Table"), value="Panel2",                    
-                                              #                              fluidRow(column(12, htmlOutput("DefaultTableTextThirds"))),
-                                              #                              fluidRow(column(12, )))
-                                  )#)
+                                  )
                                 ), #end main panel
                                 sidebarPanel( 
-                                  #         column(12,
                                   wellPanel( #left side panel  
                                     tags$head(
                                       tags$style(type="text/css", ".well{border: 0px transparent;}"
@@ -129,9 +118,7 @@ fluidPage(title = "FISHEyE",
                                     
                                     fluidRow(
                                       column(8, HTML("<p style = 'font-size: 160%'><strong>Control Panel </strong></p> <p style='font-size: 110%'><strong>Make selections in each of the panels below </strong></p>"))#,
-                                      # column(2, uiOutput("resetButton")
-                                      # )
-                                    ),#end fluidRow
+                                     ),#end fluidRow
                                     fluidRow(
                                       column(6,
                                              uiOutput("resetButton"),
@@ -141,8 +128,6 @@ fluidPage(title = "FISHEyE",
                                                  uiOutput("CategorySelect")
                                                ),
                                                uiOutput("SelectText"),
-                                               
-                                               #                                 fluidRow((div(style="padding-left:120%;")),
                                                uiOutput("VariableSelect")
                                              ),
                                              #  conditionalPanel(condition = "input.CategorySelect != 'Fisheries'",
@@ -153,20 +138,18 @@ fluidPage(title = "FISHEyE",
                                              wellPanelSub(
                                                uiOutput("FishAkSelect"),
                                                uiOutput("FishWhitingSelect")
-                                             )
-                                      ),
+                                               )
+                                             ),
                                       column(6,
                                              wellPanelSub(
                                                uiOutput("StatSelect")
                                              ),
                                              wellPanelSub(
-                                               uiOutput("YearSelect")#,
-                                               # uiOutput("SelectTextYear")
+                                               uiOutput("YearSelect")
                                              ),
                                              conditionalPanel(condition ="input.tabs == 'Panel2'|| input.tabs== 'Panel1' & input.DodgeSelect == 'Economic measures side-by-side'",
                                                               wellPanelSub(
-                                                                uiOutput("ShortdescrSelect")
-                                                              ))
+                                                                uiOutput("ShortdescrSelect")))
                                       ),
                                       column(6,
                                              wellPanel(
@@ -175,15 +158,10 @@ fluidPage(title = "FISHEyE",
                                       ),
                                       column(4,
                                              wellPanel(uiOutput("download_figure"),
-                                                       #tags$br(),
                                                        uiOutput("download_Table")#,
-                                                       #tags$br(),
-                                                       # uiOutput("resetButton")
-                                                       
-                                             )
+                                              )
                                       )
                                     ) #end Fluid row
-                                    # ) #end well panel 
                                   )
                                   ,       style = "padding: 0px;border: 1px solid #000000;") # end left side column
                                 

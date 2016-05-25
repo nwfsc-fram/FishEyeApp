@@ -1,3 +1,5 @@
+#Text for about page
+
 tags$div(style = "margin: 15px; 15px;30px; 30px; width: 60%",
          HTML("<div style='display:inline-block;width:100%;padding:0;line-height: 0.72em; margin-top:5px; margin-bottom:5px;'>
                      <h3>About</h3></div>"),
@@ -29,12 +31,12 @@ tags$div(style = "margin: 15px; 15px;30px; 30px; width: 60%",
          tags$hr(),
          tags$h3("A note about confidentiality"), 
          p('Data confidentiality requirements do not allow us to show individual observations.
-         Therefore, we aggregate or summarize the data to protect individual confidentiality.  
-         In some cases, this limits our ability to show certain statistics or measures. 
-         Data queries that would display confidential data are not plotted or made available to download. In these cases, a message will appear that indicates which data are suppressed
-         due to confidentiality. This message will help you to differentiate suppressed confidential data from data points that do not exist. Please note there are some cases where results cannot be presented 
+         Therefore, we aggregate or summarize the data to protect individual confidentiality.', tags$br(), tags$br(), 
+         'Data queries that would display confidential data are not plotted or made available to download. In these cases, a message will appear that indicates which data are suppressed
+         due to confidentiality. This message will help you to differentiate suppressed confidential data from data points that do not exist.',
+         tags$br(),tags$br(),'There are some cases where results cannot be presented 
           after selecting the box for either 1) vessels that fished in Alaska or 2) vessels that fished for Pacific whiting. This is because there are not enough vessels to differentiate between selections. 
-           When this happens, we show results for when the box is selected.  More information on data confidentiality requirements can be found in the',
+           When this happens, we show results for when the box is selected. When this happens, it is indicated in a message below the plot and in the data table. More information on data confidentiality requirements can be found in the',
          tags$a(href = "http://www.nwfsc.noaa.gov/research/divisions/fram/documents/Administration_Operations_Report_2014.pdf",
          "EDC Administration and Operations Report.", target="_blank")),
          tags$hr(),
