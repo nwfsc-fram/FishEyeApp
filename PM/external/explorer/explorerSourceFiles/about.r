@@ -12,9 +12,7 @@ tags$div(style = "margin: 15px; 15px;30px; 30px; width: 60%",
        tags$ul(tags$li('Provide for a viable, profitable, and efficient groundfish fishery;'),
                tags$li('Increase operational flexibility;'), 
                tags$li('Minimize adverse effects on fishing communities and other fisheries to the extent practical;'), 
-               tags$li('Promote measurable economic and employment benefits through the seafood catching, processing, distribution, and support sectors of the industry;'), 
-               tags$li('Provide quality product for the consumer; and,'),
-               tags$li('Increase safety in the fishery.')),  
+               tags$li('Promote measurable economic and employment benefits through the seafood catching, processing, distribution, and support sectors of the industry;')),  
 tags$p('FISHEyE Performance Metrics provides metrics to assess the effectiveness and outcomes of the Catch Share program. The metrics are not intended to be interpreted as causal (i.e., X caused Y change), 
        directional (i.e., "up is good, down is bad"), nor normative (i.e., a particular trend is "good" or "bad"), but, rather, to facilitate the examination of trends and changes.'),
                 
@@ -31,7 +29,7 @@ tags$p('FISHEyE Performance Metrics provides metrics to assess the effectiveness
          tags$p('FISHEyE Performance Metrics is user driven and interactive. Information on how to use FISHEyE Performance Metrics is available in the', tags$em("Instructions"), 'tab.
                 Information on the variables in the dataset and definitions of the statistics and metrics used are found in the', tags$em("Definitions"), 'tab.'),
          tags$p('The metrics provided are not an exhaustive list of potential performance metrics. They were chosen based on their ability to present meaningful information about the fishery 
-                that can be tracked over time, as well as data availability. Further metrics can be developed using the summary data available from',
+                that can be tracked over time, as well as data availability. Additional information can be explored using the summary data available from',
                 tags$a(href='https://dataexplorer.northwestscience.fisheries.noaa.gov/fisheye/NetRevExplorer/', 'FISHEyE Net Revenue Explorer.', target="_blank")),
          
          tags$hr(),
@@ -40,7 +38,7 @@ tags$p('FISHEyE Performance Metrics provides metrics to assess the effectiveness
          p('Data queries that would display confidential data are not plotted or made available to download. In these cases, a message will appear below the figure to indicate that data 
            are suppressed due to confidentiality. This message will help you to differentiate suppressed confidential data from data points that do not exist.'),
          p("There are some cases where there are not enough vessels to differentiate between results summed across all vessels, whiting vessels, and non-whiting vessels. This occurs when there 
-           is less than three vessels at either the whiting or non-whiting level. When this happens, we show data for the", tags$em("all vessels"), "level and indicate that we have done so in a 
+           is less than three vessels at either the whiting or non-whiting level. When this happens, we suppress results that would reveal confidential data and indicate that we have done so in a 
            message below the plot and in the data table. More information on data confidentiality requirements can be found in the",
          tags$a(href = "http://www.nwfsc.noaa.gov/research/divisions/fram/documents/Administration_Operations_Report_2014.pdf","EDC Administration and Operations Report.", target="_blank")),
          

@@ -39,31 +39,31 @@ tags$div(style = "margin: 15px 15px 30px; width: 60%",
                     tags$ul(
                       tags$li(strong('Demographic:'), 'Characteristics of the vessels in the fleet that may vary over time. Changes in the demographic metrics may indicate changes such as fleet consolidation, efficiency, productivity, specialization, or diversification.'),
                       tags$li(strong('Economic:'),'Metrics within the economic indicators section describe the potenital economic impacts of the Catch Share fishery on the West Coast. Changes may be indicative of changes in total allowable catch (TAC), fish or product prices, costs or cost structure, profitability, productivity, and diversification.'),
-                      tags$li(strong('Social:'),'Distribution of benefits and costs among individuals, groups, and communities. Indicators describe potential impact on individuals (i.e., wages) and communities (i.e. share of landings by state).')
+                      tags$li(strong('Social and Regional:'),'Distribution of benefits and costs among individuals, groups, and communities. Indicators describe potential impact on individuals (i.e., wages) and communities (i.e. share of landings by state).')
                     ),
                     h4('Metrics'),
                     tags$ul(h4(tags$em('Demographic')),
                             tags$li(strong('Number of vessels or processors: '),
                                     'Number of vessels actively participating (i.e., had an active permit and non-zero revenue).'),
                             tags$li(strong('Vessel length: '),
-                                    'Changes in length (ft) of vessels actively participating in the fishery. Changes may indicate that some sizes of vessels are ceasing to participate in the fishery more than other sizes.'),
+                                    'The length (ft) of vessels reflects the mix of active participants in the fishery in each year.'),
                             tags$li(strong('Fishery participation: '),
-                                    'Count of fisheries (defined above) vessels participated in. Changes may indicate specialization or diversification.'),
-                            tags$li(strong('Exponential Shannon Index: '),
-                                    'Measures the income diversification of a vessel across revenue sources.  A larger number corresponds to increased diversification. Changes may indicate specialization or diversification.'),
+                                    'Count of fisheries (defined above) that vessels participated in. Changes may indicate specialization or diversification.'),
                             tags$li(strong('Proportion of revenue from Catch Share fishery: '),
-                                    "The average proportion of a vessels total revenue that comes from fish caught in the limited entry trawl or catch share fishery. Metric measures how reliant vessels are on revenue from the limited entry Catch Shares fishery."),
+                                    "The proportion of a vessels total revenue that comes from fish caught in the limited entry/catch share fishery. Metric measures how reliant vessels are on revenue from the limited entry/Catch Shares fishery."),
                             tags$li(strong('Days at sea: '),
-                                    'The average number of days at sea targeting fish in the limited entry trawl or catch share fishery. Changes may indicate specialization, efficiency, or consolidation.'),
-                            tags$li(strong('Gini coefficient: '),'The Gini coefficient of Catch Share revenue measures the degree of revenue concentration among vessels. A value of zero would represent all vessels earning the same revenue, and a value of one would represent one vessel earning all of the revenue. The value of the Gini coefficient can be affected by fleet consolidation and specialization.'),
-                            tags$li(strong('Herfindahl-Hirschman Index: '),'The Herfindahl-Hirschman Index of Catch Share revenue measures the degree of revenue concentration among vessels. It is calculated as the sum of the squaresof the market shares, defined here by the share of the catch share revenues earned by each vessel. Values range from 0 to 10,000. A low value would indicate low market concentration (and higher competition). A value of 10,000 would represent one vessel earning all of the revenue. The value of the Herfindahl-Hirschman Index can be affected by fleet consolidation and specialization.')
+                                    'The number of days at sea may indicate specialization, efficiency, or consolidation.'),
+                            tags$li(strong('Exponential Shannon Index: '),
+                                    'Measures the income diversification of a vessel across revenue sources. A larger number corresponds to increased diversification. Changes may indicate specialization or diversification.'),
+                            tags$li(strong('Gini coefficient: '),'Measures the degree of catch share revenue concentration among vessels. A value of zero would represent all vessels earning the same revenue, and a value of one would represent one vessel earning all of the revenue. The value of the Gini coefficient can be affected by fleet consolidation and specialization.'),
+                            tags$li(strong('Herfindahl-Hirschman Index: '),'The Herfindahl-Hirschman Index is a measure of market concentration. It is calculated as the sum of the squares of the market shares, defined here by the share of the catch share revenues earned by each vessel. Values range from 0 to 10,000. Lower values indicate low market concentration (and higher competition). A value of 10,000 would represent one vessel earning all of the revenue. The value of the Herfindahl-Hirschman Index can be affected by fleet consolidation and specialization.')
                     ),
                     tags$br(),
                     
                     tags$ul(h4(tags$em("Economic")),tags$em("Values reported in inflation adjusted 2014 dollars."),
                     
                       tags$li(strong("Revenue:"),    
-                              "Revenue is the total revenue generated by participation in the selected fisheries."
+                              "Revenue is the total revenue generated by participation in the selected fisheries. This metric captures changes in total harvest and ex-vessel prices."
                       ),      
                       tags$li(strong("Variable cost:"),
                               "Vary with the level of participation in a fishery and generally include items such as fuel and crew payments.", 
@@ -87,13 +87,15 @@ tags$div(style = "margin: 15px 15px 30px; width: 60%",
                       ), 
                     tags$br(),
                     
-                    tags$ul(h4(tags$em('Social')),
-                           tags$li(strong('Number of positions: '),'Number of positions (including captain and crew) is a lower bound for employment in the fishery, and is affected by positions per vessel and the number of vessels fishing.'),
-                             tags$li(strong('Crew wage: '),': Daily wage paid to a crewmember operating in the limited entry/catch shares fishery.'),
-                            tags$li(strong('Revenue per crew-day: '),'Days at sea multiplied by number of crew vessel. This metric is a measure of productivity (in terms of revenue generation) of a crew member in the fleet. An increase in this metric means that a crew-day is more productive (generates more revenue).'),
-                            tags$li(strong('Date 50% of total catch landed: '),'The date (day of year, Jan. 1 = 1) on which 50% of the total volume of catch was landed in the fishery. Metric measures broad-scale changes in the seasonality of fishing for catch shares fish. It can also indicate changes in total allowable catch (TAC); it may take the fleet longer to catch a higher TAC.'),
+                    tags$ul(h4(tags$em('Social and Regional')),
+                           tags$li(strong('Number of positions: '),'Number of positions (including captain and crew) is a lower bound for employment in the fishery. The metric is affected by positions per vessel and the number of vessels fishing.'),
+                             tags$li(strong('Crew wage per day: '),'Daily wage paid to a crewmember operating in the limited entry/catch shares fishery.'),
+                            tags$li(strong('Revenue per crew-day: '),'Revenue divided by crew day, where crew days are calculated as days at sea multipled by number of crew per vessel. This metric is a measure of productivity (in terms of revenue generation) of a crew member.'),
+                            tags$li(strong('Seasonality: '),'The date (day of year, Jan. 1 = 1) on which 50% of the total volume of catch was landed in the fishery. Metric measures broad-scale changes in the seasonality of fishing for catch shares fish. It can also indicate changes in total allowable catch (TAC); it may take the fleet longer to catch a higher TAC/ACL.'),
                             tags$li(strong('Share of landings by state: '),'Share of landings (deliveries) by all vessels, by whiting vessels, and by non-whiting groundfish vessels in each state or at-sea. Shares are in terms of revenue. When selecting the ',tags$em('State'), 'summary variable, this metric shows the share of landings in each state for vessels that homeport in the selected state. This selection highlights that vessels may deliver fish in multiple states.')
                             ),
+                    tags$p('Additional metrics that address economic input/output impacts are available in the Economic Performance Metrics for the West Coast Groundfish Trawl Catch Share Program report.  These indicators are the total impacts on income and employment of the West Coast Groundfish Trawl Catch Share fishery.
+                           Total impacts include, direct, indirect, and induced employment effects, as measured by IO-PAC model.'),
                     tags$br(),
                     h4("Statistics"),
                     tags$p(strong('The statistic provided depends upon the metric selected. '),'For instance, the average or median per day or per metric-ton is only available for economic metrics.'),

@@ -135,10 +135,9 @@ output$DefaultPlotText <- renderUI({
            
           
            tags$p(strong('Show Plot(s):'),'The', tags$em('Show Plot(s)'), 'button returns the display to the plot output. Pre- and post- implementation of the Catch Share program is distinguished with shading. 
-                  You can select whether or not to show the variance around the average or median values. Percent change is calculated based on the years selected and is the percent change between 
-                  pre- and post-implementation of the Catch Share program. The Catch Share program began in 2011.'),
+                  You can select whether or not to show the variance around the average or median values.'),
             tags$br(),
-           img(src="indicators_example2.png", height=400),  #  img(src="EconInd4.png", height=350),       
+           img(src="indicators_example2.png", height=300),  #  img(src="EconInd4.png", height=350),       
            tags$br(), 
            tags$br(),
              tags$p(strong('Show Data:'), 'The', tags$em('Show Data'), 'button displays a data table that can be filtered using the Search box or the boxes at the bottom of the table.'),

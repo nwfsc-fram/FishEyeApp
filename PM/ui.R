@@ -11,6 +11,7 @@ wellPanelHeading <- function(...){div(class = "well-radioHeading", ...)}
 
 fluidPage(title = "FISHEyE",
             # create a CSS to modify style of validation test error (for Variability analysis)
+          tags$head(tags$body(includeHTML("google-analytics.noaa.js"))),
           tags$head(
             tags$style(HTML("
                             .shiny-output-error-validation {
@@ -60,7 +61,7 @@ fluidPage(title = "FISHEyE",
           tags$style(type='text/css', "#data2 { background-color:RoyalBlue; color:white; height:37px;position:absolute;bottom:170%;left:425%;}
                                        #data  { background-color:RoyalBlue; color:white; height:37px;position:absolute;bottom:170%;left:425%;}"),
           
-#           tags$head(includeScript("google-analytics.js")),
+           tags$head(includeScript("google-analytics.js")),
            tags$head(tags$script(src = "message-handler.js")),
           
            tags$head(
@@ -105,61 +106,86 @@ fluidPage(title = "FISHEyE",
                        tags$style(type="text/css", ".well{border: 0px transparent;}"
                        )),
                       fluidRow(
-                        column(8, HTML("<p style = 'font-size: 160%'><strong>Control Panel </strong></p> <p style='font-size: 110%'><strong>Make selections in each of the panels below </strong></p>"))#,
-                     ),#end fluidRow
+                        column(8, HTML("<p style = 'font-size: 160%'><strong>Control Panel </strong></p> <p style='font-size: 110%'><strong>Make selections in each of the panels below </strong></p>")),
+                        column(4,
+                               uiOutput("resetButton"),
+                               uiOutput('Button'))),#end fluidRow
+                     
+                    # fluidRow(
+                     #  column(6,
+                     #         uiOutput("resetButton"),
+                     #         uiOutput('Button'))),
+                       fluidRow(
+                       column(6,
+                              uiOutput("CategorySelect"), style = "background:white; padding: 0px;margin:0px; border: 1px solid #D3D3D3;border-radius:1px;"
+                          
+                              ),
+                       column(6, 
+                              uiOutput("FishWhitingSelect")), style = "background:white; padding: 0px;margin-bottom:10px; border: 3px solid #D3D3D3;border-radius:10px;"
+                     ), #end fluid row
+                    fluidRow(
+                      column(12,
+                             " ")),
                      fluidRow(
                        column(6,
-                              uiOutput("resetButton"),
-                              uiOutput('Button'),
-                              wellPanelSub(
-                                wellPanelHeading(
-                                  uiOutput("CategorySelect")
-                                ),
+                             # uiOutput("resetButton"),
+                             # uiOutput('Button'),
+                             # wellPanelSub(
+                              #  wellPanelHeading(
+                               #   uiOutput("CategorySelect")
+                              #  )),
                           #      uiOutput("VesSumSelect"),
-                                 uiOutput("SelectText"),
-                                 uiOutput("VariableSelect")
-                               
+                                 wellPanelSub(
+                                    conditionalPanel(condition="input.Sect_sel=='CV'",uiOutput("SelectText")),
+                                    uiOutput("VariableSelect")
+                                 
                               )
-                            
-                       ),
+                           ), #end column
                   
                       column(6,
+                            #  wellPanelSub(
+                            #    uiOutput("FishWhitingSelect")),
                               wellPanelSub(
                                 uiOutput("IndicatorSelect"),
-                              conditionalPanel(condition="input.Ind_sel=='Economic'",
-                                uiOutput("ShortdescrSelect"),
-                                uiOutput("StatSelect")),
-                              conditionalPanel(condition="input.Ind_sel!='Economic'",
+                                conditionalPanel(condition="input.Ind_sel=='Economic'",
+                                    uiOutput("ShortdescrSelect"),
+                                    uiOutput("StatSelect")),
+                                conditionalPanel(condition="input.Ind_sel!='Economic'",
                                                uiOutput("StatSelect2"))
-                              ),
+                                     ),#end sub panel
                              
-                             
-                      wellPanelSub(
-                                uiOutput("FishWhitingSelect"),
-                                wellPanelSub(conditionalPanel(condition="input.MetricSelect=='Exponential Shannon Index'||input.MetricSelect=='Proportion of revenue from CS fishery'||input.MetricSelect=='Fishery participation'||input.MetricSelect=='Days at sea'", 
+                              wellPanelSub( wellPanelSub(conditionalPanel(condition="input.Sect_sel=='CV'&&input.MetricSelect=='Exponential Shannon Index'
+                                                                          ||input.Sect_sel=='CV'&&input.MetricSelect=='Proportion of revenue from CS fishery'
+                                                                          ||input.Sect_sel=='CV'&&input.MetricSelect=='Fishery participation'
+                                                                          ||input.MetricSelect=='Days at sea'", 
                                                  uiOutput("FishAkSelect"))),
-                                wellPanelSub(
-                                  conditionalPanel(condition="input.AVE_MED2!=''&&input.AVE_MED2!='Total'&&input.AVE_MED!='T'",
+                              wellPanelSub(
+                                  conditionalPanel(condition="input.AVE_MED2=='Average'||input.AVE_MED2=='Median'||input.AVE_MED=='A'||input.AVE_MED=='M'",
                                                    uiOutput("PlotSelect"))
-                                )
-                              ) , 
-                        wellPanelSub(
+                                    )
+                                    ) , #end sub panel
+                              wellPanelSub(
                                 
                                  uiOutput("YearSelect"),
                                  wellPanelSub(
-                                    conditionalPanel(condition="input.Ind_sel=='Economic'||input.MetricSelect=='Gini coefficient'||input.MetricSelect=='Number of vessels'||
-                                                      input.MetricSelect=='Vessel length'||input.MetricSelect=='Date 50 percent of total catch landed'||input.MetricSelect=='Share of landings by state'",
-                                   uiOutput('moreOptions'))#,
+                                    conditionalPanel(condition="input.Sect_sel=='CV'&&input.Ind_sel=='Economic'&&input.CategorySelect!='Homeport'&&input.CategorySelect!='State'
+                                          ||input.Sect_sel=='CV'&&input.MetricSelect=='Gini coefficient'&&input.CategorySelect!='Homeport'&&input.CategorySelect!='State'
+                                          ||input.Sect_sel=='CV'&&input.MetricSelect=='Number of vessels'&&input.CategorySelect!='Homeport'&&input.CategorySelect!='State'
+                                          ||input.Sect_sel=='CV'&&input.MetricSelect=='Vessel length'&&input.CategorySelect!='Homeport'&&input.CategorySelect!='State'
+                                          ||input.Sect_sel=='CV'&&input.MetricSelect=='Seasonality'&&input.CategorySelect!='Homeport'&&input.CategorySelect!='State'
+                                          ||input.Sect_sel=='CV'&&input.MetricSelect=='Share of landings by state'&&input.CategorySelect!='Homeport'&&input.CategorySelect!='State'",
+                                    uiOutput('moreOptions'))#,
                                    #conditionalPanel(condition="",uiOutput('moreOptions'))#&&input.ShortdescrSelect=='Revenue'
                                                     )       
-                               )),
+                                 )
+                             ),#end column
                         column(4,
                                 wellPanel(uiOutput("download_figure"),
                                 #tags$br(),
                                  uiOutput("download_Table")#,
                               ))
                        ) #end Fluid row
-            ),      style = "padding: 0px;border: 1px solid #000000;") # end left side column
+            ),      style = "padding: 0px;border: 1px solid #000000;") # end right side column
 
 
 
