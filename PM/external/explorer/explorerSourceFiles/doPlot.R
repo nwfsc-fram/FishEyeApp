@@ -62,11 +62,12 @@ doPlot <- function(dat, x, y){
       }}
 
     gv <- function(){
+      if(input$LayoutSelect!="Metrics"){
       if(input$Ind_sel=="Economic"){
         if(input$CategorySelect=="Fisheries"){
-          sprintf(paste(input$CategorySelect, ":", input$VariableSelect, "     Statistic: ",  input$StatSelect))
+          sprintf(paste("Economic measure:", input$SHORTDESCR, "     Statistic: ",  input$StatSelect))
         } else {
-          sprintf(paste(input$CategorySelect, ":", input$VariableSelect, "     Statistic: ", input$StatSelect,"    Summed across:", input$inSelect))
+          sprintf(paste("Economic measure:", input$SHORTDESCR, "     Statistic: ", input$StatSelect,"    Summed across:", input$inSelect))
         }
       } else {
         if(input$CategorySelect=="Fisheries"){
@@ -75,6 +76,21 @@ doPlot <- function(dat, x, y){
           sprintf(paste("Category:",input$CategorySelect,"     Metric: ", input$MetricSelect,"    Summed across:", input$inSelect))   
         }
       }
+      } else {
+        if(input$Ind_sel=="Economic"){
+          if(input$CategorySelect=="Fisheries"){
+            sprintf(paste(input$CategorySelect, ":", input$VariableSelect, "     Statistic: ",  input$StatSelect))
+          } else {
+            sprintf(paste(input$CategorySelect, ":", input$VariableSelect, "     Statistic: ", input$StatSelect,"    Summed across:", input$inSelect))
+          }
+        } else {
+          if(input$CategorySelect=="Fisheries"){
+            sprintf(paste(input$CategorySelect, ":",input$VariableSelect))
+          } else {
+            sprintf(paste(input$CategorySelect,":",input$VariableSelect,"Summed across:", input$inSelect))   
+          }
+        }
+    }
     }
     
     main <- function(){
@@ -291,13 +307,17 @@ doPlot <- function(dat, x, y){
    
 
     # define facet
-    if(input$Ind_sel!="Economic"){
-    if(input$MetricSelect=="Share of landings by state"){
-       g <- g + facet_wrap(~ agid, ncol=2, as.table = TRUE)#, scales="free_x"
-     } else { g <- g + facet_wrap(~ sort, ncol=2, as.table = TRUE)#, scales="free_x"
-    }} else {
-      g <- g + facet_wrap(~SHORTDESCR, scales="free_x")#(~), sortsortas.table=TRUE,
-    }
+ #   if(input$LayoutSelect!="Metrics"){
+     g <- g + facet_wrap(~ sort, ncol=2, as.table = TRUE)
+ # } else {
+ #     if(input$Ind_sel=="Economic"){
+ #     g <- g + facet_wrap(~SHORTDESCR, scales="free_x")#(~), sortsortas.table=TRUE,
+ #   } else if(input$MetricSelect=="Share of landings by state"){
+ #      g <- g + facet_wrap(~ agid, ncol=2, as.table = TRUE)#, scales="free_x"
+#     } else {
+#       g <- g + facet_wrap(~ METRIC, ncol=2, as.table=TRUE)
+#     } #, scales="free_x"
+#    }
      # define scale
     g <- g + scale_fill_manual(values = colourThirds) + scale_colour_manual(values = colourThirds)
 

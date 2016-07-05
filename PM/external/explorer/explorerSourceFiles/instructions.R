@@ -17,7 +17,7 @@ tags$div(style = "margin: 15px; 15px; 30px; width: 60%",
                  
                  tags$strong('Plots'),tags$p('To aid visualizing changes over time, we show line plots for all selected metrics. You can select whether or not to show the variance around the average or median values. 
                                              A figure demonstrating how to interpret the plot output is located on the', tags$em('Explore the Data'), 'page. 
-                                             Percent change is calculated based on the years selected and is the percent change between pre- and post-implementation of the Catch Share program. The Catch Share program began in 2011.'),
+                                             The Catch Share program began in 2011.'),
                  tags$strong("Data Table"),
                  tags$p('View data used to generate the plots.', tags$br(), 'After a table has been displayed, the data can be filtered using the', tags$em('Search'), 'box, or filtered within a column using the boxes at the bottom of the table.'),
                  tags$br()

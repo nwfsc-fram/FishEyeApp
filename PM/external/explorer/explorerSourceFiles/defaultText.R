@@ -14,7 +14,7 @@ output$Email <- renderUI({
   tags$div(style = "margin: 15px 15px 30px; width: 60%",
            h3("Contact us"),
            tags$p("We look forward to receiving feedback and questions.", tags$br()),
-           tags$p("Please email us at", strong("nwfsc.fisheye@noaa.gov"),
+           tags$p(h4("Please email us at", strong("nwfsc.fisheye@noaa.gov")),
                   # tags$a(href="mailto:nwfsc.fisheye@noaa.gov?subject=FISHEyE", 'nwfsc.fisheye@noaa.gov'),
                   tags$br()),
            
@@ -54,8 +54,8 @@ output$BlogUpdates <- renderUI({
            tags$h3("Updates"),
            tags$div( class='date', style='height:45px;width:30px; font-family:Arial; font-weight:bold;background-color:#ffffff;text-align:center; border-top:1px solid #c0c0c0;
                      border-left:1px solid #c0c0c0;border-right:1px solid #c0c0c0;position:absolute;z-index:3;line-height: 13px;',
-                     HTML("<span class='month' style='text-transform:uppercase;font-size:11px;'>Mar</span><br />
-                          <span class='day' style='font-size:16px;'>7</span><br />
+                     HTML("<span class='month' style='text-transform:uppercase;font-size:11px;'>Jun</span><br />
+                          <span class='day' style='font-size:16px;'>20</span><br />
                           <span class='year' style='font-size:11px;line-height: 10px;'>2016</span>")
                      ),
            tags$p(HTML("<span style='margin-left:60px;font-size:18px;font-weight:bold'>Data updated</span>")), 
@@ -63,8 +63,8 @@ output$BlogUpdates <- renderUI({
            tags$hr(),
            tags$div( class='date', style='height:45px;width:30px;font-family:Arial;font-weight:bold;background-color:#ffffff;text-align:center;border-top:1px solid #c0c0c0;
                      border-left:1px solid #c0c0c0;border-right:1px solid #c0c0c0;position:absolute;z-index:3;line-height: 13px;',
-                     HTML("<span class='month' style='text-transform:uppercase;font-size:11px;'>Feb</span><br />
-                          <span class='day' style='font-size:16px;'>8</span><br />
+                     HTML("<span class='month' style='text-transform:uppercase;font-size:11px;'>Jun</span><br />
+                          <span class='day' style='font-size:16px;'>20</span><br />
                           <span class='year' style='font-size:11px;line-height: 10px;'>2016</span>")
                      ),
            tags$p(HTML("<span style='margin-left:60px;font-size:18px;font-weight:bold'>Welcome to the Performance Metrics application!</span>")), 

@@ -203,6 +203,10 @@ tags$head(tags$body(includeHTML("google-analytics.noaa.js"))),
                      ),
                      # HTML('<a href="http://devdataexplorer.nwfsc.noaa.gov/fisheye/"style="display: padding-bottom:100;margin: -30px -50px 0px 300px;color:blue"> 
                      #Return to FISHEyE homepage </a>'))# style="height:40px;margin: -40px -20px 0px 50px; float:top; border:0"/>
+                     tabPanel("FISHEyE Applications",
+                              fluidRow(
+                                column(12, htmlOutput("ApplicationsText"))
+                              )),
                      
                      tabPanel(HTML('<a class="btn btn-warning", href="http://dataexplorer.northwestscience.fisheries.noaa.gov/fisheye/"
                                    style="height:37px;border-radius:25px;margin: -24px -50px; float:top;position:absolute;right:-100px;font-familiy: Arial, Helvetica, sans-serif;font-size: 12pt; padding-top:7px;

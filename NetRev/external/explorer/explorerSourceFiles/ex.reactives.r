@@ -57,13 +57,13 @@ DatSubTable <- reactive({
   dat <- dat[-c(which(colnames(dat)=="con_flag"),which(colnames(dat)=="flag"))]
   
   #subsetting
-  datSub <- subset(dat, YEAR %in% input$YearSelect &  
+  datSub <- with(dat, dat[which(YEAR %in% input$YearSelect &  
                      SHORTDESCR %in% input$ShortdescrSelect & 
                      CATEGORY %in% input$CategorySelect &
                      VARIABLE %in% input$VariableSelect &
                      FISHAK == input$FishAkSelect &
                      whitingv == input$FishWhitingSelect &
-                     STAT == input$StatSelect)
+                     STAT == input$StatSelect),])
   
   datSub$VALUE <- as.numeric(datSub$VALUE)
   datSub$VARIANCE <- as.numeric(datSub$VARIANCE)

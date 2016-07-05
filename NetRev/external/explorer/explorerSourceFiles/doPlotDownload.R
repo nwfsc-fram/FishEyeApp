@@ -251,38 +251,42 @@ doPlotDownload <- function(dat, x, y, type){
     if(type!="summary"){
       if(max(dat$con_flag, na.rm=T)==1){
         if(max(dat$AK_FLAG, na.rm=T)==0){
-          g <- g + labs(y = paste("Thousands of 2014 $", "(",input$StatSelect, ")"), x="  Vessels are grouped into three tiered categories: top, middle, and lower earners based on revenue. This is done for each year separately.
-                      \nData has been suppressed for years that are not plotted as there are not enough observations to protect confidentiality.", title = main()) 
+          g <- g + labs(y = paste("Thousands of 2014 $", "(",input$StatSelect, ")"), x=paste("Sourced from the FISHEyE application (http://dataexplorer.northwestscience.fisheries.noaa.gov/fisheye/NetRevExplorer/) maintained by NOAA Fisheries NWFSC on ",format(Sys.Date(), format="%B %d %Y"),
+                                                                                             "\n  Vessels are grouped into three tiered categories: top, middle, and lower earners based on revenue. This is done for each year separately.
+                      \nData has been suppressed for years that are not plotted as there are not enough observations to protect confidentiality."), title = main()) 
         } else {
-          g <- g + labs(y = paste("Thousands of 2014 $", "(",input$StatSelect, ")"), x=" Vessels are grouped into three tiered categories: top, middle, and lower earners based on revenue. This is done for each year separately.  
+          g <- g + labs(y = paste("Thousands of 2014 $", "(",input$StatSelect, ")"), x=paste("Sourced from the FISHEyE application (http://dataexplorer.northwestscience.fisheries.noaa.gov/fisheye/NetRevExplorer/) maintained by NOAA Fisheries NWFSC on ",format(Sys.Date(), format="%B %d %Y"),
+                          "\n Vessels are grouped into three tiered categories: top, middle, and lower earners based on revenue. This is done for each year separately.  
                           \nData has been suppressed for years that are not plotted as there are not enough observations to protect confidentiality.  
-                          \nNOTE: In addition, your selection would reveal confidential data for years with sufficient observations.  The results shown may include both vessels that fished in Alaska and those that \nfished for Pacific whiting. See the confidentiality section under the ABOUT tab for more information.", title = main())        
+                          \nNOTE: In addition, your selection would reveal confidential data for years with sufficient observations.  The results shown may include both vessels that fished in Alaska and those that \nfished for Pacific whiting. See the confidentiality section under the ABOUT tab for more information."), title = main())        
         }} else {
           
           if(max(dat$AK_FLAG, na.rm=T)==0){
-            g <- g + labs(y = paste("Thousands of 2014 $", "(",input$StatSelect, ")"), x="  Vessels are grouped into three tiered categories: top, middle, and lower earners based on revenue. This is done for each year separately.", title = main()) 
+            g <- g + labs(y = paste("Thousands of 2014 $", "(",input$StatSelect, ")"), x=paste("Sourced from the FISHEyE application (http://dataexplorer.northwestscience.fisheries.noaa.gov/fisheye/NetRevExplorer/) maintained by NOAA Fisheries NWFSC on ",format(Sys.Date(), format="%B %d %Y"),  
+                          "\nVessels are grouped into three tiered categories: top, middle, and lower earners based on revenue. This is done for each year separately."), title = main()) 
           } else {
-            g <- g + labs(y = paste("Thousands of 2014 $", "(",input$StatSelect, ")"), x=" Vessels are grouped into three tiered categories: top, middle, and lower earners based on revenue. This is done for each year separately.  
-                          \nNOTE: Unfortunately, your selection would reveal confidential data.  The results shown may include both vessels that fished in Alaska and those that \nfished for Pacific whiting. See the confidentiality section under the ABOUT tab for more information.", title = main())        
+            g <- g + labs(y = paste("Thousands of 2014 $", "(",input$StatSelect, ")"), x=paste("Sourced from the FISHEyE application (http://dataexplorer.northwestscience.fisheries.noaa.gov/fisheye/NetRevExplorer/) maintained by NOAA Fisheries NWFSC on ",format(Sys.Date(), format="%B %d %Y"),
+                        "\n Vessels are grouped into three tiered categories: top, middle, and lower earners based on revenue. This is done for each year separately.  
+                          \nNOTE: Unfortunately, your selection would reveal confidential data.  The results shown may include both vessels that fished in Alaska and those that \nfished for Pacific whiting. See the confidentiality section under the ABOUT tab for more information."), title = main())        
           }
         }
           } else {
             if(max(dat$flag)==1) {
               if(max(dat$AK_FLAG, na.rm=T)==0){
-                g <- g + labs(y = paste("Thousands of 2014 $","(",input$StatSelect, ")"), x=paste("Sourced from the FISHEyE application (http://devdataexplorer.nwfsc.noaa.gov/fisheye/FisheyeApp/) maintained by NOAA Fisheries NWFSC on ",format(Sys.Date(), format="%B %d %Y"),
+                g <- g + labs(y = paste("Thousands of 2014 $","(",input$StatSelect, ")"), x=paste("Sourced from the FISHEyE application (http://dataexplorer.northwestscience.fisheries.noaa.gov/fisheye/NetRevExplorer/) maintained by NOAA Fisheries NWFSC on ",format(Sys.Date(), format="%B %d %Y"),
                                                                                             "\n* Data has been suppressed for this selected",input$CategorySelect, "and year as there are not enough observations to protect confidentiality."), title = main())   
               }  else {
                 g <- g + labs(y = paste("Thousands of 2014 $","(",input$StatSelect, ")"), x=
-                                paste("Sourced from the FISHEyE application (http://devdataexplorer.nwfsc.noaa.gov/fisheye/FisheyeApp/) maintained by NOAA Fisheries NWFSC on ",format(Sys.Date(), format="%B %d %Y"),
+                                paste("Sourced from the FISHEyE application (http://dataexplorer.northwestscience.fisheries.noaa.gov/fisheye/NetRevExplorer/) maintained by NOAA Fisheries NWFSC on ",format(Sys.Date(), format="%B %d %Y"),
                           "\n* Data has been suppressed for this selected",input$CategorySelect, "and year as there are not enough observations to protect confidentiality.
                           \nNOTE: Unfortunately, your selection would reveal confidential data.  The results shown may include both vessels that fished in Alaska and those that \nfished for Pacific whiting. See the confidentiality section under the ABOUT tab for more information."), title = main())        
               }
             }
             else if(max(dat$AK_FLAG, na.rm=T)==1){
-              g <- g + labs(y = paste("Thousands of 2014 $", "(",input$StatSelect, ")"), x=paste("Sourced from the FISHEyE application (http://devdataexplorer.nwfsc.noaa.gov/fisheye/FisheyeApp/) maintained by NOAA Fisheries NWFSC on ",format(Sys.Date(), format="%B %d %Y"),
+              g <- g + labs(y = paste("Thousands of 2014 $", "(",input$StatSelect, ")"), x=paste("Sourced from the FISHEyE application (http://devdataexplorer.nwfsc.noaa.gov/fisheye/NetRevExplorer/) maintained by NOAA Fisheries NWFSC on ",format(Sys.Date(), format="%B %d %Y"),
                                                                                            "\nNOTE: Unfortunately, your selection would reveal confidential data.  The results shown may include both vessels that fished in Alaska and those that \nfished for Pacific whiting. See the confidentiality section under the ABOUT tab for more information."), title = main())       
             } else {
-              g <- g + labs(y = paste("Thousands of 2014 $", "(",input$StatSelect, ")"), x=paste("Sourced from the FISHEyE application (http://devdataexplorer.nwfsc.noaa.gov/fisheye/FisheyeApp/) maintained by NOAA Fisheries NWFSC on ",format(Sys.Date(), format="%B %d %Y")), title = main())       
+              g <- g + labs(y = paste("Thousands of 2014 $", "(",input$StatSelect, ")"), x=paste("Sourced from the FISHEyE application (http://dataexplorer.northwestscience.fisheries.noaa.gov/fisheye/NetRevExplorer/) maintained by NOAA Fisheries NWFSC on ",format(Sys.Date(), format="%B %d %Y")), title = main())       
               
             }}   
             

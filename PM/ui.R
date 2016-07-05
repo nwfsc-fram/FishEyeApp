@@ -11,7 +11,7 @@ wellPanelHeading <- function(...){div(class = "well-radioHeading", ...)}
 
 fluidPage(title = "FISHEyE",
             # create a CSS to modify style of validation test error (for Variability analysis)
-          tags$head(tags$body(includeHTML("google-analytics.noaa.js"))),
+         # tags$head(tags$body(includeHTML("google-analytics.noaa.js"))),
           tags$head(
             tags$style(HTML("
                             .shiny-output-error-validation {
@@ -34,9 +34,9 @@ fluidPage(title = "FISHEyE",
             tags$style(HTML(".ckbox2 .checkbox:nth-child(10) label{margin-left:17px;}")),tags$style(HTML(".ckbox2 .checkbox:nth-child(11) label{margin-left:17px;}")),
             tags$style(HTML(".ckbox2 .checkbox:nth-child(12) label{margin-left:17px;}")),tags$style(HTML(".ckbox2 .checkbox:nth-child(13) label{margin-left:17px;}")),
 
-            tags$style(HTML(".sectselect >li{position:relative; z-index:10000; background-color:black !important; display:inline-block; vertical-align:middle}")),
+            tags$style(HTML(".sectselect >li{position:relative; z-index:10000; background-color:black !important; display:inline; vertical-align:middle}")),
             tags$style(HTML(".sectselect{font-size:28px; line-height:28px;}")),
-          
+
             tags$style(HTML(".actbutton {margin-bottom:5px}")),
             tags$style(HTML(".rbutton {margin-top:15px}")),
           
@@ -115,6 +115,10 @@ fluidPage(title = "FISHEyE",
                      #  column(6,
                      #         uiOutput("resetButton"),
                      #         uiOutput('Button'))),
+                       fluidRow(
+                         column(12,
+                               uiOutput('LayoutSelect'),style = "background:white; padding: 0px;margin:0px; border: 3px solid #D3D3D3;border-radius:10px;"
+                               )),
                        fluidRow(
                        column(6,
                               uiOutput("CategorySelect"), style = "background:white; padding: 0px;margin:0px; border: 1px solid #D3D3D3;border-radius:1px;"

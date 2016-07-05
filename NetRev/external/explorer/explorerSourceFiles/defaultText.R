@@ -31,6 +31,15 @@ output$Email <- renderUI({
   ))
 })
 
+output$ApplicationsText <- renderUI({
+  tags$div(style="margin:15px 15px 30px; with: 60%",
+           tags$br(),
+           HTML('<a class="btn btn-primary", href="http://dataexplorer.northwestscience.fisheries.noaa.gov/fisheye/PerformanceMetrics/"
+                        style="height:37px;border-radius:25px;font-familiy: Arial, Helvetica, sans-serif;font-size: 12pt; padding-top:7px;
+       padding-bottom:10px"> FISHEyE Performance Metrics</a>' )
+  )
+})
+
 output$BlogText <- renderUI({
 
 tags$div(style = "margin-top: 15px;margin-bottom:0; width: 80%; ",

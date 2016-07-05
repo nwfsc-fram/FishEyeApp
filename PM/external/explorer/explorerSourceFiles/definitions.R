@@ -12,6 +12,7 @@ tags$div(style = "margin: 15px 15px 30px; width: 60%",
            tags$div(style= "margin-top: 15px;",
                     
                     h4("Summary Variables"),
+                    p('Please not that availability of summary variables will vary between sectors.'),
                     tags$ul(
                       tags$li(strong("Fisheries:"),'The Performance Metrics application uses the same fisheries definitions as those used by the', 
                               tags$a(href="http://www.nwfsc.noaa.gov/research/divisions/fram/economic/overview.cfm", target="_blank", 'EDC program'), 'to characterize the', 
@@ -42,6 +43,8 @@ tags$div(style = "margin: 15px 15px 30px; width: 60%",
                       tags$li(strong('Social and Regional:'),'Distribution of benefits and costs among individuals, groups, and communities. Indicators describe potential impact on individuals (i.e., wages) and communities (i.e. share of landings by state).')
                     ),
                     h4('Metrics'),
+                    p('Please not that availability of metrics will vary between sectors.'),
+                    
                     tags$ul(h4(tags$em('Demographic')),
                             tags$li(strong('Number of vessels or processors: '),
                                     'Number of vessels actively participating (i.e., had an active permit and non-zero revenue).'),

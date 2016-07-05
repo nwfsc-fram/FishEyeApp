@@ -236,7 +236,7 @@ DatSub <- reactive({
       { datSub$star <- ""}
          datSub$VALUE <- ifelse(datSub$N<3, NA, datSub$VALUE)
          datSub$VARIANCE <- ifelse(datSub$N<3, NA, datSub$VARIANCE)
-      if(input$Ind_sel!="Economic"){
+      if(input$LayoutSelect!="Metrics"){
         if(input$Sect_sel!="CV"){
             datSub$sort <- "At-sea Pacific whiting"
           }   else {
@@ -270,11 +270,19 @@ DatSub <- reactive({
         datSub$sort <- datSub$VARIABLE 
       }
       }} else {
+        if(input$Ind_sel=="Economic"){
       datSub$sort <- ifelse(datSub$SHORTDESCR=="Revenue", "...Revenue", as.character(datSub$SHORTDESCR))
       datSub$sort <- ifelse(datSub$SHORTDESCR=="Variable costs", "..Variable costs", as.character(datSub$sort))
       datSub$sort <- ifelse(datSub$SHORTDESCR=="Fixed costs", ".Fixed costs", as.character(datSub$sort))
       datSub$sort <- ifelse(datSub$SHORTDESCR=="Variable Cost Net Revenue", ".Variable Cost Net Revenue",  as.character(datSub$sort))
-      }  
+       # }  else if(input$MetricSelect=="Share of landings by state"){
+        #  datSub$sort <- ifelse(datSub$agid=="In Washington", "...In Washington", as.character(datSub$agid))
+        #  datSub$sort <- ifelse(datSub$agid=="In Oregon", "..In Oregon", as.character(datSub$sort))
+        #  datSub$sort <- ifelse(datSub$agid=="In California", ".In California", as.character(datSub$sort))
+        #  datSub$sort <- ifelse(datSub$agid=="At sea", ".At sea",  as.character(datSub$sort))
+        } else {
+       datSub$sort <- as.character(datSub$METRIC)
+     }}
       
       datSub$whitingv <- factor(datSub$whitingv, levels=c("Whiting vessels","Non-whiting vessels","All vessels"))
       if(input$Ind_sel!="Economic"&input$MetricSelect=="Number of vessels"){
