@@ -52,6 +52,19 @@ output$BlogText <- renderUI({
 output$BlogUpdates <- renderUI({  
   tags$div(style = "margin-top:0; padding-top:0;background-color:#F8F8E9;",
            tags$h3("Updates"),
+  #Major update - adding other sectors
+           tags$div( class='date', style='height:45px;width:30px; font-family:Arial; font-weight:bold;background-color:#ffffff;text-align:center; border-top:1px solid #c0c0c0;
+                     border-left:1px solid #c0c0c0;border-right:1px solid #c0c0c0;position:absolute;z-index:3;line-height: 13px;',
+                     HTML("<span class='month' style='text-transform:uppercase;font-size:11px;'>Jul</span><br />
+                          <span class='day' style='font-size:16px;'>25</span><br />
+                          <span class='year' style='font-size:11px;line-height: 10px;'>2016</span>")
+                     ),
+           tags$p(HTML("<span style='margin-left:60px;font-size:18px;font-weight:bold'>New sectors added</span>")), 
+           tags$p(tags$br(),"Two major updates have been made to this application. First, we have added two more sectors - motherships and catcher processors. We are currently working on first receivers and shorebased processors.
+                  In addition, we revised the functionality of the application. You can now compare by vessel categories (fisheries, homeports, etc.) or by metrics. 
+                  When comparing metrics, the metrics displayed will depend upon both the metrics chosen and the selected statistics."),
+           tags$hr(),
+  # Data updates
            tags$div( class='date', style='height:45px;width:30px; font-family:Arial; font-weight:bold;background-color:#ffffff;text-align:center; border-top:1px solid #c0c0c0;
                      border-left:1px solid #c0c0c0;border-right:1px solid #c0c0c0;position:absolute;z-index:3;line-height: 13px;',
                      HTML("<span class='month' style='text-transform:uppercase;font-size:11px;'>Jun</span><br />
@@ -61,6 +74,7 @@ output$BlogUpdates <- renderUI({
            tags$p(HTML("<span style='margin-left:60px;font-size:18px;font-weight:bold'>Data updated</span>")), 
            tags$p(tags$br(),"Data are periodically updated. Please check back here for updates on data."),
            tags$hr(),
+  # Welcome to fisheye
            tags$div( class='date', style='height:45px;width:30px;font-family:Arial;font-weight:bold;background-color:#ffffff;text-align:center;border-top:1px solid #c0c0c0;
                      border-left:1px solid #c0c0c0;border-right:1px solid #c0c0c0;position:absolute;z-index:3;line-height: 13px;',
                      HTML("<span class='month' style='text-transform:uppercase;font-size:11px;'>Jun</span><br />
@@ -125,7 +139,7 @@ output$DefaultPlotText <- renderUI({
            tags$h3("Summary Plots and Data"),
            tags$p('The performance metrics in this web application provide a set of measures that can be used to gauge and track changes in the West Coast groundfish trawl limited entry fishery  following implementation of the',
                   tags$a(href="http://www.westcoast.fisheries.noaa.gov/fisheries/groundfish_catch_shares/index.html", 'West Coast Groundfish Trawl Catch Share Program ', target="_blank"),
-                  'in 2011. Metrics are grouped into three broad indicator categories: demographic, economic, and social. Information on how metrics were chosen can be found in the', tags$em('About'), 'tab.',
+                  'in 2011. Select whether to view results for catcher vessels, motherships, catch-processors, or first receivers and shorebased processors. Metrics are grouped into three broad indicator categories: demographic, economic, and social. Information on how metrics were chosen can be found in the', tags$em('About'), 'tab.',
                   tags$strong('Information on the individual metrics can be found by clicking the blue information icon above the list of metrics'), 'or in the Definitions tab.' 
                   ),
            tags$p(strong("To get started, make at least one selection in each of the fields in the Control Panel.")),
@@ -147,4 +161,27 @@ output$DefaultPlotText <- renderUI({
             tags$p(strong('To view these instructions'), 'at any time, visit the', tags$em('Instructions'), 'tab.')
                    )
   
+})
+
+output$GetStartedText <- renderUI({
+  if(PermitPlot()) return()
+  tags$div(style = "margin: 15px 15px 30px; width: 60%",
+           tags$p(strong(paste('Note this tutorial will disappear once you select a',input$CategorySelect))),
+           tags$h4("1. Compare groups of vessels or metrics"),
+           tags$p(paste('Choose whether to view a single metric for multiple', #'
+                      'vessel groups',#  ,input$CategorySelect, 
+                      'or view multiple metrics for a single vessel group.'#,input$CategorySelect,'.'
+                        )), 
+           tags$h4("2. Select General categories to view data by"),
+           tags$p("First, select the vessel grouping category (Fisheries, State, Homeport, Vessel length class). Not all categories will be available for all sectors.
+                  Second, select whether to show results for all vessels, just vessels that fished for pacific whiting, and/or just vessels that did not fish for pacific whiting."),
+           tags$h4(paste("3. Select one more more subgroups.")),
+           tags$p(strong('Once this selection is made, this tutorial will disappear.'), paste('Multiple subgroups of the selected vessel grouping category (such as fishery) can be selected if, in step 1, you chose to compare groups of vessels. If you chose to compare metrics, only a single metric can be selected.')),
+           tags$h4("4. Select an indicator category"),
+           tags$p("This drop down menu divides metrics into three categories:",tags$em('Demographic,'), tags$em("Economic,"),'and',tags$em('Social and regional.'), 'The choice of metrics to be displayed depends on which indicator category is selected.'),
+           tags$h4("5. Select a statistic and a metric"),
+           tags$p('Which statistic is calculated depends on the metric. If a selected metric is not shown, try a different statistic.'),
+           tags$h4('6. Select years and whether or not to include Alaskan fisheries activities'),
+           tags$p('The number of years for which data is available and the choice to include activities in Alaskan depend upon the metric and sector selected.')
+  )
 })

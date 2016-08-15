@@ -28,8 +28,10 @@ fluidPage(title = "FISHEyE",
             tags$style(HTML(".ckbox2 .checkbox:first-child label{font-weight:bold;}")),
             tags$style(HTML(".ckbox2 .checkbox:nth-child(2) label{font-weight:bold;}")),
             tags$style(HTML(".ckbox2 .checkbox:nth-child(9) label{font-weight:bold;}")),
-            tags$style(HTML(".ckbox2 .checkbox:nth-child(3) label{margin-left:17px;}")), tags$style(HTML(".ckbox2 .checkbox:nth-child(4) label{margin-left:17px;}")),
-           tags$style(HTML(".ckbox2 .checkbox:nth-child(5) label{margin-left:17px;}")),tags$style(HTML(".ckbox2 .checkbox:nth-child(6) label{margin-left:17px;}")),
+            tags$style(HTML(".ckbox2 .checkbox:nth-child(3) label{margin-left:17px;}")), 
+            tags$style(HTML(".ckbox2 .checkbox:nth-child(4) label{margin-left:17px;}")),
+            tags$style(HTML(".ckbox2 .checkbox:nth-child(5) label{margin-left:17px;}")),
+            tags$style(HTML(".ckbox2 .checkbox:nth-child(6) label{margin-left:17px;}")),
             tags$style(HTML(".ckbox2 .checkbox:nth-child(7) label{margin-left:17px;}")),tags$style(HTML(".ckbox2 .checkbox:nth-child(8) label{margin-left:17px;}")),
             tags$style(HTML(".ckbox2 .checkbox:nth-child(10) label{margin-left:17px;}")),tags$style(HTML(".ckbox2 .checkbox:nth-child(11) label{margin-left:17px;}")),
             tags$style(HTML(".ckbox2 .checkbox:nth-child(12) label{margin-left:17px;}")),tags$style(HTML(".ckbox2 .checkbox:nth-child(13) label{margin-left:17px;}")),
@@ -55,7 +57,8 @@ fluidPage(title = "FISHEyE",
            tags$style(HTML('#istat{width:20px; height:19px; margin:0px;border:none; padding:0px;border-radius:25px;background-color:transparent;font-size:12px; color:RoyalBlue}')),
            tags$style(HTML('#ipo{width:20px; height:19px; margin:0px;border:none; padding:0px;border-radius:25px;background-color:transparent;font-size:12px; color:RoyalBlue}')),
            tags$style(HTML('#ivs{width:20px; height:19px; margin:0px;border:none; padding:0px;border-radius:25px;background-color:transparent;font-size:12px; color:RoyalBlue}')),
-           tags$style(HTML('#iem{width:20px; height:19px; margin:0px;border:none; padding:0px;border-radius:25px;background-color:transparent;font-size:12px; color:RoyalBlue}'))),
+           tags$style(HTML('#iem{width:20px; height:19px; margin:0px;border:none; padding:0px;border-radius:25px;background-color:transparent;font-size:12px; color:RoyalBlue}')),
+           tags$style(HTML('#icompare{width:20px; height:19px; margin:0px;border:none; padding:0px;border-radius:25px;background-color:transparent;font-size:12px; color:RoyalBlue}'))),
 #           tags$style(HTML('#iVesSum{width:20px; height:19px; margin:0px;border:none; padding:0px;border-radius:25px;background-color:transparent;font-size:12px; color:RoyalBlue}'))),
 # java script 
           tags$style(type='text/css', "#data2 { background-color:RoyalBlue; color:white; height:37px;position:absolute;bottom:170%;left:425%;}
@@ -92,13 +95,23 @@ fluidPage(title = "FISHEyE",
             sidebarLayout(
               mainPanel(         
                 tabsetPanel(id = "tabs", 
-                            tabPanel(title=HTML("Summary Plots <br> and Data"), value="Panel1",
-                                     fluidRow(
-                                       column(12, htmlOutput("DefaultPlotText")),                                
-                                       column(2, uiOutput("DataButton")),  
+                            tabPanel(title=HTML("Summary Plots <br> and Data"), value="Panel1", padding='10px',
+                                   fluidRow(column(12,'',
+                                            fluidRow(column(12,
+                                                    conditionalPanel(condition="input.VariableSelect==''",  tabsetPanel(tabPanel('Overview',
+                                              fluidRow(
+                                       column(12, htmlOutput("DefaultPlotText"))#,                                
+                                     #  column(2, uiOutput("DataButton")),  
                                      #  column(2, uiOutput("VCNRButton")), 
-                                       column(12, dataTableOutput("TableMain"), plotOutput("PlotMain", height="auto",width="auto"))
-                                     )))),
+                                    #   column(12, dataTableOutput("TableMain"), plotOutput("PlotMain", height="auto",width="auto"))
+                                     )),
+                            tabPanel('Get started',
+                                     fluidRow(column(12, htmlOutput('GetStartedText')))))))))), 
+                            conditionalPanel(condition="input.VariableSelect!=''",  fluidRow(
+                              column(2, uiOutput("DataButton")),  
+                              #  column(2, uiOutput("VCNRButton")), 
+                              column(12, dataTableOutput("TableMain"), plotOutput("PlotMain", height="auto",width="auto"))
+                            ))))),
                             
                   sidebarPanel( 
                    wellPanel( 
@@ -150,18 +163,20 @@ fluidPage(title = "FISHEyE",
                             #  wellPanelSub(
                             #    uiOutput("FishWhitingSelect")),
                               wellPanelSub(
+                                conditionalPanel(condition="input.Ind_sel!='Economic'",
+                                               uiOutput("StatSelect2")),
                                 uiOutput("IndicatorSelect"),
+                                uiOutput("MetricSelect"),
                                 conditionalPanel(condition="input.Ind_sel=='Economic'",
                                     uiOutput("ShortdescrSelect"),
-                                    uiOutput("StatSelect")),
-                                conditionalPanel(condition="input.Ind_sel!='Economic'",
-                                               uiOutput("StatSelect2"))
+                                    uiOutput("StatSelect"))
+
                                      ),#end sub panel
                              
-                              wellPanelSub( wellPanelSub(conditionalPanel(condition="input.Sect_sel=='CV'&&input.MetricSelect=='Exponential Shannon Index'
-                                                                          ||input.Sect_sel=='CV'&&input.MetricSelect=='Proportion of revenue from CS fishery'
-                                                                          ||input.Sect_sel=='CV'&&input.MetricSelect=='Fishery participation'
-                                                                          ||input.MetricSelect=='Days at sea'", 
+                              wellPanelSub( wellPanelSub(conditionalPanel(condition="input.LayoutSelect!='Metrics'&&input.Sect_sel=='CV'&&input.MetricSelect=='Exponential Shannon Index'
+                                                                          ||input.LayoutSelect!='Metrics'&&input.Sect_sel=='CV'&&input.MetricSelect=='Proportion of revenue from CS fishery'
+                                                                          ||input.LayoutSelect!='Metrics'&&input.Sect_sel=='CV'&&input.MetricSelect=='Fishery participation'
+                                                                          ||input.LayoutSelect!='Metrics'&&input.MetricSelect=='Days at sea'", 
                                                  uiOutput("FishAkSelect"))),
                               wellPanelSub(
                                   conditionalPanel(condition="input.AVE_MED2=='Average'||input.AVE_MED2=='Median'||input.AVE_MED=='A'||input.AVE_MED=='M'",

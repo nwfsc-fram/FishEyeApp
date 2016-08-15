@@ -11,8 +11,14 @@ tags$div(style = "margin: 15px 15px 30px; width: 60%",
                        ),  
            tags$div(style= "margin-top: 15px;",
                     
+                    h4("Compare groups of vessels or metrics"),
+                     tags$ul(p('Select whether to compare groups of vessels based on selected summary variables (see below) or by metrics. For the mothership and catcher processor sectors, the only summary variable available is Pacific whiting.'),
+                             p('When comparing metrics, selected metrics may not all be displayed. This is because the displayed metrics depend upon the statistic selected. For some metrics, it is not appropriate to calculate all statistics. 
+                               For instance, the Gini coefficient and Herfindahl-Hirschman Index are indices. We cannot calculate an annual average or median value. 
+                               ')),
+                    
                     h4("Summary Variables"),
-                    p('Please not that availability of summary variables will vary between sectors.'),
+                    p('Please note that availability of summary variables will vary between sectors.'),
                     tags$ul(
                       tags$li(strong("Fisheries:"),'The Performance Metrics application uses the same fisheries definitions as those used by the', 
                               tags$a(href="http://www.nwfsc.noaa.gov/research/divisions/fram/economic/overview.cfm", target="_blank", 'EDC program'), 'to characterize the', 
@@ -120,12 +126,11 @@ tags$div(style = "margin: 15px 15px 30px; width: 60%",
                     
                     h4("Pacific whiting vessel category"),
                     tags$ul(
-                      tags$p("For each summary variable, the selected metric is calculated at three levels: 1) for the fleet as a whole, 2) for vessels that fished for Pacific whiting, and 3) for vessels that participate in the non-whiting groundfish sector of the limited entry trawl fishery. 
-                             Vessels that fished for both whiting and non-whiting are included in the whiting level. The purpose of separating the whiting from the non-whiting vessels is that the whiting vessels tend to be larger and catch a higher volume of fish. In addition, total allowable catch for Pacific whiting has more annual variation than total annual catch for species targeted in the non-whiting groundfish sector."), 
-                      tags$p("Note that there are several fisheries where vessels only participated in whiting or non-whiting fisheries."),
-                      tags$p('There are some cases where there are not enough vessels to differentiate between results summed across all vessels, whiting vessels, and non-whiting vessels. 
-                             This occurs when there is less than three vessels at either the whiting or non-whiting level. When this happens, we suppress data for both the whiting and non-whiting levels
-                             and indicate that we have done so in a message below the plot. Values for suppressed data appear as NA in the data table.')
+                      tags$p("For the catcher vessel sector, the selected metric is calculated at three levels: 1) for the fleet as a whole, 2) for vessels that fished for Pacific whiting, and 3) for vessels that participate in the non-whiting groundfish sector of the limited entry trawl fishery. 
+                             Vessels that fished for both whiting and non-whiting are included in the whiting level. The purpose of separating the whiting from the non-whiting vessels is that the whiting vessels tend to be larger and catch a higher volume of fish. In addition, total allowable catch for Pacific whiting has more annual variation than total annual catch for species targeted in the non-whiting groundfish sector. 
+                             Note that there are several fisheries where vessels only participated in whiting or non-whiting fisheries."),
+                      tags$p('This division is not appropriate for the mothership and catcher processor sectors. For these sectors, only pacific whiting is shown.'),
+                      tags$p('There are some cases where there are not enough vessels to separate the vessels into the whiting and non-whiting vessel categories. This occurs when there is less than three vessels at either the whiting or non-whiting level. When this happens, we only report the "All vessels" category and indicate that we have done so in a message below the plot and in the data table. More information on data confidentiality requirements can be found in the EDC Administration and Operations Report.')
                       ), tags$br(),                   
                     
                     h4("Include Alaskan fisheries activities"),

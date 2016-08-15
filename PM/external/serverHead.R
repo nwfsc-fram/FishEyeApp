@@ -1,9 +1,9 @@
 # load("data/tabs.out.RData") ## this is now the following datatables
 load("data/CVperfmetrics.RData")
 load("data/factorOrder.RData")
-#load("data/Mperfmetrics.RData")
-#load("data/CPperfmetrics.RData")
-#load("data/FRperfmetrics.RData")
+load("data/Mperfmetrics.RData")
+load("data/CPperfmetrics.RData")
+load("data/FRperfmetrics.RData")
 
 
 

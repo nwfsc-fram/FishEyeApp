@@ -73,6 +73,11 @@ observeEvent(input$iVesSum, {
                             message = 'For all vessels that fished within selected fisheries, show data for activities either within the selected fisheries, across all Catch Share fisheries, or across all West Coast fisheries. ')
 })
 
+observeEvent(input$icompare, {
+  session$sendCustomMessage(type= 'testmessage',
+                            message = 'You are selecting to either 1) look at a single metric for vessels grouped by fisheries, states, homeports, or vessel length or 2) compare multiple metrics for a single fishery, state, homeport, or vessel length.')
+})
+
 scale_height <- function(){
  if(length(input$VariableSelect)<=2){ 
    700 }  else if(length(input$VariableSelect)>2 & length(input$VariableSelect)<=4) { 
@@ -107,34 +112,61 @@ output$TableMain <- renderDataTable({
   if(vars$counter%%2 != 0) return()
 #  else if(!PermitPlot()) return()
     if(!is.null(DatSubTable())) {
+      if(input$LayoutSelect=="Metrics"){
+        if(input$Ind_sel=="Economic"){
+          if(input$Sect_sel=="CV"){
+            if(input$CategorySelect == "Fisheries"){
+              table <- subset(DatSubTable(), select = -c(CATEGORY, CS))
+              table$VALUE <- paste('$', prettyNum(table$VALUE, big.mark = ",", format = 'f', digits = 5, trim=T))
+              table$VARIANCE <- paste('$', prettyNum(table$VARIANC, big.mark = ",", format = 'f', digits = 5, trim=T))
+              table$YEAR <- factor(table$YEAR, levels=c(min(table$YEAR):max(table$YEAR)))
+              names(table) <- c("Year", "Summary Variable", "Statistic", "Economic measure","Data summed\nacross", "Number of vessels","Value",  "Variance \n\n(MAD, SD)")
+            } else {
+              table <- subset(DatSubTable(), select = -CATEGORY)  
+              table$VALUE <- paste('$', prettyNum(table$VALUE,  big.mark = ",", format = 'f', digits = 5, trim=T))
+              table$VARIANCE <- paste('$', prettyNum(table$VARIANCE,  big.mark = ",", format = 'f', digits = 5, trim=T))
+              table$YEAR <- factor(table$YEAR, levels=c(min(table$YEAR):max(table$YEAR)))
+              names(table) <- c("Year", "Summary Variable","Fisheries Category", "Statistic", "Economic measure", "Data summed\nacross","Number of vessels", "Value", "Variance \n(MAD, SD)")
+            }
+          } else {
+            table <- subset(DatSubTable(), select = -c(CATEGORY, CS))
+            table$VALUE <- paste('$', prettyNum(table$VALUE, big.mark = ",", format = 'f', digits = 5, trim=T))
+            table$VARIANCE <- paste('$', prettyNum(table$VARIANCE, big.mark = ",", format = 'f', digits = 5, trim=T))
+            table$YEAR <- factor(table$YEAR, levels=c(min(table$YEAR):max(table$YEAR)))
+            names(table) <- c("Year", "Summary Variable", "Statistic", "Economic measure","Data summed\nacross", "Number of vessels","Value",  "Variance \n\n(MAD, SD)")
+          }
+        } else {
+          if(input$Sect_sel=="CV"){
+            if(input$CategorySelect == "Fisheries"){
+            table <- subset(DatSubTable(), select = -c(CATEGORY, CS))
+            table <- subset(table, is.na(table$VALUE)==F)
+            names(table) <- c("Year", "Summary Variable", "Statistic", "Metric","Data summed\nacross","Number of vessels","Value",  "Variance \n\n(MAD, SD)")
+          } else{
+            table <- subset(DatSubTable(), select = -c(CATEGORY))
+            table <- subset(table, is.na(table$VALUE)==F)
+            names(table) <- c("Year", "Summary Variable","Fisheries Category", "Statistic", "Metric","Data summed\nacross","Number of vessels","Value",  "Variance \n\n(MAD, SD)")
+          }}
+          
+        }
+      } else {
       
       if(input$Ind_sel=="Economic"){
-      if(input$Sect_sel=="CV"){
-        if(input$CategorySelect == "Fisheries"){
-      table <- subset(DatSubTable(), select = -c(CATEGORY, CS))
-      table$VALUE <- paste('$', prettyNum(table$VALUE*1000, big.mark = ",", format = 'f', digits = 5, trim=T))
-      table$VARIANCE <- paste('$', prettyNum(table$VARIANCE*1000, big.mark = ",", format = 'f', digits = 5, trim=T))
-      table$YEAR <- factor(table$YEAR, levels=c(min(table$YEAR):max(table$YEAR)))
-      names(table) <- c("Year", "Summary Variable", "Statistic", "Economic measure","Data summed\nacross", "Number of vessels","Value",  "Variance \n\n(MAD, SD)")
+      if(input$Sect_sel=="CV"&input$CategorySelect == "Fisheries"){
+          table <- subset(DatSubTable(), select = -CATEGORY)  
+          table$VALUE <- paste('$', prettyNum(table$VALUE,  big.mark = ",", format = 'f', digits = 5, trim=T))
+          table$VARIANCE <- paste('$', prettyNum(table$VARIANCE,  big.mark = ",", format = 'f', digits = 5, trim=T))
+          table$YEAR <- factor(table$YEAR, levels=c(min(table$YEAR):max(table$YEAR)))
+          names(table) <- c("Year", "Summary Variable","Fisheries Category", "Statistic", "Economic measure", "Data summed\nacross","Number of vessels", "Value", "Variance \n(MAD, SD)")
       } else {
-      table <- subset(DatSubTable(), select = -CATEGORY)  
-      table$VALUE <- paste('$', prettyNum(table$VALUE*1000,  big.mark = ",", format = 'f', digits = 5, trim=T))
-      table$VARIANCE <- paste('$', prettyNum(table$VARIANCE*1000,  big.mark = ",", format = 'f', digits = 5, trim=T))
-      table$YEAR <- factor(table$YEAR, levels=c(min(table$YEAR):max(table$YEAR)))
-      names(table) <- c("Year", "Summary Variable","Fisheries Category", "Statistic", "Economic measure", "Data summed\nacross","Number of vessels", "Value", "Variance \n(MAD, SD)")
+          table <- subset(DatSubTable(), select = -c(CATEGORY, CS))
+          table$VALUE <- paste('$', prettyNum(table$VALUE, big.mark = ",", format = 'f', digits = 5, trim=T))
+          table$VARIANCE <- paste('$', prettyNum(table$VARIANCE, big.mark = ",", format = 'f', digits = 5, trim=T))
+          table$YEAR <- factor(table$YEAR, levels=c(min(table$YEAR):max(table$YEAR)))
+          names(table) <- c("Year", "Summary Variable", "Statistic", "Economic measure","Data summed\nacross", "Number of vessels","Value",  "Variance \n\n(MAD, SD)")
       }
-      } else {
-        table <- subset(DatSubTable(), select = -c(CATEGORY, CS))
-        table$VALUE <- paste('$', prettyNum(table$VALUE*1000, big.mark = ",", format = 'f', digits = 5, trim=T))
-        table$VARIANCE <- paste('$', prettyNum(table$VARIANCE*1000, big.mark = ",", format = 'f', digits = 5, trim=T))
-        table$YEAR <- factor(table$YEAR, levels=c(min(table$YEAR):max(table$YEAR)))
-        names(table) <- c("Year", "Summary Variable", "Statistic", "Economic measure","Data summed\nacross", "Number of vessels","Value",  "Variance \n\n(MAD, SD)")
-      }
-      }
+      } #end economoic for non-metrrics comparison
       if(input$Ind_sel!="Economic"){
         if(input$CategorySelect == "Fisheries"){
-          
-          
           if(input$MetricSelect=="Revenue per crew day"|input$MetricSelect=="Crew wage per day"){
             table <- subset(DatSubTable(), select = -c(CATEGORY, CS))
             table$VALUE <- paste('$', prettyNum(table$VALUE, big.mark = ",", format = 'f', digits = 5, trim=T))
@@ -174,7 +206,7 @@ output$TableMain <- renderDataTable({
               table$YEAR <- factor(table$YEAR, levels=c(min(table$YEAR):max(table$YEAR)))
               names(table) <- c("Year", "Summary Variable", "Statistic", "Metric","Data summed\nacross", "Number of vessels","Value",  "Variance \n\n(MAD, SD)")
             }
-           } 
+           } # end fisheries
         else {
              if(input$MetricSelect=="Revenue per crew day"|input$MetricSelect=="Crew wage per day"){
                table <- subset(DatSubTable(), select = -CATEGORY)  
@@ -198,8 +230,12 @@ output$TableMain <- renderDataTable({
             table$VALUE <- prettyNum(table$VALUE, big.mark = ",", format = 'f', digits = 5, trim=T)
             table$VARIANCE <- prettyNum(table$VARIANCE, big.mark = ",", format = 'f', digits = 5, trim=T)
             table$YEAR <- factor(table$YEAR, levels=c(min(table$YEAR):max(table$YEAR)))
-            names(table) <- c("Year", "Summary Variable","Fisheries Category", "Statistic", "Metric","Data summed\nacross", "Alaskan fisheries","Number of vessels","Value",  "Variance \n\n(MAD, SD)")
-          }else {
+            if(input$Sect_sel=="FR"){
+            names(table) <- c("Year", "Summary Variable","Fisheries Category", "Statistic", "Metric","Data summed\nacross", "Number of vessels","Value",  "Variance \n\n(MAD, SD)")
+            } else {
+              names(table) <- c("Year", "Summary Variable","Fisheries Category", "Statistic", "Metric","Data summed\nacross", "Alaskan fisheries","Number of vessels","Value",  "Variance \n\n(MAD, SD)")
+            }
+            }else {
                table <- subset(DatSubTable(), select = -CATEGORY)    
                table$VALUE <- prettyNum(table$VALUE, big.mark = ",", format = 'f', digits = 5, trim=T)
                table$VARIANCE <- prettyNum(table$VARIANCE, big.mark = ",", format = 'f', digits = 5, trim=T)
@@ -207,7 +243,7 @@ output$TableMain <- renderDataTable({
                names(table) <- c("Year", "Summary Variable","Fisheries Category", "Statistic", "Metric","Data summed\nacross", "Number of vessels","Value",  "Variance \n\n(MAD, SD)")
              }
                   }
-      }
+      }}
             table
     }
 })
@@ -235,7 +271,14 @@ output$dlTable <- downloadHandler(
             table <- subset(DatSubTable(), select = -CATEGORY)  
         }
       }
-    
+  
+      if(input$LayoutSelect=="Metrics"){
+        if(input$CategorySelect == "Fisheries"){
+        names(table) <- c(4,1,3,2,"a ", " b", "c ", "d ") 
+        } else {
+          names(table) <- c(4,1,3,2,"a ", " b","c ", "d ", "e ") 
+        }
+      } else { 
   if(input$CategorySelect == "Fisheries"){
         if(input$MetricSelect=="Number of vessels"){
           names(table) <- c(4,1,3,2,"a ", " b")
@@ -248,26 +291,37 @@ output$dlTable <- downloadHandler(
       else {
         if(input$MetricSelect=="Number of vessels"){
           names(table) <- c(4,1,3,2,"a ", " b","c ")
-        } else if(input$MetricSelect=="Exponential Shannon Index"|input$MetricSelect=="Proportion of revenue from CS fishery"|input$MetricSelect=="Fishery participation"|input$MetricSelect=="Days at sea"){
+        } else if(input$LayoutSelect!="Metrics"&input$MetricSelect=="Exponential Shannon Index"|input$LayoutSelect!="Metrics"&input$MetricSelect=="Proportion of revenue from CS fishery"|input$LayoutSelect!="Metrics"&input$MetricSelect=="Fishery participation"|input$LayoutSelect!="Metrics"&input$MetricSelect=="Days at sea"){
           names(table) <- c(4,1,3,2,"a ", " b","c ", "d ", "e ","f ")
         }else {
           names(table) <- c(4,1,3,2,"a ", " b","c ", "d ", "e ")
         }
       }
+      }
       # some wonky code to insert a timestamp. xtable has a more straightfoward approach but not supported with current RStudio version on the server
       
       if(input$Ind_sel=="Economic"){
+        if(input$LayoutSelect=="Metrics"){
+          if(input$CategorySelect == "Fisheries"){
+            temp <- data.frame("Year", "Summary Variable", "Statistic", "Economic measure","Fished for whiting","Number of vessels","Value",  "Variance (MAD, SD)")
+          } else {
+            temp <- data.frame("Year", "Summary Variable","Fisheries Category", "Statistic", "Economic measure","Number of vessels", "Value", "Variance (MAD, SD)")
+          }  
+        } else {
         if(input$CategorySelect == "Fisheries"){
           temp <- data.frame("Year", "Summary Variable", "Statistic", "Economic measure","Fished for whiting", "Number of vessels","Value",  "Variance (MAD, SD)")
         } else {
           temp <- data.frame("Year", "Summary Variable","Fisheries Category", "Statistic", "Economic measure", "Fished for whiting","Number of vessels", "Value", "Variance (MAD, SD)")
+        }
         }
       }
       
       if(input$Ind_sel!="Economic"){
         if(input$CategorySelect == "Fisheries"){
           table <- subset(DatSubTable(), select = -c(CATEGORY, CS))
-          
+          if(input$LayoutSelect=="Metrics"){
+            temp <- data.frame("Year", "Summary Variable", "Statistic", "Metric", "Fished for whiting","Number of vessels","Value",  "Variance (MAD, SD)")
+          } else {
           if(input$MetricSelect=="Revenue per crew day"|input$MetricSelect=="Crew wage per day"){
             temp <- data.frame("Year", "Summary Variable", "Statistic", "Metric","Fished for whiting", "Number of vessels","Value",  "Variance (MAD, SD)")
           } else if(input$MetricSelect=="Share of landings by state"){
@@ -279,8 +333,12 @@ output$dlTable <- downloadHandler(
           }else {
             temp <- data.frame("Year", "Summary Variable", "Statistic", "Metric","Fished for whiting", "Number of vessels","Value",  "Variance (MAD, SD)")
           }
-        } 
+          }#End not metrics
+          }#End fisheries
         else {
+          if(input$LayoutSelect=="Metrics"){
+            temp <- data.frame("Year", "Summary Variable","Fisheries Category", "Statistic", "Metric", "Fished for whiting","Number of vessels","Value",  "Variance (MAD, SD)")
+          } else {
           if(input$MetricSelect=="Revenue per crew day"|input$MetricSelect=="Crew wage per day"){
             temp <- data.frame("Year", "Summary Variable","Fisheries Category", "Statistic", "Metric", "Fished for whiting","Number of vessels", "Value", "Variance (MAD, SD)")
           } else if(input$MetricSelect=="Share of landings by state"){
@@ -293,37 +351,46 @@ output$dlTable <- downloadHandler(
             temp <- data.frame("Year", "Summary Variable","Fisheries Category", "Statistic", "Metric","Fished for whiting", "Number of vessels","Value",  "Variance (MAD, SD)")
           }
         }
-      }
+      }}
         
       
       colnames(temp)=colnames(table)
 
             table <- rbindCommonCols(temp, table) 
+            if(input$LayoutSelect=="Metrics"){
+              if(input$CategorySelect == "Fisheries"){
+                names(table) <- c(paste("Sourced from the FISHEyE application (http://dataexplorer.northwestscience.fisheries.noaa.gov/fisheye/PerformanceMetrics/) maintained by NOAA Fisheriess NWFSC on ",
+                                        format(Sys.Date(), format="%B %d %Y")),"", "", "", "","", "")
+              } else {
+                names(table) <- c(paste("Sourced from the FISHEyE application (http://dataexplorer.northwestscience.fisheries.noaa.gov/fisheye/PerformanceMetrics/) maintained by NOAA Fisheriess NWFSC on ",
+                                        format(Sys.Date(), format="%B %d %Y")),"", "", "", "","", "","")
+              }
+            } else {
         if(input$CategorySelect == "Fisheries"){
         if(input$MetricSelect=="Number of vessels"){
-          names(table) <- c(paste("Sourced from the FISHEyE application (http://dataexplorer.northwestscience.fisheries.noaa.gov/fisheye/PerfMetrics/) maintained by NOAA Fisheriess NWFSC on ",
+          names(table) <- c(paste("Sourced from the FISHEyE application (http://dataexplorer.northwestscience.fisheries.noaa.gov/fisheye/PerformanceMetrics/) maintained by NOAA Fisheriess NWFSC on ",
                                   format(Sys.Date(), format="%B %d %Y")),"", "", "", "","")
         }  else if(input$MetricSelect=="Exponential Shannon Index"|input$MetricSelect=="Proportion of revenue from CS fishery"|input$MetricSelect=="Fishery participation"|input$MetricSelect=="Days at sea"){
-          names(table) <- c(paste("Sourced from the FISHEyE application (http://dataexplorer.northwestscience.fisheries.noaa.gov/fisheye/PerfMetrics/) maintained by NOAA Fisheriess NWFSC on ",
+          names(table) <- c(paste("Sourced from the FISHEyE application (http://dataexplorer.northwestscience.fisheries.noaa.gov/fisheye/PerformanceMetrics/) maintained by NOAA Fisheriess NWFSC on ",
                                   format(Sys.Date(), format="%B %d %Y")),"", "", "", "","", "","")
         }else {
-          names(table) <- c(paste("Sourced from the FISHEyE application (http://dataexplorer.northwestscience.fisheries.noaa.gov/fisheye/PerfMetrics/) maintained by NOAA Fisheriess NWFSC on ",
+          names(table) <- c(paste("Sourced from the FISHEyE application (http://dataexplorer.northwestscience.fisheries.noaa.gov/fisheye/PerformanceMetrics/) maintained by NOAA Fisheriess NWFSC on ",
                                   format(Sys.Date(), format="%B %d %Y")),"", "", "", "","", "","")
         }
       } 
       else {
         if(input$MetricSelect=="Number of vessels"){
-          names(table) <- c(paste("Sourced from the FISHEyE application (http://dataexplorer.northwestscience.fisheries.noaa.gov/fisheye/PerfMetrics/) maintained by NOAA Fisheriess NWFSC on ",
+          names(table) <- c(paste("Sourced from the FISHEyE application (http://dataexplorer.northwestscience.fisheries.noaa.gov/fisheye/PerformanceMetrics/) maintained by NOAA Fisheriess NWFSC on ",
                                   format(Sys.Date(), format="%B %d %Y")),"", "","","","", "")
         } else if(input$MetricSelect=="Exponential Shannon Index"|input$MetricSelect=="Proportion of revenue from CS fishery"|input$MetricSelect=="Fishery participation"|input$MetricSelect=="Days at sea"){
-          names(table) <- c(paste("Sourced from the FISHEyE application (http://dataexplorer.northwestscience.fisheries.noaa.gov/fisheye/PerfMetrics/) maintained by NOAA Fisheriess NWFSC on ",
+          names(table) <- c(paste("Sourced from the FISHEyE application (http://dataexplorer.northwestscience.fisheries.noaa.gov/fisheye/PerformanceMetrics/) maintained by NOAA Fisheriess NWFSC on ",
                                   format(Sys.Date(), format="%B %d %Y")),"", "","", "", "","", "","")
         }else {
-          names(table) <- c(paste("Sourced from the FISHEyE application (http://dataexplorer.northwestscience.fisheries.noaa.gov/fisheye/PerfMetrics/) maintained by NOAA Fisheriess NWFSC on ",
+          names(table) <- c(paste("Sourced from the FISHEyE application (http://dataexplorer.northwestscience.fisheries.noaa.gov/fisheye/PerformanceMetrics/) maintained by NOAA Fisheriess NWFSC on ",
                                   format(Sys.Date(), format="%B %d %Y")),"", "","", "", "","", "","")
         }
       }
-      
+            }
            write.csv(table, file)
    })
 

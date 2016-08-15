@@ -6,6 +6,16 @@ doPlotDownload <- function(dat, x, y){
     if(input$Ind_sel=="Economic"){   
       dat$thresh <- data.frame(dat %>% group_by(SHORTDESCR) %>% transmute(threshold=length(table(YEAR[YEAR<=2010]))))[,2]
     }
+    else if(input$Ind_sel!="Economic"){ 
+      if(input$LayoutSelect=="Metrics"){   
+        if(input$PlotSelect==T&dat$STAT[1]!="Fleet-wide total"&is.na(max(dat$VARIANCE))==F) { 
+          dat$thresh <- as.numeric(data.frame(dat %>% group_by(METRIC) %>% transmute(threshold=max(VALUE, na.rm=T)+max(VARIANCE)+max(VALUE, na.rm=T)/10))[,2])
+        } else {
+          dat$thresh <- as.numeric(data.frame(dat %>% group_by(METRIC) %>% transmute(threshold=max(VALUE, na.rm=T)+max(VALUE, na.rm=T)/10))[,2])
+        }
+      } else {
+        dat$thresh <- 0
+      }}
     
     groupVar <- "whitingv"
     
@@ -24,6 +34,7 @@ doPlotDownload <- function(dat, x, y){
       }}
     
     gv <- function(){
+      if(input$LayoutSelect!="Metrics"){
       if(input$Ind_sel=="Economic"){
         if(input$CategorySelect=="Fisheries"){
           sprintf(paste(input$CategorySelect, ":", input$VariableSelect, "     Statistic: ", input$StatSelect))
@@ -31,10 +42,33 @@ doPlotDownload <- function(dat, x, y){
           sprintf(paste(input$CategorySelect, ":", input$VariableSelect, "     Statistic: ", input$StatSelect,"    Summed across:", input$inSelect))
         }
       } else {
-        if(input$CategorySelect=="Fisheries"){
-          sprintf(paste("Category:",input$CategorySelect,"     Metric: ", input$MetricSelect))
+        if(input$MetricSelect!="Share of landings by state"){
+          if(input$CategorySelect=="Fisheries"){
+            sprintf(paste("Category:", input$CategorySelect,"     Metric: ", input$MetricSelect, "   Statistic:", dat$SUMSTAT[1]))
+          } else {
+            sprintf(paste("Category:",input$CategorySelect,"     Metric: ", input$MetricSelect,"   Statistic:", dat$SUMSTAT[1],"    Summed across:", input$inSelect))   
+          }
         } else {
-          sprintf(paste("Category:",input$CategorySelect, "     Metric: ", input$MetricSelect,"    Summed across:", input$inSelect))   
+          if(input$CategorySelect=="Fisheries"){
+            sprintf(paste("Variable:", input$VariableSelect,"     Metric: ", input$MetricSelect))
+          } else {
+            sprintf(paste("Variable:",input$VariableSelect,"     Metric: ", input$MetricSelect,"    Summed across:", input$inSelect))   
+          } 
+        }
+      } 
+      } else {
+        if(input$Ind_sel=="Economic"){
+          if(input$CategorySelect=="Fisheries"){
+            sprintf(paste(input$CategorySelect, ":", input$VariableSelect, "     Statistic: ",  input$StatSelect))
+          } else {
+            sprintf(paste(input$CategorySelect, ":", input$VariableSelect, "     Statistic: ", input$StatSelect,"    Summed across:", input$inSelect))
+          }
+        } else {
+          if(input$CategorySelect=="Fisheries"){
+            sprintf(paste(input$CategorySelect, ":",input$VariableSelect, "  Metrics for which",  dat$SUMSTAT[1],"is calculated are shown"))
+          } else {
+            sprintf(paste(input$CategorySelect,":",input$VariableSelect,"  Summed across:", input$inSelect, "  Metrics for which",  dat$SUMSTAT[1],'is calculated are shown'))   
+          }
         }
       }
     }
@@ -47,11 +81,10 @@ doPlotDownload <- function(dat, x, y){
     ylab <- function(){
       if(input$Ind_sel=="Economic") {
         paste("Thousands of 2014 $","(",input$StatSelect, ")")   
-        
-      } else if(input$Ind_sel!="Economic") {
+      } else if(input$LayoutSelect!='Metrics'){
+#      } else if(input$Ind_sel!="Economic") {
         if(input$MetricSelect=="Crew wage per day"|input$MetricSelect=="Revenue per crew day"){
           paste("Thousands of 2014 $","(",input$AVE_MED2, ")")
-          
         } else if(input$MetricSelect=="Proportion of revenue from CS fishery"){
           "Proportion of revenue from Catch Share fishery"  
         }  else if(input$MetricSelect=="Gini coefficient"){
@@ -69,122 +102,132 @@ doPlotDownload <- function(dat, x, y){
         }  else {
           input$MetricSelect         
         }
-      }
+      } else {'Scale and units depend upon metric'}
     }
     
+source_lab <- function(){
+  paste("\nSourced from the FISHEyE application (http://dataexplorer.northwestscience.fisheries.noaa.gov/fisheye/PerformanceMetrics/) maintained by NOAA Fisheriess NWFSC on ",format(Sys.Date(), format="%B %d %Y"))
+}
+supp_obs <- function(){
+  paste("\nData have been suppressed for years that are not plotted as there are not enough observations to protect confidentiality.")
+}
+conf_mess <- function(){
+"\nSee the confidentiality section under the ABOUT tab for more information."
+}
+
+supp_whiting <- function(){
+"\nYour selection would reveal confidential data for years with sufficient observations. 
+  For years when confidential data would be revealed, only results for 'All vessels' have been shown."
+}
+
+supp_metric <- function(){
+  "At least one of the selected metrics cannot be shown. This is because the selected statistic for that metric is not available. 
+\nFor instance, the number of vessels metric will not show when the average or median statistic is selected. Please select the total statistic in this case."
+}
+
     xlab <- function(){
-      if(input$MetricSelect=="Fishery participation"|input$MetricSelect=="Proportion of revenue from CS fishery"){
-        if(max(dat$conf)==0) {
-          if(max(dat$flag)==0){
-            if(input$CategorySelect=="Fisheries"){
-              paste("Sourced from the FISHEyE application (http://dataexplorer.northwestscience.fisheries.noaa.gov/fisheye/PerformanceMetrics) maintained by NOAA Fisheries NWFSC on ",format(Sys.Date(), format="%B %d %Y"),
-                    "\nFor individual fisheries and the", input$MetricSelect, "metric, we show all activities for vessels that fished in the selected fisheries, \nnot just their activity in the selected fishery, \nFor example, the", if(length(input$VariableSelect)>2){input$VariableSelect[3]} else if(length(input$VariableSelect)==2) {input$VariableSelect[2]} else {""},"plot above shows the", input$AVE_MED2, input$MetricSelect,"for all vessels that fished for", if(length(input$VariableSelect)>2){input$VariableSelect[3]} else if(length(input$VariableSelect)==2) {input$VariableSelect[2]} else {input$VariableSelect[1]},".")
-            } else {
-              paste("Sourced from the FISHEyE application (http://dataexplorer.northwestscience.fisheries.noaa.gov/fisheye/PerformanceMetrics) maintained by NOAA Fisheries NWFSC on ",format(Sys.Date(), format="%B %d %Y")) 
-            }}else {
+      if(input$LayoutSelect!="Metrics"){
+        if(input$MetricSelect=="Fishery participation"|input$MetricSelect=="Proportion of revenue from CS fishery"){
+          if(max(dat$conf)==0) {
+            if(max(dat$flag)==0){
               if(input$CategorySelect=="Fisheries"){
-                paste("Sourced from the FISHEyE application (http://dataexplorer.northwestscience.fisheries.noaa.gov/fisheye/PerformanceMetrics) maintained by NOAA Fisheries NWFSC on ",format(Sys.Date(), format="%B %d %Y"),
-"\nFor individual fisheries and the", input$MetricSelect, "metric, we show all activities for vessels that fished in the selected fisheries, \nnot just their activity in the selected fishery, \nFor example, the", if(length(input$VariableSelect)>2){input$VariableSelect[3]} else if(length(input$VariableSelect)==2) {input$VariableSelect[2]} else {""},"plot above shows the", input$AVE_MED2, input$MetricSelect,"for all vessels that fished for", if(length(input$VariableSelect)>2){input$VariableSelect[3]} else if(length(input$VariableSelect)==2) {input$VariableSelect[2]} else {input$VariableSelect[1]},".
-                      \nData have been suppressed for years that are not plotted as there are not enough observations to protect confidentiality.") 
+                paste("For individual fisheries and the", input$MetricSelect, "metric, we show all activities for vessels that fished in the selected fisheries, \nnot just their activity in the selected fishery, \nFor example, the", if(length(input$VariableSelect)>2){input$VariableSelect[3]} else if(length(input$VariableSelect)==2) {input$VariableSelect[2]} else {""},"plot above shows the", input$AVE_MED2, input$MetricSelect,"for all vessels that fished for", if(length(input$VariableSelect)>2){input$VariableSelect[3]} else if(length(input$VariableSelect)==2) {input$VariableSelect[2]} else {input$VariableSelect[1]},".",
+                      source_lab())
               } else {
-                paste("Sourced from the FISHEyE application (http://dataexplorer.northwestscience.fisheries.noaa.gov/fisheye/PerformanceMetrics) maintained by NOAA Fisheries NWFSC on ",format(Sys.Date(), format="%B %d %Y"),
-                      "\nData have been sueppressed for years that are not plotted as there are not enough observations to protect confidentiality.")        
-              }}} else {
-                if(max(dat$flag)==0){
-                  if(input$CategorySelect=="Fisheries"){
-                    paste("Sourced from the FISHEyE application (http://dataexplorer.northwestscience.fisheries.noaa.gov/fisheye/PerformanceMetrics) maintained by NOAA Fisheries NWFSC on ",format(Sys.Date(), format="%B %d %Y"),
-"\nFor individual fisheries and the", input$MetricSelect, "metric, we show all activities for vessels that fished in the selected fisheries, \nnot just their activity in the selected fishery, \nFor example, the", if(length(input$VariableSelect)>2){input$VariableSelect[3]} else if(length(input$VariableSelect)==2) {input$VariableSelect[2]} else {""},"plot above shows the", input$AVE_MED2, input$MetricSelect,"for all vessels that fished for", if(length(input$VariableSelect)>2){input$VariableSelect[3]} else if(length(input$VariableSelect)==2) {input$VariableSelect[2]} else {input$VariableSelect[1]},".
-                          \nYour selection would reveal confidential data for years with sufficient observations. For years when confidential data would be revealed, 
-                          only results for 'All vessels' are shown. 
-                          \nSee the confidentiality section under the ABOUT tab for more information.")
-                  } else{
-                    paste("Sourced from the FISHEyE application (http://dataexplorer.northwestscience.fisheries.noaa.gov/fisheye/PerformanceMetrics) maintained by NOAA Fisheries NWFSC on ",format(Sys.Date(), format="%B %d %Y"),
-"\nYour selection would reveal confidential data for years with sufficient observations. For years when confidential data would be revealed, 
-                    only results for 'All vessels' are shown. 
-                    \nSee the confidentiality section under the ABOUT tab for more information.")
-                  }} else {
-                    if(input$CategorySelect=="Fisheries"){
-                      paste("Sourced from the FISHEyE application (http://dataexplorer.northwestscience.fisheries.noaa.gov/fisheye/PerformanceMetrics) maintained by NOAA Fisheries NWFSC on ",format(Sys.Date(), format="%B %d %Y"),
-"\nFor individual fisheries and the", input$MetricSelect, "metric, we show all activities for vessels that fished in the selected fisheries, \nnot just their activity in the selected fishery, \nFor example, the", if(length(input$VariableSelect)>2){input$VariableSelect[3]} else if(length(input$VariableSelect)==2) {input$VariableSelect[2]} else {""},"plot above shows the", input$AVE_MED2, input$MetricSelect,"for all vessels that fished for", if(length(input$VariableSelect)>2){input$VariableSelect[3]} else if(length(input$VariableSelect)==2) {input$VariableSelect[2]} else {input$VariableSelect[1]},".
-                            \nData have been suppressed for years that are not plotted as there are not enough observations to protect confidentiality. 
-                            \nIn addition, your selection would reveal confidential data for years with sufficient observations. For years when confidential data would be revealed, 
-                            only results for 'All vessels' are shown. 
-                            \nSee the confidentiality section under the ABOUT tab for more information.")
-                    } else {
-                      paste("Sourced from the FISHEyE application (https://dataexplorer.northwestscience.fisheries.noaa.gov/fisheye/PerformanceMetrics) maintained by NOAA Fisheries NWFSC on ",format(Sys.Date(), format="%B %d %Y"),
-                      "\nData have been suppressed for years that are not plotted as there are not enough observations to protect confidentiality. 
-                      \nIn addition, your selection would reveal confidential data for years with sufficient observations. For years when confidential data would be revealed, 
-                      only results for 'All vessels' are shown. 
-                      \nSee the confidentiality section under the ABOUT tab for more information.")
-                    } }}
-                    } 
-      else if(input$MetricSelect=="Share of landings by state"){
-        if(max(dat$conf)==0) {
-          if(max(dat$flag)==0){
-            if(input$CategorySelect=="State"|input$CategorySelect=="Homeport"){
-              paste("Sourced from the FISHEyE application (http://dataexplorer.northwestscience.fisheries.noaa.gov/fisheye/PerformanceMetrics) maintained by NOAA Fisheries NWFSC on ",format(Sys.Date(), format="%B %d %Y"),
-                    "\nFor the", input$MetricSelect, "metric, we show all activities for vessels that homeported in the selected",input$CategorySelect,", \nnot just their activity in the selected",input$CategorySelect,".\nFor example, the plots above show the", input$MetricSelect,"for vessels that homeported in", input$VariableSelect,".")
-            } else {
-              paste("Sourced from the FISHEyE application (http://dataexplorer.northwestscience.fisheries.noaa.gov/fisheye/PerformanceMetrics) maintained by NOAA Fisheries NWFSC on ",format(Sys.Date(), format="%B %d %Y"))
-            }} else {
-              if(input$CategorySelect=="State"|input$CategorySelect=="Homeport"){
-                paste("Sourced from the FISHEyE application (http://dataexplorer.northwestscience.fisheries.noaa.gov/fisheye/PerformanceMetrics) maintained by NOAA Fisheries NWFSC on ",format(Sys.Date(), format="%B %d %Y"),
-"\nFor the", input$MetricSelect, "metric, we show all activities for vessels that homeported in the selected",input$CategorySelect,", \nnot just their activity in the selected",input$CategorySelect,".\nFor example, the plots above show the", input$MetricSelect,"for vessels that homeported in", input$VariableSelect,".
-                      \nData have been suppressed for years that are not plotted as there are not enough observations to protect confidentiality." )
-              } else {
-                paste("Sourced from the FISHEyE application (http://dataexplorer.northwestscience.fisheries.noaa.gov/fisheye/PerformanceMetrics) maintained by NOAA Fisheries NWFSC on ",format(Sys.Date(), format="%B %d %Y"),
-                      "\nData have been suppressed for years that are not plotted as there are not enough observations to protect confidentiality.") 
-              }}
-        } else {
-          if(max(dat$flag)==0){
-            if(input$CategorySelect=="State"|input$CategorySelect=="Homeport"){
-              paste("Sourced from the FISHEyE application (http://dataexplorer.northwestscience.fisheries.noaa.gov/fisheye/PerformanceMetrics) maintained by NOAA Fisheries NWFSC on ",format(Sys.Date(), format="%B %d %Y"),
-                "\nFor the", input$MetricSelect, "metric, we show all activities for vessels that homeported in the selected",input$CategorySelect,", \nnot just their activity in the selected",input$CategorySelect,"\nFor example, the plots above show the", input$MetricSelect,"for vessels that homeported in", input$VariableSelect,".
-                \nYour selection would reveal confidential data for years with sufficient observations.  For years when confidential data would be revealed, 
-                 only results for 'All vessels' have been shown. 
-               \nSee the confidentiality section under the ABOUT tab for more information.")
-            } else {
-              paste("Sourced from the FISHEyE application (http://dataexplorer.northwestscience.fisheries.noaa.gov/fisheye/PerformanceMetrics) maintained by NOAA Fisheries NWFSC on ",format(Sys.Date(), format="%B %d %Y"),
-              "\nYour selection would reveal confidential data for years with sufficient observations.  For years when confidential data would be revealed, 
-                 only results for 'All vessels' have been shown. 
-                \nSee the confidentiality section under the ABOUT tab for more information.")
-            }}  else {
-              if(input$CategorySelect=="State"|input$CategorySelect=="Homeport"){
-                paste("Sourced from the FISHEyE application (http://dataexplorer.northwestscience.fisheries.noaa.gov/fisheye/PerformanceMetrics) maintained by NOAA Fisheries NWFSC on ",format(Sys.Date(), format="%B %d %Y"),
-                  "\nFor the", input$MetricSelect, "metric, we show all activities for vessels that homeported in the selected",input$CategorySelect,", \nnot just their activity in the selected",input$CategorySelect,".\nFor example, the plots above show the", input$MetricSelect,"for vessels that homeported in", input$VariableSelect,".
-                \nData have been suppressed for years that are not plotted as there are not enough observations to protect confidentiality. 
-                \nIn addition, your selection would reveal confidential data for years with sufficient observations. For years when confidential data would be revealed, 
-                 only results for 'All vessels' have been shown. 
-                \nSee the confidentiality section under the ABOUT tab for more information.")
-              } else {
-                paste("Sourced from the FISHEyE application (http://dataexplorer.northwestscience.fisheries.noaa.gov/fisheye/PerformanceMetrics) maintained by NOAA Fisheries NWFSC on ",format(Sys.Date(), format="%B %d %Y"),
-                  "\nData have been suppressed for years that are not plotted as there are not enough observations to protect confidentiality. 
-                    \nIn addition, your selection would reveal confidential data for years with sufficient observations. For years when confidential data would be revealed, 
-                     only results for 'All vessels' have been shown. 
-                   \nSee the confidentiality section under the ABOUT tab for more information.")
-              }} }
-            } else {
-              if(max(dat$conf)==0) {
-                if(max(dat$flag)==0){
-                  paste("Sourced from the FISHEyE application (http://dataexplorer.northwestscience.fisheries.noaa.gov/fisheye/PerformanceMetrics) maintained by NOAA Fisheries NWFSC on ",format(Sys.Date(), format="%B %d %Y"))
+                print(source_lab())
+              }}else {
+                if(input$CategorySelect=="Fisheries"){
+                  paste("For individual fisheries and the", input$MetricSelect, "metric, we show all activities for vessels that fished in the selected fisheries, \nnot just their activity in the selected fishery, \nFor example, the", if(length(input$VariableSelect)>2){input$VariableSelect[3]} else if(length(input$VariableSelect)==2) {input$VariableSelect[2]} else {""},"plot above shows the", input$AVE_MED2, input$MetricSelect,"for all vessels that fished for", if(length(input$VariableSelect)>2){input$VariableSelect[3]} else if(length(input$VariableSelect)==2) {input$VariableSelect[2]} else {input$VariableSelect[1]},".",
+                        supp_obs(), source_lab()) 
                 } else {
-                  paste("Sourced from the FISHEyE application (http://dataexplorer.northwestscience.fisheries.noaa.gov/fisheye/PerformanceMetrics) maintained by NOAA Fisheries NWFSC on ",format(Sys.Date(), format="%B %d %Y"),
-                  "\nData have been suppressed for years that are not plotted as there are not enough observations to protect confidentiality.") 
-                }} else {
+                  paste(supp_obs(), source_lab())
+                }}} else {
                   if(max(dat$flag)==0){
-                    paste("Sourced from the FISHEyE application (http://dataexplorer.northwestscience.fisheries.noaa.gov/fisheye/PerformanceMetrics) maintained by NOAA Fisheries NWFSC on ",format(Sys.Date(), format="%B %d %Y"),
-            "\nYour selection would reveal confidential data for years with sufficient observations. For years when confidential data would be revealed, 
-           only results for 'All vessels' are shown. 
-        \nSee the confidentiality section under the ABOUT tab for more information.")
-                  }  else {
-                    paste("Sourced from the FISHEyE application (http://dataexplorer.northwestscience.fisheries.noaa.gov/fisheye/PerformanceMetrics) maintained by NOAA Fisheries NWFSC on ",format(Sys.Date(), format="%B %d %Y"),
-        "\nData have been suppressed for years that are not plotted as there are not enough observations to protect confidentiality. 
-          \nIn addition, your selection would reveal confidential data for years with sufficient observations. For years when confidential data would be revealed, 
-           only results for 'All vessels' are shown. 
-        \nSee the confidentiality section under the ABOUT tab for more information.")
-                  }}}
-                    } #end x label function
-    #end x label function
+                    if(input$CategorySelect=="Fisheries"){
+                      paste("For individual fisheries and the", input$MetricSelect, "metric, we show all activities for vessels that fished in the selected fisheries, \nnot just their activity in the selected fishery, \nFor example, the", if(length(input$VariableSelect)>2){input$VariableSelect[3]} else if(length(input$VariableSelect)==2) {input$VariableSelect[2]} else {""},"plot above shows the", input$AVE_MED2, input$MetricSelect,"for all vessels that fished for", if(length(input$VariableSelect)>2){input$VariableSelect[3]} else if(length(input$VariableSelect)==2) {input$VariableSelect[2]} else {input$VariableSelect[1]},".",
+                            supp_whiting(), conf_mess(),source_lab())
+                    } else{
+                      paste(supp_whiting(), conf_mess(),source_lab())
+                    }} else {
+                      if(input$CategorySelect=="Fisheries"){
+                        paste("For individual fisheries and the", input$MetricSelect, "metric, we show all activities for vessels that fished in the selected fisheries, \nnot just their activity in the selected fishery, \nFor example, the", if(length(input$VariableSelect)>2){input$VariableSelect[3]} else if(length(input$VariableSelect)==2) {input$VariableSelect[2]} else {""},"plot above shows the", input$AVE_MED2, input$MetricSelect,"for all vessels that fished for", if(length(input$VariableSelect)>2){input$VariableSelect[3]} else if(length(input$VariableSelect)==2) {input$VariableSelect[2]} else {input$VariableSelect[1]},".",
+                              supp_obs(), supp_whiting(), conf_mess(),source_lab())
+                      } else {
+                        paste(supp_obs(), supp_whiting(), conf_mess(),source_lab())
+                      } }}
+                      } 
+        else if(input$MetricSelect=="Share of landings by state"){
+          if(max(dat$conf)==0) {
+            if(max(dat$flag)==0){
+              if(input$CategorySelect=="State"|input$CategorySelect=="Homeport"){
+                paste("For the", input$MetricSelect, "metric, we show all activities for vessels that homeported in the selected",input$CategorySelect,", \nnot just their activity in the selected",input$CategorySelect,".\nFor example, the plots above show the", input$MetricSelect,"for vessels that homeported in", input$VariableSelect,".",
+                     source_lab())
+              } else {
+                source_lab()
+              }} else {
+                if(input$CategorySelect=="State"|input$CategorySelect=="Homeport"){
+                  paste("For the", input$MetricSelect, "metric, we show all activities for vessels that homeported in the selected",input$CategorySelect,", \nnot just their activity in the selected",input$CategorySelect,".\nFor example, the plots above show the", input$MetricSelect,"for vessels that homeported in", input$VariableSelect,".",
+                        supp_obs(), source_lab())
+                } else {
+                  paste(supp_obs(), source_lab())
+                }}
+          } else {
+            if(max(dat$flag)==0){
+              if(input$CategorySelect=="State"|input$CategorySelect=="Homeport"){
+                paste("For the", input$MetricSelect, "metric, we show all activities for vessels that homeported in the selected",input$CategorySelect,", \nnot just their activity in the selected",input$CategorySelect,"\nFor example, the plots above show the", input$MetricSelect,"for vessels that homeported in", input$VariableSelect,".",
+                     supp_whiting(), conf_mess(),source_lab())
+              } else {
+                paste(supp_whiting(), conf_mess(), source_lab())
+              }}  else {
+                if(input$CategorySelect=="State"|input$CategorySelect=="Homeport"){
+                  paste("For the", input$MetricSelect, "metric, we show all activities for vessels that homeported in the selected",input$CategorySelect,", \nnot just their activity in the selected",input$CategorySelect,".\nFor example, the plots above show the", input$MetricSelect,"for vessels that homeported in", input$VariableSelect,".",
+                        supp_obs(), supp_whiting(), conf_mess(),source_lab())
+                } else {
+                  paste(supp_obs(), supp_whiting(), conf_mess(),source_lab())
+                }} }
+                } else {
+                  if(max(dat$conf)==0) {
+                    if(max(dat$flag)==0){
+                      source_lab()
+                    } else {
+                      paste(supp_obs(), source_lab)
+                    }} else {
+                      if(max(dat$flag)==0){
+                        paste(supp_whiting(), conf_mess(), source_lab())
+                      }  else {
+                        paste(supp_obs(), supp_whiting(), conf_mess(), source_lab())
+                      }}}
+                      } else {
+                        if(max(dat$conf)==0) {
+                          if(max(dat$flag)==0){
+                            if(max(dat$metric_flag)==1){
+                              paste(supp_metric(), source_lab())
+                            } else {
+                              paste(source_lab())
+                            }
+                          } else if(max(dat$flag)==1){
+                            if(max(dat$metric_flag)==1){
+                              paste(supp_metric(), supp_obs(), source_lab())
+                            } else {
+                              paste(supp_obs(), source_lab())
+                            } 
+                          }
+                          } else if(max(dat$conf)==1){
+                            if(max(dat$flag==0)){
+                              if(max(dat$metric_flag)==1){
+                                paste(supp_metric(), supp_obs(), supp_whiting(), conf_mess(), source_lab())
+                              } else {
+                                paste(supp_whiting(), conf_mess(), source_lab())
+        } 
+        } else if(max(dat$flag)==1){
+          if(max(dat$metric_flag)==1){
+            paste(supp_metric(), supp_whiting(), supp_obs(), conf_mess(), source_lab())
+          } else {
+            paste(supp_whiting(), supp_obs(), conf_mess(), source_lab())
+          } 
+      }}
+      }
+      }#end x label function 
 
     
     scale_text <- function() {
@@ -203,7 +246,8 @@ doPlotDownload <- function(dat, x, y){
         }}   
     
     g <- ggplot(dat, aes_string(x = x, y = y , group = groupVar, order='sort'), environment=environment()) #+coord_cartesian(xlim = c(0, length(table(dat$YEAR))+1))
-    if(length(input$YearSelect)>1){
+
+        if(length(input$YearSelect)>1){
         g <- g + geom_line(aes_string(colour = groupVar), size=1.5)
     } else {
       g <- g + geom_point(aes_string(colour = groupVar), size=4)
@@ -241,34 +285,60 @@ doPlotDownload <- function(dat, x, y){
       else {
         g <- g + geom_rect(aes(xmin=-Inf, xmax=length(table(dat$YEAR[dat$YEAR<=2010])), ymin=-Inf, ymax=Inf),fill="grey50", alpha=.02)
         if(input$PlotSelect==T&dat$STAT[1]!="Fleet-wide total"&is.na(max(dat$VARIANCE))==F) {  
+          if (input$LayoutSelect!='Metrics') {
           g <- g + geom_text(aes(x=length(table(dat$YEAR[dat$YEAR<2011]))/3.5,y=max(VALUE+VARIANCE)+max(VALUE)/10, label="Pre-Catch shares", family="serif"),hjust=0,color = "grey20", size=3/scale_text())  
+          } else {
+            g <- g + geom_text(aes(x=length(table(dat$YEAR[dat$YEAR<2011]))/3.5,y=thresh, label="Pre-Catch shares", family="serif"),hjust=0,color = "grey20", size=3/scale_text())  
+          }
           if(length(input$YearSelect[input$YearSelect<2010])>3 & length(input$YearSelect[input$YearSelect>=2010])==2) {
-            g <- g + geom_text(aes(x=length(table(dat$YEAR[dat$YEAR<2011]))+length(table(dat$YEAR[dat$YEAR>2010]))/2.75,y=max(VALUE+VARIANCE)+max(VALUE)/10,label="Post-Catch "),hjust=0, family="serif",color = "grey20", size=3/scale_text())#+
+            if (input$LayoutSelect!='Metrics') {
+              g <- g + geom_text(aes(x=length(table(dat$YEAR[dat$YEAR<2011]))+length(table(dat$YEAR[dat$YEAR>2010]))/2.75,y=max(VALUE+VARIANCE)+max(VALUE)/10,label="Post-Catch "),hjust=0, family="serif",color = "grey20", size=3/scale_text())#+
               geom_text(aes(x=length(table(dat$YEAR[dat$YEAR<2011]))+length(table(dat$YEAR[dat$YEAR>2010]))/2.75,y=max(VALUE+VARIANCE)-max(VALUE+VARIANCE)/50,label="shares"),hjust=0, family="serif",color = "grey20", size=3/scale_text())
-          } else {
+            } else {
+              g <- g + geom_text(aes(x=length(table(dat$YEAR[dat$YEAR<2011]))+length(table(dat$YEAR[dat$YEAR>2010]))/2.75,y=thresh,label="Post-Catch "),hjust=0, family="serif",color = "grey20", size=3/scale_text())#+
+              geom_text(aes(x=length(table(dat$YEAR[dat$YEAR<2011]))+length(table(dat$YEAR[dat$YEAR>2010]))/2.75,y=thresh,label="shares"),hjust=0, family="serif",color = "grey20", size=3/scale_text())
+            }
+              } else {
+                if (input$LayoutSelect!='Metrics') {
             g <- g + geom_text(aes(x=length(table(dat$YEAR[dat$YEAR<2011]))+length(table(dat$YEAR[dat$YEAR>2010]))/2.75,y=max(VALUE+VARIANCE)+max(VALUE)/10,label="Post-Catch shares"),hjust=0, family="serif",color = "grey20", size=3/scale_text())
-          }
+                } else {
+                  g <- g + geom_text(aes(x=length(table(dat$YEAR[dat$YEAR<2011]))+length(table(dat$YEAR[dat$YEAR>2010]))/2.75,y=thresh,label="Post-Catch shares"),hjust=0, family="serif",color = "grey20", size=3/scale_text())
+                }
+            }
         } else {
+          if (input$LayoutSelect!='Metrics') {
           g <- g + geom_text(aes(x=length(input$YearSelect[input$YearSelect<2011])/3.5,y=max(VALUE+0)+max(VALUE)/10, label="Pre-Catch shares", family="serif"),hjust=0,color = "grey20", size=3/scale_text())  
-          if(length(input$YearSelect[input$YearSelect<2010])>3 & length(input$YearSelect[input$YearSelect>=2010])==2) {
-            g <- g + geom_text(aes(x=length(input$YearSelect[input$YearSelect<2011])+length(input$YearSelect[input$YearSelect>2010])/2.75,y=max(VALUE+0)+max(VALUE)/10,label="Post-Catch"),hjust=0, family="serif",color = "grey20", size=3/scale_text())+
-              geom_text(aes(x=length(input$YearSelect[input$YearSelect<2011])+length(input$YearSelect[input$YearSelect>2010])/2.75,y=max(VALUE+0)-max(VALUE)/50,label="shares"),hjust=0, family="serif",color = "grey20", size=3/scale_text())
           } else {
-            g <- g + geom_text(aes(x=length(input$YearSelect[input$YearSelect<2011])+length(input$YearSelect[input$YearSelect>2010])/2.75,y=max(VALUE+0)+max(VALUE)/10,label="Post-Catch shares"),hjust=0, family="serif",color = "grey20", size=3/scale_text())
+            g <- g + geom_text(aes(x=length(input$YearSelect[input$YearSelect<2011])/3.5,y=thresh, label="Pre-Catch shares", family="serif"),hjust=0,color = "grey20", size=3/scale_text())  
           }
+          if(length(input$YearSelect[input$YearSelect<2010])>3 & length(input$YearSelect[input$YearSelect>=2010])==2) {
+            if (input$LayoutSelect!='Metrics') {
+              g <- g + geom_text(aes(x=length(input$YearSelect[input$YearSelect<2011])+length(input$YearSelect[input$YearSelect>2010])/2.75,y=max(VALUE+0)+max(VALUE)/10,label="Post-Catch"),hjust=0, family="serif",color = "grey20", size=3/scale_text())+
+              geom_text(aes(x=length(input$YearSelect[input$YearSelect<2011])+length(input$YearSelect[input$YearSelect>2010])/2.75,y=max(VALUE+0)-max(VALUE)/50,label="shares"),hjust=0, family="serif",color = "grey20", size=3/scale_text())
+            } else {
+              g <- g + geom_text(aes(x=length(input$YearSelect[input$YearSelect<2011])+length(input$YearSelect[input$YearSelect>2010])/2.75,y=thresh,label="Post-Catch"),hjust=0, family="serif",color = "grey20", size=3/scale_text())+
+                geom_text(aes(x=length(input$YearSelect[input$YearSelect<2011])+length(input$YearSelect[input$YearSelect>2010])/2.75,y=thresh,label="shares"),hjust=0, family="serif",color = "grey20", size=3/scale_text())
+            }
+              } else {
+                if (input$LayoutSelect!='Metrics') {
+                  g <- g + geom_text(aes(x=length(input$YearSelect[input$YearSelect<2011])+length(input$YearSelect[input$YearSelect>2010])/2.75,y=max(VALUE+0)+max(VALUE)/10,label="Post-Catch shares"),hjust=0, family="serif",color = "grey20", size=3/scale_text())
+                } else {
+                  g <- g + geom_text(aes(x=length(input$YearSelect[input$YearSelect<2011])+length(input$YearSelect[input$YearSelect>2010])/2.75,y=thresh,label="Post-Catch shares"),hjust=0, family="serif",color = "grey20", size=3/scale_text())
+                }
+                  }
         } 
       }} else {
         g <- g  
       }
-    g <- g + geom_text(aes(label=star), colour="black", vjust=0, size=3)
+ #   g <- g + geom_text(aes(label=star), colour="black", vjust=0, size=3)
     
     # define facet
-    if(input$Ind_sel!="Economic"){
-      if(input$MetricSelect=="Share of landings by state"){
+      if(input$MetricSelect[1]=="Share of landings by state"){
         g <- g + facet_wrap(~ agid, as.table = TRUE)#, scales="free_x"
-      } else { g <- g + facet_wrap(~ sort, as.table = TRUE)#, scales="free_x"
-      }} else {
-        g <- g + facet_wrap(~SHORTDESCR, scales="free_x")#(~), sortsortas.table=TRUE,
+      } else  if (input$LayoutSelect!='Metrics') {
+        g <- g + facet_wrap(~ sort, ncol=2)
+      } else {
+        g <- g + facet_wrap(~ sort, ncol=2, scales="free_y")
       }
     # define scale
     g <- g + scale_fill_manual(values = colourThirds) + scale_colour_manual(values = colourThirds)
