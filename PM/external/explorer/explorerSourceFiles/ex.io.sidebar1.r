@@ -4,18 +4,6 @@
   # expressions for the dynamic user interface
 
 #======================================
-output$LayoutSelect <- renderUI({
-  
-   tags$div(radioButtons("LayoutSelect", HTML("<div> Compare: <button id='icompare' type='button' class='btn btn-default action-button shiny-bound-input'>
-                                    <i class='fa fa-info-circle fa-fw'></i></button></div>"),
-                         if(input$Sect_sel=='CV'){ choices = c('Groups of Catcher Vessels','Metrics')}
-                         else if(input$Sect_sel=='M'){ choices = c('Groups of Motherships','Metrics')} 
-                         else if(input$Sect_sel=='CP'){choices = c('Groups of Vessels','Metrics')}
-                         else if(input$Sect_sel=='FR'){choices = c('Groups of Vessels','Metrics')}
-                         , inline=T))
-})
-
-
 
 output$moreOptions <- renderUI({
   tags$div(class="ckbox", checkboxInput("moreOptions","Click to select additional years", value = FALSE))
@@ -69,162 +57,277 @@ output$IndicatorSelect <- renderUI({
 })
 
 
-output$VariableSelect <- renderUI({  
-  if(input$Sect_sel=="M"|input$Sect_sel=="CP"){
-    tags$div(class="ckbox2", checkboxGroupInput("VariableSelect","",choices=c("At-sea Pacific whiting")), selected="")
-  } else if(input$Sect_sel=="CV"){
-  if(!is.null(input$CategorySelect)){  
-    if(input$LayoutSelect=="Metrics"){
-    if(input$CategorySelect == "State"){
-      tagList(           
-        tags$div(class="select", selectInput("inSelect","",c("All fisheries","All Catch Share fisheries","All non-Catch Share fisheries")), style="margin-bottom:-10px"),
-        tags$div(class="rbutton2",  radioButtons("VariableSelect", "Select ONE state", choices = c("No state selected"="","Washington"="Washington", "Oregon"="Oregon","California"="California"), selected="")) 
-      )} else if(input$CategorySelect == "Vessel length class"){
-        tagList(           
-          tags$div(class="select", selectInput("inSelect","",c("All fisheries","All Catch Share fisheries","All non-Catch Share fisheries")), style="margin-bottom:-10px"),
-          tags$div(class="rbutton2", radioButtons("VariableSelect",  "Select ONE vessel length class", choices=c("No vessel length selected"="",factorOrder$lengths), selected=""))
-        )} else if(input$CategorySelect == "Homeport"){
-          tagList(           
-            tags$div(class="select", selectInput("inSelect","", c("All fisheries","All Catch Share fisheries", "All non-Catch Share fisheries")), style="margin-bottom:-10px"),
-            tags$div(class="rbutton2", radioButtons("VariableSelect", "Select ONE homeport", choices=c("No homeport selected"="",factorOrder$port), selected=""))
-          )} else if(input$CategorySelect=="Fisheries"){
-            tags$div(class="rbutton", radioButtons("VariableSelect", HTML("<div> Select ONE fishery <button id='iof' type='button' class='btn btn-default action-button shiny-bound-input'> <i class='fa fa-info-circle fa-fw' ></i></button> </div>"), 
-                                                   choices=c("No fishery selected"="",fish.var), selected=""))}
+##Metric Select
+output$MetricSelect <- renderUI({ 
+  if(input$LayoutSelect!="Metrics"){
+    if(input$Ind_sel=="Economic") {
+      radioButtons("MetricSelect","", choices ="Select an economic measure and statistic below")
+    } #end economic
+    else if(input$Ind_sel=="Demographic"){
+      if(input$Sect_sel=="CV"){
+        tags$div(class="statbox",radioButtons("MetricSelect","", choices = c(DatVars()$METRIC[1:8]), selected=DatVars()$METRIC[1]))
+      } else if(input$Sect_sel=="FR"){
+        tags$div(class="statbox",radioButtons("MetricSelect","", choices = c(DatVars()$METRIC[1:6]), selected=DatVars()$METRIC[1]))
+      }else {
+        tags$div(class="statbox",radioButtons("MetricSelect","", choices = c(DatVars()$METRIC[1:6]), selected=DatVars()$METRIC[1]))
+      }} # end demographic
+    else if(input$Ind_sel=="Social and Regional"){
+      if(input$Sect_sel=="CV"){
+        tags$div(class="statbox",radioButtons("MetricSelect","", choices = c(DatVars()$METRIC[9:13]), selected=DatVars()$METRIC[9]))
+      } else if(input$Sect_sel=="FR"){
+        tags$div(class="statbox",radioButtons("MetricSelect","", choices = c(DatVars()$METRIC[7:8]), selected=DatVars()$METRIC[7]))
+      }else {
+        tags$div(class="statbox",radioButtons("MetricSelect","", choices = c(DatVars()$METRIC[7:10]), selected=DatVars()$METRIC[7]))
+      }
+    } #end social and regional 
   } else {
+    ##Metric Select
+    if(input$Ind_sel=="Economic") {
+      radioButtons("MetricSelect","", choices ="Select an economic measure and statistic below")
+    }
+    else if(input$Ind_sel=="Demographic"){
+      if(input$Sect_sel=="CV"){
+        tags$div(class='statbox',checkboxGroupInput("MetricSelect","", choices = c(DatVars()$METRIC[1:8])),selected=DatVars()$METRIC[1])
+      } else if(input$Sect_sel=="FR"){
+        tags$div(class='statbox',checkboxGroupInput("MetricSelect","", choices = c(DatVars()$METRIC[1:6]), selected=DatVars()$METRIC[1]))
+      }else {
+        tags$div(class="statbox",checkboxGroupInput("MetricSelect","", choices = c(DatVars()$METRIC[1:6]), selected=DatVars()$METRIC[1]))
+      }} #end demographic
+    else if(input$Ind_sel=="Social and Regional"){
+      if(input$Sect_sel=="CV"){
+        tags$div(class="statbox",checkboxGroupInput("MetricSelect","", choices = c(DatVars()$METRIC[9:12]), selected=DatVars()$METRIC[9]))
+      } else if(input$Sect_sel=="FR"){
+        tags$div(class="statbox",checkboxGroupInput("MetricSelect","", choices = c(DatVars()$METRIC[7]), selected=DatVars()$METRIC[7]))
+      }else {
+        tags$div(class="statbox",checkboxGroupInput("MetricSelect","", choices = c(DatVars()$METRIC[7:10]), selected=DatVars()$METRIC[7]))
+      }
+    } #end social and regional
+  }
+})
+
+
+#output$VariableSelect <- renderUI({  
+#  if(!is.null(input$CategorySelect)){
+#    if(input$LayoutSelect!='Metrics'){
+#    if(input$Sect_sel=="M"|input$Sect_sel=="CP"){
+ #   tags$div(class="ckbox2", checkboxGroupInput("VariableSelect","",choices=c("At-sea Pacific whiting")), selected="")
+#  } else if(input$Sect_sel=="CV"){
+#      if(input$CategorySelect == "State"){
+#        if(input$MetricSelect!="Share of landings by state"){
+#        tagList(           
+#          tags$div(class="select", selectInput("inSelect","",c("All fisheries",  "All Catch Share fisheries", "All non-Catch Share fisheries")), style="margin-bottom:-10px"),
+#          checkboxGroupInput("VariableSelect", "Select one or more state:", choices = factorOrder$state, selected="")
+#        ) 
+#        } else {
+#          tagList(           
+#            tags$div(class="select", selectInput("inSelect","",c("All fisheries",  "All Catch Share fisheries", "All non-Catch Share fisheries")), style="margin-bottom:-10px"),
+#            tags$div(class="rbutton2",radioButtons("VariableSelect", "Select one state:", choices = c("No state selected"="",factorOrder$state), selected="")))
+#        }
+#        } else if(input$CategorySelect == "Vessel length class"){
+#          if(input$MetricSelect!="Share of landings by state"){
+#            tagList(           
+#            tags$div(class="select", selectInput("inSelect","",c("All fisheries", "All Catch Share fisheries", "All non-Catch Share fisheries")), style="margin-bottom:-10px"),
+#            checkboxGroupInput("VariableSelect",  "Select one or more vessel length class:", choices=factorOrder$lengths, selected="")
+#          ) 
+#          } else {
+#            tagList(           
+ #             tags$div(class="select", selectInput("inSelect","",c("All fisheries", "All Catch Share fisheries", "All non-Catch Share fisheries")), style="margin-bottom:-10px"),
+#              radioButtons("VariableSelect",  "Select one vessel length class:", choices=factorOrder$lengths, selected="")
+#            ) 
+#          }
+#          } else if(input$CategorySelect == "Homeport"){
+#            if(input$MetricSelect!="Share of landings by state"){
+#               tagList(           
+#              tags$div(class="select", selectInput("inSelect","", c("All fisheries","All Catch Share fisheries","All non-Catch Share fisheries")), style="margin-bottom:-10px"),
+#              tags$div(checkboxGroupInput("VariableSelect", div("Select one or more homeport:", style="margin-top:0; padding:-10px"), choices=factorOrder$port, selected=""))
+#            ) 
+#            } else {
+#              tagList(           
+#                tags$div(class="select", selectInput("inSelect","", c("All fisheries","All Catch Share fisheries","All non-Catch Share fisheries")), style="margin-bottom:-10px"),
+#                tags$div(radioButtons("VariableSelect", div("Select one homeport:", style="margin-top:0; padding:-10px"), choices=factorOrder$port, selected=""))
+#              ) 
+#            }
+#            } #end homeport
+#            else if(input$CategorySelect=="Fisheries"){
+#              if(input$MetricSelect!="Share of landings by state"){
+#                tagList(
+#                tags$div(class="ckbox2", checkboxGroupInput("VariableSelect", div("Select one or more fisheries:", style="margin-top:0; padding:-10px"),#HTML("<div style='font-style:italic; font-size:10.87pt; font-weight:normal; margin-top:8.5pt'> 
+#                                                                              #     or select fisheries individually:  <button id='ivs' type='button' class='btn btn-default action-button shiny-bound-input'> <i class='fa fa-info-circle fa-fw' ></i></button> </div>"), 
+#                                                            choices=c("All fisheries combined"="All fisheries"," All Catch Share fisheries combined"="All Catch Share fisheries",fish.var[3:13])))
+#                )
+#            } else {
+#              tagList(
+#                tags$div(class="ckbox2", radioButtons("VariableSelect", div("Select one fisheries:", style="margin-top:0; padding:-10px"),#HTML("<div style='font-style:italic; font-size:10.87pt; font-weight:normal; margin-top:8.5pt'> 
+#                                                            #     or select fisheries individually:  <button id='ivs' type='button' class='btn btn-default action-button shiny-bound-input'> <i class='fa fa-info-circle fa-fw' ></i></button> </div>"),                                                            
+#                                                      choices=c("All fisheries combined"="All fisheries"," All Catch Share fisheries combined"="All Catch Share fisheries",fish.var[3:13]), selected=""))
+#              )
+#            }} #end fisheries 
+#       } ##END Catcher Vessels
+#  else if(input$Sect_sel=="FR"){
+#        if(input$CategorySelect == "State"){
+#          if(input$MetricSelect!="Share of landings by state"){
+ #            checkboxGroupInput("VariableSelect", "Select one or more state:", choices = c('Washington','Oregon','California','Multi-state'), selected="")
+#          } else {
+#           tags$div(class="rbutton2",radioButtons("VariableSelect", "Select one state:", choices = c("No state selected"="",'Washington','Oregon','California','Multi-state'), selected=""))
+ #         }
+#        } else if(input$CategorySelect == "Vessel length class"){
+#          if(input$MetricSelect!="Share of landings by state"){
+#            checkboxGroupInput("VariableSelect",  "Select one or more size classes:", choices=c("Large",'Medium','Small'), selected="")
+#          } else {
+#            radioButtons("VariableSelect",  "Select one size class:", choices=c("Large",'Medium','Small'), selected="")
+#          }
+#        } #End Vessel length class
+#        else if(input$CategorySelect=="Fisheries"){
+#          if(input$MetricSelect!="Share of landings by state"){
+#             tags$div(checkboxGroupInput("VariableSelect", div("Select one or more fisheries:", style="margin-top:0; padding:-10px"),#HTML("<div style='font-style:italic; font-size:10.87pt; font-weight:normal; margin-top:8.5pt'> 
+#                                                          choices=c("All fisheries combined"="All fisheries","Pacific whiting",'Non-whiting groundfish',"Other fisheries"), selected=""))
+#          } else {
+#               tags$div(radioButtons("VariableSelect", div("Select one fisheries:", style="margin-top:0; padding:-10px"),#HTML("<div style='font-style:italic; font-size:10.87pt; font-weight:normal; margin-top:8.5pt'> 
+#                                                    choices=c("All fisheries combined"="All fisheries","Pacific whiting",'Non-whiting groundfish',"Other fisheries"), selected=""))
+#          }
+#        } #end fisheries 
+#      } #else if(input$Ind_sel=="Social and Regional"){
+#        } else if(input$LayoutSelect=="Metrics"){
+#    if(input$Sect_sel=="M"|input$Sect_sel=="CP"){
+#    tags$div(class="ckbox2", radioButtons("VariableSelect","",choices=c("At-sea Pacific whiting")), selected="")
+#  } else if(input$Sect_sel=="CV"){
+#        if(input$CategorySelect == "State"){
+#          tagList(           
+#            tags$div(class="select", selectInput("inSelect","",c("All fisheries","All Catch Share fisheries","All non-Catch Share fisheries")), style="margin-bottom:-10px"),
+#            tags$div(class="rbutton2",  radioButtons("VariableSelect", "Select ONE state", choices = c("No state selected"="","Washington"="Washington", "Oregon"="Oregon","California"="California"), selected="")) 
+#          )} else if(input$CategorySelect == "Vessel length class"){
+#            tagList(           
+#              tags$div(class="select", selectInput("inSelect","",c("All fisheries","All Catch Share fisheries","All non-Catch Share fisheries")), style="margin-bottom:-10px"),
+#              tags$div(class="rbutton2", radioButtons("VariableSelect",  "Select ONE vessel length class", choices=c("No vessel length selected"="",factorOrder$lengths), selected=""))
+#            )} else if(input$CategorySelect == "Homeport"){
+#              tagList(           
+#                tags$div(class="select", selectInput("inSelect","", c("All fisheries","All Catch Share fisheries", "All non-Catch Share fisheries")), style="margin-bottom:-10px"),
+#                tags$div(class="rbutton2", radioButtons("VariableSelect", "Select ONE homeport", choices=c("No homeport selected"="",factorOrder$port), selected=""))
+#              )} else if(input$CategorySelect=="Fisheries"){
+#                tags$div(class="rbutton", radioButtons("VariableSelect", HTML("<div> Select ONE fishery <button id='iof' type='button' class='btn btn-default action-button shiny-bound-input'> <i class='fa fa-info-circle fa-fw' ></i></button> </div>"), 
+#                                                       choices=c("No fishery selected"="",fish.var), selected=""))
+#          }}  #END Catcher Vessels
+#  else if(input$Sect_sel=="FR"){
+##        if(input$CategorySelect == "State"){
+#          tags$div(class="rbutton2",  radioButtons("VariableSelect", "Select ONE state", choices = c("No state selected"="","Washington", "Oregon","California",'Multi-state'), selected="")) 
+#        } else if(input$CategorySelect == "Vessel length class"){
+#          tags$div(class="rbutton2", radioButtons("VariableSelect",  "Select ONE size class", choices=c("No sizes selected"="",'Large','Medium','Small'), selected=""))
+#        } else if(input$CategorySelect=="Fisheries"){
+#          tags$div(class="rbutton2", radioButtons("VariableSelect", HTML("<div> Select ONE fishery <button id='iof' type='button' class='btn btn-default action-button shiny-bound-input'> <i class='fa fa-info-circle fa-fw' ></i></button> </div>"), 
+#                                                 choices=c("No fishery selected"="",'All fisheries',"Pacific whiting", 'Non-whiting groundfish','Other fisheries'), selected=""))}
+#    }} #end compare metrics
+#    }#end not null 
+ # else return ()
+#})
+
+output$VariableSelect <- renderUI({  
+  if(!is.null(input$CategorySelect)){
+    if(input$Sect_sel=="M"|input$Sect_sel=="CP"){
+      tags$div(class="ckbox2", radioButtons("VariableSelect","",choices=c("At-sea Pacific whiting")), selected="")
+    } 
+    else if(input$Sect_sel=="CV"){
       if(input$CategorySelect == "State"){
-        if(input$MetricSelect!="Share of landings by state"){
-        tagList(           
-          tags$div(class="select", selectInput("inSelect","",c("All fisheries",  "All Catch Share fisheries", "All non-Catch Share fisheries")), style="margin-bottom:-10px"),
-          checkboxGroupInput("VariableSelect", "Select one or more state:", choices = factorOrder$state, selected="")
-        ) 
+        if(input$LayoutSelect!='Metrics'){
+          if(input$MetricSelect!="Share of landings by state"){
+          tagList(           
+            tags$div(class="select", selectInput("inSelect","",c("All fisheries",  "All Catch Share fisheries", "All non-Catch Share fisheries")), style="margin-bottom:-10px"),
+            checkboxGroupInput("VariableSelect", "Select one or more state:", choices = factorOrder$state, selected=""))
         } else {
+          tagList(           
+            tags$div(class="select", selectInput("inSelect","",c("All fisheries",  "All Catch Share fisheries", "All non-Catch Share fisheries")), style="margin-bottom:-10px"),
+            tags$div(class="rbutton2",radioButtons("VariableSelect", "Select one state:", choices = c(#"No state selected"="",
+              factorOrder$state), selected="")))
+        }}  else {
           tagList(           
             tags$div(class="select", selectInput("inSelect","",c("All fisheries",  "All Catch Share fisheries", "All non-Catch Share fisheries")), style="margin-bottom:-10px"),
             tags$div(class="rbutton2",radioButtons("VariableSelect", "Select one state:", choices = c("No state selected"="",factorOrder$state), selected="")))
         }
-        } else if(input$CategorySelect == "Vessel length class"){
-          if(input$MetricSelect!="Share of landings by state"){
-            tagList(           
-            tags$div(class="select", selectInput("inSelect","",c("All fisheries", "All Catch Share fisheries", "All non-Catch Share fisheries")), style="margin-bottom:-10px"),
-            checkboxGroupInput("VariableSelect",  "Select one or more vessel length class:", choices=factorOrder$lengths, selected="")
-          ) 
-          } else {
-            tagList(           
-              tags$div(class="select", selectInput("inSelect","",c("All fisheries", "All Catch Share fisheries", "All non-Catch Share fisheries")), style="margin-bottom:-10px"),
-              radioButtons("VariableSelect",  "Select one vessel length class:", choices=factorOrder$lengths, selected="")
-            ) 
-          }
-          } else if(input$CategorySelect == "Homeport"){
+      } else if(input$CategorySelect == "Vessel length class"){
+        if(input$LayoutSelect!='Metrics'){
             if(input$MetricSelect!="Share of landings by state"){
-               tagList(           
-              tags$div(class="select", selectInput("inSelect","", c("All fisheries","All Catch Share fisheries","All non-Catch Share fisheries")), style="margin-bottom:-10px"),
-              tags$div(checkboxGroupInput("VariableSelect", div("Select one or more homeport:", style="margin-top:0; padding:-10px"), choices=factorOrder$port, selected=""))
-            ) 
-            } else {
-              tagList(           
-                tags$div(class="select", selectInput("inSelect","", c("All fisheries","All Catch Share fisheries","All non-Catch Share fisheries")), style="margin-bottom:-10px"),
-                tags$div(radioButtons("VariableSelect", div("Select one homeport:", style="margin-top:0; padding:-10px"), choices=factorOrder$port, selected=""))
-              ) 
-            }
-            } #end homeport
-            else if(input$CategorySelect=="Fisheries"){
-              if(input$MetricSelect!="Share of landings by state"){
-                tagList(
-            #    actionButton("selectall2", "All fisheries", style="default", size="extra-small",block=F, type="action"),
-            #    actionButton("selectallcs", "All Catch Share fisheries", style="default",size="extra-small", block=F, type="action"),
-            #    actionButton("selectallncs", "All non-Catch Share fisheries", style="default", size="extra-small", block=F, type="action"),
-                tags$div(class="ckbox2", checkboxGroupInput("VariableSelect", div("Select one or more fisheries:", style="margin-top:0; padding:-10px"),#HTML("<div style='font-style:italic; font-size:10.87pt; font-weight:normal; margin-top:8.5pt'> 
-                                                                              #     or select fisheries individually:  <button id='ivs' type='button' class='btn btn-default action-button shiny-bound-input'> <i class='fa fa-info-circle fa-fw' ></i></button> </div>"), 
-                                                            choices=c("All fisheries combined"="All fisheries"," All Catch Share fisheries combined"="All Catch Share fisheries",fish.var[3:13]), selected=""))
-                )
-            } else {
-              tagList(
-                tags$div(class="ckbox2", radioButtons("VariableSelect", div("Select one fisheries:", style="margin-top:0; padding:-10px"),#HTML("<div style='font-style:italic; font-size:10.87pt; font-weight:normal; margin-top:8.5pt'> 
-                                                            #     or select fisheries individually:  <button id='ivs' type='button' class='btn btn-default action-button shiny-bound-input'> <i class='fa fa-info-circle fa-fw' ></i></button> </div>"), 
-                                                            choices=c("All fisheries combined"="All fisheries"," All Catch Share fisheries combined"="All Catch Share fisheries",fish.var[3:13]), selected=""))
-              )
-            }
-              } #end fisheries 
-       } #else if(input$Ind_sel=="Social and Regional"){
-#         if(input$MetricSelect=="Share of landings by state"){
-#    if(input$CategorySelect == "State"){
-#      tagList(           
-#        tags$div(class="select", selectInput("inSelect","",c("All fisheries","All Catch Share fisheries","All non-Catch Share fisheries")), style="margin-bottom:-10px"),
-#        tags$div(class="rbutton2",  radioButtons("VariableSelect", "Select ONE state", choices = c("No state selected"="","Washington"="Washington", "Oregon"="Oregon","California"="California"), selected="")) 
-#      )} else if(input$CategorySelect == "Vessel length class"){
-#        tagList(           
-#          tags$div(class="select", selectInput("inSelect","",c("All fisheries","All Catch Share fisheries","All non-Catch Share fisheries")), style="margin-bottom:-10px"),
-#          tags$div(class="rbutton2", radioButtons("VariableSelect",  "Select ONE vessel length class", choices=c("No vessel length selected"="",factorOrder$lengths), selected=""))
-#        )} else if(input$CategorySelect == "Homeport"){
-#          tagList(           
-#            tags$div(class="select", selectInput("inSelect","", c("All fisheries","All Catch Share fisheries", "All non-Catch Share fisheries")), style="margin-bottom:-10px"),
-#            tags$div(class="rbutton2", radioButtons("VariableSelect", "Select ONE homeport", choices=c("No homeport selected"="",factorOrder$port), selected=""))
-#          )} else if(input$CategorySelect=="Fisheries"){
-#            tags$div(class="rbutton", radioButtons("VariableSelect", HTML("<div> Select ONE fishery <button id='iof' type='button' class='btn btn-default action-button shiny-bound-input'> <i class='fa fa-info-circle fa-fw' ></i></button> </div>"), 
-#                                                   choices=c("No fishery selected"="",fish.var), selected=""))}
-#  }
-#  else {
-#        if(input$CategorySelect == "State"){
-#          tagList(           
-#            tags$div(class="select", selectInput("inSelect","",c("All fisheries",  "All Catch Share fisheries", "All non-Catch Share fisheries")), style="margin-bottom:-10px"),
-#            checkboxGroupInput("VariableSelect", "Select one or more state:", choices = factorOrder$state, selected="")
-#          ) } else if(input$CategorySelect == "Vessel length class"){
-#          tagList(           
-#            tags$div(class="select", selectInput("inSelect","",c("All fisheries", "All Catch Share fisheries", "All non-Catch Share fsheries")), style="margin-bottom:-10px"),
-#            checkboxGroupInput("VariableSelect",  "Select one or more vessel length class:", choices=factorOrder$lengths, selected="")
-#          ) } else if(input$CategorySelect == "Homeport"){
-#            tagList(           
-#              tags$div(class="select", selectInput("inSelect","", c("All fisheries","All Catch Share fisheries","All non-Catch Share fisheries")), style="margin-bottom:-10px"),
-#              tags$div(checkboxGroupInput("VariableSelect", div("Select one or more homeport:", style="margin-top:0; padding:-10px"), choices=factorOrder$port, selected=""))
-#            ) } else if(input$CategorySelect=="Fisheries"){
-#            tagList(
-#          tags$div(class="ckbox2", checkboxGroupInput("VariableSelect", div("Select one or more fisheries:", style="margin-top:0; padding:-10px"),
-                      #HTML("<div style='font-style:italic; font-size:10.87pt; font-weight:normal; margin-top:8.5pt'> 
-                      #or select fisheries individually:  <button id='ivs' type='button' 
-                      #class='btn btn-default action-button shiny-bound-input'> <i class='fa fa-info-circle fa-fw' ></i></button> </div>"), 
-#                      choices=c("All fisheries combined"="All fisheries"," All Catch Share fisheries combined"="All Catch Share fisheries",fish.var[3:13]), selected=""))
-#            )} 
-# } }
-  } else return ()}
-  else if(input$Sect_sel=="FR"){
-    if(!is.null(input$CategorySelect)){  
-      if(input$LayoutSelect=="Metrics"){
-        if(input$CategorySelect == "State"){
-          tags$div(class="rbutton2",  radioButtons("VariableSelect", "Select ONE state", choices = c("No state selected"="","Washington", "Oregon","California",'Multi-state'), selected="")) 
-          } else if(input$CategorySelect == "Vessel length class"){
-            tags$div(class="rbutton2", radioButtons("VariableSelect",  "Select ONE size class", choices=c("No sizes selected"="",'Large','Medium','Small'), selected=""))
-            } else if(input$CategorySelect=="Fisheries"){
-                tags$div(class="rbutton2", radioButtons("VariableSelect", HTML("<div> Select ONE fishery <button id='iof' type='button' class='btn btn-default action-button shiny-bound-input'> <i class='fa fa-info-circle fa-fw' ></i></button> </div>"), 
-                                                       choices=c("No fishery selected"="",'All fisheries',"Pacific whiting", 'Non-whiting groundfish','Other fisheries'), selected=""))}
-      } else {
-        if(input$CategorySelect == "State"){
+          tagList(           
+            tags$div(class="select", selectInput("inSelect","",c("All fisheries", "All Catch Share fisheries", "All non-Catch Share fisheries")), style="margin-bottom:-10px"),
+            checkboxGroupInput("VariableSelect",  "Select one or more vessel length class:", choices=factorOrder$lengths, selected="")) 
+        } else {
+          tagList(           
+            tags$div(class="select", selectInput("inSelect","",c("All fisheries", "All Catch Share fisheries", "All non-Catch Share fisheries")), style="margin-bottom:-10px"),
+            radioButtons("VariableSelect",  "Select one vessel length class:", choices=factorOrder$lengths, selected="")) 
+        }}else {
+          tagList(           
+            tags$div(class="select", selectInput("inSelect","",c("All fisheries", "All Catch Share fisheries", "All non-Catch Share fisheries")), style="margin-bottom:-10px"),
+            radioButtons("VariableSelect",  "Select one vessel length class:", choices=factorOrder$lengths, selected="")) 
+        }
+      } else if(input$CategorySelect == "Homeport"){
+        if(input$LayoutSelect!="Metrics"){
           if(input$MetricSelect!="Share of landings by state"){
-             checkboxGroupInput("VariableSelect", "Select one or more state:", choices = c('Washington','Oregon','California','Multi-state'), selected="")
-          } else {
-           tags$div(class="rbutton2",radioButtons("VariableSelect", "Select one state:", choices = c("No state selected"="",'Washington','Oregon','California','Multi-state'), selected=""))
-          }
-        } else if(input$CategorySelect == "Vessel length class"){
+          tagList(           
+            tags$div(class="select", selectInput("inSelect","", c("All fisheries","All Catch Share fisheries","All non-Catch Share fisheries")), style="margin-bottom:-10px"),
+            tags$div(checkboxGroupInput("VariableSelect", div("Select one or more homeport:", style="margin-top:0; padding:-10px"), choices=factorOrder$port, selected=""))) 
+        } else {
+          tagList(           
+            tags$div(class="select", selectInput("inSelect","", c("All fisheries","All Catch Share fisheries","All non-Catch Share fisheries")), style="margin-bottom:-10px"),
+            tags$div(radioButtons("VariableSelect", div("Select one homeport:", style="margin-top:0; padding:-10px"), choices=factorOrder$port, selected=""))) 
+        }}  else {
+          tagList(           
+            tags$div(class="select", selectInput("inSelect","", c("All fisheries","All Catch Share fisheries","All non-Catch Share fisheries")), style="margin-bottom:-10px"),
+            tags$div(radioButtons("VariableSelect", div("Select one homeport:", style="margin-top:0; padding:-10px"), choices=factorOrder$port, selected=""))) 
+        }
+      } #end homeport
+      else if(input$CategorySelect=="Fisheries"){
+        if(input$LayoutSelect!='Metrics'){
+           if(input$MetricSelect!="Share of landings by state"){
+          tagList(
+            tags$div(class="ckbox2", checkboxGroupInput("VariableSelect", div("Select one or more fisheries:", style="margin-top:0; padding:-10px"),#HTML("<div style='font-style:italic; font-size:10.87pt; font-weight:normal; margin-top:8.5pt'> 
+                                                        choices=c("All fisheries combined"="All fisheries"," All Catch Share fisheries combined"="All Catch Share fisheries",fish.var[3:13]))))
+        } else {
+          tags$div(class="ckbox2", radioButtons("VariableSelect", div("Select one fisheries:", style="margin-top:0; padding:-10px"),#HTML("<div style='font-style:italic; font-size:10.87pt; font-weight:normal; margin-top:8.5pt'> 
+                                                choices=c("All fisheries combined"="All fisheries"," All Catch Share fisheries combined"="All Catch Share fisheries",fish.var[3:13]), selected=""))
+        }}else {
+            tags$div(class="ckbox2", radioButtons("VariableSelect", div("Select one fisheries:", style="margin-top:0; padding:-10px"),#HTML("<div style='font-style:italic; font-size:10.87pt; font-weight:normal; margin-top:8.5pt'> 
+                                                  choices=c("All fisheries combined"="All fisheries"," All Catch Share fisheries combined"="All Catch Share fisheries",fish.var[3:13]), selected=""))
+          } 
+      }#end fisheries
+    } ##END Catcher Vessels
+    else if(input$Sect_sel=="FR"){
+      if(input$CategorySelect == "State"){
+        if(input$LayoutSelect!='Metrics'){
           if(input$MetricSelect!="Share of landings by state"){
-            checkboxGroupInput("VariableSelect",  "Select one or more size classes:", choices=c("Large",'Medium','Small'), selected="")
-          } else {
-            radioButtons("VariableSelect",  "Select one size class:", choices=c("Large",'Medium','Small'), selected="")
-          }
-        } #End Vessel length class
-        else if(input$CategorySelect=="Fisheries"){
+         checkboxGroupInput("VariableSelect", "Select one or more state:", choices = c('Washington','Oregon','California','Multi-state'), selected="")
+         } else {
+          tags$div(class="rbutton2",radioButtons("VariableSelect", "Select one state:", choices = c(#"No state selected"="",
+            'Washington','Oregon','California','Multi-state'), selected=""))
+         }}else {
+           tags$div(class="rbutton2",radioButtons("VariableSelect", "Select one state:", choices = c(#"No state selected"="",
+             'Washington','Oregon','California','Multi-state'), selected=""))
+         }
+      } else if(input$CategorySelect == "Vessel length class"){
+        if(input$LayoutSelect!='Metrics'){
           if(input$MetricSelect!="Share of landings by state"){
-             tags$div(checkboxGroupInput("VariableSelect", div("Select one or more fisheries:", style="margin-top:0; padding:-10px"),#HTML("<div style='font-style:italic; font-size:10.87pt; font-weight:normal; margin-top:8.5pt'> 
-                                                          choices=c("All fisheries combined"="All fisheries","Pacific whiting",'Non-whiting groundfish',"Other fisheries"), selected=""))
-          } else {
-               tags$div(radioButtons("VariableSelect", div("Select one fisheries:", style="margin-top:0; padding:-10px"),#HTML("<div style='font-style:italic; font-size:10.87pt; font-weight:normal; margin-top:8.5pt'> 
-                                                    choices=c("All fisheries combined"="All fisheries","Pacific whiting",'Non-whiting groundfish',"Other fisheries"), selected=""))
-          }
-        } #end fisheries 
-      } #else if(input$Ind_sel=="Social and Regional"){
-        } else return ()}
-  
-  
-  })
-   
+          checkboxGroupInput("VariableSelect",  "Select one or more size classes:", choices=c("Large",'Medium','Small'), selected="")
+        } else {
+          radioButtons("VariableSelect",  "Select one size class:", choices=c("Large",'Medium','Small'), selected="")
+        }}else {
+          radioButtons("VariableSelect",  "Select one size class:", choices=c("Large",'Medium','Small'), selected="")
+        }
+      } #End Vessel length class
+      else if(input$CategorySelect=="Fisheries"){
+        if(input$LayoutSelect!='Metrics'){
+          if(input$MetricSelect!="Share of landings by state"){
+          tags$div(checkboxGroupInput("VariableSelect", div("Select one or more fisheries:", style="margin-top:0; padding:-10px"),#HTML("<div style='font-style:italic; font-size:10.87pt; font-weight:normal; margin-top:8.5pt'> 
+                                      choices=c("All fisheries combined"="All fisheries","Pacific whiting",'Non-whiting groundfish',"Other fisheries"), selected=""))
+         } else {
+         tags$div(radioButtons("VariableSelect", div("Select one fisheries:", style="margin-top:0; padding:-10px"),#HTML("<div style='font-style:italic; font-size:10.87pt; font-weight:normal; margin-top:8.5pt'> 
+                                choices=c("All fisheries combined"="All fisheries","Pacific whiting",'Non-whiting groundfish',"Other fisheries"), selected=""))
+         }}else {
+           tags$div(radioButtons("VariableSelect", div("Select one fisheries:", style="margin-top:0; padding:-10px"),#HTML("<div style='font-style:italic; font-size:10.87pt; font-weight:normal; margin-top:8.5pt'> 
+                                 choices=c("All fisheries combined"="All fisheries","Pacific whiting",'Non-whiting groundfish',"Other fisheries"), selected=""))
+         }
+      } #end fisheries 
+    } #End FR
+  }#end not null 
+  else return ()
+})
+          
 
 #observe({
 #   if (is.null(input$selectall) || input$selectall == 0) return() 
@@ -283,56 +386,11 @@ output$FishWhitingSelect <- renderUI({
   } else {
     tags$div(class="ckbox", radioButtons("ShortdescrSelect", HTML("<div> Economic measures:<button id='iem' type='button' class='btn btn-default action-button shiny-bound-input'> <i class='fa fa-info-circle fa-fw' ></i> 
                                                                       </button></div>"), 
-                                               choices = DatVars()$SHORTDESCR, selected =''))
+                                               choices = DatVars()$SHORTDESCR, selected =DatVars()$SHORTDESCR[1]))
   }
-})
-output$MetricSelect <- renderUI({ 
-  if(input$Ind_sel=="Economic") {
-    radioButtons("MetricSelect","", choices ="Select an economic measure and statistic below")
-  }
-  else if(input$Ind_sel=="Demographic"){
-    if(input$Sect_sel=="CV"){
-      if(input$LayoutSelect=="Metrics"){
-        tags$div(class='statbox',checkboxGroupInput("MetricSelect","", choices = c(DatVars()$METRIC[1:8])))
-      } else {
-        tags$div(class="statbox",radioButtons("MetricSelect","", choices = c(DatVars()$METRIC[1:8])))
-     }
-  } else if(input$Sect_sel=="FR"){
-    if(input$LayoutSelect=="Metrics"){
-      tags$div(class='statbox',checkboxGroupInput("MetricSelect","", choices = c(DatVars()$METRIC[1:6])))
-    } else {
-      tags$div(class="statbox",radioButtons("MetricSelect","", choices = c(DatVars()$METRIC[1:6])))
-    }
-  }else {
-    if(input$LayoutSelect!="Metrics"){
-        tags$div(class="statbox",radioButtons("MetricSelect","", choices = c(DatVars()$METRIC[1:6]), selected=''))
-    } else {
-        tags$div(class="statbox",checkboxGroupInput("MetricSelect","", choices = c(DatVars()$METRIC[1:6]), selected=''))
-    }
-  }}
-   else if(input$Ind_sel=="Social and Regional"){
-    if(input$Sect_sel=="CV"){
-      if(input$LayoutSelect!="Metrics"){
-        tags$div(class="statbox",radioButtons("MetricSelect","", choices = c(DatVars()$METRIC[9:13]), selected=''))
-      } else {
-        tags$div(class="statbox",checkboxGroupInput("MetricSelect","", choices = c(DatVars()$METRIC[9:12]), selected=''))
-      }
-    } else if(input$Sect_sel=="FR"){
-      if(input$LayoutSelect!="Metrics"){
-        tags$div(class="statbox",radioButtons("MetricSelect","", choices = c(DatVars()$METRIC[7:8]), selected=''))
-      } else {
-        tags$div(class="statbox",checkboxGroupInput("MetricSelect","", choices = c(DatVars()$METRIC[7]), selected=''))
-      }
-    }else {
-      if(input$LayoutSelect!="Metrics"){
-      tags$div(class="statbox",radioButtons("MetricSelect","", choices = c(DatVars()$METRIC[7:10]), selected=''))
-      } else {
-       tags$div(class="statbox",checkboxGroupInput("MetricSelect","", choices = c(DatVars()$METRIC[7:10]), selected=''))
-      }
-    }
-  } 
 })
 
+## --------------------------- Sector Select ------------------------------------------##
 output$SectorSelect <- renderUI({
   tags$div(class="sectselect", selectInput("Sect_sel", span("West Coast Trawl Catch Share Program:", style="font-size:110%;font-style:italic; padding:5px; display:inline-block;vertical-align:middle"), 
                                    c('Catcher Vessels'="CV", 'Mothership Vessels'="M", 'Catcher Processor Vessels'="CP", 'First Receivers and Shorebased Processors'="FR"), width='35%')
@@ -362,7 +420,7 @@ if(input$Sect_sel=="FR")  {
     tagList(
       selectInput("AVE_MED", HTML("<div> Statistic: <button id='istat' type='button' class='btn btn-default action-button shiny-bound-input'> <i class='fa fa-info-circle fa-fw' ></i></button> </div>"),
                   c('Median, Average, or Total values'="", Average="A", Median="M", Total="T"), selectize=F),
-      tags$div(class="statbox", radioButtons("StatSelect","",  choices = c(DatVars()$STAT[4:6]))))
+      tags$div(class="statbox", radioButtons("StatSelect","",  choices = c(DatVars()$STAT[4:6]), selected=DatVars()$STAT[4])))
 }
 })
 
@@ -400,11 +458,23 @@ if(input$LayoutSelect=='Metrics'){
    ) {  choices=c("")
              }else {choices=c("Average", "Median", "Total or index value"='Total')
              }
-  , selected=choices[3])
+  , selected=choices[1])
   )
 })
 
 #======================================
+output$LayoutSelect <- renderUI({
+  
+   tags$div(radioButtons("LayoutSelect", HTML("<div> Compare: <button id='icompare' type='button' class='btn btn-default action-button shiny-bound-input'>
+                                    <i class='fa fa-info-circle fa-fw'></i></button></div>"),
+                         if(input$Sect_sel=='CV'){ choices = c('Groups of Catcher Vessels','Metrics')}
+                         else if(input$Sect_sel=='M'){ choices = c('Groups of Motherships','Metrics')} 
+                         else if(input$Sect_sel=='CP'){choices = c('Groups of Vessels','Metrics')}
+                         else if(input$Sect_sel=='FR'){choices = c('Groups of Vessels','Metrics')}
+                         , inline=T))
+})
+
+
 
 # Plot options
 

@@ -79,22 +79,53 @@ doPlot <- function(dat, x, y){
         } else {
           sprintf(paste("Economic measure:", dat$SHORTDESCR[1], "     Statistic: ", input$StatSelect,"    Summed across:", input$inSelect))
         }
-      } else {
-        if(input$MetricSelect!="Share of landings by state"){
-        if(input$CategorySelect=="Fisheries"){
+      } #end economic 
+        else {
+       # if(input$MetricSelect[1]!='Number of vessels'&input$MetricSelect!="Share of landings by state"&input$MetricSelect!='Gini coefficient'&input$MetricSelect!='Herfindahl-Hirschman Index'&input$MetricSelect!='Seasonality'&input$MetricSelect!="Vessel length"){
+        if(max(dat$metric_flag)==0){
+          if(input$CategorySelect=="Fisheries"){
           sprintf(paste("Category:", input$CategorySelect,"     Metric: ", input$MetricSelect, "   Statistic:", dat$SUMSTAT[1]))
         } else {
           sprintf(paste("Category:",input$CategorySelect,"     Metric: ", input$MetricSelect,"   Statistic:", dat$SUMSTAT[1],"    Summed across:", input$inSelect))   
         }
-        } else {
+        }# end normal cases
+         else {
+           if(input$MetricSelect=="Number of vessels"){
+             if(input$CategorySelect=="Fisheries"){
+               sprintf(paste("Variable:", input$VariableSelect,"     Metric: ", input$MetricSelect, '  Statistic: Total vessels'))
+             } else {
+               sprintf(paste("Variable:",input$VariableSelect,"     Metric: ", input$MetricSelect, "  Statistic: Total vessels   Summed across:", input$inSelect))   
+             } 
+           } else if(input$MetricSelect=="Seasonality"){
           if(input$CategorySelect=="Fisheries"){
-            sprintf(paste("Variable:", input$VariableSelect,"     Metric: ", input$MetricSelect))
+            sprintf(paste("Variable:", input$VariableSelect,"     Metric: ", input$MetricSelect, '  Statistic: Day of year'))
           } else {
-            sprintf(paste("Variable:",input$VariableSelect,"     Metric: ", input$MetricSelect,"    Summed across:", input$inSelect))   
+            sprintf(paste("Variable:",input$VariableSelect,"     Metric: ", input$MetricSelect, "  Statistic: Day of year  Summed across:", input$inSelect))   
           } 
-        }
-           } 
-      } else {
+           } else if(input$MetricSelect=="Share of landings by state")  {
+             if(input$CategorySelect=="Fisheries"){
+               sprintf(paste("Variable:", input$VariableSelect,"     Metric: ", input$MetricSelect, '  Statistic: Percentage'))
+             } else {
+               sprintf(paste("Variable:",input$VariableSelect,"     Metric: ", input$MetricSelect, "  Statistic: Percentage   Summed across:", input$inSelect))   
+             } 
+           }
+           else if(input$MetricSelect=="Vessel length")  {
+             if(input$CategorySelect=="Fisheries"){
+               sprintf(paste("Variable:", input$VariableSelect,"     Metric: ", input$MetricSelect, '  Statistic: Average maximum length'))
+             } else {
+               sprintf(paste("Variable:",input$VariableSelect,"     Metric: ", input$MetricSelect, "  Statistic: Average maximum length   Summed across:", input$inSelect))   
+             } 
+           }
+           else {         
+           if(input$CategorySelect=="Fisheries"){
+           sprintf(paste("Variable:", input$VariableSelect,"     Metric: ", input$MetricSelect, '  Statistic: Index value'))
+         } else {
+           sprintf(paste("Variable:",input$VariableSelect,"     Metric: ", input$MetricSelect, '  Statistic: Index value',"    Summed across:", input$inSelect))   
+         } 
+         }}
+           } #END NOT ECONOMIC
+      } #end compare vessel groupings
+      else {
         if(input$Ind_sel=="Economic"){
           if(input$CategorySelect=="Fisheries"){
             sprintf(paste(input$CategorySelect, ":", input$VariableSelect, "     Statistic: ",  input$StatSelect))
@@ -102,14 +133,23 @@ doPlot <- function(dat, x, y){
             sprintf(paste(input$CategorySelect, ":", input$VariableSelect, "     Statistic: ", input$StatSelect,"    Summed across:", input$inSelect))
           }
         } else {
+          if(max(dat$metric_flag==0)){
           if(input$CategorySelect=="Fisheries"){
-            sprintf(paste(input$CategorySelect, ":",input$VariableSelect, "  Metrics for which",  dat$SUMSTAT[1],"is calculated are shown"))
+            sprintf(paste(input$CategorySelect, ":",input$VariableSelect, " Statistic:",  dat$SUMSTAT[1]))
           } else {
-            sprintf(paste(input$CategorySelect,":",input$VariableSelect,"  Summed across:", input$inSelect, "  Metrics for which",  dat$SUMSTAT[1],'is calculated are shown'))   
+            sprintf(paste(input$CategorySelect,":",input$VariableSelect,"  Summed across:", input$inSelect, "  Statistic:",  dat$SUMSTAT[1]))   
           }
+          }
+         else {
+          if(input$CategorySelect=="Fisheries"){
+            sprintf(paste(input$CategorySelect, ":",input$VariableSelect, "  Statistic: See message below plot"))
+          } else {
+            sprintf(paste(input$CategorySelect,":",input$VariableSelect,"  Summed across:", input$inSelect, '  Statistic: See message below plot'))   
+          }
+          
         }
     }
-    }
+    }}
     
     main <- function(){
       bquote(atop(.(plot.title()), .(gv())))
@@ -155,11 +195,12 @@ doPlot <- function(dat, x, y){
     supp_whiting <- function(){
       "\nYour selection would reveal confidential data for years with sufficient observations. 
       For years when confidential data would be revealed, only results for 'All vessels' have been shown."
-    }
+    } 
     
     supp_metric <- function(){
-      "At least one of the selected metrics cannot be shown. This is because the selected statistic for that metric is not available. 
-      \nFor instance, the number of vessels metric will not show when the average or median statistic is selected. Please select the total statistic in this case."
+      "We show the selected statistic when possible. For the Gini Coefficient and Herfindahl-Hirschman Index the index value is shown, regardless of the statistic selectd.\n
+   For number of vessels, only the total number of vessels is shown. For seasonality, the day when 50% of catch was landded is always shown.
+      \nFor Vessel length, the average of the longest three vessels is shown if TOTAL is selected."
     }
     
     xlab <- function(){
