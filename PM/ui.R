@@ -167,16 +167,20 @@ fluidPage(title = "FISHEyE",
                                                uiOutput("StatSelect2")),
                                 uiOutput("IndicatorSelect"),
                                 uiOutput("MetricSelect"),
+                                conditionalPanel(condition="input.Ind_sel=='Demographic'",
+                                    uiOutput("demSelect")),
                                 conditionalPanel(condition="input.Ind_sel=='Economic'",
                                     uiOutput("ShortdescrSelect"),
-                                    uiOutput("StatSelect"))
+                                    uiOutput("StatSelect")),
+                                conditionalPanel(condition="input.Ind_sel=='Social and Regional'",
+                                    uiOutput("socSelect"))
 
                                      ),#end sub panel
                              
-                              wellPanelSub( wellPanelSub(conditionalPanel(condition="input.LayoutSelect!='Metrics'&&input.Sect_sel=='CV'&&input.MetricSelect=='Exponential Shannon Index'
-                                                                          ||input.LayoutSelect!='Metrics'&&input.Sect_sel=='CV'&&input.MetricSelect=='Proportion of revenue from CS fishery'
-                                                                          ||input.LayoutSelect!='Metrics'&&input.Sect_sel=='CV'&&input.MetricSelect=='Fishery participation'
-                                                                          ||input.LayoutSelect!='Metrics'&&input.MetricSelect=='Days at sea'", 
+                              wellPanelSub( wellPanelSub(conditionalPanel(condition="input.LayoutSelect!='Metrics'&&input.Sect_sel=='CV'&&input.Ind_sel=='Demographic'&&input.demSelect=='Exponential Shannon Index'
+                                                                          ||input.LayoutSelect!='Metrics'&&input.Sect_sel=='CV'&&input.Ind_sel=='Demographic'&&input.demSelect=='Proportion of revenue from CS fishery'
+                                                                          ||input.LayoutSelect!='Metrics'&&input.Sect_sel=='CV'&&input.Ind_sel=='Demographic'&&input.demSelect=='Fishery participation'
+                                                                          ||input.LayoutSelect!='Metrics'&&input.Ind_sel=='Demographic'&&input.demSelect=='Days at sea'", 
                                                  uiOutput("FishAkSelect"))),
                               wellPanelSub(
                                   conditionalPanel(condition="input.AVE_MED2=='Average'||input.AVE_MED2=='Median'||input.AVE_MED=='A'||input.AVE_MED=='M'",
@@ -188,11 +192,11 @@ fluidPage(title = "FISHEyE",
                                  uiOutput("YearSelect"),
                                  wellPanelSub(
                                     conditionalPanel(condition="input.Sect_sel=='CV'&&input.Ind_sel=='Economic'&&input.CategorySelect!='Homeport'&&input.CategorySelect!='State'
-                                          ||input.Sect_sel=='CV'&&input.MetricSelect=='Gini coefficient'&&input.CategorySelect!='Homeport'&&input.CategorySelect!='State'
-                                          ||input.Sect_sel=='CV'&&input.MetricSelect=='Number of vessels'&&input.CategorySelect!='Homeport'&&input.CategorySelect!='State'
-                                          ||input.Sect_sel=='CV'&&input.MetricSelect=='Vessel length'&&input.CategorySelect!='Homeport'&&input.CategorySelect!='State'
-                                          ||input.Sect_sel=='CV'&&input.MetricSelect=='Seasonality'&&input.CategorySelect!='Homeport'&&input.CategorySelect!='State'
-                                          ||input.Sect_sel=='CV'&&input.MetricSelect=='Share of landings by state'&&input.CategorySelect!='Homeport'&&input.CategorySelect!='State'",
+                                          ||input.Sect_sel=='CV'&&input.demSelect=='Gini coefficient'&&input.CategorySelect!='Homeport'&&input.CategorySelect!='State'
+                                          ||input.Sect_sel=='CV'&&input.demSelect=='Number of vessels'&&input.CategorySelect!='Homeport'&&input.CategorySelect!='State'
+                                          ||input.Sect_sel=='CV'&&input.demSelect=='Vessel length'&&input.CategorySelect!='Homeport'&&input.CategorySelect!='State'
+                                          ||input.Sect_sel=='CV'&&input.socSelect=='Seasonality'&&input.CategorySelect!='Homeport'&&input.CategorySelect!='State'
+                                          ||input.Sect_sel=='CV'&&input.socSelect=='Share of landings by state'&&input.CategorySelect!='Homeport'&&input.CategorySelect!='State'",
                                     uiOutput('moreOptions'))#,
                                    #conditionalPanel(condition="",uiOutput('moreOptions'))#&&input.ShortdescrSelect=='Revenue'
                                                     )       

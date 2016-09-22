@@ -120,33 +120,42 @@ doPlotDownload <- function(dat, x, y){
     
     ylab <- function(){
       if(input$Ind_sel=="Economic") {
-        paste("Thousands of 2014 $","(",input$StatSelect, ")")   
+        expression(paste(bold("Thousands of 2014 $","(",input$StatSelect, ")")))   
+        
       } else if(input$LayoutSelect!='Metrics'){
-#      } else if(input$Ind_sel!="Economic") {
-        if(input$MetricSelect=="Crew wage per day"|input$MetricSelect=="Revenue per crew day"){
-          paste("Thousands of 2014 $","(",input$AVE_MED2, ")")
-        } else if(input$MetricSelect=="Proportion of revenue from CS fishery"){
-          "Proportion of revenue from Catch Share fishery"  
-        }  else if(input$MetricSelect=="Gini coefficient"){
-          "Gini coefficient (0 - 1)"
-        } else if(input$MetricSelect=="Seasonality"){
-          "Day of year when 50% of catch was landed"
-        }  else if(input$MetricSelect=="Share of landings by state"){
-          "Share of landings (% of revenue)"
-        } else if(input$MetricSelect=="Fishery participation"){
-          "Fishery participation (number of fisheries)"
-        }  else if(input$MetricSelect=="Vessel length"){
-          "Vessel length (in feet)"
-        }  else if(input$MetricSelect=="Herfindahl-Hirschman Index"){
-          "Herfindahl-Hirschman Index (0 - 10,000)"
-        }  else {
-          input$MetricSelect         
-        }
-      } else {'Scale and units depend upon metric'}
+        if(input$Ind_sel=="Demographic") {
+          if(input$demSelect=="Proportion of revenue from CS fishery"){
+            expression(bold("Proportion of revenue from Catch Share fishery"))  
+          }  else if(input$demSelect=="Gini coefficient"){
+            expression(bold("Gini coefficient (0 - 1)"))
+          }  else if(input$demSelect=="Fishery participation"){
+            expression(bold("Fishery participation (number of fisheries)"))
+          }  else if(input$demSelect=="Vessel length"){
+            expression(bold("Vessel length (in feet)"))
+          }  else if(input$demSelect=="Herfindahl-Hirschman Index"){
+            expression(bold("Herfindahl-Hirschman Index (0 - 10,000)"))
+          } else {
+            input$demSelect         
+          }}
+        if(input$Ind_sel=="Social and Regional") {
+          if(input$socSelect=="Crew wage per day"|input$socSelect=="Revenue per crew day"){
+            expression(paste(bold("Thousands of 2014 $","(",input$AVE_MED2, ")")))
+          }  else if(input$socSelect=="Seasonality"){
+            expression(bold("Day of year when 50% of catch was landed"))
+          }  else if(input$socSelect=="Share of landings by state"){
+            expression(bold("Share of landings (% of revenue)"))
+          }  else if(input$socSelect=="Hourly compensation"){
+            expression(bold("Hourly compensation ($)"))
+          }   else {
+            input$socSelect         
+          }
+        } 
+      }else {'Scale and units depend upon metric'}
     }
     
+    
 source_lab <- function(){
-  paste("\nSourced from the FISHEyE application (http://dataexplorer.northwestscience.fisheries.noaa.gov/fisheye/PerformanceMetrics/) maintained by NOAA Fisheriess NWFSC on ",format(Sys.Date(), format="%B %d %Y"))
+  paste("\nSourced from the FISHEyE application (https://dataexplorer.northwestscience.fisheries.noaa.gov/fisheye/PerformanceMetrics/) maintained by NOAA Fisheriess NWFSC on ",format(Sys.Date(), format="%B %d %Y"))
 }
 supp_obs <- function(){
   paste("\nData have been suppressed for years that are not plotted as there are not enough observations to protect confidentiality.")
@@ -166,109 +175,132 @@ supp_metric <- function(){
   \nFor Vessel length, the average of the longest three vessels is shown if TOTAL is selected."
 }
 
-    xlab <- function(){
-      if(input$LayoutSelect!="Metrics"){
-        if(input$MetricSelect=="Fishery participation"|input$MetricSelect=="Proportion of revenue from CS fishery"){
-          if(max(dat$conf)==0) {
-            if(max(dat$flag)==0){
+xlab <- function(){
+  if(input$LayoutSelect!="Metrics"){
+    if(input$Ind_sel=="Economic"){
+      if(max(dat$conf)==0) {
+        if(max(dat$flag)==0){
+          ""
+        } else {
+          paste(supp_obs())
+        }} else {
+          if(max(dat$flag)==0){
+            paste(supp_whiting(), conf_mess())
+          }  else {
+            paste(supp_obs(), supp_whiting(), conf_mess())
+          }}}
+    else if(input$Ind_sel=="Demographic"){
+      if(input$demSelect=="Fishery participation"|input$demSelect=="Proportion of revenue from CS fishery"){
+        if(max(dat$conf)==0) {
+          if(max(dat$flag)==0){
+            if(input$CategorySelect=="Fisheries"){
+              paste("For individual fisheries and the", input$demSelect, "metric, we show all activities for vessels that fished in the selected fisheries, \nnot just their activity in the selected fishery, \nFor example, the", if(length(input$VariableSelect)>2){input$VariableSelect[3]} else if(length(input$VariableSelect)==2) {input$VariableSelect[2]} else {""},"plot above shows the", input$AVE_MED2, input$demSelect,"for all vessels that fished for", if(length(input$VariableSelect)>2){input$VariableSelect[3]} else if(length(input$VariableSelect)==2) {input$VariableSelect[2]} else {input$VariableSelect[1]},".")
+            } else {
+              ""
+            }}else {
               if(input$CategorySelect=="Fisheries"){
-                paste("For individual fisheries and the", input$MetricSelect, "metric, we show all activities for vessels that fished in the selected fisheries, \nnot just their activity in the selected fishery, \nFor example, the", if(length(input$VariableSelect)>2){input$VariableSelect[3]} else if(length(input$VariableSelect)==2) {input$VariableSelect[2]} else {""},"plot above shows the", input$AVE_MED2, input$MetricSelect,"for all vessels that fished for", if(length(input$VariableSelect)>2){input$VariableSelect[3]} else if(length(input$VariableSelect)==2) {input$VariableSelect[2]} else {input$VariableSelect[1]},".",
-                      source_lab())
+                paste("For individual fisheries and the", input$demSelect, "metric, we show all activities for vessels that fished in the selected fisheries, \nnot just their activity in the selected fishery, \nFor example, the", if(length(input$VariableSelect)>2){input$VariableSelect[3]} else if(length(input$VariableSelect)==2) {input$VariableSelect[2]} else {""},"plot above shows the", input$AVE_MED2, input$demSelect,"for all vessels that fished for", if(length(input$VariableSelect)>2){input$VariableSelect[3]} else if(length(input$VariableSelect)==2) {input$VariableSelect[2]} else {input$VariableSelect[1]},".",
+                      supp_obs()) 
               } else {
-                print(source_lab())
-              }}else {
-                if(input$CategorySelect=="Fisheries"){
-                  paste("For individual fisheries and the", input$MetricSelect, "metric, we show all activities for vessels that fished in the selected fisheries, \nnot just their activity in the selected fishery, \nFor example, the", if(length(input$VariableSelect)>2){input$VariableSelect[3]} else if(length(input$VariableSelect)==2) {input$VariableSelect[2]} else {""},"plot above shows the", input$AVE_MED2, input$MetricSelect,"for all vessels that fished for", if(length(input$VariableSelect)>2){input$VariableSelect[3]} else if(length(input$VariableSelect)==2) {input$VariableSelect[2]} else {input$VariableSelect[1]},".",
-                        supp_obs(), source_lab()) 
-                } else {
-                  paste(supp_obs(), source_lab())
-                }}} else {
-                  if(max(dat$flag)==0){
+                paste(supp_obs())
+              }}} else {
+                if(max(dat$flag)==0){
+                  if(input$CategorySelect=="Fisheries"){
+                    paste("For individual fisheries and the", input$demSelect, "metric, we show all activities for vessels that fished in the selected fisheries, \nnot just their activity in the selected fishery, \nFor example, the", if(length(input$VariableSelect)>2){input$VariableSelect[3]} else if(length(input$VariableSelect)==2) {input$VariableSelect[2]} else {""},"plot above shows the", input$AVE_MED2, input$demSelect,"for all vessels that fished for", if(length(input$VariableSelect)>2){input$VariableSelect[3]} else if(length(input$VariableSelect)==2) {input$VariableSelect[2]} else {input$VariableSelect[1]},".",
+                          supp_whiting(), conf_mess())
+                  } else{
+                    paste(supp_whiting(), conf_mess())
+                  }} else {
                     if(input$CategorySelect=="Fisheries"){
-                      paste("For individual fisheries and the", input$MetricSelect, "metric, we show all activities for vessels that fished in the selected fisheries, \nnot just their activity in the selected fishery, \nFor example, the", if(length(input$VariableSelect)>2){input$VariableSelect[3]} else if(length(input$VariableSelect)==2) {input$VariableSelect[2]} else {""},"plot above shows the", input$AVE_MED2, input$MetricSelect,"for all vessels that fished for", if(length(input$VariableSelect)>2){input$VariableSelect[3]} else if(length(input$VariableSelect)==2) {input$VariableSelect[2]} else {input$VariableSelect[1]},".",
-                            supp_whiting(), conf_mess(),source_lab())
-                    } else{
-                      paste(supp_whiting(), conf_mess(),source_lab())
-                    }} else {
-                      if(input$CategorySelect=="Fisheries"){
-                        paste("For individual fisheries and the", input$MetricSelect, "metric, we show all activities for vessels that fished in the selected fisheries, \nnot just their activity in the selected fishery, \nFor example, the", if(length(input$VariableSelect)>2){input$VariableSelect[3]} else if(length(input$VariableSelect)==2) {input$VariableSelect[2]} else {""},"plot above shows the", input$AVE_MED2, input$MetricSelect,"for all vessels that fished for", if(length(input$VariableSelect)>2){input$VariableSelect[3]} else if(length(input$VariableSelect)==2) {input$VariableSelect[2]} else {input$VariableSelect[1]},".",
-                              supp_obs(), supp_whiting(), conf_mess(),source_lab())
-                      } else {
-                        paste(supp_obs(), supp_whiting(), conf_mess(),source_lab())
-                      } }}
-                      } 
-        else if(input$MetricSelect=="Share of landings by state"){
-          if(max(dat$conf)==0) {
-            if(max(dat$flag)==0){
-              if(input$CategorySelect=="State"|input$CategorySelect=="Homeport"){
-                paste("For the", input$MetricSelect, "metric, we show all activities for vessels that homeported in the selected",input$CategorySelect,", \nnot just their activity in the selected",input$CategorySelect,".\nFor example, the plots above show the", input$MetricSelect,"for vessels that homeported in", input$VariableSelect,".",
-                     source_lab())
-              } else {
-                source_lab()
-              }} else {
-                if(input$CategorySelect=="State"|input$CategorySelect=="Homeport"){
-                  paste("For the", input$MetricSelect, "metric, we show all activities for vessels that homeported in the selected",input$CategorySelect,", \nnot just their activity in the selected",input$CategorySelect,".\nFor example, the plots above show the", input$MetricSelect,"for vessels that homeported in", input$VariableSelect,".",
-                        supp_obs(), source_lab())
-                } else {
-                  paste(supp_obs(), source_lab())
-                }}
-          } else {
-            if(max(dat$flag)==0){
-              if(input$CategorySelect=="State"|input$CategorySelect=="Homeport"){
-                paste("For the", input$MetricSelect, "metric, we show all activities for vessels that homeported in the selected",input$CategorySelect,", \nnot just their activity in the selected",input$CategorySelect,"\nFor example, the plots above show the", input$MetricSelect,"for vessels that homeported in", input$VariableSelect,".",
-                     supp_whiting(), conf_mess(),source_lab())
-              } else {
-                paste(supp_whiting(), conf_mess(), source_lab())
-              }}  else {
-                if(input$CategorySelect=="State"|input$CategorySelect=="Homeport"){
-                  paste("For the", input$MetricSelect, "metric, we show all activities for vessels that homeported in the selected",input$CategorySelect,", \nnot just their activity in the selected",input$CategorySelect,".\nFor example, the plots above show the", input$MetricSelect,"for vessels that homeported in", input$VariableSelect,".",
-                        supp_obs(), supp_whiting(), conf_mess(),source_lab())
-                } else {
-                  paste(supp_obs(), supp_whiting(), conf_mess(),source_lab())
-                }} }
-                } else {
-                  if(max(dat$conf)==0) {
-                    if(max(dat$flag)==0){
-                      source_lab()
+                      paste("For individual fisheries and the", input$demSelect, "metric, we show all activities for vessels that fished in the selected fisheries, \nnot just their activity in the selected fishery, \nFor example, the", if(length(input$VariableSelect)>2){input$VariableSelect[3]} else if(length(input$VariableSelect)==2) {input$VariableSelect[2]} else {""},"plot above shows the", input$AVE_MED2, input$demSelect,"for all vessels that fished for", if(length(input$VariableSelect)>2){input$VariableSelect[3]} else if(length(input$VariableSelect)==2) {input$VariableSelect[2]} else {input$VariableSelect[1]},".",
+                            supp_obs(), supp_whiting(), conf_mess())
                     } else {
-                      paste(supp_obs(), source_lab)
-                    }} else {
-                      if(max(dat$flag)==0){
-                        paste(supp_whiting(), conf_mess(), source_lab())
-                      }  else {
-                        paste(supp_obs(), supp_whiting(), conf_mess(), source_lab())
-                      }}}
-                      } else {
-                        if(max(dat$conf)==0) {
-                          if(max(dat$flag)==0){
-                            if(max(dat$metric_flag)==1){
-                              paste(supp_metric(), source_lab())
-                            } else {
-                              paste(source_lab())
-                            }
-                          } else if(max(dat$flag)==1){
-                            if(max(dat$metric_flag)==1){
-                              paste(supp_metric(), supp_obs(), source_lab())
-                            } else {
-                              paste(supp_obs(), source_lab())
-                            } 
-                          }
-                          } else if(max(dat$conf)==1){
-                            if(max(dat$flag==0)){
-                              if(max(dat$metric_flag)==1){
-                                paste(supp_metric(), supp_obs(), supp_whiting(), conf_mess(), source_lab())
-                              } else {
-                                paste(supp_whiting(), conf_mess(), source_lab())
-        } 
+                      paste(supp_obs(), supp_whiting(), conf_mess())
+                    } }}
+      } else  {
+        if(max(dat$conf)==0) {
+          if(max(dat$flag)==0){
+            ""
+          } else {
+            paste(supp_obs())
+          }} else {
+            if(max(dat$flag)==0){
+              paste(supp_whiting(), conf_mess())
+            }  else {
+              paste(supp_obs(), supp_whiting(), conf_mess())
+            }}}
+    }else if(input$Ind_sel=="Social and Regional"){
+      if(input$socSelect=="Share of landings by state"){
+        if(max(dat$conf)==0) {
+          if(max(dat$flag)==0){
+            if(input$CategorySelect=="State"|input$CategorySelect=="Homeport"){
+              paste("For the", input$socSelect, "metric, we show all activities for vessels that homeported in the selected",input$CategorySelect,", \nnot just their activity in the selected",input$CategorySelect,".\nFor example, the plots above show the", input$socSelect,"for vessels that homeported in", input$VariableSelect,".")
+            } else {
+              ""
+            }} else {
+              if(input$CategorySelect=="State"|input$CategorySelect=="Homeport"){
+                paste("For the", input$socSelect, "metric, we show all activities for vessels that homeported in the selected",input$CategorySelect,", \nnot just their activity in the selected",input$CategorySelect,".\nFor example, the plots above show the", input$socSelect,"for vessels that homeported in", input$VariableSelect,".",
+                      supp_obs())
+              } else {
+                paste(supp_obs())
+              }}
+        } else {
+          if(max(dat$flag)==0){
+            if(input$CategorySelect=="State"|input$CategorySelect=="Homeport"){
+              paste("For the", input$socSelect, "metric, we show all activities for vessels that homeported in the selected",input$CategorySelect,", \nnot just their activity in the selected",input$CategorySelect,"\nFor example, the plots above show the", input$socSelect,"for vessels that homeported in", input$VariableSelect,".",
+                    supp_whiting(), conf_mess())
+            } else {
+              paste(supp_whiting(), conf_mess())
+            }}  else {
+              if(input$CategorySelect=="State"|input$CategorySelect=="Homeport"){
+                paste("For the", input$socSelect, "metric, we show all activities for vessels that homeported in the selected",input$CategorySelect,", \nnot just their activity in the selected",input$CategorySelect,".\nFor example, the plots above show the", input$socSelect,"for vessels that homeported in", input$VariableSelect,".",
+                      supp_obs(), supp_whiting(), conf_mess())
+              } else {
+                paste(supp_obs(), supp_whiting(), conf_mess())
+              }} }
+      } else {
+        if(max(dat$conf)==0) {
+          if(max(dat$flag)==0){
+            ""
+          } else {
+            paste(supp_obs())
+          }} else {
+            if(max(dat$flag)==0){
+              paste(supp_whiting(), conf_mess())
+            }  else {
+              paste(supp_obs(), supp_whiting(), conf_mess())
+            }}}
+    }} else {
+      if(max(dat$conf)==0) {
+        if(max(dat$flag)==0){
+          if(max(dat$metric_flag)==1){
+            paste(supp_metric())
+          } else {
+            ""
+          }
         } else if(max(dat$flag)==1){
           if(max(dat$metric_flag)==1){
-            paste(supp_metric(), supp_whiting(), supp_obs(), conf_mess(), source_lab())
+            paste(supp_metric(), supp_obs())
           } else {
-            paste(supp_whiting(), supp_obs(), conf_mess(), source_lab())
+            paste(supp_obs())
           } 
-      }}
-      }
-      }#end x label function 
+        }
+      } else if(max(dat$conf)==1){
+        if(max(dat$flag==0)){
+          if(max(dat$metric_flag)==1){
+            paste(supp_metric(), supp_obs(), supp_whiting(), conf_mess())
+          } else {
+            paste(supp_whiting(), conf_mess())
+          } 
+        } else if(max(dat$flag)==1){
+          if(max(dat$metric_flag)==1){
+            paste(supp_metric(), supp_whiting(), supp_obs(), conf_mess())
+          } else {
+            paste(supp_whiting(), supp_obs(), conf_mess())
+          } 
+        }}
+    }
+}#end x label function 
 
     
     scale_text <- function() {
@@ -305,7 +337,7 @@ supp_metric <- function(){
     # Define rectangles and labels
     if(length(input$YearSelect)>1 & min(input$YearSelect)<2011 & max(input$YearSelect)>2010){
       if(input$Ind_sel=="Economic"){
-       g <- g + geom_rect(aes(xmin=-Inf, xmax=dat$thresh, ymin=-Inf, ymax=Inf),fill="grey50", alpha=.02)
+       g <- g + geom_rect(aes(xmin=-Inf, xmax=dat$thresh+.5, ymin=-Inf, ymax=Inf),fill="grey50", alpha=.02)
        if(input$PlotSelect==T&dat$STAT[1]!="Fleet-wide total"&is.na(max(dat$VARIANCE))==F) {  
             g <- g + geom_text(aes(x=dat$thresh/3.5,y=max(VALUE+VARIANCE)+max(VALUE)/10, label="Pre-Catch shares", family="serif"),hjust=0,color = "grey20", size=3/scale_text()) 
           if(length(input$YearSelect[input$YearSelect<2010])>3 & length(input$YearSelect[input$YearSelect>=2010])==2) {
@@ -324,7 +356,7 @@ supp_metric <- function(){
           }}
       } 
       else {
-        g <- g + geom_rect(aes(xmin=-Inf, xmax=length(table(dat$YEAR[dat$YEAR<=2010])), ymin=-Inf, ymax=Inf),fill="grey50", alpha=.02)
+        g <- g + geom_rect(aes(xmin=-Inf, xmax=length(table(dat$YEAR[dat$YEAR<=2010]))+.5, ymin=-Inf, ymax=Inf),fill="grey50", alpha=.02)
         if(input$PlotSelect==T&dat$STAT[1]!="Fleet-wide total"&is.na(max(dat$VARIANCE))==F) {  
           if (input$LayoutSelect!='Metrics') {
           g <- g + geom_text(aes(x=length(table(dat$YEAR[dat$YEAR<2011]))/3.5,y=max(VALUE+VARIANCE)+max(VALUE)/10, label="Pre-Catch shares", family="serif"),hjust=0,color = "grey20", size=3/scale_text())  
