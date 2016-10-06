@@ -263,7 +263,7 @@ output$DodgeSelect <- renderUI({
 
 output$PlotSelect <- renderUI({
   if(input$tabs!="Panel2"){
-    if(input$DodgeSelect == "Economic measures side-by-side") {
+    if(input$DodgeSelect[1] == "Economic measures side-by-side") {
       tags$div(class="ckbox", selectInput("PlotSelect", "", choices= c("Bar", "Point", "Line")))
     }} else return()
 })

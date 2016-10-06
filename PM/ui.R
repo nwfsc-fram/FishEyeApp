@@ -35,8 +35,11 @@ fluidPage(title = "FISHEyE",
             tags$style(HTML(".ckbox2 .checkbox:nth-child(7) label{margin-left:17px;}")),tags$style(HTML(".ckbox2 .checkbox:nth-child(8) label{margin-left:17px;}")),
             tags$style(HTML(".ckbox2 .checkbox:nth-child(10) label{margin-left:17px;}")),tags$style(HTML(".ckbox2 .checkbox:nth-child(11) label{margin-left:17px;}")),
             tags$style(HTML(".ckbox2 .checkbox:nth-child(12) label{margin-left:17px;}")),tags$style(HTML(".ckbox2 .checkbox:nth-child(13) label{margin-left:17px;}")),
-
-            tags$style(HTML(".sectselect >li{position:relative; z-index:10000; background-color:black !important; display:inline; vertical-align:middle}")),
+           
+            #tags$style(HTML(".met_mod label{font-style:italic;margin-bottom:20px;margin-top:-90px;padding-top:0;}")),#{margin-top:-40px;margin-bottom:50px; height:12px;}
+            tags$style(HTML(".met_mod  input[type=radio] {border: 0px;    width: 0%;    height:0em;}#")),
+           
+           tags$style(HTML(".sectselect >li{position:relative; z-index:10000; background-color:black !important; display:inline; vertical-align:middle}")),
             tags$style(HTML(".sectselect{font-size:28px; line-height:28px;}")),
 
             tags$style(HTML(".actbutton {margin-bottom:5px}")),
@@ -181,10 +184,10 @@ fluidPage(title = "FISHEyE",
                                                                           ||input.LayoutSelect!='Metrics'&&input.Sect_sel=='CV'&&input.Ind_sel=='Demographic'&&input.demSelect=='Proportion of revenue from CS fishery'
                                                                           ||input.LayoutSelect!='Metrics'&&input.Sect_sel=='CV'&&input.Ind_sel=='Demographic'&&input.demSelect=='Fishery participation'
                                                                           ||input.LayoutSelect!='Metrics'&&input.Ind_sel=='Demographic'&&input.demSelect=='Days at sea'", 
-                                                 uiOutput("FishAkSelect"))),
+                                                 uiOutput("FishAkSelect")), style = "padding: 0px;margin-bottom:0px; border: 3px solid #D3D3D3;border-radius:10px;"),
                               wellPanelSub(
                                   conditionalPanel(condition="input.AVE_MED2=='Average'||input.AVE_MED2=='Median'||input.AVE_MED=='A'||input.AVE_MED=='M'",
-                                                   uiOutput("PlotSelect"))
+                                                   uiOutput("PlotSelect")), style = "padding: 0px;margin-bottom:0px; border: 3px solid #D3D3D3;border-radius:10px;"
                                     )
                                     ) , #end sub panel
                               wellPanelSub(
@@ -197,7 +200,7 @@ fluidPage(title = "FISHEyE",
                                           ||input.Sect_sel=='CV'&&input.demSelect=='Vessel length'&&input.CategorySelect!='Homeport'&&input.CategorySelect!='State'
                                           ||input.Sect_sel=='CV'&&input.socSelect=='Seasonality'&&input.CategorySelect!='Homeport'&&input.CategorySelect!='State'
                                           ||input.Sect_sel=='CV'&&input.socSelect=='Share of landings by state'&&input.CategorySelect!='Homeport'&&input.CategorySelect!='State'",
-                                    uiOutput('moreOptions'))#,
+                                    uiOutput('moreOptions')), style = "padding: 0px;margin-bottom:0px; border: 3px solid #D3D3D3;border-radius:10px;"#,
                                    #conditionalPanel(condition="",uiOutput('moreOptions'))#&&input.ShortdescrSelect=='Revenue'
                                                     )       
                                  )

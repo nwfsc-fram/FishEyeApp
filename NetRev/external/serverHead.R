@@ -4,6 +4,12 @@ years.list <- c("2009", "2010", "2011", "2012")
 load("data/netrevTable.RData")
 load("data/factorOrder.RData")
 load("data/netrevThirds.RData")
+load("data/FRthirds.RData")
+load("data/CPthirds.RData")
+load("data/MSthirds.RData")
+load("data/FRnetrev.RData")
+load("data/CPnetrev.RData")
+load("data/MSnetrev.RData")
 
 # custom palettes
 # for net rev figures

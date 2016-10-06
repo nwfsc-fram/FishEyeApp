@@ -12,10 +12,11 @@ tags$div(style = "margin: 15px 15px 30px; width: 60%",
            tags$div(style= "margin-top: 15px;",
                     
                     h4("Compare groups of vessels or metrics"),
-                     tags$ul(p('Select whether to compare groups of vessels based on selected summary variables (see below) or by metrics. For the mothership and catcher processor sectors, the only summary variable available is Pacific whiting.'),
-                             p('When comparing metrics, selected metrics may not all be displayed. This is because the displayed metrics depend upon the statistic selected. For some metrics, it is not appropriate to calculate all statistics. 
-                               For instance, the Gini coefficient and Herfindahl-Hirschman Index are indices. We cannot calculate an annual average or median value. 
-                               ')),
+                    tags$ul(p('Select whether to compare groups of vessels based on selected summary variables (see below) or by metrics. For the mothership and catcher processor sectors, the only summary variable available is At-sea Pacific whiting.')#,
+                             #p('When comparing metrics, selected metrics may not all be displayed. This is because the displayed metrics depend upon the statistic selected. For some metrics, it is not appropriate to calculate all statistics. 
+                             #  For instance, the Gini coefficient and Herfindahl-Hirschman Index are indices. We cannot calculate an annual average or median value. 
+                              # ')
+                             ),
                     
                     h4("Summary Variables"),
                     p('Please note that availability of summary variables will vary between sectors.'),
@@ -36,11 +37,13 @@ tags$div(style = "margin: 15px 15px 30px; width: 60%",
                         'Groundfish fixed gear with fixed gear endorsement;
                         Crab; Shrimp; Other fisheries (e.g., tuna, salmon, and halibut), Alaskan fisheries (not shown separately).'),
                       
-                      tags$li(strong("Vessel length class:"),"Three categories of vessel length representing the range of catcher vessel length: large vessels (> 80 ft), medium vessels (> 60 ft, <= 80 ft), and small vessels (< 60 ft)."),
                       tags$li(strong("Homeport:"), "The", tags$a(href="map.pdf", "homeport", target="_blank"), "reported by each vessel on the", tags$a(href="http://www.nwfsc.noaa.gov/research/divisions/fram/economic/economic_data_forms.cfm", "EDC survey form", target="_blank"), "aggregated to port groups.
                                Vessels that fished of the West coast but report their homeport to be in Alaska are included. These vessels are included in the Puget Sound port."), 
-                      tags$li(strong("State:"), "The state corresponding to each homeport. Vessels that fished of the West coast but report their homeport to be in Alaska are included. These vessels are included in Washington State.")
-                      ),  tags$br(),             
+                      tags$li(strong("State:"), "The state corresponding to each homeport. Vessels that fished of the West coast but report their homeport to be in Alaska are included. These vessels are included in Washington State."
+                              ),
+                      tags$li(strong("Vessel length class:"),"Three categories of vessel length representing the range of catcher vessel length: large vessels (> 80 ft), medium vessels (> 60 ft, <= 80 ft), and small vessels (< 60 ft)."),
+                      tags$li(strong("Processor size:"),"First receivers and shorebased processors are grouped into three size classes based on the average annual maximum number of workers in a month: large (> 200 workers), medium (100 - 200 workers), and small (< 100 workers).")
+                       ), tags$br(),             
                     
                     h4('Indicators'),
                     tags$ul(
@@ -49,24 +52,28 @@ tags$div(style = "margin: 15px 15px 30px; width: 60%",
                       tags$li(strong('Social and Regional:'),'Distribution of benefits and costs among individuals, groups, and communities. Indicators describe potential impact on individuals (i.e., wages) and communities (i.e. share of landings by state).')
                     ),
                     h4('Metrics'),
-                    p('Please not that availability of metrics will vary between sectors.'),
+                    p('Please note that availability of metrics will vary between sectors.'),
                     
                     tags$ul(h4(tags$em('Demographic')),
-                            tags$li(strong('Number of vessels or processors: '),
-                                    'Number of vessels actively participating (i.e., had an active permit and non-zero revenue).'),
-                            tags$li(strong('Vessel length: '),
-                                    'The length (ft) of vessels reflects the mix of active participants in the fishery in each year.'),
-                            tags$li(strong('Fishery participation: '),
-                                    'Count of fisheries (defined above) that vessels participated in. Changes may indicate specialization or diversification.'),
-                            tags$li(strong('Proportion of revenue from Catch Share fishery: '),
-                                    "The proportion of a vessels total revenue that comes from fish caught in the limited entry/catch share fishery. Metric measures how reliant vessels are on revenue from the limited entry/Catch Shares fishery."),
                             tags$li(strong('Days at sea: '),
                                     'The number of days at sea may indicate specialization, efficiency, or consolidation.'),
                             tags$li(strong('Exponential Shannon Index: '),
                                     'Measures the income diversification of a vessel across revenue sources. A larger number corresponds to increased diversification. Changes may indicate specialization or diversification.'),
-                            tags$li(strong('Gini coefficient: '),'Measures the degree of catch share revenue concentration among vessels. A value of zero would represent all vessels earning the same revenue, and a value of one would represent one vessel earning all of the revenue. The value of the Gini coefficient can be affected by fleet consolidation and specialization.'),
-                            tags$li(strong('Herfindahl-Hirschman Index: '),'The Herfindahl-Hirschman Index is a measure of market concentration. It is calculated as the sum of the squares of the market shares, defined here by the share of the catch share revenues earned by each vessel. Values range from 0 to 10,000. Lower values indicate low market concentration (and higher competition). A value of 10,000 would represent one vessel earning all of the revenue. The value of the Herfindahl-Hirschman Index can be affected by fleet consolidation and specialization.')
-                    ),
+                            tags$li(strong('Fishery participation: '),
+                                    'Count of fisheries (defined above) that vessels participated in. Changes may indicate specialization or diversification.'),
+                            tags$li(strong('Gini coefficient: '),
+                                    'Measures the degree of catch share revenue concentration among vessels. A value of zero would represent all vessels earning the same revenue, and a value of one would represent one vessel earning all of the revenue. The value of the Gini coefficient can be affected by fleet consolidation and specialization.'),
+                             tags$li(strong('Herfindahl-Hirschman Index: '),
+                                    'The Herfindahl-Hirschman Index is a measure of market concentration. It is calculated as the sum of the squares of the market shares, defined here by the share of the catch share revenues earned by each vessel. Values range from 0 to 10,000. Lower values indicate low market concentration (and higher competition). A value of 10,000 would represent one vessel earning all of the revenue. The value of the Herfindahl-Hirschman Index can be affected by fleet consolidation and specialization.'),
+                            tags$li(strong('Number of species processed: '),
+                                    'Count of the number of species processed. Changes may indicate specialization or diversification.'),
+                            tags$li(strong('Number of vessels or processors: '),
+                                    'Number of vessels actively participating (i.e., had an active permit and non-zero revenue).'),
+                            tags$li(strong('Proportion of revenue from Catch Share fishery: '),
+                                    "The proportion of a vessels total revenue that comes from fish caught in the limited entry/catch share fishery. Metric measures how reliant vessels are on revenue from the limited entry/Catch Shares fishery."),
+                            tags$li(strong('Vessel length: '),
+                                    'The length (ft) of vessels reflects the mix of active participants in the fishery in each year.')
+                                               ),
                     tags$br(),
                     
                     tags$ul(h4(tags$em("Economic")),tags$em("Values reported in inflation adjusted 2014 dollars."),
@@ -97,8 +104,9 @@ tags$div(style = "margin: 15px 15px 30px; width: 60%",
                     tags$br(),
                     
                     tags$ul(h4(tags$em('Social and Regional')),
-                           tags$li(strong('Number of positions: '),'Number of positions (including captain and crew) is a lower bound for employment in the fishery. The metric is affected by positions per vessel and the number of vessels fishing.'),
-                             tags$li(strong('Crew wage per day: '),'Daily wage paid to a crewmember operating in the limited entry/catch shares fishery.'),
+                            tags$li(strong('Crew wage per day: '),'Daily wage paid to a crewmember operating in the limited entry/catch shares fishery.'),
+                            tags$li(strong('Hourly compensation:'), 'Hourly compensation paid to a processing worker in the West Coast groundfish fishery.'),
+                            tags$li(strong('Number of positions or workers: '),'Number of positions (including captain and crew or workers for the First Receivers and Shorebased Processors sector) is a lower bound for employment in the fishery. The metric is affected by positions per vessel and the number of vessels fishing.'),
                             tags$li(strong('Revenue per crew-day: '),'Revenue divided by crew day, where crew days are calculated as days at sea multipled by number of crew per vessel. This metric is a measure of productivity (in terms of revenue generation) of a crew member.'),
                             tags$li(strong('Seasonality: '),'The date (day of year, Jan. 1 = 1) on which 50% of the total volume of catch was landed in the fishery. Metric measures broad-scale changes in the seasonality of fishing for catch shares fish. It can also indicate changes in total allowable catch (TAC); it may take the fleet longer to catch a higher TAC/ACL.'),
                             tags$li(strong('Share of landings by state: '),'Share of landings (deliveries) by all vessels, by whiting vessels, and by non-whiting groundfish vessels in each state or at-sea. Shares are in terms of revenue. When selecting the ',tags$em('State'), 'summary variable, this metric shows the share of landings in each state for vessels that homeport in the selected state. This selection highlights that vessels may deliver fish in multiple states.')
@@ -116,13 +124,15 @@ tags$div(style = "margin: 15px 15px 30px; width: 60%",
                         tags$li(strong("Per vessel per day:"),
                                 "Median or Average per day for all vessels that participated in the Catch Share program."),
                         tags$li(strong("Per vessel per metric-ton:"),
-                                "Median or Average per metric ton of fish caught for all vessels that participated in the Catch Share program.")),tags$br(),
-                      tags$li(strong("Fleet-wide total:"),"Summed over all vessels that participated in the Catch Share program.") ),tags$br(),
+                                "Median or Average per metric ton of fish caught for all vessels that participated in the Catch Share program.")
+                        ),tags$br(),
+                      tags$li(strong("Fleet-wide total:"),"Summed over all vessels that participated in the Catch Share program.") 
+                      ),tags$br(),
                     tags$ul(tags$p(tags$strong("What is the purpose of using median, average, and fleet-wide total values when looking at the data?"), "The median and average provide information about a representative vessel; 
                                    however, they do it in different ways.  The ",  tags$strong("median"), "means that half of the vessels have a larger result than the median, and half are smaller.  The ", tags$strong("average "),"
                                    is the sum of the values divided by the number of responses.  If the data do not have many extreme responses in a particular direction, the median and average will be very similar.  However, if the data are ", 
-                                   tags$em('skewed'), "by extreme responses, then the median is a better measure for a typical vessel.  The ", tags$strong("fleet-wide total"), "measures how the entire fleet is doing, rather than a representative vessel."))
-                    ,tags$br(),
+                                   tags$em('skewed'), "by extreme responses, then the median is a better measure for a typical vessel.  The ", tags$strong("fleet-wide total"), "measures how the entire fleet is doing, rather than a representative vessel.")
+                            ),tags$br(),
                     
                     h4("Pacific whiting vessel category"),
                     tags$ul(
@@ -136,13 +146,15 @@ tags$div(style = "margin: 15px 15px 30px; width: 60%",
                     h4("Include Alaskan fisheries activities"),
                     tags$ul(
                       tags$p('For some metrics, you may choose whether or not to include activities in Alaskan fisheries. If this box', tags$strong('is selected,'),
-                             'then activities in Alaskan fisheries will be included.' )), tags$br(),
+                             'then activities in Alaskan fisheries will be included.' )
+                      ), tags$br(),
                     
                    h4('Years'),
                    tags$ul('The Catch Share program began in 2011. A mandatory',
                            tags$a(href='https://www.nwfsc.noaa.gov/research/divisions/fram/economic/overview.cfm', 'Economic Data Collection (EDC) program ', target="_blank"),
                            'began in 2009. Results are available from 2009 onwards for metrics that require EDC data. For metrics that do not require EDC data, 
-                           results are available from 2004 onwards. For these metrics, click the box to select years prior to 2009.'),tags$br(),
+                           results are available from 2004 onwards. For these metrics, click the box to select years prior to 2009.'
+                           ),tags$br(),
                     
                     h4("Variables in the Data Table"),
                     tags$ul(

@@ -8,7 +8,7 @@ library(reshape2)
 #library(gridExtra)
 library(grid)
 library(scales)
-library(tidyr)
+#library(tidyr)
 #library(mail) #for sending email
 
 

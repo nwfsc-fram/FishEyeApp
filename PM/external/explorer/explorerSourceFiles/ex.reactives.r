@@ -38,10 +38,10 @@ DatVars <- reactive({
                     list(
                       YEAR = 2004:2014,
                       SHORTDESCR = c("Revenue","Variable costs","Fixed costs","Variable Cost Net Revenue","Total Cost Net Revenue"),
-                      CATEGORY = c("Fisheries","State","Vessel length class"),
+                      CATEGORY = c("Fisheries","State","Processor size"),
                       whitingv = c("All vessels","Non-whiting vessels","Whiting vessels"),
                       STAT =  c("Average per vessel","Average per vessel/metric-ton","Median per vessel","Median per vessel/metric-ton","Fleet-wide total","Fleet-wide total/metric-ton"),
-                      METRIC =  c("Number of vessels or processors"="Number of processors","Fishery participation","Proportion of revenue from Catch Share fishery"="Proportion of revenue from CS fishery",
+                      METRIC =  c("Number of vessels or processors"="Number of processors","Number of species processed","Proportion of revenue from Catch Share fishery"="Proportion of revenue from CS fishery",
                                   "Exponential Shannon Index","Gini coefficient","Herfindahl-Hirschman Index","Number of workers"='Number of workers',"Hourly compensation", "Share of landings by state")
                     ))
   }else if(input$Sect_sel=="M"|input$Sect_sel=="CP"){
@@ -356,7 +356,7 @@ DatSub <- reactive({
                 datSub$VARIABLE <- factor(datSub$VARIABLE, levels = c("Washington",'Oregon','California','Multi-state'))
                 } else if(input$CategorySelect == "Fisheries"){
                 datSub$VARIABLE <- factor(datSub$VARIABLE, levels = c("All fisheries","Pacific whiting","Non-whiting groundfish","Other fisheries"))
-                } else if(input$CategorySelect == "Vessel length class") {
+                } else if(input$CategorySelect == "Processor size") {
                   datSub$VARIABLE <- factor(datSub$VARIABLE, levels =c("Small","Medium","Large"))
                 }
            } else {
@@ -448,12 +448,13 @@ DatSub <- reactive({
 #      }
       datSub$flag <- max(datSub$flag, na.rm=T)
       datSub$metric_flag <- max(datSub$metric_flag, na.rm=T)
+      datSub$conf <- ifelse(datSub$CS=="All fisheries", 0, datSub$conf)
  
       if(input$Ind_sel=="Demographic"&input$demSelect=="Number of vessels"){#    if(datSub$METRIC=="Number of vessels"){
         datSub$VALUE <- ifelse(datSub$N<3, NA, datSub$VALUE)
         datSub$N <- ifelse(datSub$N<3, NA, datSub$N)
       }
-   print(datSub[1,])    
+   print(datSub)    
       return(datSub)
           
   #   } else return()

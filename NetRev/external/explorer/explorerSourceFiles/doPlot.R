@@ -123,8 +123,8 @@ doPlot <- function(dat, x, y, type){
          
         if(length(input$YearSelect)>1 & min(input$YearSelect)<2011 & max(input$YearSelect)>2010){
                 g <- g + geom_rect(aes_string(xmin=-Inf, xmax=length(table(input$YearSelect[input$YearSelect<2011]))+.5, ymin=-Inf, ymax=Inf), fill="grey50", alpha=.05/length(input$YearSelect))
-              #  g <- g + geom_text(aes(x=length(table(input$YearSelect[input$YearSelect<2011]))/2,y=max(VALUE)/1000+max(VALUE)/10000, label="Pre-Catch shares", family="sans"),hjust=0,color = "grey20", size=7/scale_text()) 
-                g <- g + geom_text(aes(x=length(table(input$YearSelect[input$YearSelect<2011]))+length(table(input$YearSelect[input$YearSelect>2010]))/2,y=max(VALUE)/1000+max(VALUE)/10000,label="Post-Catch shares"),hjust=0, 
+                g <- g + geom_text(aes(x=length(table(input$YearSelect[input$YearSelect<2011]))/2,y=max(VALUE,na.rm=T)/1000+max(VALUE,na.rm=T)/10000, label="Pre-Catch shares", family="sans"),hjust=0,color = "grey20", size=7/scale_text()) 
+                g <- g + geom_text(aes(x=length(table(input$YearSelect[input$YearSelect<2011]))+length(table(input$YearSelect[input$YearSelect>2010]))/2,y=max(VALUE,na.rm=T)/1000+max(VALUE,na.rm=T)/10000,label="Post-Catch shares"),hjust=0, 
                           fontface=1, family = "sans", color = "grey20", size=7/scale_text())  
             } else {
               g <- g  
@@ -139,9 +139,32 @@ doPlot <- function(dat, x, y, type){
           geom_bar(stat = "identity", position = "stack", width = scale_bars(), aes_string(order = 'SHORTDESCR', fill = 'SHORTDESCR'))
         
         if(length(input$YearSelect)>1 & min(input$YearSelect)<2011 & max(input$YearSelect)>2010){
-                g <- g + geom_rect(aes_string(xmin=-Inf, xmax=length(table(dat$YEAR[dat$YEAR<=2010]))+.5, ymin=-Inf, ymax=Inf), fill="grey50", alpha=.05/length(input$YearSelect))
-                g <- g + geom_text(aes(x=length(input$YearSelect[input$YearSelect<2011])/2,y=max(VALUE)/400+max(VALUE[VALUE!=max(VALUE)])/400, label="Pre-Catch shares"),hjust=0, family="sans",color = "grey20", size=7/scale_text()) + 
-                  geom_text(aes(x=length(table(input$YearSelect[input$YearSelect<2011]))+length(table(input$YearSelect[input$YearSelect>2010]))/2,y=max(VALUE)/400+max(VALUE[VALUE!=max(VALUE)])/400,label="Post-Catch shares"),hjust=0, family="sans",color = "grey20", size=7/scale_text())# +
+          if(input$YearSelect[1]==2009&input$YearSelect[2]==2010){
+            if(length(input$YearSelect[input$YearSelect>2010])==1){
+              g <- g + geom_rect(aes(xmin=.1, xmax=2.35, ymin=-Inf, ymax=Inf), fill="grey50", alpha=.05/length(input$YearSelect))+ 
+                geom_text(aes(x=.4,y=max(VALUE,na.rm=T)/500, label="Pre-Catch shares",family="sans"),hjust=0, size=4.5/scale_text(), color="grey20") + 
+                geom_text(aes(x=length(table(as.numeric(YEAR)))+.6,y=max(VALUE,na.rm=T)/500,label="Post-Catch shares",family="sans"),hjust=1, size=4.5/scale_text(), color="grey20")# +
+            } else {
+              g <- g + geom_rect(aes(xmin=.1, xmax=2.5, ymin=-Inf, ymax=Inf), fill="grey50", alpha=.05/length(input$YearSelect))+ 
+                geom_text(aes(x=.3,y=max(VALUE,na.rm=T)/500, label="Pre-Catch shares",family="sans"),hjust=0, size=4.5/scale_text(), color="grey20") + 
+                geom_text(aes(x=2.75,y=max(VALUE,na.rm=T)/500,label="Post-Catch shares",family="sans"),hjust=0, size=4.5/scale_text(), color="grey20")# +
+            }
+          } else  {
+            if(length(input$YearSelect[input$YearSelect>2010])==1){  
+              g <- g + geom_rect(aes(xmin=.1, xmax=1.5, ymin=-Inf, ymax=Inf), fill="grey50", alpha=.05/length(input$YearSelect))+ 
+                geom_text(aes(x=.25,y=max(VALUE,na.rm=T)/500, label="Pre-Catch shares",family="sans"),hjust=0, size=4.5/scale_text(), color="grey20") + 
+                geom_text(aes(x=length(table(as.numeric(YEAR)))+.6,y=max(VALUE,na.rm=T)/500,label="Post-Catch shares",family="sans"),hjust=1, size=4.5/scale_text(), color="grey20") #+
+            } else {
+              g <- g + geom_rect(aes(xmin=.1, xmax=1.5, ymin=-Inf, ymax=Inf), fill="grey50", alpha=.05/length(input$YearSelect))+ 
+                geom_text(aes(x=.15,y=max(VALUE,na.rm=T)/500, label="Pre-Catch shares",family="sans"),hjust=0, size=4.5/scale_text(), color="grey20") + 
+                geom_text(aes(x=1.9,y=max(VALUE,na.rm=T)/500,label="Post-Catch shares",family="sans"),hjust=0, size=4.5/scale_text(), color="grey20") #+
+            }
+          } 
+        
+#        if(length(input$YearSelect)>1 & min(input$YearSelect)<2011 & max(input$YearSelect)>2010){
+#                g <- g + geom_rect(aes_string(xmin=-Inf, xmax=length(table(input$YearSelect[input$YearSelect<2011]))+.5, ymin=-Inf, ymax=Inf), fill="grey50", alpha=.05/length(input$YearSelect))
+#                g <- g + geom_text(aes(x=length(table(input$YearSelect[input$YearSelect<2011]))/2, y=max(VALUE,na.rm=T)/400+max(VALUE[VALUE!=max(VALUE,na.rm=T)],na.rm=T)/400, label="Pre-Catch shares"),hjust=0, family="sans",color = "grey20", size=7/scale_text())# + 
+#                g <- g + geom_text(aes(x=length(table(input$YearSelect[input$YearSelect<2011]))+length(table(input$YearSelect[input$YearSelect>2010]))/2,y=max(VALUE,na.rm=T)/400+max(VALUE[VALUE!=max(VALUE,na.rm=T)],na.rm=T)/400,label="Post-Catch shares"),hjust=0, family="sans",color = "grey20", size=7/scale_text())# +
                } else {
               g <- g
             } #end if statement for text and greyed block
@@ -149,16 +172,17 @@ doPlot <- function(dat, x, y, type){
       g <- g + geom_text(aes(label=star), colour="black", vjust=0, size=10)
       }# end Summary loop for total and variable revenue figures
     
-    if(type != "summary"){    # Begin Variability analysis figure
-      if(length(input$YearSelect) > 1){
+    else if(type != "summary"){    # Begin Variability analysis figure
+      if(length(table(input$YearSelect)) > 1){
         g <- g + geom_line(aes_string(colour = groupVar), size=1.5)
         if(length(input$YearSelect)>1 & min(input$YearSelect)<2011 & max(input$YearSelect)>2010){
-          g <- g + geom_rect(aes(xmin=-Inf, xmax=length(table(dat$YEAR[dat$YEAR<=2010]))+.5, ymin=-Inf, ymax=Inf),fill="grey50", alpha=.05/length(input$YearSelect))
-          g <- g + geom_text(aes(x=length(table(input$YearSelect[input$YearSelect<2011]))/2,y=max(VALUE)/1000+max(VALUE)/10000, label="Pre-Catch shares", family="sans"),hjust=0,color = "grey20", size=7/scale_text()) + 
-                geom_text(aes(x=length(table(input$YearSelect[input$YearSelect<2011]))+length(table(input$YearSelect[input$YearSelect>2010]))/2,y=max(VALUE)/1000+max(VALUE)/10000,label="Post-Catch shares"),hjust=0, family="sans",color = "grey20", size=7/scale_text()) #+
+          g <- g + geom_rect(aes_string(xmin=-Inf, xmax=length(table(input$YearSelect[input$YearSelect<2011]))+.5, ymin=-Inf, ymax=Inf),fill="grey50", alpha=.05/length(input$YearSelect))
+          g <- g + geom_text(aes(x=length(table(input$YearSelect[input$YearSelect<2011]))/2,y=max(VALUE,na.rm=T)/1000+max(VALUE,na.rm=T)/10000, label="Pre-Catch shares", family="sans"),hjust=0,color = "grey20", size=7/scale_text()) + 
+                   geom_text(aes(x=length(table(input$YearSelect[input$YearSelect<2011]))+length(table(input$YearSelect[input$YearSelect>2010]))/2,y=max(VALUE,na.rm=T)/1000+max(VALUE,na.rm=T)/10000,label="Post-Catch shares"),hjust=0, family="sans",color = "grey20", size=7/scale_text()) #+
               } else {
               g <- g 
-            }} else{
+            }
+        } else{
               g <- g + geom_point(aes_string(colour =groupVar), size=4)
             }
 #      g <- g + geom_text(aes(label=star), colour="black", vjust=0, size=10)
@@ -167,7 +191,7 @@ doPlot <- function(dat, x, y, type){
     
     # define facet
     if(type =="summary"){
-      g <- g + facet_wrap(~ sort, ncol=2, as.table = TRUE, scales="free_x")#
+      g <- g + facet_wrap(~sort, ncol=2, as.table = TRUE, scales="free_x")#
     } else {
       g <- g + facet_wrap(~sort, scales="free_x")#(~SHORTDESCR)
     }

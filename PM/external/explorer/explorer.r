@@ -282,9 +282,7 @@ output$dlTable <- downloadHandler(
          } else {
           table <- subset(DatSubTable(), select = -CATEGORY)  
         }
-      }
-      
-      if(input$Ind_sel!="Economic"){
+      } else if(input$Ind_sel!="Economic"){
         if(input$CategorySelect == "Fisheries"){
           table <- subset(DatSubTable(), select = -c(CATEGORY, CS))
           } 
@@ -300,25 +298,31 @@ output$dlTable <- downloadHandler(
           names(table) <- c(4,1,3,2,"a ", " b","c ", "d ", "e ") 
         }
       } else { 
-  if(input$CategorySelect == "Fisheries"){
-        if(input$Ind_sel=="Demographic"&input$demSelect=="Number of vessels"){
+        if(input$CategorySelect == "Fisheries"){
+        if(input$Ind_sel=="Demographic"){
+          if(input$demSelect=="Number of vessels"){
           names(table) <- c(4,1,3,2,"a ", " b")
-        }  else if(input$Ind_sel=="Demographic"&input$demSelect=="Exponential Shannon Index"|input$Ind_sel=="Demographic"&input$demSelect=="Proportion of revenue from CS fishery"|input$Ind_sel=="Demographic"&input$demSelect=="Fishery participation"|input$Ind_sel=="Demographic"&input$demSelect=="Days at sea"){
+        }  else if(input$demSelect=="Exponential Shannon Index"|input$demSelect=="Proportion of revenue from CS fishery"|input$demSelect=="Fishery participation"|input$demSelect=="Days at sea"){
           names(table) <- c(4,1,3,2,"a ", " b", "c ", "d "," e")
         }else {
+          names(table) <- c(4,1,3,2,"a ", " b", "c ", "d ")
+          }}else {
           names(table) <- c(4,1,3,2,"a ", " b", "c ", "d ")
         }
       } 
       else {
-        if(input$Ind_sel=="Demographic"&input$demSelect=="Number of vessels"){
+        if(input$Ind_sel=="Demographic"){
+          if(input$demSelect=="Number of vessels"){
           names(table) <- c(4,1,3,2,"a ", " b","c ")
-        } else if(input$Ind_sel=="Demographic"&input$LayoutSelect!="Metrics"&input$demSelect=="Exponential Shannon Index"|input$Ind_sel=="Demographic"&input$LayoutSelect!="Metrics"&input$demSelect=="Proportion of revenue from CS fishery"|input$Ind_sel=="Demographic"&input$LayoutSelect!="Metrics"&input$demSelect=="Fishery participation"|input$Ind_sel=="Demographic"&input$LayoutSelect!="Metrics"&input$demSelect=="Days at sea"){
+        } else if(input$LayoutSelect!="Metrics"&input$demSelect=="Exponential Shannon Index"|input$LayoutSelect!="Metrics"&input$demSelect=="Proportion of revenue from CS fishery"|input$LayoutSelect!="Metrics"&input$demSelect=="Fishery participation"|input$LayoutSelect!="Metrics"&input$demSelect=="Days at sea"){
           names(table) <- c(4,1,3,2,"a ", " b","c ", "d ", "e ","f ")
         }else {
           names(table) <- c(4,1,3,2,"a ", " b","c ", "d ", "e ")
         }
-      }
-      }
+        }else {
+          names(table) <- c(4,1,3,2,"a ", " b","c ", "d ", "e ")
+        }
+      }}
       # some wonky code to insert a timestamp. xtable has a more straightfoward approach but not supported with current RStudio version on the server
       
       if(input$Ind_sel=="Economic"){
@@ -335,9 +339,7 @@ output$dlTable <- downloadHandler(
           temp <- data.frame("Year", "Summary Variable","Fisheries Category", "Statistic", "Economic measure", "Fished for whiting","Number of vessels", "Value", "Variance (MAD, SD)")
         }
         }
-      }
-      
-      if(input$Ind_sel!="Economic"){
+      }else if(input$Ind_sel!="Economic"){
         if(input$CategorySelect == "Fisheries"){
           table <- subset(DatSubTable(), select = -c(CATEGORY, CS))
           if(input$LayoutSelect=="Metrics"){

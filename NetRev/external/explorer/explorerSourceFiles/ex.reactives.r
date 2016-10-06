@@ -318,6 +318,8 @@ DatSubThirds <- reactive({
 #  datSub$star <- ifelse(datSub$con_flag==1, "*", "")
   datSub$con_flag <- max(datSub$con_flag)
   datSub <- subset(datSub, is.na(datSub$VALUE)==F)
+  datSub$VALUE <- as.numeric(datSub$VALUE)
+  datSub$VARIANCE <- as.numeric(datSub$VARIANCE)
   
   validate(
     need(dim(datSub)[1]>0, 
