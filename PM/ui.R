@@ -13,34 +13,77 @@ fluidPage(title = "FISHEyE",
             # create a CSS to modify style of validation test error (for Variability analysis)
          # tags$head(tags$body(includeHTML("google-analytics.noaa.js"))),
           tags$head(
-            tags$style(HTML("
-                            .shiny-output-error-validation {
-                            color: red;
-                            font-size: 120%;
-                            }
-                            ")),
+            tags$style(HTML(".shiny-output-error-validation {
+                            color: red;font-size: 120%;}")),
             tags$style(HTML(".select {margin-top:-20px}"),
                        tags$textarea(id="message", rows=3, cols=40, "Default value")),
           #  tags$style(HTML(".navbar .nav > li { position:relative; z-index: 10000;}")),
             tags$style(HTML(".navbar {position:static}")),
             tags$style(HTML(".ckbox {margin-top: 0px; margin-bottom: -15px}")),
-            tags$style(HTML(".statbox {margin-top: -30px; margin-bottom: -15px}")),
-            tags$style(HTML(".ckbox2 .checkbox:first-child label{font-weight:bold;}")),
-            tags$style(HTML(".ckbox2 .checkbox:nth-child(2) label{font-weight:bold;}")),
-            tags$style(HTML(".ckbox2 .checkbox:nth-child(9) label{font-weight:bold;}")),
-            tags$style(HTML(".ckbox2 .checkbox:nth-child(3) label{margin-left:17px;}")), 
-            tags$style(HTML(".ckbox2 .checkbox:nth-child(4) label{margin-left:17px;}")),
-            tags$style(HTML(".ckbox2 .checkbox:nth-child(5) label{margin-left:17px;}")),
-            tags$style(HTML(".ckbox2 .checkbox:nth-child(6) label{margin-left:17px;}")),
+            tags$style(HTML(".statbox {margin-top: -30px; margin-bottom: -15px}")), tags$style(HTML(".ckbox2 .checkbox:first-child label{font-weight:bold;}")),
+          
+          tags$style(HTML(".ckboxCV  .checkbox:nth-child(2) label{color:grey;} .checkbox.input:nth-child(2) {border: 0px;    width: 0%;    height:0em;}#")),
+          tags$style(HTML(".ckboxCV  .checkbox:nth-child(6) label{color:grey;} .checkbox.input:nth-child(3) {border: 0px;    width: 0%;    height:0em;}#")),
+          tags$style(HTML(".ckboxCV  .checkbox:nth-child(3) label{color:grey;} .checkbox.input:nth-child(3) {border: 0px;    width: 0%;    height:0em;}#")),
+              tags$style(HTML(".ckboxCV  .checkbox:nth-child(3)  input[type=checkbox]  {border: 0px;    width: 0%;    height:0em;}#")),
+              tags$style(HTML(".ckboxCV  .checkbox:nth-child(2)  input[type=checkbox]  {border: 0px;    width: 0%;    height:0em;}#")),
+              tags$style(HTML(".ckboxCV  .checkbox:nth-child(6)  input[type=checkbox]  {border: 0px;    width: 0%;    height:0em;}#")),
+          tags$style(HTML(".ckboxCV2  .checkbox:nth-child(1) label{color:grey;} .checkbox.input:nth-child(1) {border: 0px;    width: 0%;    height:0em;}#")),
+          tags$style(HTML(".ckboxCV2  .checkbox:nth-child(7) label{color:grey;} .checkbox.input:nth-child(7) {border: 0px;    width: 0%;    height:0em;}#")),
+              tags$style(HTML(".ckboxCV2  .checkbox:nth-child(1)  input[type=checkbox]  {border: 0px;    width: 0%;    height:0em;}#")),
+              tags$style(HTML(".ckboxCV2  .checkbox:nth-child(7)  input[type=checkbox]  {border: 0px;    width: 0%;    height:0em;}#")),
+          tags$style(HTML(".ckboxCPFR  .checkbox:nth-child(1) label{color:grey;} .checkbox.input:nth-child(1) {border: 0px;    width: 0%;    height:0em;}#")),
+          tags$style(HTML(".ckboxCPFR  .checkbox:nth-child(5) label{color:grey;} .checkbox.input:nth-child(5) {border: 0px;    width: 0%;    height:0em;}#")),
+              tags$style(HTML(".ckboxCPFR  .checkbox:nth-child(1)  input[type=checkbox]  {border: 0px;    width: 0%;    height:0em;}#")),
+              tags$style(HTML(".ckboxCPFR  .checkbox:nth-child(5)  input[type=checkbox]  {border: 0px;    width: 0%;    height:0em;}#")),
+          tags$style(HTML(".ckboxCP  .checkbox:nth-child(2) label{color:grey;} .checkbox.input:nth-child(2) {border: 0px;    width: 0%;    height:0em;}#")),
+          tags$style(HTML(".ckboxFR  .checkbox:nth-child(4) label{color:grey;} .checkbox.input:nth-child(4) {border: 0px;    width: 0%;    height:0em;}#")),
+              tags$style(HTML(".ckboxCP  .checkbox:nth-child(2)  input[type=checkbox]  {border: 0px;    width: 0%;    height:0em;}#")),
+              tags$style(HTML(".ckboxFR  .checkbox:nth-child(4)  input[type=checkbox]  {border: 0px;    width: 0%;    height:0em;}#")),
+          tags$style(HTML(".ckboxSOC  .checkbox:nth-child(2) label{color:grey;} .checkbox.input:nth-child(2) {border: 0px;    width: 0%;    height:0em;}#")),
+              tags$style(HTML(".ckboxSOC  .checkbox:nth-child(2)  input[type=checkbox]  {border: 0px;    width: 0%;    height:0em;}#")),
+          
+            tags$style(HTML(".ckbox2 .checkbox:nth-child(2) label{font-weight:bold;}")),tags$style(HTML(".ckbox2 .checkbox:nth-child(4) label{margin-left:17px;}")),
+            tags$style(HTML(".ckbox2 .checkbox:nth-child(9) label{font-weight:bold;}")),tags$style(HTML(".ckbox2 .checkbox:nth-child(3) label{margin-left:17px;}")), 
+            tags$style(HTML(".ckbox2 .checkbox:nth-child(5) label{margin-left:17px;}")),tags$style(HTML(".ckbox2 .checkbox:nth-child(6) label{margin-left:17px;}")),
             tags$style(HTML(".ckbox2 .checkbox:nth-child(7) label{margin-left:17px;}")),tags$style(HTML(".ckbox2 .checkbox:nth-child(8) label{margin-left:17px;}")),
             tags$style(HTML(".ckbox2 .checkbox:nth-child(10) label{margin-left:17px;}")),tags$style(HTML(".ckbox2 .checkbox:nth-child(11) label{margin-left:17px;}")),
             tags$style(HTML(".ckbox2 .checkbox:nth-child(12) label{margin-left:17px;}")),tags$style(HTML(".ckbox2 .checkbox:nth-child(13) label{margin-left:17px;}")),
-           
+
+          tags$style(HTML(".ckbox3 .radio:first-child label{font-style:italic;}")),
+          tags$style(HTML(".ckbox3 .radio:nth-child(2) label{font-weight:bold;}")), tags$style(HTML(".ckbox3 .radio:nth-child(3) label{font-weight:bold;}")),
+          tags$style(HTML(".ckbox3 .radio:nth-child(10) label{font-weight:bold;}")),
+          tags$style(HTML(".ckbox3 .radio:nth-child(4) label{margin-left:17px;}")), tags$style(HTML(".ckbox3 .radio:nth-child(5) label{margin-left:17px;}")),
+          tags$style(HTML(".ckbox3 .radio:nth-child(6) label{margin-left:17px;}")), tags$style(HTML(".ckbox3 .radio:nth-child(7) label{margin-left:17px;}")),
+          tags$style(HTML(".ckbox3 .radio:nth-child(8) label{margin-left:17px;}")), tags$style(HTML(".ckbox3 .radio:nth-child(9) label{margin-left:17px;}")),
+          tags$style(HTML(".ckbox3 .radio:nth-child(11) label{margin-left:17px;}")),tags$style(HTML(".ckbox3 .radio:nth-child(12) label{margin-left:17px;}")),
+          tags$style(HTML(".ckbox3 .radio:nth-child(13) label{margin-left:17px;}")),tags$style(HTML(".ckbox3 .radio:nth-child(14) label{margin-left:17px;}")), 
+          
+           tags$style(HTML(".StatGrey  .radio:first-child  label{color:grey;} .radio.input:first-child  {border: 0px;    width: 0%;    height:0em;}#")),
+           tags$style(HTML(".StatGrey  .radio:nth-child(2) label{color:grey;} .radio.input:nth-child(2) {border: 0px;    width: 0%;    height:0em;}#")),
+                     tags$style(HTML(".StatGrey  .radio:first-child  input[type=radio]  {border: 0px;    width: 0%;    height:0em;}#")),
+                     tags$style(HTML(".StatGrey  .radio:nth-child(2) input[type=radio]  {border: 0px;    width: 0%;    height:0em;}#")),
+            tags$style(HTML(".StatGrey2 .radio:nth-child(3) label{color:grey;}")),
+                     tags$style(HTML(".StatGrey2  .radio:nth-child(3) input[type=radio]  {border: 0px;    width: 0%;    height:0em;}#")),
+            tags$style(HTML(".StatGrey3  .checkbox:nth-child(4) label{color:grey;} .checkbox.input:nth-child(4) {border: 0px;    width: 0%;    height:0em;}#")),
+            tags$style(HTML(".StatGrey3  .checkbox:nth-child(5) label{color:grey;} .checkbox.input:nth-child(5) {border: 0px;    width: 0%;    height:0em;}#")),
+            tags$style(HTML(".StatGrey3  .checkbox:nth-child(3) label{color:grey;} .checkbox.input:nth-child(3) {border: 0px;    width: 0%;    height:0em;}#")),
+                tags$style(HTML(".StatGrey3  .checkbox:nth-child(4) input[type=checkbox]  {border: 0px;   width: 0%;    height:0em;}#")),
+                tags$style(HTML(".StatGrey3  .checkbox:nth-child(3) input[type=checkbox]  {border: 0px;   width: 0%;    height:0em;}#")),
+                tags$style(HTML(".StatGrey3  .checkbox:nth-child(5) input[type=checkbox]  {border: 0px;   width: 0%;    height:0em;}#")),
+            tags$style(HTML(".StatGrey4  .radio:nth-child(5) label{color:grey;} .radio.input:nth-child(5) {border: 0px;    width: 0%;    height:0em;}#")),
+            tags$style(HTML(".StatGrey4  .radio:nth-child(6) label{color:grey;} .radio.input:nth-child(6) {border: 0px;    width: 0%;    height:0em;}#")),
+            tags$style(HTML(".StatGrey4  .radio:nth-child(4) label{color:grey;} .radio.input:nth-child(4) {border: 0px;    width: 0%;    height:0em;}#")),
+            tags$style(HTML(".StatGrey4  .radio:first-child label{font-style:italic;")),
+                tags$style(HTML(".StatGrey4  .radio:nth-child(4) input[type=radio] {border: 0px;    width: 0%;    height:0em;}#")),
+                tags$style(HTML(".StatGrey4  .radio:nth-child(5) input[type=radio] {border: 0px;    width: 0%;    height:0em;}#")),
+                tags$style(HTML(".StatGrey4  .radio:nth-child(6) input[type=radio] {border: 0px;    width: 0%;    height:0em;}#")),
+          
             #tags$style(HTML(".met_mod label{font-style:italic;margin-bottom:20px;margin-top:-90px;padding-top:0;}")),#{margin-top:-40px;margin-bottom:50px; height:12px;}
             tags$style(HTML(".met_mod  input[type=radio] {border: 0px;    width: 0%;    height:0em;}#")),
            
-           tags$style(HTML(".sectselect >li{position:relative; z-index:10000; background-color:black !important; display:inline; vertical-align:middle}")),
-            tags$style(HTML(".sectselect{font-size:28px; line-height:28px;}")),
+            tags$style(HTML(".sectselect >li{position:relative; z-index:10000; background-color:black !important; display:inline; vertical-align:middle}")),
+#            tags$style(HTML(".sectselect{font-size:28px; line-height:28px;}")),
 
             tags$style(HTML(".actbutton {margin-bottom:5px}")),
             tags$style(HTML(".rbutton {margin-top:15px}")),
@@ -61,6 +104,9 @@ fluidPage(title = "FISHEyE",
            tags$style(HTML('#ipo{width:20px; height:19px; margin:0px;border:none; padding:0px;border-radius:25px;background-color:transparent;font-size:12px; color:RoyalBlue}')),
            tags$style(HTML('#ivs{width:20px; height:19px; margin:0px;border:none; padding:0px;border-radius:25px;background-color:transparent;font-size:12px; color:RoyalBlue}')),
            tags$style(HTML('#iem{width:20px; height:19px; margin:0px;border:none; padding:0px;border-radius:25px;background-color:transparent;font-size:12px; color:RoyalBlue}')),
+           tags$style(HTML('#FRr{width:20px; height:19px; margin:0px;border:none; padding:0px;border-radius:25px;background-color:transparent;font-size:12px; color:RoyalBlue}')),
+           tags$style(HTML('#FRs{width:20px; height:19px; margin:0px;border:none; padding:0px;border-radius:25px;background-color:transparent;font-size:12px; color:RoyalBlue}')),
+           tags$style(HTML('#FRi{width:20px; height:19px; margin:0px;border:none; padding:0px;border-radius:25px;background-color:transparent;font-size:12px; color:RoyalBlue}')),
            tags$style(HTML('#icompare{width:20px; height:19px; margin:0px;border:none; padding:0px;border-radius:25px;background-color:transparent;font-size:12px; color:RoyalBlue}'))),
 #           tags$style(HTML('#iVesSum{width:20px; height:19px; margin:0px;border:none; padding:0px;border-radius:25px;background-color:transparent;font-size:12px; color:RoyalBlue}'))),
 # java script 
@@ -86,9 +132,10 @@ fluidPage(title = "FISHEyE",
                    tags$h2(style = "margin-left: 15px", 
                      HTML("<div>
 <p style='font-size:120%'><strong><a style='color:white; background-color:#1a5d99;  font-family:Cambria; border-radius:25px; padding:5px' href='https://dataexplorer.northwestscience.fisheries.noaa.gov/fisheye/'> FISHEyE</a>
-                             - Performance Metrics</strong></p> 
+                             - Performance Metrics </strong></p> 
                             
-                          </div>")), uiOutput("SectorSelect")  
+                          </div>")), htmlOutput("SectPrint")
+                  # ,uiOutput("SectorSelect")  
           ),# <p><i>West Coast Trawl Catch Share Program:</i></p>     
           navbarPage(id="page", collapsible=TRUE, inverse=F,
             title="",
@@ -127,8 +174,9 @@ fluidPage(title = "FISHEyE",
                                uiOutput("resetButton"),
                                uiOutput('Button'))),#end fluidRow
                      
-                    # fluidRow(
-                     #  column(6,
+                     fluidRow(
+                       column(12,uiOutput("SectorSelect"),
+                              style = "background:white; padding:0px;margin-bottom:0px; border: 3px solid #D3D3D3;border-radius:10px;")), 
                      #         uiOutput("resetButton"),
                      #         uiOutput('Button'))),
                        fluidRow(
@@ -156,7 +204,10 @@ fluidPage(title = "FISHEyE",
                               #  )),
                           #      uiOutput("VesSumSelect"),
                                  wellPanelSub(
-                                    conditionalPanel(condition="input.Sect_sel=='CV'",uiOutput("SelectText")),
+                                    conditionalPanel(condition="input.Sect_sel=='CV'||
+                                                     input.Sect_sel=='FR'&input.Ind_sel=='Economic'||
+                                                     input.Sect_sel=='FR'&input.Ind_sel=='Demographic'&input.demSelect!='Proportion of revenue from catch share species'",
+                                                     uiOutput("SelectText")),
                                     uiOutput("VariableSelect")
                                  
                               )
@@ -186,7 +237,7 @@ fluidPage(title = "FISHEyE",
                                                                           ||input.LayoutSelect!='Metrics'&&input.Ind_sel=='Demographic'&&input.demSelect=='Days at sea'", 
                                                  uiOutput("FishAkSelect")), style = "padding: 0px;margin-bottom:0px; border: 3px solid #D3D3D3;border-radius:10px;"),
                               wellPanelSub(
-                                  conditionalPanel(condition="input.AVE_MED2=='Average'||input.AVE_MED2=='Median'||input.AVE_MED=='A'||input.AVE_MED=='M'",
+                                  conditionalPanel(condition="input.Ind_sel!='Economic'&input.AVE_MED2!='Total'||input.Ind_sel=='Economic'&input.AVE_MED!='T'",
                                                    uiOutput("PlotSelect")), style = "padding: 0px;margin-bottom:0px; border: 3px solid #D3D3D3;border-radius:10px;"
                                     )
                                     ) , #end sub panel
@@ -194,13 +245,15 @@ fluidPage(title = "FISHEyE",
                                 
                                  uiOutput("YearSelect"),
                                  wellPanelSub(
-                                    conditionalPanel(condition="input.Sect_sel=='CV'&&input.Ind_sel=='Economic'&&input.CategorySelect!='Homeport'&&input.CategorySelect!='State'
-                                          ||input.Sect_sel=='CV'&&input.demSelect=='Gini coefficient'&&input.CategorySelect!='Homeport'&&input.CategorySelect!='State'
-                                          ||input.Sect_sel=='CV'&&input.demSelect=='Number of vessels'&&input.CategorySelect!='Homeport'&&input.CategorySelect!='State'
-                                          ||input.Sect_sel=='CV'&&input.demSelect=='Vessel length'&&input.CategorySelect!='Homeport'&&input.CategorySelect!='State'
-                                          ||input.Sect_sel=='CV'&&input.socSelect=='Seasonality'&&input.CategorySelect!='Homeport'&&input.CategorySelect!='State'
-                                          ||input.Sect_sel=='CV'&&input.socSelect=='Share of landings by state'&&input.CategorySelect!='Homeport'&&input.CategorySelect!='State'",
-                                    uiOutput('moreOptions')), style = "padding: 0px;margin-bottom:0px; border: 3px solid #D3D3D3;border-radius:10px;"#,
+                                    conditionalPanel(condition=
+                                         "input.Sect_sel=='CV'&&input.CategorySelect!='Homeport'&&input.CategorySelect!='State'&&input.Ind_sel=='Economic'&&input.ShortdescrSelect=='Revenue'||
+                                          input.Sect_sel=='CV'&&input.CategorySelect!='Homeport'&&input.CategorySelect!='State'&&input.Ind_sel=='Demographic'&&input.demSelect=='Gini coefficient'||
+                                          input.Sect_sel=='CV'&&input.CategorySelect!='Homeport'&&input.CategorySelect!='State'&&input.Ind_sel=='Demographic'&&input.demSelect=='Number of vessels'||
+                                          input.Sect_sel=='CV'&&input.CategorySelect!='Homeport'&&input.CategorySelect!='State'&&input.Ind_sel=='Demographic'&&input.demSelect=='Vessel length'||
+                                          input.Sect_sel=='CV'&&input.CategorySelect!='Homeport'&&input.CategorySelect!='State'&&input.Ind_sel=='Social and Regional'&&input.socSelect=='Seasonality'||
+                                          input.Sect_sel=='CV'&&input.CategorySelect!='Homeport'&&input.CategorySelect!='State'&&input.Ind_sel=='Social and Regional'&&input.socSelect=='Share of landings by state'",
+                                    uiOutput('moreOptions')),
+                                    style = "padding: 0px;margin-bottom:0px; border: 3px solid #D3D3D3;border-radius:10px;"#,
                                    #conditionalPanel(condition="",uiOutput('moreOptions'))#&&input.ShortdescrSelect=='Revenue'
                                                     )       
                                  )

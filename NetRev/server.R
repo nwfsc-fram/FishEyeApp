@@ -5,10 +5,9 @@ library(appFrame)
 library(shiny)
 library(ggplot2)
 library(reshape2)
-#library(gridExtra)
 library(grid)
 library(scales)
-#library(tidyr)
+library(dplyr)
 #library(mail) #for sending email
 
 

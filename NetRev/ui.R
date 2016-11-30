@@ -10,15 +10,23 @@ fluidPage(
 title = "FISHEyE",
           #stylize the appearance of different aspects of the website
 tags$head(tags$body(includeHTML("google-analytics.noaa.js"))),
-          tags$head(
+            tags$head(
             tags$style(HTML(".shiny-output-error-validation {color: red; font-size: 120%;}")), #validation error
            # modify spacing of labels for specified widgits
              tags$style(HTML(".select {margin-top:-20px}"),tags$textarea(id="message", rows=3, cols=40, "Default value")),
-            tags$style(HTML(".ckbox {margin-top: 0px; margin-bottom: -15px}
+            tags$style(HTML(".ckbox {margin-top: 0px; margin-bottom: -15px;padding-top:10px}
+                             .ckbox3 {margin-top: 0px; margin-bottom: -15px;padding-top:10px}
+                             .ckbox3 .checkbox input[type='checkbox'] { width: 0;}
+                             .ckbox3  .checkbox:nth-child(n) label{color:#5a5a5a;}
                               .statbox {margin-top: -30px; margin-bottom: -15px}
                               .actbutton {margin-bottom:5px;}
                               .rbutton {margin-top:15px}")),
+           
             
+           
+           tags$style(HTML(".sectselect >li{position:relative; z-index:10000; background-color:black !important;display:inline; vertical-align:middle;}")),
+       #    tags$style(HTML(".sectselect{font-size:28px; line-height:28px;}")),
+           
             # indenting and bolding fishery selections
             tags$style(HTML(".ckbox2 .checkbox:first-child label{font-weight:bold;}
                              .ckbox2 .checkbox:nth-child(2) label{font-weight:bold;}
@@ -44,7 +52,8 @@ tags$head(tags$body(includeHTML("google-analytics.noaa.js"))),
                              .rbutton .radio:nth-child(9) label{margin-left:17px;}
                              .rbutton .radio:nth-child(11) label{margin-left:17px;}
                              .rbutton .radio:nth-child(12) label{margin-left:17px;}
-                             .rbutton .radio:nth-child(13) label{margin-left:17px;}"
+                             .rbutton .radio:nth-child(13) label{margin-left:17px;}
+                             .rbutton2 .radio:first-child label{font-style:italic;}"
                              )),
             
             
@@ -55,7 +64,8 @@ tags$head(tags$body(includeHTML("google-analytics.noaa.js"))),
                              #istat{width:20px; height:19px; margin:0px;border:none; padding:0px;border-radius:25px;background-color:transparent;font-size:12px; color:RoyalBlue}
                              #ipo{width:20px; height:19px; margin:0px;border:none; padding:0px;border-radius:25px;background-color:transparent;font-size:12px; color:RoyalBlue}
                              #ivs{width:20px; height:19px; margin:0px;border:none; padding:0px;border-radius:25px;background-color:transparent;font-size:12px; color:RoyalBlue}
-                             #iem{width:20px; height:19px; margin:0px;border:none; padding:0px;border-radius:25px;background-color:transparent;font-size:12px; color:RoyalBlue}'))),
+                             #iem{width:20px; height:19px; margin:0px;border:none; padding:0px;border-radius:25px;background-color:transparent;font-size:12px; color:RoyalBlue}'))
+          ),#end tags head
           # stylize show data and show plots buttons
    
           tags$style(type='text/css', "#data2 { background-color:RoyalBlue; color:white; height:37px;position:absolute;bottom:170%;left:425%;}
@@ -78,13 +88,14 @@ tags$head(tags$body(includeHTML("google-analytics.noaa.js"))),
          #   source("www/shiny_framebuster/framebuster.R")$value,
           appFrameHeaderScrolling(),
           ## example R framebusting code
-          fluidRow(div(style = "padding-bottom: 5px;margin-bottom:0"),
+         fluidRow(div(style = "padding-bottom: 5px;margin-bottom:0"),
                    tags$h2(style = "margin-left: 15px", 
                            HTML("<div>
                                 
-                                <p style='font-size:120%'><strong><a style='color:white; background-color:#1a5d99;  font-family:Cambria; border-radius:25px; padding:5px' href='https://dataexplorer.northwestscience.fisheries.noaa.gov/fisheye/'> FISHEyE</a> - Net Revenue Explorer</strong></p> 
-                                <p><i>West Coast Trawl Catch Share Program: Catcher Vessels</i></p>
-                                </div>"))  
+                                <p style='font-size:120%'><strong><a style='color:white; background-color:#1a5d99;  font-family:Cambria; border-radius:25px; padding:5px' href='https://dataexplorer.northwestscience.fisheries.noaa.gov/fisheye/'> FISHEyE</a> 
+                                        - Net Revenue Explorer</strong></p> 
+                                </div>")), htmlOutput("SectPrint")#,
+#                   uiOutput("SectorSelect") 
                            ),
           navbarPage(id="page", collapsible=TRUE, inverse=F,
                      title="",#HTML("<div> <p style='color:#2fa4e7'>_</p></div>"), #inverse=T, 
@@ -110,24 +121,33 @@ tags$head(tags$body(includeHTML("google-analytics.noaa.js"))),
                                                          column(12, dataTableOutput("TableThirds"),plotOutput("PlotThirds", height="auto", width="auto"))))#,
                                   )
                                 ), #end main panel
-                                sidebarPanel( 
+                                sidebarPanel(
                                   wellPanel( #left side panel  
                                     tags$head(
-                                      tags$style(type="text/css", ".well{border: 0px transparent;}"
+                                      tags$style(type="text/css", ".well{border: 0px transparent; padding-right:0px; margin-right:0px}"
                                       )),
                                     
                                     fluidRow(
-                                      column(8, HTML("<p style = 'font-size: 160%'><strong>Control Panel </strong></p> <p style='font-size: 110%'><strong>Make selections in each of the panels below </strong></p>"))#,
+                                      column(12, HTML("<p style = 'font-size: 160%'><strong>Control Panel </strong></p> <p style='font-size: 110%'><strong>Make selections in each of the panels below </strong></p>"))#,
                                      ),#end fluidRow
                                     fluidRow(
+                                      column(12,uiOutput("resetButton"),
+                                             uiOutput('Button')
+                                             )),
+                                    fluidRow(
+                                      column(12,
+                                             uiOutput("SectorSelect"),
+                                             style = "background:white; padding:0px;padding-bottom:-15px;margin-bottom:0px;margin-left:1px; border: 3px solid #D3D3D3;border-radius:10px;width:97%;")
+                                      ), 
+                                    fluidRow(
                                       column(6,
-                                             uiOutput("resetButton"),
-                                             uiOutput('Button'),
-                                             wellPanelSub(
+                                               wellPanelSub(
+                                               conditionalPanel(condition="input.Sect_sel=='FR'",  
+                                                              uiOutput("ProductionSelect")),
                                                wellPanelHeading(
                                                  uiOutput("CategorySelect")
                                                ),
-                                               uiOutput("SelectText"),
+                                               conditionalPanel(condition="input.Sect_sel=='CV'|input.Sect_sel=='FR'",uiOutput("SelectText")),
                                                uiOutput("VariableSelect")
                                              ),
                                              #  conditionalPanel(condition = "input.CategorySelect != 'Fisheries'",
@@ -135,39 +155,43 @@ tags$head(tags$body(includeHTML("google-analytics.noaa.js"))),
                                              #      uiOutput("FisherySubsetSelect")
                                              #   )
                                              #   ),
-                                             wellPanelSub(
-                                               uiOutput("FishAkSelect"),
-                                               uiOutput("FishWhitingSelect")
-                                               )
+                                             conditionalPanel(condition="input.Sect_sel=='CV'",
+                                                              wellPanelSub(uiOutput("FishAkSelect"),uiOutput("FishWhitingSelect"))),
+                                             
+                                             conditionalPanel(condition="input.Sect_sel!='CV'",
+                                                              wellPanelSub(uiOutput("YearSelect2"))),
+                                                                                             #,
+                                             #  conditionalPanel(condition="input.Sect_sel!='CV'",uiOutput("DodgeSelect"),uiOutput("PlotSelect"))
+                                             #  ,
+                                             style = "padding-left:-15px;margin-left:-15px;margin-right:0px;padding-right:2px;"
                                              ),
                                       column(6,
-                                             wellPanelSub(
-                                               uiOutput("StatSelect")
+                                            wellPanelSub(
+                                               uiOutput("StatSelect"),
+                                             #conditionalPanel(condition ="input.tabs == 'Panel2'|| input.tabs== 'Panel1' & input.DodgeSelect == 'Economic measures side-by-side'",
+                                                               uiOutput("ShortdescrSelect")#)
                                              ),
-                                             wellPanelSub(
+                                            conditionalPanel(condition="input.Sect_sel=='CV'", wellPanelSub(
                                                uiOutput("YearSelect")
                                              ),
-                                             conditionalPanel(condition ="input.tabs == 'Panel2'|| input.tabs== 'Panel1' & input.DodgeSelect == 'Economic measures side-by-side'",
-                                                              wellPanelSub(
-                                                                uiOutput("ShortdescrSelect")))
-                                      ),
+                                             style = "padding-right:5px;margin-right:0px; padding-left:2px;,width:100%"
+                                      )),
                                       column(6,
                                              wellPanel(
-                                               uiOutput("DodgeSelect"),
-                                               uiOutput("PlotSelect"))
+                                            #   conditionalPanel(condition="input.Sect_sel=='CV'", uiOutput('DodgeSelect2'), uiOutput('PlotSelect2'))
+                                               uiOutput('DodgeSelect'), uiOutput('PlotSelect')
                                       ),
+                                      style = "padding-right:-20px;margin-right:-55px; padding-left:2px;,width:102%"),
                                       column(4,
                                              wellPanel(uiOutput("download_figure"),
-                                                       uiOutput("download_Table")#,
-                                              )
+                                                       uiOutput("download_Table"),
+                                                       style = "padding:0px;,width:102%"#,
+                                              ),style = "padding-left:5px;margin-top:-10px;padding-top:-20px;"
                                       )
                                     ) #end Fluid row
                                   )
                                   ,       style = "padding: 0px;border: 1px solid #000000;") # end left side column
-                                
-                                
-                                
-                              )),
+                              )), #End explore the data
                      navbarMenu("Instructions",
                                 #HTML("<div> <p style= 'color:black; margin-bottom:-65px; margin-top:-15px; padding:19px; border-left: 1px solid black;border-right: 1px solid black; width:250px'>About, Instructions, Definitions</p></div>"),
                                 tabPanel("About", 
@@ -211,7 +235,6 @@ tags$head(tags$body(includeHTML("google-analytics.noaa.js"))),
                      tabPanel(HTML('<a class="btn btn-warning", href="http://dataexplorer.northwestscience.fisheries.noaa.gov/fisheye/"
                                    style="height:37px;border-radius:25px;margin: -24px -50px; float:top;position:absolute;right:-100px;font-familiy: Arial, Helvetica, sans-serif;font-size: 12pt; padding-top:7px;
                                    padding-bottom:10px"> FISHEyE Homepage</a>' ),style='width:1000px')
-                     
-                     ), #end app level fluid row#, target="_blank"
+                            ), #end app level fluid row#, target="_blank"
           appFrameFooterScrolling()
                      ) # end fluid Page

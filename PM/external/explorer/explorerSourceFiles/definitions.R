@@ -11,8 +11,8 @@ tags$div(style = "margin: 15px 15px 30px; width: 60%",
                        ),  
            tags$div(style= "margin-top: 15px;",
                     
-                    h4("Compare groups of vessels or metrics"),
-                    tags$ul(p('Select whether to compare groups of vessels based on selected summary variables (see below) or by metrics. For the mothership and catcher processor sectors, the only summary variable available is At-sea Pacific whiting.')#,
+                    h4("Compare groups of vessels/processors or metrics"),
+                    tags$ul(p('Select whether to compare groups of vessels or processors based on selected summary variables (see below) or by metrics. For the mothership and catcher processor sectors, the only summary variable available is At-sea Pacific whiting.')#,
                              #p('When comparing metrics, selected metrics may not all be displayed. This is because the displayed metrics depend upon the statistic selected. For some metrics, it is not appropriate to calculate all statistics. 
                              #  For instance, the Gini coefficient and Herfindahl-Hirschman Index are indices. We cannot calculate an annual average or median value. 
                               # ')
@@ -36,15 +36,23 @@ tags$div(style = "margin: 15px 15px 30px; width: 60%",
                       p(tags$i('Non-catch Share fisheries:'), 
                         'Groundfish fixed gear with fixed gear endorsement;
                         Crab; Shrimp; Other fisheries (e.g., tuna, salmon, and halibut), Alaskan fisheries (not shown separately).'),
-                      
+                      tags$li(strong("Production activities:"),'For shorebased processors, information on the EDC form  is collected at the species level (e.g. fish production information), not the fishery level like the catcher vessels.'),
+                      p(tags$i('Pacific whiting:'),' Pacific whiting.'),
+                      p(tags$i('Non-whiting groundfish:'),' Arrowtooth flounder; Dover sole; English sole; Lingcod; Pacific sanddab; Petrale sole; Rex sole; Rockfish; Sablefish (black cod); Thornyheads; Sharks, skates, and rays.'),
+                      p(tags$i('Other species:'),' Coastal pelagics (including sardines and mackerel); Crab; Enchinoderms (including sea urchins and sea cucumbers);
+                       California halibut; Pacific halibut; Pacific herring; Salmon; Squid; Sturgeon; Tuna; Other shellfish; Other species.'),
                       tags$li(strong("Homeport:"), "The", tags$a(href="map.pdf", "homeport", target="_blank"), "reported by each vessel on the", tags$a(href="http://www.nwfsc.noaa.gov/research/divisions/fram/economic/economic_data_forms.cfm", "EDC survey form", target="_blank"), "aggregated to port groups.
                                Vessels that fished of the West coast but report their homeport to be in Alaska are included. These vessels are included in the Puget Sound port."), 
-                      tags$li(strong("State:"), "The state corresponding to each homeport. Vessels that fished of the West coast but report their homeport to be in Alaska are included. These vessels are included in Washington State."
+                      tags$li(strong("State of homeport:"), "The state corresponding to each homeport. Vessels that fished of the West coast but report their homeport to be in Alaska are included. These vessels are included in Washington State."
                               ),
+                      tags$li(strong("Region:"), "The region corresponding to each processors. For First Receivers and Shorebased Processors, two regions are recognized:", tags$em('Washington and Oregon'), 'and', tags$em("California.")
+                      ),
                       tags$li(strong("Vessel length class:"),"Three categories of vessel length representing the range of catcher vessel length: large vessels (> 80 ft), medium vessels (> 60 ft, <= 80 ft), and small vessels (< 60 ft)."),
-                      tags$li(strong("Processor size:"),"First receivers and shorebased processors are grouped into three size classes based on the average annual maximum number of workers in a month: large (> 200 workers), medium (100 - 200 workers), and small (< 100 workers).")
+                      tags$li(strong("Processor size:"),"First receivers and shorebased processors are grouped into three size classes based on the average number of workers: large (> 200 workers), medium (100 - 200 workers), and small (< 100 workers).
+                              Processor size was determined by examining the maximum weekly number of production workers employed by a processor (as reported on the EDC form) for each year. Then the
+                              weekly maximum was averaged across all EDC years to place processors in one size category for all years.")
                        ), tags$br(),             
-                    
+                     
                     h4('Indicators'),
                     tags$ul(
                       tags$li(strong('Demographic:'), 'Characteristics of the vessels in the fleet that may vary over time. Changes in the demographic metrics may indicate changes such as fleet consolidation, efficiency, productivity, specialization, or diversification.'),
@@ -63,8 +71,6 @@ tags$div(style = "margin: 15px 15px 30px; width: 60%",
                                     'Count of fisheries (defined above) that vessels participated in. Changes may indicate specialization or diversification.'),
                             tags$li(strong('Gini coefficient: '),
                                     'Measures the degree of catch share revenue concentration among vessels. A value of zero would represent all vessels earning the same revenue, and a value of one would represent one vessel earning all of the revenue. The value of the Gini coefficient can be affected by fleet consolidation and specialization.'),
-                             tags$li(strong('Herfindahl-Hirschman Index: '),
-                                    'The Herfindahl-Hirschman Index is a measure of market concentration. It is calculated as the sum of the squares of the market shares, defined here by the share of the catch share revenues earned by each vessel. Values range from 0 to 10,000. Lower values indicate low market concentration (and higher competition). A value of 10,000 would represent one vessel earning all of the revenue. The value of the Herfindahl-Hirschman Index can be affected by fleet consolidation and specialization.'),
                             tags$li(strong('Number of species processed: '),
                                     'Count of the number of species processed. Changes may indicate specialization or diversification.'),
                             tags$li(strong('Number of vessels or processors: '),

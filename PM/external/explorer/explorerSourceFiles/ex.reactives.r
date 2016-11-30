@@ -23,14 +23,14 @@ DatVars <- reactive({
   if(input$Sect_sel=="CV"){
     datVars <- with(dat, 
       list(
-        YEAR = 2004:2014,
+        YEAR = 2004:2015,
         SHORTDESCR = c("Revenue","Variable costs","Fixed costs","Variable Cost Net Revenue","Total Cost Net Revenue"),
-        CATEGORY = c("Fisheries","Homeport","State","Vessel length class"),
+        CATEGORY = c("Fisheries","Homeport","State of homeport"="State","Vessel length class"),
         FISHAK = unique(FISHAK),
         whitingv = c("All vessels","Non-whiting vessels","Whiting vessels"),
         STAT =  c("Average per vessel","Average per vessel/day","Average per vessel/metric-ton","Median per vessel","Median per vessel/day","Median per vessel/metric-ton","Fleet-wide total","Fleet-wide total/day","Fleet-wide total/metric-ton"),
-        METRIC =  c("Number of vessels or processors"="Number of vessels","Vessel length","Fishery participation","Proportion of revenue from Catch Share fishery"="Proportion of revenue from CS fishery",
-                  "Days at sea","Exponential Shannon Index","Gini coefficient","Herfindahl-Hirschman Index","Number of positions (captain and crew)"='Number of positions',"Crew wage per day","Revenue per crew day",
+        METRIC =  c("Number of vessels","Vessel length","Fishery participation","Proportion of revenue from Catch Share fishery"="Proportion of revenue from CS fishery",
+                  "Days at sea","Exponential Shannon Index","Gini coefficient","Number of positions (captain and crew)"='Number of positions',"Crew wage per day","Revenue per crew day",
                   "Seasonality","Share of landings by state")
   ))
   } else if(input$Sect_sel=="FR"){
@@ -38,24 +38,26 @@ DatVars <- reactive({
                     list(
                       YEAR = 2004:2014,
                       SHORTDESCR = c("Revenue","Variable costs","Fixed costs","Variable Cost Net Revenue","Total Cost Net Revenue"),
-                      CATEGORY = c("Fisheries","State","Processor size"),
-                      whitingv = c("All vessels","Non-whiting vessels","Whiting vessels"),
-                      STAT =  c("Average per vessel","Average per vessel/metric-ton","Median per vessel","Median per vessel/metric-ton","Fleet-wide total","Fleet-wide total/metric-ton"),
-                      METRIC =  c("Number of vessels or processors"="Number of processors","Number of species processed","Proportion of revenue from Catch Share fishery"="Proportion of revenue from CS fishery",
-                                  "Exponential Shannon Index","Gini coefficient","Herfindahl-Hirschman Index","Number of workers"='Number of workers',"Hourly compensation", "Share of landings by state")
+                      CATEGORY = c("Production activities"="Fisheries","Region","Processor size"),
+                      whitingv = c("All processors", "Whiting processors","Non-whiting processors"),
+                      STAT =  c("Average per processor","Average per processor/metric-ton of groundfish products"="Average per processor/metric-ton",
+                                "Median per processor", "Median per processor/metric-ton of groundfish products"="Median per processor/metric-ton",
+                                "Industry-wide total","Industry-wide total/metric-ton of groundfish products"="Industry-wide total/metric-ton"),
+                      METRIC =  c("Number of processors","Number of species processed","Proportion of production value from West Coast groundfish"="Proportion of revenue from catch share species",
+                                  "Exponential Shannon Index","Gini coefficient",'Number of workers',"Hourly compensation")#, "Share of landings by state")
                     ))
   }else if(input$Sect_sel=="M"|input$Sect_sel=="CP"){
       datVars <- with(dat, 
            list(
-                YEAR = 2004:2014,
+                YEAR = 2004:2015,
                 SHORTDESCR = c("Revenue","Variable costs","Fixed costs","Variable Cost Net Revenue","Total Cost Net Revenue"),
                 CATEGORY = "Fisheries",
                 FISHAK = unique(FISHAK),
                 whitingv = "Whiting vessels",
                 STAT =  c("Average per vessel","Average per vessel/day","Average per vessel/metric-ton","Median per vessel","Median per vessel/day","Median per vessel/metric-ton","Fleet-wide total","Fleet-wide total/day","Fleet-wide total/metric-ton"),
-                METRIC =  c("Number of vessels or processors"="Number of vessels","Vessel length",
+                METRIC =  c("Number of vessels","Vessel length",
                             "Proportion of revenue from Catch Share fishery"="Proportion of revenue from CS fishery","Days at sea","Gini coefficient",
-                            "Herfindahl-Hirschman Index", "Number of positions (captain and crew)"='Number of positions',
+                             "Number of positions (captain and crew)"='Number of positions',
                             "Crew wage per day", "Revenue per crew day", "Seasonality")
                     ))
   }
@@ -68,8 +70,7 @@ DatVars <- reactive({
 # build dcast formula using if controls and using the quoted method in dcast
 DatSubTable <- reactive({
     dat <- DatMain()      
-#    dat <- dat[-c(which(colnames(dat)=="AK_FLAG"),which(colnames(dat)=="con_flag"),which(colnames(dat)=="repFISHAK"),which(colnames(dat)=="repwhitingv"))]
-    
+
     #subsetting
     if(input$Sect_sel=="CV"|input$Sect_sel=="FR"){    
     datSub <- subset(dat, YEAR %in% input$YearSelect &  
@@ -90,7 +91,7 @@ DatSubTable <- reactive({
         if(input$Sect_sel=="FR"){
           datSub <- subset(datSub,  METRIC %in% input$demSelect & SUMSTAT == input$AVE_MED2) 
         }
-        else if(input$demSelect=="Exponential Shannon Index"|input$Sect_sel=="CV" &input$demSelect=="Proportion of revenue from CS fishery"|input$Sect_sel=="CV" &input$demSelect=="Fishery participation"|input$demSelect=="Days at sea"){
+        else if(input$demSelect[1]=="Exponential Shannon Index"|input$Sect_sel=="CV" &input$demSelect[1]=="Proportion of revenue from CS fishery"|input$Sect_sel=="CV" &input$demSelect[1]=="Fishery participation"|input$demSelect[1]=="Days at sea"){
           datSub <- subset(datSub,  METRIC%in%input$demSelect & SUMSTAT==input$AVE_MED2 &  FISHAK==input$FishAkSelect)
         } else {
           datSub <- subset(datSub,  METRIC %in% input$demSelect & SUMSTAT == input$AVE_MED2)
@@ -108,13 +109,8 @@ DatSubTable <- reactive({
       if(input$LayoutSelect!="Metrics"){
         #        if(input$MetricSelect!="Number of vessels"&input$MetricSelect!="Seasonality"&input$MetricSelect!="Share of landings by state"&input$MetricSelect!="Gini coefficient"){
         if(input$socSelect!="Share of landings by state"){
-          #           if(input$LayoutSelect!="Metrics"){}
-          if(input$Sect_sel=="FR"){
-            datSub <- subset(datSub,  METRIC %in% input$socSelect & SUMSTAT == input$AVE_MED2 & !is.na(input$socSelect)) 
-          }
-           else {
-            datSub <- subset(datSub,  METRIC %in% input$socSelect & SUMSTAT == input$AVE_MED2 & !is.na(input$socSelect))
-            }
+           datSub <- subset(datSub,  METRIC %in% input$socSelect & SUMSTAT == input$AVE_MED2 & !is.na(input$socSelect))
+            
         }   else {
           datSub <- subset(datSub,  METRIC %in% input$socSelect & !is.na(input$socSelect))
         }} else {
@@ -127,9 +123,8 @@ DatSubTable <- reactive({
           }
         }
     }
-    print(datSub[1:2,])
- 
-#    if(input$Ind_sel!="Economic")  {
+    print(datSub)[1:3,]
+ #    if(input$Ind_sel!="Economic")  {
 #      if(input$MetricSelect!="Number of vessels"&input$MetricSelect!="date"&input$MetricSelect!="landings"&input$MetricSelect!="GINI"){
 #        datSub <- subset(datSub,  METRIC %in% input$MetricSelect & !is.na(input$MetricSelect) & SUMSTAT == input$AVE_MED2)}
 #      else {
@@ -146,42 +141,97 @@ DatSubTable <- reactive({
 #      }}
     
  
-    
+    print(datSub[1,])
    
      datSub$VALUE <- as.numeric(as.character(datSub$VALUE))
      datSub$VARIANCE <- as.numeric(as.character(datSub$VARIANCE))
      datSub$N <- as.numeric(datSub$N)
 #     datSub$PCHANGE <- as.numeric(datSub$PCHANGE)
      
-      if(input$Sect_sel=="CV" & input$CategorySelect != "Fisheries") {
+      if(input$Sect_sel=="CV" & input$CategorySelect != "Fisheries"|
+         input$Sect_sel=="FR" & input$CategorySelect != "Fisheries"&input$demSelect!="Proportion of revenue from catch share species") {
         datSub <- subset(datSub, CS == input$inSelect)
       }
-     datSub$VARIANCE <- ifelse(datSub$N<3, NA, datSub$VARIANCE)
-     datSub$VALUE <- ifelse(datSub$N<3, NA, datSub$VALUE)
+     if(input$Sect_sel=="FR"){
+       datSub[datSub$METRIC!="Number of processors",'VALUE'] <- ifelse(datSub$N[datSub$METRIC!="Number of processors"]<3, NA, datSub$VALUE)
+       datSub[datSub$METRIC!="Number of processors",'VARIANCE'] <- ifelse(datSub$N[datSub$METRIC!="Number of processors"]<3, NA, datSub$VARIANCE)
+     } else {
+     datSub[datSub$METRIC!="Number of vessels",'VALUE'] <- ifelse(datSub$N[datSub$METRIC!="Number of vessels"]<3, NA, datSub$VALUE)
+     datSub[datSub$METRIC!="Number of vessels",'VARIANCE'] <- ifelse(datSub$N[datSub$METRIC!="Number of vessels"]<3, NA, datSub$VARIANCE)
+     }
+     
 #    datSub$N <- ifelse(datSub$N<3, NA, datSub$N)
 #    datSub$N <- ifelse(datSub$N>2&is.na(datSub$VALUE)==T, NA, datSub$N)
     datSub$VARIANCE <- ifelse(datSub$N>2&is.na(datSub$VALUE)==T, NA, datSub$VARIANCE)
     #datSub$FISHAK <- ifelse(datSub$FISHAK=="TRUE", "Vessels included", "Vessels not included")
    # datSub$whitingv <- ifelse(datSub$whitingv=="TRUE", "Vessels included", "Vessels not included") 
-
+      
            validate(
          need(sum(!is.na(as.numeric(datSub$VALUE)))!=0, 
               paste('Sorry, the selected statistic is not available for the selected metric. Try selecting a different statistic.
                   ')))
        
   
+           validate(
+             need(datSub$METRIC!="Vessel length",
+                  need(datSub$SUMSTAT!="Total", 
+                       paste('Sorry, this plot could not be generated as total vessel length is not calculated. Try selecting the average or median statistic.
+                             '))))
+           
+           validate(
+             need(datSub$METRIC!="Exponential Shannon Index",
+                  need(datSub$SUMSTAT!="Total", 
+                       paste('Sorry, this plot could not be generated as the total exponential shannon index is not calculated. Try selecting the average or median statistic.
+                             '))))
+           
+           validate(
+             need(datSub$METRIC!="Fishery participation",
+                  need(datSub$SUMSTAT!="Total", 
+                       paste('Sorry, this plot could not be generated as the total fishery participation is not calculated. Try selecting the average or median statistic.
+                  '))))
+           
+           validate(
+             need(datSub$METRIC!="Number of vessels",
+                  need(datSub$SUMSTAT!="Average"&datSub$SUMSTAT!="Median", 
+                       paste('Sorry, this plot could not be generated as the average and median number of vessels are not calculated. Try selecting the total statistic.
+                  '))))
+           
+           validate(
+             need(datSub$METRIC!="Number of processors",
+                  need(datSub$SUMSTAT!="Average"&datSub$SUMSTAT!="Median", 
+                       paste('Sorry, this plot could not be generated as the average and median number of processors are not calculated. Try selecting the total statistic.
+                  '))))
+           
+           validate(
+             need(datSub$METRIC!="Gini coefficient",
+                  need(datSub$SUMSTAT!="Average"&datSub$SUMSTAT!="Median", 
+                       paste('Sorry, this plot could not be generated as the average and median Gini coefficient are not calculated. Try selecting the total statistic.
+                  '))))
+           validate(
+             need(datSub$METRIC!="Hourly compensation",
+                  need(datSub$SUMSTAT!="Total", 
+                       paste('Sorry, this plot could not be generated as the total hourly compensation is not calculated. Try selecting the average or median statistic.
+                  '))))
+           
+           validate(
+             need(datSub$METRIC!="Crew wage per day",
+                  need(datSub$SUMSTAT!="Total", 
+                       paste('Sorry, this plot could not be generated as the crew wage per day is not calculated. Try selecting the average or median statistic.
+                  '))))
+           
+           
     if(input$Ind_sel=="Social and Regional"){
       if(input$socSelect[1]=="Share of landings by state"){
       datSub$VALUE <- datSub$VALUE*100
       datSub$VARIANCE <- datSub$VARIANCE*100
     }
-      } else if(input$Ind_sel=="Demographic"){
-           if(input$demSelect=="Number of vessels"){
-             datSub$VALUE <- ifelse(datSub$N<3, NA, datSub$VALUE)
-             datSub$N <- ifelse(datSub$N<3, NA, datSub$N)
-           }
-      }      
-   print(datSub[1,])            
+      } #else if(input$Ind_sel=="Demographic"){
+#           if(input$demSelect=="Number of vessels"){
+#             datSub$VALUE <- ifelse(datSub$N<3, NA, datSub$VALUE)
+#             datSub$N <- ifelse(datSub$N<3, NA, datSub$N)
+#           }
+#      }      
+#   print(datSub[1,])            
 if(input$LayoutSelect!="Metrics"){   
   if(input$Ind_sel=="Economic") {
       datSub <- datSub[,c(which(colnames(datSub)=="YEAR"),which(colnames(datSub)=="VARIABLE"),which(colnames(datSub)=="CATEGORY"),which(colnames(datSub)=="CS"),which(colnames(datSub)=="STAT"),
@@ -198,7 +248,7 @@ if(input$LayoutSelect!="Metrics"){
                                    which(colnames(datSub)=="METRIC"),which(colnames(datSub)=="whitingv"),which(colnames(datSub)=="N"),which(colnames(datSub)=="VALUE"),which(colnames(datSub)=="VARIANCE"))]
              }
              }
-          else if(input$demSelect=="Number of vessels"){
+          else if(input$demSelect=="Number of vessels"|input$demSelect=="Number of processors"){
              datSub <- datSub[,c(which(colnames(datSub)=="YEAR"),which(colnames(datSub)=="VARIABLE"),which(colnames(datSub)=="CATEGORY"),which(colnames(datSub)=="CS"),which(colnames(datSub)=="SUMSTAT"),
                             which(colnames(datSub)=="METRIC"),which(colnames(datSub)=="whitingv"),which(colnames(datSub)=="N"))]
             }else {
@@ -224,12 +274,31 @@ if(input$LayoutSelect!="Metrics"){
       datSub <- datSub[,c(which(colnames(datSub)=="YEAR"),which(colnames(datSub)=="VARIABLE"),which(colnames(datSub)=="CATEGORY"),which(colnames(datSub)=="CS"),which(colnames(datSub)=="SUMSTAT"),
                       which(colnames(datSub)=="METRIC"),which(colnames(datSub)=="whitingv"),which(colnames(datSub)=="N"),which(colnames(datSub)=="VALUE"),which(colnames(datSub)=="VARIANCE"))]
   }}
-
- 
-       validate(
+     if(input$Ind_sel!="Economic"){
+             if(input$LayoutSelect=="Metrics"){
+                  if(input$AVE_MED2=="Average"|input$AVE_MED2=="Median"){
+                      if(table(table(datSub$METRIC)>1)[2]>1){
+                      datSub <- subset(datSub,  !METRIC %in% c("Number of vessels","Gini coefficient","Number of processors"))
+                  }}
+                  else if(input$AVE_MED2=="Total"){
+                      if(table(table(datSub$METRIC)>1)[2]>1){
+                      datSub <- subset(datSub,  !METRIC %in% c("Vessel length","Exponential Shannon Index","Fishery participation","Hourly compensation",'Crew wage per day'))
+                  }}
+               else {
+                  datSub
+               }
+      }} 
+  
+          
+  
+        validate(
            need(dim(datSub)[1]>0, 
-               paste('Sorry, this output could not be generated as no vessels matched your selections. Try selecting a different variable.
-                  ')))
+                if(input$Sect_sel!="FR"){
+               paste('Sorry, this output could not be generated as no vessels matched your selections. Try selecting a different variable.')
+                } else {
+                  paste('Sorry, this output could not be generated as no processors matched your selections. Try selecting a different variable.')
+                }
+               ))
     return(datSub)
     
 })
@@ -256,7 +325,7 @@ DatSub <- reactive({
              if(input$Sect_sel=='FR'){
               datSub <- subset(datSub,  METRIC %in% input$demSelect & SUMSTAT == input$AVE_MED2)
             }
-            else if(input$demSelect=="Exponential Shannon Index"|input$Sect_sel=="CV" &input$demSelect=="Proportion of revenue from CS fishery"|input$Sect_sel=="CV" &input$demSelect=="Fishery participation"|input$demSelect=="Days at sea"){
+            else if(input$demSelect[1]=="Exponential Shannon Index"|input$Sect_sel=="CV" &input$demSelect[1]=="Proportion of revenue from CS fishery"|input$Sect_sel=="CV" &input$demSelect[1]=="Fishery participation"|input$demSelect[1]=="Days at sea"){
               datSub <- subset(datSub,  METRIC %in% input$demSelect & SUMSTAT==input$AVE_MED2& FISHAK==input$FishAkSelect)
             } else {
               datSub <- subset(datSub,  METRIC %in% input$demSelect & SUMSTAT == input$AVE_MED2 )}
@@ -294,12 +363,66 @@ DatSub <- reactive({
       } #End Social and Regional
       
      
-      validate(
+          
+        validate(
         need(dim(datSub)[1]>0, 
-             paste('Sorry, this plot could not be generated as no vessels matched your selections. Try selecting a different variable.
-                  ')))
+             if(input$Sect_sel!="FR"){
+               paste('Sorry, this plot could not be generated as no vessels matched your selections. Try selecting a different variable.')
+             } else {
+               paste('Sorry, this plot could not be generated as no processors matched your selections. Try selecting a different variable.')
+             }
+        ))
       
-      if(input$Sect_sel=="CV" &input$CategorySelect != "Fisheries") {
+      validate(
+        need(datSub$METRIC!="Vessel length",
+             need(datSub$SUMSTAT!="Total", 
+             paste('Sorry, this plot could not be generated as total vessel length is not calculated. Try selecting the average or median statistic.
+                  '))))
+ 
+      validate(
+        need(datSub$METRIC!="Exponential Shannon Index",
+             need(datSub$SUMSTAT!="Total", 
+                  paste('Sorry, this plot could not be generated as the total exponential shannon index is not calculated. Try selecting the average or median statistic.
+                  '))))
+ 
+      validate(
+        need(datSub$METRIC!="Fishery participation",
+             need(datSub$SUMSTAT!="Total", 
+                  paste('Sorry, this plot could not be generated as the total fishery participation is not calculated. Try selecting the average or median statistic.
+                  '))))
+      
+      validate(
+        need(datSub$METRIC!="Number of vessels",
+             need(datSub$SUMSTAT!="Average"&datSub$SUMSTAT!="Median", 
+                  paste('Sorry, this plot could not be generated as the average and median number of vessels are not calculated. Try selecting the total statistic.
+                  '))))
+
+      validate(
+        need(datSub$METRIC!="Number of processors",
+             need(datSub$SUMSTAT!="Average"&datSub$SUMSTAT!="Median", 
+                  paste('Sorry, this plot could not be generated as the average and median number of processors are not calculated. Try selecting the total statistic.
+                  '))))
+      
+      validate(
+        need(datSub$METRIC!="Gini coefficient",
+                     need(datSub$SUMSTAT!="Average"&datSub$SUMSTAT!="Median", 
+                  paste('Sorry, this plot could not be generated as the average and median Gini coefficient are not calculated. Try selecting the total statistic.
+                  '))))
+      validate(
+        need(datSub$METRIC!="Hourly compensation",
+             need(datSub$SUMSTAT!="Total", 
+                  paste('Sorry, this plot could not be generated as the total hourly compensation is not calculated. Try selecting the average or median statistic.
+                  '))))
+
+      validate(
+        need(datSub$METRIC!="Crew wage per day",
+             need(datSub$SUMSTAT!="Total", 
+                  paste('Sorry, this plot could not be generated as the crew wage per day is not calculated. Try selecting the average or median statistic.
+                  '))))
+      
+      
+      if(input$Sect_sel=="CV" &input$CategorySelect != "Fisheries"|
+         input$Sect_sel=="FR" & input$CategorySelect != "Fisheries"&input$demSelect!="Proportion of revenue from catch share species") {
         datSub <- subset(datSub, CS == input$inSelect)
       }
 
@@ -310,12 +433,17 @@ DatSub <- reactive({
     
        validate( 
         need(max(datSub$N, na.rm=T)>2, 
+             if(input$Sect_sel!='FR'){
              paste('Sorry, this plot could not be generated as data has been suppressed to protect confidentiality. 
-                  Try selecting "All fisheries" in the "Show data summed across these fisheries" button or a different variable.
-                   ')))
-              validate(
-                need(sum(!is.na(as.numeric(datSub$VALUE)))!=0, 
-                     paste('Sorry, the selected statistic is not available for the selected metric. Try selecting a different statistic.
+                  Try selecting "All fisheries" in the "Show data summed across these fisheries" button or a different variable.')
+             } else {
+               paste('Sorry, this plot could not be generated as data has been suppressed to protect confidentiality. 
+                  Try selecting "All processors" in the "Show data summed across:" checkbox option or a different variable.')    
+               }
+             ))
+       validate(
+           need(sum(!is.na(as.numeric(datSub$VALUE)))!=0, 
+                   paste('Sorry, the selected statistic is not available for the selected metric. Try selecting a different statistic.
                   ')))
               
       
@@ -352,10 +480,10 @@ DatSub <- reactive({
                                                               "DTS trawl with trawl endorsement","Non-whiting midwater trawl","Non-whiting, non-DTS trawl with trawl endorsement",  "Groundfish fixed gear with trawl endorsement",
                                                               "All non-Catch Share fisheries combined"="All non-Catch Share fisheries", "Groundfish fixed gear with fixed gear endorsement","Crab","Shrimp","Other fisheries"))
         }} else if(input$Sect_sel=="FR"){
-                if(input$CategorySelect == "State"){
-                datSub$VARIABLE <- factor(datSub$VARIABLE, levels = c("Washington",'Oregon','California','Multi-state'))
+                if(input$CategorySelect == "Region"){
+                datSub$VARIABLE <- factor(datSub$VARIABLE, levels = c('Washington and Oregon','California'))
                 } else if(input$CategorySelect == "Fisheries"){
-                datSub$VARIABLE <- factor(datSub$VARIABLE, levels = c("All fisheries","Pacific whiting","Non-whiting groundfish","Other fisheries"))
+                datSub$VARIABLE <- factor(datSub$VARIABLE, levels = c("All production","Groundfish production","Pacific whiting production","Non-whiting groundfish production","Other species production"))
                 } else if(input$CategorySelect == "Processor size") {
                   datSub$VARIABLE <- factor(datSub$VARIABLE, levels =c("Small","Medium","Large"))
                 }
@@ -375,8 +503,9 @@ DatSub <- reactive({
         datSub$star <- ""
       }}} else { datSub$star <- ""}
          datSub$VARIANCE <- ifelse(datSub$N<3, NA, datSub$VARIANCE)
+         if(datSub$METRIC!="Number of processors"){
          datSub$VALUE <- ifelse(datSub$N<3, NA, datSub$VALUE)
-         
+         }
 
    if(input$LayoutSelect!="Metrics"){
         if(input$Sect_sel=="CV"){
@@ -411,11 +540,11 @@ DatSub <- reactive({
         }# End CV
         else if(input$Sect_sel=='FR'){
             if(input$CategorySelect=="Fisheries"){
-              datSub$sort <- ifelse(datSub$VARIABLE=="All fisheries", ".All fisheries", as.character(datSub$VARIABLE))
-              datSub$sort <- ifelse(datSub$VARIABLE=="Non-whiting groundfish", ".Non-whiting groundfish", as.character(datSub$sort))
-            } else if(input$CategorySelect == "State"){
-              datSub$sort <- ifelse(datSub$VARIABLE=="Washington", "..Washington", as.character(datSub$VARIABLE))
-              datSub$sort <- ifelse(datSub$VARIABLE=="Oregon", ".Oregon", as.character(datSub$sort))
+              datSub$sort <- ifelse(datSub$VARIABLE=="All production", "..All production", as.character(datSub$VARIABLE))
+              datSub$sort <- ifelse(datSub$VARIABLE=="Non-whiting groundfish production", ".Non-whiting groundfish production", as.character(datSub$sort))
+              datSub$sort <- ifelse(datSub$VARIABLE=="Pacific whiting production", ".Pacific whiting production", as.character(datSub$sort))
+            } else if(input$CategorySelect == "Region"){
+              datSub$sort <- ifelse(datSub$VARIABLE=="Washington and Oregon", ".Washington and Oregon", as.character(datSub$VARIABLE))
             } else {
               datSub$sort <- as.character(datSub$VARIABLE)
             }
@@ -438,8 +567,11 @@ DatSub <- reactive({
        datSub$sort <- as.character(datSub$METRIC)
      }}
         
-      datSub$whitingv <- factor(datSub$whitingv, levels=c("Whiting vessels","Non-whiting vessels","All vessels"))
-      
+      datSub$whitingv <- if(input$Sect_sel=='FR'){
+        factor(datSub$whitingv, levels=c("Whiting processors","Non-whiting processors","All processors"))
+      } else {
+        factor(datSub$whitingv, levels=c("Whiting vessels","Non-whiting vessels","All vessels"))
+      }
 #      if(input$Ind_sel!="Economic"&input$MetricSelect=="Number of vessels"){
 #        if(input$Ind_sel=="Demographic"&input$demSelect=="Number of vessels"){
 #          datSub$star <- ifelse(datSub$N<3, "*", datSub$star)
@@ -450,11 +582,28 @@ DatSub <- reactive({
       datSub$metric_flag <- max(datSub$metric_flag, na.rm=T)
       datSub$conf <- ifelse(datSub$CS=="All fisheries", 0, datSub$conf)
  
-      if(input$Ind_sel=="Demographic"&input$demSelect=="Number of vessels"){#    if(datSub$METRIC=="Number of vessels"){
-        datSub$VALUE <- ifelse(datSub$N<3, NA, datSub$VALUE)
-        datSub$N <- ifelse(datSub$N<3, NA, datSub$N)
-      }
-   print(datSub)    
+#      if(input$Ind_sel=="Demographic"&input$demSelect=="Number of vessels"){#    if(datSub$METRIC=="Number of vessels"){
+#        datSub$VALUE <- ifelse(datSub$N<3, NA, datSub$VALUE)
+#        datSub$N <- ifelse(datSub$N<3, NA, datSub$N)
+#      }
+      
+      if(input$LayoutSelect=="Metrics"){
+         if(input$AVE_MED2!="Total"){
+           if(table(table(datSub$METRIC)>1)[2]>1){
+          datSub <- subset(datSub,  !METRIC %in% c("Number of vessels","Gini coefficient","Number of processors"))
+         }}}else {
+          datSub
+        }
+
+      if(input$LayoutSelect=="Metrics"){
+        if(input$AVE_MED2=="Total"){
+          if(table(table(datSub$METRIC)>1)[2]>1){
+            datSub <- subset(datSub,  !METRIC %in% c("Vessel length","Exponential Shannon Index","Fishery participation","Hourly compensation",'Crew wage per day'))
+          }}}else {
+            datSub
+          }
+      
+#   print(datSub)    
       return(datSub)
           
   #   } else return()

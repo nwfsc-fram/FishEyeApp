@@ -10,20 +10,31 @@ doPlotDownload <- function(dat, x, y, type){
     colourThirds <- c('Top third'="#253494",'Middle third'="#41b6c4",'Lower third'="#a1dab4")
     colourList <- c('Revenue'="#256D36",'Variable costs'="#fed25d",'Fixed costs'="#fca836",'Variable Cost Net Revenue'="#4B958D", 'Total Cost Net Revenue'="#4575B4")
     
-    
-    plot.title <- function(){
-      if(type == "summary"){
-        if(input$DodgeSelect == "Economic measures side-by-side"){
-          return("Summary Economic Measures for West Coast Catcher Vessels")
-        } else if(input$DodgeSelect == "Composition of Total Cost Net Revenue"){
-          return("Composition of Total Cost Net Revenue for West Coast Catcher Vessels")
-        } else if(input$DodgeSelect == "Composition of Variable Cost Net Revenue"){
-          return("Composition of Variable Cost Net Revenue for West Coast Catcher Vessels")
-        }#}
-      } else {
-        return("Variability Analysis of West Coast Catcher Vessels")
+    sect <- function(){
+      if(input$Sect_sel == "CV"){
+        return("Catcher Vessels")
+      } else if(input$Sect_sel == "M"){
+        return("Motherships")
+      } else if(input$Sect_sel == "CP"){
+        return("Catcher Processors")
+      } else if (input$Sect_sel == "FR"){
+        return("First Receivers")
       }}
     
+    # Plot title construction
+    plot.title <- function(){
+      if(type == "summary"){
+      if(input$DodgeSelect == "Economic measures side-by-side"){
+        return(paste("Summary Economic Measures for West Coast ", sect()))
+      } else if(input$DodgeSelect == "Composition of Total Cost Net Revenue"){
+        return(paste("Composition of Total Cost Net Revenue for West Coast ", sect()))
+      } else if(input$DodgeSelect == "Composition of Variable Cost Net Revenue"){
+        return(paste("Composition of Variable Cost Net Revenue for West Coast ", sect()))
+      }#}
+    } else {
+      return(paste("Variability Analysis of West Coast Catcher Vessels", sect()))
+    }}
+  
     gv <- function(){
       if(type == "summary"){
         if(input$CategorySelect=="Fisheries"){

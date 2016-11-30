@@ -9,33 +9,60 @@ doPlot <- function(dat, x, y, type){
     colourList <- c('Revenue'="#256D36",'Variable costs'="#fed25d",'Fixed costs'="#fca836",'Variable Cost Net Revenue'="#4B958D", 'Total Cost Net Revenue'="#4575B4")
     colourThirds <- c('Top third'="#253494",'Middle third'="#41b6c4",'Lower third'="#a1dab4")
 
+    sect <- function(){
+      if(input$Sect_sel == "CV"){
+        return("Catcher Vessels")
+      } else if(input$Sect_sel == "M"){
+        return("Motherships")
+      } else if(input$Sect_sel == "CP"){
+        return("Catcher Processors")
+      } else if (input$Sect_sel == "FR"){
+        return("First Receivers")
+      }}
+    
    # Plot title construction
      plot.title <- function(){
       if(type == "summary"){
         if(input$DodgeSelect == "Economic measures side-by-side"){
-          return("Summary Economic Measures for West Coast Catcher Vessels")
+          return(paste("Summary Economic Measures for West Coast ", sect()))
         } else if(input$DodgeSelect == "Composition of Total Cost Net Revenue"){
-          return("Composition of Total Cost Net Revenue for West Coast Catcher Vessels")
+          return(paste("Composition of Total Cost Net Revenue for West Coast ", sect()))
         } else if(input$DodgeSelect == "Composition of Variable Cost Net Revenue"){
-          return("Composition of Variable Cost Net Revenue for West Coast Catcher Vessels")
+          return(paste("Composition of Variable Cost Net Revenue for West Coast ", sect()))
         }#}
       } else {
-        return("Variability Analysis of West Coast Catcher Vessels")
+        return(paste("Variability Analysis of West Coast Catcher Vessels", sect()))
       }}
     
     gv <- function(){
       if(type == "summary"){
-        if(input$CategorySelect=="Fisheries"){
-          sprintf(paste("Group variable:", input$CategorySelect, "     Statistic: ", input$StatSelect, "    Fished in AK included:", input$FishAkSelect, "    Fished for whiting included:", input$FishWhitingSelect))
-        } else {
-          sprintf(paste("Group variable:", input$CategorySelect, "     Statistic: ", input$StatSelect, "    Fished in AK included:", input$FishAkSelect,"    Fished for whiting included:", input$FishWhitingSelect,"    Summed across:", input$inSelect))
-        }
+          if(input$CategorySelect=="Fisheries"){
+              if(input$Sect_sel=="CV"){
+                    sprintf(paste("Group variable:", input$CategorySelect, "     Statistic: ", input$StatSelect, "    Fished in AK included:", input$FishAkSelect, "    Fished for whiting included:", input$FishWhitingSelect))
+              } else {
+                    sprintf(paste("Group variable:", input$CategorySelect, "     Statistic: ", input$StatSelect))
+           }} else if(input$CategorySelect=="Production activities"){
+                    sprintf(paste("Group variable:", input$CategorySelect, "     Statistic: ", input$StatSelect))
+            } else {
+              if(input$Sect_sel=="CV"){
+                    sprintf(paste("Group variable:", input$CategorySelect, "     Statistic: ", input$StatSelect, "    Fished in AK included:", input$FishAkSelect,"    Fished for whiting included:", input$FishWhitingSelect,"    Summed across:", input$inSelect))
+              } else {
+                    sprintf(paste("Group variable:", input$CategorySelect, "     Statistic: ", input$StatSelect,   "Summed across:", input$inSelect))
+           }}
       } else {
         if(input$CategorySelect=="Fisheries"){
-          sprintf(paste(input$CategorySelect, ":", input$VariableSelect, "     Statistic: ", input$StatSelect, "    Fished in AK included:", input$FishAkSelect,"    Fished for whiting included:", input$FishWhitingSelect))
-        } else {
-          sprintf(paste(input$CategorySelect, ":", input$VariableSelect, "     Statistic: ", input$StatSelect, "    Fished in AK included:", input$FishAkSelect,"    Fished for whiting included:", input$FishWhitingSelect,"    Summed across:", input$inSelect))   
-        }
+            if(input$Sect_sel=="CV"){
+                  sprintf(paste(input$CategorySelect, ":", input$VariableSelect, "     Statistic: ", input$StatSelect, "    Fished in AK included:", input$FishAkSelect,"    Fished for whiting included:", input$FishWhitingSelect))
+              } else{
+                 sprintf(paste(input$CategorySelect, ":", input$VariableSelect, "     Statistic: ", input$StatSelect))
+          }} else if(input$CategorySelect=="Production activities"){
+                  sprintf(paste(input$CategorySelect, ":", input$VariableSelect, "     Statistic: ", input$StatSelect))
+          } else {
+              if(input$Sect_sel=="CV"){
+                  sprintf(paste(input$CategorySelect, ":", input$VariableSelect, "     Statistic: ", input$StatSelect, "    Fished in AK included:", input$FishAkSelect,"    Fished for whiting included:", input$FishWhitingSelect,"    Summed across:", input$inSelect))   
+              } else {
+                 sprintf(paste(input$CategorySelect, ":", input$VariableSelect, "     Statistic: ", input$StatSelect,  "Summed across:", input$inSelect))   
+        }}
       }
     }
 
@@ -60,7 +87,11 @@ doPlot <- function(dat, x, y, type){
     
     # simple scaling for bar charts based on number of inputs
     scale_bars <- function(){
-      b = length(input$YearSelect)
+      if(input$Sect_sel=="CV"){
+        b = length(input$YearSelect)
+      } else {
+        b = length(input$YearSelect2)  
+      }
       if(b == 1){
         return(0.25)
       } else if(b == 2){
@@ -224,7 +255,10 @@ doPlot <- function(dat, x, y, type){
       } else {
         g <- g + labs(y = paste("Thousands of 2014 $", "(",input$StatSelect, ")"), x=" Vessels are grouped into three tiered categories: top, middle, and lower earners based on revenue. This is done for each year separately.  
                           \nData has been suppressed for years that are not plotted as there are not enough observations to protect confidentiality.  
-                          \nNOTE: In addition, your selection would reveal confidential data for years with sufficient observations.  The results shown may include both vessels that fished in Alaska and those that \nfished for Pacific whiting. See the confidentiality section under the ABOUT tab for more information.", title = main())        
+                          \nNOTE: In addition, your selection would reveal confidential data for years with sufficient observations.  
+                          \nIf looking at Catcher vessels, the results shown may include both vessels that fished in Alaska and those that fished for Pacific whiting. 
+                          \nIf looking at First Receivers, the results shown may include both processors that process catch share fish and those that do not.
+                          \nSee the confidentiality section under the ABOUT tab for more information.", title = main())        
       }} else {
       
       if(max(dat$AK_FLAG, na.rm=T)==0){
@@ -251,7 +285,6 @@ doPlot <- function(dat, x, y, type){
             
         }}
 
-    
     # define theme
     g <- g + theme(
       plot.title = element_text( vjust=1, size=rel(1.5), colour="grey25", family = "sans", face = "bold"),# 
