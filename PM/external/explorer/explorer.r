@@ -579,8 +579,6 @@ output$dlTable <- downloadHandler(
       
       colnames(temp)=colnames(table)
 
-print(temp) 
-print(rbindCommonCols(temp, table) )
 table <- rbindCommonCols(temp, table) 
             if(input$LayoutSelect=="Metrics"){
               if(input$CategorySelect == "Fisheries"){
@@ -629,9 +627,19 @@ table <- rbindCommonCols(temp, table)
 output$dlFigure <- downloadHandler(
   filename = function() {'perfmetricsPlot.pdf'},
   content = function(file){
-     if(!PermitPlot()) return()
-    pdf(file = file, width=10.25, height=7.5, onefile=F)
+  #   if(!PermitPlot()) return()
+   
+    pdf(file = file, width=10.25, height=7.5, onefile=T)
+    if(length(input$VariableSelect)<=6){
             doPlotDownload(dat = DatSub(), x = "YEAR", y = "VALUE")
+    } else {
+      dat <- DatSub()
+      dat <- subset(dat, VARIABLE %in% input$VariableSelect[1:6])
+      doPlotDownload(dat = dat, x="YEAR", y= "VALUE")
+      dat <- DatSub()
+      dat <- subset(dat, VARIABLE %in% input$VariableSelect[7:length(input$VariableSelect)])
+      doPlotDownload(dat = dat, x="YEAR", y= "VALUE")
+      }
     dev.off()
  })
 

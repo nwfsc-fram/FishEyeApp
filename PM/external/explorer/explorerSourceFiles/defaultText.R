@@ -53,7 +53,17 @@ output$BlogUpdates <- renderUI({
   tags$div(style = "margin-top:0; padding-top:0;background-color:#F8F8E9;",
            tags$h3("Updates"),
   #Major update - adding other sectors
-           tags$div( class='date', style='height:45px;width:30px; font-family:Arial; font-weight:bold;background-color:#ffffff;text-align:center; border-top:1px solid #c0c0c0;
+  tags$div( class='date', style='height:45px;width:30px; font-family:Arial; font-weight:bold;background-color:#ffffff;text-align:center; border-top:1px solid #c0c0c0;
+                     border-left:1px solid #c0c0c0;border-right:1px solid #c0c0c0;position:absolute;z-index:3;line-height: 13px;',
+            HTML("<span class='month' style='text-transform:uppercase;font-size:11px;'>Dec</span><br />
+                 <span class='day' style='font-size:16px;'>02</span><br />
+                 <span class='year' style='font-size:11px;line-height: 10px;'>2016</span>")
+            ),
+  tags$p(HTML("<span style='margin-left:60px;font-size:18px;font-weight:bold'>New sectors!</span>")), 
+  tags$p(tags$br(),"We have added Motherships, Catcher Processors, and First Feceivers and Shorebased Processors."),
+  tags$hr(),
+  
+tags$div( class='date', style='height:45px;width:30px; font-family:Arial; font-weight:bold;background-color:#ffffff;text-align:center; border-top:1px solid #c0c0c0;
                      border-left:1px solid #c0c0c0;border-right:1px solid #c0c0c0;position:absolute;z-index:3;line-height: 13px;',
                      HTML("<span class='month' style='text-transform:uppercase;font-size:11px;'>Nov</span><br />
                           <span class='day' style='font-size:16px;'>02</span><br />

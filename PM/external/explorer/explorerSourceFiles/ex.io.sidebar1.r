@@ -41,76 +41,53 @@ output$moreOptions <- renderUI({
 ##YEAR
 ########################################################
 
-output$YearSelect <- renderUI({
+output$Yearselect <- renderUI({
   if(input$LayoutSelect=='Metrics'){
-    if(input$Sect_sel=="FR"){  
-      tags$div(class="ckbox", checkboxGroupInput( "YearSelect","Years:", choices = DatVars()$YEAR[6:11], selected = DatVars()$YEAR[6:11]))
-    } else {
-      tags$div(class="ckbox", checkboxGroupInput( "YearSelect","Years:", choices = DatVars()$YEAR[6:12], selected = DatVars()$YEAR[6:12]))
-  }} else {
+      tags$div(class="ckbox", checkboxGroupInput( "YearSelect","Years:", choices = DatVars()$YEAR[6:length(DatVars()$YEAR)], selected = DatVars()$YEAR[6:length(DatVars()$YEAR)]))
+  } else {
     if(input$Ind_sel=="Demographic"){
     if(input$demSelect!='Gini coefficient'&input$demSelect!='Number of vessels'& input$demSelect!='Vessel length'){
-      if(input$Sect_sel=="FR"){  
-        tags$div(class="ckbox", checkboxGroupInput( "YearSelect","Years:", choices = DatVars()$YEAR[6:11], selected = DatVars()$YEAR[6:11]))
-      } else {
-        tags$div(class="ckbox", checkboxGroupInput( "YearSelect","Years:", choices = DatVars()$YEAR[6:12], selected = DatVars()$YEAR[6:12]))
-      }
+        tags$div(class="ckbox", checkboxGroupInput( "YearSelect","Years:", choices = DatVars()$YEAR[6:length(DatVars()$YEAR)], selected = DatVars()$YEAR[6:length(DatVars()$YEAR)]))
     } else{
       if(input$moreOptions=="FALSE"){
-        if(input$Sect_sel=="FR"){  
-          tags$div(class="ckbox", checkboxGroupInput( "YearSelect","Years:", choices = DatVars()$YEAR[6:11], selected = DatVars()$YEAR[6:11]))
-        } else {
-          tags$div(class="ckbox", checkboxGroupInput( "YearSelect","Years:", choices = DatVars()$YEAR[6:12], selected = DatVars()$YEAR[6:12]))
-        }
+          tags$div(class="ckbox", checkboxGroupInput( "YearSelect","Years:", choices = DatVars()$YEAR[6:length(DatVars()$YEAR)], selected = DatVars()$YEAR[6:length(DatVars()$YEAR)]))
     } else{
       if(input$Sect_sel=="FR"){  
-        tags$div(class="ckbox", checkboxGroupInput( "YearSelect","Years:", choices = DatVars()$YEAR[6:11], selected = DatVars()$YEAR[6:11], inline=T))
+        tags$div(class="ckbox", checkboxGroupInput( "YearSelect","Years:", choices = DatVars()$YEAR[6:length(DatVars()$YEAR)], selected = DatVars()$YEAR[6:length(DatVars()$YEAR)], inline=T))
       } else {
-        tags$div(class="ckbox", checkboxGroupInput( "YearSelect","Years:", choices = DatVars()$YEAR, selected = DatVars()$YEAR[6:12], inline=T))
+        tags$div(class="ckbox", checkboxGroupInput( "YearSelect","Years:", choices = DatVars()$YEAR[2:length(DatVars()$YEAR)], selected = DatVars()$YEAR[6:length(DatVars()$YEAR)], inline=T))
       }
     }}
     } else if(input$Ind_sel=="Social and Regional"){ 
     if(input$socSelect!='Seasonality'&input$socSelect!='Share of landings by state'){
-      if(input$Sect_sel=="FR"){  
-        tags$div(class="ckbox", checkboxGroupInput( "YearSelect","Years:", choices = DatVars()$YEAR[6:11], selected = DatVars()$YEAR[6:11]))
-      } else {
-        tags$div(class="ckbox", checkboxGroupInput( "YearSelect","Years:", choices = DatVars()$YEAR[6:12], selected = DatVars()$YEAR[6:12]))
-      }
+      tags$div(class="ckbox", checkboxGroupInput( "YearSelect","Years:", choices = DatVars()$YEAR[6:length(DatVars()$YEAR)], selected = DatVars()$YEAR[6:length(DatVars()$YEAR)]))
     } else{
       if(input$moreOptions=="FALSE"){
-        if(input$Sect_sel=="FR"){  
-          tags$div(class="ckbox", checkboxGroupInput( "YearSelect","Years:", choices = DatVars()$YEAR[6:11], selected = DatVars()$YEAR[6:11]))
-        } else {
-          tags$div(class="ckbox", checkboxGroupInput( "YearSelect","Years:", choices = DatVars()$YEAR[6:12], selected = DatVars()$YEAR[6:12]))
-        }
+         tags$div(class="ckbox", checkboxGroupInput( "YearSelect","Years:", choices = DatVars()$YEAR[6:length(DatVars()$YEAR)], selected = DatVars()$YEAR[6:length(DatVars()$YEAR)]))
     } else{
       if(input$Sect_sel=="FR"){  
-        tags$div(class="ckbox", checkboxGroupInput( "YearSelect","Years:", choices = DatVars()$YEAR[6:11], selected = DatVars()$YEAR[6:11], inline=T))
+        tags$div(class="ckbox", checkboxGroupInput( "YearSelect","Years:", choices = DatVars()$YEAR[6:length(DatVars()$YEAR)], selected = DatVars()$YEAR[6:length(DatVars()$YEAR)], inline=T))
       } else {
-        tags$div(class="ckbox", checkboxGroupInput( "YearSelect","Years:", choices = DatVars()$YEAR, selected = DatVars()$YEAR[6:12], inline=T))
+        tags$div(class="ckbox", checkboxGroupInput( "YearSelect","Years:", choices = DatVars()$YEAR[2:length(DatVars()$YEAR)], selected = DatVars()$YEAR[6:length(DatVars()$YEAR)], inline=T))
       }
     }}
     } else if(input$Ind_sel=='Economic'){
 #    if(input$ShortdescrSelect[1]!="Revenue"){
       if(!input$ShortdescrSelect[1] %in% "Revenue"){
         if(input$Sect_sel=="FR"){  
-          tags$div(class="ckbox", checkboxGroupInput( "YearSelect","Years:", choices = DatVars()$YEAR[6:11], selected = DatVars()$YEAR[6:11]))
+          tags$div(class="ckbox", checkboxGroupInput( "YearSelect","Years:", choices = DatVars()$YEAR[6:length(DatVars()$YEAR)], selected = DatVars()$YEAR[6:length(DatVars()$YEAR)]))
         } else {
-          tags$div(class="ckbox", checkboxGroupInput( "YearSelect","Years:", choices = DatVars()$YEAR[6:12], selected = DatVars()$YEAR[6:12]))
+          tags$div(class="ckbox", checkboxGroupInput( "YearSelect","Years:", choices = DatVars()$YEAR[6:length(DatVars()$YEAR)], selected = DatVars()$YEAR[6:length(DatVars()$YEAR)]))
         }
     } 
     else {
       if(input$moreOptions=="FALSE"){
-        if(input$Sect_sel=="FR"){  
-          tags$div(class="ckbox", checkboxGroupInput( "YearSelect","Years:", choices = DatVars()$YEAR[6:11], selected = DatVars()$YEAR[6:11]))
-        } else {
-          tags$div(class="ckbox", checkboxGroupInput( "YearSelect","Years:", choices = DatVars()$YEAR[6:12], selected = DatVars()$YEAR[6:12]))
-        }
+          tags$div(class="ckbox", checkboxGroupInput( "YearSelect","Years:", choices = DatVars()$YEAR[6:length(DatVars()$YEAR)], selected = DatVars()$YEAR[6:length(DatVars()$YEAR)]))
     } else{
-      if(input$Sect_sel=="FR"){  
-        tags$div(class="ckbox", checkboxGroupInput( "YearSelect","Years:", choices = DatVars()$YEAR[1:11], selected = DatVars()$YEAR[6:11], inline=T))
+      if(input$Sect_sel!="CV"){  
+        tags$div(class="ckbox", checkboxGroupInput( "YearSelect","Years:", choices = DatVars()$YEAR[6:length(DatVars()$YEAR)], selected = DatVars()$YEAR[6:length(DatVars()$YEAR)], inline=T))
       } else {
-        tags$div(class="ckbox", checkboxGroupInput( "YearSelect","Years:", choices = DatVars()$YEAR, selected = DatVars()$YEAR[6:12], inline=T))
+        tags$div(class="ckbox", checkboxGroupInput( "YearSelect","Years:", choices = DatVars()$YEAR[2:length(DatVars()$YEAR)], selected = DatVars()$YEAR[6:length(DatVars()$YEAR)], inline=T))
       }
     }
     }}
@@ -125,7 +102,7 @@ fish.var <- c("All fisheries combined"="All fisheries"," All Catch Share fisheri
 ###################################################
 #CATEGORY SELECT
 ###################################################
-output$CategorySelect <- renderUI({
+output$Categoryselect <- renderUI({
   if(input$Sect_sel!="FR"){
   tags$div(class="ckbox", radioButtons("CategorySelect", "Group vessels according to:", choices = DatVars()$CATEGORY, selected=DatVars()$CATEGORY[1]))
 } else {  tags$div(class="ckbox", radioButtons("CategorySelect", "Group processors according to:", choices = DatVars()$CATEGORY, selected=DatVars()$CATEGORY[1]))
@@ -150,7 +127,7 @@ output$IndicatorSelect <- renderUI({
 ###################################################
 ##METRIC SELECT
 ###################################################
-output$MetricSelect <- renderUI({ 
+output$Metricselect <- renderUI({ 
   if(input$LayoutSelect!="Metrics"){
     if(input$Ind_sel=="Economic") {
       tags$div(class='met_mod', radioButtons("MetricSelect","", choices ="Select an economic measure and statistic below"), style="font-style:italic;margin-bottom:20px;margin-top:-32px;margin-left:-15px;padding-top:0;")
@@ -213,7 +190,7 @@ output$MetricSelect <- renderUI({
 ###################################################
 ##VARIABLE SELECT
 ###################################################
-output$VariableSelect <- renderUI({  
+output$Variableselect <- renderUI({  
   if(!is.null(input$CategorySelect)){
     if(input$Sect_sel=="M"|input$Sect_sel=="CP"){
       tags$div(class="ckbox2", checkboxGroupInput("VariableSelect","",choices="At-sea Pacific whiting", selected=""))
@@ -236,7 +213,7 @@ output$VariableSelect <- renderUI({
         else {
             tagList(           
               tags$div(class="select", selectInput("inSelect","",c("All fisheries",  "All Catch Share fisheries", "All non-Catch Share fisheries")), style="margin-bottom:-10px"),
-              tags$div(class="rbutton2",radioButtons("VariableSelect", "Select one state:", choices = c("No state selected"="",factorOrder$state), selected="")))
+              tags$div(class="rbutton3",radioButtons("VariableSelect", "Select one state:", choices = c("No state selected"="",factorOrder$state), selected="")))
           }
       } else if(input$CategorySelect == "Vessel length class"){
         if(input$LayoutSelect!='Metrics'){
@@ -252,7 +229,7 @@ output$VariableSelect <- renderUI({
           }}else {
             tagList(           
               tags$div(class="select", selectInput("inSelect","",c("All fisheries", "All Catch Share fisheries", "All non-Catch Share fisheries")), style="margin-bottom:-10px"),
-              tags$div(class="rbutton2", radioButtons("VariableSelect",  "Select one vessel length class:", choices=c("No vessel length selected"="",factorOrder$lengths), selected=""))) 
+              tags$div(class="rbutton3", radioButtons("VariableSelect",  "Select one vessel length class:", choices=c("No vessel length selected"="",factorOrder$lengths), selected=""))) 
           }
       } else if(input$CategorySelect == "Homeport"){
         if(input$LayoutSelect!="Metrics"){
@@ -269,7 +246,7 @@ output$VariableSelect <- renderUI({
           }else {
             tagList(           
               tags$div(class="select", selectInput("inSelect","", c("All fisheries","All Catch Share fisheries","All non-Catch Share fisheries")), style="margin-bottom:-10px"),
-              tags$div(class="rbutton2",radioButtons("VariableSelect", div("Select one homeport:", style="margin-top:0; padding:-10px"), 
+              tags$div(class="rbutton3",radioButtons("VariableSelect", div("Select one homeport:", style="margin-top:0; padding:-10px"), 
                                                      choices=c("No homeport selected"="",factorOrder$port), selected=""))) 
           }
       } #end homeport
@@ -321,12 +298,12 @@ output$VariableSelect <- renderUI({
           if(input$Ind_sel!="Social and Regional"){
             tagList(
                   tags$div(class="select", selectInput("inSelect","",c("All production",  "Groundfish production", "Other species production")), style="margin-bottom:-10px"),
-                  tags$div(class="rbutton2",radioButtons("VariableSelect", HTML("<div> Select one region:<button id='FRr' type='button' class='btn btn-default action-button shiny-bound-input'> 
+                  tags$div(class="rbutton3",radioButtons("VariableSelect", HTML("<div> Select one region:<button id='FRr' type='button' class='btn btn-default action-button shiny-bound-input'> 
                                                        <i class='fa fa-info-circle fa-fw'></i></button></div>"), choices = c("No region selected"="",
                                                         'Washington and Oregon','California'), selected=""))
                 )
           } else {
-            tags$div(class="rbutton2",radioButtons("VariableSelect", HTML("<div> Select one region:<button id='FRr' type='button' class='btn btn-default action-button shiny-bound-input'> 
+            tags$div(class="rbutton3",radioButtons("VariableSelect", HTML("<div> Select one region:<button id='FRr' type='button' class='btn btn-default action-button shiny-bound-input'> 
                                                        <i class='fa fa-info-circle fa-fw'></i></button></div>"), choices = c("No region selected"="",
                                                                                                                              'Washington and Oregon','California'), selected="")) 
           }
@@ -358,11 +335,11 @@ output$VariableSelect <- renderUI({
             if(input$Ind_sel!="Social and Regional"){
                   tagList(
                     tags$div(class="select", selectInput("inSelect","",c("All production",  "Groundfish production", "Other species production")), style="margin-bottom:-10px"),
-                    tags$div(class="rbutton2",radioButtons("VariableSelect",  HTML("<div> Select one size class:<button id='FRs' type='button' class='btn btn-default action-button shiny-bound-input'> 
+                    tags$div(class="rbutton3",radioButtons("VariableSelect",  HTML("<div> Select one size class:<button id='FRs' type='button' class='btn btn-default action-button shiny-bound-input'> 
                                                        <i class='fa fa-info-circle fa-fw'></i></button></div>"), choices=c("No processor size selected"="","Large",'Medium','Small'), selected=""))
                   )
             } else {                   
-                    tags$div(class="rbutton2",radioButtons("VariableSelect",  HTML("<div> Select one size class:<button id='FRs' type='button' class='btn btn-default action-button shiny-bound-input'> 
+                    tags$div(class="rbutton3",radioButtons("VariableSelect",  HTML("<div> Select one size class:<button id='FRs' type='button' class='btn btn-default action-button shiny-bound-input'> 
                                <i class='fa fa-info-circle fa-fw'></i></button></div>"), choices=c("No processor size selected"="","Large",'Medium','Small'), selected=""))
             }
                   }
@@ -370,7 +347,7 @@ output$VariableSelect <- renderUI({
       else {
         if(input$LayoutSelect!='Metrics'){
           if(input$Ind_sel=="Demographic"|input$Ind_sel=="Economic"){
-            tags$div(checkboxGroupInput("VariableSelect", HTML("<div> Select one or more production activities:<button id='FRi' type='button' class='btn btn-default action-button shiny-bound-input'> 
+            tags$div(class='FRprod',checkboxGroupInput("VariableSelect", HTML("<div> Select one or more production activities:<button id='FRi' type='button' class='btn btn-default action-button shiny-bound-input'> 
                                                        <i class='fa fa-info-circle fa-fw'></i></button> <style margin-top:0; padding:-10px> </style></div>"),#HTML("<div style='font-style:italic; font-size:10.87pt; font-weight:normal; margin-top:8.5pt'> 
                                         choices=c("All production","Groundfish production","Pacific whiting production",'Non-whiting groundfish production','Other species production'), selected=""))
           }
@@ -400,7 +377,7 @@ output$VariableSelect <- renderUI({
 ###################################################
 #Select FISHAK
 ###################################################
-output$FishAkSelect <- renderUI({
+output$FishAkselect <- renderUI({
   tags$div(class="ckbox", checkboxInput("FishAkSelect", p("Include Alaskan fisheries activities: ", 
                                                           span("By selecting this, you will include data from their activities in Alaska.", style="font-style:italic;font-size:10pt")), value = TRUE))
 })
@@ -411,7 +388,7 @@ output$FishAkSelect <- renderUI({
 ###################################################
 #Select whiting (data summed across category)
 ###################################################
-output$FishWhitingSelect <- renderUI({
+output$FishWhitingselect <- renderUI({
   tags$div(class="ckbox", checkboxGroupInput("FishWhitingSelect", "Show data summed across:", choices=DatVars()$whitingv, selected=DatVars()$whitingv[1]))
 })
 ###################################################
@@ -421,7 +398,7 @@ output$FishWhitingSelect <- renderUI({
 ###################################################
 #Economic measure select
 ###################################################
-output$ShortdescrSelect <- renderUI({ 
+output$Shortdescrselect <- renderUI({ 
   if(input$LayoutSelect=='Metrics'){
     tags$div(class="ckbox", checkboxGroupInput("ShortdescrSelect", HTML("<div> Economic measures:<button id='iem' type='button' class='btn btn-default action-button shiny-bound-input'> <i class='fa fa-info-circle fa-fw' ></i> 
                                                                         </button></div>"), 
@@ -439,7 +416,7 @@ output$ShortdescrSelect <- renderUI({
 ###################################################
 # Identify Individual metrics for demography
 ###################################################
-output$demSelect <- renderUI({
+output$demselect <- renderUI({
   if(input$LayoutSelect=='Metrics'){
     if(input$Sect_sel=="CV"){
       if(input$AVE_MED2=="Total"){
@@ -471,7 +448,7 @@ output$demSelect <- renderUI({
 ###################################################
 #Identify individual metrics for social and regional class
 ###################################################
-output$socSelect <- renderUI({
+output$socselect <- renderUI({
     if(input$LayoutSelect=='Metrics'){
       if(input$Sect_sel=="CV"){
         if(input$AVE_MED2!="Total"){
@@ -482,8 +459,10 @@ output$socSelect <- renderUI({
     }else {
       if(input$AVE_MED2!="Total"){
     tags$div(class="ckbox",checkboxGroupInput("socSelect","", choices = c(DatVars()$METRIC[6:7]), selected=DatVars()$METRIC[6]))
-      } else {
+      } else if(input$Sect_sel=="FR"){ 
     tags$div(class="ckboxSOC",checkboxGroupInput("socSelect","", choices = c(DatVars()$METRIC[6:7]), selected=DatVars()$METRIC[6]))
+      } else {
+        tags$div(class="ckboxSOC",checkboxGroupInput("socSelect","", choices = c(DatVars()$METRIC[6:9]), selected=DatVars()$METRIC[6]))
   }
       }}else{
     if(input$Sect_sel=="CV"){
@@ -491,7 +470,7 @@ output$socSelect <- renderUI({
     } else if(input$Sect_sel=="FR"){
       tags$div(class="statbox",radioButtons("socSelect","", choices = c(DatVars()$METRIC[6:7]), selected=DatVars()$METRIC[6]))
     }else {
-      tags$div(class="statbox",radioButtons("socSelect","", choices = c(DatVars()$METRIC[6:7]), selected=DatVars()$METRIC[6]))
+      tags$div(class="statbox",radioButtons("socSelect","", choices = c(DatVars()$METRIC[6:9]), selected=DatVars()$METRIC[6]))
   }
   }
 })
@@ -516,7 +495,7 @@ output$VesSumSelect <- renderUI({
 #Statistic select for economic measures
 ###################################################
 #Being by select average, median, or total values
-output$StatSelect <- renderUI({
+output$Statselect <- renderUI({
   if(input$Sect_sel=="FR")  { 
     tagList(
       selectInput("AVE_MED", HTML("<div> Statistic: <button id='istat' type='button' class='btn btn-default action-button shiny-bound-input'> <i class='fa fa-info-circle fa-fw' ></i></button> </div>"),
@@ -582,9 +561,9 @@ output$StatSelect2 <- renderUI({
       }
         } #End demographic
       else if(input$Ind_sel=="Social and Regional"){
-        if(input$socSelect[1]=="Share of landings by state") { 
+        if(input$socSelect[1]=="Share of landings by state"|input$socSelect[1]=="Seasonality") { 
           tags$div(class='met_mod', radioButtons("AVE_MED2","", choices =""), style="margin-bottom:20px;margin-top:-32px;margin-left:-15px;padding-top:0;")
-      } else if (input$socSelect == "Hourly compensation"| input$socSelect == "Crew wage per day"){
+      } else if (input$socSelect == "Hourly compensation"| input$socSelect == "Crew wage per day"| input$socSelect == "Revenue per crew day"){
           tagList(
             tags$div(class='StatGrey2', radioButtons("AVE_MED2", HTML("<div> Statistic: <button id='istat' type='button' class='btn btn-default action-button shiny-bound-input'> <i class='fa fa-info-circle fa-fw' ></i></button> </div>"),
                          choices=c("Average","Median",'Total'), select='Average')))            
@@ -605,7 +584,7 @@ output$StatSelect2 <- renderUI({
 ###################################################
 #Layout select (Compare vessels or compare metrics)
 ###################################################
-output$LayoutSelect <- renderUI({
+output$Layoutselect <- renderUI({
   
   tags$div(radioButtons("LayoutSelect", HTML("<div> Compare: <button id='icompare' type='button' class='btn btn-default action-button shiny-bound-input'>
                                              <i class='fa fa-info-circle fa-fw'></i></button></div>"),
@@ -623,7 +602,7 @@ output$LayoutSelect <- renderUI({
 # Plot options
 
 #======================================
-output$PlotSelect <- renderUI({
+output$Plotselect <- renderUI({
   tags$div(class="ckbox", checkboxInput("PlotSelect", p(span("Plot options: ", style="font-weight:bold;font-size:12pt"),span("Show variance (standard deviation or median average deviation).", style="font-style:italic;font-size:10pt")), value=TRUE))
 })
 

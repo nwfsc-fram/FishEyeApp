@@ -23,7 +23,7 @@ fluidPage(title = "FISHEyE",
             tags$style(HTML(".statbox {margin-top: -30px; margin-bottom: -15px}")), tags$style(HTML(".ckbox2 .checkbox:first-child label{font-weight:bold;}")),
           
           tags$style(HTML(".ckboxCV  .checkbox:nth-child(2) label{color:grey;} .checkbox.input:nth-child(2) {border: 0px;    width: 0%;    height:0em;}#")),
-          tags$style(HTML(".ckboxCV  .checkbox:nth-child(6) label{color:grey;} .checkbox.input:nth-child(3) {border: 0px;    width: 0%;    height:0em;}#")),
+          tags$style(HTML(".ckboxCV  .checkbox:nth-child(6) label{color:grey;} .checkbox.input:nth-child(6) {border: 0px;    width: 0%;    height:0em;}#")),
           tags$style(HTML(".ckboxCV  .checkbox:nth-child(3) label{color:grey;} .checkbox.input:nth-child(3) {border: 0px;    width: 0%;    height:0em;}#")),
               tags$style(HTML(".ckboxCV  .checkbox:nth-child(3)  input[type=checkbox]  {border: 0px;    width: 0%;    height:0em;}#")),
               tags$style(HTML(".ckboxCV  .checkbox:nth-child(2)  input[type=checkbox]  {border: 0px;    width: 0%;    height:0em;}#")),
@@ -65,19 +65,22 @@ fluidPage(title = "FISHEyE",
                      tags$style(HTML(".StatGrey  .radio:nth-child(2) input[type=radio]  {border: 0px;    width: 0%;    height:0em;}#")),
             tags$style(HTML(".StatGrey2 .radio:nth-child(3) label{color:grey;}")),
                      tags$style(HTML(".StatGrey2  .radio:nth-child(3) input[type=radio]  {border: 0px;    width: 0%;    height:0em;}#")),
-            tags$style(HTML(".StatGrey3  .checkbox:nth-child(4) label{color:grey;} .checkbox.input:nth-child(4) {border: 0px;    width: 0%;    height:0em;}#")),
+            tags$style(HTML(".StatGrey3  .checkbox:nth-child(4) label{margin-left:17px;color:grey;} .checkbox.input:nth-child(4) {border: 0px;    width: 0%;    height:0em;}#")),
             tags$style(HTML(".StatGrey3  .checkbox:nth-child(5) label{color:grey;} .checkbox.input:nth-child(5) {border: 0px;    width: 0%;    height:0em;}#")),
-            tags$style(HTML(".StatGrey3  .checkbox:nth-child(3) label{color:grey;} .checkbox.input:nth-child(3) {border: 0px;    width: 0%;    height:0em;}#")),
+            tags$style(HTML(".StatGrey3  .checkbox:nth-child(3) label{margin-left:17px;color:grey;} .checkbox.input:nth-child(3) {border: 0px;    width: 0%;    height:0em;}#")),
                 tags$style(HTML(".StatGrey3  .checkbox:nth-child(4) input[type=checkbox]  {border: 0px;   width: 0%;    height:0em;}#")),
                 tags$style(HTML(".StatGrey3  .checkbox:nth-child(3) input[type=checkbox]  {border: 0px;   width: 0%;    height:0em;}#")),
                 tags$style(HTML(".StatGrey3  .checkbox:nth-child(5) input[type=checkbox]  {border: 0px;   width: 0%;    height:0em;}#")),
-            tags$style(HTML(".StatGrey4  .radio:nth-child(5) label{color:grey;} .radio.input:nth-child(5) {border: 0px;    width: 0%;    height:0em;}#")),
+            tags$style(HTML(".StatGrey4  .radio:nth-child(5) label{margin-left:17px;color:grey;} .radio.input:nth-child(5) {border: 0px;    width: 0%;    height:0em;}#")),
             tags$style(HTML(".StatGrey4  .radio:nth-child(6) label{color:grey;} .radio.input:nth-child(6) {border: 0px;    width: 0%;    height:0em;}#")),
-            tags$style(HTML(".StatGrey4  .radio:nth-child(4) label{color:grey;} .radio.input:nth-child(4) {border: 0px;    width: 0%;    height:0em;}#")),
+            tags$style(HTML(".StatGrey4  .radio:nth-child(4) label{margin-left:17px;color:grey;} .radio.input:nth-child(4) {border: 0px;    width: 0%;    height:0em;}#")),
             tags$style(HTML(".StatGrey4  .radio:first-child label{font-style:italic;")),
                 tags$style(HTML(".StatGrey4  .radio:nth-child(4) input[type=radio] {border: 0px;    width: 0%;    height:0em;}#")),
                 tags$style(HTML(".StatGrey4  .radio:nth-child(5) input[type=radio] {border: 0px;    width: 0%;    height:0em;}#")),
                 tags$style(HTML(".StatGrey4  .radio:nth-child(6) input[type=radio] {border: 0px;    width: 0%;    height:0em;}#")),
+          tags$style(HTML(".FRprod  .checkbox:nth-child(4) label{margin-left:17px;}#")),
+          tags$style(HTML(".FRprod  .checkbox:nth-child(3) label{margin-left:17px;}#")),
+          
           
             #tags$style(HTML(".met_mod label{font-style:italic;margin-bottom:20px;margin-top:-90px;padding-top:0;}")),#{margin-top:-40px;margin-bottom:50px; height:12px;}
             tags$style(HTML(".met_mod  input[type=radio] {border: 0px;    width: 0%;    height:0em;}#")),
@@ -87,16 +90,17 @@ fluidPage(title = "FISHEyE",
 
             tags$style(HTML(".actbutton {margin-bottom:5px}")),
             tags$style(HTML(".rbutton {margin-top:15px}")),
-          
-            tags$style(HTML(".rbutton .radio:nth-child(2) label{font-weight:bold")),
-            tags$style(HTML(".rbutton .radio:nth-child(3) label{font-weight:bold")),
-            tags$style(HTML(".rbutton .radio:nth-child(4) label{margin-left:17px;")), tags$style(HTML(".rbutton .radio:nth-child(5) label{margin-left:17px;")), tags$style(HTML(".rbutton .radio:nth-child(6) label{margin-left:17px;")),
-           tags$style(HTML(".rbutton .radio:nth-child(7) label{margin-left:17px;")), tags$style(HTML(".rbutton .radio:nth-child(7) label{margin-left:17px;")),tags$style(HTML(".rbutton .radio:nth-child(8) label{margin-left:17px;")),
-           tags$style(HTML(".rbutton .radio:nth-child(10) label{font-weight:bold")),
-           tags$style(HTML(".rbutton .radio:nth-child(9) label{margin-left:17px;")), tags$style(HTML(".rbutton .radio:nth-child(11) label{margin-left:17px;")),tags$style(HTML(".rbutton .radio:nth-child(12) label{margin-left:17px;")),
-           tags$style(HTML(".rbutton .radio:nth-child(13) label{margin-left:17px;")),tags$style(HTML(".rbutton .radio:nth-child(14) label{margin-left:17px;")),
-           tags$style(HTML(".rbutton .radio:nth-child(1) label{font-style:italic")),
-           tags$style(HTML(".rbutton2 .radio:nth-child(1) label{font-style:italic")),
+                  tags$style(HTML(".rbutton .radio:nth-child(2) label{font-weight:bold")),
+                  tags$style(HTML(".rbutton .radio:nth-child(3) label{font-weight:bold")), tags$style(HTML(".rbutton .radio:nth-child(10) label{font-weight:bold")),
+                  tags$style(HTML(".rbutton .radio:nth-child(4) label{margin-left:17px;")), tags$style(HTML(".rbutton .radio:nth-child(5) label{margin-left:17px;")), tags$style(HTML(".rbutton .radio:nth-child(6) label{margin-left:17px;")),
+                  tags$style(HTML(".rbutton .radio:nth-child(7) label{margin-left:17px;")), tags$style(HTML(".rbutton .radio:nth-child(7) label{margin-left:17px;")),tags$style(HTML(".rbutton .radio:nth-child(8) label{margin-left:17px;")),
+                  tags$style(HTML(".rbutton .radio:nth-child(9) label{margin-left:17px;")), tags$style(HTML(".rbutton .radio:nth-child(11) label{margin-left:17px;")),tags$style(HTML(".rbutton .radio:nth-child(12) label{margin-left:17px;")),
+                  tags$style(HTML(".rbutton .radio:nth-child(13) label{margin-left:17px;")),tags$style(HTML(".rbutton .radio:nth-child(14) label{margin-left:17px;")),
+                  tags$style(HTML(".rbutton .radio:nth-child(1) label{font-style:italic")),
+            tags$style(HTML(".rbutton2 .radio:nth-child(1) label{font-style:italic")),
+                tags$style(HTML(".rbutton2 .radio:nth-child(4) label{margin-left:17px;")),
+                tags$style(HTML(".rbutton2 .radio:nth-child(5) label{margin-left:17px;")),
+           tags$style(HTML(".rbutton3 .radio:nth-child(1) label{font-style:italic")),
            tags$style(HTML('#iof{width:20px; height:19px; margin:0px;border:none; padding:0px;border-radius:25px;background-color:transparent;font-size:12px; color:RoyalBlue}')),
            tags$style(HTML('#isummed{width:20px; height:19px; margin:0px;border:none; padding:0px;border-radius:25px;background-color:transparent;font-size:12px; color:RoyalBlue}')),
            tags$style(HTML('#ifg{width:20px; height:19px; margin:0px;border:none; padding:0px;border-radius:25px;background-color:transparent;font-size:12px; color:RoyalBlue}')),
@@ -121,7 +125,7 @@ fluidPage(title = "FISHEyE",
             tags$link(rel="stylesheet", type="text/css", href="bootstrap.css"),
             # secondary css page with fisheye specific attributes
             tags$link(rel="stylesheet", type="text/css", href="fisheye.css"),
-            tags$link(rel="stylesheet", href="http://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.4.0/css/font-awesome.min.css"),
+            tags$link(rel="stylesheet", href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.4.0/css/font-awesome.min.css"),
             tags$style(type="text/css", ".tab-content {overflow: visible;}")         
             ),
           
@@ -176,20 +180,20 @@ fluidPage(title = "FISHEyE",
                      
                      fluidRow(
                        column(12,uiOutput("SectorSelect"),
-                              style = "background:white; padding:0px;margin-bottom:0px; border: 3px solid #D3D3D3;border-radius:10px;")), 
+                              style = "background:white; padding:0px;margin-bottom:0px; border: 3px solid #D3D3D3;border-radius:10px;font-size:100%;")), 
                      #         uiOutput("resetButton"),
                      #         uiOutput('Button'))),
                        fluidRow(
                          column(12,
-                               uiOutput('LayoutSelect'),style = "background:white; padding: 0px;margin:0px; border: 3px solid #D3D3D3;border-radius:10px;"
+                               uiOutput('Layoutselect'),style = "background:white; padding: 0px;margin:0px; border: 3px solid #D3D3D3;border-radius:10px;"
                                )),
                        fluidRow(
                        column(6,
-                              uiOutput("CategorySelect"), style = "background:white; padding: 0px;margin:0px; border: 1px solid #D3D3D3;border-radius:1px;"
+                              uiOutput("Categoryselect"), style = "background:white; padding: 0px;margin:0px; border: 1px solid #D3D3D3;border-radius:1px;"
                           
                               ),
                        column(6, 
-                              uiOutput("FishWhitingSelect")), style = "background:white; padding: 0px;margin-bottom:10px; border: 3px solid #D3D3D3;border-radius:10px;"
+                              uiOutput("FishWhitingselect")), style = "background:white; padding: 0px;margin-bottom:10px; border: 3px solid #D3D3D3;border-radius:10px;"
                      ), #end fluid row
                     fluidRow(
                       column(12,
@@ -208,9 +212,9 @@ fluidPage(title = "FISHEyE",
                                                      input.Sect_sel=='FR'&input.Ind_sel=='Economic'||
                                                      input.Sect_sel=='FR'&input.Ind_sel=='Demographic'&input.demSelect!='Proportion of revenue from catch share species'",
                                                      uiOutput("SelectText")),
-                                    uiOutput("VariableSelect")
+                                    uiOutput("Variableselect")
                                  
-                              )
+                              ),style = "padding-left:-15px;margin-left:-15px;margin-right:0px;padding-right:2px;"
                            ), #end column
                   
                       column(6,
@@ -220,14 +224,14 @@ fluidPage(title = "FISHEyE",
                                 conditionalPanel(condition="input.Ind_sel!='Economic'",
                                                uiOutput("StatSelect2")),
                                 uiOutput("IndicatorSelect"),
-                                uiOutput("MetricSelect"),
+                                uiOutput("Metricselect"),
                                 conditionalPanel(condition="input.Ind_sel=='Demographic'",
-                                    uiOutput("demSelect")),
+                                    uiOutput("demselect")),
                                 conditionalPanel(condition="input.Ind_sel=='Economic'",
-                                    uiOutput("ShortdescrSelect"),
-                                    uiOutput("StatSelect")),
+                                    uiOutput("Shortdescrselect"),
+                                    uiOutput("Statselect")),
                                 conditionalPanel(condition="input.Ind_sel=='Social and Regional'",
-                                    uiOutput("socSelect"))
+                                    uiOutput("socselect"))
 
                                      ),#end sub panel
                              
@@ -235,28 +239,29 @@ fluidPage(title = "FISHEyE",
                                                                           ||input.LayoutSelect!='Metrics'&&input.Sect_sel=='CV'&&input.Ind_sel=='Demographic'&&input.demSelect=='Proportion of revenue from CS fishery'
                                                                           ||input.LayoutSelect!='Metrics'&&input.Sect_sel=='CV'&&input.Ind_sel=='Demographic'&&input.demSelect=='Fishery participation'
                                                                           ||input.LayoutSelect!='Metrics'&&input.Ind_sel=='Demographic'&&input.demSelect=='Days at sea'", 
-                                                 uiOutput("FishAkSelect")), style = "padding: 0px;margin-bottom:0px; border: 3px solid #D3D3D3;border-radius:10px;"),
+                                                 uiOutput("FishAkselect")), style = "padding: 0px;margin-bottom:0px; border: 3px solid #D3D3D3;border-radius:10px;"),
                               wellPanelSub(
                                   conditionalPanel(condition="input.Ind_sel!='Economic'&input.AVE_MED2!='Total'||input.Ind_sel=='Economic'&input.AVE_MED!='T'",
-                                                   uiOutput("PlotSelect")), style = "padding: 0px;margin-bottom:0px; border: 3px solid #D3D3D3;border-radius:10px;"
+                                                   uiOutput("Plotselect")), style = "padding: 0px;margin-bottom:0px; border: 3px solid #D3D3D3;border-radius:10px;"
                                     )
                                     ) , #end sub panel
                               wellPanelSub(
                                 
-                                 uiOutput("YearSelect"),
+                                 uiOutput("Yearselect"),
                                  wellPanelSub(
                                     conditionalPanel(condition=
                                          "input.Sect_sel=='CV'&&input.CategorySelect!='Homeport'&&input.CategorySelect!='State'&&input.Ind_sel=='Economic'&&input.ShortdescrSelect=='Revenue'||
                                           input.Sect_sel=='CV'&&input.CategorySelect!='Homeport'&&input.CategorySelect!='State'&&input.Ind_sel=='Demographic'&&input.demSelect=='Gini coefficient'||
-                                          input.Sect_sel=='CV'&&input.CategorySelect!='Homeport'&&input.CategorySelect!='State'&&input.Ind_sel=='Demographic'&&input.demSelect=='Number of vessels'||
+                                          input.Sect_sel!='FR'&&input.CategorySelect!='Homeport'&&input.CategorySelect!='State'&&input.Ind_sel=='Demographic'&&input.demSelect=='Number of vessels'||
                                           input.Sect_sel=='CV'&&input.CategorySelect!='Homeport'&&input.CategorySelect!='State'&&input.Ind_sel=='Demographic'&&input.demSelect=='Vessel length'||
                                           input.Sect_sel=='CV'&&input.CategorySelect!='Homeport'&&input.CategorySelect!='State'&&input.Ind_sel=='Social and Regional'&&input.socSelect=='Seasonality'||
-                                          input.Sect_sel=='CV'&&input.CategorySelect!='Homeport'&&input.CategorySelect!='State'&&input.Ind_sel=='Social and Regional'&&input.socSelect=='Share of landings by state'",
+                                          input.Sect_sel!='FR'&&input.CategorySelect!='Homeport'&&input.CategorySelect!='State'&&input.Ind_sel=='Social and Regional'&&input.socSelect=='Share of landings by state'",
                                     uiOutput('moreOptions')),
                                     style = "padding: 0px;margin-bottom:0px; border: 3px solid #D3D3D3;border-radius:10px;"#,
                                    #conditionalPanel(condition="",uiOutput('moreOptions'))#&&input.ShortdescrSelect=='Revenue'
                                                     )       
-                                 )
+                                 ),
+                            style = "padding-right:2px;margin-right:0px; padding-left:2px;,width:100%"
                              ),#end column
                         column(4,
                                 wellPanel(uiOutput("download_figure"),

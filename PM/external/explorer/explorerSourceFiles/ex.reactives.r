@@ -108,7 +108,7 @@ DatSubTable <- reactive({
     } else if(input$Ind_sel=="Social and Regional")  {
       if(input$LayoutSelect!="Metrics"){
         #        if(input$MetricSelect!="Number of vessels"&input$MetricSelect!="Seasonality"&input$MetricSelect!="Share of landings by state"&input$MetricSelect!="Gini coefficient"){
-        if(input$socSelect!="Share of landings by state"){
+        if(input$socSelect!="Share of landings by state"&input$socSelect!="Seasonality"){
            datSub <- subset(datSub,  METRIC %in% input$socSelect & SUMSTAT == input$AVE_MED2 & !is.na(input$socSelect))
             
         }   else {
@@ -123,7 +123,6 @@ DatSubTable <- reactive({
           }
         }
     }
-    print(datSub)[1:3,]
  #    if(input$Ind_sel!="Economic")  {
 #      if(input$MetricSelect!="Number of vessels"&input$MetricSelect!="date"&input$MetricSelect!="landings"&input$MetricSelect!="GINI"){
 #        datSub <- subset(datSub,  METRIC %in% input$MetricSelect & !is.na(input$MetricSelect) & SUMSTAT == input$AVE_MED2)}
@@ -258,7 +257,7 @@ if(input$LayoutSelect!="Metrics"){
       else if(input$Ind_sel=="Social and Regional") {
         if(input$socSelect=="Share of landings by state"){
           datSub <- datSub[,c(which(colnames(datSub)=="YEAR"),which(colnames(datSub)=="VARIABLE"),which(colnames(datSub)=="CATEGORY"),which(colnames(datSub)=="CS"),which(colnames(datSub)=="SUMSTAT"),
-                          which(colnames(datSub)=="METRIC"),which(colnames(datSub)=="whitingv"),which(colnames(datSub)=="N"),which(colnames(datSub)=="VALUE"),which(colnames(datSub)=="agid"))]
+                          which(colnames(datSub)=="METRIC"),which(colnames(datSub)=="whitingv"),which(colnames(datSub)=="N"),which(colnames(datSub)=="VALUE"),which(colnames(datSub)=="AGID"))]
         }else {
           datSub <- datSub[,c(which(colnames(datSub)=="YEAR"),which(colnames(datSub)=="VARIABLE"),which(colnames(datSub)=="CATEGORY"),which(colnames(datSub)=="CS"),which(colnames(datSub)=="SUMSTAT"),
                           which(colnames(datSub)=="METRIC"),which(colnames(datSub)=="whitingv"),which(colnames(datSub)=="N"),which(colnames(datSub)=="VALUE"),which(colnames(datSub)=="VARIANCE"))]
@@ -508,7 +507,10 @@ DatSub <- reactive({
          }
 
    if(input$LayoutSelect!="Metrics"){
-        if(input$Sect_sel=="CV"){
+        if(input$Ind_sel=='Social and Regional'&&input$socSelect=='Share of landings by state'){
+            datSub$sort <- as.character(datSub$AGID)
+          } else {
+            if(input$Sect_sel=="CV"){
             if(input$CategorySelect=="Fisheries"){
             datSub$sort <- ifelse(datSub$VARIABLE=="All fisheries", ".......All fisheries", as.character(datSub$VARIABLE))
             datSub$sort <- ifelse(datSub$VARIABLE=="All Catch Share fisheries", "......All Catch Share fisheries", as.character(datSub$sort))
@@ -551,7 +553,8 @@ DatSub <- reactive({
         } #end FR
         else {datSub$sort <- "At-sea Pacific whiting"
         } #end MS and CP  
-    } #end Metrics
+          }#end not social and regional
+    } #end not Metrics
       else {
         if(input$Ind_sel=="Economic"){
       datSub$sort <- ifelse(datSub$SHORTDESCR=="Revenue", "...Revenue", as.character(datSub$SHORTDESCR))
@@ -602,8 +605,8 @@ DatSub <- reactive({
           }}}else {
             datSub
           }
-      
-#   print(datSub)    
+    
+   print(datSub[1:2,])    
       return(datSub)
           
   #   } else return()

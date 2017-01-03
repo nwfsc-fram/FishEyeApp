@@ -43,9 +43,9 @@ tags$div(style = "margin: 15px 15px 30px; width: 60%",
                        California halibut; Pacific halibut; Pacific herring; Salmon; Squid; Sturgeon; Tuna; Other shellfish; Other species.'),
                       tags$li(strong("Homeport:"), "The", tags$a(href="map.pdf", "homeport", target="_blank"), "reported by each vessel on the", tags$a(href="http://www.nwfsc.noaa.gov/research/divisions/fram/economic/economic_data_forms.cfm", "EDC survey form", target="_blank"), "aggregated to port groups.
                                Vessels that fished of the West coast but report their homeport to be in Alaska are included. These vessels are included in the Puget Sound port."), 
-                      tags$li(strong("State of homeport:"), "The state corresponding to each homeport. Vessels that fished of the West coast but report their homeport to be in Alaska are included. These vessels are included in Washington State."
+                      tags$li(strong("State of homeport:"), "The state corresponding to each homeport. Vessels that fished off the West coast but report their homeport to be in Alaska are included. These vessels are included in Washington State."
                               ),
-                      tags$li(strong("Region:"), "The region corresponding to each processors. For First Receivers and Shorebased Processors, two regions are recognized:", tags$em('Washington and Oregon'), 'and', tags$em("California.")
+                      tags$li(strong("Region:"), "The region corresponding to each processor. For first receivers and shorebased processors, two regions are recognized:", tags$em('Washington and Oregon'), 'and', tags$em("California.")
                       ),
                       tags$li(strong("Vessel length class:"),"Three categories of vessel length representing the range of catcher vessel length: large vessels (> 80 ft), medium vessels (> 60 ft, <= 80 ft), and small vessels (< 60 ft)."),
                       tags$li(strong("Processor size:"),"First receivers and shorebased processors are grouped into three size classes based on the average number of workers: large (> 200 workers), medium (100 - 200 workers), and small (< 100 workers).
@@ -168,13 +168,16 @@ tags$div(style = "margin: 15px 15px 30px; width: 60%",
                       tags$li(strong('Summary variables:'),  'Summary variables (fisheries, homeport, state, vessel length class) are used to group vessels to better understand the economic performance of particular segments of the fleet.'),
                       tags$li(strong('Metric:'), 'See above for a description of the individual metrics. This column is not included when an economic indicator is selected.'),
                       tags$li(strong('Economic measure:'), 'See the economic metric section above for a description of the economic measures.'),
-                      tags$li(strong('Number of vessels:'), 'The number of observations for each displayed statistic.'),
+                      tags$li(strong('Number of vessels/processors:'), 'The number of observations for each displayed statistic.'),
                       tags$li(strong('Statistic:'), 'See above for further description of the statistics.'),
                       tags$li(strong('Value:'), 'Value of the metric or economic measure for the selected statistic.'),
                       tags$li(strong('Alaskan fisheries:'), 'Include activities in Alaskan fisheries  (Vessels included or Vessels not included).'),
-                      tags$li(strong('Data summed across:'), 'Data summed across all vessels, vessel that participated in the non-whiting groundfish sector of the limited entry trawl fishery, vessels that fished for Pacific whiting. Vessels that fished for both whiting and non-whiting are included in the whiting level.'),
+                      tags$li(strong('Data summed across:'), 'For catcher vessels, we show data summed across all vessels, vessel that participated in the non-whiting groundfish sector of the limited entry trawl fishery, vessels that fished for Pacific whiting. Vessels that fished for both whiting and non-whiting are included in the whiting level.
+                                                              For first receivers and shorebased processors, we show data summed across all processors, processors that process whiting species, and processors that process non-whiting species.'),
                       tags$li(strong('Fisheries Category:'), 'This variable is relevant for when vessels are grouped by homeport, state, or vessel length class. It indicates whether the reported value of the selected metric or economic 
                                       measure includes activity in all fisheries or only in the Catch Share fisheries or the non-Catch Share fisheries.'),
+                      tags$li(strong('Production Category:'), 'This variable is relevant for when processors are grouped by region or processor size. It indicates whether the reported value of the selected metric or economic 
+                                      measure includes all production or only groundfish production or other species production.'),
                       tags$li(strong('Variance:'), 'A measure of the spread of values. We report the standard deviation (SD) when vessel averages are selected and the median absolute deviation (MAD) when vessel medians are selected.'),
                       tags$li(strong('Delivery location:'), 'This variable is only relevant for the', tags$em('Share of landings by state'), 'metric. This variable indicates location of landings.'),
                       tags$p(tags$br(),
