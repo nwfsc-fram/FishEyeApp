@@ -11,9 +11,13 @@ source("external/explorer/explorerSourceFiles/doPlot.R", local = TRUE)
 source("external/explorer/explorerSourceFiles/doPlotDownload.R", local = TRUE)
 source("external/explorer/explorerSourceFiles/defaultText.R", local = TRUE)
 
+observeEvent(input$iprod, {
+  session$sendCustomMessage(type = 'testmessage',
+                            message = 'Although all processors included in FISHEyE hold a site license for the catch share program, not all processors process catch share species. Select CATCH SHARE PROCESSORS to show activities only for processors that processed catch share species or ALL PROCESSORS to show activities for all processors regardless of whether they processed catch share species.')
+})
 observeEvent(input$istat, {
   session$sendCustomMessage(type = 'testmessage',
-                            message = 'The median and average provide information about a representative vessel or processor; however, they do it in different ways. The median means that half of the vessels or processors have a larger result than the median, and half are smaller. The average, or mean, is the sum of the values divided by the number of responses. If the data are skewed by extreme responses, then the median is a better measure of the result for a typical vessel or processor. The fleet-wide total is the sum over all vessels or processors selected and measures how the entire fleet is doing, rather than a representative vessel or processor.')
+                            message = 'The median and average provide information about a representative vessel or processor; however, they do it in different ways. The median means that half of the vessels or processors have a larger result than the median, and half are smaller. The average, or mean, is the sum of the values divided by the number of responses. If the data are skewed by extreme responses, then the median is a better measure of the result for a typical vessel or processor. The fleet- or processor-wide total is the sum over all vessels or processors selected and measures how the entire fleet is doing, rather than a representative vessel or processor.')
 })
 observeEvent(input$ipo, {
   session$sendCustomMessage(type = 'testmessage',
@@ -30,7 +34,7 @@ observeEvent(input$iof, {
 observeEvent(input$isummed, {
   session$sendCustomMessage(type = 'testmessage',
                             if(input$Sect_sel=="CV"){
-                                    message = 'For each homeport, state, or vessel length class, you can select to show activities across all fisheries, only catch share fisheries, or only non-catch share fisheries.'
+                                    message = 'For each homeport, state of homeport, or vessel length class, you can select to show activities across all fisheries, only catch share fisheries, or only non-catch share fisheries.'
                             } else if(input$Sect_sel=="FR"){
                                     message = 'For each region or processor size class, you can select to show activities across all production, only groundfish production, or only other species production.'
                             })
@@ -105,9 +109,9 @@ output$TableMain <- renderDataTable({
             } else {
        if(input$CategorySelect=="Production activities"){
         table <- subset(table, select = -CS)
-                names(table) <- c("Year", "ACS","Summary Variable","Statistic", "Economic measure","Number of vessels", "Value", "Variance \n(MAD, SD)")
+                names(table) <- c("Year", "Data summed across","Summary Variable","Statistic", "Economic measure","Number of processors", "Value", "Variance \n(MAD, SD)")
        }else {
-                names(table) <- c("Year", "ACS","Summary Variable","Production Category", "Statistic", "Economic measure","Number of vessels", "Value", "Variance \n(MAD, SD)")
+                names(table) <- c("Year", "Data summed across","Summary Variable","Production Category", "Statistic", "Economic measure","Number of processors", "Value", "Variance \n(MAD, SD)")
        }}}
     #  table$YEAR <- as.numeric(table$YEAR),
     #names(table) <- c("Year", "Summary Variable", "FishAK", "Value","Statistic", "N", "Economic measure","")
@@ -135,18 +139,23 @@ output$TableThirds <- renderDataTable({
           if(input$Sect_sel=="CV"){
                 names(table) <- c("Year", "Summary Variable", "Statistic", "Economic measure","Thirds", "Fished in Alaska","Fished for whiting", "Number of vessels", "Value","Variance \n(MAD, SD)")
           } else {
-                names(table) <- c("Year", "ACS","Summary Variable", "Statistic", "Economic measure","Thirds", "Number of vessels", "Value","Variance \n(MAD, SD)")
+                names(table) <- c("Year", "Summary Variable", "Statistic", "Economic measure","Thirds", "Number of vessels", "Value","Variance \n(MAD, SD)")
           }
       } else{
           if(input$Sect_sel=="CV"){
                 names(table) <- c("Year", "Summary Variable","Fisheries Category", "Statistic","Economic measure","Thirds", "Fished in Alaska","Fished for whiting", "Number of vessels", "Value","Variance \n(MAD, SD)")
           } else {
+          if(input$Sect_sel=="M"|input$Sect_sel=="CP"){
+            table <- subset(table, select = -CS)
+            names(table) <- c("Year", "Summary Variable", "Statistic","Economic measure","Thirds", "Fished in Alaska","Fished for whiting", "Number of vessels", "Value","Variance \n(MAD, SD)")
+        
+          } else {
       if(input$CategorySelect=="Production activities"){
               table <- subset(table, select = -CS)
-              names(table) <- c("Year",'ACS', "Summary Variable","Statistic","Economic measure","Thirds",  "Number of vessels", "Value","Variance \n(MAD, SD)")
+              names(table) <- c("Year",'Data summed across', "Summary Variable","Statistic","Economic measure","Thirds",  "Number of processors", "Value","Variance \n(MAD, SD)")
        } else {
-              names(table) <- c("Year","ACS", "Summary Variable","Production Category", "Statistic","Economic measure","Thirds", "Number of vessels", "Value","Variance \n(MAD, SD)")
-    }}}
+              names(table) <- c("Year","Data summed across", "Summary Variable","Production Category", "Statistic","Economic measure","Thirds", "Number of processors", "Value","Variance \n(MAD, SD)")
+    }}}}
     #  table$YEAR <- as.numeric(table$YEAR),
     #names(table) <- c("Year", "Summary Variable", "FishAK", "Value","Statistic", "N", "Economic measure","")
     #   datatable(table, filter="bottom", rownames=F)
@@ -179,14 +188,22 @@ output$dlTable <- downloadHandler(
       table <- DatThirdsTable() %>% mutate(Sector =input$Sect_sel)
       table$Sector <-c('Catcher Vessels','First Receivers and Shorebased Processors','Mothership vessels','Catcher Processor vessels')[match(table$Sector, c('CV','FR','M','CP'))]
       # some wonky code to insert a timestamp. xtable has a more straightfoward approach but not supported with current RStudio version on the server
-      names(table) <- c(4,1,3,2,"a "," b","c ","d "," e","f","g","h","i")
-      temp <-    data.frame("Year", "Summary variable","Summary Variable category","Fisheries Category","Statistic", "Economic Measure", "Thirds", "Fished in Alaska","Fished for whiting",  "Number of vessels", "Value","Variance (MAD,SD)","Sector")
+      if(input$Sect_sel=="FR"){
+      names(table) <- c(4,1,3,2,"a "," b","c ","d "," e","f","g","h")
+      temp <-    data.frame("Year", "Data summed across","Summary variable","Summary Variable category","Production Category","Statistic", "Economic Measure", "Thirds", "Number of processors", "Value","Variance (MAD,SD)","Sector")
       colnames(temp)=colnames(table)
       table <- rbindCommonCols(temp, table) 
       names(table) <- c(paste("Sourced from the FISHEyE application (http://dataexplorer.northwestscience.fisheries.noaa.gov/fisheye/NetRevExplorer/) maintained by NOAA Fisheriess NWFSC on ",
-                              format(Sys.Date(), format="%B %d %Y")),"","","","","","","","","","","","")
-    }
-    else {
+                              format(Sys.Date(), format="%B %d %Y")),"","","","","","","","","","","")
+      } else {
+        names(table) <- c(4,1,3,2,"a "," b","c ","d "," e","f","g","h","i")
+        temp <-    data.frame("Year","Summary variable","Summary Variable category","Fisheries Category","Statistic", "Economic Measure", "Thirds", "Fished in Alaska","Fished for whiting",  "Number of vessels", "Value","Variance (MAD,SD)","Sector")
+        colnames(temp)=colnames(table)
+        table <- rbindCommonCols(temp, table) 
+        names(table) <- c(paste("Sourced from the FISHEyE application (http://dataexplorer.northwestscience.fisheries.noaa.gov/fisheye/NetRevExplorer/) maintained by NOAA Fisheriess NWFSC on ",
+                                format(Sys.Date(), format="%B %d %Y")),"","","","","","","","","","","","")
+      }
+    }else {
       table <- DatSubTable() %>% mutate(Sector =input$Sect_sel)
       table$Sector <-c('Catcher Vessels','First Receivers and Shorebased Processors','Mothership vessels','Catcher Processor vessels')[match(table$Sector, c('CV','FR','M','CP'))]
       if(input$Sect_sel=="CV"){
@@ -197,6 +214,14 @@ output$dlTable <- downloadHandler(
       table <- rbindCommonCols(temp, table) 
       names(table) <- c(paste("Sourced from the FISHEyE application (http://dataexplorer.northwestscience.fisheries.noaa.gov/fisheye/NetRevExplorer/) maintained by NOAA Fisheriess NWFSC on ",
                               format(Sys.Date(), format="%B %d %Y")),"","","","","","","","","","","")
+      } else if(input$Sect_sel=="FR"){
+        # some wonky code to insert a timestamp. xtable has a more straightfoward approach but not supported with current RStudio version on the server
+        names(table) <- c(4,1,3,2,"a "," b","c ","d "," e","g","h")##c("Year", "Summary variable","FishAK", "Summary Variable category","Fisheries Category", "Value","Statistic",  "N", "Economic Measure")
+        temp <-    data.frame("Year", "Data summed across",'Summary variable',"Summary Variable category", "Production Category","Statistic", "Economic Measure","Number of processors","Value", "Variance (MAD, SD)","Sector")
+        colnames(temp)=colnames(table)
+        table <- rbindCommonCols(temp, table) 
+        names(table) <- c(paste("Sourced from the FISHEyE application (http://dataexplorer.northwestscience.fisheries.noaa.gov/fisheye/NetRevExplorer/) maintained by NOAA Fisheriess NWFSC on ",
+                                format(Sys.Date(), format="%B %d %Y")),"","","","","","","","","","")
       } else {
         names(table) <- c(4,1,3,2,"a "," b","c ","d "," e","g")
         temp <-    data.frame("Year", "Summary variable","Summary Variable category", "Fisheries Category","Statistic", "Economic Measure","Number of vessels","Value", "Variance (MAD, SD)","Sector")
@@ -218,11 +243,31 @@ output$dlFigure <- downloadHandler(
   filename = function() {'dataexplorerPlot.pdf'},
   content = function(file){
     if(!PermitPlot()) return()
-    pdf(file = file, width=10.25, height=7.5, onefile=F)
+    pdf(file = file, width=10.25, height=7.5, onefile=T)
+    if(length(input$VariableSelect)<=6){
     if(input$tabs=="Panel2"){ 
       doPlotDownload(dat = DatSubThirds(), x = "YEAR", y = "VALUE/1000", type = "thirds")}
     else {
          doPlotDownload(dat = DatSub(), x = "YEAR", y = "VALUE/1000", type = "summary")}
+      }else {
+        if(input$tabs=="Panel2"){ 
+          dat = DatSubThirds()
+          dat <- subset(dat, VARIABLE %in% input$VariableSelect[1:6])
+          doPlotDownload(dat, x = "YEAR", y = "VALUE/1000", type = "thirds")
+          dat = DatSubThirds()
+          dat <- subset(dat, VARIABLE %in% input$VariableSelect[7:length(input$VariableSelect)])
+          doPlotDownload(dat, x = "YEAR", y = "VALUE/1000", type = "thirds")
+          }
+        else {
+          dat = DatSub()
+          dat <- subset(dat, VARIABLE %in% input$VariableSelect[1:6])
+          doPlotDownload(dat, x = "YEAR", y = "VALUE/1000", type = "summary")
+          dat = DatSub()
+          dat <- subset(dat, VARIABLE %in% input$VariableSelect[7:length(input$VariableSelect)])
+          doPlotDownload(dat, x = "YEAR", y = "VALUE/1000", type = "summary")
+          
+          }
+      }
     #  }
     dev.off()
   }

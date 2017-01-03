@@ -9,7 +9,7 @@ wellPanelHeading <- function(...){div(class = "well-radioHeading", ...)}
 fluidPage(
 title = "FISHEyE",
           #stylize the appearance of different aspects of the website
-tags$head(tags$body(includeHTML("google-analytics.noaa.js"))),
+#tags$head(tags$body(includeHTML("google-analytics.noaa.js"))),
             tags$head(
             tags$style(HTML(".shiny-output-error-validation {color: red; font-size: 120%;}")), #validation error
            # modify spacing of labels for specified widgits
@@ -39,7 +39,9 @@ tags$head(tags$body(includeHTML("google-analytics.noaa.js"))),
                              .ckbox2 .checkbox:nth-child(8) label{margin-left:17px;}
                              .ckbox2 .checkbox:nth-child(10) label{margin-left:17px;}
                              .ckbox2 .checkbox:nth-child(11) label{margin-left:17px;}
-                             .ckbox2 .checkbox:nth-child(12) label{margin-left:17px;}")),
+                             .ckbox2 .checkbox:nth-child(12) label{margin-left:17px;}
+                             .frckbox .checkbox:nth-child(3) label{margin-left:17px;}
+                             .frckbox .checkbox:nth-child(4) label{margin-left:17px;}")),
             tags$style(HTML(".rbutton .radio:first-child label{font-style:italic;}
                              .rbutton .radio:nth-child(2) label{font-weight:bold;}
                              .rbutton .radio:nth-child(3) label{font-weight:bold;}
@@ -53,7 +55,10 @@ tags$head(tags$body(includeHTML("google-analytics.noaa.js"))),
                              .rbutton .radio:nth-child(11) label{margin-left:17px;}
                              .rbutton .radio:nth-child(12) label{margin-left:17px;}
                              .rbutton .radio:nth-child(13) label{margin-left:17px;}
-                             .rbutton2 .radio:first-child label{font-style:italic;}"
+                             .rbutton2 .radio:first-child label{font-style:italic;}
+                             .frbutton .radio:first-child label{font-style:italic;}
+                             .frbutton .radio:nth-child(4) label{margin-left:17px;}
+                             .frbutton .radio:nth-child(5) label{margin-left:17px;}"
                              )),
             
             
@@ -64,7 +69,8 @@ tags$head(tags$body(includeHTML("google-analytics.noaa.js"))),
                              #istat{width:20px; height:19px; margin:0px;border:none; padding:0px;border-radius:25px;background-color:transparent;font-size:12px; color:RoyalBlue}
                              #ipo{width:20px; height:19px; margin:0px;border:none; padding:0px;border-radius:25px;background-color:transparent;font-size:12px; color:RoyalBlue}
                              #ivs{width:20px; height:19px; margin:0px;border:none; padding:0px;border-radius:25px;background-color:transparent;font-size:12px; color:RoyalBlue}
-                             #iem{width:20px; height:19px; margin:0px;border:none; padding:0px;border-radius:25px;background-color:transparent;font-size:12px; color:RoyalBlue}'))
+                             #iem{width:20px; height:19px; margin:0px;border:none; padding:0px;border-radius:25px;background-color:transparent;font-size:12px; color:RoyalBlue}
+                             #iprod{width:20px; height:19px; margin:0px;border:none; padding:0px;border-radius:25px;background-color:transparent;font-size:12px; color:RoyalBlue}'))
           ),#end tags head
           # stylize show data and show plots buttons
    
@@ -82,7 +88,7 @@ tags$head(tags$body(includeHTML("google-analytics.noaa.js"))),
             tags$link(rel="stylesheet", type="text/css", href="bootstrap.css"),
             # secondary css page with fisheye specific attributes
             tags$link(rel="stylesheet", type="text/css", href="fisheye.css"),
-            tags$link(rel="stylesheet", href="http://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.4.0/css/font-awesome.min.css"),
+            tags$link(rel="stylesheet", href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.4.0/css/font-awesome.min.css"),
             tags$style(type="text/css", ".tab-content {overflow: visible;}")         
           ),
          #   source("www/shiny_framebuster/framebuster.R")$value,
@@ -137,18 +143,18 @@ tags$head(tags$body(includeHTML("google-analytics.noaa.js"))),
                                     fluidRow(
                                       column(12,
                                              uiOutput("SectorSelect"),
-                                             style = "background:white; padding:0px;padding-bottom:-15px;margin-bottom:0px;margin-left:1px; border: 3px solid #D3D3D3;border-radius:10px;width:97%;")
+                                             style = "background:white; padding:0px;padding-bottom:-15px;margin-bottom:0px;margin-left:1px; border: 3px solid #D3D3D3;border-radius:10px;width:95%;font-size:110%")
                                       ), 
                                     fluidRow(
                                       column(6,
                                                wellPanelSub(
                                                conditionalPanel(condition="input.Sect_sel=='FR'",  
-                                                              uiOutput("ProductionSelect")),
+                                                              uiOutput("Productionselect")),
                                                wellPanelHeading(
-                                                 uiOutput("CategorySelect")
+                                                 uiOutput("Categoryselect")
                                                ),
                                                conditionalPanel(condition="input.Sect_sel=='CV'|input.Sect_sel=='FR'",uiOutput("SelectText")),
-                                               uiOutput("VariableSelect")
+                                               uiOutput("Variableselect")
                                              ),
                                              #  conditionalPanel(condition = "input.CategorySelect != 'Fisheries'",
                                              #    wellPanelSub(
@@ -156,10 +162,10 @@ tags$head(tags$body(includeHTML("google-analytics.noaa.js"))),
                                              #   )
                                              #   ),
                                              conditionalPanel(condition="input.Sect_sel=='CV'",
-                                                              wellPanelSub(uiOutput("FishAkSelect"),uiOutput("FishWhitingSelect"))),
+                                                              wellPanelSub(uiOutput("FishAkselect"),uiOutput("FishWhitingselect"))),
                                              
                                              conditionalPanel(condition="input.Sect_sel!='CV'",
-                                                              wellPanelSub(uiOutput("YearSelect2"))),
+                                                              wellPanelSub(uiOutput("Yearselect2"))),
                                                                                              #,
                                              #  conditionalPanel(condition="input.Sect_sel!='CV'",uiOutput("DodgeSelect"),uiOutput("PlotSelect"))
                                              #  ,
@@ -167,19 +173,19 @@ tags$head(tags$body(includeHTML("google-analytics.noaa.js"))),
                                              ),
                                       column(6,
                                             wellPanelSub(
-                                               uiOutput("StatSelect"),
+                                               uiOutput("Statselect"),
                                              #conditionalPanel(condition ="input.tabs == 'Panel2'|| input.tabs== 'Panel1' & input.DodgeSelect == 'Economic measures side-by-side'",
-                                                               uiOutput("ShortdescrSelect")#)
+                                                               uiOutput("Shortdescrselect")#)
                                              ),
-                                            conditionalPanel(condition="input.Sect_sel=='CV'", wellPanelSub(
-                                               uiOutput("YearSelect")
+                                            conditionalPanel(condition="input.Sect_sel=='CV'", 
+                                                              wellPanelSub(uiOutput("Yearselect")
                                              ),
                                              style = "padding-right:5px;margin-right:0px; padding-left:2px;,width:100%"
                                       )),
                                       column(6,
                                              wellPanel(
                                             #   conditionalPanel(condition="input.Sect_sel=='CV'", uiOutput('DodgeSelect2'), uiOutput('PlotSelect2'))
-                                               uiOutput('DodgeSelect'), uiOutput('PlotSelect')
+                                               uiOutput('Dodgeselect'), uiOutput('Plotselect')
                                       ),
                                       style = "padding-right:-20px;margin-right:-55px; padding-left:2px;,width:102%"),
                                       column(4,
@@ -232,7 +238,7 @@ tags$head(tags$body(includeHTML("google-analytics.noaa.js"))),
                                 column(12, htmlOutput("ApplicationsText"))
                               )),
                      
-                     tabPanel(HTML('<a class="btn btn-warning", href="http://dataexplorer.northwestscience.fisheries.noaa.gov/fisheye/"
+                     tabPanel(HTML('<a class="btn btn-warning", href="https://dataexplorer.northwestscience.fisheries.noaa.gov/fisheye/"
                                    style="height:37px;border-radius:25px;margin: -24px -50px; float:top;position:absolute;right:-100px;font-familiy: Arial, Helvetica, sans-serif;font-size: 12pt; padding-top:7px;
                                    padding-bottom:10px"> FISHEyE Homepage</a>' ),style='width:1000px')
                             ), #end app level fluid row#, target="_blank"

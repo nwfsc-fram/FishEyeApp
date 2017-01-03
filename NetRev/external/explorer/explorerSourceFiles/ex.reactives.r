@@ -28,7 +28,7 @@ DatThirds <- reactive({
     dat <- netrevThirds
    } else if(input$Sect_sel=="FR"){
     dat <- FRthirds
-  } 
+   }
 })
 
 
@@ -39,18 +39,19 @@ DatVars <- reactive({
   datVars <- with(dat, 
                   list(YEAR = 2009:2015,
                        SHORTDESCR = c("Revenue","Variable costs","Fixed costs","Variable Cost Net Revenue","Total Cost Net Revenue"),
-                       CATEGORY = c("Fisheries","Homeport","State","Vessel length class"),
+                       CATEGORY = c("Fisheries","Homeport","State of homeport"="State","Vessel length class"),
                        FISHAK = unique(FISHAK),
                        whitingv = unique(whitingv),
                        STAT =  c("Average per vessel","Average per vessel/day","Average per vessel/metric-ton","Median per vessel","Median per vessel/day","Median per vessel/metric-ton","Fleet-wide total")#="Total"
                    ))
   } else if(input$Sect_sel=="FR"){
+    
     datVars <- with(dat, 
                     list(YEAR =  2009:2014,
                          SHORTDESCR = c("Revenue","Variable costs","Fixed costs","Variable Cost Net Revenue","Total Cost Net Revenue"),
                          CATEGORY = c("Production activities","Region","Processor size"),
                          FISHAK = unique(FISHAK),
-                         STAT =  c("Average per vessel","Average per vessel/metric-ton","Median per vessel","Median per vessel/metric-ton","Fleet-wide total")#="Total"
+                         STAT =  c("Average per processor","Average per processor/metric-ton","Median per processor","Median per processor/metric-ton","Industry-wide total")#="Total"
                     ))
   } else {
     datVars <- with(dat, 
@@ -88,7 +89,14 @@ DatSubTable <- reactive({
 
   dat <- DatMain()      
   dat <- dat[-c(which(colnames(dat)=="con_flag"),which(colnames(dat)=="flag"))]
-  
+ 
+   if(input$Sect_sel=="FR") {
+     dat$STAT <- ifelse(dat$STAT=="Fleet-wide total", "Industry-wide total", as.character(dat$STAT))
+     dat$STAT <- ifelse(dat$STAT=="Average per vessel", "Average per processor", as.character(dat$STAT))
+     dat$STAT <- ifelse(dat$STAT=="Average per vessel/metric-ton", "Average per processor/metric-ton", as.character(dat$STAT))
+     dat$STAT <- ifelse(dat$STAT=="Median per vessel", "Median per processor", as.character(dat$STAT))
+     dat$STAT <- ifelse(dat$STAT=="Median per vessel/metric-ton", "Median per processor/metric-ton", as.character(dat$STAT))
+   }
   #subsetting
   datSub <- with(dat, dat[which(SHORTDESCR %in% input$ShortdescrSelect & 
                      CATEGORY %in% input$CategorySelect &
@@ -120,9 +128,9 @@ DatSubTable <- reactive({
   if(input$Sect_sel=='CV' & input$CategorySelect != "Fisheries" || input$Sect_sel=='FR' & input$CategorySelect != "Production activities") {
     datSub <- subset(datSub, CS == input$inSelect)
   }
-  datSub$N <- ifelse(datSub$N<3, NA, datSub$N)
-  datSub$N <- ifelse(datSub$N>2&is.na(datSub$VALUE)==T, NA, datSub$N)
-  datSub$VARIANCE <- ifelse(datSub$N>2&is.na(datSub$VALUE)==T, NA, datSub$VARIANCE)
+  datSub$VALUE <- ifelse(datSub$N<3, NA, datSub$VALUE)
+#  datSub$N <- ifelse(datSub$N>2&is.na(datSub$VALUE)==T, NA, datSub$N)
+  datSub$VARIANCE <- ifelse(datSub$N<3, NA, datSub$VARIANCE)
   
   if(input$Sect_sel=="CV"){
   datSub$FISHAK <- ifelse(datSub$FISHAK=="TRUE", "Vessels included", "Vessels not included")
@@ -139,7 +147,6 @@ DatSubTable <- reactive({
                         which(colnames(datSub)=="SHORTDESCR"),which(colnames(datSub)=="N"),which(colnames(datSub)=="VALUE"),which(colnames(datSub)=="VARIANCE"))]
   }
   
-  print(datSub[1:5,])
   validate(
     need(dim(datSub)[1]>0, #min(datSub$N)>2,
          paste('Sorry, this plot could not be generated as no vessels matched your selections. 
@@ -161,6 +168,13 @@ DatThirdsTable <- reactive({
   #  if(!is.null(DatMain())  ){
   dat <- DatThirds()      
   dat <- dat[,-which(colnames(dat)=="con_flag")]
+   if(input$Sect_sel=="FR") {
+    dat$STAT <- ifelse(dat$STAT=="Fleet-wide total", "Industry-wide total", as.character(dat$STAT))
+    dat$STAT <- ifelse(dat$STAT=="Average per vessel", "Average per processor", as.character(dat$STAT))
+    dat$STAT <- ifelse(dat$STAT=="Average per vessel/metric-ton", "Average per processor/metric-ton", as.character(dat$STAT))
+    dat$STAT <- ifelse(dat$STAT=="Median per vessel", "Median per processor", as.character(dat$STAT))
+    dat$STAT <- ifelse(dat$STAT=="Median per vessel/metric-ton", "Median per processor/metric-ton", as.character(dat$STAT))
+  }
   
   #subsetting
   datSub <- subset(dat, SHORTDESCR %in% input$ShortdescrSelect & 
@@ -192,9 +206,9 @@ DatThirdsTable <- reactive({
   if(input$Sect_sel=='CV' & input$CategorySelect != "Fisheries" || input$Sect_sel=='FR' & input$CategorySelect != "Production activities") {
     datSub <- subset(datSub, CS == input$inSelect)
   }
-  datSub$N <- ifelse(datSub$N<3, NA, datSub$N)
-  datSub$N <- ifelse(datSub$N>2&is.na(datSub$VALUE)==T, NA, datSub$N)
-  datSub$VARIANCE <- ifelse(datSub$N>2&is.na(datSub$VALUE)==T, NA, datSub$VARIANCE)
+#  datSub$VALUE <- ifelse(datSub$N<3, NA, datSub$VALUE)
+#  datSub$N <- ifelse(datSub$N>2&is.na(datSub$VALUE)==T, NA, datSub$N)
+#  datSub$VARIANCE <- ifelse(datSub$N>2, NA, datSub$VARIANCE)
   
   if(input$Sect_sel=="CV"){
   datSub$FISHAK <- ifelse(datSub$FISHAK=="TRUE", "Vessels included", "Vessels not included")
@@ -210,9 +224,17 @@ DatThirdsTable <- reactive({
   
   validate(
     need(dim(datSub)[1]>0, #min(datSub$N)>2,
-         paste('Sorry, this plot could not be generated as no vessels matched your selections. 
-               Try clicking the box to include all vessels that fished in AK or include all vessels that fished for whiting. 
-               ')))
+         'Sorry, this plot could not be generated as no vessels matched your selections. 
+          Try clicking the box to include all vessels that fished in AK or include all vessels that fished for whiting.'),
+    need(datSub$VARIABLE!='Large',
+         'Sorry, this plot could not be generated as an insufficient number of processors matched your selections. 
+          Try selecting a different processor size.'),
+    need(input$VariableSelect!='Small',
+         need(input$ProductionSelect!="Catch share processors",
+            "Sorry, this plot could not be generated as an insufficient number of processors matched your selections. 
+            Try selecting  'All processors' or selecting a different processor size. "))
+    )
+  
   print(datSub)[1:3,]
   return(datSub)
   
@@ -222,7 +244,15 @@ DatThirdsTable <- reactive({
 # build dcast formula using if controls and using the quoted method in dcast
 DatSub <- reactive({
   
-    dat <- DatMain()      
+    dat <- DatMain() 
+    if(input$Sect_sel=="FR") {
+      dat$STAT <- ifelse(dat$STAT=="Fleet-wide total", "Industry-wide total", as.character(dat$STAT))
+      dat$STAT <- ifelse(dat$STAT=="Average per vessel", "Average per processor", as.character(dat$STAT))
+      dat$STAT <- ifelse(dat$STAT=="Average per vessel/metric-ton", "Average per processor/metric-ton", as.character(dat$STAT))
+      dat$STAT <- ifelse(dat$STAT=="Median per vessel", "Median per processor", as.character(dat$STAT))
+      dat$STAT <- ifelse(dat$STAT=="Median per vessel/metric-ton", "Median per processor/metric-ton", as.character(dat$STAT))
+    }
+    
       datSub <- subset(dat, CATEGORY == input$CategorySelect &
                             VARIABLE %in% input$VariableSelect &
                             STAT == input$StatSelect)
@@ -259,7 +289,7 @@ DatSub <- reactive({
     }
        
     datSub$VALUE <- as.numeric(datSub$VALUE)
-    print(datSub[1,])
+
     #Define levels - this is for the order when plotting
     if(input$CategorySelect == "Homeport"){
       datSub$VARIABLE <- factor(datSub$VARIABLE, levels = factorOrder$port)
@@ -285,6 +315,9 @@ DatSub <- reactive({
       datSub$VALUE <- ifelse(datSub$flag==1, 0, datSub$VALUE)
       datSub$star <- ifelse(datSub$flag==1, "*", "")
       datSub$con_flag <- ifelse(datSub$con_flag==1, 0, datSub$con_flag)
+      datSub$VALUE <- ifelse(datSub$N<3, NA, datSub$VALUE)
+      datSub$VARIANCE <- ifelse(datSub$N<3, NA, datSub$VARIANCE)
+      
 #    }
 #    else {
 #      datSub$star <- ""
@@ -340,9 +373,9 @@ DatSub <- reactive({
 #                         ')))
     validate(
       need(dim(datSub)[1]>0, #min(datSub$N)>2,
-           paste('Sorry, this plot could not be generated as no vessels matched your selections. 
+           'Sorry, this plot could not be generated as no vessels matched your selections. 
                  Try clicking the box to include all vessels that fished in Alaska or include all vessels that fished for Pacific whiting. 
-                 ')))
+                 '))
     
     
     return(datSub)
@@ -353,6 +386,13 @@ DatSub <- reactive({
 # create an additional subset for thirds plot
 DatSubThirds <- reactive({
   dat <- DatThirds()
+  if(input$Sect_sel=="FR") {
+    dat$STAT <- ifelse(dat$STAT=="Fleet-wide total", "Industry-wide total", as.character(dat$STAT))
+    dat$STAT <- ifelse(dat$STAT=="Average per vessel", "Average per processor", as.character(dat$STAT))
+    dat$STAT <- ifelse(dat$STAT=="Average per vessel/metric-ton", "Average per processor/metric-ton", as.character(dat$STAT))
+    dat$STAT <- ifelse(dat$STAT=="Median per vessel", "Median per processor", as.character(dat$STAT))
+    dat$STAT <- ifelse(dat$STAT=="Median per vessel/metric-ton", "Median per processor/metric-ton", as.character(dat$STAT))
+  }
   
   #subsetting
   datSub <- subset(dat, 
@@ -411,12 +451,23 @@ DatSubThirds <- reactive({
   datSub <- subset(datSub, is.na(datSub$VALUE)==F)
   datSub$VALUE <- as.numeric(datSub$VALUE)
   datSub$VARIANCE <- as.numeric(datSub$VARIANCE)
+#  datSub$VALUE <- ifelse(datSub$N<3, NA, datSub$VALUE)
+#  datSub$VARIANCE <- ifelse(is.na(datSub$VALUE)==T, NA, datSub$VARIANCE)
+  
   
   validate(
     need(dim(datSub)[1]>0, 
-         paste('Sorry, this plot could not be generated as no vessels matched your selections. 
-               Try clicking the box to include all vessels that fished in Alaska or include all vessels that fished for Pacific whiting. 
-               ')))
+         'Sorry, this plot could not be generated as no vessels matched your selections. 
+          Try clicking the box to include all vessels that fished in Alaska or include all vessels that fished for Pacific whiting.'),
+    need(datSub$VARIABLE!='Large',
+         'Sorry, this plot could not be generated as an insufficient number of processors matched your selections. 
+          Try selecting a different processor size.'),
+    need(input$VariableSelect!='Small',
+         need(input$ProductionSelect!="Catch share processors",
+          "Sorry, this plot could not be generated as an insufficient number of processors matched your selections. 
+          Try selecting  'All processors' or selecting a different processor size."))
+  )
+  
   
   return(datSub)
   

@@ -10,18 +10,16 @@ tags$div(style = "margin: 15px; 15px;30px; 30px; width: 60%",
                       fishing quota (IFQ) program for the shorebased trawl fleet (catcher vessels, and first receivers and shorebased processors). FISHEyE allows you to explore economic data pre- and post-Catch Share management.'),
                
                 tags$p('Data used in FISHEyE comes from', 
-                tags$a(href='http://www.nwfsc.noaa.gov/research/divisions/fram/economic/economic_data_forms.cfm', 'EDC survey forms', target="_blank"),'and
+                tags$a(href='https://www.nwfsc.noaa.gov/research/divisions/fram/economic/economic_data_forms.cfm', 'EDC survey forms', target="_blank"),'and
                 Pacific Fisheries Information Network', tags$a(href="http://pacfin.psmfc.org/",'(PacFIN).', target="_blank"),
-                'As part of the Catch Share program, participants of the fishery are required to complete', tags$a(href='http://www.nwfsc.noaa.gov/research/divisions/fram/economic/economic_data_forms.cfm', 'EDC survey forms', target="_blank"),
+                'As part of the Catch Share program, participants of the fishery are required to complete', tags$a(href='https://www.nwfsc.noaa.gov/research/divisions/fram/economic/economic_data_forms.cfm', 'EDC survey forms', target="_blank"),
                 'as stated in', 
                 tags$a(href="http://www.ecfr.gov/cgi-bin/text-idx?SID=06f0c396e52e564ce22a048aa910f49f&node=50:13.0.1.1.1.4.1.5&rgn=div8",'regulation 50 CFR 660.114', target="_blank"), 
                 'for all fisheries they participate in, including non-Catch Share fisheries. Data collection began in 2009, two years prior to implementing the Catch Share program. 
                 FISHEyE Net Revenue Explorer allows for the comparison of revenue, costs, and net revenue across years for several summary statistics. Net Revenue Explorer currently includes',
-                  tags$a(href="2012CatcherVessel.jpg","catcher vessels.", target="_blank"), 
-                  'Other sectors that participate in the Catch Share program', tags$a(href="2012CatcherProcessor.jpg", '(catcher-processors,', target="_blank"), 
+                  tags$a(href="2012CatcherVessel.jpg","catcher vessels,", target="_blank"), tags$a(href="2012CatcherProcessor.jpg", 'catcher-processors,', target="_blank"), 
                   tags$a(href="2012Mothership.jpg", 'motherships,', target="_blank"), 'and ', 
-                  tags$a(href="2012FirstRecieversShorebasedProcessors.jpg",'first receivers and shorebased processors)', target="_blank"),
-                  ' will be added. Additional metrics to assess the effectiveness and outcomes of the Catch Share program are also in development.'),
+                  tags$a(href="2012FirstRecieversShorebasedProcessors.jpg",'first receivers and shorebased processors.', target="_blank")),
                
                  
          tags$p('FISHEyE Net Revenue Explorer is user driven and interactive. Information on how to use FISHEyE Net Revenue Explorer is available in the', tags$em("Instructions"), 'tab.
@@ -37,7 +35,7 @@ tags$div(style = "margin: 15px; 15px;30px; 30px; width: 60%",
          tags$br(),tags$br(),'There are some cases where results cannot be presented 
           after selecting the box for either 1) vessels that fished in Alaska or 2) vessels that fished for Pacific whiting. This is because there are not enough vessels to differentiate between selections. 
            When this happens, we show results for when the box is selected. When this happens, it is indicated in a message below the plot and in the data table. More information on data confidentiality requirements can be found in the',
-         tags$a(href = "http://www.nwfsc.noaa.gov/research/divisions/fram/documents/Administration_Operations_Report_2014.pdf",
+         tags$a(href = "https://www.nwfsc.noaa.gov/research/divisions/fram/documents/Administration_Operation_Report_October_2016.pdf",
          "EDC Administration and Operations Report.", target="_blank")),
          tags$hr(),
           tags$h3('A note about the timing that data become available:'), 
@@ -53,14 +51,14 @@ tags$div(style = "margin: 15px; 15px;30px; 30px; width: 60%",
                 <a href='http://www.pcouncil.org/groundfish/background/' target='_blank'>Pacific Fishery Management Council </a><br>          
                 <a href='http://www.westcoast.fisheries.noaa.gov/' target='_blank'>West Coast Regional Office </a><br>
                 <a href='http://www.westcoast.fisheries.noaa.gov/fisheries/groundfish_catch_shares/' target='_blank'>West Coast Groundfish Trawl Catch Share Program </a><br>
-                <a href='http://www.nwfsc.noaa.gov/index.cfm' target='_blank'>Northwest Fishery Science Center (NWFSC)</a></div>"),              
+                <a href='https://www.nwfsc.noaa.gov/index.cfm' target='_blank'>Northwest Fishery Science Center (NWFSC)</a></div>"),              
             
-            tags$ul(tags$li(tags$a(href="http://www.nwfsc.noaa.gov/research/divisions/fram/economic/index.cfm", "Economic and Social Science Research (ESSR) Program at the NWFSC", target="_blank")),  
-            tags$li(tags$a(href="http://www.nwfsc.noaa.gov/research/divisions/fram/economic/overview.cfm","The Economic Data Collection (EDC) Program", target="_blank"),
+            tags$ul(tags$li(tags$a(href="https://www.nwfsc.noaa.gov/research/divisions/fram/economic/index.cfm", "Economic and Social Science Research (ESSR) Program at the NWFSC", target="_blank")),  
+            tags$li(tags$a(href="https://www.nwfsc.noaa.gov/research/divisions/fram/economic/overview.cfm","The Economic Data Collection (EDC) Program", target="_blank"),
             tags$ul(#tags$li( "EDC General Information")),
-            tags$li(tags$a(href="http://www.nwfsc.noaa.gov/research/divisions/fram/economic/economic_data_reports.cfm","EDC Reports",target="_blank")),       
-            tags$li(tags$a(href="http://www.nwfsc.noaa.gov/research/divisions/fram/economic/economic_data_forms.cfm","EDC Forms",target="_blank")),      
-            tags$li(tags$a(href="http://www.nwfsc.noaa.gov/news/features/infographics/index.cfm", "Infographic describing the sectors participating in the Catch Share program", target="_blank"))))),
+            tags$li(tags$a(href="https://www.nwfsc.noaa.gov/research/divisions/fram/economic/economic_data_reports.cfm","EDC Reports",target="_blank")),       
+            tags$li(tags$a(href="https://www.nwfsc.noaa.gov/research/divisions/fram/economic/economic_data_forms.cfm","EDC Forms",target="_blank")),      
+            tags$li(tags$a(href="https://www.nwfsc.noaa.gov/news/features/infographics/index.cfm", "Infographic describing the sectors participating in the Catch Share program", target="_blank"))))),
             
             tags$a(href="http://pacfin.psmfc.org/","Pacific Fisheries Information Network (PacFIN)", target="_blank"),tags$br(),
 

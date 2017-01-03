@@ -3,6 +3,14 @@
 doPlotDownload <- function(dat, x, y, type){
   if(PermitPlot()){
     
+    yr <- function(){
+      if(input$Sect_sel=="CV"){
+        return(input$YearSelect)  
+      } else {
+        return(input$YearSelect2)
+      }
+    }
+    
     groupVar <- ifelse(type=="summary", "SHORTDESCR", "THIRDS")
     facetVar <- ifelse(type== "summary" , "VARIABLE", "SHORTDESCR")
 
@@ -38,16 +46,32 @@ doPlotDownload <- function(dat, x, y, type){
     gv <- function(){
       if(type == "summary"){
         if(input$CategorySelect=="Fisheries"){
-          sprintf(paste("Group variable:", input$CategorySelect, " Statistic: ", input$StatSelect, " Fished in AK included:", input$FishAkSelect, " Fished for whiting included:", input$FishWhitingSelect))
-        } else {
-          sprintf(paste("Group variable:", input$CategorySelect, "Statistic: ", input$StatSelect, "Fished in AK included:", input$FishAkSelect, "Fished for whiting included:", input$FishWhitingSelect,"Summed across:", input$inSelect))
-        }
+          if(input$Sect_sel=="CV"){
+            sprintf(paste("Group variable:", input$CategorySelect, "     Statistic: ", input$StatSelect, "    Fished in AK included:", input$FishAkSelect, "    Fished for whiting included:", input$FishWhitingSelect))
+          } else {
+            sprintf(paste("Group variable:", input$CategorySelect, "     Statistic: ", input$StatSelect))
+          }} else if(input$CategorySelect=="Production activities"){
+            sprintf(paste("Group variable:", input$CategorySelect, "     Statistic: ", input$StatSelect))
+          } else {
+            if(input$Sect_sel=="CV"){
+              sprintf(paste("Group variable:", input$CategorySelect, "     Statistic: ", input$StatSelect, "    Fished in AK included:", input$FishAkSelect,"    Fished for whiting included:", input$FishWhitingSelect,"    Summed across:", input$inSelect))
+            } else {
+              sprintf(paste("Group variable:", input$CategorySelect, "     Statistic: ", input$StatSelect,   "Summed across:", input$inSelect))
+            }}
       } else {
         if(input$CategorySelect=="Fisheries"){
-          sprintf(paste(input$CategorySelect, ":", input$VariableSelect, " Statistic: ", input$StatSelect, "Fished in AK included:", input$FishAkSelect, " Fished for whiting included:", input$FishWhitingSelect))
-        } else {
-          sprintf(paste(input$CategorySelect, ":", input$VariableSelect, " Statistic: ", input$StatSelect, " Fished in AK included:", input$FishAkSelect, " Fished for whiting included:", input$FishWhitingSelect," Summed across:", input$inSelect))   
-        }
+          if(input$Sect_sel=="CV"){
+            sprintf(paste(input$CategorySelect, ":", input$VariableSelect, "     Statistic: ", input$StatSelect, "    Fished in AK included:", input$FishAkSelect,"    Fished for whiting included:", input$FishWhitingSelect))
+          } else{
+            sprintf(paste(input$CategorySelect, ":", input$VariableSelect, "     Statistic: ", input$StatSelect))
+          }} else if(input$CategorySelect=="Production activities"){
+            sprintf(paste(input$CategorySelect, ":", input$VariableSelect, "     Statistic: ", input$StatSelect))
+          } else {
+            if(input$Sect_sel=="CV"){
+              sprintf(paste(input$CategorySelect, ":", input$VariableSelect, "     Statistic: ", input$StatSelect, "    Fished in AK included:", input$FishAkSelect,"    Fished for whiting included:", input$FishWhitingSelect,"    Summed across:", input$inSelect))   
+            } else {
+              sprintf(paste(input$CategorySelect, ":", input$VariableSelect, "     Statistic: ", input$StatSelect,  "Summed across:", input$inSelect))   
+            }}
       }
     }
     
@@ -89,21 +113,13 @@ doPlotDownload <- function(dat, x, y, type){
     scale_text <- function() {
       if(input$CategorySelect =="Fisheries" | input$CategorySelect == "Homeport") {
         b <- table(table(dat$VARIABLE)>1)[[1]]
-        if(b == 10 | b ==9) {
-          return(1.1)
-        } else if(b == 8){
-          return(1.3)
-        } else if(b >= 5 & b < 8){
-          return(1.5)
-        } else if(b<5 | b==12){
-          return(1.9)
+        if(b<=8 | b==12){
+          return(1.2)
         }   else {
-          if(b==11) {
             return(1.1)
-          }
         }
       } else {
-        return(1.4)
+        return(1.2)
       }
     }   
     
@@ -111,9 +127,9 @@ doPlotDownload <- function(dat, x, y, type){
       
       b <- table(table(dat$SHORTDESCR)>1)[[1]]
       if(b == 2 | b ==5) {
-        return(1.7)
+        return(1.6)
       } else {
-        return(1.3)
+        return(1.2)
       } 
     }   
     
@@ -125,7 +141,7 @@ doPlotDownload <- function(dat, x, y, type){
         if(input$PlotSelect!="Bar"){
           if(input$PlotSelect == "Point"){
             
-            g <- g + geom_point(aes_string(colour = groupVar), size=4)   
+            g <- g + geom_point(aes_string(colour = groupVar), size=2)   
           } else {
             g <- g + geom_line(aes_string(colour = groupVar), size=1.5)
           }} # end if statement for line figure
@@ -134,27 +150,27 @@ doPlotDownload <- function(dat, x, y, type){
           g <- g + geom_bar(aes_string(fill = groupVar, order=groupVar), stat="identity", position="dodge", width = scale_bars())
         } #End if else for side-by-side comparion
 
-        if(length(input$YearSelect)>1 & min(input$YearSelect)<2011 & max(input$YearSelect)>2010){
-          if(input$YearSelect[1]==2009&input$YearSelect[2]==2010){
-            if(length(input$YearSelect[input$YearSelect>2010])==1){
-              g <- g + geom_rect(aes_string(xmin=.1, xmax=2.35, ymin=-Inf, ymax=Inf), fill="grey50", alpha=.05/length(input$YearSelect))+ 
-                geom_text(aes(x=0.4,y=max(VALUE,na.rm=T)/1000+max(VALUE,na.rm=T)/10000, label="Pre-Catch shares", family="sans"),hjust=0, color="grey20", size=4.5/scale_text()) + 
-                geom_text(aes(x=length(table(input$YearSelect[input$YearSelect<2011]))+length(table(input$YearSelect[input$YearSelect>2010]))/2,y=max(VALUE,na.rm=T)/1000+max(VALUE,na.rm=T)/10000,label="Post-Catch shares", family="sans"),hjust=1, size=4.5/scale_text(), color="grey20")# +
+        if(length(yr())>1 & min(yr())<2011 & max(yr())>2010){
+          if(yr()[1]==2009&yr()[2]==2010){
+            if(length(yr())==3){
+              g <- g + geom_rect(aes(xmin=.1, xmax=2.5, ymin=-Inf, ymax=Inf), fill="grey50", alpha=.05/length(yr()))+ 
+                geom_text(aes(x=0.4,y=max(VALUE,na.rm=T)/1000+max(VALUE,na.rm=T)/10000, label="Pre-Catch shares"), family="serif",fontface="italic",hjust=0, color="grey40", size=4/scale_text()) + 
+                geom_text(aes(x=table(yr()<2011)[[2]]+table(yr()>2010)[[2]]/1,y=max(VALUE,na.rm=T)/1000+max(VALUE,na.rm=T)/10000,label="Post-Catch shares"), family="serif",fontface="italic",hjust=1, size=4/scale_text(), color="grey40")# +
               
             } else {
-              g <- g + geom_rect(aes_string(xmin=.1, xmax=2.5, ymin=-Inf, ymax=Inf), fill="grey50", alpha=.05/length(input$YearSelect))+ 
-                geom_text(aes(x=0.3,y=max(VALUE,na.rm=T)/1000+max(VALUE,na.rm=T)/10000, label="Pre-Catch shares", family="sans"),hjust=0, color="grey20", size=4.5/scale_text()) + 
-                geom_text(aes(x=2.75,y=max(VALUE,na.rm=T)/1000+max(VALUE,na.rm=T)/10000,label="Post-Catch shares", family="sans"),hjust=0, size=4.5/scale_text(), color="grey20")# +
+              g <- g + geom_rect(aes_string(xmin=.1, xmax=2.5, ymin=-Inf, ymax=Inf), fill="grey50", alpha=.05/length(yr()))+ 
+                geom_text(aes(x=0.3,y=max(VALUE,na.rm=T)/1000+max(VALUE,na.rm=T)/10000, label="Pre-Catch shares"), family="serif",fontface="italic",hjust=0, color="grey40", size=4/scale_text()) + 
+                geom_text(aes(x=table(yr()<2011)[[2]]+table(yr()>2010)[[2]]/1.75,y=max(VALUE,na.rm=T)/1000+max(VALUE,na.rm=T)/10000,label="Post-Catch shares"),family="serif",fontface="italic",hjust=0, size=4/scale_text(), color="grey40")# +
               
             }} else  {
-              if(length(input$YearSelect[input$YearSelect>2010])==1){
-                g <- g + geom_rect(aes(xmin=.1, xmax=1.5, ymin=-Inf, ymax=Inf), fill="grey50", alpha=.05/length(input$YearSelect))+ 
-                  geom_text(aes(x=.25,y=max(VALUE,na.rm=T)/1000+max(VALUE,na.rm=T)/10000, label="Pre-Catch shares", family="sans"),hjust=0, size=4.5/scale_text(), color="grey20") + 
-                  geom_text(aes(x=length(table(input$YearSelect[input$YearSelect<2011]))+length(table(input$YearSelect[input$YearSelect>2010]))/2,y=max(VALUE,na.rm=T)/1000+max(VALUE,na.rm=T)/10000,label="Post-Catch shares", family="sans"),hjust=1, size=4.5/scale_text(), color="grey20") #+
+              if(table(yr()>2010)[[2]]==1){
+                g <- g + geom_rect(aes(xmin=.1, xmax=1.5, ymin=-Inf, ymax=Inf), fill="grey50", alpha=.05/length(yr()))+ 
+                  geom_text(aes(x=.25,y=max(VALUE,na.rm=T)/1000+max(VALUE,na.rm=T)/10000, label="Pre-Catch shares"), family="serif",fontface="italic",hjust=0, size=4/scale_text(), color="grey40") + 
+                  geom_text(aes(x=table(yr()<2011)[[2]]+table(yr()>2010)[[2]]/.75,y=max(VALUE,na.rm=T)/1000+max(VALUE,na.rm=T)/10000,label="Post-Catch shares"), family="serif",fontface="italic",hjust=1, size=4/scale_text(), color="grey40") #+
               } else {
-                g <- g + geom_rect(aes(xmin=.1, xmax=1.5, ymin=-Inf, ymax=Inf), fill="grey50", alpha=.05/length(input$YearSelect))+ 
-                  geom_text(aes(x=.15,y=max(VALUE,na.rm=T)/1000+max(VALUE,na.rm=T)/10000, label="Pre-Catch shares", family="sans"),hjust=0, size=4.5/scale_text(), color="grey20") + 
-                  geom_text(aes(x=1.9,y=max(VALUE,na.rm=T)/1000+max(VALUE,na.rm=T)/10000,label="Post-Catch shares", family="sans"),hjust=0, size=4.5/scale_text(), color="grey20") #+
+                g <- g + geom_rect(aes(xmin=.1, xmax=1.5, ymin=-Inf, ymax=Inf), fill="grey50", alpha=.05/length(yr()))+ 
+                  geom_text(aes(x=.15,y=max(VALUE,na.rm=T)/1000+max(VALUE,na.rm=T)/10000, label="Pre-Catch shares"), family="serif",fontface="italic",hjust=0, size=4/scale_text(), color="grey40") + 
+                  geom_text(aes(x=table(yr()<2011)[[2]]+table(yr()>2010)[[2]]/1.75,y=max(VALUE,na.rm=T)/1000+max(VALUE,na.rm=T)/10000,label="Post-Catch shares"), family="serif",fontface="italic",hjust=0, size=4/scale_text(), color="grey40") #+
               }
             }} # end if-else for adding dashed lines or not (pre- and post- catch shares)
         else {
@@ -163,31 +179,32 @@ doPlotDownload <- function(dat, x, y, type){
       }#End standard plots
     
       if(input$DodgeSelect != "Economic measures side-by-side"){          
-        dat <- dat[order(dat$SHORTDESCR),]
-        g <- ggplot(dat, aes_string(x = x, y = y , group = groupVar, fill=groupVar, order=groupVar)) + 
-          geom_bar(aes_string(fill = groupVar), stat = "identity", position = "stack", width = scale_bars())
+        #dat <- dat[order(dat$SHORTDESCR),]
+       #g <- ggplot(dat, aes_string(x = x, y = y , group = groupVar, fill=groupVar, order=groupVar)) + 
+        #  geom_bar(aes_string(fill = groupVar), stat = "identity", position = "stack", width = scale_bars())
         #    }  
+        g <- g + geom_bar(aes_string(fill = groupVar, order=groupVar), stat="identity", position="stack", width = scale_bars())
         
-        if(length(input$YearSelect)>1 & min(input$YearSelect)<2011 & max(input$YearSelect)>2010){
-          if(input$YearSelect[1]==2009&input$YearSelect[2]==2010){
-            if(length(input$YearSelect[input$YearSelect>2010])==1){
-              g <- g + geom_rect(aes(xmin=.1, xmax=2.35, ymin=-Inf, ymax=Inf), fill="grey50", alpha=.05/length(input$YearSelect))+ 
-                geom_text(aes(x=.4,y=max(VALUE,na.rm=T)/500, label="Pre-Catch shares",family="sans"),hjust=0, size=4.5/scale_text(), color="grey20") + 
-                geom_text(aes(x=length(table(as.numeric(YEAR)))+.6,y=max(VALUE,na.rm=T)/500,label="Post-Catch shares",family="sans"),hjust=1, size=4.5/scale_text(), color="grey20")# +
+        if(length(yr())>1 & min(yr())<2011 & max(yr())>2010){
+          if(yr()[1]==2009&yr()[2]==2010){
+            if(table(yr()>2010)[[2]]==1){
+              g <- g + geom_rect(aes(xmin=.1, xmax=2.5, ymin=-Inf, ymax=Inf), fill="grey50", alpha=.05/length(yr()))+ 
+                geom_text(aes(x=.4,y=max(VALUE,na.rm=T)/500, label="Pre-Catch shares"),family="serif",fontface="italic",hjust=0, size=4/scale_text(), color="grey40") + 
+                geom_text(aes(x=table(yr()<2011)[[2]]+table(yr()>2010)[[2]]/1,y=max(VALUE,na.rm=T)/500,label="Post-Catch shares"),family="serif",fontface="italic",hjust=1, size=4/scale_text(), color="grey40")# +
             } else {
-              g <- g + geom_rect(aes(xmin=.1, xmax=2.5, ymin=-Inf, ymax=Inf), fill="grey50", alpha=.05/length(input$YearSelect))+ 
-                geom_text(aes(x=.3,y=max(VALUE,na.rm=T)/500, label="Pre-Catch shares",family="sans"),hjust=0, size=4.5/scale_text(), color="grey20") + 
-                geom_text(aes(x=2.75,y=max(VALUE,na.rm=T)/500,label="Post-Catch shares",family="sans"),hjust=0, size=4.5/scale_text(), color="grey20")# +
+              g <- g + geom_rect(aes(xmin=.1, xmax=2.5, ymin=-Inf, ymax=Inf), fill="grey50", alpha=.05/length(yr()))+ 
+                geom_text(aes(x=.3,y=max(VALUE,na.rm=T)/500, label="Pre-Catch shares"),family="serif",fontface="italic", hjust=0, size=4/scale_text(), color="grey40") + 
+                geom_text(aes(x=table(yr()<2011)[[2]]+table(yr()>2010)[[2]]/1.5,y=max(VALUE,na.rm=T)/500,label="Post-Catch shares"),family="serif",fontface="italic",hjust=0, size=4/scale_text(), color="grey40")# +
             }
           } else  {
-            if(length(input$YearSelect[input$YearSelect>2010])==1){  
-              g <- g + geom_rect(aes(xmin=.1, xmax=1.5, ymin=-Inf, ymax=Inf), fill="grey50", alpha=.05/length(input$YearSelect))+ 
-                geom_text(aes(x=.25,y=max(VALUE,na.rm=T)/500, label="Pre-Catch shares",family="sans"),hjust=0, size=4.5/scale_text(), color="grey20") + 
-                geom_text(aes(x=length(table(as.numeric(YEAR)))+.6,y=max(VALUE,na.rm=T)/500,label="Post-Catch shares",family="sans"),hjust=1, size=4.5/scale_text(), color="grey20") #+
+            if(table(yr()>2010)[[2]]==1){  
+              g <- g + geom_rect(aes(xmin=.1, xmax=1.5, ymin=-Inf, ymax=Inf), fill="grey50", alpha=.05/length(yr()))+ 
+                geom_text(aes(x=.25,y=max(VALUE,na.rm=T)/500, label="Pre-Catch shares"),family="serif",fontface="italic",hjust=0, size=4/scale_text(), color="grey40") + 
+                geom_text(aes(x=table(yr()<2011)[[2]]+table(yr()>2010)[[2]]/1,y=max(VALUE,na.rm=T)/500,label="Post-Catch shares"),family="serif",fontface="italic",hjust=1, size=4/scale_text(), color="grey40") #+
             } else {
-              g <- g + geom_rect(aes(xmin=.1, xmax=1.5, ymin=-Inf, ymax=Inf), fill="grey50", alpha=.05/length(input$YearSelect))+ 
-                geom_text(aes(x=.15,y=max(VALUE,na.rm=T)/500, label="Pre-Catch shares",family="sans"),hjust=0, size=4.5/scale_text(), color="grey20") + 
-                geom_text(aes(x=1.9,y=max(VALUE,na.rm=T)/500,label="Post-Catch shares",family="sans"),hjust=0, size=4.5/scale_text(), color="grey20") #+
+              g <- g + geom_rect(aes(xmin=.1, xmax=1.5, ymin=-Inf, ymax=Inf), fill="grey50", alpha=.05/length(yr()))+ 
+                geom_text(aes(x=.15,y=max(VALUE,na.rm=T)/500, label="Pre-Catch shares"),family="serif",fontface="italic",hjust=0, size=4/scale_text(), color="grey40") + 
+                geom_text(aes(x=table(yr()<2011)[[2]]+table(yr()>2010)[[2]]/1.5,y=max(VALUE,na.rm=T)/500,label="Post-Catch shares"),family="serif",fontface="italic",hjust=0, size=4/scale_text(), color="grey40") #+
             }
           }}   else {
             g <- g 
@@ -199,30 +216,30 @@ doPlotDownload <- function(dat, x, y, type){
     
     # Begin Variability analysis figure
     if(type!="summary"){
-      if(length(input$YearSelect) > 1){
-        if(length(input$YearSelect)>1 & min(input$YearSelect)<2011 & max(input$YearSelect)>2010){
-          if(input$YearSelect[1]==2009&input$YearSelect[2]==2010){
-            if(length(input$YearSelect[input$YearSelect>2010])==1){
+      if(length(yr()) > 1){
+        if(length(yr())>1 & min(yr())<2011 & max(yr())>2010){
+          if(yr()[1]==2009&yr()[2]==2010){
+            if(table(yr()>2010)[[2]]==1){
               g <- g + geom_line(aes_string(colour = groupVar), size=1.5)+  
-                geom_rect(aes(xmin=.2, xmax=2.5, ymin=-Inf, ymax=Inf),fill="grey50", alpha=.05/length(input$YearSelect))+ 
-                geom_text(aes(x=.5,y=max(VALUE,na.rm=T)/1000+max(VALUE,na.rm=T)/10000, label="Pre-Catch shares"),hjust=0, size=4.5/scale_text2(), color="grey20",family="sans") + 
-                geom_text(aes(x=length(table(as.numeric(YEAR)))+.7,y=max(VALUE,na.rm=T)/1000+max(VALUE,na.rm=T)/10000,label="Post-Catch shares"),hjust=1, size=4.5/scale_text2(), color="grey20",family="sans") #+
+                geom_rect(aes(xmin=.2, xmax=2.5, ymin=-Inf, ymax=Inf),fill="grey50", alpha=.05/length(yr()))+ 
+                geom_text(aes(x=.5,y=max(VALUE,na.rm=T)/1000+max(VALUE,na.rm=T)/10000, label="Pre-Catch shares"),hjust=0, size=4/scale_text2(), color="grey40",family="serif", fontface="italic") + 
+                geom_text(aes(x=length(yr())+.7,y=max(VALUE,na.rm=T)/1000+max(VALUE,na.rm=T)/10000,label="Post-Catch shares"),hjust=1, size=4/scale_text2(), color="grey40",family="serif", fontface="italic") #+
             } else {
               g <- g + geom_line(aes_string(colour = groupVar), size=1.5)+  
-                geom_rect(aes(xmin=.1, xmax=2.5, ymin=-Inf, ymax=Inf),fill="grey50", alpha=.05/length(input$YearSelect))+ 
-                geom_text(aes(x=.25,y=max(VALUE,na.rm=T)/1000+max(VALUE,na.rm=T)/10000, label="Pre-Catch shares"),hjust=0, size=4.5/scale_text2(), color="grey20",family="sans") + 
-                geom_text(aes(x=length(table(as.numeric(YEAR)))-1.5,y=max(VALUE,na.rm=T)/1000+max(VALUE,na.rm=T)/10000,label="Post-Catch shares"),hjust=0, size=4.5/scale_text2(), color="grey20",family="sans") #+
+                geom_rect(aes(xmin=.1, xmax=2.5, ymin=-Inf, ymax=Inf),fill="grey50", alpha=.05/length(yr()))+ 
+                geom_text(aes(x=.25,y=max(VALUE,na.rm=T)/1000+max(VALUE,na.rm=T)/10000, label="Pre-Catch shares"),hjust=0, size=4/scale_text2(), color="grey40",family="serif", fontface="italic") + 
+                geom_text(aes(x=length(yr())-1.5,y=max(VALUE,na.rm=T)/1000+max(VALUE,na.rm=T)/10000,label="Post-Catch shares"),hjust=0, size=4/scale_text2(), color="grey40",family="serif", fontface="italic") #+
             }  }  else {
-              if(length(input$YearSelect[input$YearSelect>2010])==1){              
+              if(table(yr()>2010)[[2]]==1){              
                 g <- g + geom_line(aes_string(colour = groupVar), size=1.5)+ 
-                  geom_rect(aes(xmin=.1, xmax=1.5, ymin=-Inf, ymax=Inf),fill="grey50", alpha=.05/length(input$YearSelect))+ 
-                  geom_text(aes(x=.25,y=max(VALUE,na.rm=T)/1000+max(VALUE,na.rm=T)/10000, label="Pre-Catch shares"),hjust=0, size=4.5/scale_text2(), color="grey20",family="sans") + 
-                  geom_text(aes(x=2.5,y=max(VALUE,na.rm=T)/1000+max(VALUE,na.rm=T)/10000,label="Post-Catch shares"),hjust=1, size=4.5/scale_text2(), color="grey20",family="sans") #+
+                  geom_rect(aes(xmin=.1, xmax=1.5, ymin=-Inf, ymax=Inf),fill="grey50", alpha=.05/length(yr()))+ 
+                  geom_text(aes(x=.25,y=max(VALUE,na.rm=T)/1000+max(VALUE,na.rm=T)/10000, label="Pre-Catch shares"),hjust=0, size=4/scale_text2(), color="grey40",family="serif", fontface="italic") + 
+                  geom_text(aes(x=length(yr())+.2,y=max(VALUE,na.rm=T)/1000+max(VALUE,na.rm=T)/10000,label="Post-Catch shares"),hjust=1, size=4/scale_text2(), color="grey40",family="serif", fontface="italic") #+
               } else {
                 g <- g + geom_line(aes_string(colour = groupVar), size=1.5)+ 
-                  geom_rect(aes(xmin=.1, xmax=1.5, ymin=-Inf, ymax=Inf),fill="grey50", alpha=.05/length(input$YearSelect))+ 
-                  geom_text(aes(x=.25,y=max(VALUE,na.rm=T)/1000+max(VALUE,na.rm=T)/10000, label="Pre-Catch shares"),hjust=0, size=4.5/scale_text2(), color="grey20",family="sans") + 
-                  geom_text(aes(x=2.2,y=max(VALUE,na.rm=T)/1000+max(VALUE,na.rm=T)/10000,label="Post-Catch shares"),hjust=0, size=4.5/scale_text2(), color="grey20",family="sans") #+
+                  geom_rect(aes(xmin=.1, xmax=1.5, ymin=-Inf, ymax=Inf),fill="grey50", alpha=.05/length(yr()))+ 
+                  geom_text(aes(x=.25,y=max(VALUE,na.rm=T)/1000+max(VALUE,na.rm=T)/10000, label="Pre-Catch shares"),hjust=0, size=4/scale_text2(), color="grey40",family="serif", fontface="italic") + 
+                  geom_text(aes(x=table(yr()<2011)[[2]]+table(yr()>2010)[[2]]/1.5,y=max(VALUE,na.rm=T)/1000+max(VALUE,na.rm=T)/10000,label="Post-Catch shares"),hjust=0, size=4/scale_text2(), color="grey40",family="serif", fontface="italic") #+
               }
             }} else {
               g <- g + geom_line(aes_string(colour = groupVar), size=1.5)
@@ -257,51 +274,69 @@ doPlotDownload <- function(dat, x, y, type){
     g <- g + geom_hline(yintercept = 0)
     
     
+    ylab <- function(){
+      if(input$Sect_sel=='FR'){
+        paste("Thousands of 2014 $", "(",input$StatSelect, ")")
+      } else {
+        paste("Thousands of 2015 $", "(",input$StatSelect, ")")
+      }
+    }
     
-    # define labels
+    source_lab <- function(){
+      paste("Sourced from the FISHEyE application (http://dataexplorer.northwestscience.fisheries.noaa.gov/fisheye/NetRevExplorer/) maintained by NOAA Fisheries NWFSC on ",format(Sys.Date(), format="%B %d %Y"))
+    }
+    supp_obs <- function(){
+      "\nData has been suppressed for years that are not plotted as there are not enough observations to protect confidentiality."
+    }
+    conf_mess <- function(){
+      if(input$Sect_sel=="CV"){
+      "\nNOTE: Your selection would reveal confidential data for years with sufficient observations.  The results shown may include both vessels that fished in Alaska and those that \nfished for Pacific whiting. See the confidentiality section under the ABOUT tab for more information."
+      } else {
+      ""
+      }
+    }
+    thirds_mess <- function(){
+      "\n  Vessels are grouped into three tiered categories: top, middle, and lower earners based on revenue. This is done for each year separately."
+    }
+    suff_flag <- function(){
+      paste("\n* Data has been suppressed for this selected",input$CategorySelect, "and year as there are not enough observations to protect confidentiality.")
+    }
+      # define labels
+    xlab <- function(){
     if(type!="summary"){
       if(max(dat$con_flag, na.rm=T)==1){
         if(max(dat$AK_FLAG, na.rm=T)==0){
-          g <- g + labs(y = paste("Thousands of 2014 $", "(",input$StatSelect, ")"), x=paste("Sourced from the FISHEyE application (http://dataexplorer.northwestscience.fisheries.noaa.gov/fisheye/NetRevExplorer/) maintained by NOAA Fisheries NWFSC on ",format(Sys.Date(), format="%B %d %Y"),
-                                                                                             "\n  Vessels are grouped into three tiered categories: top, middle, and lower earners based on revenue. This is done for each year separately.
-                      \nData has been suppressed for years that are not plotted as there are not enough observations to protect confidentiality."), title = main()) 
+          paste(source_lab(),thirds_mess(),supp_obs())
         } else {
-          g <- g + labs(y = paste("Thousands of 2014 $", "(",input$StatSelect, ")"), x=paste("Sourced from the FISHEyE application (http://dataexplorer.northwestscience.fisheries.noaa.gov/fisheye/NetRevExplorer/) maintained by NOAA Fisheries NWFSC on ",format(Sys.Date(), format="%B %d %Y"),
-                          "\n Vessels are grouped into three tiered categories: top, middle, and lower earners based on revenue. This is done for each year separately.  
-                          \nData has been suppressed for years that are not plotted as there are not enough observations to protect confidentiality.  
-                          \nNOTE: In addition, your selection would reveal confidential data for years with sufficient observations.  The results shown may include both vessels that fished in Alaska and those that \nfished for Pacific whiting. See the confidentiality section under the ABOUT tab for more information."), title = main())        
+          paste(source_lab(), thirds_mess(),supp_obs(), conf_mess())
         }} else {
-          
           if(max(dat$AK_FLAG, na.rm=T)==0){
-            g <- g + labs(y = paste("Thousands of 2014 $", "(",input$StatSelect, ")"), x=paste("Sourced from the FISHEyE application (http://dataexplorer.northwestscience.fisheries.noaa.gov/fisheye/NetRevExplorer/) maintained by NOAA Fisheries NWFSC on ",format(Sys.Date(), format="%B %d %Y"),  
-                          "\nVessels are grouped into three tiered categories: top, middle, and lower earners based on revenue. This is done for each year separately."), title = main()) 
+            paste(source_lab(),thirds_mess()) 
           } else {
-            g <- g + labs(y = paste("Thousands of 2014 $", "(",input$StatSelect, ")"), x=paste("Sourced from the FISHEyE application (http://dataexplorer.northwestscience.fisheries.noaa.gov/fisheye/NetRevExplorer/) maintained by NOAA Fisheries NWFSC on ",format(Sys.Date(), format="%B %d %Y"),
-                        "\n Vessels are grouped into three tiered categories: top, middle, and lower earners based on revenue. This is done for each year separately.  
-                          \nNOTE: Unfortunately, your selection would reveal confidential data.  The results shown may include both vessels that fished in Alaska and those that \nfished for Pacific whiting. See the confidentiality section under the ABOUT tab for more information."), title = main())        
+            paste(source_lab(),thirds_mess(), conf_mess())
           }
         }
-          } else {
+          }
+      
+      else {
             if(max(dat$flag)==1) {
               if(max(dat$AK_FLAG, na.rm=T)==0){
-                g <- g + labs(y = paste("Thousands of 2014 $","(",input$StatSelect, ")"), x=paste("Sourced from the FISHEyE application (http://dataexplorer.northwestscience.fisheries.noaa.gov/fisheye/NetRevExplorer/) maintained by NOAA Fisheries NWFSC on ",format(Sys.Date(), format="%B %d %Y"),
-                                                                                            "\n* Data has been suppressed for this selected",input$CategorySelect, "and year as there are not enough observations to protect confidentiality."), title = main())   
+                paste(source_lab(),suff_flag())
               }  else {
-                g <- g + labs(y = paste("Thousands of 2014 $","(",input$StatSelect, ")"), x=
-                                paste("Sourced from the FISHEyE application (http://dataexplorer.northwestscience.fisheries.noaa.gov/fisheye/NetRevExplorer/) maintained by NOAA Fisheries NWFSC on ",format(Sys.Date(), format="%B %d %Y"),
-                          "\n* Data has been suppressed for this selected",input$CategorySelect, "and year as there are not enough observations to protect confidentiality.
-                          \nNOTE: Unfortunately, your selection would reveal confidential data.  The results shown may include both vessels that fished in Alaska and those that \nfished for Pacific whiting. See the confidentiality section under the ABOUT tab for more information."), title = main())        
+                paste(source_lab(),suff_flag(),conf_mess())
               }
             }
             else if(max(dat$AK_FLAG, na.rm=T)==1){
-              g <- g + labs(y = paste("Thousands of 2014 $", "(",input$StatSelect, ")"), x=paste("Sourced from the FISHEyE application (http://devdataexplorer.nwfsc.noaa.gov/fisheye/NetRevExplorer/) maintained by NOAA Fisheries NWFSC on ",format(Sys.Date(), format="%B %d %Y"),
-                                                                                           "\nNOTE: Unfortunately, your selection would reveal confidential data.  The results shown may include both vessels that fished in Alaska and those that \nfished for Pacific whiting. See the confidentiality section under the ABOUT tab for more information."), title = main())       
+              paste(source_lab(),conf_mess())
             } else {
-              g <- g + labs(y = paste("Thousands of 2014 $", "(",input$StatSelect, ")"), x=paste("Sourced from the FISHEyE application (http://dataexplorer.northwestscience.fisheries.noaa.gov/fisheye/NetRevExplorer/) maintained by NOAA Fisheries NWFSC on ",format(Sys.Date(), format="%B %d %Y")), title = main())       
-              
-            }}   
+              source_lab()      
+            }}
+    }
             
-     
+    g <- g + labs(y=ylab(), x=xlab(), title=main())
+    
+    g$data[[names(g$facet$facets)]] = unlist(gsub("([.])", "\\ ", g$data[[names(g$facet$facets)]])) 
+    
     
     # define theme
     g <- g + theme(
@@ -309,22 +344,22 @@ doPlotDownload <- function(dat, x, y, type){
       plot.title = element_text(family = "sans", face = "bold", vjust = 1),
       plot.margin = unit(c(0.5, 0.5, 1, 0.5), "cm"),
       panel.background = element_rect(fill = "white"),
-      panel.margin = unit(1.2, "lines"),
+      panel.margin = unit(1.1, "lines"),
       panel.grid.minor = element_line(linetype = "blank"),
       panel.grid.major.x = element_line(linetype = "blank"),
       panel.grid.major.y = element_line(color = "#656C70", linetype = "dotted"),
       strip.text = element_text(family = "sans", 
-                                size = 11, color = "grey25", vjust=1),
+                                size = 8, color = "grey25", vjust=1),
       strip.background = element_rect(fill = "lightgrey"),
       axis.ticks = element_blank(),
       axis.title.x = element_text(size=rel(.7), face="italic", vjust=0, colour="grey25"),
       axis.title.y = element_text(size=rel(1.2), vjust=2, colour="grey25"),
       axis.line.x = element_line(size = 2, colour = "black", linetype = "solid"),
-      axis.text = element_text(size = 9.5),
+      axis.text = element_text(size = 8),
       legend.position = "top",
       legend.key = element_rect(fill = "white"),
       legend.text = element_text(family = "sans", 
-                                 color = "grey25", face = "bold", size = 12),
+                                 color = "grey25", face = "bold", size = 9),
       legend.title = element_blank())
     
     ##function to wrapping facet labels
@@ -367,7 +402,7 @@ doPlotDownload <- function(dat, x, y, type){
       invisible(p)
     }   
     #    print(g)
-    g <- strwrap_strip_text(g) #use instead of print(g)
+#    g <- strwrap_strip_text(g) #use instead of print(g)
     print(g)
     
     } else plot(0,0,type="n", axes=F, xlab="", ylab="")

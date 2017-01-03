@@ -34,7 +34,7 @@ output$Email <- renderUI({
 output$ApplicationsText <- renderUI({
   tags$div(style="margin:15px 15px 30px; with: 60%",
            tags$br(),
-           HTML('<a class="btn btn-primary", href="http://dataexplorer.northwestscience.fisheries.noaa.gov/fisheye/PerformanceMetrics/"
+           HTML('<a class="btn btn-primary", href="https://dataexplorer.northwestscience.fisheries.noaa.gov/fisheye/PerformanceMetrics/"
                         style="height:37px;border-radius:25px;font-familiy: Arial, Helvetica, sans-serif;font-size: 12pt; padding-top:7px;
        padding-bottom:10px"> FISHEyE Performance Metrics</a>' )
   )
@@ -50,16 +50,27 @@ tags$div(style = "margin-top: 15px;margin-bottom:0; width: 80%; ",
   }) #        tags$br(),
   #       ,
 output$BlogUpdates <- renderUI({  
+
   tags$div(style = "margin-top:0; padding-top:0;background-color:#F8F8E9;",
-         tags$h3("Updates"),
+           tags$h3("Updates"),
+           tags$div( class='date', style='height:45px;width:30px; font-family:Arial; font-weight:bold;background-color:#ffffff;text-align:center; border-top:1px solid #c0c0c0;
+                 border-left:1px solid #c0c0c0;border-right:1px solid #c0c0c0;position:absolute;z-index:3;line-height: 13px;',
+                     HTML("<span class='month' style='text-transform:uppercase;font-size:11px;'>Dec</span><br />
+                      <span class='day' style='font-size:16px;'>15</span><br />
+                      <span class='year' style='font-size:11px;line-height: 10px;'>2016</span>")
+           ),
+           tags$p(HTML("<span style='margin-left:60px;font-size:18px;font-weight:bold'>Additional sectors added</span>")), 
+           tags$p(tags$br(),"Data for motherships, catcher processors, and first receivers and shorebased processors have been added."),
+           tags$hr(),
+           
        tags$div( class='date', style='height:45px;width:30px; font-family:Arial; font-weight:bold;background-color:#ffffff;text-align:center; border-top:1px solid #c0c0c0;
                  border-left:1px solid #c0c0c0;border-right:1px solid #c0c0c0;position:absolute;z-index:3;line-height: 13px;',
-                 HTML("<span class='month' style='text-transform:uppercase;font-size:11px;'>May</span><br />
-                      <span class='day' style='font-size:16px;'>25</span><br />
+                 HTML("<span class='month' style='text-transform:uppercase;font-size:11px;'>Dec</span><br />
+                      <span class='day' style='font-size:16px;'>02</span><br />
                       <span class='year' style='font-size:11px;line-height: 10px;'>2016</span>")
                  ),
        tags$p(HTML("<span style='margin-left:60px;font-size:18px;font-weight:bold'>Data updated</span>")), 
-       tags$p(tags$br(),"Data are periodically updated. We uploaded an updated dataset today. Data were previously updated 4/25/16, 3/7/16, 2/24/16, 2/15/16. On February 24th, we added vessels that reported Alaska as their homeport. 
+       tags$p(tags$br(),"Data are periodically updated. We uploaded an updated dataset today. Data were previously updated 5/25/16, 4/25/16, 3/7/16, 2/24/16, 2/15/16. On February 24th, we added vessels that reported Alaska as their homeport. 
               These vessels are grouped into the Puget Sound port. Only their activities in a West Coast fishery are included; activities in Alaskan fisheries are not included."),
               tags$hr(),
          tags$div( class='date', style='height:45px;width:30px;font-family:Arial;font-weight:bold;background-color:#ffffff;text-align:center;border-top:1px solid #c0c0c0;
@@ -111,9 +122,8 @@ tags$div( class='date', style='height:45px;width:30px;font-family:Arial;font-wei
  ),
  tags$p(HTML("<span style='margin-left:60px;font-size:18px;font-weight:bold'>When will other sectors be added to the Net Revenue Explorer?</span>")), 
  tags$p(tags$br(),
-        "We are currently working on adding other sectors to the Net Revenue Explorer. We will provide an update on this page when the data and necessary changes 
-        to the Net Revenue Explorer are complete. We are also working on adding additional metrics to assess the effectiveness and outcomes of the Catch Share program.
-        These metrics will be available from the Performance Metrics application accessed through the", tags$a(href="https://dataexplorer.northwestscience.fisheries.noaa.gov/fisheye", 'FISHEyE homepage'),'.',
+        "They've been added! We have also added additional metrics to assess the effectiveness and outcomes of the Catch Share program.
+        These metrics are available from the Performance Metrics application accessed through the", tags$a(href="https://dataexplorer.northwestscience.fisheries.noaa.gov/fisheye", 'FISHEyE homepage'),'.',
         tags$br()),
  
          tags$hr())
@@ -126,7 +136,7 @@ output$DefaultPlotText <- renderUI({
   if(PermitPlot()) return()
   tags$div(style = "margin: 15px 15px 30px; width: 60%",
            tags$h3("Summary Plots and Data"),
-           tags$p('Visualize', tags$a(href="http://www.nwfsc.noaa.gov/research/divisions/fram/economic/overview.cfm", 'Economic Data Collection (EDC)', target="_blank"), 
+           tags$p('Visualize', tags$a(href="https://www.nwfsc.noaa.gov/research/divisions/fram/economic/overview.cfm", 'Economic Data Collection (EDC)', target="_blank"), 
                   'summary statistics for revenue, costs, and net revenue of', tags$a(href="2012CatcherVessel.jpg","catcher vessels", target="_blank"), 
                   '(both at-sea and shoreside) that participate in the', tags$a(href="http://www.westcoast.fisheries.noaa.gov/fisheries/groundfish_catch_shares/index.html", 'West Coast Groundfish Trawl Catch Share Program. ', target="_blank")),
             tags$p(strong("To get started, make at least one selection in each of the fields in the Control Panel.")),
@@ -169,7 +179,7 @@ output$DefaultThirdsText <- renderUI({
                          )),
             tags$p(strong("To get started, make at least one selection in each of fields in the Control Panel.")),
             tags$p(strong('Background:'), 'Catcher vessels that participate in the', 
-                  tags$a(href="http://www.nwfsc.noaa.gov/research/divisions/fram/catch_shares.cfm", target="_blank", "West Coast Groundfish Trawl Catch Share Program"), 
+                  tags$a(href="https://www.nwfsc.noaa.gov/research/divisions/fram/catch_shares.cfm", target="_blank", "West Coast Groundfish Trawl Catch Share Program"), 
                     'span a very broad range in terms of the scale of their operations. To view the heterogeneity within the catcher vessel fleet while taking into account confidentiality rules,
                     we group the vessels into three tiered categories annually: top, middle, and lower revenue earners.   We then calculate the median, average, or total of the selected 
                     statistic (per vessel, vessel/day, or vessel/metric-ton) for vessels within each tiered category.'), 
