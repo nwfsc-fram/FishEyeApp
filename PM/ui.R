@@ -11,12 +11,10 @@ wellPanelHeading <- function(...){div(class = "well-radioHeading", ...)}
 
 fluidPage(title = "FISHEyE",
             # create a CSS to modify style of validation test error (for Variability analysis)
-         # tags$head(tags$body(includeHTML("google-analytics.noaa.js"))),
+          tags$head(tags$body(includeHTML("google-analytics.noaa.js"))),
           tags$head(
-            tags$style(HTML(".shiny-output-error-validation {
-                            color: red;font-size: 120%;}")),
-            tags$style(HTML(".select {margin-top:-20px}"),
-                       tags$textarea(id="message", rows=3, cols=40, "Default value")),
+            tags$style(HTML(".shiny-output-error-validation {color: red;font-size: 120%;}")),
+            tags$style(HTML(".select {margin-top:-20px}"),tags$textarea(id="message", rows=3, cols=40, "Default value")),
           #  tags$style(HTML(".navbar .nav > li { position:relative; z-index: 10000;}")),
             tags$style(HTML(".navbar {position:static}")),
             tags$style(HTML(".ckbox {margin-top: 0px; margin-bottom: -15px}")),
@@ -134,9 +132,8 @@ fluidPage(title = "FISHEyE",
           ## example R framebusting code
           fluidRow(div(style = "padding-bottom: 5px;margin-bottom:0"),
                    tags$h2(style = "margin-left: 15px", 
-                     HTML("<div>
-<p style='font-size:120%'><strong><a style='color:white; background-color:#1a5d99;  font-family:Cambria; border-radius:25px; padding:5px' href='https://dataexplorer.northwestscience.fisheries.noaa.gov/fisheye/'> FISHEyE</a>
-                             - Performance Metrics </strong></p> 
+                     HTML("<div><p style='font-size:120%'><strong><a style='color:white; background-color:#1a5d99;  font-family:Cambria; border-radius:25px; padding:5px' 
+                              href='https://dataexplorer.northwestscience.fisheries.noaa.gov/fisheye/'> FISHEyE</a>- Performance Metrics </strong></p> 
                             
                           </div>")), htmlOutput("SectPrint")
                   # ,uiOutput("SectorSelect")  
@@ -152,7 +149,8 @@ fluidPage(title = "FISHEyE",
                             tabPanel(title=HTML("Summary Plots <br> and Data"), value="Panel1", padding='10px',
                                    fluidRow(column(12,'',
                                             fluidRow(column(12,
-                                                    conditionalPanel(condition="input.VariableSelect==''",  tabsetPanel(tabPanel('Overview',
+                                                    conditionalPanel(condition="input.VariableSelect==''",  
+                                                                     tabsetPanel(tabPanel('Overview',
                                               fluidRow(
                                        column(12, htmlOutput("DefaultPlotText"))#,                                
                                      #  column(2, uiOutput("DataButton")),  

@@ -1,0 +1,259 @@
+#https://github.com/hadley/ggplot2/issues/1301  #use website for dealing with stacked bar plot order issue
+doPlot <- function(dat, x, y){
+  if(PermitPlot()){
+    
+   
+    groupVar <- "SHORTDESCR"
+    facetVar <- "VARIABLE"
+
+ 
+    ## Change color palette to printer-friendly colors that are color-blind friendly. Want consistent colors with what Erin is using
+    colourList <- c('All variable costs'='#590014',
+                    'Buyback fees'="#8f0007","Fish purchases"="#8f0007",#'Freight'="#8f0007", #a50026
+                    'Captain'="#d73027","Non-processing crew"="#d73027",'Freight'='#d73027',#''='#d73027',
+                    'Cost recovery fees'="#ff6d33","Processing crew"="#ff6d33",'Labor'="#ff6d33",
+                    'Crew'="#cc7e00",'Monitoring'="#cc7e00",#
+                    'Fuel'="#fdae61",'Off-site freezing & storage'="#fdae61",#fee090
+                    'Observers'="#e3d165",'Packing materials'="#e3d165",  
+                    'Utilities'='#d8bc03',
+                    'Other variable costs'="#fffb05",
+                   
+                     'All fixed costs'="#023858",
+                    'Equipment'="#045a8d","On-board equipment"="#045a8d",
+                    'Buildings'='#2605ff','Fishing gear'="#2605ff",
+                     #'Repair and maintenance'='#3690c0',
+                     "Processing equipment"="#3690c0",
+                    'Other fixed costs'="#74a9cf"
+                    )
+    
+
+    
+    sect <- function(){
+      if(input$Sect_sel == "CV"){
+        return("Catcher Vessels")
+      } else if(input$Sect_sel == "M"){
+        return("Motherships")
+      } else if(input$Sect_sel == "CP"){
+        return("Catcher-Processors")
+      } else if (input$Sect_sel == "FR"){
+        return("First Receivers")
+      }}
+    
+     yr <- function(){
+       as.numeric(unique(dat$YEAR))
+#     if(sect()=="Catcher Vessels"){
+#    return(input$YearSelect)  
+#    } else {
+#    return(input$YearSelect2)
+#   }
+     }
+
+     thresh <- function(){
+       if(input$PlotSelect != "Stacked bar"){
+       return(max(dat$VALUE,na.rm=T)/1000+max(dat$VALUE,na.rm=T)/10000)
+       } else {
+       return(
+         max(data.frame(
+           dat %>% group_by(VARIABLE, YEAR, SHORTDESCR) %>% 
+                       summarise(VALUE=max(VALUE, na.rm=T)) %>% 
+                       group_by(VARIABLE,SHORTDESCR) %>% 
+                       summarise(VALUE=sum(VALUE, na.rm=T))
+           )[,'VALUE'])/1300
+       )
+       }
+     }
+     
+ # Plot title construction
+     plot.title <- function(){
+          return(paste("Summary Cost Measures for West Coast ", sect()))
+}
+    
+    gv <- function(){
+          if(input$CategorySelect=="Fisheries"){
+              if(input$Sect_sel=="CV"){
+                    sprintf(paste("Group variable:", input$CategorySelect, "     Statistic: ", input$StatSelect, "    Fished in AK included:", input$FishAkSelect, "    Fished for whiting included:", input$FishWhitingSelect))
+              } else {
+                    sprintf(paste("Group variable:", input$CategorySelect, "     Statistic: ", input$StatSelect))
+           }} else if(input$CategorySelect=="Production activities"){
+                    sprintf(paste("Group variable:", input$CategorySelect, "     Statistic: ", input$StatSelect))
+            } else {
+              if(input$Sect_sel=="CV"){
+                    sprintf(paste("Group variable:", input$CategorySelect, "     Statistic: ", input$StatSelect, "    Fished in AK included:", input$FishAkSelect,"    Fished for whiting included:", input$FishWhitingSelect,"    Summed across:", input$inSelect))
+              } else {
+                    sprintf(paste("Group variable:", input$CategorySelect, "     Statistic: ", input$StatSelect,   "Summed across:", input$inSelect))
+              }}
+      }
+
+      
+    main <- function(){
+      bquote(atop(.(plot.title()), atop(.(gv()))))  #bquote splits subtitle into two lines
+    }
+    
+    
+    # simple scaling for bar charts based on number of inputs
+    scale_bars <- function(){
+        b = length(yr())  
+      if(b == 1){
+        return(0.25)
+      } else if(b == 2){
+        return(0.375)
+      } else if(b == 3){
+        return(0.5)      
+      } else{
+        return(0.9)
+      }
+    }
+    
+# Scaling of "Pre and Post catch shares" text based on number of variables selected    
+    scale_text <- function() {
+      if(input$CategorySelect =="Fisheries" | input$CategorySelect == "Homeport") {
+        b <- table(table(dat$VARIABLE)>1)[[1]]
+        if(b >= 5 & b <=11){
+          return(1.3)
+        } else if(b<5 | b == 12){
+          return(1.45)
+        } 
+        } else {
+        return(1.3)
+      }
+    }    
+
+# Beging ggplot    
+    g <- ggplot(dat, aes_string(x = x, y = y , group = groupVar), environment=environment())
+        
+      if(input$PlotSelect=="Line"){
+                g <- g + geom_line(aes_string(colour = groupVar), size=1.5)
+        } # end if statement for line figure
+      else if(input$PlotSelect == "Bar"){
+                g <- g + geom_bar(aes_string(fill = groupVar, order=groupVar), stat="identity", position="dodge", width = scale_bars())
+        } #End if else for side-by-side comparion
+      else {
+          g <- g + geom_bar(aes_string(fill = groupVar, order=groupVar), stat="identity", position="stack", width = scale_bars())
+        }
+    
+        if(length(yr())>1 & min(yr())<2011 & max(yr())>2010){
+                g <- g + geom_rect(aes_string(xmin=-Inf, xmax=table(yr()<2011)[[2]]+.5, ymin=-Inf, ymax=Inf), fill="grey50", alpha=.05/length(yr()))
+                g <- g + geom_text(aes(x=(table(yr()<2011)[[2]])/4,y=thresh(), label="Pre-Catch shares"), family="serif",fontface="italic", hjust=0,color = "grey40", size=7/scale_text()) 
+                g <- g + geom_text(aes(x=table(yr()<2011)[[2]]+table(yr()>2010)[[2]]/1.5,y=thresh(),label="Post-Catch shares"),hjust=0, 
+                          family = "serif", fontface="italic", color = "grey40", size=7/scale_text())  
+            } else {
+              g <- g  
+     } # end 
+    
+ 
+    # define facet
+      g <- g + facet_wrap(~sort, ncol=2, as.table = TRUE, scales="free_x")#
+    
+    
+    # define colors and order
+        g <- g + scale_fill_manual(values = colourList, guide=guide_legend(reverse=F)) + 
+                 scale_colour_manual(values = colourList, guide=guide_legend(reverse=F))
+      
+    
+    # define solid line y=0
+    g <- g + geom_hline(yintercept = 0) + ylim(0, thresh())
+    
+    # define x- and y-axis labels
+    ylab <- function(){
+        paste("Thousands of 2015 $", "(",input$StatSelect, ")")
+      }
+    
+    conf_mess <- function(){
+      if(input$Sect_sel=="CV"){
+        "\nNOTE: Your selection would reveal confidential data for years with sufficient observations.  The results shown may include both vessels that fished in Alaska and those that \nfished for Pacific whiting. See the confidentiality section under the ABOUT tab for more information."
+      } else {
+        ""
+      }
+    }
+    suff_flag <- function(){
+      paste("\n* Data has been suppressed for this selected",input$CategorySelect, "and year as there are not enough observations to protect confidentiality.")
+    }
+    # define labels
+    xlab <- function(){
+     
+ #       if(max(dat$flag)==1) {
+ #         if(max(dat$AK_FLAG, na.rm=T)==0){
+ #           paste(suff_flag())
+ #         }  else {
+ #           paste(suff_flag(),conf_mess())
+ #         }
+ #       }
+ #       else 
+      if(max(dat$AK_FLAG, na.rm=T)==1){
+          paste(conf_mess())
+        } else {
+          ""      
+        }
+    }
+    
+    g <- g + labs(y=ylab(), x=xlab(), title=main())
+    
+              
+    # define theme
+    g <- g + theme(
+      plot.title = element_text( vjust=1, size=rel(1.5), colour="grey25", family = "sans", face = "bold"),# 
+      panel.background = element_rect(fill = "white"),
+      plot.margin = unit(c(0.5, 0.5, 1, 0.5), "cm"),
+      panel.grid.minor = element_line(linetype = "blank"),
+      panel.grid.major.x = element_line(linetype = "blank"),
+      panel.grid.major.y = element_line(color = "#656C70", linetype = "dotted"),
+      strip.text = element_text(family = "sans", size = 16, color = "grey25", vjust=1),
+      strip.background = element_rect(fill = "lightgrey"),
+      axis.ticks = element_blank(),
+      axis.title.x = element_text(size=rel(1.1),  face="italic", vjust=-1, hjust=-.05, colour="grey25"),
+      axis.title.y = element_text(size=rel(1.2), vjust=2, colour="grey25"),
+      axis.line.x = element_line(size = 2, colour = "black", linetype = "solid"),
+      axis.text = element_text(size = 12),
+      legend.position = "top",
+      legend.key = element_rect(fill = "white"),
+      legend.text = element_text(family = "sans", color = "grey25", face = "bold", size = 12),
+      legend.title = element_blank()
+    )
+    ############################################################################################################
+    ##function to wrapping facet labels and remove dots before facet labels 
+    strwrap_strip_text = function(p, pad=0.02) { 
+      # get facet font attributes
+      th = theme_get()
+      if (length(p$theme) > 0L)
+        th = th + p$theme
+      
+      require("grid")
+      grobs <- ggplotGrob(p)
+      
+      # wrap strip x text
+      ps = calc_element("strip.text.x", th)[["size"]]
+      family = calc_element("strip.text.x", th)[["family"]]
+      face = calc_element("strip.text.x", th)[["face"]]
+      
+      nm = names(p$facet$facets)
+      
+      # get number of facet columns
+      levs = levels(factor(p$data[[nm]]))
+      npanels = length(levs)
+      cols = n2mfrow(npanels)[1]
+      
+      # get plot width
+      sum = 0#sum(sapply(grobs$width, function(x) convertWidth(x, "in")))##
+      panels_width = par("din")[1] - sum  # inches
+      # determine strwrap width
+      panel_width = panels_width / cols +.5
+      mx_ind = which.max(nchar(levs))
+      char_width = strwidth(levs[mx_ind], units="inches", cex=ps / par("ps"), 
+                            family=family, font=gpar(fontface=face)$font) / 
+        nchar(levs[mx_ind])
+      width = floor((panel_width - pad)/ char_width)  # characters
+      
+      # wrap facet text
+      p$data[[nm]] = unlist(lapply(strwrap(p$data[[nm]], width=width, 
+                                           simplify=FALSE), paste, collapse="\n"))
+      p$data[[nm]] = gsub("([.])", "\\ ", p$data[[nm]]) 
+      invisible(p)
+    }   
+    #################################################################################################################################
+    
+    g <- strwrap_strip_text(g)
+    
+    print(g)
+    
+    } else plot(0,0,type="n", axes=F, xlab="", ylab="")
+}

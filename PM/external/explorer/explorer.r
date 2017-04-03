@@ -26,10 +26,10 @@ observeEvent(input$ipo, {
                               message = "The average proportion of a vessel's total revenue that comes from fish caught in the limited entry trawl or catch share fishery measures how reliant vessels are on revenue from the limited entry/catch shares fishery."
                             }else if(input$demSelect=="Days at sea"){
                               message = 'The number of days at sea may indicate specialization, efficiency, or consolidation.'
-                            }else if(input$socSelect=="Number of positions"){
-                              message = 'Number of positions (including captain and crew) is a lower bound for employment in the fishery, and is affected by positions per vessel and the number of vessels fishing.'
                             }else if(input$demSelect=="Gini coefficient"){
                               message = 'Measures the degree of catch share revenue concentration among vessels. A value of zero would represent all vessels earning the same revenue, and a value of one would represent one vessel earning all of the revenue. The value of the Gini coefficient can be affected by fleet consolidation and specialization.'
+                            }else if(input$socSelect=="Number of positions"){
+                              message = 'Number of positions (including captain and crew) is a lower bound for employment in the fishery, and is affected by positions per vessel and the number of vessels fishing.'
                             }else if(input$SocSelect=="Crew wage per day"){
                               message = 'Daily wage paid to a crewmember operating in the limited entry/catch shares fishery.'
                             }else if(input$SocSelect=="Revenue per crew day"){
@@ -610,13 +610,13 @@ table <- rbindCommonCols(temp, table)
       else {
         if(input$Ind_sel=="Demographic"&input$demSelect=="Number of vessels"|input$Ind_sel=="Demographic"&input$demSelect=="Number of processors"){
           names(table) <- c(paste("Sourced from the FISHEyE application (http://dataexplorer.northwestscience.fisheries.noaa.gov/fisheye/PerformanceMetrics/) maintained by NOAA Fisheriess NWFSC on ",
-                                  format(Sys.Date(), format="%B %d %Y")),"", "","","","", "","","","")
+                                  format(Sys.Date(), format="%B %d %Y")),"", "","","","", "","")
         } else if(input$Ind_sel=="Demographic"&input$demSelect=="Exponential Shannon Index"|input$Ind_sel=="Demographic"&input$demSelect=="Proportion of revenue from CS fishery"|input$Ind_sel=="Demographic"&input$demSelect=="Fishery participation"|input$Ind_sel=="Demographic"&input$demSelect=="Days at sea"){
           names(table) <- c(paste("Sourced from the FISHEyE application (http://dataexplorer.northwestscience.fisheries.noaa.gov/fisheye/PerformanceMetrics/) maintained by NOAA Fisheriess NWFSC on ",
-                                  format(Sys.Date(), format="%B %d %Y")),"", "","", "", "","", "","","","")
+                                  format(Sys.Date(), format="%B %d %Y")),"", "","", "", "","", "","","")
         }else {
           names(table) <- c(paste("Sourced from the FISHEyE application (http://dataexplorer.northwestscience.fisheries.noaa.gov/fisheye/PerformanceMetrics/) maintained by NOAA Fisheriess NWFSC on ",
-                                  format(Sys.Date(), format="%B %d %Y")),"", "","", "", "","", "","","","")
+                                  format(Sys.Date(), format="%B %d %Y")),"", "","", "", "","", "","","")
         }
       }
             }

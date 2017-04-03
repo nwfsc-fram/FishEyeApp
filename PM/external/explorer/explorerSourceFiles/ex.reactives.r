@@ -36,7 +36,7 @@ DatVars <- reactive({
   } else if(input$Sect_sel=="FR"){
     datVars <- with(dat, 
                     list(
-                      YEAR = 2004:2014,
+                      YEAR = 2004:2015,
                       SHORTDESCR = c("Revenue","Variable costs","Fixed costs","Variable Cost Net Revenue","Total Cost Net Revenue"),
                       CATEGORY = c("Production activities"="Fisheries","Region","Processor size"),
                       whitingv = c("All processors", "Whiting processors","Non-whiting processors"),

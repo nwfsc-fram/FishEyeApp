@@ -22,8 +22,6 @@ DatMain <- reactive({ # data load moved to serverhead
 #})
 
 DatThirds <- reactive({
-#  dat <- netrevThirds
-  #dat <- subset(dat, YEAR<2014)
   if(input$Sect_sel=="CV"){
     dat <- netrevThirds
    } else if(input$Sect_sel=="FR"){
@@ -47,7 +45,7 @@ DatVars <- reactive({
   } else if(input$Sect_sel=="FR"){
     
     datVars <- with(dat, 
-                    list(YEAR =  2009:2014,
+                    list(YEAR =  2009:2015,
                          SHORTDESCR = c("Revenue","Variable costs","Fixed costs","Variable Cost Net Revenue","Total Cost Net Revenue"),
                          CATEGORY = c("Production activities","Region","Processor size"),
                          FISHAK = unique(FISHAK),
@@ -275,11 +273,11 @@ DatSub <- reactive({
           }
         if(input$DodgeSelect == "Composition of Total Cost Net Revenue"){
             datSub <- subset(datSub,  SHORTDESCR %in% c("Total Cost Net Revenue", "Fixed costs","Variable costs"))
-                  datSub$SHORTDESCR <- factor(datSub$SHORTDESCR, levels=c("Total Cost Net Revenue","Fixed costs","Variable costs") )
+                  datSub$SHORTDESCR <- factor(datSub$SHORTDESCR, levels=c("Variable costs","Fixed costs","Total Cost Net Revenue") )
           }
         if(input$DodgeSelect == "Composition of Variable Cost Net Revenue"){
             datSub <- subset(datSub,  SHORTDESCR %in% c("Variable Cost Net Revenue", "Variable costs"))  
-                  datSub$SHORTDESCR <- factor(datSub$SHORTDESCR, levels=c("Variable Cost Net Revenue","Variable costs"))
+                  datSub$SHORTDESCR <- factor(datSub$SHORTDESCR, levels=c("Variable costs","Variable Cost Net Revenue"))
           }
 
     
@@ -377,7 +375,7 @@ DatSub <- reactive({
                  Try clicking the box to include all vessels that fished in Alaska or include all vessels that fished for Pacific whiting. 
                  '))
     
-    
+#   datSub$VALUE <- ifelse(is.na(datSub$VALUE)==T, 0, datSub$VALUE) 
     return(datSub)
 })
 

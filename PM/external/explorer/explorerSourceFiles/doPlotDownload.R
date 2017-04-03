@@ -166,44 +166,42 @@ doPlotDownload <- function(dat, x, y){
     }
     
     
-    ylab <- function(){
-      if(input$Ind_sel=="Economic") {
-        expression(paste(bold("Thousands of 2014 $","(",input$StatSelect, ")")))   
-      } else if(input$Ind_sel=="Social and Regional") {
-        if(input$LayoutSelect!='Metrics'){
-          if(input$socSelect=="Crew wage per day"|input$socSelect=="Revenue per crew day"){
-            expression(paste(bold("Thousands of 2014 $","(",input$AVE_MED2, ")")))
-          }  else if(input$socSelect=="Seasonality"){
-            expression(bold("Day of year when 50% of catch was landed"))
-          }  else if(input$socSelect=="Share of landings by state"){
-            expression(bold("Share of landings (% of revenue)"))
-          }  else if(input$socSelect=="Hourly compensation"){
-            expression(bold("Hourly compensation ($)"))
-          }   else {
-            input$socSelect         
-          }
-        } else {
-          expression(bold('Scale and units depend upon metric'))
-        } 
-      }else if(input$Ind_sel=="Demographic"){
-        if(input$LayoutSelect!='Metrics'){
-          if(input$demSelect=="Proportion of revenue from CS fishery"){
-            expression(bold("Proportion of revenue from Catch Share fishery"))  
-          }  else if(input$demSelect=="Gini coefficient"){
-            expression(bold("Gini coefficient (0 - 1)"))
-          }  else if(input$demSelect=="Fishery participation"){
-            expression(bold("Fishery participation (number of fisheries)"))
-          }  else if(input$demSelect=="Vessel length"){
-            expression(bold("Vessel length (in feet)"))
-#          }  else if(input$demSelect=="Herfindahl-Hirschman Index"){
-#            expression(bold("Herfindahl-Hirschman Index (0 - 10,000)"))
+      ylab <- function(){
+        if(input$Ind_sel=="Economic") {
+            expression(paste(bold("Thousands of 2015 $","(",input$StatSelect, ")")))  
+        } else if(input$Ind_sel=="Social and Regional") {
+          if(input$LayoutSelect!='Metrics'){
+            if(input$socSelect=="Crew wage per day"|input$socSelect=="Revenue per crew day"){
+                expression(paste(bold("Thousands of 2015 $","(",input$AVE_MED2, ")")))    
+            }  else if(input$socSelect=="Seasonality"){
+              expression(bold("Day of year when 50% of catch was landed"))
+            }  else if(input$socSelect=="Share of landings by state"){
+              expression(bold("Share of landings (% of revenue)"))
+            }  else if(input$socSelect=="Hourly compensation"){
+              expression(bold("Hourly compensation ($)"))
+            }   else {
+              input$socSelect         
+            }
           } else {
-            input$demSelect     
-          }
-        }else {expression(bold('Scale and units depend upon metric'))}
+            expression(bold('Scale and units depend upon metric'))
+          } 
+        }else if(input$Ind_sel=="Demographic"){
+          if(input$LayoutSelect!='Metrics'){
+            if(input$demSelect=="Proportion of revenue from CS fishery"){
+              expression(bold("Proportion of revenue from Catch Share fishery"))  
+            }  else if(input$demSelect=="Gini coefficient"){
+              expression(bold("Gini coefficient (0 - 1)"))
+            }  else if(input$demSelect=="Fishery participation"){
+              expression(bold("Fishery participation (number of fisheries)"))
+            }  else if(input$demSelect=="Vessel length"){
+              expression(bold("Vessel length (in feet)"))
+            }  else {
+              input$demSelect     
+            }
+          }else {expression(bold('Scale and units depend upon metric'))}
+        }
       }
-    }
-    
+      
     
 source_lab <- function(){
   paste("\nSourced from the FISHEyE application (https://dataexplorer.northwestscience.fisheries.noaa.gov/fisheye/PerformanceMetrics/) maintained by NOAA Fisheriess NWFSC on ",format(Sys.Date(), format="%B %d %Y"))
@@ -478,7 +476,7 @@ xlab <- function(){
     
     # define theme
     g <- g + theme(
-      plot.title = element_text(size=rel(1), vjust=1, colour="grey25"), 
+      plot.title = element_text(size=rel(1.2), vjust=1, colour="grey25"), 
       plot.title = element_text(family = "sans", face = "bold", vjust = 1),
       plot.margin = unit(c(0.25, 0.25, 1, 0.25), "cm"),
       panel.background = element_rect(fill = "white"),
@@ -486,17 +484,17 @@ xlab <- function(){
       panel.grid.minor = element_line(linetype = "blank"),
       panel.grid.major.x = element_line(linetype = "blank"),
       panel.grid.major.y = element_line(color = "#656C70", linetype = "dotted"),
-      strip.text = element_text(family = "sans", size = 10, color = "grey25", vjust=1),
+      strip.text = element_text(family = "sans", size = 13, color = "grey25", vjust=1),
       strip.background = element_rect(fill = "lightgrey"),
       axis.ticks = element_blank(),
       axis.title.x = element_text(size=rel(.7), face="italic", vjust=0, colour="grey25"),
       axis.title.y = element_text(size=rel(1.2), vjust=2, colour="grey25"),
       axis.line.x = element_line(size = 2, colour = "black", linetype = "solid"),
-      axis.text = element_text(size = 6),
+      axis.text = element_text(size = 11),
       legend.position = "top",
       legend.key = element_rect(fill = "white"),
       legend.text = element_text(family = "sans", 
-                                 color = "grey25", face = "bold", size = 6),
+                                 color = "grey25", face = "bold", size = 10),
       legend.title = element_blank())
     
 

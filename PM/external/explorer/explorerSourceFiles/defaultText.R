@@ -185,8 +185,11 @@ output$GetStartedText <- renderUI({
            tags$h4("3. Select general categories to view data by"),
            tags$p("First, select the vessel or processor grouping category (Fisheries, State, Homeport, Vessel length class, Production activities, Region, Processor size). 
                   Categories will depend upon the selected sector."),
-           tags$p("Second, for catcher vessels, select whether to show results for all vessels, just vessels that fished for pacific whiting, and/or just vessels that did not fish for pacific whiting.
-                  For first receivers and shorebased processors, select whether to show results for all processors, just processors that process whiting, and/or just processors that process non-whiting species."),
+           tags$p("Second, for catcher vessels, select whether to show results for all vessels, just vessels that fished for pacific 
+                  whiting, and/or just vessels that did not fish for pacific whiting.
+                  For first receivers and shorebased processors, select whether to show results for all processors, just processors that 
+                  process whiting, and/or just processors that process non-whiting species. For motherships and catcher processors, only 
+                  the pacific whiiting category is available."),
            tags$h4(paste("4. Select one more more subgroups.")),
            tags$p(strong('Once this selection is made, this tutorial will disappear. This selection can be made last.'), 
                   paste('Multiple subgroups of the selected vessel or processor grouping category (such as fishery) can be selected if, in step 1, you chose to compare groups of vessels or processors. 
@@ -195,7 +198,7 @@ output$GetStartedText <- renderUI({
            tags$p("This drop down menu divides metrics into three categories:",tags$em('Demographic,'), tags$em("Economic,"),'and',tags$em('Social and regional.'), 'The choice of metrics to be displayed depends on which indicator category is selected.'),
            tags$h4("6. Select a statistic and a metric"),
            tags$p('Which statistic is calculated depends on the metric. If a selected metric is not shown, try a different statistic.'),
-           tags$h4('7. Select years and whether or not to include Alaskan fisheries activities'),
-           tags$p('The number of years for which data is available and the choice to include activities in Alaskan fisheries depend upon the metric and sector selected.')
+           tags$h4('7. Select years')#,
+          # tags$p('The number of years for which data is available and the choice to include activities in Alaskan fisheries depend upon the metric and sector selected.')
   )
 })

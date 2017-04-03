@@ -53,6 +53,17 @@ output$BlogUpdates <- renderUI({
 
   tags$div(style = "margin-top:0; padding-top:0;background-color:#F8F8E9;",
            tags$h3("Updates"),
+   tags$div( class='date', style='height:45px;width:30px; font-family:Arial; font-weight:bold;background-color:#ffffff;text-align:center; border-top:1px solid #c0c0c0;
+                 border-left:1px solid #c0c0c0;border-right:1px solid #c0c0c0;position:absolute;z-index:3;line-height: 13px;',
+                 HTML("<span class='month' style='text-transform:uppercase;font-size:11px;'>Jan</span><br />
+                      <span class='day' style='font-size:16px;'>30</span><br />
+                      <span class='year' style='font-size:11px;line-height: 10px;'>2017</span>")
+                 ),
+       tags$p(HTML("<span style='margin-left:60px;font-size:18px;font-weight:bold'>Data updated</span>")), 
+       tags$p(tags$br(),"Data are periodically updated. We uploaded an updated dataset today. Data were previously updated 12/02/16, 5/25/16, 4/25/16, 3/7/16, 2/24/16, 2/15/16. On February 24th, we added vessels that reported Alaska as their homeport. 
+              These vessels are grouped into the Puget Sound port. Only their activities in a West Coast fishery are included; activities in Alaskan fisheries are not included."),
+              tags$hr(),
+
            tags$div( class='date', style='height:45px;width:30px; font-family:Arial; font-weight:bold;background-color:#ffffff;text-align:center; border-top:1px solid #c0c0c0;
                  border-left:1px solid #c0c0c0;border-right:1px solid #c0c0c0;position:absolute;z-index:3;line-height: 13px;',
                      HTML("<span class='month' style='text-transform:uppercase;font-size:11px;'>Dec</span><br />
@@ -63,17 +74,7 @@ output$BlogUpdates <- renderUI({
            tags$p(tags$br(),"Data for motherships, catcher processors, and first receivers and shorebased processors have been added."),
            tags$hr(),
            
-       tags$div( class='date', style='height:45px;width:30px; font-family:Arial; font-weight:bold;background-color:#ffffff;text-align:center; border-top:1px solid #c0c0c0;
-                 border-left:1px solid #c0c0c0;border-right:1px solid #c0c0c0;position:absolute;z-index:3;line-height: 13px;',
-                 HTML("<span class='month' style='text-transform:uppercase;font-size:11px;'>Dec</span><br />
-                      <span class='day' style='font-size:16px;'>02</span><br />
-                      <span class='year' style='font-size:11px;line-height: 10px;'>2016</span>")
-                 ),
-       tags$p(HTML("<span style='margin-left:60px;font-size:18px;font-weight:bold'>Data updated</span>")), 
-       tags$p(tags$br(),"Data are periodically updated. We uploaded an updated dataset today. Data were previously updated 5/25/16, 4/25/16, 3/7/16, 2/24/16, 2/15/16. On February 24th, we added vessels that reported Alaska as their homeport. 
-              These vessels are grouped into the Puget Sound port. Only their activities in a West Coast fishery are included; activities in Alaskan fisheries are not included."),
-              tags$hr(),
-         tags$div( class='date', style='height:45px;width:30px;font-family:Arial;font-weight:bold;background-color:#ffffff;text-align:center;border-top:1px solid #c0c0c0;
+             tags$div( class='date', style='height:45px;width:30px;font-family:Arial;font-weight:bold;background-color:#ffffff;text-align:center;border-top:1px solid #c0c0c0;
                    border-left:1px solid #c0c0c0;border-right:1px solid #c0c0c0;position:absolute;z-index:3;line-height: 13px;',
                    HTML("<span class='month' style='text-transform:uppercase;font-size:11px;'>Feb</span><br />
                         <span class='day' style='font-size:16px;'>8</span><br />
@@ -138,7 +139,7 @@ output$DefaultPlotText <- renderUI({
            tags$h3("Summary Plots and Data"),
            tags$p('Visualize', tags$a(href="https://www.nwfsc.noaa.gov/research/divisions/fram/economic/overview.cfm", 'Economic Data Collection (EDC)', target="_blank"), 
                   'summary statistics for revenue, costs, and net revenue of', tags$a(href="2012CatcherVessel.jpg","catcher vessels", target="_blank"), 
-                  '(both at-sea and shoreside) that participate in the', tags$a(href="http://www.westcoast.fisheries.noaa.gov/fisheries/groundfish_catch_shares/index.html", 'West Coast Groundfish Trawl Catch Share Program. ', target="_blank")),
+                  '(both at-sea and shoreside),', tags$a(href="2012Mothership.jpg","motherships,", target="blank"), tags$a(href="2012CatcherProcessor.jpg", "catcher processors,", target="blank"), 'and', tags$a(href="2012FirstRecieversShorebasedProcessors.jpg", "first receivers and shorebased processors", target="blank"), 'that participate in the', tags$a(href="http://www.westcoast.fisheries.noaa.gov/fisheries/groundfish_catch_shares/index.html", 'West Coast Groundfish Trawl Catch Share Program. ', target="_blank")),
             tags$p(strong("To get started, make at least one selection in each of the fields in the Control Panel.")),
  #          tags$br(),
            HTML("<div style='display:inline-block;width:100%;padding:0;line-height: 0.8em; margin-top:15px; margin-bottom:-2px;font-size:11.5pt'>

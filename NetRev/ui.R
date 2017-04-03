@@ -9,12 +9,13 @@ wellPanelHeading <- function(...){div(class = "well-radioHeading", ...)}
 fluidPage(
 title = "FISHEyE",
           #stylize the appearance of different aspects of the website
-#tags$head(tags$body(includeHTML("google-analytics.noaa.js"))),
+tags$head(tags$body(includeHTML("google-analytics.noaa.js"))),
             tags$head(
             tags$style(HTML(".shiny-output-error-validation {color: red; font-size: 120%;}")), #validation error
            # modify spacing of labels for specified widgits
              tags$style(HTML(".select {margin-top:-20px}"),tags$textarea(id="message", rows=3, cols=40, "Default value")),
-            tags$style(HTML(".ckbox {margin-top: 0px; margin-bottom: -15px;padding-top:10px}
+             tags$style(HTML(".navbar {margin-top:40px; position:relative; padding-left:15px; padding-right:0;}")),
+             tags$style(HTML(".ckbox {margin-top: 0px; margin-bottom: -15px;padding-top:10px}
                              .ckbox3 {margin-top: 0px; margin-bottom: -15px;padding-top:10px}
                              .ckbox3 .checkbox input[type='checkbox'] { width: 0;}
                              .ckbox3  .checkbox:nth-child(n) label{color:#5a5a5a;}
@@ -74,13 +75,12 @@ title = "FISHEyE",
           ),#end tags head
           # stylize show data and show plots buttons
    
-          tags$style(type='text/css', "#data2 { background-color:RoyalBlue; color:white; height:37px;position:absolute;bottom:170%;left:425%;}
-                                       #data { background-color:RoyalBlue; color:white; height:37px;position:absolute;bottom:170%;left:425%;}"),
+          tags$style(type='text/css', "#data2 { background-color:RoyalBlue; color:white; height:37px;position:absolute;bottom:110%;left:325%;}
+                                       #data { background-color:RoyalBlue; color:white; height:37px;position:absolute;bottom:110%;left:325%;}"),
           
           #java script code to run google analytics and display messages for information icons. 
           tags$head(includeScript("google-analytics.js"),
-                    
-                    tags$script(src = "message-handler.js")),
+          tags$script(src = "message-handler.js")),
               
      
           tags$head(
@@ -113,7 +113,7 @@ title = "FISHEyE",
                               sidebarLayout(
                                 mainPanel(         
                                   tabsetPanel(id = "tabs", 
-                                              tabPanel(title=HTML("Summary Plots <br> and Data"), value="Panel1",
+                                              tabPanel(title=HTML("Summary Plots <br> and Data"), value="Panel1", 
                                                        fluidRow(
                                                          column(12, htmlOutput("DefaultPlotText")),                                
                                                          column(2, uiOutput("DataButton")),  
@@ -125,7 +125,7 @@ title = "FISHEyE",
                                                          column(12, htmlOutput("DefaultThirdsText")),                             
                                                          column(2, uiOutput("DataButton2")),
                                                          column(12, dataTableOutput("TableThirds"),plotOutput("PlotThirds", height="auto", width="auto"))))#,
-                                  )
+                                  ) #end id-tabs
                                 ), #end main panel
                                 sidebarPanel(
                                   wellPanel( #left side panel  

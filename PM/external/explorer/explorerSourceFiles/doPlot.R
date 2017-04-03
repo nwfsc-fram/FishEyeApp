@@ -1,6 +1,6 @@
 doPlot <- function(dat, x, y){
   if(PermitPlot()){
-    dat <- subset(dat, is.na(dat$VALUE)==FALSE)
+#    dat <- subset(dat, is.na(dat$VALUE)==FALSE)
 
     ######################################################
     
@@ -44,8 +44,8 @@ doPlot <- function(dat, x, y){
     }
     else if(input$Ind_sel!="Economic"){ 
       if(input$LayoutSelect=="Metrics"){   
-        if(input$PlotSelect==T&dat$STAT[1]!="Fleet-wide total"&is.na(max(dat$VARIANCE))==F) { 
-      dat$thresh <- as.numeric(data.frame(dat %>% group_by(METRIC) %>% transmute(threshold=max(VALUE, na.rm=T)+max(VARIANCE, na.rm=T)+max(VALUE, na.rm=T)/10))[,2])
+        if(input$PlotSelect==T&!is.na(max(dat$VARIANCE))) { 
+          dat$thresh <- as.numeric(data.frame(dat %>% group_by(METRIC) %>% transmute(threshold=max(VALUE, na.rm=T)+max(VARIANCE, na.rm=T)+max(VALUE, na.rm=T)/10))[,2])
         } else {
           dat$thresh <- as.numeric(data.frame(dat %>% group_by(METRIC) %>% transmute(threshold=max(VALUE, na.rm=T)+max(VALUE, na.rm=T)/10))[,2])
         }
@@ -193,11 +193,11 @@ doPlot <- function(dat, x, y){
     
     ylab <- function(){
       if(input$Ind_sel=="Economic") {
-        expression(paste(bold("Thousands of 2014 $","(",input$StatSelect, ")")))   
+          expression(paste(bold("Thousands of 2015 $","(",input$StatSelect, ")")))  
       } else if(input$Ind_sel=="Social and Regional") {
            if(input$LayoutSelect!='Metrics'){
                 if(input$socSelect=="Crew wage per day"|input$socSelect=="Revenue per crew day"){
-               expression(paste(bold("Thousands of 2014 $","(",input$AVE_MED2, ")")))
+                    expression(paste(bold("Thousands of 2015 $","(",input$AVE_MED2, ")")))    
              }  else if(input$socSelect=="Seasonality"){
                expression(bold("Day of year when 50% of catch was landed"))
              }  else if(input$socSelect=="Share of landings by state"){
