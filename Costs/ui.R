@@ -29,20 +29,17 @@ tags$head(tags$body(includeHTML("google-analytics.noaa.js"))),
            #Style appears of Cost category check boxes - indents, bolding, spacing
              tags$style(HTML(".statbox {margin-top: -30px; margin-bottom: 0px}
                               .statboxC .checkbox:first-child label, 
-                                     .statboxCP .checkbox:first-child label,
                                      .statboxM  .checkbox:first-child label,
                                      .statboxF  .checkbox:first-child label,
                                      .statboxF  .checkbox:nth-child(10) label,
                                      .statboxC  .checkbox:nth-child(9) label,
                                      .statboxM  .checkbox:nth-child(8) label,
-                                     .statboxCP .checkbox:nth-child(7) label,
                                      .ckbox2 .checkbox:first-child label,
                                      .ckbox2 .checkbox:nth-child(2) label,
                                      .ckbox2 .checkbox:nth-child(9) label{font-weight:bold;}
                               .statboxC .checkbox:nth-child(-n+12) label,
                                     .statboxF .checkbox:nth-child(-n+14) label,
                                     .statboxM .checkbox:nth-child(-n+12) label,
-                                    .statboxCP .checkbox:nth-child(-n+11) label,
                                     .ckbox2 .checkbox:nth-child(-n+12) label,
                                    .frckbox .checkbox:nth-child(3) label,
                                    .frckbox .checkbox:nth-child(4) label{margin-left:17px;}
@@ -51,8 +48,6 @@ tags$head(tags$body(includeHTML("google-analytics.noaa.js"))),
                                     .statboxF .checkbox:nth-child(1) label,
                                     .statboxC .checkbox:nth-child(9) label,
                                     .statboxF .checkbox:nth-child(10) label,
-                                    .statboxCP .checkbox:nth-child(1) label,
-                                    .statboxCP .checkbox:nth-child(7) label,
                                     .statboxM .checkbox:nth-child(8) label,
                                     .ckbox2 .checkbox:nth-child(1) label,
                                     .ckbox2 .checkbox:nth-child(2) label,
@@ -122,7 +117,7 @@ tags$head(tags$body(includeHTML("google-analytics.noaa.js"))),
                                 sidebarPanel(
                                   wellPanel( #left side panel  
                                     tags$head(
-                                      tags$style(type="text/css", ".well{border: 0px transparent; padding-right:0px; margin-right:0px}"
+                                      tags$style(type="text/css", ".well{border: 0px transparent;}"# padding-right:0px; margin-right:0px}"
                                       )),
                                     
                                     fluidRow(
@@ -152,8 +147,9 @@ tags$head(tags$body(includeHTML("google-analytics.noaa.js"))),
                                     fluidRow(
                                       column(6,
                                                wellPanelSub(
-                                               conditionalPanel(condition="input.Sect_sel=='FR'",  
-                                                              uiOutput("Productionselect")),
+                                               conditionalPanel(condition="input.Sect_sel=='FR'"#,  
+                                                             # uiOutput("Productionselect")
+                                                             ),
                                                conditionalPanel(condition="input.Sect_sel=='CV'|input.Sect_sel=='FR'",uiOutput("SelectText")),
                                                uiOutput("Variableselect")
                                              ),
