@@ -122,7 +122,7 @@ output$dlTable <- downloadHandler(
       temp <-    data.frame("Year", "Summary variable","Summary Variable category", "Fisheries Category","Statistic", "Costs measure", "Data summed across","Number of vessels","Value", "Variance (MAD, SD)","Sector")
       colnames(temp)=colnames(table)
       table <- rbindCommonCols(temp, table) 
-      names(table) <- c(paste("Sourced from the FISHEyE application (http://dataexplorer.northwestscience.fisheries.noaa.gov/fisheye/NetRevExplorer/) maintained by NOAA Fisheriess NWFSC on ",
+      names(table) <- c(paste("Sourced from the FISHEyE application (http://dataexplorer.northwestscience.fisheries.noaa.gov/fisheye/Costs/) maintained by NOAA Fisheriess NWFSC on ",
                               format(Sys.Date(), format="%B %d %Y")),"","","","","","","","","","")
       } else if(input$Sect_sel=="FR"){
         # some wonky code to insert a timestamp. xtable has a more straightfoward approach but not supported with current RStudio version on the server
@@ -130,14 +130,14 @@ output$dlTable <- downloadHandler(
         temp <-    data.frame("Year", "Data summed across",'Summary variable',"Summary Variable category", "Production Category","Statistic", "Costs measure","Number of processors","Value", "Variance (MAD, SD)","Sector")
         colnames(temp)=colnames(table)
         table <- rbindCommonCols(temp, table) 
-        names(table) <- c(paste("Sourced from the FISHEyE application (http://dataexplorer.northwestscience.fisheries.noaa.gov/fisheye/NetRevExplorer/) maintained by NOAA Fisheriess NWFSC on ",
+        names(table) <- c(paste("Sourced from the FISHEyE application (http://dataexplorer.northwestscience.fisheries.noaa.gov/fisheye/Costs/) maintained by NOAA Fisheriess NWFSC on ",
                                 format(Sys.Date(), format="%B %d %Y")),"","","","","","","","","","")
       } else {
         names(table) <- c(4,1,3,2,"a "," b","c ","d "," e","g")
         temp <-    data.frame("Year", "Summary variable","Summary Variable category", "Fisheries Category","Statistic", "Costs measure","Number of vessels","Value", "Variance (MAD, SD)","Sector")
         colnames(temp)=colnames(table)
         table <- rbindCommonCols(temp, table) 
-        names(table) <- c(paste("Sourced from the FISHEyE application (http://dataexplorer.northwestscience.fisheries.noaa.gov/fisheye/NetRevExplorer/) maintained by NOAA Fisheriess NWFSC on ",
+        names(table) <- c(paste("Sourced from the FISHEyE application (http://dataexplorer.northwestscience.fisheries.noaa.gov/fisheye/Costs/) maintained by NOAA Fisheriess NWFSC on ",
                                 format(Sys.Date(), format="%B %d %Y")),"","","","","","","","","")
         
       } 

@@ -69,7 +69,7 @@ tags$div(style = "margin: 15px 15px 30px; width: 60%",
 
       h4("Costs Measures"),
       tags$ul(tags$em("Values reported in inflation-adjusted 2015 dollars.")),
-      tags$ul('Quota earnings and costs are currently excluded from these table due to data limitations. It is not possible to convert quota data to the calendar year format like the rest of the cost categories.
+      tags$ul('Quota earnings and costs are currently excluded due to data limitations. It is not possible to convert quota data to the calendar year format like the rest of the cost categories.
               Additionally, many quota trades are non-cash transactions and therefore cannot be included in the calculations.'),
        tags$ul('Please note that the availability of cost measures will vary by sector.'),
 
@@ -106,7 +106,7 @@ tags$div(style = "margin: 15px 15px 30px; width: 60%",
 #        )
 #      ),
 tags$br(),
-tags$ul(strong("A note about total costs."),em(' Please note that there are a variety of costs that are associated with operating a vessel or processing facility that are not requested on the form because it is difficult to determine the 
+tags$ul(strong("A note about total costs."),em(' There are a variety of costs that are associated with operating a vessel or processing facility that are not requested on the form because it is difficult to determine the 
         share of the cost associated with the vessel or facility. These costs include items that can be used for activities other than fishing, or are too difficult to allocate to a particular 
         vessel or facility in a multi-vessel company. These expenses include office space, vehicles, storage of equipment, professional fees, and marketing. In general, the EDC form aims to capture 
         costs that are directly related to vessel or facility maintenance and fishing or processing operations, and not costs that are related to activities or equipment off the vessel or beyond 
@@ -115,10 +115,10 @@ tags$ul(strong("A note about total costs."),em(' Please note that there are a va
 
 h4("Pacific Whiting Vessel Category"),
 tags$ul(
-  tags$p("For the catcher vessel sector, the selected cost measure is calculated at three levels: 1) for the fleet as a whole, 2) for vessels that fished for Pacific whiting, and 3) for vessels that participate in the non-whiting groundfish sector of the limited entry trawl fishery. 
+  tags$p("For the catcher vessel and shorebased processor sectors, the selected cost measure is calculated at three levels: 1) for the fleet or processors as a whole, 2) for vessels that fished for or processors that processed Pacific whiting, and 3) for vessels or processors that participate in the non-whiting groundfish sector of the limited entry trawl fishery. 
          Vessels that fished for both whiting and non-whiting are included in the whiting vessel category. The purpose of separating the whiting from the non-whiting vessels is that the whiting vessels tend to be larger and catch a higher volume of fish. In addition, total allowable catch for Pacific whiting has more annual variation than total annual catch for species targeted in the non-whiting groundfish sector."),
   tags$p('This division is not appropriate for the mothership and catcher-processor sectors. For these sectors, only Pacific whiting is shown.'),
-  tags$p('There are some cases where there are not enough vessels to separate the vessels into the whiting and non-whiting vessel categories. This occurs when there is less than three vessels at either the whiting or non-whiting level. When this happens, we only report the "All vessels" category and indicate that we have done so in a message below the plot and in the data table. More information on data confidentiality requirements can be found in the EDC Administration and Operations Report.')
+  tags$p('There are some cases where there are not enough vessels or processors to separate into the whiting and non-whiting categories. This occurs when there is less than three vessels or processors at either the whiting or non-whiting level. When this happens, we only report the "All vessels" or "All processors" categories and indicate that we have done so in a message below the plot and in the data table. More information on data confidentiality requirements can be found in the EDC Administration and Operations Report.')
   ), tags$br(),                   
 
 
@@ -126,16 +126,16 @@ tags$ul(
  tags$ul(
    tags$li(strong('Year:'), 'Calendar year over which fishing activities occurred.'),
    tags$li(strong('Summary variables:'),  'Summary variables (fisheries, homeport, state, vessel length class) are used to group vessels to better understand the costs and expenses for particular segments of the fleet.'),
-   tags$li(strong('Costs categories:'), 'See above for a description of the costs measures.'),
-   tags$li(strong('Number of vessels/processors:'), 'The number of observations for each displayed statistic.'),
    tags$li(strong('Statistic:'), 'See above for further description of the statistics.'),
+   tags$li(strong('Costs measure:'), 'See above for a description of the costs measures.'),
+   tags$li(strong('Data summed across:'), 'For catcher vessels, we show data summed across all vessels, vessel that participated in the non-whiting groundfish sector of the limited entry trawl fishery, vessels that fished for Pacific whiting. Vessels that fished for both whiting and non-whiting are included in the whiting level. For first receivers and shorebased processors, we show data summed across all processors, processors that process whiting species, and processors that process non-whiting species.'),
+   tags$li(strong('Number of vessels/processors:'), 'The number of observations for each displayed statistic.'),
    tags$li(strong('Value:'), 'Value of the cost measures for the statistic.'),
+   tags$li(strong('Variance:'), 'A measure of the spread of values. We report the standard deviation (SD) when vessel averages are selected and the median absolute deviation (MAD) when vessel medians are selected.'),
    tags$li(strong('Fisheries category:'), 'This variable is relevant for when vessels are grouped by homeport, state, or vessel length class. It indicates whether the reported value of the 
           selected cost measure includes activity in all fisheries or only in the catch share fisheries or the non-catch share fisheries.'),
    tags$li(strong('Production category:'), 'This variable is relevant for first receivers and shorebased processors. It indicates whether the reported value of the selected cost 
            measure includes  all production or only groundfish production or other species production.'),
-   tags$li(strong('Variance:'), 'A measure of the spread of values. We report the standard deviation (SD) when vessel averages are selected and the median absolute deviation (MAD) when vessel medians are selected.'),
-   tags$li(strong('Data summed across:'), 'For first receivers and shorebased processors, we show data summed across all processors or processors that process catch share species.'),
    tags$p(tags$br(),
           tags$br(),
           tags$br(),

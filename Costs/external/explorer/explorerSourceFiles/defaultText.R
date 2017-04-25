@@ -59,8 +59,8 @@ output$BlogUpdates <- renderUI({
 
          tags$div( class='date', style='height:45px;width:30px;font-family:Arial;font-weight:bold;background-color:#ffffff;text-align:center;border-top:1px solid #c0c0c0;
                    border-left:1px solid #c0c0c0;border-right:1px solid #c0c0c0;position:absolute;z-index:3;line-height: 13px;',
-                   HTML("<span class='month' style='text-transform:uppercase;font-size:11px;'>Jan</span><br />
-                        <span class='day' style='font-size:16px;'>08</span><br />
+                   HTML("<span class='month' style='text-transform:uppercase;font-size:11px;'>Apr</span><br />
+                        <span class='day' style='font-size:16px;'>21</span><br />
                         <span class='year' style='font-size:11px;line-height: 10px;'>2017</span>")
          ),
          tags$p(HTML("<span style='margin-left:60px;font-size:18px;font-weight:bold'>Welcome to the Net Revenue Explorer!</span>")), 
@@ -122,8 +122,12 @@ output$DefaultPlotText <- renderUI({
            tags$p('Visualize', tags$a(href="https://www.nwfsc.noaa.gov/research/divisions/fram/economic/overview.cfm", 'Economic Data Collection (EDC)', target="_blank"), 
                   'summary statistics for costs (variable and fixed) of vessels and processors that participate in the', 
                    tags$a(href="http://www.westcoast.fisheries.noaa.gov/fisheries/groundfish_catch_shares/index.html", 'West Coast Groundfish Trawl Catch Share Program. ', target="_blank"), 
-                  'Select whether to view results for', tags$a(href="2012CatcherVessel.jpg","catcher vessels", target="_blank"), 
-                  '(both at-sea and shoreside), motherships, catcher-processors, or first receivers and shorebased processes.'),
+                  'Select whether to view results for', 
+                   tags$a(href="https://www.nwfsc.noaa.gov/research/divisions/fram/documents/EDC_Catcher_Vessel_Report_October_2016.pdf","catcher vessels", target="_blank"), 
+                  '(both at-sea and shoreside), ', 
+                  tags$a(href='https://www.nwfsc.noaa.gov/research/divisions/fram/documents/EDC_Mothership_Report_October_2016.pdf', 'motherships,', target='_blank'), 
+                  tags$a(href='https://www.nwfsc.noaa.gov/research/divisions/fram/documents/Catcher_Processor_Report_October_2016.pdf','catcher-processors,', target='_blank'),
+                  'or', tags$a(href='https://www.nwfsc.noaa.gov/research/divisions/fram/documents/EDC_First_Receiver_Shorebased_Processor_Report_October_2016.pdf', 'first receivers and shorebased processes.', target='_blank')),
             tags$p(strong("To get started, make at least one selection in each of the fields in the Control Panel.")),
  #          tags$br(),
            HTML("<div style='display:inline-block;width:100%;padding:0;line-height: 0.8em; margin-top:15px; margin-bottom:-2px;font-size:11.5pt'>
@@ -136,7 +140,7 @@ output$DefaultPlotText <- renderUI({
           img(src="CostsFig.png", height=450),  #  img(src="EconInd4.png", height=350),       
            tags$br(), 
            tags$br(),
-          tags$p(strong('Show Data:'), 'The', tags$em('Show Data'), 'button displays a data table that can be filtered using the Search box or the boxes at the bottom of the table.'),
+          tags$p(strong('Show Data:'), 'The', tags$em('Show Data'), 'button displays a data table that can be filtered using the', tags$em('Search'), 'box or the boxes at the bottom of the table.'),
           
           
            tags$p(strong('Download Plots and Data:'),'Once selections have been made and a plot or data table is visible, use these buttons to download the plot and the data used to generate the plot.'),
@@ -165,15 +169,13 @@ output$GetStartedText <- renderUI({
                   "Second, for catcher vessels, select to show results for all vessels, just vessels that fished for pacific whiting, 
                   or just vessels that did not fish for pacific whiting. For first receivers and shorebased processors, select to 
                   show results for all processors, just processors that processed whiting, or just processors that processed non-whiting 
-                  species. For motherships and catcher-processors, only the Pacific whiiting category is available."),
+                  species. For motherships and catcher-processors, only the Pacific whiting category is available."),
            tags$h4(paste("3. Select one more more subgroups")),
            tags$p(strong('This tutorial will disappear once this selection is made. Selections can be made in any order.'), 
-                  paste('Multiple subgroups of the selected vessel or processor grouping category (such as fishery) can be selected if, in step 1, you chose to compare groups of vessels or processors.')),
+                  paste('Multiple subgroups of the selected vessel or processor grouping category (such as fishery) can be selected.')),
            tags$h4("4. Select a statistic"),
            tags$p('Three statistics are calculated: average, median, and fleet- or processor-wide total.'),
            tags$h4("5. Select a cost category"),
-           tags$p("This drop down menu allows you to choose between showing:",tags$em('All cost categories,'), tags$em("Variable costs,"),'or',tags$em('Fixed costs.'), 
-                  'Then select a cost to display.'),
            tags$h4('6. Select years')#,
            #tags$p('The choice to include activities in Alaskan fisheries depend upon the sector selected.')
   )

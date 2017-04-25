@@ -15,8 +15,9 @@ tags$div(style = "margin: 15px; 15px;30px; 30px; width: 60%",
                 'As part of the catch share program, participants of the fishery are required to complete', tags$a(href='https://www.nwfsc.noaa.gov/research/divisions/fram/economic/economic_data_forms.cfm', 'EDC survey forms', target="_blank"),
                 'as stated in', 
                 tags$a(href="http://www.ecfr.gov/cgi-bin/text-idx?SID=06f0c396e52e564ce22a048aa910f49f&node=50:13.0.1.1.1.4.1.5&rgn=div8",'regulation 50 CFR 660.114', target="_blank"), 
-                'for all fisheries they participate in, including non-catch share fisheries. Data collection began in 2009, two years prior to implementing the catch share program. 
-                FISHEyE Costs Explorer allows for the evaluation of variable and fixed costs for',
+                'for all fisheries they participate in, including non-catch share fisheries. Data collection began in 2009, two years prior to implementing the catch share program.'),
+       
+                tags$p('FISHEyE Costs Explorer is designed to explore and evaluate variable and fixed costs for',
                   tags$a(href="2012CatcherVessel.jpg","catcher vessels,", target="_blank"), tags$a(href="2012CatcherProcessor.jpg", 'catcher-processors,', target="_blank"), 
                   tags$a(href="2012Mothership.jpg", 'motherships,', target="_blank"), 'and ', 
                   tags$a(href="2012FirstRecieversShorebasedProcessors.jpg",'first receivers and shorebased processors.', target="_blank")),
