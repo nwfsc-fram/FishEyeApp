@@ -6,7 +6,7 @@ tags$div(style = "margin: 15px; 15px; 30px; width: 60%",
               '<a class="btn btn-primary", href="Definitions.htm" target="_blank"  style="height:47px;margin: -54px 0px 0px 930px"> Open Instructions <br> in new browser tab</a>'
          ),
          #tags$h3('Instructions'), 
-          tags$p('To use Costs Explorer, make data selections in each of the fields in the Control Panel (this panel will only appear when you are on the',tags$em('Explore the data'), 'page).
+          tags$p('To use the Costs Explorer, make data selections in each of the fields in the Control Panel (this panel will only appear when you are on the',tags$em('Explore the data'), 'page).
           Output will be automatically generated when each of the fields in the Control Panel has at least one selection.', tags$br(), tags$br(),
           'A button to download the plot(s) and data table can be found at the bottom of the Control Panel. Download the data and analyze externally to generate plots and analyses beyond what is 
           provided in the Costs Explorer.',
@@ -16,7 +16,7 @@ tags$div(style = "margin: 15px; 15px; 30px; width: 60%",
            tags$li(tags$h4("Summary Plots and Data")),
            tags$p('Visualize', tags$a(href="https://www.nwfsc.noaa.gov/research/divisions/fram/economic/overview.cfm",'Economic Data Collection (EDC)', target="_blank"), 'summary statistics for variable and fixed costs of 
                   catcher vessels (both at-sea and shoreside), mothership vessels, catcher-processor vessels, and first receivers and shorebased processors that participate in the',
-                  tags$a(href="https://www.nwfsc.noaa.gov/research/divisions/fram/catch_shares.cfm", 'Catch Share program. ', target="_blank")),
+                  tags$a(href="https://www.nwfsc.noaa.gov/research/divisions/fram/catch_shares.cfm", 'catch share program. ', target="_blank")),
                  
                 tags$strong('Plots'),tags$p('Visualize costs data.', tags$br(),
                 
