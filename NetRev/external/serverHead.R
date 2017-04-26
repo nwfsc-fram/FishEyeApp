@@ -1,4 +1,3 @@
-years.list <- c("2009", "2010", "2011", "2012")
 
 # load("data/tabs.out.RData") ## this is now the following datatables
 load("data/netrevTable.RData")
