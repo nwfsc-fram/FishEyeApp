@@ -1,20 +1,38 @@
 #https://github.com/hadley/ggplot2/issues/1301  #use website for dealing with stacked bar plot order issue
 doPlot <- function(dat, x, y){
   if(PermitPlot()){
-    
+    currentyear <- 2015
    
     groupVar <- "SHORTDESCR"
     facetVar <- "VARIABLE"
-
- 
+    
+#   if(input$Sect_sel=="CV"){
+#     levels(groupVar) <- c('All variable costs','Buyback fees','Captain','Cost recovery fees',
+#                                         'Crew','Fuel','Observers','Other variable costs',
+#                                         'All fixed costs','Fishing gear','On-board equipment','Other fixed costs')
+#    } else if(input$Sect_sel=="M"){
+#      groupVar <- reorder('SHORTDESCR', levels=c("All variable costs","Fish purchases","Fuel","Non-processing crew","Observers","Processing crew","Other variable costs",
+#                                         "All fixed costs","Fishing gear","On-board equipment","Processing equipment",'Other fixed costs'))
+#    } else 
+#    if(input$Sect_sel=='CP'){ 
+#      groupVar <- reorder('SHORTDESCR', levels=c("All variable costs",'Cost recovery fees', "Fish purchases","Fuel","Non-processing crew","Observers","Processing crew","Other variable costs",
+#                                         "All fixed costs","Fishing gear","On-board equipment","Processing equipment",'Other fixed costs'))
+#    } else {
+#      groupVar <- reorder('SHORTDESCR', levels=c("All variable costs",'Fish purchases','Freight','Labor','Monitoring','Off-site freezing & storage','Packing materials','Utilities','Other variable costs',
+#                                         "All fixed costs",'Buildings','Equipment','Other fixed costs'))
+#    }
+    
     ## Change color palette to printer-friendly colors that are color-blind friendly. Want consistent colors with what Erin is using
     colourList <- c('All variable costs'='#590014',
-                    'Buyback fees'="#8f0007","Fish purchases"="#8f0007",#'Freight'="#8f0007", #a50026
+                    'Buyback fees'="#8f0007","Fish purchases"="#8f0007","Processing crew"="#8f0007",#'Freight'="#8f0007", #a50026
                     'Captain'="#d73027","Non-processing crew"="#d73027",'Freight'='#d73027',#''='#d73027',
-                    'Cost recovery fees'="#ff6d33","Processing crew"="#ff6d33",'Labor'="#ff6d33",
-                    'Crew'="#cc7e00",'Monitoring'="#cc7e00",#
-                    'Fuel'="#fdae61",'Off-site freezing & storage'="#fdae61",#fee090
-                    'Observers'="#e3d165",'Packing materials'="#e3d165",  
+                    'Cost recovery fees'='#FE8181','Labor'='#FE8181',
+                    'Fuel'="#fdae61",'Off-site freezing & storage'="#fdae61",
+                    
+                    'Crew'="#ff6d33",'Monitoring'="#ff6d33",#
+                    'Observers'="#cc7e00",#cc7e00",#fee090
+                    #FE8181",#fcc212",#e3d165",
+                    'Packing materials'="#fcc212",  
                     'Utilities'='#d8bc03',
                     'Other variable costs'="#fffb05",
                    
@@ -56,31 +74,31 @@ doPlot <- function(dat, x, y){
          max(data.frame(
            dat %>% group_by(VARIABLE, YEAR, SHORTDESCR) %>% 
                        summarise(VALUE=max(VALUE, na.rm=T)) %>% 
-                       group_by(VARIABLE,SHORTDESCR) %>% 
+                       group_by(VARIABLE,YEAR) %>% 
                        summarise(VALUE=sum(VALUE, na.rm=T))
-           )[,'VALUE'])/1300
+           )[,'VALUE'])/900
        )
        }
      }
-     
+     print(thresh())
  # Plot title construction
      plot.title <- function(){
           return(paste("Summary Cost Measures for West Coast ", sect()))
 }
     
     gv <- function(){
-          if(input$CategorySelect=="Fisheries"){
+          if(input$CategorySelect=="Fisheries"|input$CategorySelect=="Production activities"){
               if(input$Sect_sel=="CV"){
-                    sprintf(paste("Group variable:", input$CategorySelect, "     Statistic: ", input$StatSelect, "    Fished in AK included:", input$FishAkSelect, "    Fished for whiting included:", input$FishWhitingSelect))
+                    sprintf(paste("Group variable:", input$CategorySelect,"  Summed across:", input$FishWhitingSelect))
               } else {
-                    sprintf(paste("Group variable:", input$CategorySelect, "     Statistic: ", input$StatSelect))
+                    sprintf(paste("Group variable:", input$CategorySelect, "     Statistic: ", input$StatSelect, "  Summed across:", input$FishWhitingSelect))
            }} else if(input$CategorySelect=="Production activities"){
-                    sprintf(paste("Group variable:", input$CategorySelect, "     Statistic: ", input$StatSelect))
+                    sprintf(paste("Group variable:", input$CategorySelect, "     Statistic: ", input$StatSelect, "  Summed across:", input$inSelect,' and ', input$FishWhitingSelect))
             } else {
               if(input$Sect_sel=="CV"){
-                    sprintf(paste("Group variable:", input$CategorySelect, "     Statistic: ", input$StatSelect, "    Fished in AK included:", input$FishAkSelect,"    Fished for whiting included:", input$FishWhitingSelect,"    Summed across:", input$inSelect))
+                    sprintf(paste("Group variable:", input$CategorySelect, "     Statistic: ", input$StatSelect, "  Summed across:", input$inSelect, ' and ', input$FishWhitingSelect))
               } else {
-                    sprintf(paste("Group variable:", input$CategorySelect, "     Statistic: ", input$StatSelect,   "Summed across:", input$inSelect))
+                    sprintf(paste("Group variable:", input$CategorySelect, "     Statistic: ", input$StatSelect, "  Summed across:", input$inSelect, ' and ', input$FishWhitingSelect))
               }}
       }
 
@@ -126,11 +144,11 @@ doPlot <- function(dat, x, y){
         } # end if statement for line figure
       else if(input$PlotSelect == "Bar"){
                 g <- g + geom_bar(aes_string(fill = groupVar, order=groupVar), stat="identity", position="dodge", width = scale_bars())
-        } #End if else for side-by-side comparion
+        } #End if else for side-by-side comparison
       else {
-          g <- g + geom_bar(aes_string(fill = groupVar, order=groupVar), stat="identity", position="stack", width = scale_bars())
+                g <- g + geom_bar(aes_string(fill = groupVar, order=groupVar), stat="identity", position="stack", width = scale_bars())
         }
-    
+ #   reorder(groupVar, dat$barorder    
         if(length(yr())>1 & min(yr())<2011 & max(yr())>2010){
                 g <- g + geom_rect(aes_string(xmin=-Inf, xmax=table(yr()<2011)[[2]]+.5, ymin=-Inf, ymax=Inf), fill="grey50", alpha=.05/length(yr()))
                 g <- g + geom_text(aes(x=(table(yr()<2011)[[2]])/4,y=thresh(), label="Pre-Catch shares"), family="serif",fontface="italic", hjust=0,color = "grey40", size=7/scale_text()) 
@@ -155,7 +173,7 @@ doPlot <- function(dat, x, y){
     
     # define x- and y-axis labels
     ylab <- function(){
-        paste("Thousands of 2015 $", "(",input$StatSelect, ")")
+        paste("Thousands of", currentyear, " $ (",input$StatSelect, ")")
       }
     
     conf_mess <- function(){
@@ -206,9 +224,16 @@ doPlot <- function(dat, x, y){
       axis.text = element_text(size = 12),
       legend.position = "top",
       legend.key = element_rect(fill = "white"),
-      legend.text = element_text(family = "sans", color = "grey25", face = "bold", size = 12),
+      legend.text = element_text(family = "sans", color = "grey25", face = "bold", size = 10),
+      legend.key.size=unit(2,'line'),
       legend.title = element_blank()
     )
+    
+    if(input$PlotSelect!="Line"){
+    g <- g +guides(fill=guide_legend(nrow=2, byrow=TRUE))
+    } else {
+    g <- g +guides(colour=guide_legend(nrow=2, byrow=TRUE))
+    }
     ############################################################################################################
     ##function to wrapping facet labels and remove dots before facet labels 
     strwrap_strip_text = function(p, pad=0.02) { 

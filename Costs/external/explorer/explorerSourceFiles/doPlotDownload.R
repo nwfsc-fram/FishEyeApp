@@ -2,7 +2,9 @@
 
 doPlotDownload <- function(dat, x, y){
   if(PermitPlot()){
-    
+  
+    currentyear <- 2015
+      
     yr <- function(){
       if(input$Sect_sel=="CV"){
         return(input$YearSelect)  
@@ -16,12 +18,15 @@ doPlotDownload <- function(dat, x, y){
 
     ## Change color palette to printer-friendly colors that are color-blind friendly. Want consistent colors with what Erin is using
     colourList <- c('All variable costs'='#590014',
-                    'Buyback fees'="#8f0007","Fish purchases"="#8f0007",#'Freight'="#8f0007", #a50026
+                    'Buyback fees'="#8f0007","Fish purchases"="#8f0007","Processing crew"="#8f0007",#'Freight'="#8f0007", #a50026
                     'Captain'="#d73027","Non-processing crew"="#d73027",'Freight'='#d73027',#''='#d73027',
-                    'Cost recovery fees'="#ff6d33","Processing crew"="#ff6d33",'Labor'="#ff6d33",
-                    'Crew'="#cc7e00",'Monitoring'="#cc7e00",#
-                    'Fuel'="#fdae61",'Off-site freezing & storage'="#fdae61",#fee090
-                    'Observers'="#e3d165",'Packing materials'="#e3d165",  
+                    'Cost recovery fees'='#FE8181','Labor'='#FE8181',
+                    'Fuel'="#fdae61",'Off-site freezing & storage'="#fdae61",
+                    
+                    'Crew'="#ff6d33",'Monitoring'="#ff6d33",#
+                    'Observers'="#cc7e00",#cc7e00",#fee090
+                    #FE8181",#fcc212",#e3d165",
+                    'Packing materials'="#e3d165",  
                     'Utilities'='#d8bc03',
                     'Other variable costs'="#fffb05",
                     
@@ -41,9 +46,9 @@ doPlotDownload <- function(dat, x, y){
           max(data.frame(
             dat %>% group_by(VARIABLE, YEAR, SHORTDESCR) %>% 
               summarise(VALUE=max(VALUE, na.rm=T)) %>% 
-              group_by(VARIABLE,SHORTDESCR) %>% 
+              group_by(VARIABLE,YEAR) %>% 
               summarise(VALUE=sum(VALUE, na.rm=T))
-          )[,'VALUE'])/1300
+          )[,'VALUE'])/900
         )
       }
     }
@@ -65,18 +70,18 @@ doPlotDownload <- function(dat, x, y){
      }
   
     gv <- function(){
-     if(input$CategorySelect=="Fisheries"){
+     if(input$CategorySelect=="Fisheries"|input$CategorySelect=="Production activities"){
           if(input$Sect_sel=="CV"){
-            sprintf(paste("Group variable:", input$CategorySelect, "     Statistic: ", input$StatSelect, "    Fished in AK included:", input$FishAkSelect, "    Fished for whiting included:", input$FishWhitingSelect))
+            sprintf(paste("Group variable:", input$CategorySelect, "     Statistic: ", input$StatSelect,"  Summed across:", input$FishWhitingSelect))
           } else {
-            sprintf(paste("Group variable:", input$CategorySelect, "     Statistic: ", input$StatSelect))
+            sprintf(paste("Group variable:", input$CategorySelect, "     Statistic: ", input$StatSelect,"  Summed across:", input$FishWhitingSelect))
           }} else if(input$CategorySelect=="Production activities"){
-            sprintf(paste("Group variable:", input$CategorySelect, "     Statistic: ", input$StatSelect))
+            sprintf(paste("Group variable:", input$CategorySelect, "     Statistic: ", input$StatSelect, "  Summed across:", input$inSelect,' and ', input$FishWhitingSelect))
           } else {
             if(input$Sect_sel=="CV"){
-              sprintf(paste("Group variable:", input$CategorySelect, "     Statistic: ", input$StatSelect, "    Fished in AK included:", input$FishAkSelect,"    Fished for whiting included:", input$FishWhitingSelect,"    Summed across:", input$inSelect))
+              sprintf(paste("Group variable:", input$CategorySelect, "     Statistic: ", input$StatSelect, "  Summed across:", input$inSelect,' and ', input$FishWhitingSelect))
             } else {
-              sprintf(paste("Group variable:", input$CategorySelect, "     Statistic: ", input$StatSelect,   "Summed across:", input$inSelect))
+              sprintf(paste("Group variable:", input$CategorySelect, "     Statistic: ", input$StatSelect, "  Summed across:", input$inSelect,' and ', input$FishWhitingSelect))
             }}
     }
     
@@ -130,7 +135,7 @@ doPlotDownload <- function(dat, x, y){
     
     
     if(input$PlotSelect=="Line"){
-      g <- g + geom_line(aes_string(colour = groupVar), size=2.5)
+      g <- g + geom_line(aes_string(colour = groupVar), size=1.5)
     } # end if statement for line figure
     else if(input$PlotSelect == "Bar"){
       g <- g + geom_bar(aes_string(fill = groupVar, order=groupVar), stat="identity", position="dodge", width = scale_bars())
@@ -162,11 +167,11 @@ doPlotDownload <- function(dat, x, y){
     
     
     ylab <- function(){
-        paste("Thousands of 2015 $", "(",input$StatSelect, ")")
+        paste("Thousands of", currentyear, "$", "(",input$StatSelect, ")")
         }
     
     source_lab <- function(){
-      paste("Sourced from the FISHEyE application (https://dataexplorer.northwestscience.fisheries.noaa.gov/fisheye/CostsExplorer/) maintained by NOAA Fisheries NWFSC on ",format(Sys.Date(), format="%B %d %Y"))
+      paste("Sourced from the FISHEyE application (https://dataexplorer.northwestscience.fisheries.noaa.gov/fisheye/Costs/) maintained by NOAA Fisheries NWFSC on ",format(Sys.Date(), format="%B %d %Y"))
     }
     conf_mess <- function(){
       if(input$Sect_sel=="CV"){
@@ -179,7 +184,7 @@ doPlotDownload <- function(dat, x, y){
     # define labels
     xlab <- function(){
             if(max(dat$AK_FLAG, na.rm=T)==1){
-              paste(source_lab(),conf_mess())
+              paste(conf_mess(),source_lab())
             } else {
               source_lab()      
             }
@@ -213,9 +218,16 @@ doPlotDownload <- function(dat, x, y){
       legend.position = "top",
       legend.key = element_rect(fill = "white"),
       legend.text = element_text(family = "sans", 
-                                 color = "grey25", face = "bold", size = 10),
+                                 color = "grey25", face = "bold", size = 7),
+      legend.key.size=unit(1,'line'),
       legend.title = element_blank())
     
+    if(input$PlotSelect!="Line"){
+      g <- g +guides(fill=guide_legend(nrow=2, byrow=TRUE))
+    } else {
+      g <- g +guides(colour=guide_legend(nrow=2, byrow=TRUE))
+    }
+    ######################################################################################
     ##function to wrapping facet labels
     strwrap_strip_text = function(p, pad=0.05) { 
       # get facet font attributes
