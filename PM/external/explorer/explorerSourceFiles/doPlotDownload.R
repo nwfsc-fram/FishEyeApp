@@ -32,7 +32,7 @@ doPlotDownload <- function(dat, x, y){
       } else if(input$Sect_sel == "M"){
         return("Motherships")
       } else if(input$Sect_sel == "CP"){
-        return("Catcher Processors")
+        return("Catcher-Processors")
       } else if (input$Sect_sel == "FR"){
         return("First Receivers")
       }}
@@ -42,11 +42,11 @@ doPlotDownload <- function(dat, x, y){
       if(input$Sect_sel == "CV"){
         return("Performance Metrics for West Coast Catcher Vessels")
       } else if(input$Sect_sel == "M"){
-        return("Performance Metrics for West Coast Motherships")
+        return("Performance Metrics for West Coast Mothership Vessels")
       } else if(input$Sect_sel == "CP"){
-        return("Performance Metrics for West Coast Catcher Processors")
+        return("Performance Metrics for West Coast Catcher-Processor Vessels")
       }else if (input$Sect_sel == "FR"){
-        return("Performance Metrics for West Coast First Receivers")
+        return("Performance Metrics for West Coast First Receivers and Shorebased Processors")
       }}
     
     gv <- function(){
@@ -188,7 +188,7 @@ doPlotDownload <- function(dat, x, y){
         }else if(input$Ind_sel=="Demographic"){
           if(input$LayoutSelect!='Metrics'){
             if(input$demSelect=="Proportion of revenue from CS fishery"){
-              expression(bold("Proportion of revenue from Catch Share fishery"))  
+              expression(bold("Proportion of revenue from catch share fishery"))  
             }  else if(input$demSelect=="Gini coefficient"){
               expression(bold("Gini coefficient (0 - 1)"))
             }  else if(input$demSelect=="Fishery participation"){
@@ -388,64 +388,64 @@ xlab <- function(){
       if(input$Ind_sel=="Economic"){
        g <- g + geom_rect(aes(xmin=-Inf, xmax=dat$thresh+.5, ymin=-Inf, ymax=Inf),fill="grey50", alpha=.02)
        if(input$PlotSelect==T&dat$STAT[1]!="Fleet-wide total"&is.na(max(dat$VARIANCE))==F) {  
-            g <- g + geom_text(aes(x=dat$thresh/3.5,y=max(VALUE+VARIANCE)+max(VALUE)/10, label="Pre-Catch shares", family="serif"),hjust=0,color = "grey20", size=3) 
+            g <- g + geom_text(aes(x=dat$thresh/3.5,y=max(VALUE+VARIANCE)+max(VALUE)/10, label="Pre-catch shares", family="serif"),hjust=0,color = "grey20", size=3) 
           if(length(input$YearSelect[input$YearSelect<2010])>3 & length(input$YearSelect[input$YearSelect>=2010])==2) {
-            g <- g + geom_text(aes(x=dat$thresh+length(table(dat$YEAR[dat$YEAR>2010]))/2,y=max(VALUE+VARIANCE)+max(VALUE)/10,label="Post-Catch"),hjust=0, family="serif",color = "grey20", size=3)+
+            g <- g + geom_text(aes(x=dat$thresh+length(table(dat$YEAR[dat$YEAR>2010]))/2,y=max(VALUE+VARIANCE)+max(VALUE)/10,label="Post-catch"),hjust=0, family="serif",color = "grey20", size=3)+
               geom_text(aes(x=dat$thresh+length(table(dat$YEAR[dat$YEAR>2010]))/2,y=max(VALUE+VARIANCE)-max(VALUE+VARIANCE)/80,label="shares"),hjust=0, family="serif",color = "grey20", size=3)
           } else {
-            g <- g + geom_text(aes(x=dat$thresh+length(table(dat$YEAR[dat$YEAR>2010]))/2,y=max(VALUE+VARIANCE)+max(VALUE)/10,label="Post-Catch shares"),hjust=0, family="serif",color = "grey20", size=3)
+            g <- g + geom_text(aes(x=dat$thresh+length(table(dat$YEAR[dat$YEAR>2010]))/2,y=max(VALUE+VARIANCE)+max(VALUE)/10,label="Post-catch shares"),hjust=0, family="serif",color = "grey20", size=3)
           }
         } else {
-          g <- g + geom_text(aes(x=dat$thresh/3.5,y=max(VALUE+0)+max(VALUE)/10, label="Pre-Catch shares", family="serif"),hjust=0,color = "grey20", size=3) 
+          g <- g + geom_text(aes(x=dat$thresh/3.5,y=max(VALUE+0)+max(VALUE)/10, label="Pre-catch shares", family="serif"),hjust=0,color = "grey20", size=3) 
           if(length(input$YearSelect[input$YearSelect<2010])>3 & length(input$YearSelect[input$YearSelect>=2010])==2) {
-            g <- g + geom_text(aes(x=dat$thresh+length(table(dat$YEAR[dat$YEAR>2010]))/2,y=max(VALUE+0)+max(VALUE)/10,label="Post-Catch"),hjust=0, family="serif",color = "grey20", size=3)+
+            g <- g + geom_text(aes(x=dat$thresh+length(table(dat$YEAR[dat$YEAR>2010]))/2,y=max(VALUE+0)+max(VALUE)/10,label="Post-catch"),hjust=0, family="serif",color = "grey20", size=3)+
               geom_text(aes(x=dat$thresh+length(table(dat$YEAR[dat$YEAR>2010]))/2,y=max(VALUE+0)-max(VALUE)/80,label="shares"),hjust=0, family="serif",color = "grey20", size=3)
           } else {
-            g <- g + geom_text(aes(x=dat$thresh+length(table(dat$YEAR[dat$YEAR>2010]))/2,y=max(VALUE+0)+max(VALUE)/10,label="Post-Catch shares"),hjust=0, family="serif",color = "grey20", size=3)
+            g <- g + geom_text(aes(x=dat$thresh+length(table(dat$YEAR[dat$YEAR>2010]))/2,y=max(VALUE+0)+max(VALUE)/10,label="Post-catch shares"),hjust=0, family="serif",color = "grey20", size=3)
           }}
       } 
       else {
         g <- g + geom_rect(aes(xmin=-Inf, xmax=length(table(dat$YEAR[dat$YEAR<=2010]))+.5, ymin=-Inf, ymax=Inf),fill="grey50", alpha=.02)
         if(input$PlotSelect==T&dat$STAT[1]!="Fleet-wide total"&is.na(max(dat$VARIANCE))==F) {  
           if (input$LayoutSelect!='Metrics') {
-          g <- g + geom_text(aes(x=length(table(dat$YEAR[dat$YEAR<2011]))/3.5,y=max(VALUE+VARIANCE)+max(VALUE)/20, label="Pre-Catch shares", family="serif"),hjust=0,color = "grey20", size=3)  
+          g <- g + geom_text(aes(x=length(table(dat$YEAR[dat$YEAR<2011]))/3.5,y=max(VALUE+VARIANCE)+max(VALUE)/20, label="Pre-catch shares", family="serif"),hjust=0,color = "grey20", size=3)  
           } else {
-            g <- g + geom_text(aes(x=length(table(dat$YEAR[dat$YEAR<2011]))/3.5,y=thresh-thresh/10, label="Pre-Catch shares", family="serif"),hjust=0,color = "grey20", size=3)  
+            g <- g + geom_text(aes(x=length(table(dat$YEAR[dat$YEAR<2011]))/3.5,y=thresh-thresh/10, label="Pre-catch shares", family="serif"),hjust=0,color = "grey20", size=3)  
           }
           if(length(input$YearSelect[input$YearSelect<2010])>3 & length(input$YearSelect[input$YearSelect>=2010])==2) {
             if (input$LayoutSelect!='Metrics') {
-              g <- g + geom_text(aes(x=length(table(dat$YEAR[dat$YEAR<2011]))+length(table(dat$YEAR[dat$YEAR>2010]))/2.75,y=max(VALUE+VARIANCE)+max(VALUE)/20,label="Post-Catch "),hjust=0, family="serif",color = "grey20", size=3)#+
+              g <- g + geom_text(aes(x=length(table(dat$YEAR[dat$YEAR<2011]))+length(table(dat$YEAR[dat$YEAR>2010]))/2.75,y=max(VALUE+VARIANCE)+max(VALUE)/20,label="Post-catch "),hjust=0, family="serif",color = "grey20", size=3)#+
               geom_text(aes(x=length(table(dat$YEAR[dat$YEAR<2011]))+length(table(dat$YEAR[dat$YEAR>2010]))/2.75,y=max(VALUE+VARIANCE)-max(VALUE+VARIANCE)/51,label="shares"),hjust=0, family="serif",color = "grey20", size=3)
             } else {
-              g <- g + geom_text(aes(x=length(table(dat$YEAR[dat$YEAR<2011]))+length(table(dat$YEAR[dat$YEAR>2010]))/2.75,y=thresh-thresh/10,label="Post-Catch "),hjust=0, family="serif",color = "grey20", size=3)#+
+              g <- g + geom_text(aes(x=length(table(dat$YEAR[dat$YEAR<2011]))+length(table(dat$YEAR[dat$YEAR>2010]))/2.75,y=thresh-thresh/10,label="Post-catch "),hjust=0, family="serif",color = "grey20", size=3)#+
               geom_text(aes(x=length(table(dat$YEAR[dat$YEAR<2011]))+length(table(dat$YEAR[dat$YEAR>2010]))/2.75,y=thresh-thresh/10,label="shares"),hjust=0, family="serif",color = "grey20", size=3)
             }
               } else {
                 if (input$LayoutSelect!='Metrics') {
-            g <- g + geom_text(aes(x=length(table(dat$YEAR[dat$YEAR<2011]))+length(table(dat$YEAR[dat$YEAR>2010]))/2.75,y=max(VALUE+VARIANCE)+max(VALUE)/20,label="Post-Catch shares"),hjust=0, family="serif",color = "grey20", size=3)
+            g <- g + geom_text(aes(x=length(table(dat$YEAR[dat$YEAR<2011]))+length(table(dat$YEAR[dat$YEAR>2010]))/2.75,y=max(VALUE+VARIANCE)+max(VALUE)/20,label="Post-catch shares"),hjust=0, family="serif",color = "grey20", size=3)
                 } else {
-                  g <- g + geom_text(aes(x=length(table(dat$YEAR[dat$YEAR<2011]))+length(table(dat$YEAR[dat$YEAR>2010]))/2.75,y=thresh-thresh/10,label="Post-Catch shares"),hjust=0, family="serif",color = "grey20", size=3)
+                  g <- g + geom_text(aes(x=length(table(dat$YEAR[dat$YEAR<2011]))+length(table(dat$YEAR[dat$YEAR>2010]))/2.75,y=thresh-thresh/10,label="Post-catch shares"),hjust=0, family="serif",color = "grey20", size=3)
                 }
             }
         } else {
           if (input$LayoutSelect!='Metrics') {
-          g <- g + geom_text(aes(x=length(input$YearSelect[input$YearSelect<2011])/3.5,y=max(VALUE+0)+max(VALUE)/20, label="Pre-Catch shares", family="serif"),hjust=0,color = "grey20", size=3)  
+          g <- g + geom_text(aes(x=length(input$YearSelect[input$YearSelect<2011])/3.5,y=max(VALUE+0)+max(VALUE)/20, label="Pre-catch shares", family="serif"),hjust=0,color = "grey20", size=3)  
           } else {
-            g <- g + geom_text(aes(x=length(input$YearSelect[input$YearSelect<2011])/3.5,y=thresh-thresh/10, label="Pre-Catch shares", family="serif"),hjust=0,color = "grey20", size=3)  
+            g <- g + geom_text(aes(x=length(input$YearSelect[input$YearSelect<2011])/3.5,y=thresh-thresh/10, label="Pre-catch shares", family="serif"),hjust=0,color = "grey20", size=3)  
           }
           if(length(input$YearSelect[input$YearSelect<2010])>3 & length(input$YearSelect[input$YearSelect>=2010])==2) {
             if (input$LayoutSelect!='Metrics') {
-              g <- g + geom_text(aes(x=length(input$YearSelect[input$YearSelect<2011])+length(input$YearSelect[input$YearSelect>2010])/2.75,y=max(VALUE+0)+max(VALUE)/20,label="Post-Catch"),hjust=0, family="serif",color = "grey20", size=3)+
+              g <- g + geom_text(aes(x=length(input$YearSelect[input$YearSelect<2011])+length(input$YearSelect[input$YearSelect>2010])/2.75,y=max(VALUE+0)+max(VALUE)/20,label="Post-catch"),hjust=0, family="serif",color = "grey20", size=3)+
               geom_text(aes(x=length(input$YearSelect[input$YearSelect<2011])+length(input$YearSelect[input$YearSelect>2010])/2.75,y=max(VALUE+0)-max(VALUE)/51,label="shares"),hjust=0, family="serif",color = "grey20", size=3)
             } else {
-              g <- g + geom_text(aes(x=length(input$YearSelect[input$YearSelect<2011])+length(input$YearSelect[input$YearSelect>2010])/2.75,y=thresh-thresh/10,label="Post-Catch"),hjust=0, family="serif",color = "grey20", size=3)+
+              g <- g + geom_text(aes(x=length(input$YearSelect[input$YearSelect<2011])+length(input$YearSelect[input$YearSelect>2010])/2.75,y=thresh-thresh/10,label="Post-catch"),hjust=0, family="serif",color = "grey20", size=3)+
                 geom_text(aes(x=length(input$YearSelect[input$YearSelect<2011])+length(input$YearSelect[input$YearSelect>2010])/2.75,y=thresh-thresh/10,label="shares"),hjust=0, family="serif",color = "grey20", size=3)
             }
               } else {
                 if (input$LayoutSelect!='Metrics') {
-                  g <- g + geom_text(aes(x=length(input$YearSelect[input$YearSelect<2011])+length(input$YearSelect[input$YearSelect>2010])/2.75,y=max(VALUE+0)+max(VALUE)/11,label="Post-Catch shares"),hjust=0, family="serif",color = "grey20", size=3)
+                  g <- g + geom_text(aes(x=length(input$YearSelect[input$YearSelect<2011])+length(input$YearSelect[input$YearSelect>2010])/2.75,y=max(VALUE+0)+max(VALUE)/11,label="Post-catch shares"),hjust=0, family="serif",color = "grey20", size=3)
                 } else {
-                  g <- g + geom_text(aes(x=length(input$YearSelect[input$YearSelect<2011])+length(input$YearSelect[input$YearSelect>2010])/2.75,y=thresh-thresh/10,label="Post-Catch shares"),hjust=0, family="serif",color = "grey20", size=3)
+                  g <- g + geom_text(aes(x=length(input$YearSelect[input$YearSelect<2011])+length(input$YearSelect[input$YearSelect>2010])/2.75,y=thresh-thresh/10,label="Post-catch shares"),hjust=0, family="serif",color = "grey20", size=3)
                 }
                   }
         } 

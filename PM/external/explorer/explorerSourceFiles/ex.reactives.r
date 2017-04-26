@@ -28,8 +28,8 @@ DatVars <- reactive({
         CATEGORY = c("Fisheries","Homeport","State of homeport"="State","Vessel length class"),
         FISHAK = unique(FISHAK),
         whitingv = c("All vessels","Non-whiting vessels","Whiting vessels"),
-        STAT =  c("Average per vessel","Average per vessel/day","Average per vessel/metric-ton","Median per vessel","Median per vessel/day","Median per vessel/metric-ton","Fleet-wide total","Fleet-wide total/day","Fleet-wide total/metric-ton"),
-        METRIC =  c("Number of vessels","Vessel length","Fishery participation","Proportion of revenue from Catch Share fishery"="Proportion of revenue from CS fishery",
+        STAT =  c("Average per vessel","Average per vessel/day","Average per vessel/metric-ton caught","Median per vessel","Median per vessel/day","Median per vessel/metric-ton caught","Fleet-wide total","Fleet-wide total/day","Fleet-wide total/metric-ton caught"),
+        METRIC =  c("Number of vessels","Vessel length","Fishery participation","Proportion of revenue from catch share fishery"="Proportion of revenue from CS fishery",
                   "Days at sea","Exponential Shannon Index","Gini coefficient","Number of positions (captain and crew)"='Number of positions',"Crew wage per day","Revenue per crew day",
                   "Seasonality","Share of landings by state")
   ))
@@ -40,9 +40,9 @@ DatVars <- reactive({
                       SHORTDESCR = c("Revenue","Variable costs","Fixed costs","Variable Cost Net Revenue","Total Cost Net Revenue"),
                       CATEGORY = c("Production activities"="Fisheries","Region","Processor size"),
                       whitingv = c("All processors", "Whiting processors","Non-whiting processors"),
-                      STAT =  c("Average per processor","Average per processor/metric-ton of groundfish products"="Average per processor/metric-ton",
-                                "Median per processor", "Median per processor/metric-ton of groundfish products"="Median per processor/metric-ton",
-                                "Industry-wide total","Industry-wide total/metric-ton of groundfish products"="Industry-wide total/metric-ton"),
+                      STAT =  c("Average per processor","Average per processor/metric-ton of groundfish products produced"="Average per processor/metric-ton produced",
+                                "Median per processor", "Median per processor/metric-ton of groundfish products produced"="Median per processor/metric-ton produced",
+                                "Industry-wide total","Industry-wide total/metric-ton of groundfish products produced"="Industry-wide total/metric-ton produced"),
                       METRIC =  c("Number of processors","Number of species processed","Proportion of production value from West Coast groundfish"="Proportion of revenue from catch share species",
                                   "Exponential Shannon Index","Gini coefficient",'Number of workers',"Hourly compensation")#, "Share of landings by state")
                     ))
@@ -54,9 +54,10 @@ DatVars <- reactive({
                 CATEGORY = "Fisheries",
                 FISHAK = unique(FISHAK),
                 whitingv = "Whiting vessels",
-                STAT =  c("Average per vessel","Average per vessel/day","Average per vessel/metric-ton","Median per vessel","Median per vessel/day","Median per vessel/metric-ton","Fleet-wide total","Fleet-wide total/day","Fleet-wide total/metric-ton"),
+                STAT =  c("Average per vessel","Average per vessel/day","Average per vessel/metric-ton produced",
+                          "Median per vessel","Median per vessel/day","Median per vessel/metric-ton produced","Fleet-wide total","Fleet-wide total/day","Fleet-wide total/metric-ton produced"),
                 METRIC =  c("Number of vessels","Vessel length",
-                            "Proportion of revenue from Catch Share fishery"="Proportion of revenue from CS fishery","Days at sea","Gini coefficient",
+                            "Proportion of revenue from catch share fishery"="Proportion of revenue from CS fishery","Days at sea","Gini coefficient",
                              "Number of positions (captain and crew)"='Number of positions',
                             "Crew wage per day", "Revenue per crew day", "Seasonality")
                     ))
@@ -475,9 +476,9 @@ DatSub <- reactive({
         datSub$VARIABLE <- factor(datSub$VARIABLE, levels = factorOrder$state)
       } else if(input$CategorySelect == "Fisheries"){
         
-        datSub$VARIABLE <- factor(datSub$VARIABLE, levels = c("All fisheries","All Catch Share fisheries","All non-Catch Share fisheries","At-sea Pacific whiting","Shoreside Pacific whiting",
+        datSub$VARIABLE <- factor(datSub$VARIABLE, levels = c("All fisheries",'All catch share fisheries'="All catch share fisheries","All non-catch share fisheries","At-sea Pacific whiting","Shoreside Pacific whiting",
                                                               "DTS trawl with trawl endorsement","Non-whiting midwater trawl","Non-whiting, non-DTS trawl with trawl endorsement",  "Groundfish fixed gear with trawl endorsement",
-                                                              "All non-Catch Share fisheries combined"="All non-Catch Share fisheries", "Groundfish fixed gear with fixed gear endorsement","Crab","Shrimp","Other fisheries"))
+                                                              "All non-catch share fisheries combined"="All non-catch share fisheries", "Groundfish fixed gear with fixed gear endorsement","Crab","Shrimp","Other fisheries"))
         }} else if(input$Sect_sel=="FR"){
                 if(input$CategorySelect == "Region"){
                 datSub$VARIABLE <- factor(datSub$VARIABLE, levels = c('Washington and Oregon','California'))
@@ -513,8 +514,8 @@ DatSub <- reactive({
             if(input$Sect_sel=="CV"){
             if(input$CategorySelect=="Fisheries"){
             datSub$sort <- ifelse(datSub$VARIABLE=="All fisheries", ".......All fisheries", as.character(datSub$VARIABLE))
-            datSub$sort <- ifelse(datSub$VARIABLE=="All Catch Share fisheries", "......All Catch Share fisheries", as.character(datSub$sort))
-            datSub$sort <- ifelse(datSub$VARIABLE=="All non-Catch Share fisheries", "..All non-Catch Share fisheries",  as.character(datSub$sort))
+            datSub$sort <- ifelse(datSub$VARIABLE=="All catch share fisheries", "......All catch share fisheries", as.character(datSub$sort))
+            datSub$sort <- ifelse(datSub$VARIABLE=="All non-catch share fisheries", "..All non-catch share fisheries",  as.character(datSub$sort))
             datSub$sort <- ifelse(datSub$VARIABLE=="At-sea Pacific whiting", ".....At-sea Pacific whiting",  as.character(datSub$sort))
             datSub$sort <- ifelse(datSub$VARIABLE=="Shoreside Pacific whiting", ".....Shoreside Pacific whiting",  as.character(datSub$sort))
             datSub$sort <- ifelse(datSub$VARIABLE=="DTS trawl with trawl endorsement", "....DTS trawl with trawl endorsement",  as.character(datSub$sort))

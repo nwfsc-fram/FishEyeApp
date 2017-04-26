@@ -88,7 +88,7 @@ observeEvent(input$ivs, {
 
 observeEvent(input$iVesSum, {
   session$sendCustomMessage(type = 'testmessage',
-                            message = 'For all vessels that fished within selected fisheries, show data for activities either within the selected fisheries, across all Catch Share fisheries, or across all West Coast fisheries. ')
+                            message = 'For all vessels that fished within selected fisheries, show data for activities either within the selected fisheries, across all catch share fisheries, or across all West Coast fisheries. ')
 })
 
 observeEvent(input$icompare, {
@@ -335,7 +335,7 @@ output$dlTable <- downloadHandler(
               table <- subset(DatSubTable(), select = -CATEGORY) %>% mutate(Sector =input$Sect_sel)  
           }
       }
-      table$Sector <-c('Catcher Vessels','First Receivers and Shorebased Processors','Mothership vessels','Catcher Processor vessels')[match(table$Sector, c('CV','FR','M','CP'))]
+      table$Sector <-c('Catcher Vessels','First Receivers and Shorebased Processors','Mothership vessels','Catcher-Processor vessels')[match(table$Sector, c('CV','FR','M','CP'))]
       
       # some wonky code to insert a timestamp. xtable has a more straightfoward approach but not supported with current RStudio version on the server
       if(input$LayoutSelect=="Metrics"){

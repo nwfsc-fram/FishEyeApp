@@ -4,26 +4,26 @@ tags$div(style = "margin: 15px; 15px;30px; 30px; width: 60%",
        #  tags$h3('About Net Revenue Explorer', style="border-top:10px; padding-top:10px; margin-top:10px"),
          tags$p(tags$br(),"Welcome to FISHeries Economics Explorer (FISHEyE) Performance Metrics page for the ",
                 tags$a(href = "http://www.westcoast.fisheries.noaa.gov/fisheries/groundfish_catch_shares/index.html", "West Coast Groundfish Trawl Catch Share Program,", target="_blank"),
-               'which began in 2011. The Catch Share program consists of cooperatives for the at-sea mothership (including catcher vessels and motherships) and catcher-processor fleets,
+               'which began in 2011. The catch share program consists of cooperatives for the at-sea mothership (including catcher vessels and motherships) and catcher-processor fleets,
                 and an individual fishing quota (IFQ) program for the shorebased trawl fleet (catcher vessels, and first receivers and shorebased processors).'),
        tags$br(),
        
-            tags$p('The Catch Share program was instituted with several goals, including:'),
+            tags$p('The catch share program was instituted with several goals, including:'),
        tags$ul(tags$li('Provide for a viable, profitable, and efficient groundfish fishery;'),
                tags$li('Increase operational flexibility;'), 
                tags$li('Minimize adverse effects on fishing communities and other fisheries to the extent practical;'), 
                tags$li('Promote measurable economic and employment benefits through the seafood catching, processing, distribution, and support sectors of the industry;')),  
-tags$p('FISHEyE Performance Metrics provides metrics to assess the effectiveness and outcomes of the Catch Share program. The metrics are not intended to be interpreted as causal (i.e., X caused Y change), 
+tags$p('FISHEyE Performance Metrics provides metrics to assess the effectiveness and outcomes of the catch share program. The metrics are not intended to be interpreted as causal (i.e., X caused Y change), 
        directional (i.e., "up is good, down is bad"), nor normative (i.e., a particular trend is "good" or "bad"), but, rather, to facilitate the examination of trends and changes.'),
                 
                tags$br(),
                 
                 tags$p('Data used in FISHEyE comes from',tags$a(href='http://www.nwfsc.noaa.gov/research/divisions/fram/economic/economic_data_forms.cfm', 'EDC survey forms', target="_blank"),
                        'and Pacific Fisheries Information Network', tags$a(href="http://pacfin.psmfc.org/",'(PacFIN).', target="_blank"), 
-                       'As part of the Catch Share program, participants of the fishery are required to complete', 
+                       'As part of the catch share program, participants of the fishery are required to complete', 
                 tags$a(href='http://www.nwfsc.noaa.gov/research/divisions/fram/economic/economic_data_forms.cfm', 'EDC survey forms', target="_blank"), 'as stated in', 
                 tags$a(href="http://www.ecfr.gov/cgi-bin/text-idx?SID=06f0c396e52e564ce22a048aa910f49f&node=50:13.0.1.1.1.4.1.5&rgn=div8",'regulation 50 CFR 660.114.', target="_blank"), 
-                'Data collection began in 2009, two years prior to implementing the Catch Share program. All vessels that participate in the Catch Share program must report 
+                'Data collection began in 2009, two years prior to implementing the catch share program. All vessels that participate in the catch share program must report 
                 data for all fisheries they participate in, including non-catch share fisheries.'), 
                
          tags$p('FISHEyE Performance Metrics is user driven and interactive. Information on how to use FISHEyE Performance Metrics is available in the', tags$em("Instructions"), 'tab.
@@ -56,7 +56,7 @@ tags$p('FISHEyE Performance Metrics provides metrics to assess the effectiveness
             tags$ul(#tags$li( "EDC General Information")),
             tags$li(tags$a(href="http://www.nwfsc.noaa.gov/research/divisions/fram/economic/economic_data_reports.cfm","EDC Reports",target="_blank")),       
             tags$li(tags$a(href="http://www.nwfsc.noaa.gov/research/divisions/fram/economic/economic_data_forms.cfm","EDC Forms",target="_blank")),      
-            tags$li(tags$a(href="http://www.nwfsc.noaa.gov/news/features/infographics/index.cfm", "Infographic describing the sectors participating in the Catch Share program", target="_blank"))))),
+            tags$li(tags$a(href="http://www.nwfsc.noaa.gov/news/features/infographics/index.cfm", "Infographic describing the sectors participating in the catch share program", target="_blank"))))),
             
             tags$a(href="http://pacfin.psmfc.org/","Pacific Fisheries Information Network (PacFIN)", target="_blank"),tags$br(),
 

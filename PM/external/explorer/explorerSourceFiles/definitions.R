@@ -12,7 +12,7 @@ tags$div(style = "margin: 15px 15px 30px; width: 60%",
            tags$div(style= "margin-top: 15px;",
                     
                     h4("Compare groups of vessels/processors or metrics"),
-                    tags$ul(p('Select whether to compare groups of vessels or processors based on selected summary variables (see below) or by metrics. For the mothership and catcher processor sectors, the only summary variable available is At-sea Pacific whiting.')#,
+                    tags$ul(p('Select whether to compare groups of vessels or processors based on selected summary variables (see below) or by metrics. For the mothership and catcher-processor sectors, the only summary variable available is At-sea Pacific whiting.')#,
                              #p('When comparing metrics, selected metrics may not all be displayed. This is because the displayed metrics depend upon the statistic selected. For some metrics, it is not appropriate to calculate all statistics. 
                              #  For instance, the Gini coefficient and Herfindahl-Hirschman Index are indices. We cannot calculate an annual average or median value. 
                               # ')
@@ -24,9 +24,9 @@ tags$div(style = "margin: 15px 15px 30px; width: 60%",
                       tags$li(strong("Fisheries:"),'The Performance Metrics application uses the same fisheries definitions as those used by the', 
                               tags$a(href="http://www.nwfsc.noaa.gov/research/divisions/fram/economic/overview.cfm", target="_blank", 'EDC program'), 'to characterize the', 
                               tags$a(href="http://www.westcoast.fisheries.noaa.gov/fisheries/groundfish/", 'US West Coast Groundfish fishery. ', target="_blank"), 
-                              ' Many vessels that participate in the Catch Share program also participate in other fisheries such as Dungeness crab or Alaskan fisheries. 
-                              Please note that data from Alaskan fisheries are included in the combined non-Catch Share fisheries category when viewing results for homeport, state,
-                              and vessel length class. When viewing fisheries,activities from Alaskan fisheries are included in the ', tags$em('All non-Catch Share fisheries combined'), ' category. Sample size is insufficient to show results for this fishery alone.'),
+                              ' Many vessels that participate in the catch share program also participate in other fisheries such as Dungeness crab or Alaskan fisheries. 
+                              Please note that data from Alaskan fisheries are included in the combined non-catch share fisheries category when viewing results for homeport, state,
+                              and vessel length class. When viewing fisheries,activities from Alaskan fisheries are included in the ', tags$em('All non-catch share fisheries combined'), ' category. Sample size is insufficient to show results for this fishery alone.'),
                       p(tags$i('Catch Share fisheries:'),' At-sea Pacific whiting; 
                         Shoreside Pacific whiting;
                         Groundfish fixed gear with trawl endorsement;
@@ -56,7 +56,7 @@ tags$div(style = "margin: 15px 15px 30px; width: 60%",
                     h4('Indicators'),
                     tags$ul(
                       tags$li(strong('Demographic:'), 'Characteristics of the vessels in the fleet that may vary over time. Changes in the demographic metrics may indicate changes such as fleet consolidation, efficiency, productivity, specialization, or diversification.'),
-                      tags$li(strong('Economic:'),'Metrics within the economic indicators section describe the potenital economic impacts of the Catch Share fishery on the West Coast. Changes may be indicative of changes in total allowable catch (TAC), fish or product prices, costs or cost structure, profitability, productivity, and diversification.'),
+                      tags$li(strong('Economic:'),'Metrics within the economic indicators section describe the potenital economic impacts of the catch share fishery on the West Coast. Changes may be indicative of changes in total allowable catch (TAC), fish or product prices, costs or cost structure, profitability, productivity, and diversification.'),
                       tags$li(strong('Social and Regional:'),'Distribution of benefits and costs among individuals, groups, and communities. Indicators describe potential impact on individuals (i.e., wages) and communities (i.e. share of landings by state).')
                     ),
                     h4('Metrics'),
@@ -75,8 +75,8 @@ tags$div(style = "margin: 15px 15px 30px; width: 60%",
                                     'Count of the number of species processed. Changes may indicate specialization or diversification.'),
                             tags$li(strong('Number of vessels or processors: '),
                                     'Number of vessels actively participating (i.e., had an active permit and non-zero revenue).'),
-                            tags$li(strong('Proportion of revenue from Catch Share fishery: '),
-                                    "The proportion of a vessels total revenue that comes from fish caught in the limited entry/catch share fishery. Metric measures how reliant vessels are on revenue from the limited entry/Catch Shares fishery."),
+                            tags$li(strong('Proportion of revenue from catch share fishery: '),
+                                    "The proportion of a vessels total revenue that comes from fish caught in the limited entry/catch share fishery. Metric measures how reliant vessels are on revenue from the limited entry/catch shares fishery."),
                             tags$li(strong('Vessel length: '),
                                     'The length (ft) of vessels reflects the mix of active participants in the fishery in each year.')
                                                ),
@@ -126,13 +126,13 @@ tags$div(style = "margin: 15px 15px 30px; width: 60%",
                       
                       tags$li(strong("Median or Average")),
                       tags$ul(
-                        tags$li(strong("Per vessel:"),"Median or Average for all vessels that participated in the Catch Share program."),
+                        tags$li(strong("Per vessel:"),"Median or Average for all vessels that participated in the catch share program."),
                         tags$li(strong("Per vessel per day:"),
-                                "Median or Average per day for all vessels that participated in the Catch Share program."),
+                                "Median or Average per day for all vessels that participated in the catch share program."),
                         tags$li(strong("Per vessel per metric-ton:"),
-                                "Median or Average per metric ton of fish caught for all vessels that participated in the Catch Share program.")
+                                "Median or Average per metric ton of fish caught for all vessels that participated in the catch share program.")
                         ),tags$br(),
-                      tags$li(strong("Fleet-wide total:"),"Summed over all vessels that participated in the Catch Share program.") 
+                      tags$li(strong("Fleet-wide total:"),"Summed over all vessels that participated in the catch share program.") 
                       ),tags$br(),
                     tags$ul(tags$p(tags$strong("What is the purpose of using median, average, and fleet-wide total values when looking at the data?"), "The median and average provide information about a representative vessel; 
                                    however, they do it in different ways.  The ",  tags$strong("median"), "means that half of the vessels have a larger result than the median, and half are smaller.  The ", tags$strong("average "),"
@@ -145,7 +145,7 @@ tags$div(style = "margin: 15px 15px 30px; width: 60%",
                       tags$p("For the catcher vessel sector, the selected metric is calculated at three levels: 1) for the fleet as a whole, 2) for vessels that fished for Pacific whiting, and 3) for vessels that participate in the non-whiting groundfish sector of the limited entry trawl fishery. 
                              Vessels that fished for both whiting and non-whiting are included in the whiting level. The purpose of separating the whiting from the non-whiting vessels is that the whiting vessels tend to be larger and catch a higher volume of fish. In addition, total allowable catch for Pacific whiting has more annual variation than total annual catch for species targeted in the non-whiting groundfish sector. 
                              Note that there are several fisheries where vessels only participated in whiting or non-whiting fisheries."),
-                      tags$p('This division is not appropriate for the mothership and catcher processor sectors. For these sectors, only pacific whiting is shown.'),
+                      tags$p('This division is not appropriate for the mothership and catcher-processor sectors. For these sectors, only pacific whiting is shown.'),
                       tags$p('There are some cases where there are not enough vessels to separate the vessels into the whiting and non-whiting vessel categories. This occurs when there is less than three vessels at either the whiting or non-whiting level. When this happens, we only report the "All vessels" category and indicate that we have done so in a message below the plot and in the data table. More information on data confidentiality requirements can be found in the EDC Administration and Operations Report.')
                       ), tags$br(),                   
                     
@@ -156,7 +156,7 @@ tags$div(style = "margin: 15px 15px 30px; width: 60%",
                       ), tags$br(),
                     
                    h4('Years'),
-                   tags$ul('The Catch Share program began in 2011. A mandatory',
+                   tags$ul('The catch share program began in 2011. A mandatory',
                            tags$a(href='https://www.nwfsc.noaa.gov/research/divisions/fram/economic/overview.cfm', 'Economic Data Collection (EDC) program ', target="_blank"),
                            'began in 2009. Results are available from 2009 onwards for metrics that require EDC data. For metrics that do not require EDC data, 
                            results are available from 2004 onwards. For these metrics, click the box to select years prior to 2009.'
@@ -175,7 +175,7 @@ tags$div(style = "margin: 15px 15px 30px; width: 60%",
                       tags$li(strong('Data summed across:'), 'For catcher vessels, we show data summed across all vessels, vessel that participated in the non-whiting groundfish sector of the limited entry trawl fishery, vessels that fished for Pacific whiting. Vessels that fished for both whiting and non-whiting are included in the whiting level.
                                                               For first receivers and shorebased processors, we show data summed across all processors, processors that process whiting species, and processors that process non-whiting species.'),
                       tags$li(strong('Fisheries Category:'), 'This variable is relevant for when vessels are grouped by homeport, state, or vessel length class. It indicates whether the reported value of the selected metric or economic 
-                                      measure includes activity in all fisheries or only in the Catch Share fisheries or the non-Catch Share fisheries.'),
+                                      measure includes activity in all fisheries or only in the catch share fisheries or the non-catch share fisheries.'),
                       tags$li(strong('Production Category:'), 'This variable is relevant for when processors are grouped by region or processor size. It indicates whether the reported value of the selected metric or economic 
                                       measure includes all production or only groundfish production or other species production.'),
                       tags$li(strong('Variance:'), 'A measure of the spread of values. We report the standard deviation (SD) when vessel averages are selected and the median absolute deviation (MAD) when vessel medians are selected.'),

@@ -252,7 +252,7 @@ fluidPage(title = "FISHEyE",
                                           input.Sect_sel=='CV'&&input.CategorySelect!='Homeport'&&input.CategorySelect!='State'&&input.Ind_sel=='Demographic'&&input.demSelect=='Gini coefficient'||
                                           input.Sect_sel!='FR'&&input.CategorySelect!='Homeport'&&input.CategorySelect!='State'&&input.Ind_sel=='Demographic'&&input.demSelect=='Number of vessels'||
                                           input.Sect_sel=='CV'&&input.CategorySelect!='Homeport'&&input.CategorySelect!='State'&&input.Ind_sel=='Demographic'&&input.demSelect=='Vessel length'||
-                                          input.Sect_sel=='CV'&&input.CategorySelect!='Homeport'&&input.CategorySelect!='State'&&input.Ind_sel=='Social and Regional'&&input.socSelect=='Seasonality'||
+                                          input.Sect_sel!='FR'&&input.CategorySelect!='Homeport'&&input.CategorySelect!='State'&&input.Ind_sel=='Social and Regional'&&input.socSelect=='Seasonality'||
                                           input.Sect_sel!='FR'&&input.CategorySelect!='Homeport'&&input.CategorySelect!='State'&&input.Ind_sel=='Social and Regional'&&input.socSelect=='Share of landings by state'",
                                     uiOutput('moreOptions')),
                                     style = "padding: 0px;margin-bottom:0px; border: 3px solid #D3D3D3;border-radius:10px;"#,

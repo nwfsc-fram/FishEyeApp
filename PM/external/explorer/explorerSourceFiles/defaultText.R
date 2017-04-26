@@ -60,7 +60,7 @@ output$BlogUpdates <- renderUI({
                  <span class='year' style='font-size:11px;line-height: 10px;'>2016</span>")
             ),
   tags$p(HTML("<span style='margin-left:60px;font-size:18px;font-weight:bold'>New sectors!</span>")), 
-  tags$p(tags$br(),"We have added Motherships, Catcher Processors, and First Feceivers and Shorebased Processors."),
+  tags$p(tags$br(),"We have added motherships, catcher-processors, and first receivers and shorebased processors."),
   tags$hr(),
   
 tags$div( class='date', style='height:45px;width:30px; font-family:Arial; font-weight:bold;background-color:#ffffff;text-align:center; border-top:1px solid #c0c0c0;
@@ -70,10 +70,9 @@ tags$div( class='date', style='height:45px;width:30px; font-family:Arial; font-w
                           <span class='year' style='font-size:11px;line-height: 10px;'>2016</span>")
                      ),
            tags$p(HTML("<span style='margin-left:60px;font-size:18px;font-weight:bold'>Improved functionality!</span>")), 
-           tags$p(tags$br(),"Several major updates have been made to this application. We have provided updated data for Catcher Vessels.
+           tags$p(tags$br(),"Several major updates have been made to this application. We have provided updated data for catcher vessels.
                   In addition, we revised the functionality of the application. You can now compare by vessel or by metrics. 
-                  When comparing metrics, the metrics displayed will depend upon the selected statistics.
-                  We are working hard to add other sectors. We expect to have Motherships, Catcher Processors, and First Feceivers and Shorebased Processors added by the end of the month."),
+                  When comparing metrics, the metrics displayed will depend upon the selected statistics."),
            tags$hr(),
   # Data updates
            tags$div( class='date', style='height:45px;width:30px; font-family:Arial; font-weight:bold;background-color:#ffffff;text-align:center; border-top:1px solid #c0c0c0;
@@ -150,7 +149,7 @@ output$DefaultPlotText <- renderUI({
            tags$h3("Summary Plots and Data"),
            tags$p('The performance metrics in this web application provide a set of measures that can be used to gauge and track changes in the West Coast groundfish trawl limited entry fishery  following implementation of the',
                   tags$a(href="http://www.westcoast.fisheries.noaa.gov/fisheries/groundfish_catch_shares/index.html", 'West Coast Groundfish Trawl Catch Share Program ', target="_blank"),
-                  'in 2011. Select whether to view results for catcher vessels, motherships, catch-processors, or first receivers and shorebased processors. Metrics are grouped into three broad indicator categories: demographic, economic, and social. Information on how metrics were chosen can be found in the', tags$em('About'), 'tab.',
+                  'in 2011. Select whether to view results for catcher vessels, motherships, catcher-processors, or first receivers and shorebased processors. Metrics are grouped into three broad indicator categories: demographic, economic, and social. Information on how metrics were chosen can be found in the', tags$em('About'), 'tab.',
                   tags$strong('Information on the individual metrics can be found by clicking the blue information icon above the list of metrics'), 'or in the Definitions tab.' 
                   ),
            tags$p(strong("To get started, make at least one selection in each of the fields in the Control Panel.")),
@@ -159,7 +158,7 @@ output$DefaultPlotText <- renderUI({
                 <b>Plot Options:</b></div>"),
            
           
-           tags$p(strong('Show Plot(s):'),'The', tags$em('Show Plot(s)'), 'button returns the display to the plot output. Pre- and post- implementation of the Catch Share program is distinguished with shading. 
+           tags$p(strong('Show Plot(s):'),'The', tags$em('Show Plot(s)'), 'button returns the display to the plot output. Pre- and post- implementation of the catch share program is distinguished with shading. 
                   You can select whether or not to show the variance around the average or median values.'),
             tags$br(),
            img(src="indicators_example2.png", height=300),  #  img(src="EconInd4.png", height=350),       
@@ -179,7 +178,7 @@ output$GetStartedText <- renderUI({
   tags$div(style = "margin: 15px 15px 30px; width: 60%",
            tags$p(strong(paste('Note this tutorial will disappear once you select a',input$CategorySelect,'. Selections can be made in any order.'))),
            tags$h4("1. Select a sector."),
-           tags$p("Select whether to show results for catcher vessels, mothership vessels, catcher processor vessels, or first receivers and shorebased processors."),
+           tags$p("Select whether to show results for catcher vessels, mothership vessels, catcher-processor vessels, or first receivers and shorebased processors."),
            tags$h4("2. Compare groups of vessels/processors or metrics"),
            tags$p('Choose whether to view a single metric for multiple vessel or processor groups or view multiple metrics for a single vessel or processor group.'), 
            tags$h4("3. Select general categories to view data by"),
@@ -188,7 +187,7 @@ output$GetStartedText <- renderUI({
            tags$p("Second, for catcher vessels, select whether to show results for all vessels, just vessels that fished for pacific 
                   whiting, and/or just vessels that did not fish for pacific whiting.
                   For first receivers and shorebased processors, select whether to show results for all processors, just processors that 
-                  process whiting, and/or just processors that process non-whiting species. For motherships and catcher processors, only 
+                  process whiting, and/or just processors that process non-whiting species. For motherships and catcher-processors, only 
                   the pacific whiiting category is available."),
            tags$h4(paste("4. Select one more more subgroups.")),
            tags$p(strong('Once this selection is made, this tutorial will disappear. This selection can be made last.'), 
