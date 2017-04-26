@@ -12,8 +12,8 @@
 ###################################################
 output$Sectorselect <- renderUI({
   tags$div(class="sectselect", selectInput("Sect_sel", span("Select a sector:", style="font-style:strong;display:inline-block;vertical-align:middle"), 
-                                           c('Catcher Vessels'="CV", 'Mothership Vessels'="M", 'Catcher-Processor Vessels'="CP", 'First Receivers and Shorebased Processors'="FR"), selected="CV"
-                                           , width='90%')
+                                           c('Catcher Vessels'="CV", 'Mothership Vessels'="M", 'Catcher-Processor Vessels'="CP", 'First Receivers and Shorebased Processors'="FR"), 
+                                           "CV", width='90%')
   )
 })
 
@@ -25,7 +25,7 @@ output$SectPrint <- renderUI({
              'West Coast Trawl Catch Share Program:  Mothership Vessels'
            } else if(input$Sect_sel=="CP"){
              'West Coast Trawl Catch Share Program:  Catcher-Processor Vessels'
-           } else if(input$Sect_sel=="FR"){
+           } else {
              'West Coast Trawl Catch Share Program:  First Receivers and Shorebased Processors'
            }
   )
@@ -58,7 +58,7 @@ output$Shortdescrselect <- renderUI({
       tags$div(class="statboxM", checkboxGroupInput("ShortdescrSelect",'Cost categories:',
                                                     choices = DatVars()$SHORTDESCR,selected = DatVars()$SHORTDESCR))
     } else {
-      tags$div(class="statboxCP", checkboxGroupInput("ShortdescrSelect",'Cost categories:',
+      tags$div(class="statboxM", checkboxGroupInput("ShortdescrSelect",'Cost categories:',
                                                    choices = DatVars()$SHORTDESCR,selected = DatVars()$SHORTDESCR))
     }
 #}  else if(input$CostCategorySelect=="Variable costs"){
@@ -262,12 +262,12 @@ output$FishWhitingselect <- renderUI({
 
 ################################################################
 #--------Select production categories-------------------------
-output$Productionselect <- renderUI({
-    selectInput("ProductionSelect", HTML("<div> Show data for: <button id='iprod' type='button' class='btn btn-default action-button shiny-bound-input'> 
-                                         <i class='fa fa-info-circle fa-fw' ></i></button> </div>"), 
-                choices=c("All processors","Catch share processors"), selected="Catch share processors")
-})
-#################################################################
+#output$Productionselect <- renderUI({
+#    selectInput("ProductionSelect", HTML("<div> Show data for: <button id='iprod' type='button' class='btn btn-default action-button shiny-bound-input'> 
+#                                         <i class='fa fa-info-circle fa-fw' ></i></button> </div>"), 
+#                choices=c("All processors","Catch share processors"), selected="Catch share processors")
+#})
+##################################################################
 
 
 ##################################################################
@@ -320,7 +320,7 @@ observe({
 ##################################################
 #-------------- Plot options------------------------------
 output$Plotselect <- renderUI({
-      tags$div(class="ckbox", selectInput("PlotSelect", "Plot options:", choices= c("Bar", "Stacked bar", "Line")))
+      tags$div(class="ckbox", selectInput("PlotSelect", "Plot options:", choices= c("Bar", "Stacked bar", "Line"), selected='Line'))
 })
 
 ##############################################################
