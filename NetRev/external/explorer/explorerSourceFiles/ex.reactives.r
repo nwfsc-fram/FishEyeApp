@@ -295,7 +295,7 @@ DatSub <- reactive({
       datSub$VARIABLE <- factor(datSub$VARIABLE, levels = factorOrder$state)
     } else if(input$CategorySelect == "Fisheries"){
       if(input$Sect_sel=="CV"){
-      datSub$VARIABLE <- factor(datSub$VARIABLE, levels = c("All Fisheries","All Catch Share Fisheries","All Non-Catch Share Fisheries","At-sea Pacific whiting",                      
+      datSub$VARIABLE <- factor(datSub$VARIABLE, levels = c("All fisheries","All catch share fisheries","All non-catch share fisheries","At-sea Pacific whiting",                      
                                                             "Shoreside Pacific whiting","DTS trawl with trawl endorsement","Non-whiting, non-DTS trawl with trawl endorsement",
                                                             "Non-whiting midwater trawl","Groundfish fixed gear with trawl endorsement","Groundfish fixed gear with fixed gear endorsement",
                                                             "Crab","Shrimp"))
@@ -326,9 +326,9 @@ DatSub <- reactive({
     #The URL below is a solution for similar problem with stacking and may work for this issue. I have not yet tried.
     #https://github.com/hadley/ggplot2/issues/1301  #use website for dealing with stacked bar plot order issue
     if(input$CategorySelect=="Fisheries"&input$Sect_sel=="CV"){
-      datSub$sort <- ifelse(datSub$VARIABLE=="All Fisheries", "......All Fisheries", as.character(datSub$VARIABLE))
-      datSub$sort <- ifelse(datSub$VARIABLE=="All Catch Share Fisheries", ".....All Catch Share Fisheries", as.character(datSub$sort))
-      datSub$sort <- ifelse(datSub$VARIABLE=="All Non-Catch Share Fisheries", "..All Non-Catch Share Fisheries",  as.character(datSub$sort))
+      datSub$sort <- ifelse(datSub$VARIABLE=="All fisheries", "......All fisheries", as.character(datSub$VARIABLE))
+      datSub$sort <- ifelse(datSub$VARIABLE=="All catch share fisheries", ".....All catch share fisheries", as.character(datSub$sort))
+      datSub$sort <- ifelse(datSub$VARIABLE=="All non-catch share fisheries", "..All non-catch share fisheries",  as.character(datSub$sort))
       datSub$sort <- ifelse(datSub$VARIABLE=="At-sea Pacific whiting", ".....At-sea Pacific whiting",  as.character(datSub$sort))
       datSub$sort <- ifelse(datSub$VARIABLE=="Shoreside Pacific whiting", ".....Shoreside Pacific whiting",  as.character(datSub$sort))
       datSub$sort <- ifelse(datSub$VARIABLE=="DTS trawl with trawl endorsement", "....DTS trawl with trawl endorsement",  as.character(datSub$sort))
@@ -433,7 +433,7 @@ DatSubThirds <- reactive({
     datSub$VARIABLE <- factor(datSub$VARIABLE, levels = factorOrder$state)
   } else if(input$CategorySelect == "Fisheries"){
     if(input$Sect_sel=="CV"){
-    datSub$VARIABLE <- factor(datSub$VARIABLE, levels = c("All Fisheries","All Catch Share Fisheries","All Non-Catch Share Fisheries","At-sea Pacific whiting",                      
+    datSub$VARIABLE <- factor(datSub$VARIABLE, levels = c("All fisheries","All catch share fisheries","All non-catch share fisheries","At-sea Pacific whiting",                      
                                                             "Shoreside Pacific whiting","DTS trawl with trawl endorsement","Non-whiting, non-DTS trawl with trawl endorsement",
                                                             "Non-whiting midwater trawl","Groundfish fixed gear with trawl endorsement","Groundfish fixed gear with fixed gear endorsement",
                                                             "Crab","Shrimp"))

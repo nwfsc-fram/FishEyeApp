@@ -21,9 +21,9 @@ tags$div(style = "margin: 15px 15px 30px; width: 60%",
        tags$li(strong("Fisheries:"),'The Net Revenue Explorer uses the same fisheries definitions as those used by the', 
                 tags$a(href="https://www.nwfsc.noaa.gov/research/divisions/fram/economic/overview.cfm", target="_blank", 'EDC program'), 'to characterize the', 
                 tags$a(href="http://www.westcoast.fisheries.noaa.gov/fisheries/groundfish/", 'US West Coast Groundfish fishery. ', target="_blank"), 
-               ' Many vessels that participate in the Catch Share program also participate in other fisheries such as Dungeness crab or Alaskan fisheries. 
+               ' Many vessels that participate in the catch share program also participate in other fisheries such as Dungeness crab or Alaskan fisheries. 
                 The Net Revenue Explorer currently shows data for catcher vessels (both at-sea and shoreside).'),
-         p(tags$i('Catch Share fisheries:'),' At-sea Pacific whiting; 
+         p(tags$i('Catch share fisheries:'),' At-sea Pacific whiting; 
                 Shoreside Pacific whiting;
                 Groundfish fixed gear with trawl endorsement;
                 DTS (Dover, Thornyhead, and Sablefish) trawl with trawl endorsement;
@@ -54,12 +54,12 @@ tags$div(style = "margin: 15px 15px 30px; width: 60%",
     
     tags$li(strong("Median or Average")),
     tags$ul(
-      tags$li(strong("Per vessel or processor:"),"Median or Average for all vessels or processors that participated in the Catch Share program."),
+      tags$li(strong("Per vessel or processor:"),"Median or Average for all vessels or processors that participated in the catch share program."),
     tags$li(strong("Per vessel per day:"),
-      "Median or Average per day for all vessels that participated in the Catch Share program."),
+      "Median or Average per day for all vessels that participated in the catch share program."),
     tags$li(strong("Per vessel or processor per metric-ton:"),
-      "Median or Average per metric ton of fish caught or processed for all vessels or processors that participated in the Catch Share program.")),tags$br(),
-    tags$li(strong("Fleet-wide and industry-wide total:"),"Summed over all vessels or processors that participated in the Catch Share program.") ),tags$br(),
+      "Median or Average per metric ton of fish caught or processed for all vessels or processors that participated in the catch share program.")),tags$br(),
+    tags$li(strong("Fleet-wide and industry-wide total:"),"Summed over all vessels or processors that participated in the catch share program.") ),tags$br(),
     tags$ul(tags$p(tags$strong("What is the purpose of using median, average, and total values when looking at the data?"), "The median and average provide information about a representative vessel or processor; 
            however, they do it in different ways.  The ",  tags$strong("median"), "means that half of the vessels or processors have a larger result than the median, and half are smaller.  The ", tags$strong("average "),"
             is the sum of the values divided by the number of responses.  If the data do not have many extreme responses in a particular direction, the median and average will be very similar.  However, if the data are ", 
@@ -131,7 +131,7 @@ tags$ul(
    tags$li(strong('Fished in Alaska:'), 'Fished in Alaskan fisheries (Vessels included or Vessels not included).'),
    tags$li(strong('Fished for whiting:'), 'Fished for Pacific whiting (Vessels included or Vessels not included).'),
    tags$li(strong('Fisheries Category:'), 'This variable is relevant for when vessels are grouped by homeport, state, or vessel length class. It indicates whether the reported value of the selected economic 
-           measure includes activity in all fisheries or only in the Catch Share fisheries or the non-Catch Share fisheries.'),
+           measure includes activity in all fisheries or only in the catch share fisheries or the non-catch share fisheries.'),
    tags$li(strong('Production Category:'), 'This variable is relevant for first receivers and shorebased processors. It indicates whether the reported value of the selected economic 
            measure includes  all production or only groundfish production or other species production.'),
    tags$li(strong('Variance:'), 'A measure of the spread of values. We report the standard deviation (SD) when vessel averages are selected and the median absolute deviation (MAD) when vessel medians are selected.'),

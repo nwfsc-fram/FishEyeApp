@@ -15,7 +15,7 @@ tags$div(style = "margin: 15px; 15px; 30px; width: 60%",
                    
            tags$li(tags$h4("Summary Plots and Data")),
            tags$p('Visualize', tags$a(href="https://www.nwfsc.noaa.gov/research/divisions/fram/economic/overview.cfm",'Economic Data Collection (EDC)', target="_blank"), 'summary statistics for revenue, costs, and net revenue of catcher vessels (both at-sea and shoreside) that participate in the',
-                  tags$a(href="https://www.nwfsc.noaa.gov/research/divisions/fram/catch_shares.cfm", 'Catch Share program. ', target="_blank")),
+                  tags$a(href="https://www.nwfsc.noaa.gov/research/divisions/fram/catch_shares.cfm", 'catch share program. ', target="_blank")),
                  
                 tags$strong('Plots'),tags$p('Plotting options can be found at the bottom of the Control Panel. There are three plot options:', tags$br(),
                 
@@ -33,7 +33,7 @@ tags$div(style = "margin: 15px; 15px; 30px; width: 60%",
  
                    tags$li(tags$h4("Fleet- and Industry-wide Variability Analysis")),
               tags$em('Visualize the variability within the selected sector.'),
-              tags$p('Participants in the Catch Share program span a very broad range in terms of the scale of their operations. 
+              tags$p('Participants in the catch share program span a very broad range in terms of the scale of their operations. 
                 For instance, the revenue earned ranges from around $10,000 to well over $1.5 million. To view the heterogeneity within the selected sector while taking into account confidentiality 
                      rules, we group the vessels or processors into three tiered categories annually: top, middle, and lower revenue earners.   We then calculate the median, average, or total of the selected statistic 
                      (per vessel or processor, vessel/day, or vessel or processor/metric-ton) for vessels or processors within each tiered category. 

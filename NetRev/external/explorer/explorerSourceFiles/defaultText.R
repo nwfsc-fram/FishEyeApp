@@ -123,7 +123,7 @@ tags$div( class='date', style='height:45px;width:30px;font-family:Arial;font-wei
  ),
  tags$p(HTML("<span style='margin-left:60px;font-size:18px;font-weight:bold'>When will other sectors be added to the Net Revenue Explorer?</span>")), 
  tags$p(tags$br(),
-        "They've been added! We have also added additional metrics to assess the effectiveness and outcomes of the Catch Share program.
+        "They've been added! We have also added additional metrics to assess the effectiveness and outcomes of the catch share program.
         These metrics are available from the Performance Metrics application accessed through the", tags$a(href="https://dataexplorer.northwestscience.fisheries.noaa.gov/fisheye", 'FISHEyE homepage'),'.',
         tags$br()),
  
@@ -159,7 +159,7 @@ output$DefaultPlotText <- renderUI({
           img(src="NetRevGraphic.png", height=450),  #  img(src="EconInd4.png", height=350),       
            tags$br(), 
            tags$br(),
-          tags$p(strong('Show Plot(s):'),'The', tags$em('Show Plot(s)'), 'button returns the display to the plot output. Pre- and post- implementation of the Catch Share program is distinguished with shading.'),
+          tags$p(strong('Show Plot(s):'),'The', tags$em('Show Plot(s)'), 'button returns the display to the plot output. Pre- and post- implementation of the catch share program is distinguished with shading.'),
             tags$p(strong('Show Data:'), 'The', tags$em('Show Data'), 'button displays a data table that can be filtered using the', tags$em('Search'), 'box or the boxes at the bottom of the table.'),
           
           
@@ -194,7 +194,7 @@ output$DefaultThirdsText <- renderUI({
              # tags$p(strong('Download Plots:'), 'Once selections have been made and a plot if visible, a button to download the plot(s) appears at the bottom of the panel on the right.'),
 
            tags$p(strong('Show Plot(s):'), 'The', tags$em('Show Plot(s)'), 'button returns the display to the plot output. Results are shown if there are at least three vessels in a group. 
-                  Pre- and post- implementation of the Catch Share program is distinguished with shading.'),
+                  Pre- and post- implementation of the catch share program is distinguished with shading.'),
                   
   
            tags$p(strong('Show Data:'), 'The', tags$em('Show Data'), 'button displays a data table that can be filtered using the Search box or the boxes at the bottom of the table.'),                                     

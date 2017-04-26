@@ -6,16 +6,16 @@ tags$div(style = "margin: 15px; 15px;30px; 30px; width: 60%",
        #  tags$h3('About Net Revenue Explorer', style="border-top:10px; padding-top:10px; margin-top:10px"),
          tags$p(tags$br(),"Welcome to FISHeries Economics Explorer (FISHEyE) Net Revenue Explorer for the ",
                 tags$a(href = "http://www.westcoast.fisheries.noaa.gov/fisheries/groundfish_catch_shares/index.html","West Coast Groundfish Trawl Catch Share Program,", target="_blank"), 'which began in 2011.  
-                       The Catch Share program consists of cooperatives for the at-sea mothership (including catcher vessels and motherships) and catcher-processor fleets, and an individual 
-                      fishing quota (IFQ) program for the shorebased trawl fleet (catcher vessels, and first receivers and shorebased processors). FISHEyE allows you to explore economic data pre- and post-Catch Share management.'),
+                       The catch share program consists of cooperatives for the at-sea mothership (including catcher vessels and motherships) and catcher-processor fleets, and an individual 
+                      fishing quota (IFQ) program for the shorebased trawl fleet (catcher vessels, and first receivers and shorebased processors). FISHEyE allows you to explore economic data pre- and post-catch share management.'),
                
                 tags$p('Data used in FISHEyE comes from', 
                 tags$a(href='https://www.nwfsc.noaa.gov/research/divisions/fram/economic/economic_data_forms.cfm', 'EDC survey forms', target="_blank"),'and
                 Pacific Fisheries Information Network', tags$a(href="http://pacfin.psmfc.org/",'(PacFIN).', target="_blank"),
-                'As part of the Catch Share program, participants of the fishery are required to complete', tags$a(href='https://www.nwfsc.noaa.gov/research/divisions/fram/economic/economic_data_forms.cfm', 'EDC survey forms', target="_blank"),
+                'As part of the catch share program, participants of the fishery are required to complete', tags$a(href='https://www.nwfsc.noaa.gov/research/divisions/fram/economic/economic_data_forms.cfm', 'EDC survey forms', target="_blank"),
                 'as stated in', 
                 tags$a(href="http://www.ecfr.gov/cgi-bin/text-idx?SID=06f0c396e52e564ce22a048aa910f49f&node=50:13.0.1.1.1.4.1.5&rgn=div8",'regulation 50 CFR 660.114', target="_blank"), 
-                'for all fisheries they participate in, including non-Catch Share fisheries. Data collection began in 2009, two years prior to implementing the Catch Share program. 
+                'for all fisheries they participate in, including non-catch share fisheries. Data collection began in 2009, two years prior to implementing the catch share program. 
                 FISHEyE Net Revenue Explorer allows for the comparison of revenue, costs, and net revenue across years for several summary statistics. Net Revenue Explorer currently includes',
                   tags$a(href="2012CatcherVessel.jpg","catcher vessels,", target="_blank"), tags$a(href="2012CatcherProcessor.jpg", 'catcher-processors,', target="_blank"), 
                   tags$a(href="2012Mothership.jpg", 'motherships,', target="_blank"), 'and ', 
@@ -58,7 +58,7 @@ tags$div(style = "margin: 15px; 15px;30px; 30px; width: 60%",
             tags$ul(#tags$li( "EDC General Information")),
             tags$li(tags$a(href="https://www.nwfsc.noaa.gov/research/divisions/fram/economic/economic_data_reports.cfm","EDC Reports",target="_blank")),       
             tags$li(tags$a(href="https://www.nwfsc.noaa.gov/research/divisions/fram/economic/economic_data_forms.cfm","EDC Forms",target="_blank")),      
-            tags$li(tags$a(href="https://www.nwfsc.noaa.gov/news/features/infographics/index.cfm", "Infographic describing the sectors participating in the Catch Share program", target="_blank"))))),
+            tags$li(tags$a(href="https://www.nwfsc.noaa.gov/news/features/infographics/index.cfm", "Infographic describing the sectors participating in the catch share program", target="_blank"))))),
             
             tags$a(href="http://pacfin.psmfc.org/","Pacific Fisheries Information Network (PacFIN)", target="_blank"),tags$br(),
 
