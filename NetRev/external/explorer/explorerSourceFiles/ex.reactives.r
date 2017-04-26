@@ -40,7 +40,7 @@ DatVars <- reactive({
                        CATEGORY = c("Fisheries","Homeport","State of homeport"="State","Vessel length class"),
                        FISHAK = unique(FISHAK),
                        whitingv = unique(whitingv),
-                       STAT =  c("Average per vessel","Average per vessel/day","Average per vessel/metric-ton","Median per vessel","Median per vessel/day","Median per vessel/metric-ton","Fleet-wide total")#="Total"
+                       STAT =  c("Average per vessel","Average per vessel/day","Average per vessel/metric-ton caught","Median per vessel","Median per vessel/day","Median per vessel/metric-ton caught","Fleet-wide total")#="Total"
                    ))
   } else if(input$Sect_sel=="FR"){
     
@@ -49,14 +49,14 @@ DatVars <- reactive({
                          SHORTDESCR = c("Revenue","Variable costs","Fixed costs","Variable Cost Net Revenue","Total Cost Net Revenue"),
                          CATEGORY = c("Production activities","Region","Processor size"),
                          FISHAK = unique(FISHAK),
-                         STAT =  c("Average per processor","Average per processor/metric-ton","Median per processor","Median per processor/metric-ton","Industry-wide total")#="Total"
+                         STAT =  c("Average per processor","Average per processor/metric-ton produced","Median per processor","Median per processor/metric-ton produced","Industry-wide total")#="Total"
                     ))
   } else {
     datVars <- with(dat, 
                     list(YEAR =  2009:2015,
                          SHORTDESCR = c("Revenue","Variable costs","Fixed costs","Variable Cost Net Revenue","Total Cost Net Revenue"),
                          CATEGORY = c("Fisheries"),
-                         STAT =  c("Average per vessel","Average per vessel/day","Average per vessel/metric-ton","Median per vessel","Median per vessel/day","Median per vessel/metric-ton","Fleet-wide total")#="Total"
+                         STAT =  c("Average per vessel","Average per vessel/day","Average per vessel/metric-ton produced","Median per vessel","Median per vessel/day","Median per vessel/metric-ton produced","Fleet-wide total")#="Total"
                     ))
   }
 })
