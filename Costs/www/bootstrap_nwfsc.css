@@ -3884,7 +3884,7 @@ select[multiple].input-group-sm > .input-group-btn > .btn {
   .navbar-static-top .navbar-collapse,
   .navbar-fixed-bottom .navbar-collapse {
     padding-right: 0;
-    padding-left: 0;
+    padding-left: 15px;
   }
 }
 .navbar-fixed-top .navbar-collapse,
@@ -3910,7 +3910,7 @@ select[multiple].input-group-sm > .input-group-btn > .btn {
   .container > .navbar-collapse,
   .container-fluid > .navbar-collapse {
     margin-right: 0;
-    margin-left: 0;
+    margin-left: 15px;
   }
 }
 .navbar-static-top {
