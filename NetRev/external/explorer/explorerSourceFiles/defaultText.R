@@ -71,7 +71,7 @@ output$BlogUpdates <- renderUI({
                       <span class='year' style='font-size:11px;line-height: 10px;'>2016</span>")
            ),
            tags$p(HTML("<span style='margin-left:60px;font-size:18px;font-weight:bold'>Additional sectors added</span>")), 
-           tags$p(tags$br(),"Data for motherships, catcher processors, and first receivers and shorebased processors have been added."),
+           tags$p(tags$br(),"Data for motherships, catcher-processors, and first receivers and shorebased processors have been added."),
            tags$hr(),
            
              tags$div( class='date', style='height:45px;width:30px;font-family:Arial;font-weight:bold;background-color:#ffffff;text-align:center;border-top:1px solid #c0c0c0;
@@ -138,8 +138,12 @@ output$DefaultPlotText <- renderUI({
   tags$div(style = "margin: 15px 15px 30px; width: 60%",
            tags$h3("Summary Plots and Data"),
            tags$p('Visualize', tags$a(href="https://www.nwfsc.noaa.gov/research/divisions/fram/economic/overview.cfm", 'Economic Data Collection (EDC)', target="_blank"), 
-                  'summary statistics for revenue, costs, and net revenue of', tags$a(href="2012CatcherVessel.jpg","catcher vessels", target="_blank"), 
-                  '(both at-sea and shoreside),', tags$a(href="2012Mothership.jpg","motherships,", target="blank"), tags$a(href="2012CatcherProcessor.jpg", "catcher processors,", target="blank"), 'and', tags$a(href="2012FirstRecieversShorebasedProcessors.jpg", "first receivers and shorebased processors", target="blank"), 'that participate in the', tags$a(href="http://www.westcoast.fisheries.noaa.gov/fisheries/groundfish_catch_shares/index.html", 'West Coast Groundfish Trawl Catch Share Program. ', target="_blank")),
+                  'summary statistics for revenue, costs, and net revenue of', 
+                  tags$a(href="https://www.nwfsc.noaa.gov/research/divisions/fram/documents/EDC_Catcher_Vessel_Report_October_2016.pdf","catcher vessels", target="_blank"), 
+                  '(both at-sea and shoreside),', 
+                  tags$a(href="https://www.nwfsc.noaa.gov/research/divisions/fram/documents/EDC_Mothership_Report_October_2016.pdf","motherships,", target="blank"), 
+                  tags$a(href="https://www.nwfsc.noaa.gov/research/divisions/fram/documents/Catcher_Processor_Report_October_2016.pdf", "catcher-processors,", target="blank"), 'and', 
+                  tags$a(href="https://www.nwfsc.noaa.gov/research/divisions/fram/documents/EDC_First_Receiver_Shorebased_Processor_Report_October_2016.pdf", "first receivers and shorebased processors", target="blank"), 'that participate in the', tags$a(href="http://www.westcoast.fisheries.noaa.gov/fisheries/groundfish_catch_shares/index.html", 'West Coast Groundfish Trawl Catch Share Program. ', target="_blank")),
             tags$p(strong("To get started, make at least one selection in each of the fields in the Control Panel.")),
  #          tags$br(),
            HTML("<div style='display:inline-block;width:100%;padding:0;line-height: 0.8em; margin-top:15px; margin-bottom:-2px;font-size:11.5pt'>
@@ -156,7 +160,7 @@ output$DefaultPlotText <- renderUI({
            tags$br(), 
            tags$br(),
           tags$p(strong('Show Plot(s):'),'The', tags$em('Show Plot(s)'), 'button returns the display to the plot output. Pre- and post- implementation of the Catch Share program is distinguished with shading.'),
-            tags$p(strong('Show Data:'), 'The', tags$em('Show Data'), 'button displays a data table that can be filtered using the Search box or the boxes at the bottom of the table.'),
+            tags$p(strong('Show Data:'), 'The', tags$em('Show Data'), 'button displays a data table that can be filtered using the', tags$em('Search'), 'box or the boxes at the bottom of the table.'),
           
           
            tags$p(strong('Download Plots and Data:'),'Once selections have been made and a plot or data table is visible, use these buttons to download the plot and the data used to generate the plot.'),
