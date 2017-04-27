@@ -295,8 +295,8 @@ DatSub <- reactive({
       datSub$VARIABLE <- factor(datSub$VARIABLE, levels = factorOrder$state)
     } else if(input$CategorySelect == "Fisheries"){
       if(input$Sect_sel=="CV"){
-      datSub$VARIABLE <- factor(datSub$VARIABLE, levels = c("All fisheries","All catch share fisheries","All non-catch share fisheries","At-sea Pacific whiting",                      
-                                                            "Shoreside Pacific whiting","DTS trawl with trawl endorsement","Non-whiting, non-DTS trawl with trawl endorsement",
+      datSub$VARIABLE <- factor(datSub$VARIABLE, levels = c("All fisheries","All catch share fisheries","All non-catch share fisheries",'Pacific whiting',"At-sea Pacific whiting",                      
+                                                            "Shoreside Pacific whiting",'Groundfish with trawl gear',"DTS trawl with trawl endorsement","Non-whiting, non-DTS trawl with trawl endorsement",
                                                             "Non-whiting midwater trawl","Groundfish fixed gear with trawl endorsement","Groundfish fixed gear with fixed gear endorsement",
                                                             "Crab","Shrimp"))
       }else{
@@ -326,30 +326,34 @@ DatSub <- reactive({
     #The URL below is a solution for similar problem with stacking and may work for this issue. I have not yet tried.
     #https://github.com/hadley/ggplot2/issues/1301  #use website for dealing with stacked bar plot order issue
     if(input$CategorySelect=="Fisheries"&input$Sect_sel=="CV"){
-      datSub$sort <- ifelse(datSub$VARIABLE=="All fisheries", "......All fisheries", as.character(datSub$VARIABLE))
-      datSub$sort <- ifelse(datSub$VARIABLE=="All catch share fisheries", ".....All catch share fisheries", as.character(datSub$sort))
-      datSub$sort <- ifelse(datSub$VARIABLE=="All non-catch share fisheries", "..All non-catch share fisheries",  as.character(datSub$sort))
-      datSub$sort <- ifelse(datSub$VARIABLE=="At-sea Pacific whiting", ".....At-sea Pacific whiting",  as.character(datSub$sort))
-      datSub$sort <- ifelse(datSub$VARIABLE=="Shoreside Pacific whiting", ".....Shoreside Pacific whiting",  as.character(datSub$sort))
-      datSub$sort <- ifelse(datSub$VARIABLE=="DTS trawl with trawl endorsement", "....DTS trawl with trawl endorsement",  as.character(datSub$sort))
-      datSub$sort <- ifelse(datSub$VARIABLE=="Non-whiting, non-DTS trawl with trawl endorsement", "....Non-whiting, non-DTS trawl with trawl endorsement",  as.character(datSub$sort))
-      datSub$sort <- ifelse(datSub$VARIABLE=="Non-whiting midwater trawl","....Non-whiting midwater trawl" ,  as.character(datSub$sort))
-      datSub$sort <- ifelse(datSub$VARIABLE=="Groundfish fixed gear with trawl endorsement", "...Groundfish fixed gear with trawl endorsement",  as.character(datSub$sort))
-      datSub$sort <- ifelse(datSub$VARIABLE=="Groundfish fixed gear with fixed gear endorsement", "..Groundfish fixed gear with fixed gear endorsement",  as.character(datSub$sort))
-      datSub$sort <- ifelse(datSub$VARIABLE=="Crab", ".Crab",  as.character(datSub$sort))
-      datSub$sort <- ifelse(datSub$VARIABLE=="Shrimp", ".Shrimp",  as.character(datSub$sort))
+      datSub$sort <- ifelse(datSub$VARIABLE=="All fisheries", "........All fisheries", 
+                             ifelse(datSub$VARIABLE=="All catch share fisheries", ".......All catch share fisheries", 
+                                    ifelse(datSub$VARIABLE=="All non-catch share fisheries", "..All non-catch share fisheries",  
+                                           ifelse(datSub$VARIABLE=="Pacific whiting", ".......Pacific whiting",  
+                                                  ifelse(datSub$VARIABLE=="At-sea Pacific whiting", "......At-sea Pacific whiting", 
+                                                         ifelse(datSub$VARIABLE=="Shoreside Pacific whiting", "......Shoreside Pacific whiting",  
+                                                                ifelse(datSub$VARIABLE=="Groundfish with trawl gear", ".....Groundfish with trawl gear",  
+                                                                       ifelse(datSub$VARIABLE=="DTS trawl with trawl endorsement", "....DTS trawl with trawl endorsement",  
+                                                                              ifelse(datSub$VARIABLE=="Non-whiting, non-DTS trawl with trawl endorsement", "....Non-whiting, non-DTS trawl with trawl endorsement",  
+                                                                                     ifelse(datSub$VARIABLE=="Non-whiting midwater trawl","....Non-whiting midwater trawl" , 
+                                                                                            ifelse(datSub$VARIABLE=="Groundfish fixed gear with trawl endorsement", "...Groundfish fixed gear with trawl endorsement",  
+                                                                                                   ifelse(datSub$VARIABLE=="Groundfish fixed gear with fixed gear endorsement", "..Groundfish fixed gear with fixed gear endorsement", 
+                                                                                                          ifelse(datSub$VARIABLE=="Crab", ".Crab", 
+                                                                                                                 ifelse(datSub$VARIABLE=="Shrimp", ".Shrimp",  as.character(datSub$VARIABLE)
+                                                                                                                        ))))))))))))))
     } else if(input$CategorySelect == "Homeport") {
-      datSub$sort <- ifelse(datSub$VARIABLE=="Puget Sound", ".....Puget Sound", as.character(datSub$VARIABLE))                
-      datSub$sort <- ifelse(datSub$VARIABLE=="South and central WA coast", ".....South and central WA coast", as.character(datSub$sort)) 
-      datSub$sort <- ifelse(datSub$VARIABLE=="Astoria", "....Astoria", as.character(datSub$sort))                    
-      datSub$sort <- ifelse(datSub$VARIABLE=="Tillamook", "....Tillamook", as.character(datSub$sort))                  
-      datSub$sort <- ifelse(datSub$VARIABLE=="Newport", "...Newport", as.character(datSub$sort))                   
-      datSub$sort <- ifelse(datSub$VARIABLE=="Coos Bay","..Coos Bay", as.character(datSub$sort))                   
-      datSub$sort <- ifelse(datSub$VARIABLE=="Brookings", ".Brookings", as.character(datSub$sort))                  
-      datSub$sort <- ifelse(datSub$VARIABLE=="Crescent City", ".Crescent City", as.character(datSub$sort))              
-      datSub$sort <- ifelse(datSub$VARIABLE=="Eureka", ".Eureka", as.character(datSub$sort))                     
-      datSub$sort <- ifelse(datSub$VARIABLE=="Fort Bragg", ".Fort Brag", as.character(datSub$sort))                
-      datSub$sort <- ifelse(datSub$VARIABLE=="San Francisco", ".San Francisco", as.character(datSub$sort))              
+      datSub$sort <- ifelse(datSub$VARIABLE=="Puget Sound", ".....Puget Sound",               
+                            ifelse(datSub$VARIABLE=="South and central WA coast", ".....South and central WA coast", 
+                                   ifelse(datSub$VARIABLE=="Astoria", "....Astoria",                     
+                                          ifelse(datSub$VARIABLE=="Tillamook", "....Tillamook",                   
+                                          ifelse(datSub$VARIABLE=="Newport", "...Newport",                   
+                                                 ifelse(datSub$VARIABLE=="Coos Bay","..Coos Bay",                  
+                                                        ifelse(datSub$VARIABLE=="Brookings", ".Brookings",                  
+                                                               ifelse(datSub$VARIABLE=="Crescent City", ".Crescent City",               
+                                                                      ifelse(datSub$VARIABLE=="Eureka", ".Eureka",                    
+                                                                             ifelse(datSub$VARIABLE=="Fort Bragg", ".Fort Brag",                 
+                                                                                      ifelse(datSub$VARIABLE=="San Francisco", ".San Francisco", as.character(datSub$VARIABLE)
+                                                                                             )))))))))))             
     }
     else {
       datSub$sort <- datSub$VARIABLE 
@@ -433,8 +437,8 @@ DatSubThirds <- reactive({
     datSub$VARIABLE <- factor(datSub$VARIABLE, levels = factorOrder$state)
   } else if(input$CategorySelect == "Fisheries"){
     if(input$Sect_sel=="CV"){
-    datSub$VARIABLE <- factor(datSub$VARIABLE, levels = c("All fisheries","All catch share fisheries","All non-catch share fisheries","At-sea Pacific whiting",                      
-                                                            "Shoreside Pacific whiting","DTS trawl with trawl endorsement","Non-whiting, non-DTS trawl with trawl endorsement",
+    datSub$VARIABLE <- factor(datSub$VARIABLE, levels = c("All fisheries","All catch share fisheries","All non-catch share fisheries",'Pacific whiting',"At-sea Pacific whiting",                      
+                                                            "Shoreside Pacific whiting",'Groundfish with trawl gear',"DTS trawl with trawl endorsement","Non-whiting, non-DTS trawl with trawl endorsement",
                                                             "Non-whiting midwater trawl","Groundfish fixed gear with trawl endorsement","Groundfish fixed gear with fixed gear endorsement",
                                                             "Crab","Shrimp"))
     } else {

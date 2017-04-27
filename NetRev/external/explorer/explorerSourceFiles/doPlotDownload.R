@@ -3,8 +3,10 @@
 doPlotDownload <- function(dat, x, y, type){
   if(PermitPlot()){
     
+    currentyear <- 2015
+    
     yr <- function(){
-      return(unique(dat$YEAR))
+      return(as.numeric(unique(dat$YEAR)))
     }
     
     groupVar <- ifelse(type=="summary", "SHORTDESCR", "THIRDS")
@@ -18,11 +20,11 @@ doPlotDownload <- function(dat, x, y, type){
       if(input$Sect_sel == "CV"){
         return("Catcher Vessels")
       } else if(input$Sect_sel == "M"){
-        return("Motherships")
+        return("Mothership Vessels")
       } else if(input$Sect_sel == "CP"){
-        return("Catcher Processors")
+        return("Catcher Processor Vessels")
       } else if (input$Sect_sel == "FR"){
-        return("First Receivers")
+        return("First Receivers and Shorebased Processors")
       }}
     
     # Plot title construction
@@ -252,9 +254,9 @@ doPlotDownload <- function(dat, x, y, type){
     
     # define facet
     if(type =="summary"){
-      g <- g + facet_wrap(~ sort, as.table = TRUE)
+      g <- g + facet_wrap(~ sort, as.table = TRUE, scales="free_x")
     } else {
-      g <- g + facet_wrap(~ sort)
+      g <- g + facet_wrap(~ sort, scales="free_x")
     }
     
 
@@ -349,7 +351,7 @@ doPlotDownload <- function(dat, x, y, type){
       panel.grid.major.x = element_line(linetype = "blank"),
       panel.grid.major.y = element_line(color = "#656C70", linetype = "dotted"),
       strip.text = element_text(family = "sans", 
-                                size = 13, color = "grey25", vjust=1),
+                                size = 11, color = "grey25", vjust=1),
       strip.background = element_rect(fill = "lightgrey"),
       axis.ticks = element_blank(),
       axis.title.x = element_text(size=rel(.7), face="italic", vjust=0, colour="grey25"),

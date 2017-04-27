@@ -1,8 +1,8 @@
 #https://github.com/hadley/ggplot2/issues/1301  #use website for dealing with stacked bar plot order issue
 doPlot <- function(dat, x, y, type){
   if(PermitPlot()){
-    
-   print(dat[1:3,])
+     currentyear <- 2015
+
     groupVar <- ifelse(type=="summary", "SHORTDESCR", "THIRDS")
     
     ## Change color palette to printer-friendly colors that are color-blind friendly. Want consistent colors with what Erin is using
@@ -13,17 +13,18 @@ doPlot <- function(dat, x, y, type){
       if(input$Sect_sel == "CV"){
         return("Catcher Vessels")
       } else if(input$Sect_sel == "M"){
-        return("Motherships")
+        return("Mothership Vessels")
       } else if(input$Sect_sel == "CP"){
-        return("Catcher Processors")
+        return("Catcher Processor Vessels")
       } else if (input$Sect_sel == "FR"){
-        return("First Receivers")
+        return("First Receivers and Shorebased Processors")
       }
       }
     
      yr <- function(){
-    return(unique(dat$YEAR))
+    return(as.numeric(unique(dat$YEAR)))
      }
+     
 #     print(yr())
  # Plot title construction
      plot.title <- function(){
@@ -103,20 +104,20 @@ doPlot <- function(dat, x, y, type){
         return(0.9)
       }
     }
-    
+
 # Scaling of "Pre and Post catch shares" text based on number of variables selected    
     scale_text <- function() {
       if(type == "summary"){
-      if(input$CategorySelect =="Fisheries" | input$CategorySelect == "Homeport") {
-        b <- table(table(dat$VARIABLE)>1)[[1]]
-        if(b >= 5 & b <=11){
+      #if(input$CategorySelect =="Fisheries" | input$CategorySelect == "Homeport") {
+      #  b <- table(table(dat$VARIABLE)>1)[[1]]
+        # if(b >= 5 & b <=11){
           return(1.3)
-        } else if(b<5 | b == 12){
-          return(1.45)
-        } 
-        } else {
+       # } else if(b<5 | b == 12){
+      #    return(1.45)
+      #  } 
+      #  } else {
         return(1.3)
-      }
+     # }
     } else {  
       b <- table(table(dat$SHORTDESCR)>1)[[1]]
       if(b == 2 | b ==5) {
@@ -133,7 +134,7 @@ doPlot <- function(dat, x, y, type){
         return(0)
       }
     }
-    
+
 # Beging ggplot    
     g <- ggplot(dat, aes_string(x = x, y = y , group = groupVar), environment=environment())
     if(type == "summary"){    
@@ -152,12 +153,13 @@ doPlot <- function(dat, x, y, type){
           g <- g + geom_bar(aes_string(fill = groupVar, order=groupVar), stat="identity", position="dodge", width = scale_bars())
         } #End if else for side-by-side comparion
         # }#}     
-         
-        if(length(unique(dat$YEAR))>1 & min(dat$YEAR)<2011 & max(dat$YEAR)>2010){
-                g <- g + geom_rect(aes_string(xmin=-Inf, xmax=table(unique(dat$YEAR)<2011)[[2]]+.5, ymin=-Inf, ymax=Inf), fill="grey50", alpha=.05/length(unique(dat$YEAR)))
-                g <- g + geom_text(aes_string(x=(table(unique(dat$YEAR)<2011)[[2]])/4,y=scale_geom_text()/1000+scale_geom_text()/10000), label="Pre-catch shares", family="serif",fontface="italic", hjust=0,color = "grey40", size=7/scale_text()) 
-                g <- g + geom_text(aes_string(x=table(unique(dat$YEAR)<2011)[[2]]+table(unique(dat$YEAR)>2010)[[2]]/1.5,y=scale_geom_text()/1000+scale_geom_text()/10000),label="Post-catch shares",hjust=0, 
-                          family = "serif", fontface="italic", color = "grey40", size=7/scale_text())  
+        
+    
+        if(length(yr())>1 & min(yr())<2011 & max(yr())>2010){
+                g <- g + geom_rect(aes(xmin=-Inf, xmax=table(yr()<2011)[[2]]+.5, ymin=-Inf, ymax=Inf), fill="grey50", alpha=.05/length(yr())) +
+                          geom_text(aes(x=(table(yr()<2011)[[2]])/4,y=scale_geom_text()/1000+scale_geom_text()/10000, label="Pre-catch shares"), family="serif",fontface="italic", hjust=0, color = "grey40", size=7/scale_text()) +
+                          geom_text(aes(x=table(yr()<2011)[[2]]+table(yr()>2010)[[2]]/1.5,y=scale_geom_text()/1000+scale_geom_text()/10000,label="Post-catch shares"), family = "serif", fontface="italic",hjust=0, 
+                           color = "grey40", size=7/scale_text())  
             } else {
               g <- g  
             }
@@ -244,7 +246,7 @@ doPlot <- function(dat, x, y, type){
     
     # define x- and y-axis labels
     ylab <- function(){
-        paste("Thousands of 2015 $", "(",input$StatSelect, ")")
+        paste("Thousands of", currentyear, "$", "(",input$StatSelect, ")")
     }
     
      supp_obs <- function(){
@@ -320,7 +322,7 @@ doPlot <- function(dat, x, y, type){
     )
     ############################################################################################################
     ##function to wrapping facet labels and remove dots before facet labels 
-    strwrap_strip_text = function(p, pad=0.02) { 
+    strwrap_strip_text = function(p, pad=0.05) { 
       # get facet font attributes
       th = theme_get()
       if (length(p$theme) > 0L)
@@ -342,10 +344,10 @@ doPlot <- function(dat, x, y, type){
       cols = n2mfrow(npanels)[1]
       
       # get plot width
-      sum = 0#sum(sapply(grobs$width, function(x) convertWidth(x, "in")))##
+      sum = .5#sum(sapply(grobs$width, function(x) convertWidth(x, "in")))
       panels_width = par("din")[1] - sum  # inches
       # determine strwrap width
-      panel_width = panels_width / cols +.5
+      panel_width = panels_width / cols
       mx_ind = which.max(nchar(levs))
       char_width = strwidth(levs[mx_ind], units="inches", cex=ps / par("ps"), 
                             family=family, font=gpar(fontface=face)$font) / 

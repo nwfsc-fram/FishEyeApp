@@ -106,8 +106,8 @@ output$Categoryselect <- renderUI({
 #################################################################################
 
 
-fish.var <- c("All fisheries combined"="All fisheries"," All catch fhare fisheries combined"="All catch share fisheries","At-sea Pacific whiting","Shoreside Pacific whiting",
-              "DTS trawl with trawl endorsement","Non-whiting, non-DTS trawl with trawl endorsement",  "Non-whiting midwater trawl","Groundfish fixed gear with trawl endorsement",
+fish.var <- c("All fisheries combined"="All fisheries"," All catch share fisheries combined"="All catch share fisheries","Pacific whiting","At-sea Pacific whiting","Shoreside Pacific whiting",
+              "Groundfish with trawl gear","DTS trawl with trawl endorsement","Non-whiting, non-DTS trawl with trawl endorsement",  "Non-whiting midwater trawl","Groundfish fixed gear with trawl endorsement",
               "All non-catch share fisheries combined"="All non-catch share fisheries", "Groundfish fixed gear with fixed gear endorsement","Crab","Shrimp")
 
 
@@ -161,7 +161,7 @@ output$Variableselect <- renderUI({
           #  conditionalPanel("input.fishCatSelect==AF", 
           tags$div(class="ckbox2", checkboxGroupInput("VariableSelect", HTML("<div style='font-style:italic; font-size:10.87pt; font-weight:normal; margin-top:8.5pt'> 
                                                                              or select fisheries individually:  <button id='ivs' type='button' class='btn btn-default action-button shiny-bound-input'> <i class='fa fa-info-circle fa-fw' ></i></button> </div>"), 
-                                                      choices=c("All fisheries combined"="All fisheries"," All catch share fisheries combined"="All catch share fisheries",fish.var[3:12])#div(fish.var, stlye="font-style:bold")#fish.var
+                                                      choices=c("All fisheries combined"="All fisheries"," All catch share fisheries combined"="All catch share fisheries",fish.var[3:14])#div(fish.var, stlye="font-style:bold")#fish.var
                                                       , selected=""))
           #tags$div(class="ckbox", checkboxGroupInput("ShortdescrSelect", HTML("<div> Economic measures:<button id='iem' type='button' class='btn btn-default action-button shiny-bound-input'> <i class='fa fa-info-circle fa-fw' ></i> 
           
@@ -283,7 +283,7 @@ observe({
   else if (input$selectallcs%%2 == 0) {
     updateCheckboxGroupInput(session,"VariableSelect", selected=as.character(0)) } 
   else {
-    updateCheckboxGroupInput(session,"VariableSelect", selected=fish.var[2:8])
+    updateCheckboxGroupInput(session,"VariableSelect", selected=fish.var[2:10])
   }
 })
 
@@ -292,7 +292,7 @@ observe({
   else if (input$selectallncs%%2 == 0) {
     updateCheckboxGroupInput(session,"VariableSelect", selected=as.character(0)) } 
   else {
-    updateCheckboxGroupInput(session,"VariableSelect", selected=fish.var[9:12])
+    updateCheckboxGroupInput(session,"VariableSelect", selected=fish.var[11:14])
   }
 })
 ##########################################################################################################

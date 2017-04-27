@@ -23,9 +23,11 @@ tags$div(style = "margin: 15px 15px 30px; width: 60%",
                 tags$a(href="http://www.westcoast.fisheries.noaa.gov/fisheries/groundfish/", 'US West Coast Groundfish fishery. ', target="_blank"), 
                ' Many vessels that participate in the catch share program also participate in other fisheries such as Dungeness crab or Alaskan fisheries. 
                 The Net Revenue Explorer currently shows data for catcher vessels (both at-sea and shoreside).'),
-         p(tags$i('Catch share fisheries:'),' At-sea Pacific whiting; 
+         p(tags$i('Catch share fisheries:'),' Pacific whiting (includes as-sea an shoreside Pacific whiting); 
+                At-sea Pacific whiting; 
                 Shoreside Pacific whiting;
                 Groundfish fixed gear with trawl endorsement;
+                Groundfish with trawl gear (includes groundfish DTS with trawl endorsement, non-whiting, non-DTS trawl with trawl endorsement, and non-whiting midwater trawl);
                 DTS (Dover, Thornyhead, and Sablefish) trawl with trawl endorsement;
                 Non-whiting, Non-DTS trawl with trawl endorsement (e.g., petrale sole, rockfish, and other flatfish);
                 Non-whiting midwater trawl (uses midwater trawl gear to target pelagic rockfish such as widow rockfish and yellowtail rockfish).'),

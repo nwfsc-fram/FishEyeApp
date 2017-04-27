@@ -32,15 +32,17 @@ tags$head(tags$body(includeHTML("google-analytics.noaa.js"))),
             tags$style(HTML(".ckbox2 .checkbox:first-child label{font-weight:bold;}
                              .ckbox2 .checkbox:nth-child(2) label{font-weight:bold;}
                              .ckbox2 .checkbox:nth-child(3) label{margin-left:17px;}
-                             .ckbox2 .checkbox:nth-child(4) label{margin-left:17px;}
-                             .ckbox2 .checkbox:nth-child(5) label{margin-left:17px;}
+                             .ckbox2 .checkbox:nth-child(4) label{margin-left:34px;}
+                             .ckbox2 .checkbox:nth-child(5) label{margin-left:34px;}
                              .ckbox2 .checkbox:nth-child(6) label{margin-left:17px;}
-                             .ckbox2 .checkbox:nth-child(7) label{margin-left:17px;}
-                             .ckbox2 .checkbox:nth-child(9) label{font-weight:bold;}
-                             .ckbox2 .checkbox:nth-child(8) label{margin-left:17px;}
+                             .ckbox2 .checkbox:nth-child(7) label{margin-left:34px;}
+                             .ckbox2 .checkbox:nth-child(11) label{font-weight:bold;}
+                             .ckbox2 .checkbox:nth-child(8) label{margin-left:34px;}
                              .ckbox2 .checkbox:nth-child(10) label{margin-left:17px;}
-                             .ckbox2 .checkbox:nth-child(11) label{margin-left:17px;}
+                             .ckbox2 .checkbox:nth-child(9) label{margin-left:34px;}
                              .ckbox2 .checkbox:nth-child(12) label{margin-left:17px;}
+                             .ckbox2 .checkbox:nth-child(13) label{margin-left:17px;}
+                             .ckbox2 .checkbox:nth-child(14) label{margin-left:17px;}
                              .frckbox .checkbox:nth-child(3) label{margin-left:17px;}
                              .frckbox .checkbox:nth-child(4) label{margin-left:17px;}")),
             tags$style(HTML(".rbutton .radio:first-child label{font-style:italic;}
