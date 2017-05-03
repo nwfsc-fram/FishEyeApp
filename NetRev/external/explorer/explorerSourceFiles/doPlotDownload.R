@@ -138,7 +138,7 @@ doPlotDownload <- function(dat, x, y, type){
         return(0)
       }
     }
-    g <- ggplot(dat, aes_string(x = x, y = y , group = groupVar), environment=environment()) 
+    g <- ggplot(dat[!is.na(dat$VALUE),], aes_string(x = x, y = y , group = groupVar), environment=environment()) 
     
     if(type == "summary"){
       if(input$DodgeSelect == "Economic measures side-by-side"){

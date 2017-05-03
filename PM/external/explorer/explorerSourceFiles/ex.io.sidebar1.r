@@ -97,8 +97,8 @@ output$Yearselect <- renderUI({
 #END YEAR
 ##############################################
 
-fish.var <- c("All fisheries combined"="All fisheries"," All catch share fisheries combined"="All catch share fisheries","At-sea Pacific whiting","Shoreside Pacific whiting",
-              "DTS trawl with trawl endorsement","Non-whiting midwater trawl","Non-whiting, non-DTS trawl with trawl endorsement",  "Groundfish fixed gear with trawl endorsement",
+fish.var <- c("All fisheries combined"="All fisheries"," All catch share fisheries combined"="All catch share fisheries","Pacific whiting","At-sea Pacific whiting","Shoreside Pacific whiting",
+              "Groundfish with trawl gear","DTS trawl with trawl endorsement","Non-whiting midwater trawl","Non-whiting, non-DTS trawl with trawl endorsement",  "Groundfish fixed gear with trawl endorsement",
               "All non-catch share fisheries combined"="All non-catch share fisheries", "Groundfish fixed gear with fixed gear endorsement","Crab","Shrimp","Other fisheries")
 ###################################################
 #CATEGORY SELECT
@@ -255,16 +255,16 @@ output$Variableselect <- renderUI({
         if(input$LayoutSelect!='Metrics'){
           if(input$Ind_sel=="Economic"||input$Ind_sel=="Demographic"||input$Ind_sel=="Social and Regional" &input$socSelect[1]!="Share of landings by state"){
            tags$div(class="ckbox2", checkboxGroupInput("VariableSelect", div("Select one or more fisheries:", style="margin-top:0; padding:-10px"),#HTML("<div style='font-style:italic; font-size:10.87pt; font-weight:normal; margin-top:8.5pt'> 
-                                                        choices=c("All fisheries combined"="All fisheries"," All catch share fisheries combined"="All catch share fisheries",fish.var[3:13])))
+                                                        choices=c("All fisheries combined"="All fisheries"," All catch share fisheries combined"="All catch share fisheries",fish.var[3:14])))
           }
           else {
             tagList(
              tags$div(class="ckbox2", radioButtons("VariableSelect", div("Select one fisheries:", style="margin-top:0; padding:-10px"),#HTML("<div style='font-style:italic; font-size:10.87pt; font-weight:normal; margin-top:8.5pt'> 
-                                                  choices=c("All fisheries combined"="All fisheries"," All catch share fisheries combined"="All catch share fisheries",fish.var[3:13]), selected="")))
+                                                  choices=c("All fisheries combined"="All fisheries"," All catch share fisheries combined"="All catch share fisheries",fish.var[3:14]), selected="")))
           }  
           }else {
             tags$div(class="ckbox3", radioButtons("VariableSelect", div("Select one fisheries:", style="margin-top:0; padding:-10px"), 
-                                                  choices=c("No fishery selected"="","All fisheries combined"="All fisheries"," All catch share fisheries combined"="All catch share fisheries",fish.var[3:13]), selected=""))
+                                                  choices=c("No fishery selected"="","All fisheries combined"="All fisheries"," All catch share fisheries combined"="All catch share fisheries",fish.var[3:14]), selected=""))
           } 
       }#end fisheries
     } ##END Catcher Vessels
@@ -545,7 +545,7 @@ output$StatSelect2 <- renderUI({
   } #nd Metrics
     else {
       if(input$Ind_sel=="Demographic"){
-        if(input$demSelect=="Number of vessels"|input$demSelect=="Number of processors"|input$demSelect=="Gini coefficient"){
+        if(input$demSelect %in% c("Number of vessels","Number of processors","Gini coefficient")){
           tagList(
             tags$div(class='StatGrey', radioButtons("AVE_MED2", HTML("<div> Statistic: <button id='istat' type='button' class='btn btn-default action-button shiny-bound-input'> <i class='fa fa-info-circle fa-fw' ></i></button> </div>"),
                          choices=c("Average","Median",'Total'), select='Total'))

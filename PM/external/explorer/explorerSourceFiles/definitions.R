@@ -27,9 +27,10 @@ tags$div(style = "margin: 15px 15px 30px; width: 60%",
                               ' Many vessels that participate in the catch share program also participate in other fisheries such as Dungeness crab or Alaskan fisheries. 
                               Please note that data from Alaskan fisheries are included in the combined non-catch share fisheries category when viewing results for homeport, state,
                               and vessel length class. When viewing fisheries,activities from Alaskan fisheries are included in the ', tags$em('All non-catch share fisheries combined'), ' category. Sample size is insufficient to show results for this fishery alone.'),
-                      p(tags$i('Catch Share fisheries:'),' At-sea Pacific whiting; 
+                      p(tags$i('Catch Share fisheries:'),' Pacific whiting (includes at-sea and shoreside Pacific whiting); At-sea Pacific whiting; 
                         Shoreside Pacific whiting;
                         Groundfish fixed gear with trawl endorsement;
+                        Groundfish with trawl gear (includes groundfish DTS with trawl endorsement, non-whiting, non-DTS trawl with trawl endorsement, and non-whiting midwater trawl);
                         DTS (Dover, Thornyhead, and Sablefish) trawl with trawl endorsement;
                         Non-whiting, Non-DTS trawl with trawl endorsement (e.g., petrale sole, rockfish, and other flatfish),
                         Non-whiting mid-water trawl (uses midwater trawl gear to target pelagic rockfish such as widow rockfish and yellowtail rockfish).'),

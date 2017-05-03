@@ -39,7 +39,8 @@ doPlot <- function(dat, x, y, type){
       } else {
         return(paste("Variability Analysis of West Coast Catcher Vessels", sect()))
       }}
-    
+
+     #sub-title function    
     gv <- function(){
       if(type == "summary"){
           if(input$CategorySelect=="Fisheries"){
@@ -72,6 +73,7 @@ doPlot <- function(dat, x, y, type){
       }
     }
 
+    #Additional sub-title function
     sv <- function(){
       if(type == "summary"){
         if(input$DodgeSelect == "Composition of Total Cost Net Revenue"){
@@ -85,9 +87,10 @@ doPlot <- function(dat, x, y, type){
         return()
       }
     }
-    
+
+    #Function to print main and subtitles over two lines (bquote splits subtitle into two lines)    
     main <- function(){
-      bquote(atop(.(plot.title()), atop(.(gv()), .(sv()))))  #bquote splits subtitle into two lines
+      bquote(atop(.(plot.title()), atop(.(gv()), .(sv()))))  
     }
     
     
@@ -108,24 +111,11 @@ doPlot <- function(dat, x, y, type){
 # Scaling of "Pre and Post catch shares" text based on number of variables selected    
     scale_text <- function() {
       if(type == "summary"){
-      #if(input$CategorySelect =="Fisheries" | input$CategorySelect == "Homeport") {
-      #  b <- table(table(dat$VARIABLE)>1)[[1]]
-        # if(b >= 5 & b <=11){
           return(1.3)
-       # } else if(b<5 | b == 12){
-      #    return(1.45)
-      #  } 
-      #  } else {
-        return(1.3)
-     # }
     } else {  
       b <- table(table(dat$SHORTDESCR)>1)[[1]]
-      if(b == 2 | b ==5) {
-        return(1.4)
-      } else {
-        return(1.4)
-      } 
-    }}   
+          return(1.4)
+      }}   
     
     scale_geom_text <- function() {
       if(sum(dat$VALUE, na.rm=T)!=0) {
@@ -136,7 +126,7 @@ doPlot <- function(dat, x, y, type){
     }
 
 # Beging ggplot    
-    g <- ggplot(dat, aes_string(x = x, y = y , group = groupVar), environment=environment())
+    g <- ggplot(dat[!is.na(dat$VALUE),], aes_string(x = x, y = y , group = groupVar), environment=environment())
     if(type == "summary"){    
       if(input$DodgeSelect == "Economic measures side-by-side"){
         if(input$PlotSelect!="Bar"){
@@ -321,7 +311,7 @@ doPlot <- function(dat, x, y, type){
       legend.title = element_blank()
     )
     ############################################################################################################
-    ##function to wrapping facet labels and remove dots before facet labels 
+    ##function to wrap facet labels and remove dots before facet labels 
     strwrap_strip_text = function(p, pad=0.05) { 
       # get facet font attributes
       th = theme_get()

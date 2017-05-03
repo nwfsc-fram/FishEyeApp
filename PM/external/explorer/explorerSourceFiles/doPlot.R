@@ -44,7 +44,7 @@ doPlot <- function(dat, x, y){
     gv <- function(){
       if(input$LayoutSelect!="Metrics"){
       if(input$Ind_sel=="Economic"){
-        if(input$Sect_sel!="CV"&input$Sect_sel!="FR"){
+        if(!input$Sect_sel %in% c("CV","FR")){
           sprintf(paste("Economic measure:", dat$SHORTDESCR[1], "     Statistic: ",  input$StatSelect))
         } else{
           if(input$CategorySelect=="Fisheries"){
@@ -57,7 +57,7 @@ doPlot <- function(dat, x, y){
        # if(input$MetricSelect[1]!='Number of vessels'&input$MetricSelect!="Share of landings by state"&input$MetricSelect!='Gini coefficient'&input$MetricSelect!='Herfindahl-Hirschman Index'&input$MetricSelect!='Seasonality'&input$MetricSelect!="Vessel length"){
         if(max(dat$metric_flag)==0){
           if(input$Ind_sel=="Demographic"){
-          if(input$Sect_sel!="CV"&input$Sect_sel!="FR"){
+          if(!input$Sect_sel %in% c("CV","FR")){
             sprintf(paste("Category:", input$CategorySelect,"     Metric: ", input$demSelect, "   Statistic:", input$AVE_MED2))
            } else{
             if(input$CategorySelect=="Fisheries"){
@@ -82,7 +82,7 @@ doPlot <- function(dat, x, y){
         }# end normal cases
          else {
            if(input$Ind_sel=="Demographic"){
-           if(input$demSelect=="Number of vessels"|input$demSelect=="Number of processors"){
+           if(input$demSelect %in% c("Number of vessels","Number of processors")){
              if(input$Sect_sel=="CV"&input$CategorySelect!="Fisheries"|input$Sect_sel=='FR'&input$CategorySelect!="Fisheries"){
                sprintf(paste("Category:", input$CategorySelect,"     Metric: ", input$demSelect, '  Statistic: Total     Summed across:', input$inSelect))
              } else {
@@ -350,12 +350,12 @@ doPlot <- function(dat, x, y){
      }  else {
       return(1.1)
   }} else { 
-   b <- table(table(dat$SHORTDESCR)>1)[[1]]
-   if(b == 1 | b ==3) {
+#   b <- table(table(dat$SHORTDESCR)>1)[[1]]
+#   if(b == 1 | b ==3) {
      return(1.2)
-   } else {
-     return(1.2)
-   } 
+#   } else {
+#     return(1.2)
+ #  } 
  }}   
  
  
@@ -363,7 +363,7 @@ doPlot <- function(dat, x, y){
 #    g <-    g <- ggplot(dat, aes_string(x = x, y = as.Date(origin="1970-01-01", y), group = groupVar, order='sort'), environment=environment())#+ scale_y_date(breaks=date_breaks("month"), labels=date_format("%d %m"))
 #   } else {
 #     dat <- dat[order(dat$sort),]
-     g <- ggplot(dat, aes_string(x = x, y = y , group = groupVar, order='sort'), environment=environment()) #, order='sort'+coord_cartesian(xlim = c(0, length(table(dat$YEAR))+1))
+     g <- ggplot(dat[!is.na(dat$VALUE),], aes_string(x = x, y = y , group = groupVar, order='sort'), environment=environment()) #, order='sort'+coord_cartesian(xlim = c(0, length(table(dat$YEAR))+1))
 #   }
 
   if(length(unique(dat$YEAR))>1){
@@ -454,7 +454,7 @@ doPlot <- function(dat, x, y){
 
     # define facet
    if (input$LayoutSelect!='Metrics') {
-     g <- g + facet_wrap(~ sort, ncol=2)
+     g <- g + facet_wrap(~ sort, ncol=2, scales='free_x')
    } else {
      g <- g + facet_wrap(~ sort, ncol=2, scales="free_y")
      }

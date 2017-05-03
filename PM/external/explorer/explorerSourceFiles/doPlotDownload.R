@@ -367,7 +367,7 @@ xlab <- function(){
 }#end x label function 
 
     
-    g <- ggplot(dat, aes_string(x = x, y = y , group = groupVar, order='sort'), environment=environment()) #+coord_cartesian(xlim = c(0, length(table(dat$YEAR))+1))
+    g <- ggplot(dat[!is.na(dat$VALUE),], aes_string(x = x, y = y , group = groupVar, order='sort'), environment=environment()) #+coord_cartesian(xlim = c(0, length(table(dat$YEAR))+1))
 
         if(length(input$YearSelect)>1){
         g <- g + geom_line(aes_string(colour = groupVar), size=0.5)
