@@ -119,9 +119,9 @@ output$Categoryselect <- renderUI({
 #################################################################################
 
 
-fish.var <- c("All fisheries combined"="All Fisheries"," All Catch Share fisheries combined"="All Catch Share Fisheries","At-sea Pacific whiting","Shoreside Pacific whiting",
-              "DTS trawl with trawl endorsement","Non-whiting, non-DTS trawl with trawl endorsement",  "Non-whiting midwater trawl","Groundfish fixed gear with trawl endorsement",
-              "All non-Catch Share fisheries combined"="All Non-Catch Share Fisheries", "Groundfish fixed gear with fixed gear endorsement","Crab","Shrimp")
+fish.var <- c("All fisheries combined"="All fisheries"," All catch share fisheries combined"="All catch share fisheries","Pacific whiting","At-sea Pacific whiting","Shoreside Pacific whiting",
+              "Groundfish with trawl gear","DTS trawl with trawl endorsement","Non-whiting, non-DTS trawl with trawl endorsement",  "Non-whiting midwater trawl","Groundfish fixed gear with trawl endorsement",
+              "All non-catch share fisheries combined"="All non-catch share fisheries", "Groundfish fixed gear with fixed gear endorsement","Crab","Shrimp")
 
 
 
@@ -133,9 +133,7 @@ output$Variableselect <- renderUI({
       if(input$CategorySelect == "State"){
         tagList(           
           tags$div(class="select", selectInput("inSelect","",
-                                               c("All fisheries" = "All Fisheries",
-                                                 "All Catch Share fisheries" = "All Catch Share Fisheries",
-                                                 "All non-Catch Share fisheries" = "All Non-Catch Share Fisheries")), style="margin-bottom:-10px"),
+                                               c("All fisheries","All catch share fisheries","All non-catch share fisheries")), style="margin-bottom:-10px"),
           checkboxGroupInput("VariableSelect", "Select one or more state:", choices = factorOrder$state, selected="")
         )
         } else if (input$CategorySelect=="Region"){
@@ -148,9 +146,7 @@ output$Variableselect <- renderUI({
        } else if(input$CategorySelect == "Vessel length class"){
         tagList(           
           tags$div(class="select", selectInput("inSelect","",
-                                               c("All fisheries" = "All Fisheries",
-                                                 "All Catch Share fisheries" = "All Catch Share Fisheries",
-                                                 "All non-Catch Share fisheries" = "All Non-Catch Share Fisheries")), style="margin-bottom:-10px"),
+                                               c("All fisheries","All catch share fisheries","All non-catch share fisheries")), style="margin-bottom:-10px"),
           checkboxGroupInput("VariableSelect",  "Select one or more vessel length class:", choices=factorOrder$lengths, selected="")
         )
       }else if(input$CategorySelect == "Processor size"){
@@ -161,9 +157,7 @@ output$Variableselect <- renderUI({
       } else if(input$CategorySelect == "Homeport"){
         tagList(           
           tags$div(class="select", selectInput("inSelect","",
-                                               c("All fisheries" = "All Fisheries",
-                                                 "All Catch Share fisheries" = "All Catch Share Fisheries",
-                                                 "All non-Catch Share fisheries" = "All Non-Catch Share Fisheries")), style="margin-bottom:-10px"),
+                                               c("All fisheries", "All catch share fisheries", "All non-catch share fisheries")), style="margin-bottom:-10px"),
           #$bsButton("selectall", "Select all", style="primary", size="extra-small",block=F, type="action"),
           tags$div(checkboxGroupInput("VariableSelect", div("Select one or more homeport:", style="margin-top:0; padding:-10px"), choices=factorOrder$port, selected=""))
         )
@@ -174,12 +168,12 @@ output$Variableselect <- renderUI({
         tagList(
           #              selectInput("fishCatSelect","", c("Catch share fisheries"="CSF", "Non-Catch Shares fisheries"="NSF", "All fisheries"="AF"), selected="AF"),
           actionButton("selectall2", "All fisheries", style="default", size="extra-small",block=F, type="action"),
-          actionButton("selectallcs", "All Catch Share fisheries", style="default",size="extra-small", block=F, type="action"),
-          actionButton("selectallncs", "All non-Catch Share fisheries", style="default", size="extra-small", block=F, type="action"),
+          actionButton("selectallcs", "All catch share fisheries", style="default",size="extra-small", block=F, type="action"),
+          actionButton("selectallncs", "All non-catch share fisheries", style="default", size="extra-small", block=F, type="action"),
           #  conditionalPanel("input.fishCatSelect==AF", 
           tags$div(class="ckbox2", checkboxGroupInput("VariableSelect", HTML("<div style='font-style:italic; font-size:10.87pt; font-weight:normal; margin-top:8.5pt'> 
                                                                              or select fisheries individually:  <button id='ivs' type='button' class='btn btn-default action-button shiny-bound-input'> <i class='fa fa-info-circle fa-fw' ></i></button> </div>"), 
-                                                      choices=c("All fisheries combined"="All Fisheries"," All Catch Share fisheries combined"="All Catch Share Fisheries",fish.var[3:12])#div(fish.var, stlye="font-style:bold")#fish.var
+                                                      choices=c("All fisheries combined"="All fisheries"," All catch share fisheries combined"="All catch share fisheries",fish.var[3:14])#div(fish.var, stlye="font-style:bold")#fish.var
                                                       , selected=""))
           #tags$div(class="ckbox", checkboxGroupInput("ShortdescrSelect", HTML("<div> Economic measures:<button id='iem' type='button' class='btn btn-default action-button shiny-bound-input'> <i class='fa fa-info-circle fa-fw' ></i> 
           

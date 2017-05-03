@@ -50,11 +50,11 @@ doPlot <- function(dat, x, y){
       if(input$Sect_sel == "CV"){
         return("Catcher Vessels")
       } else if(input$Sect_sel == "M"){
-        return("Motherships")
+        return("Mothership Vessels")
       } else if(input$Sect_sel == "CP"){
-        return("Catcher-Processors")
+        return("Catcher-Processor Vessels")
       } else if (input$Sect_sel == "FR"){
-        return("First Receivers")
+        return("First Receivers and Shorebased Processors")
       }}
     
      yr <- function(){
@@ -124,20 +124,20 @@ doPlot <- function(dat, x, y){
     
 # Scaling of "Pre and Post catch shares" text based on number of variables selected    
     scale_text <- function() {
-      if(input$CategorySelect =="Fisheries" | input$CategorySelect == "Homeport") {
-        b <- table(table(dat$VARIABLE)>1)[[1]]
-        if(b >= 5 & b <=11){
+      #if(input$CategorySelect =="Fisheries" | input$CategorySelect == "Homeport") {
+       # b <- table(table(dat$VARIABLE)>1)[[1]]
+       # if(b >= 5 & b <=11){
           return(1.3)
-        } else if(b<5 | b == 12){
-          return(1.45)
-        } 
-        } else {
-        return(1.3)
-      }
+       # } else if(b<5 | b == 12){
+      #    return(1.45)
+      #  } 
+     #   } else {
+     #   return(1.3)
+     # }
     }    
 
 # Beging ggplot    
-    g <- ggplot(dat, aes_string(x = x, y = y , group = groupVar), environment=environment())
+    g <- ggplot(dat[!is.na(dat$VALUE),], aes_string(x = x, y = y , group = groupVar), environment=environment())
         
       if(input$PlotSelect=="Line"){
                 g <- g + geom_line(aes_string(colour = groupVar), size=1.5)

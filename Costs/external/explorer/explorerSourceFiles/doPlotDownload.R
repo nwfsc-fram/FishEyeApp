@@ -131,7 +131,7 @@ doPlotDownload <- function(dat, x, y){
     }   
     
     
-    g <- ggplot(dat, aes_string(x = x, y = y , group = groupVar), environment=environment()) 
+    g <- ggplot(dat[!is.na(dat$VALUE),], aes_string(x = x, y = y , group = groupVar), environment=environment()) 
     
     
     if(input$PlotSelect=="Line"){

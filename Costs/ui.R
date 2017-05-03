@@ -36,13 +36,18 @@ tags$head(tags$body(includeHTML("google-analytics.noaa.js"))),
                                      .statboxM  .checkbox:nth-child(8) label,
                                      .ckbox2 .checkbox:first-child label,
                                      .ckbox2 .checkbox:nth-child(2) label,
-                                     .ckbox2 .checkbox:nth-child(9) label{font-weight:bold;}
-                              .statboxC .checkbox:nth-child(-n+12) label,
+                                     .ckbox2 .checkbox:nth-child(11) label{font-weight:bold;}
+                              .statboxC .checkbox:nth-child(-n+14) label,
                                     .statboxF .checkbox:nth-child(-n+14) label,
                                     .statboxM .checkbox:nth-child(-n+12) label,
-                                    .ckbox2 .checkbox:nth-child(-n+12) label,
+                                    .ckbox2 .checkbox:nth-child(-n+14) label,
                                    .frckbox .checkbox:nth-child(3) label,
                                    .frckbox .checkbox:nth-child(4) label{margin-left:17px;}
+                              .ckbox2 .checkbox:nth-child(4) label,
+                                    .ckbox2 .checkbox:nth-child(5) label,
+                                    .ckbox2 .checkbox:nth-child(7) label,
+                                    .ckbox2 .checkbox:nth-child(8) label,
+                                    .ckbox2 .checkbox:nth-child(9) label{margin-left:34px;}
                               .statboxM .checkbox:nth-child(1) label,
                                     .statboxC .checkbox:nth-child(1) label,
                                     .statboxF .checkbox:nth-child(1) label,
@@ -51,7 +56,7 @@ tags$head(tags$body(includeHTML("google-analytics.noaa.js"))),
                                     .statboxM .checkbox:nth-child(8) label,
                                     .ckbox2 .checkbox:nth-child(1) label,
                                     .ckbox2 .checkbox:nth-child(2) label,
-                                    .ckbox2 .checkbox:nth-child(9) label{margin-left:0px;}"
+                                        .ckbox2 .checkbox:nth-child(11) label{margin-left:0px;}"
             )),
            #Stylize sector select drop-down menu
             tags$style(HTML(".sectselect >li{position:relative; z-index:10000; background-color:black !important;display:inline; vertical-align:middle;}")),
