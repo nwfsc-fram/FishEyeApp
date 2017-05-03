@@ -29,41 +29,38 @@ tags$head(tags$body(includeHTML("google-analytics.noaa.js"))),
        #    tags$style(HTML(".sectselect{font-size:28px; line-height:28px;}")),
            
             # indenting and bolding fishery selections
-            tags$style(HTML(".ckbox2 .checkbox:first-child label{font-weight:bold;}
-                             .ckbox2 .checkbox:nth-child(2) label{font-weight:bold;}
-                             .ckbox2 .checkbox:nth-child(3) label{margin-left:17px;}
-                             .ckbox2 .checkbox:nth-child(4) label{margin-left:34px;}
-                             .ckbox2 .checkbox:nth-child(5) label{margin-left:34px;}
-                             .ckbox2 .checkbox:nth-child(6) label{margin-left:17px;}
-                             .ckbox2 .checkbox:nth-child(7) label{margin-left:34px;}
-                             .ckbox2 .checkbox:nth-child(11) label{font-weight:bold;}
-                             .ckbox2 .checkbox:nth-child(8) label{margin-left:34px;}
-                             .ckbox2 .checkbox:nth-child(10) label{margin-left:17px;}
-                             .ckbox2 .checkbox:nth-child(9) label{margin-left:34px;}
-                             .ckbox2 .checkbox:nth-child(12) label{margin-left:17px;}
-                             .ckbox2 .checkbox:nth-child(13) label{margin-left:17px;}
-                             .ckbox2 .checkbox:nth-child(14) label{margin-left:17px;}
-                             .frckbox .checkbox:nth-child(3) label{margin-left:17px;}
-                             .frckbox .checkbox:nth-child(4) label{margin-left:17px;}")),
-            tags$style(HTML(".rbutton .radio:first-child label{font-style:italic;}
-                             .rbutton .radio:nth-child(2) label{font-weight:bold;}
-                             .rbutton .radio:nth-child(3) label{font-weight:bold;}
-                             .rbutton .radio:nth-child(4) label{margin-left:17px;}
-                             .rbutton .radio:nth-child(5) label{margin-left:17px;}
-                             .rbutton .radio:nth-child(6) label{margin-left:17px;}
-                             .rbutton .radio:nth-child(7) label{margin-left:17px;}
-                             .rbutton .radio:nth-child(8) label{margin-left:17px;}
-                             .rbutton .radio:nth-child(10) label{font-weight:bold;}
-                             .rbutton .radio:nth-child(9) label{margin-left:17px;}
-                             .rbutton .radio:nth-child(11) label{margin-left:17px;}
-                             .rbutton .radio:nth-child(12) label{margin-left:17px;}
-                             .rbutton .radio:nth-child(13) label{margin-left:17px;}
-                             .rbutton2 .radio:first-child label{font-style:italic;}
+           tags$style(HTML(".rbutton .radio:first-child label,
+                             .rbutton2 .radio:first-child label,
                              .frbutton .radio:first-child label{font-style:italic;}
-                             .frbutton .radio:nth-child(4) label{margin-left:17px;}
-                             .frbutton .radio:nth-child(5) label{margin-left:17px;}"
-                             )),
+                              
+                             .ckbox2 .checkbox:nth-child(-n+2) label,
+                             .ckbox2 .checkbox:nth-child(11) label,
+                             .rbutton .radio:nth-child(2) label,
+                             .rbutton .radio:nth-child(3) label,
+                             .rbutton .radio:nth-child(11) label{font-weight:bold;}
+                             
+                             .rbutton .radio:nth-child(-n+15) label,
+                             .frbutton .radio:nth-child(4) label,
+                             .frbutton .radio:nth-child(5) label,
+                             .ckbox2 .checkbox:nth-child(-n+14) label,
+                             .frckbox .checkbox:nth-child(3) label,
+                             .frckbox .checkbox:nth-child(4) label{margin-left:17px;}
             
+                             .ckbox2 .checkbox:nth-child(4) label,
+                             .ckbox2 .checkbox:nth-child(5) label,
+                             .ckbox2 .checkbox:nth-child(7) label,
+                             .ckbox2 .checkbox:nth-child(8) label,
+                             .ckbox2 .checkbox:nth-child(9) label,
+                             .rbutton .radio:nth-child(5) label,
+                             .rbutton .radio:nth-child(6) label,
+                             .rbutton .radio:nth-child(8) label,
+                             .rbutton .radio:nth-child(9) label,
+                             .rbutton .radio:nth-child(10) label{margin-left:34px;}
+                            
+                             .rbutton .radio:nth-child(-n+3) label,
+                             .rbutton .radio:nth-child(11) label,
+                             .ckbox2 .checkbox:nth-child(-n+2) label,
+                             .ckbox2 .checkbox:nth-child(11) label{margin-left:0px;}")),
             
             #stylize information icons
             tags$style(HTML('#iof{width:20px; height:19px; margin:0px;border:none; padding:0px;border-radius:25px;background-color:transparent;font-size:12px; color:RoyalBlue}
@@ -75,9 +72,9 @@ tags$head(tags$body(includeHTML("google-analytics.noaa.js"))),
                              #iem{width:20px; height:19px; margin:0px;border:none; padding:0px;border-radius:25px;background-color:transparent;font-size:12px; color:RoyalBlue}
                              #iprod{width:20px; height:19px; margin:0px;border:none; padding:0px;border-radius:25px;background-color:transparent;font-size:12px; color:RoyalBlue}'))
           ),#end tags head
+          
           # stylize show data and show plots buttons
-   
-          tags$style(type='text/css', "#data2 { background-color:RoyalBlue; color:white; height:37px;position:absolute;bottom:110%;left:325%;}
+           tags$style(type='text/css', "#data2 { background-color:RoyalBlue; color:white; height:37px;position:absolute;bottom:110%;left:325%;}
                                        #data { background-color:RoyalBlue; color:white; height:37px;position:absolute;bottom:110%;left:325%;}"),
           
           #java script code to run google analytics and display messages for information icons. 
@@ -221,6 +218,8 @@ tags$head(tags$body(includeHTML("google-analytics.noaa.js"))),
                      tabPanel("Contact us",
                               fluidRow(
                                 column(12, htmlOutput("Email")))
+                              #The following code chunk that has been commented out is for referene purposes 
+                              # The code chunk, with the mail library create an email form for users to use
                               #      textInput("from", "From:", value="From"),
                               #      textInput("to", "To:", value="nwfsc.fisheye@noaa.gov"),
                               #            textInput("subject", "Subject:", value="Subject"),
