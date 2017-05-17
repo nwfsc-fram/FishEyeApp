@@ -49,18 +49,39 @@ output$CostCategoryselect <- renderUI({
 output$Shortdescrselect <- renderUI({
 #  if(input$CostCategorySelect=="All cost categories"){
     if(input$Sect_sel=='CV'){
-     tags$div(class="statboxC", checkboxGroupInput("ShortdescrSelect",'Cost categories:',
+      if(input$PlotSelect!='Stacked bar'){
+        tags$div(class="statboxC", checkboxGroupInput("ShortdescrSelect",'Cost categories:',
                                              choices = DatVars()$SHORTDESCR,selected = DatVars()$SHORTDESCR))
+      } else {
+        tags$div(class="statboxC", checkboxGroupInput("ShortdescrSelect",'Cost categories:',
+                                                      choices = DatVars()$SHORTDESCR,selected = c('All fixed costs','All variable costs')))
+        
+      }
     } else if(input$Sect_sel=='FR'){
+      if(input$PlotSelect!='Stacked bar'){
+        tags$div(class="statboxF", checkboxGroupInput("ShortdescrSelect",'Cost categories:',
+                                                      choices = DatVars()$SHORTDESCR,selected = DatVars()$SHORTDESCR))
+      } else{
       tags$div(class="statboxF", checkboxGroupInput("ShortdescrSelect",'Cost categories:',
-                                                   choices = DatVars()$SHORTDESCR,selected = DatVars()$SHORTDESCR))
-    } else if(input$Sect_sel=='M'){
-      tags$div(class="statboxM", checkboxGroupInput("ShortdescrSelect",'Cost categories:',
-                                                    choices = DatVars()$SHORTDESCR,selected = DatVars()$SHORTDESCR))
-    } else {
-      tags$div(class="statboxM", checkboxGroupInput("ShortdescrSelect",'Cost categories:',
-                                                   choices = DatVars()$SHORTDESCR,selected = DatVars()$SHORTDESCR))
+                                                   choices = DatVars()$SHORTDESCR,selected = c('All fixed costs','All variable costs')))
     }
+      }else if(input$Sect_sel=='M'){
+        if(input$PlotSelect!='Stacked bar'){
+          tags$div(class="statboxM", checkboxGroupInput("ShortdescrSelect",'Cost categories:',
+                                                        choices = DatVars()$SHORTDESCR,selected = DatVars()$SHORTDESCR))
+        } else {
+          tags$div(class="statboxM", checkboxGroupInput("ShortdescrSelect",'Cost categories:',
+                                                    choices = DatVars()$SHORTDESCR,selected = c('All fixed costs', 'All variable costs')))
+        }
+    } else {
+      if(input$PlotSelect!='Stacked bar'){
+        tags$div(class="statboxM", checkboxGroupInput("ShortdescrSelect",'Cost categories:',
+                                                      choices = DatVars()$SHORTDESCR,selected = DatVars()$SHORTDESCR))
+      } else{
+      tags$div(class="statboxM", checkboxGroupInput("ShortdescrSelect",'Cost categories:',
+                                                   choices = DatVars()$SHORTDESCR,selected =  c('All fixed costs', 'All variable costs')))
+      }
+      }
 #}  else if(input$CostCategorySelect=="Variable costs"){
 #  if(input$Sect_sel=='CV'|input$Sect_sel=='FR'){
 #    tags$div(class="statbox", checkboxGroupInput("ShortdescrSelect","",

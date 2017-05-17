@@ -54,9 +54,8 @@ tags$head(tags$body(includeHTML("google-analytics.noaa.js"))),
                                     .statboxC .checkbox:nth-child(9) label,
                                     .statboxF .checkbox:nth-child(10) label,
                                     .statboxM .checkbox:nth-child(8) label,
-                                    .ckbox2 .checkbox:nth-child(1) label,
-                                    .ckbox2 .checkbox:nth-child(2) label,
-                                        .ckbox2 .checkbox:nth-child(11) label{margin-left:0px;}"
+                                    .ckbox2 .checkbox:nth-child(-n+2) label,
+                                    .ckbox2 .checkbox:nth-child(11) label{margin-left:0px;}"
             )),
            #Stylize sector select drop-down menu
             tags$style(HTML(".sectselect >li{position:relative; z-index:10000; background-color:black !important;display:inline; vertical-align:middle;}")),

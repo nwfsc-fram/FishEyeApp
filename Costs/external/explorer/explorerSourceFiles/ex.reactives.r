@@ -5,7 +5,7 @@
 #  2. handles the reactive expressions for data management and statistical operations.
 #  3. 
 #======================================
-
+currentyear<- 2015
 
 # creating the dat() reactive function that contains the user selected dataset
 # The re-classification of data types can be transfered to the read-in file
@@ -29,7 +29,7 @@ DatVars <- reactive({
   dat <- DatMain()
   if(input$Sect_sel=="CV"){
     datVars <- with(dat, 
-                  list(YEAR = 2009:2015,
+                  list(YEAR = 2009:currentyear,
                        SHORTDESCR = c('All variable costs','Buyback fees','Captain','Cost recovery fees','Crew','Fuel','Observers', 'Other variable costs',
                                       'All fixed costs','Fishing gear','On-board equipment','Other fixed costs'),
                        CATEGORY = c("Fisheries","Homeport","State of homeport"="State","Vessel length class"),
@@ -40,7 +40,7 @@ DatVars <- reactive({
                    ))
   } else if(input$Sect_sel=="FR"){
     datVars <- with(dat, 
-                    list(YEAR =  2009:2015,
+                    list(YEAR =  2009:currentyear,
                          SHORTDESCR = c("All variable costs",'Fish purchases','Freight','Labor','Monitoring','Off-site freezing & storage','Packing materials','Utilities','Other variable costs',
                                         "All fixed costs",'Buildings','Equipment','Other fixed costs'),
                          whitingv = c("All processors","Whiting processors","Non-whiting processors"),
@@ -51,7 +51,7 @@ DatVars <- reactive({
                     ))
   } else if(input$Sect_sel=='M') {
     datVars <- with(dat, 
-                    list(YEAR =  2009:2015,
+                    list(YEAR =  2009:currentyear,
                          SHORTDESCR = c("All variable costs","Fish purchases","Fuel","Non-processing crew","Observers","Processing crew","Other variable costs",
                                         "All fixed costs","Fishing gear","On-board equipment","Processing equipment",'Other fixed costs'),
                          whitingv = c("Whiting vessels"),
@@ -62,7 +62,7 @@ DatVars <- reactive({
                     ))
   } else {
     datVars <- with(dat, 
-                    list(YEAR =  2009:2015,
+                    list(YEAR =  2009:currentyear,
                          SHORTDESCR = c("All variable costs",'Cost recovery fees', "Fuel","Non-processing crew","Observers","Processing crew","Other variable costs",
                                         "All fixed costs","Fishing gear","On-board equipment","Processing equipment",'Other fixed costs'),
                          whitingv = c("Whiting vessels"),
@@ -174,18 +174,47 @@ DatSub <- reactive({
                             STAT == input$StatSelect&
                             whitingv == input$FishWhitingSelect)
       
+      
       if(input$Sect_sel=="CV"){
-        datSub <- subset(datSub,  YEAR %in% input$YearSelect #& 
+        if(input$PlotSelect=='Stacked bar'& input$ShortdescrSelect[2] %in% c('Buyback fees','Buildings','Cost recovery fees','Crew','Equipment',"Fish purchases",'Fishing gear','Freight','Fuel', 'Captain','Labor','Monitoring',"Non-processing crew",'Observers','On-board equipment','Other fixed costs','Other variable costs','Packing materials','Utilities',
+                                                                        'Off-site freezing & storage',"Processing crew", "Processing equipment")|
+           input$PlotSelect=='Stacked bar'&input$ShortdescrSelect[3] %in% c('Buyback fees','Buildings','Cost recovery fees','Crew','Equipment',"Fish purchases",'Fishing gear','Freight','Fuel', 'Captain','Labor','Monitoring',"Non-processing crew",'Observers','On-board equipment','Other fixed costs','Other variable costs','Packing materials','Utilities',
+                                                                            'Off-site freezing & storage',"Processing crew", "Processing equipment")#'Buildings','Cost recovery fees','Crew','Equipment',"Fish purchases",'Fishing gear','Freight','Fuel', 
+                                                                       # )
+        ){
+          datSub <- subset(datSub,  YEAR %in% input$YearSelect & !SHORTDESCR %in% c('All variable costs','All fixed costs'))                                                                 
+        } else{
+          datSub <- subset(datSub,  YEAR %in% input$YearSelect)
+      }
                                   #FISHAK == input$FishAkSelect #&
                                   #whitingv == input$FishWhitingSelect
-                         )
       } else if(input$Sect_sel=="FR") {
+        if(input$PlotSelect=='Stacked bar'& input$ShortdescrSelect[2] %in% c('Buyback fees','Buildings','Cost recovery fees','Crew','Equipment',"Fish purchases",'Fishing gear','Freight','Fuel', 'Captain','Labor','Monitoring',"Non-processing crew",'Observers','On-board equipment','Other fixed costs','Other variable costs','Packing materials','Utilities',
+                                                                             'Off-site freezing & storage',"Processing crew", "Processing equipment")|
+           input$PlotSelect=='Stacked bar'&input$ShortdescrSelect[3] %in% c('Buyback fees','Buildings','Cost recovery fees','Crew','Equipment',"Fish purchases",'Fishing gear','Freight','Fuel', 'Captain','Labor','Monitoring',"Non-processing crew",'Observers','On-board equipment','Other fixed costs','Other variable costs','Packing materials','Utilities',
+                                                                            'Off-site freezing & storage',"Processing crew", "Processing equipment")#'Buildings','Cost recovery fees','Crew','Equipment',"Fish purchases",'Fishing gear','Freight','Fuel', 
+           # )
+        ){
         datSub <- subset(datSub, whitingv == input$FishWhitingSelect & #ACS == input$ProductionSelect &
-                           YEAR %in% input$YearSelect2) 
+                           YEAR %in% input$YearSelect2& !SHORTDESCR %in% c('All variable costs','All fixed costs'))
+        } else {
+          datSub <- subset(datSub, whitingv == input$FishWhitingSelect & #ACS == input$ProductionSelect &
+                             YEAR %in% input$YearSelect2)
+        }
       } else {
-        datSub <- subset(datSub, YEAR %in% input$YearSelect2 )  
+        
+        if(input$PlotSelect=='Stacked bar'& input$ShortdescrSelect[2] %in% c('Buyback fees','Buildings','Cost recovery fees','Crew','Equipment',"Fish purchases",'Fishing gear','Freight','Fuel', 'Captain','Labor','Monitoring',"Non-processing crew",'Observers','On-board equipment','Other fixed costs','Other variable costs','Packing materials','Utilities',
+                                                                             'Off-site freezing & storage',"Processing crew", "Processing equipment")|
+           input$PlotSelect=='Stacked bar'&input$ShortdescrSelect[3] %in% c('Buyback fees','Buildings','Cost recovery fees','Crew','Equipment',"Fish purchases",'Fishing gear','Freight','Fuel', 'Captain','Labor','Monitoring',"Non-processing crew",'Observers','On-board equipment','Other fixed costs','Other variable costs','Packing materials','Utilities',
+                                                                            'Off-site freezing & storage',"Processing crew", "Processing equipment")#'Buildings','Cost recovery fees','Crew','Equipment',"Fish purchases",'Fishing gear','Freight','Fuel', 
+           # )
+        ){
+        datSub <- subset(datSub, YEAR %in% input$YearSelect2 & !SHORTDESCR %in% c('All variable costs','All fixed costs'))  
+        } else {
+          datSub <- subset(datSub, YEAR %in% input$YearSelect2 )   
       }
-    
+      }
+      
 # for Homeport, state, and vessel length, subset the data by fisheries category (all fisheries, catch shares only, non-catch shares)
     if(input$Sect_sel=="CV" & input$CategorySelect != "Fisheries" || input$Sect_sel=="FR" & input$CategorySelect!="Production activities") {
         datSub <- subset(datSub, CS == input$inSelect)

@@ -176,6 +176,9 @@ doPlot <- function(dat, x, y){
         paste("Thousands of", currentyear, " $ (",input$StatSelect, ")")
       }
     
+    stacked_bar_mess <- function(){
+      "For the stacked bar plot, we show either the individual cost categories or the total cost categories (All variable or All fixed costs). \nIf you select a total cost category and an individual cost category, only the individual cost category will be shown."
+    }
     conf_mess <- function(){
       if(input$Sect_sel=="CV"){
         "\nNOTE: Your selection would reveal confidential data for years with sufficient observations.  The results shown may include both vessels that fished in Alaska and those that \nfished for Pacific whiting. See the confidentiality section under the ABOUT tab for more information."
@@ -188,19 +191,18 @@ doPlot <- function(dat, x, y){
     }
     # define labels
     xlab <- function(){
-     
- #       if(max(dat$flag)==1) {
- #         if(max(dat$AK_FLAG, na.rm=T)==0){
- #           paste(suff_flag())
- #         }  else {
- #           paste(suff_flag(),conf_mess())
- #         }
- #       }
- #       else 
       if(max(dat$AK_FLAG, na.rm=T)==1){
+        if(input$PlotSelect=='Stacked bar'){
+          paste(conf_mess(),stacked_bar_mess())
+        } else {
           paste(conf_mess())
+        }
+        } else {
+          if(input$PlotSelect=='Stacked bar'){
+          paste(stacked_bar_mess())
         } else {
           ""      
+        }
         }
     }
     
