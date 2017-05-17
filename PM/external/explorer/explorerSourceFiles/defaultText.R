@@ -5,7 +5,10 @@ output$ApplicationsText <- renderUI({
            tags$br(),
   HTML('<a class="btn btn-primary", href="http://dataexplorer.northwestscience.fisheries.noaa.gov/fisheye/NetRevExplorer/"
                         style="height:37px;border-radius:25px;font-familiy: Arial, Helvetica, sans-serif;font-size: 12pt; padding-top:7px;
-       padding-bottom:10px"> FISHEyE Net Revenue Explorer</a>' )
+       padding-bottom:10px"> FISHEyE Net Revenue Explorer</a>' ),
+  HTML('<a class="btn btn-primary", href="http://dataexplorer.northwestscience.fisheries.noaa.gov/fisheye/Costs/"
+                        style="height:37px;border-radius:25px;font-familiy: Arial, Helvetica, sans-serif;font-size: 12pt; padding-top:7px;
+       padding-bottom:10px"> FISHEyE Costs Explorer</a>' )
   )
 })
 

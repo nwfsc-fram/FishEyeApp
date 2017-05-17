@@ -36,7 +36,10 @@ output$ApplicationsText <- renderUI({
            tags$br(),
            HTML('<a class="btn btn-primary", href="https://dataexplorer.northwestscience.fisheries.noaa.gov/fisheye/PerformanceMetrics/"
                         style="height:37px;border-radius:25px;font-familiy: Arial, Helvetica, sans-serif;font-size: 12pt; padding-top:7px;
-       padding-bottom:10px"> FISHEyE Performance Metrics</a>' )
+       padding-bottom:10px"> FISHEyE Performance Metrics</a>' ),
+           HTML('<a class="btn btn-primary", href="https://dataexplorer.northwestscience.fisheries.noaa.gov/fisheye/Costs/"
+                        style="height:37px;border-radius:25px;font-familiy: Arial, Helvetica, sans-serif;font-size: 12pt; padding-top:7px;
+       padding-bottom:10px"> FISHEyE Costs Explorer</a>' )
   )
 })
 
