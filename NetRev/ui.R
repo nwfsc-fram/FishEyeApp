@@ -37,7 +37,7 @@ tags$head(tags$body(includeHTML("google-analytics.noaa.js"))),
                              .ckbox2 .checkbox:nth-child(11) label,
                              .rbutton .radio:nth-child(2) label,
                              .rbutton .radio:nth-child(3) label,
-                             .rbutton .radio:nth-child(11) label{font-weight:bold;}
+                             .rbutton .radio:nth-child(12) label{font-weight:bold;}
                              
                              .rbutton .radio:nth-child(-n+15) label,
                              .frbutton .radio:nth-child(4) label,
@@ -55,10 +55,11 @@ tags$head(tags$body(includeHTML("google-analytics.noaa.js"))),
                              .rbutton .radio:nth-child(6) label,
                              .rbutton .radio:nth-child(8) label,
                              .rbutton .radio:nth-child(9) label,
-                             .rbutton .radio:nth-child(10) label{margin-left:34px;}
+                             .rbutton .radio:nth-child(10) label
+                              .rbutton .radio:nth-child(11) label{margin-left:34px;}
                             
                              .rbutton .radio:nth-child(-n+3) label,
-                             .rbutton .radio:nth-child(11) label,
+                             .rbutton .radio:nth-child(12) label,
                              .ckbox2 .checkbox:nth-child(-n+2) label,
                              .ckbox2 .checkbox:nth-child(11) label{margin-left:0px;}")),
             
@@ -70,8 +71,9 @@ tags$head(tags$body(includeHTML("google-analytics.noaa.js"))),
                              #ipo{width:20px; height:19px; margin:0px;border:none; padding:0px;border-radius:25px;background-color:transparent;font-size:12px; color:RoyalBlue}
                              #ivs{width:20px; height:19px; margin:0px;border:none; padding:0px;border-radius:25px;background-color:transparent;font-size:12px; color:RoyalBlue}
                              #iem{width:20px; height:19px; margin:0px;border:none; padding:0px;border-radius:25px;background-color:transparent;font-size:12px; color:RoyalBlue}
-                             #iprod{width:20px; height:19px; margin:0px;border:none; padding:0px;border-radius:25px;background-color:transparent;font-size:12px; color:RoyalBlue}'))
-          ),#end tags head
+                             #iprod{width:20px; height:19px; margin:0px;border:none; padding:0px;border-radius:25px;background-color:transparent;font-size:12px; color:RoyalBlue}
+                             #icompare{width:20px; height:19px; margin:0px;border:none; padding:0px;border-radius:25px;background-color:transparent;font-size:12px; color:RoyalBlue}'))),
+#         ),#end tags head
           
           # stylize show data and show plots buttons
            tags$style(type='text/css', "#data2 { background-color:RoyalBlue; color:white; height:37px;position:absolute;bottom:110%;left:325%;}
@@ -143,7 +145,12 @@ tags$head(tags$body(includeHTML("google-analytics.noaa.js"))),
                                       column(12,
                                              uiOutput("SectorSelect"),
                                              style = "background:white; padding:0px;padding-bottom:-15px;margin-bottom:0px;margin-left:1px; border: 3px solid #D3D3D3;border-radius:10px;width:95%;font-size:110%")
-                                      ), 
+                                      ),
+                                    fluidRow( column(12,
+                                      conditionalPanel(condition="input.tabs!='Panel1'",
+                                         
+                                             uiOutput('Layoutselect'),style = "background:white; padding: 0px;margin-left:-12px;margin-right:12px; border: 3px solid #D3D3D3;border-radius:10px;"
+                                      ))),
                                     fluidRow(
                                       column(6,
                                                wellPanelSub(

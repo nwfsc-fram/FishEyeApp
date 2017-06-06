@@ -61,7 +61,9 @@ tags$div(style = "margin: 15px; 15px;30px; 30px; width: 60%",
             tags$li(tags$a(href="https://www.nwfsc.noaa.gov/research/divisions/fram/economic/economic_data_forms.cfm","EDC Forms",target="_blank")),      
             tags$li(tags$a(href="https://www.nwfsc.noaa.gov/news/features/infographics/index.cfm", "Infographic describing the sectors participating in the catch share program", target="_blank"))))),
             
-            tags$a(href="http://pacfin.psmfc.org/","Pacific Fisheries Information Network (PacFIN)", target="_blank"),tags$br(),
+      HTML("<div style='display:inline-block;width:100%;padding:0;line-height: 2.35em; margin-top:5px; margin-bottom:10px;'>
+           <a href='http://pacfin.psmfc.org/' target='_blank'>Pacific Fisheries Information Network (PacFIN) </a><br>
+           <a href='http://calcomfish.ucsc.edu/regulation_main.asp' target='_blank'>Commercial Regulations Database - a database containing federal commercial groundfish regulations since 1983 </a></div>"),
 
        tags$br(),
        

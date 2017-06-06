@@ -64,9 +64,8 @@ scale_height <- function(){
 output$PlotMain <- renderPlot({
   input$data
   if(vars$counter%%2 == 0) return()
-  else
-    if(!PermitPlot()) return()
-  if(PermitPlot()) {
+  else if(!PermitPlot()) return()
+   if(PermitPlot()) {
     doPlot(dat = DatSub(), x = "YEAR", y = "VALUE/1000")
     }
 },  height=scale_height, width = "auto")

@@ -8,6 +8,8 @@ library(dplyr)
 library(scales)
 #options(error=browser) # debugging
 source("external/serverHead.R")
+options(shiny.sanitize.errors = FALSE)
+options(shiny.trace=FALSE)
 
 shinyServer(
   function(input, output, session) {    
