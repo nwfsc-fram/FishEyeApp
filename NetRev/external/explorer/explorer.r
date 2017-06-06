@@ -51,6 +51,15 @@ observeEvent(input$ivs, {
                             message = 'Select individual fisheries or activities combined over a group of fisheries. For example, the option ALL CATCH SHARE FISHERIES shows the combined activities across the five catch share fisheries.')
 })
 
+observeEvent(input$icompare, {
+  session$sendCustomMessage(type= 'testmessage',
+                            if(input$Sect_sel=="CV"){
+                            message = 'You are selecting to either 1) look at a single economic measure for vessels grouped by fisheries, states, homeports, or vessel length or 2) compare multiple economic measures for a single fishery, state, homeport, or vessel length.'
+                            } else {
+                            message = 'You are selecting to either 1) look at a single economic measure for processors grouped by production activities, region, or processor size or 2) compare multiple economic measures for a single production activities, region, or processor size.'
+                            }
+  )
+})
 
 scale_height <- function(){
   if(length(input$VariableSelect)<=2){ 
@@ -69,14 +78,7 @@ output$PlotMain <- renderPlot({
   if(vars$counter%%2 == 0) return()
   else
     if(!PermitPlot()) return()
-  
-  if(PermitPlot() &  input$DodgeSelect == "Economic measures side-by-side"){
-    doPlot(dat = DatSub(), x = "YEAR", y = "VALUE/1000", type = "summary")}
-  if(PermitPlot() & input$DodgeSelect == "Composition of Total Cost Net Revenue"){
-    doPlot(dat = DatSub(), x = "YEAR", y = "VALUE/1000", type = "summary")}
-  if(PermitPlot() & input$DodgeSelect == "Composition of Variable Cost Net Revenue"){
-    doPlot(dat = DatSub(), x = "YEAR", y = "VALUE/1000", type = "summary")}
-  #  })
+      doPlot(dat = DatSub(), x = "YEAR", y = "VALUE/1000", type = "summary")
 },  height=scale_height, width = "auto")
 
 #print(length(input$VariableSelect))
