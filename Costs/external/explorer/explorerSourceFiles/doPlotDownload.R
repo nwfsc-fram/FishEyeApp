@@ -2,15 +2,13 @@
 
 doPlotDownload <- function(dat, x, y){
   if(PermitPlot()){
-  
+    dat <- subset(dat, is.na(dat$VALUE)==FALSE)
     currentyear <- 2015
-      
+
+    dat$sort2 <- reorder(dat$VARIABLE, dat$sort) 
+    
     yr <- function(){
-      if(input$Sect_sel=="CV"){
-        return(input$YearSelect)  
-      } else {
-        return(input$YearSelect2)
-      }
+      as.numeric(unique(dat$YEAR))
     }
     
     groupVar <- "SHORTDESCR"
@@ -154,7 +152,7 @@ doPlotDownload <- function(dat, x, y){
     } # end 
     
      # define facet
-      g <- g + facet_wrap(~ sort, as.table = TRUE)
+      g <- g + facet_wrap(~ sort2, as.table = TRUE)
     
 
     # define scale
@@ -178,7 +176,7 @@ doPlotDownload <- function(dat, x, y){
     }
     conf_mess <- function(){
       if(input$Sect_sel=="CV"){
-        "\nNOTE: Your selection would reveal confidential data for years with sufficient observations.  The results shown may include both vessels that fished in Alaska and those that \nfished for Pacific whiting. See the confidentiality section under the ABOUT tab for more information."
+        "\nNOTE: Your selection would reveal confidential data for years with sufficient observations.  The results have been suppressed. See the confidentiality section under the ABOUT tab for more information."
       } else {
         ""
       }
@@ -204,14 +202,10 @@ doPlotDownload <- function(dat, x, y){
 
     g <- g + labs(y=ylab(), x=xlab(), title=main())
     
-    g$data[[names(g$facet$facets)]] = unlist(gsub("([.])", "\\ ", g$data[[names(g$facet$facets)]])) 
-    
     
     # define theme
     g <- g + theme(
-      plot.title = element_text(size=rel(1.2), vjust=1, colour="grey25"), 
-      plot.title = element_text(family = "sans", face = "bold", vjust = 1),
-      plot.margin = unit(c(0.5, 0.5, 1, 0.5), "cm"),
+      plot.title = element_text( vjust=1, hjust=0.5,size=rel(1.5), colour="grey25", family = "sans", face = "bold"),# 
       panel.background = element_rect(fill = "white"),
       panel.margin = unit(1.1, "lines"),
       panel.grid.minor = element_line(linetype = "blank"),
@@ -238,47 +232,7 @@ doPlotDownload <- function(dat, x, y){
       g <- g +guides(colour=guide_legend(nrow=2, byrow=TRUE))
     }
     ######################################################################################
-    ##function to wrapping facet labels
-    strwrap_strip_text = function(p, pad=0.05) { 
-      # get facet font attributes
-      th = theme_get()
-      if (length(p$theme) > 0L)
-        th = th + p$theme
-      
-      require("grid")
-      grobs <- ggplotGrob(p)
-      
-      # wrap strip x text
-      ps = calc_element("strip.text.x", th)[["size"]]
-      family = calc_element("strip.text.x", th)[["family"]]
-      face = calc_element("strip.text.x", th)[["face"]]
-      
-      nm = names(p$facet$facets)
-      
-      # get number of facet columns
-      levs = levels(factor(p$data[[nm]]))
-      npanels = length(levs)
-      cols = n2mfrow(npanels)[1]
-      
-      # get plot width
-      sum = .5#sum(sapply(grobs$width, function(x) convertWidth(x, "in")))
-      panels_width = par("din")[1] - sum  # inches
-      # determine strwrap width
-      panel_width = panels_width / cols
-      mx_ind = which.max(nchar(levs))
-      char_width = strwidth(levs[mx_ind], units="inches", cex=ps / par("ps"), 
-                            family=family, font=gpar(fontface=face)$font) / 
-        nchar(levs[mx_ind])
-      width = floor((panel_width - pad)/ char_width)  # characters
-      
-      # wrap facet text
-      p$data[[nm]] = unlist(lapply(strwrap(p$data[[nm]], width=width, 
-                                           simplify=FALSE), paste, collapse="\n"))
-      p$data[[nm]] = gsub("([.])", "\\ ", p$data[[nm]]) 
-      invisible(p)
-    }   
-    #    print(g)
-#    g <- strwrap_strip_text(g) #use instead of print(g)
+
     print(g)
     
     } else plot(0,0,type="n", axes=F, xlab="", ylab="")

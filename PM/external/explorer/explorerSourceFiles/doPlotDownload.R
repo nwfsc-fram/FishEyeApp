@@ -476,8 +476,7 @@ xlab <- function(){
     
     # define theme
     g <- g + theme(
-      plot.title = element_text(size=rel(1.2), vjust=1, colour="grey25"), 
-      plot.title = element_text(family = "sans", face = "bold", vjust = 1),
+      plot.title = element_text(size=rel(1.2), colour="grey25",family = "sans", face = "bold", vjust = 1),
       plot.margin = unit(c(0.25, 0.25, 1, 0.25), "cm"),
       panel.background = element_rect(fill = "white"),
       panel.margin = unit(1, "lines"),

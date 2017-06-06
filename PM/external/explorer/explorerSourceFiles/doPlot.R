@@ -1,23 +1,43 @@
 doPlot <- function(dat, x, y){
   if(PermitPlot()){
-#    dat <- subset(dat, is.na(dat$VALUE)==FALSE)
+    dat <- subset(dat, is.na(dat$VALUE)==FALSE)
 
-    ######################################################
+    currentyear <- 2015
     
 
-    if(input$Ind_sel=="Economic"){   
-      dat$thresh <- data.frame(dat %>% group_by(SHORTDESCR) %>% transmute(threshold=length(table(YEAR[YEAR<=2010]))))[,2]
+    ######################################################
+    dat$sort2 <- if(input$LayoutSelect!="Metrics"){
+      if(input$Ind_sel=='Social and Regional'){
+        if(input$socSelect=='Share of landings by state'){
+        reorder(dat$AGID, dat$sort)
+        } else {
+          reorder(dat$VARIABLE, dat$sort)
+        }
+      }else {
+        reorder(dat$VARIABLE, dat$sort)
+      }} else {
+        if(input$Ind_sel=="Economic"){ 
+          reorder(dat$SHORDESCR, dat$sort)
+        } else {
+          reorder(dat$METRIC, dat$sort)
+        }}
+    
+
+    thresh <- function() {
+      if(input$Ind_sel=="Economic"){   
+      return(data.frame(dat %>% group_by(SHORTDESCR) %>% transmute(threshold=length(yr()<=2010)[[2]]))[,2])
     }
     else if(input$Ind_sel!="Economic"){ 
       if(input$LayoutSelect=="Metrics"){   
         if(input$PlotSelect==T&!is.na(max(dat$VARIANCE))) { 
-          dat$thresh <- as.numeric(data.frame(dat %>% group_by(METRIC) %>% transmute(threshold=max(VALUE, na.rm=T)+max(VARIANCE, na.rm=T)+max(VALUE, na.rm=T)/10))[,2])
+          return(as.numeric(data.frame(dat %>% group_by(METRIC) %>% transmute(threshold=max(VALUE, na.rm=T)+max(VARIANCE, na.rm=T)+max(VALUE, na.rm=T)/10))[,2]))
         } else {
-          dat$thresh <- as.numeric(data.frame(dat %>% group_by(METRIC) %>% transmute(threshold=max(VALUE, na.rm=T)+max(VALUE, na.rm=T)/10))[,2])
+          return(as.numeric(data.frame(dat %>% group_by(METRIC) %>% transmute(threshold=max(VALUE, na.rm=T)+max(VALUE, na.rm=T)/10))[,2]))
         }
           } else {
-      dat$thresh <- 0
-    }}
+        return(0)
+          }}
+    }
    
     
     groupVar <- "whitingv"
@@ -29,7 +49,11 @@ doPlot <- function(dat, x, y){
       c('Non-whiting processors'="#d7191c",'Whiting processors'="#2b83ba",'All processors'="#000000")
     }
     # Plot title construction
-   
+
+      yr <- function(){
+      as.numeric(unique(dat$YEAR))
+    }
+    
     plot.title <- function(){
       if(input$Sect_sel == "CV"){
          return("Performance Metrics for West Coast Catcher Vessels")
@@ -366,83 +390,83 @@ doPlot <- function(dat, x, y){
      g <- ggplot(dat[!is.na(dat$VALUE),], aes_string(x = x, y = y , group = groupVar, order='sort'), environment=environment()) #, order='sort'+coord_cartesian(xlim = c(0, length(table(dat$YEAR))+1))
 #   }
 
-  if(length(unique(dat$YEAR))>1){
+  if(length(yr())>1){
         g <- g + geom_line(aes_string(colour = groupVar), size=1.5)
   } else {
         g <- g + geom_point(aes_string(colour = groupVar), size=4)
   }   
          
-   if(input$PlotSelect==T&dat$STAT[1]!="Fleet-wide total"&is.na(max(dat$VARIANCE))==F) { 
-           g <- g + geom_ribbon(aes(ymax=VALUE+VARIANCE, ymin=VALUE-VARIANCE, fill=whitingv), alpha=.25)#show.legend = FALSE, 
-             } else {
-           g <- g
-             }
+#   if(input$PlotSelect==T&dat$STAT[1]!="Fleet-wide total"&is.na(max(dat$VARIANCE))==F) { 
+#           g <- g + geom_ribbon(aes(ymax=VALUE+VARIANCE, ymin=VALUE-VARIANCE, fill=whitingv), alpha=.25)}#show.legend = FALSE, 
+#              else {
+#           g <- g
+#             }
      
 
       
 # Define rectangles and labels
-    if(length(unique(dat$YEAR))>1 & min(dat$YEAR)<2011 & max(dat$YEAR)>2010){
+    if(length(yr())>1 & min(yr())<2011 & max(yr())>2010){
       if(input$Ind_sel=="Economic"){
-         g <- g + geom_rect(aes(xmin=-Inf, xmax=dat$thresh+.5, ymin=-Inf, ymax=Inf),fill="grey50", alpha=.02)
+         g <- g + geom_rect(aes(xmin=-Inf, xmax=thresh()+.5, ymin=-Inf, ymax=Inf),fill="grey50", alpha=.02)
          if(input$PlotSelect==T&dat$STAT[1]!="Fleet-wide total"&is.na(max(dat$VARIANCE))==F) {  
-           g <- g + geom_text(aes(x=dat$thresh/3.5,y=max(VALUE+VARIANCE)+max(VALUE)/20, label="Pre-catch shares", family="serif"),hjust=0,color = "grey20", size=7/scale_text()) 
-           if(length(table(dat$YEAR[dat$YEAR<2010]))==6&length(table(dat$YEAR[dat$YEAR>=2010]))<=4){
-             g <- g + geom_text(aes(x=dat$thresh+length(table(dat$YEAR[dat$YEAR>2010]))/2,y=max(VALUE+VARIANCE)+max(VALUE)/20,label="Post-catch"),hjust=0, family="serif",color = "grey20", size=7/scale_text())+
-                      geom_text(aes(x=dat$thresh+length(table(dat$YEAR[dat$YEAR>2010]))/2,y=max(VALUE+VARIANCE)-max(VALUE+VARIANCE)/100,label="shares"),hjust=0, family="serif",color = "grey20", size=7/scale_text())
+           g <- g + geom_text(aes(x=thresh()/3.5,y=max(VALUE+VARIANCE)+max(VALUE)/20, label="Pre-catch shares", family="serif"),hjust=0,color = "grey20", size=7/scale_text()) 
+           if(length(yr()<2010)[[2]]==6&length(yr()>=2010)[[2]]<=4){
+             g <- g + geom_text(aes(x=thresh()+table(yr()>2010)[[2]]/2,y=max(VALUE+VARIANCE)+max(VALUE)/20,label="Post-catch"),hjust=0, family="serif",color = "grey20", size=7/scale_text())+
+                      geom_text(aes(x=thresh()+table(yr()>2010)[[2]]/2,y=max(VALUE+VARIANCE)-max(VALUE+VARIANCE)/100,label="shares"),hjust=0, family="serif",color = "grey20", size=7/scale_text())
            } else {
-             g <- g + geom_text(aes(x=dat$thresh+length(table(dat$YEAR[dat$YEAR>2010]))/2,y=max(VALUE+VARIANCE)+max(VALUE)/20,label="Post-catch shares"),hjust=0, family="serif",color = "grey20", size=7/scale_text())
+             g <- g + geom_text(aes(x=thresh()+table(yr()>2010)[[2]]/2,y=max(VALUE+VARIANCE)+max(VALUE)/20,label="Post-catch shares"),hjust=0, family="serif",color = "grey20", size=7/scale_text())
            }
                    } else {
            g <- g + geom_text(aes(x=dat$thresh[1]/3.5,y=max(VALUE+0)+max(VALUE)/10, label="Pre-catch shares", family="serif"),hjust=0,color = "grey20", size=7/scale_text()) 
-             if(length(table(dat$YEAR[dat$YEAR<2010]))==6&length(table(dat$YEAR[dat$YEAR>=2010]))<=4){
-               g <- g + geom_text(aes(x=dat$thresh[1]+length(table(dat$YEAR[dat$YEAR>2010]))/2,y=max(VALUE+0)+max(VALUE)/10,label="Post-catch"),hjust=0, family="serif",color = "grey20", size=7/scale_text())+
-               geom_text(aes(x=dat$thresh[1]+length(table(dat$YEAR[dat$YEAR>2010]))/2,y=max(VALUE+0)-max(VALUE)/100,label="shares"),hjust=0, family="serif",color = "grey20", size=7/scale_text())
+             if(length(yr()<2010)[[2]]==6&length(yr()>=2010)[[2]]<=4){
+               g <- g + geom_text(aes(x=dat$thresh[1]+table(yr()>2010)[[2]]/2,y=max(VALUE+0)+max(VALUE)/10,label="Post-catch"),hjust=0, family="serif",color = "grey20", size=7/scale_text())+
+               geom_text(aes(x=dat$thresh[1]+table(yr()>2010)[[2]]/2,y=max(VALUE+0)-max(VALUE)/100,label="shares"),hjust=0, family="serif",color = "grey20", size=7/scale_text())
              } else {
-               g <- g + geom_text(aes(x=dat$thresh[1]+length(table(dat$YEAR[dat$YEAR>2010]))/2,y=max(VALUE+0)+max(VALUE)/10,label="Post-catch shares"),hjust=0, family="serif",color = "grey20", size=7/scale_text())
+               g <- g + geom_text(aes(x=dat$thresh[1]+table(yr()>2010)[[2]]/2,y=max(VALUE+0)+max(VALUE)/10,label="Post-catch shares"),hjust=0, family="serif",color = "grey20", size=7/scale_text())
          }}
       } 
       else {
-        g <- g + geom_rect(aes(xmin=-Inf, xmax=length(table(dat$YEAR[dat$YEAR<=2010]))+.5, ymin=-Inf, ymax=Inf),fill="grey50", alpha=.02)
-         if(input$PlotSelect==T&dat$STAT[1]!="Fleet-wide total"&is.na(max(dat$VARIANCE))==F) {  
+        g <- g + geom_rect(aes(xmin=-Inf, xmax=table(yr()<=2010)[[2]]+.5, ymin=-Inf, ymax=Inf),fill="grey50", alpha=.02)
+         if(input$PlotSelect==T&!dat$STAT %in% c("Fleet-wide total")&!is.na(max(dat$VARIANCE))) {  
            if (input$LayoutSelect!='Metrics') {
-         g <- g + geom_text(aes(x=length(table(dat$YEAR[dat$YEAR<2011]))/3.5,y=max(VALUE+VARIANCE)+max(VALUE)/20, label="Pre-catch shares", family="serif"),hjust=0,color = "grey20", size=7/scale_text())  
+         g <- g + geom_text(aes(x=table(yr()<2011)[[2]]/3.5,y=max(VALUE+VARIANCE)+max(VALUE)/20, label="Pre-catch shares", family="serif"),hjust=0,color = "grey20", size=7/scale_text())  
            } else {
-             g <- g + geom_text(aes(x=length(table(dat$YEAR[dat$YEAR<2011]))/3.5,y=thresh-thresh/10, label="Pre-catch shares", family="serif"),hjust=0,color = "grey20", size=7/scale_text())  
+             g <- g + geom_text(aes(x=table(yr()<2011)[[2]]/3.5,y=thresh()-thresh()/10, label="Pre-catch shares", family="serif"),hjust=0,color = "grey20", size=7/scale_text())  
              }
-           if(length(table(dat$YEAR[dat$YEAR<2010]))==6&length(table(dat$YEAR[dat$YEAR>=2010]))<=3){
+           if(length(yr()<2010)[[2]]==6&length(yr()>=2010)[[2]]<=3){
                if (input$LayoutSelect!='Metrics') {
-                 g <- g + geom_text(aes(x=length(table(dat$YEAR[dat$YEAR<2011]))+length(table(dat$YEAR[dat$YEAR>2010]))/2,y=max(VALUE+VARIANCE)+max(VALUE)/20,label="Post-catch"),hjust=0, family="serif",color = "grey20", size=7/scale_text())+
-                             geom_text(aes(x=length(table(dat$YEAR[dat$YEAR<2011]))+length(table(dat$YEAR[dat$YEAR>2010]))/2,y=max(VALUE+VARIANCE)-max(VALUE+VARIANCE)/20,label="shares"),hjust=0, family="serif",color = "grey20", size=7/scale_text())
+                 g <- g + geom_text(aes(x=length(yr()<2011)[[2]]+length(yr()>2010)[[2]]/2,y=max(VALUE+VARIANCE)+max(VALUE)/20,label="Post-catch"),hjust=0, family="serif",color = "grey20", size=7/scale_text())+
+                             geom_text(aes(x=length(yr()<2011)[[2]]+length(yr()>2010)[[2]]/2,y=max(VALUE+VARIANCE)-max(VALUE+VARIANCE)/20,label="shares"),hjust=0, family="serif",color = "grey20", size=7/scale_text())
                } else {
-                 g <- g + geom_text(aes(x=length(table(dat$YEAR[dat$YEAR<2011]))+length(table(dat$YEAR[dat$YEAR>2010]))/2,y=thresh-thresh/10,label="Post-catch"),hjust=0, family="serif",color = "grey20", size=7/scale_text())+
-                   geom_text(aes(x=length(table(dat$YEAR[dat$YEAR<2011]))+length(table(dat$YEAR[dat$YEAR>2010]))/2,y=thresh-thresh/10,label="shares"),hjust=0, family="serif",color = "grey20", size=7/scale_text())
+                 g <- g + geom_text(aes(x=length(yr()<2011)[[2]]+length(yr()>2010)[[2]]/2,y=thresh()-thresh()/10,label="Post-catch"),hjust=0, family="serif",color = "grey20", size=7/scale_text())+
+                   geom_text(aes(x=length(yr()<2011)[[2]]+length(yr()>2010)[[2]]/2,y=thresh()-thresh()/10,label="shares"),hjust=0, family="serif",color = "grey20", size=7/scale_text())
                }
                  } else {
                    if (input$LayoutSelect!='Metrics') {
-                   g <- g + geom_text(aes(x=length(table(dat$YEAR[dat$YEAR<2011]))+length(table(dat$YEAR[dat$YEAR>2010]))/2,y=max(VALUE+VARIANCE)+max(VALUE)/20,label="Post-catch shares"),hjust=0, family="serif",color = "grey20", size=7/scale_text())
+                   g <- g + geom_text(aes(x=length(yr()<2011)[[2]]+length(yr()>2010)[[2]]/2,y=max(VALUE+VARIANCE)+max(VALUE)/20,label="Post-catch shares"),hjust=0, family="serif",color = "grey20", size=7/scale_text())
                    } else {
-                     g <- g + geom_text(aes(x=length(table(dat$YEAR[dat$YEAR<2011]))+length(table(dat$YEAR[dat$YEAR>2010]))/2,y=thresh-thresh/10,label="Post-catch shares"),hjust=0, family="serif",color = "grey20", size=7/scale_text())
+                     g <- g + geom_text(aes(x=length(yr()<2011)[[2]]+length(yr()>2010)[[2]]/2,y=thresh()-thresh()/10,label="Post-catch shares"),hjust=0, family="serif",color = "grey20", size=7/scale_text())
                    } 
                     }
                     } else {
                       if (input$LayoutSelect!='Metrics') {
-                        g <- g + geom_text(aes(x=length(table(dat$YEAR[dat$YEAR<2011]))/3.5,y=max(VALUE+0)+max(VALUE)/20, label="Pre-catch shares", family="serif"),hjust=0,color = "grey20", size=7/scale_text())  
+                        g <- g + geom_text(aes(x=length(yr()<2011)[[2]]/3.5,y=max(VALUE+0)+max(VALUE)/20, label="Pre-catch shares", family="serif"),hjust=0,color = "grey20", size=7/scale_text())  
                       } else {
-                        g <- g + geom_text(aes(x=length(table(dat$YEAR[dat$YEAR<2011]))/3.5,y=thresh-thresh/10, label="Pre-catch shares", family="serif"),hjust=0,color = "grey20", size=7/scale_text())  
+                        g <- g + geom_text(aes(x=length(yr()<2011)[[2]]/3.5,y=thresh()-thresh()/10, label="Pre-catch shares", family="serif"),hjust=0,color = "grey20", size=7/scale_text())  
                      }  
-         if(length(table(dat$YEAR[dat$YEAR<2010]))>3&length(table(dat$YEAR[dat$YEAR>=2010]))==2) {
+         if(length(yr()<2010)[[2]]>3&length(yr()>=2010)[[2]]==2) {
            if (input$LayoutSelect!='Metrics') {
-             g <- g + geom_text(aes(x=length(table(dat$YEAR[dat$YEAR<2011]))+length(table(dat$YEAR[dat$YEAR>2010]))/2,y=max(VALUE+0)+max(VALUE)/20,label="Post-catch"),hjust=0, family="serif",color = "grey20", size=7/scale_text())+
-                      geom_text(aes(x=length(table(dat$YEAR[dat$YEAR<2011]))+length(table(dat$YEAR[dat$YEAR>2010]))/2,y=max(VALUE+0)-max(VALUE)/20,label="shares"),hjust=0, family="serif",color = "grey20", size=7/scale_text())
+             g <- g + geom_text(aes(x=length(yr()<2011)[[2]]+length(yr()>2010)[[2]]/2,y=max(VALUE+0)+max(VALUE)/20,label="Post-catch"),hjust=0, family="serif",color = "grey20", size=7/scale_text())+
+                      geom_text(aes(x=length(yr()<2011)[[2]]+length(yr()>2010)[[2]]/2,y=max(VALUE+0)-max(VALUE)/20,label="shares"),hjust=0, family="serif",color = "grey20", size=7/scale_text())
            } else {
-             g <- g + geom_text(aes(x=length(table(dat$YEAR[dat$YEAR<2011]))+length(table(dat$YEAR[dat$YEAR>2010]))/2,y=thresh-thresh/10,label="Post-catch"),hjust=0, family="serif",color = "grey20", size=7/scale_text())+
-               geom_text(aes(x=length(table(dat$YEAR[dat$YEAR<2011]))+length(table(dat$YEAR[dat$YEAR>2010]))/2,y=thresh - thresh/10,label="shares"),hjust=0, family="serif",color = "grey20", size=7/scale_text())
+             g <- g + geom_text(aes(x=length(yr()<2011)[[2]]+length(yr()>2010)[[2]]/2,y=thresh()-thresh()/10,label="Post-catch"),hjust=0, family="serif",color = "grey20", size=7/scale_text())+
+               geom_text(aes(x=length(yr()<2011)[[2]]+length(yr()>2010)[[2]]/2,y=thresh() - thresh()/10,label="shares"),hjust=0, family="serif",color = "grey20", size=7/scale_text())
            }
            }else {
              if (input$LayoutSelect!='Metrics') {
-           g <- g + geom_text(aes(x=length(table(dat$YEAR[dat$YEAR<2011]))+length(table(dat$YEAR[dat$YEAR>2010]))/2,y=max(VALUE+0)+max(VALUE)/20,label="Post-catch shares"),hjust=0, family="serif",color = "grey20", size=7/scale_text())
+           g <- g + geom_text(aes(x=length(yr()<2011)[[2]]+length(yr()>2010)[[2]]/2,y=max(VALUE+0)+max(VALUE)/20,label="Post-catch shares"),hjust=0, family="serif",color = "grey20", size=7/scale_text())
              } else {
-               g <- g + geom_text(aes(x=length(table(dat$YEAR[dat$YEAR<2011]))+length(table(dat$YEAR[dat$YEAR>2010]))/2,y=thresh-thresh/10,label="Post-catch shares"),hjust=0, family="serif",color = "grey20", size=7/scale_text())
+               g <- g + geom_text(aes(x=length(yr()<2011)[[2]]+length(yr()>2010)[[2]]/2,y=thresh()-thresh()/10,label="Post-catch shares"),hjust=0, family="serif",color = "grey20", size=7/scale_text())
              }
            }
              } 
@@ -454,9 +478,9 @@ doPlot <- function(dat, x, y){
 
     # define facet
    if (input$LayoutSelect!='Metrics') {
-     g <- g + facet_wrap(~ sort, ncol=2, scales='free_x')
+     g <- g + facet_wrap(~ sort2, ncol=2, scales='free_x')
    } else {
-     g <- g + facet_wrap(~ sort, ncol=2, scales="free_y")
+     g <- g + facet_wrap(~ sort2, ncol=2, scales="free_y")
      }
    
    # } else {
@@ -497,8 +521,7 @@ doPlot <- function(dat, x, y){
     
     # define theme
     g <- g + theme(
-      plot.title = element_text( vjust=1, size=rel(1.5), colour="grey25", family = "sans", face = "bold"),# 
-     # plot.title = element_text(, vjust = 1),
+      plot.title = element_text(vjust=1, size=rel(1.5), colour="grey25", family = "sans", face = "bold"),# 
       panel.background = element_rect(fill = "white"),
       #panel.margin = unit(1.2, "lines"),
       plot.margin = unit(c(0.5, 0.5, 1, 0.5), "cm"),
@@ -521,45 +544,45 @@ doPlot <- function(dat, x, y){
     )
  ############################################################################################################
  ##function to wrapping facet labels
-    strwrap_strip_text = function(p, pad=0.05) { 
+#    strwrap_strip_text = function(p, pad=0.05) { 
       # get facet font attributes
-      th = theme_get()
-      if (length(p$theme) > 0L)
-        th = th + p$theme
+#      th = theme_get()
+#      if (length(p$theme) > 0L)
+#        th = th + p$theme
       
-      require("grid")
-      grobs <- ggplotGrob(p)
+#      require("grid")
+#      grobs <- ggplotGrob(p)
       
       # wrap strip x text
-        ps = calc_element("strip.text.x", th)[["size"]]
-        family = calc_element("strip.text.x", th)[["family"]]
-        face = calc_element("strip.text.x", th)[["face"]]
+#        ps = calc_element("strip.text.x", th)[["size"]]
+#        family = calc_element("strip.text.x", th)[["family"]]
+#        face = calc_element("strip.text.x", th)[["face"]]
         
-          nm = names(p$facet$facets)
+#          nm = names(p$facet$facets)
       
         # get number of facet columns
-        levs = levels(factor(p$data[[nm]]))
-        npanels = length(levs)
-          cols = n2mfrow(npanels)[1]
+#        levs = levels(factor(p$data[[nm]]))
+#        npanels = length(levs)
+#          cols = n2mfrow(npanels)[1]
 
         # get plot width
-        sum = .5#sum(sapply(grobs$width, function(x) convertWidth(x, "in")))
-        panels_width = par("din")[1] - sum  # inches
+#        sum = .5#sum(sapply(grobs$width, function(x) convertWidth(x, "in")))
+ #       panels_width = par("din")[1] - sum  # inches
         # determine strwrap width
-        panel_width = panels_width / cols
-        mx_ind = which.max(nchar(levs))
-        char_width = strwidth(levs[mx_ind], units="inches", cex=ps / par("ps"), 
-                              family=family, font=gpar(fontface=face)$font) / 
-          nchar(levs[mx_ind])
-        width = floor((panel_width - pad)/ char_width)  # characters
+#        panel_width = panels_width / cols
+#        mx_ind = which.max(nchar(levs))
+#        char_width = strwidth(levs[mx_ind], units="inches", cex=ps / par("ps"), 
+#                              family=family, font=gpar(fontface=face)$font) / 
+#          nchar(levs[mx_ind])
+#        width = floor((panel_width - pad)/ char_width)  # characters
         
         # wrap facet text
-      p$data[[nm]] = unlist(lapply(strwrap(p$data[[nm]], width=width, 
-                                             simplify=FALSE), paste, collapse="\n"))
-      p$data[[nm]] = gsub("([.])", "\\ ", p$data[[nm]]) 
+#      p$data[[nm]] = unlist(lapply(strwrap(p$data[[nm]], width=width, 
+#                                             simplify=FALSE), paste, collapse="\n"))
+#      p$data[[nm]] = gsub("([.])", "\\ ", p$data[[nm]]) 
        
-        invisible(p)
-    }   
+#        invisible(p)
+#    }   
     
     #function to remove dots infront of labels but 
 #    label_mod <- function(variable, value) {
@@ -570,7 +593,7 @@ doPlot <- function(dat, x, y){
     
 #################################################################################################################################
     
-    g <- strwrap_strip_text(g)
+#    g <- strwrap_strip_text(g)
     print(g) 
    
    

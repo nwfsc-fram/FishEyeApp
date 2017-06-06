@@ -35,8 +35,9 @@ DatVars <- reactive({
                        CATEGORY = c("Fisheries","Homeport","State of homeport"="State","Vessel length class"),
                        FISHAK = '',#unique(FISHAK),
                        whitingv = c("All vessels","Non-whiting vessels","Whiting vessels"),
-                       STAT =  c("Average per vessel","Average per vessel/day","Average per vessel/metric-ton caught","Median per vessel","Median per vessel/day","Median per vessel/metric-ton caught",
-                                 "Fleet-wide total","Fleet-wide total/day","Fleet-wide total/metric-ton caught")
+                       STAT =  c("Average per vessel","Average per vessel/day","Average per vessel/metric-ton caught",'Average per vessel/dollar of revenue',
+                                 "Median per vessel","Median per vessel/day","Median per vessel/metric-ton caught",'Median per vessel/dollar of revenue',
+                                 "Fleet-wide total","Fleet-wide total/day","Fleet-wide total/metric-ton caught",'Fleet-wide total/dollar of revenue')
                    ))
   } else if(input$Sect_sel=="FR"){
     datVars <- with(dat, 
@@ -45,9 +46,9 @@ DatVars <- reactive({
                                         "All fixed costs",'Buildings','Equipment','Other fixed costs'),
                          whitingv = c("All processors","Whiting processors","Non-whiting processors"),
                          CATEGORY = c("Production activities","Region","Processor size"),
-                         STAT =  c("Average per processor","Average per processor/metric-ton of groundfish products produced"="Average per processor/metric-ton produced",
-                                   "Median per processor", "Median per processor/metric-ton of groundfish products produced"="Median per processor/metric-ton produced",
-                                   "Industry-wide total","Industry-wide total/metric-ton of groundfish products produced"="Industry-wide total/metric-ton produced")
+                         STAT =  c("Average per processor","Average per processor/metric-ton of groundfish products produced"="Average per processor/metric-ton produced",'Average per processor/dollar of revenue',
+                                   "Median per processor", "Median per processor/metric-ton of groundfish products produced"="Median per processor/metric-ton produced",'Median per processor/dollar of revenue',
+                                   "Industry-wide total","Industry-wide total/metric-ton of groundfish products produced"="Industry-wide total/metric-ton produced",'Industry-wide total/dollar of revenue')
                     ))
   } else if(input$Sect_sel=='M') {
     datVars <- with(dat, 
@@ -56,8 +57,9 @@ DatVars <- reactive({
                                         "All fixed costs","Fishing gear","On-board equipment","Processing equipment",'Other fixed costs'),
                          whitingv = c("Whiting vessels"),
                          CATEGORY = c("Fisheries"),
-                         STAT =  c("Average per vessel","Average per vessel/day","Average per vessel/metric-ton produced","Median per vessel","Median per vessel/day","Median per vessel/metric-ton produced",
-                                   "Fleet-wide total","Fleet-wide total/day","Fleet-wide total/metric-ton produced")
+                         STAT =  c("Average per vessel","Average per vessel/day","Average per vessel/metric-ton produced",'Average per vessel/dollar of revenue',
+                                   "Median per vessel","Median per vessel/day","Median per vessel/metric-ton produced",'Median per vessel/dollar of revenue',
+                                   "Fleet-wide total","Fleet-wide total/day","Fleet-wide total/metric-ton produced",'Fleet-wide total/dollar of revenue')
                          
                     ))
   } else {
@@ -67,8 +69,9 @@ DatVars <- reactive({
                                         "All fixed costs","Fishing gear","On-board equipment","Processing equipment",'Other fixed costs'),
                          whitingv = c("Whiting vessels"),
                          CATEGORY = c("Fisheries"),
-                         STAT =  c("Average per vessel","Average per vessel/day","Average per vessel/metric-ton produced","Median per vessel","Median per vessel/day","Median per vessel/metric-ton produced",
-                                   "Fleet-wide total","Fleet-wide total/day","Fleet-wide total/metric-ton produced")
+                         STAT =  c("Average per vessel","Average per vessel/day","Average per vessel/metric-ton produced",'Average per vessel/dollar of revenue',
+                                   "Median per vessel","Median per vessel/day","Median per vessel/metric-ton produced",'Median per vessel/dollar of revenue',
+                                   "Fleet-wide total","Fleet-wide total/day","Fleet-wide total/metric-ton produced",'Fleet-wide total/dollar of revenue')
                     ))
   }
 })
@@ -122,9 +125,14 @@ DatSubTable <- reactive({
       } else{
     datSub <- subset(datSub, YEAR %in% input$YearSelect2 ) 
       }
-  
-  datSub$VALUE <- round(as.numeric(datSub$VALUE),0)
-  datSub$VARIANCE <- round(as.numeric(datSub$VARIANCE),0)
+  if(input$StatSelect %in% c('Average per vessel/dollar of revenue','Median per vessel/dollar of revenue','Fleet-wide total/dollar of revenue','Average per processor/dollar of revenue',
+                             'Median per processor/dollar of revenue','Industry-wide total/dollar of revenue')){
+  datSub$VALUE <- round(as.numeric(datSub$VALUE),3)
+  datSub$VARIANCE <- round(as.numeric(datSub$VARIANCE),3)
+  } else{
+    datSub$VALUE <- round(as.numeric(datSub$VALUE),0)
+    datSub$VARIANCE <- round(as.numeric(datSub$VARIANCE),0)
+  }
 
   if(input$Sect_sel=='CV' & input$CategorySelect != "Fisheries" || input$Sect_sel=='FR' & input$CategorySelect != "Production activities") {
     datSub <- subset(datSub, CS == input$inSelect)
@@ -267,38 +275,38 @@ DatSub <- reactive({
     #The URL below is a solution for similar problem with stacking and may work for this issue. I have not yet tried.
     #https://github.com/hadley/ggplot2/issues/1301  #use website for dealing with stacked bar plot order issue
     if(input$CategorySelect=="Fisheries"&input$Sect_sel=="CV"){
-      datSub$sort <- ifelse(datSub$VARIABLE=="All fisheries", ".......All fisheries", 
-                            ifelse(datSub$VARIABLE=="All catch share fisheries", "......All catch share fisheries", 
-                                   ifelse(datSub$VARIABLE=="All non-catch share fisheries", "..All non-catch share fisheries", 
-                                          ifelse(datSub$VARIABLE=="Pacific whiting", "......Pacific whiting",
-                                                ifelse(datSub$VARIABLE=="At-sea Pacific whiting", "......At-sea Pacific whiting", 
-                                                      ifelse(datSub$VARIABLE=="Shoreside Pacific whiting", "......Shoreside Pacific whiting",  
-                                                             ifelse(datSub$VARIABLE=="Groundfish with trawl gear", ".....Groundfish with trawl gear", 
-                                                                    ifelse(datSub$VARIABLE=="DTS trawl with trawl endorsement", "....DTS trawl with trawl endorsement", 
-                                                                        ifelse(datSub$VARIABLE=="Non-whiting, non-DTS trawl with trawl endorsement", "....Non-whiting, non-DTS trawl with trawl endorsement",
-                                                                            ifelse(datSub$VARIABLE=="Non-whiting midwater trawl","....Non-whiting midwater trawl",  
-                                                                                  ifelse(datSub$VARIABLE=="Groundfish fixed gear with trawl endorsement", "...Groundfish fixed gear with trawl endorsement",
-                                                                                    ifelse(datSub$VARIABLE=="Groundfish fixed gear with fixed gear endorsement", "..Groundfish fixed gear with fixed gear endorsement",  
-                                                                                           ifelse(datSub$VARIABLE=="Crab", ".Crab", 
-                                                                                                  ifelse(datSub$VARIABLE=="Shrimp", ".Shrimp",  as.character(datSub$VARIABLE)
+      datSub$sort <- ifelse(datSub$VARIABLE=="All fisheries", 1, 
+                            ifelse(datSub$VARIABLE=="All catch share fisheries", 2, 
+                                   ifelse(datSub$VARIABLE=="Pacific whiting", 3,
+                                          ifelse(datSub$VARIABLE=="At-sea Pacific whiting", 4, 
+                                                ifelse(datSub$VARIABLE=="Shoreside Pacific whiting", 5,  
+                                                       ifelse(datSub$VARIABLE=="Groundfish with trawl gear", 6, 
+                                                              ifelse(datSub$VARIABLE=="DTS trawl with trawl endorsement", 7, 
+                                                                    ifelse(datSub$VARIABLE=="Non-whiting, non-DTS trawl with trawl endorsement", 8,
+                                                                           ifelse(datSub$VARIABLE=="Non-whiting midwater trawl", 9,  
+                                                                                  ifelse(datSub$VARIABLE=="Groundfish fixed gear with trawl endorsement", 10,
+                                                                                       ifelse(datSub$VARIABLE=="All non-catch share fisheries", 11, 
+                                                                                           ifelse(datSub$VARIABLE=="Groundfish fixed gear with fixed gear endorsement", 12,  
+                                                                                                ifelse(datSub$VARIABLE=="Crab", 13, 
+                                                                                                  ifelse(datSub$VARIABLE=="Shrimp", 14,  15
                                                                                                   ))))))))))))))
     } else if(input$CategorySelect == "Homeport") {
-      datSub$sort <- ifelse(datSub$VARIABLE=="Puget Sound", ".....Puget Sound",              
-                            ifelse(datSub$VARIABLE=="South and central WA coast", ".....South and central WA coast", 
-                                    ifelse(datSub$VARIABLE=="Astoria", "....Astoria",               
-                                           ifelse(datSub$VARIABLE=="Tillamook", "....Tillamook",           
-                                                  ifelse(datSub$VARIABLE=="Newport", "...Newport",              
-                                                         ifelse(datSub$VARIABLE=="Coos Bay","..Coos Bay",                 
-                                                                ifelse(datSub$VARIABLE=="Brookings", ".Brookings",                
-                                                                       ifelse(datSub$VARIABLE=="Crescent City", ".Crescent City",              
-                                                                              ifelse(datSub$VARIABLE=="Eureka", ".Eureka",                     
-                                                                                     ifelse(datSub$VARIABLE=="Fort Bragg", ".Fort Bragg",               
-                                                                                            ifelse(datSub$VARIABLE=="San Francisco", ".San Francisco", as.character(datSub$VARIABLE))
+      datSub$sort <- ifelse(datSub$VARIABLE=="Puget Sound", 1,              
+                            ifelse(datSub$VARIABLE=="South and central WA coast", 2, 
+                                    ifelse(datSub$VARIABLE=="Astoria", 3,               
+                                           ifelse(datSub$VARIABLE=="Tillamook", 4,           
+                                                  ifelse(datSub$VARIABLE=="Newport", 5,              
+                                                         ifelse(datSub$VARIABLE=="Coos Bay",6,                 
+                                                                ifelse(datSub$VARIABLE=="Brookings", 7,                
+                                                                       ifelse(datSub$VARIABLE=="Crescent City", 8,              
+                                                                              ifelse(datSub$VARIABLE=="Eureka", 9,                     
+                                                                                     ifelse(datSub$VARIABLE=="Fort Bragg", 10,               
+                                                                                            ifelse(datSub$VARIABLE=="San Francisco", 11, 12)
                                                                                      ))))))))))
     } else if(input$CategorySelect == "Production activities") {
-      datSub$sort <- ifelse(datSub$VARIABLE=='All production', '.All production',
-                            ifelse(datSub$VARIABLE=='Groundfish production', '.Groundfish production',
-                                   ifelse(datSub$VARIABLE=='Pacific whiting production', '.Pacific whiting production', as.character(datSub$VARIABLE))))
+      datSub$sort <- ifelse(datSub$VARIABLE=='All production', 1,
+                            ifelse(datSub$VARIABLE=='Groundfish production', 2,
+                                   ifelse(datSub$VARIABLE=='Pacific whiting production', 3, 4)))
     }
     else {
       datSub$sort <- datSub$VARIABLE 
@@ -308,9 +316,13 @@ DatSub <- reactive({
     validate(
       need(dim(datSub)[1]>0 & max(datSub$N)>2,
            'Sorry, this plot could not be generated as no vessels or processors matched your selections. 
-                 If you have selected to show data summed across non-whiting vessels or whiting vessels, try selecting to include all vessels. 
+            If you have selected to show data summed across non-whiting vessels/processors or whiting vessels, try selecting to include all vessels/processors. 
                  '))
-    
+    validate(
+      need(max(datSub$VALUE, na.rm=T)!=-Inf,
+           'Sorry, this plot could not be generated as your selection would reveal confidential data for years with sufficient observations.  The results have been suppressed. 
+            If you have selected to show data summed across non-whiting vessels/processors or whiting vessels/processors, try selecting to include all vessels/processors. 
+                 '))
     
     return(datSub)
 })

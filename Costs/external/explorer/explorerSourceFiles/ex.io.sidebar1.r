@@ -49,39 +49,39 @@ output$CostCategoryselect <- renderUI({
 output$Shortdescrselect <- renderUI({
 #  if(input$CostCategorySelect=="All cost categories"){
     if(input$Sect_sel=='CV'){
-      if(input$PlotSelect!='Stacked bar'){
-        tags$div(class="statboxC", checkboxGroupInput("ShortdescrSelect",'Cost categories:',
-                                             choices = DatVars()$SHORTDESCR,selected = DatVars()$SHORTDESCR))
-      } else {
+#      if(input$PlotSelect!='Stacked bar'){
+#        tags$div(class="statboxC", checkboxGroupInput("ShortdescrSelect",'Cost categories:',
+#                                             choices = DatVars()$SHORTDESCR,selected = DatVars()$SHORTDESCR))
+#      } else {
         tags$div(class="statboxC", checkboxGroupInput("ShortdescrSelect",'Cost categories:',
                                                       choices = DatVars()$SHORTDESCR,selected = c('All fixed costs','All variable costs')))
         
-      }
+#      }
     } else if(input$Sect_sel=='FR'){
-      if(input$PlotSelect!='Stacked bar'){
-        tags$div(class="statboxF", checkboxGroupInput("ShortdescrSelect",'Cost categories:',
-                                                      choices = DatVars()$SHORTDESCR,selected = DatVars()$SHORTDESCR))
-      } else{
+#      if(input$PlotSelect!='Stacked bar'){
+#        tags$div(class="statboxF", checkboxGroupInput("ShortdescrSelect",'Cost categories:',
+#                                                      choices = DatVars()$SHORTDESCR,selected = DatVars()$SHORTDESCR))
+#      } else{
       tags$div(class="statboxF", checkboxGroupInput("ShortdescrSelect",'Cost categories:',
                                                    choices = DatVars()$SHORTDESCR,selected = c('All fixed costs','All variable costs')))
-    }
+#    }
       }else if(input$Sect_sel=='M'){
-        if(input$PlotSelect!='Stacked bar'){
-          tags$div(class="statboxM", checkboxGroupInput("ShortdescrSelect",'Cost categories:',
-                                                        choices = DatVars()$SHORTDESCR,selected = DatVars()$SHORTDESCR))
-        } else {
+#        if(input$PlotSelect!='Stacked bar'){
+#          tags$div(class="statboxM", checkboxGroupInput("ShortdescrSelect",'Cost categories:',
+#                                                        choices = DatVars()$SHORTDESCR,selected = DatVars()$SHORTDESCR))
+#        } else {
           tags$div(class="statboxM", checkboxGroupInput("ShortdescrSelect",'Cost categories:',
                                                     choices = DatVars()$SHORTDESCR,selected = c('All fixed costs', 'All variable costs')))
-        }
+#        }
     } else {
-      if(input$PlotSelect!='Stacked bar'){
-        tags$div(class="statboxM", checkboxGroupInput("ShortdescrSelect",'Cost categories:',
-                                                      choices = DatVars()$SHORTDESCR,selected = DatVars()$SHORTDESCR))
-      } else{
+#      if(input$PlotSelect!='Stacked bar'){
+#        tags$div(class="statboxM", checkboxGroupInput("ShortdescrSelect",'Cost categories:',
+#                                                      choices = DatVars()$SHORTDESCR,selected = DatVars()$SHORTDESCR))
+#      } else{
       tags$div(class="statboxM", checkboxGroupInput("ShortdescrSelect",'Cost categories:',
                                                    choices = DatVars()$SHORTDESCR,selected =  c('All fixed costs', 'All variable costs')))
       }
-      }
+#      }
 #}  else if(input$CostCategorySelect=="Variable costs"){
 #  if(input$Sect_sel=='CV'|input$Sect_sel=='FR'){
 #    tags$div(class="statbox", checkboxGroupInput("ShortdescrSelect","",
@@ -299,12 +299,17 @@ output$Statselect <- renderUI({
     tagList(
       selectInput("AVE_MED", HTML("<div> Statistic: <button id='istat' type='button' class='btn btn-default action-button shiny-bound-input'> <i class='fa fa-info-circle fa-fw' ></i></button> </div>"),
                   c('Median, Average, or Total values'="", Average="A", Median="M", Total="T"), selectize=F),
-      tags$div(class="statbox", radioButtons("StatSelect","",  choices = c(DatVars()$STAT[3:4]))))
-  } else {
+      tags$div(class="statbox", radioButtons("StatSelect","",  choices = c(DatVars()$STAT[4:6]))))
+  } else if (input$Sect_sel=='CP'|input$Sect_sel=='M') {
     tagList(
       selectInput("AVE_MED", HTML("<div> Statistic: <button id='istat' type='button' class='btn btn-default action-button shiny-bound-input'> <i class='fa fa-info-circle fa-fw' ></i></button> </div>"),
                   c('Median, Average, or Total values'="", Average="A", Median="M", Total="T"), selectize=F),
-      tags$div(class="statbox", radioButtons("StatSelect","",  choices = c(DatVars()$STAT[4:6]), selected=DatVars()$STAT[4])))
+      tags$div(class="statbox", radioButtons("StatSelect","",  choices = c(DatVars()$STAT[5:8]), selected=DatVars()$STAT[5])))
+  }else {
+    tagList(
+      selectInput("AVE_MED", HTML("<div> Statistic: <button id='istat' type='button' class='btn btn-default action-button shiny-bound-input'> <i class='fa fa-info-circle fa-fw' ></i></button> </div>"),
+                  c('Median, Average, or Total values'="", Average="A", Median="M", Total="T"), selectize=F),
+      tags$div(class="statbox", radioButtons("StatSelect","",  choices = c(DatVars()$STAT[5:8]), selected=DatVars()$STAT[5])))
   }
 })
 
@@ -312,20 +317,28 @@ output$Statselect <- renderUI({
 observe({
   if (is.null(input$AVE_MED)) {return()}
   else 
-    if(input$Sect_sel!='FR'){
+    if(input$Sect_sel=='CP'|input$Sect_sel=='M'){
       if(input$AVE_MED=="M"){
-        updateRadioButtons(session,"StatSelect", choices = c(DatVars()$STAT[4:6]))
+        updateRadioButtons(session,"StatSelect", choices = c(DatVars()$STAT[5:8]))
       }  else if(input$AVE_MED=="A"){
-        updateRadioButtons(session,"StatSelect",   choices = c(DatVars()$STAT[1:3]))
+        updateRadioButtons(session,"StatSelect",   choices = c(DatVars()$STAT[1:4]))
       } else  if(input$AVE_MED=="T"){
-        updateRadioButtons(session,"StatSelect", choices = c(DatVars()$STAT[7:9]))
+        updateRadioButtons(session,"StatSelect", choices = c(DatVars()$STAT[9:12]))
+      } 
+    } else if(input$Sect_sel=='CV'){
+      if(input$AVE_MED=="M"){
+        updateRadioButtons(session,"StatSelect", choices = c(DatVars()$STAT[5:8]))
+      }  else if(input$AVE_MED=="A"){
+        updateRadioButtons(session,"StatSelect",   choices = c(DatVars()$STAT[1:4]))
+      } else  if(input$AVE_MED=="T"){
+        updateRadioButtons(session,"StatSelect", choices = c(DatVars()$STAT[9:12]))
       } 
     } else if(input$AVE_MED=="M"){
-      updateRadioButtons(session,"StatSelect", choices = c(DatVars()$STAT[3:4]))
+      updateRadioButtons(session,"StatSelect", choices = c(DatVars()$STAT[4:6]))
     }  else if(input$AVE_MED=="A"){
-      updateRadioButtons(session,"StatSelect",   choices = c(DatVars()$STAT[1:2]))
+      updateRadioButtons(session,"StatSelect",   choices = c(DatVars()$STAT[1:3]))
     } else  if(input$AVE_MED=="T"){
-      updateRadioButtons(session,"StatSelect", choices = c(DatVars()$STAT[5:6]))
+      updateRadioButtons(session,"StatSelect", choices = c(DatVars()$STAT[7:9]))
     } 
 })
 

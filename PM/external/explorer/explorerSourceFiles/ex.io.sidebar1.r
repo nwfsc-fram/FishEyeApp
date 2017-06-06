@@ -379,9 +379,14 @@ output$Variableselect <- renderUI({
 #Select FISHAK
 ###################################################
 output$FishAkselect <- renderUI({
+  if(input$Sect_sel=='CV'){
   tags$div(class="ckbox", checkboxInput("FishAkSelect", p("Include Alaskan fisheries activities: ", 
-                                                          span("By selecting this, you will include data from their activities in Alaska.", style="font-style:italic;font-size:10pt")), value = TRUE))
-})
+                                                          span("By selecting this, you will include data from their activities in Alaska.", style="font-style:italic;font-size:10pt")), value = FALSE))
+  } else {
+    tags$div(class="ckbox", checkboxInput("FishAkSelect", p("Include Alaskan fisheries activities: ", 
+                                                            span("By selecting this, you will include data from their activities in Alaska.", style="font-style:italic;font-size:10pt")), value = FALSE))
+}
+    })
 ###################################################
 #end fishak
 ###################################################
@@ -393,7 +398,7 @@ output$FishWhitingselect <- renderUI({
   tags$div(class="ckbox", checkboxGroupInput("FishWhitingSelect", "Show data summed across:", choices=DatVars()$whitingv, selected=DatVars()$whitingv[1]))
 })
 ###################################################
-#end fishak
+#end whiting
 ###################################################
 
 ###################################################
@@ -604,7 +609,11 @@ output$Layoutselect <- renderUI({
 
 #======================================
 output$Plotselect <- renderUI({
-  tags$div(class="ckbox", checkboxInput("PlotSelect", p(span("Plot options: ", style="font-weight:bold;font-size:12pt"),span("Show variance (standard deviation or median average deviation).", style="font-style:italic;font-size:10pt")), value=TRUE))
+  tags$div(class="ckbox", checkboxInput("PlotSelect", p(span("Plot options: ", style="font-weight:bold;font-size:12pt"),span("Show variance", style="font-style:italic;font-size:10pt")), value=FALSE))
+})
+output$Plotselectoption <- renderUI({
+  tags$div(class="ckbox", radioButtons("PlotSelectOption", span("", style="font-weight:bold;font-size:12pt"),
+                                                            choices=c("Standard deviation or Median average deviation","Percentiles (25th and 75th)"), selected=''))
 })
 
 

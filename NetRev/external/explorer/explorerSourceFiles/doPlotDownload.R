@@ -4,6 +4,13 @@ doPlotDownload <- function(dat, x, y, type){
   if(PermitPlot()){
     
     currentyear <- 2015
+
+    # Reorder the facet variable by the column sort. Will order alphabetically otherwise 
+    dat$sort2 <- if(input$tabs=="Panel1") {
+      reorder(dat$VARIABLE, dat$sort) 
+    } else {
+      if(input$LayoutSelect=='Economic measures'){
+        reorder(dat$SHORTDESCR, dat$sort)} else {reorder(dat$VARIABLE, dat$sort)}}
     
     yr <- function(){
       return(as.numeric(unique(dat$YEAR)))
@@ -49,27 +56,43 @@ doPlotDownload <- function(dat, x, y, type){
           } else {
             sprintf(paste("Group variable:", input$CategorySelect, "     Statistic: ", input$StatSelect))
           }} else if(input$CategorySelect=="Production activities"){
-            sprintf(paste("Group variable:", input$CategorySelect, "     Statistic: ", input$StatSelect))
+            sprintf(paste("Group variable:", input$CategorySelect, "     Statistic: ", input$StatSelect,  "   Data shown for:", input$ProductionSelect))
           } else {
             if(input$Sect_sel=="CV"){
               sprintf(paste("Group variable:", input$CategorySelect, "     Statistic: ", input$StatSelect, "    Fished in AK included:", input$FishAkSelect,"    Fished for whiting included:", input$FishWhitingSelect,"    Summed across:", input$inSelect))
             } else {
-              sprintf(paste("Group variable:", input$CategorySelect, "     Statistic: ", input$StatSelect,   "Summed across:", input$inSelect))
+              sprintf(paste("Group variable:", input$CategorySelect, "     Statistic: ", input$StatSelect,   "   Summed across:", input$inSelect, ' for', input$ProductionSelect))
             }}
       } else {
         if(input$CategorySelect=="Fisheries"){
           if(input$Sect_sel=="CV"){
-            sprintf(paste(input$CategorySelect, ":", input$VariableSelect, "     Statistic: ", input$StatSelect, "    Fished in AK included:", input$FishAkSelect,"    Fished for whiting included:", input$FishWhitingSelect))
-          } else{
-            sprintf(paste(input$CategorySelect, ":", input$VariableSelect, "     Statistic: ", input$StatSelect))
-          }} else if(input$CategorySelect=="Production activities"){
-            sprintf(paste(input$CategorySelect, ":", input$VariableSelect, "     Statistic: ", input$StatSelect))
-          } else {
-            if(input$Sect_sel=="CV"){
-              sprintf(paste(input$CategorySelect, ":", input$VariableSelect, "     Statistic: ", input$StatSelect, "    Fished in AK included:", input$FishAkSelect,"    Fished for whiting included:", input$FishWhitingSelect,"    Summed across:", input$inSelect))   
+            if(input$LayoutSelect=="Economic measures"){
+              sprintf(paste(input$CategorySelect, ":", input$VariableSelect, "     Statistic: ", input$StatSelect, "    Fished in AK included:", input$FishAkSelect,"    Fished for whiting included:", input$FishWhitingSelect))
             } else {
-              sprintf(paste(input$CategorySelect, ":", input$VariableSelect, "     Statistic: ", input$StatSelect,  "Summed across:", input$inSelect))   
-            }}
+              sprintf(paste("Economic measure:", input$ShortdescrSelect, "     Statistic: ", input$StatSelect, "    Fished in AK included:", input$FishAkSelect, "    Fished for whiting included:", input$FishWhitingSelect))
+              
+            }} else{
+              sprintf(paste(input$CategorySelect, ":", input$VariableSelect, "     Statistic: ", input$StatSelect))
+            }} else if(input$CategorySelect=="Production activities"){
+              if(input$LayoutSelect=='Economic measures'){
+                sprintf(paste(input$CategorySelect, ":", input$VariableSelect, "     Statistic: ", input$StatSelect,  "   Data shown for:", input$ProductionSelect))
+              } else {
+                sprintf(paste("Economic measure:", input$ShortdescrSelect, "   Statistic: ", input$StatSelect,  "  Data shown for:", input$ProductionSelect)) 
+              }
+            } else {
+              if(input$Sect_sel=="CV"){
+                if(input$LayoutSelect=='Economic measures'){
+                  sprintf(paste(input$CategorySelect, ":", input$VariableSelect, "     Statistic: ", input$StatSelect, "    Fished in AK included:", input$FishAkSelect,"    Fished for whiting included:", input$FishWhitingSelect,"    Summed across:", input$inSelect))   
+                } else {
+                  sprintf(paste("Economic measure:", input$ShortdescrSelect, "     Statistic: ", input$StatSelect, "    Fished in AK included:", input$FishAkSelect,"    Fished for whiting included:", input$FishWhitingSelect,"    Summed across:", input$inSelect)) 
+                }
+              } else {
+                if(input$LayoutSelect=='Economic measures'){
+                  sprintf(paste(input$CategorySelect, ":", input$VariableSelect, "     Statistic: ", input$StatSelect,  "   Summed across:", input$inSelect, ' for', input$ProductionSelect))   
+                } else {
+                  sprintf(paste("Economic measure:", input$ShortdescrSelect, "     Statistic: ", input$StatSelect,   "   Summed across:", input$inSelect, ' for', input$ProductionSelect))
+                }
+              }}
       }
     }
     
@@ -254,9 +277,9 @@ doPlotDownload <- function(dat, x, y, type){
     
     # define facet
     if(type =="summary"){
-      g <- g + facet_wrap(~ sort, as.table = TRUE, scales="free_x")
+      g <- g + facet_wrap(~ sort2, as.table = TRUE, scales="free_x")
     } else {
-      g <- g + facet_wrap(~ sort, scales="free_x")
+      g <- g + facet_wrap(~ sort2, scales="free_x")
     }
     
 
@@ -297,54 +320,48 @@ doPlotDownload <- function(dat, x, y, type){
         ""
       }
     }
+     supp_obs <- function(){
+      if(max(dat$con_flag, na.rm=T)==1){
+        "\nData has been suppressed for years that are not plotted as there are not enough observations to protect confidentiality."
+      } else {''}
+    }
+    conf_mess <- function(){
+      if(max(dat$AK_FLAG, na.rm=T)==1){
+        if(input$Sect_sel=="CV"){
+          "\nNOTE: Your selection would reveal confidential data for years with sufficient observations.  The results shown may include both vessels that fished in Alaska and those that \nfished for Pacific whiting. See the confidentiality section under the ABOUT tab for more information."
+        } else if(input$Sect_sel=="FR"){
+          "\nNOTE: Your selection would reveal confidential data for years with sufficient observations. When this happens, we show results for catch share processors. See the confidentiality section under the ABOUT tab for more information."
+        } else {
+          ""
+        }} else {''}
+    }
     thirds_mess <- function(){
-      "\n  Vessels are grouped into three tiered categories: top, middle, and lower earners based on revenue. This is done for each year separately."
+      if(type!='summary'){
+        "\n  Vessels are grouped into three tiered categories: top, middle, and lower earners based on revenue. This is done for each year separately."
+      } else {''}
     }
     suff_flag <- function(){
       paste("\n* Data has been suppressed for this selected",input$CategorySelect, "and year as there are not enough observations to protect confidentiality.")
     }
-      # define labels
+    samp_size <- function(){
+      if(min(dat$N,na.rm=T)<3){
+        'Data for some years or possibly a selected variable may not be shown as the sample size is insufficient to protect confidentiality.'
+      } else {''}
+    }
+    # define labels
     xlab <- function(){
-    if(type!="summary"){
-      if(max(dat$con_flag, na.rm=T)==1){
-        if(max(dat$AK_FLAG, na.rm=T)==0){
-          paste(source_lab(),thirds_mess(),supp_obs())
-        } else {
-          paste(source_lab(), thirds_mess(),supp_obs(), conf_mess())
-        }} else {
-          if(max(dat$AK_FLAG, na.rm=T)==0){
-            paste(source_lab(),thirds_mess()) 
-          } else {
-            paste(source_lab(),thirds_mess(), conf_mess())
-          }
-        }
-          }
-      
-      else {
-            if(max(dat$flag)==1) {
-              if(max(dat$AK_FLAG, na.rm=T)==0){
-                paste(source_lab(),suff_flag())
-              }  else {
-                paste(source_lab(),suff_flag(),conf_mess())
-              }
-            }
-            else if(max(dat$AK_FLAG, na.rm=T)==1){
-              paste(source_lab(),conf_mess())
-            } else {
-              source_lab()      
-            }}
+           paste(source_lab(), thirds_mess(),supp_obs(), conf_mess(),samp_size())
     }
             
     g <- g + labs(y=ylab(), x=xlab(), title=main())
     
-    g$data[[names(g$facet$facets)]] = unlist(gsub("([.])", "\\ ", g$data[[names(g$facet$facets)]])) 
-    
+
     
     # define theme
     g <- g + theme(
       plot.title = element_text(size=rel(1.2), vjust=1, colour="grey25"), 
       plot.title = element_text(family = "sans", face = "bold", vjust = 1),
-      plot.margin = unit(c(0.5, 0.5, 1, 0.5), "cm"),
+      #plot.margin = unit(c(0.5, 0.5, 1, 0.5), "cm"),
       panel.background = element_rect(fill = "white"),
       panel.margin = unit(1.1, "lines"),
       panel.grid.minor = element_line(linetype = "blank"),
@@ -365,44 +382,44 @@ doPlotDownload <- function(dat, x, y, type){
       legend.title = element_blank())
     
     ##function to wrapping facet labels
-    strwrap_strip_text = function(p, pad=0.05) { 
+#    strwrap_strip_text = function(p, pad=0.05) { 
       # get facet font attributes
-      th = theme_get()
-      if (length(p$theme) > 0L)
-        th = th + p$theme
+#      th = theme_get()
+#      if (length(p$theme) > 0L)
+#        th = th + p$theme
       
-      require("grid")
-      grobs <- ggplotGrob(p)
+#      require("grid")
+#      grobs <- ggplotGrob(p)
       
       # wrap strip x text
-      ps = calc_element("strip.text.x", th)[["size"]]
-      family = calc_element("strip.text.x", th)[["family"]]
-      face = calc_element("strip.text.x", th)[["face"]]
+#      ps = calc_element("strip.text.x", th)[["size"]]
+#      family = calc_element("strip.text.x", th)[["family"]]
+#      face = calc_element("strip.text.x", th)[["face"]]
       
-      nm = names(p$facet$facets)
-      
+#      nm = names(p$facet$facets)
+#      
       # get number of facet columns
-      levs = levels(factor(p$data[[nm]]))
-      npanels = length(levs)
-      cols = n2mfrow(npanels)[1]
+#      levs = levels(factor(p$data[[nm]]))
+#      npanels = length(levs)
+#      cols = n2mfrow(npanels)[1]
       
       # get plot width
-      sum = .5#sum(sapply(grobs$width, function(x) convertWidth(x, "in")))
-      panels_width = par("din")[1] - sum  # inches
+#      sum = .5#sum(sapply(grobs$width, function(x) convertWidth(x, "in")))
+#      panels_width = par("din")[1] - sum  # inches
       # determine strwrap width
-      panel_width = panels_width / cols
-      mx_ind = which.max(nchar(levs))
-      char_width = strwidth(levs[mx_ind], units="inches", cex=ps / par("ps"), 
-                            family=family, font=gpar(fontface=face)$font) / 
-        nchar(levs[mx_ind])
-      width = floor((panel_width - pad)/ char_width)  # characters
+#      panel_width = panels_width / cols
+#      mx_ind = which.max(nchar(levs))
+#      char_width = strwidth(levs[mx_ind], units="inches", cex=ps / par("ps"), 
+#                            family=family, font=gpar(fontface=face)$font) / 
+#        nchar(levs[mx_ind])
+#      width = floor((panel_width - pad)/ char_width)  # characters
       
       # wrap facet text
-      p$data[[nm]] = unlist(lapply(strwrap(p$data[[nm]], width=width, 
-                                           simplify=FALSE), paste, collapse="\n"))
-      p$data[[nm]] = gsub("([.])", "\\ ", p$data[[nm]]) 
-      invisible(p)
-    }   
+#      p$data[[nm]] = unlist(lapply(strwrap(p$data[[nm]], width=width, 
+#                                           simplify=FALSE), paste, collapse="\n"))
+#      p$data[[nm]] = gsub("([.])", "\\ ", p$data[[nm]]) 
+#      invisible(p)
+#    }   
     #    print(g)
 #    g <- strwrap_strip_text(g) #use instead of print(g)
     print(g)
