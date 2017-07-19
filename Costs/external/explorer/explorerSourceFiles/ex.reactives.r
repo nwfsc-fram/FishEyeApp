@@ -37,7 +37,7 @@ DatVars <- reactive({
                        whitingv = c("All vessels","Non-whiting vessels","Whiting vessels"),
                        STAT =  c("Average per vessel","Average per vessel/day","Average per vessel/metric-ton caught",'Average per vessel/dollar of revenue',
                                  "Median per vessel","Median per vessel/day","Median per vessel/metric-ton caught",'Median per vessel/dollar of revenue',
-                                 "Fleet-wide total","Fleet-wide total/day","Fleet-wide total/metric-ton caught",'Fleet-wide total/dollar of revenue')
+                                 "Fleet-wide total","Fleet-wide average/day","Fleet-wide average/metric-ton caught",'Fleet-wide average/dollar of revenue')
                    ))
   } else if(input$Sect_sel=="FR"){
     datVars <- with(dat, 
@@ -48,7 +48,7 @@ DatVars <- reactive({
                          CATEGORY = c("Production activities","Region","Processor size"),
                          STAT =  c("Average per processor","Average per processor/metric-ton of groundfish products produced"="Average per processor/metric-ton produced",'Average per processor/dollar of revenue',
                                    "Median per processor", "Median per processor/metric-ton of groundfish products produced"="Median per processor/metric-ton produced",'Median per processor/dollar of revenue',
-                                   "Industry-wide total","Industry-wide total/metric-ton of groundfish products produced"="Industry-wide total/metric-ton produced",'Industry-wide total/dollar of revenue')
+                                   "Industry-wide total","Industry-wide average/metric-ton of groundfish products produced"="Industry-wide average/metric-ton produced",'Industry-wide average/dollar of revenue')
                     ))
   } else if(input$Sect_sel=='M') {
     datVars <- with(dat, 
@@ -59,7 +59,7 @@ DatVars <- reactive({
                          CATEGORY = c("Fisheries"),
                          STAT =  c("Average per vessel","Average per vessel/day","Average per vessel/metric-ton produced",'Average per vessel/dollar of revenue',
                                    "Median per vessel","Median per vessel/day","Median per vessel/metric-ton produced",'Median per vessel/dollar of revenue',
-                                   "Fleet-wide total","Fleet-wide total/day","Fleet-wide total/metric-ton produced",'Fleet-wide total/dollar of revenue')
+                                   "Fleet-wide total","Fleet-wide average/day","Fleet-wide average/metric-ton produced",'Fleet-wide average/dollar of revenue')
                          
                     ))
   } else {
@@ -71,7 +71,7 @@ DatVars <- reactive({
                          CATEGORY = c("Fisheries"),
                          STAT =  c("Average per vessel","Average per vessel/day","Average per vessel/metric-ton produced",'Average per vessel/dollar of revenue',
                                    "Median per vessel","Median per vessel/day","Median per vessel/metric-ton produced",'Median per vessel/dollar of revenue',
-                                   "Fleet-wide total","Fleet-wide total/day","Fleet-wide total/metric-ton produced",'Fleet-wide total/dollar of revenue')
+                                   "Fleet-wide total","Fleet-wide average/day","Fleet-wide average/metric-ton produced",'Fleet-wide average/dollar of revenue')
                     ))
   }
 })

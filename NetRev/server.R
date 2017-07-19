@@ -11,7 +11,7 @@ library(dplyr)
 #library(mail) #for sending email
 
 
-#options(shiny.sanitize.errors = FALSE)
+options(shiny.sanitize.errors = FALSE)
 #options(error=browser) # debugging
 source("external/serverHead.R")
 

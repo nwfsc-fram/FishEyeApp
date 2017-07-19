@@ -6,7 +6,7 @@ DatMain <- reactive({ # data load moved to serverhead
   # data is loaded from serverHead.R load call
   if(input$Sect_sel=="CV"){
     dat <- netrevTable
-  } else if(input$Sect_sel=="M"){
+    } else if(input$Sect_sel=="M"){
     dat <- MSnetrev
   } else if(input$Sect_sel=="CP"){
     dat <- CPnetrev
