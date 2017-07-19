@@ -6,6 +6,9 @@ doPlotDownload <- function(dat, x, y){
     currentyear <- 2015
 
     dat$sort2 <- reorder(dat$VARIABLE, dat$sort) 
+
+    rectvars <- dat %>% distinct(sort2,YEAR) %>% group_by(sort2) %>% transmute(minx=min(as.numeric(YEAR)), xmaxscale=length(YEAR[YEAR<2011]), maxx=max(YEAR))  %>% data.frame()%>% distinct %>%
+                      merge(dat %>% distinct(sort2, SHORTDESCR))
     
     yr <- function(){
       as.numeric(unique(dat$YEAR))
@@ -142,15 +145,7 @@ doPlotDownload <- function(dat, x, y){
       g <- g + geom_bar(aes_string(fill = groupVar, order=groupVar), stat="identity", position="stack", width = scale_bars())
     }
 
-    if(length(yr())>1 & min(yr())<2011 & max(yr())>2010){
-      g <- g + geom_rect(aes_string(xmin=-Inf, xmax=table(yr()<2011)[[2]]+.5, ymin=-Inf, ymax=Inf), fill="grey50", alpha=.05/length(yr()))
-      g <- g + geom_text(aes(x=(table(yr()<2011)[[2]])/4,y=thresh(), label="Pre-Catch shares"), family="serif",fontface="italic", hjust=0,color = "grey40", size=4/scale_text()) 
-      g <- g + geom_text(aes(x=table(yr()<2011)[[2]]+table(yr()>2010)[[2]]/1.5,y=thresh(),label="Post-Catch shares"),hjust=0, 
-                         family = "serif", fontface="italic", color = "grey40", size=4/scale_text())  
-    } else {
-      g <- g  
-    } # end 
-    
+     
      # define facet
       g <- g + facet_wrap(~ sort2, as.table = TRUE)
     
@@ -202,12 +197,20 @@ doPlotDownload <- function(dat, x, y){
 
     g <- g + labs(y=ylab(), x=xlab(), title=main())
     
-    
+     if(length(yr())>1 & min(yr())<2011 & max(yr())>2010){
+      g <- g + geom_rect(aes(xmin=-Inf, xmax=table(yr()<=2010)[[2]]+.5, ymin=-Inf, ymax=Inf), fill="grey50", alpha=.05) +
+               geom_text(aes(x=table(yr()<=2010)[[2]]/3.5,y=thresh(), label="Pre-Catch shares"), family="serif",fontface="italic", hjust=0,color = "grey40", size=4/scale_text()) + 
+               geom_text(aes(x=table(yr()<=2010)[[2]]+table(yr()>2010)[[2]]/1.5,y=thresh(),label="Post-Catch shares"),hjust=0, 
+                         family = "serif", fontface="italic", color = "grey40", size=4/scale_text())  
+    } else {
+      g <- g  
+    } # end 
+  
     # define theme
     g <- g + theme(
       plot.title = element_text( vjust=1, hjust=0.5,size=rel(1.5), colour="grey25", family = "sans", face = "bold"),# 
       panel.background = element_rect(fill = "white"),
-      panel.margin = unit(1.1, "lines"),
+      #panel.spacing = unit(1.1, "lines"),
       panel.grid.minor = element_line(linetype = "blank"),
       panel.grid.major.x = element_line(linetype = "blank"),
       panel.grid.major.y = element_line(color = "#656C70", linetype = "dotted"),

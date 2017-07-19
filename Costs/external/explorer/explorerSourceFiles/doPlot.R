@@ -6,7 +6,10 @@ doPlot <- function(dat, x, y){
     currentyear <- 2015
  
     dat$sort2 <- reorder(dat$VARIABLE, dat$sort) 
-
+   
+    rectvars <- dat %>% distinct(sort2,YEAR) %>% group_by(sort2) %>% transmute(minx=min(as.numeric(YEAR)), xmaxscale=length(YEAR[YEAR<2011]), maxx=max(YEAR))  %>% data.frame()%>% distinct %>%
+      merge(dat %>% distinct(sort2, SHORTDESCR))
+    
     groupVar <- "SHORTDESCR"
     facetVar <- "VARIABLE"
     
@@ -152,19 +155,10 @@ doPlot <- function(dat, x, y){
       else {
                 g <- g + geom_bar(aes_string(fill = groupVar, order=groupVar), stat="identity", position="stack", width = scale_bars())
         }
- #   reorder(groupVar, dat$barorder    
-        if(length(yr())>1 & min(yr())<2011 & max(yr())>2010){
-                g <- g + geom_rect(aes_string(xmin=-Inf, xmax=table(yr()<2011)[[2]]+.5, ymin=-Inf, ymax=Inf), fill="grey50", alpha=.05/length(yr()))
-                g <- g + geom_text(aes(x=(table(yr()<2011)[[2]])/4,y=thresh(), label="Pre-Catch shares"), family="serif",fontface="italic", hjust=0,color = "grey40", size=7/scale_text()) 
-                g <- g + geom_text(aes(x=table(yr()<2011)[[2]]+table(yr()>2010)[[2]]/1.5,y=thresh(),label="Post-Catch shares"),hjust=0, 
-                          family = "serif", fontface="italic", color = "grey40", size=7/scale_text())  
-            } else {
-              g <- g  
-     } # end 
     
  
     # define facet
-      g <- g + facet_wrap(~sort2, ncol=2, as.table = TRUE, scales="free_x")#
+      g <- g + facet_wrap(~sort2, ncol=2, as.table = TRUE, scales="free_y")#
     
     
     # define colors and order
@@ -211,6 +205,16 @@ doPlot <- function(dat, x, y){
     }
     
     g <- g + labs(y=ylab(), x=xlab(), title=main())
+
+    
+     #   reorder(groupVar, dat$barorder    
+        if(length(yr())>1 & min(yr())<2011 & max(yr())>2010){
+                 g <- g + geom_rect(aes(xmin=-Inf, xmax=table(yr()<=2010)[[2]]+.5, ymin=-Inf, ymax=Inf), alpha=.02, fill="grey50") +
+                          geom_text(aes(x=table(yr()<=2010)[[2]]/3.5,y=thresh(), label="Pre-Catch shares"), family="serif",fontface="italic", hjust=0,color = "grey40", size=7/scale_text()) +
+                          geom_text(aes(x=table(yr()<=2010)[[2]]+table(yr()>2010)[[2]]/1.5,y=thresh(),label="Post-Catch shares"),hjust=0, family = "serif", fontface="italic", color = "grey40", size=7/scale_text())  
+            } else {
+              g <- g  
+     } # end 
     
               
     # define theme

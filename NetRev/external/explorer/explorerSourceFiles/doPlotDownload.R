@@ -16,6 +16,15 @@ doPlotDownload <- function(dat, x, y, type){
       return(as.numeric(unique(dat$YEAR)))
     }
     
+    if(type == "summary"){
+      rectvars <- dat %>% distinct(sort2,YEAR) %>% group_by(sort2) %>% transmute(minx=as.numeric(min(YEAR)), xmaxscale=length(YEAR[YEAR<2011]), maxx=max(YEAR))  %>% data.frame()%>% distinct %>%
+                          merge(dat %>% distinct(sort2,SHORTDESCR))
+    } else {
+      rectvars <- dat %>% distinct(sort2,YEAR,THIRDS) %>% group_by(sort2,THIRDS) %>% transmute(minx=as.numeric(min(YEAR)), xmaxscale=length(YEAR[YEAR<2011]), maxx=max(YEAR))  %>% data.frame()%>% distinct %>%
+                           merge(dat %>% distinct(sort2,SHORTDESCR))
+    }
+   
+    
     groupVar <- ifelse(type=="summary", "SHORTDESCR", "THIRDS")
     facetVar <- ifelse(type== "summary" , "VARIABLE", "SHORTDESCR")
 
@@ -135,12 +144,12 @@ doPlotDownload <- function(dat, x, y, type){
       if(input$CategorySelect =="Fisheries" | input$CategorySelect == "Homeport") {
         b <- table(table(dat$VARIABLE)>1)[[1]]
         if(b<=8 | b==12){
-          return(1.2)
+          return(2)
         }   else {
-            return(1.1)
+            return(2.2)
         }
       } else {
-        return(1.2)
+        return(2.2)
       }
     }   
     
@@ -177,32 +186,6 @@ doPlotDownload <- function(dat, x, y, type){
           g <- g + geom_bar(aes_string(fill = groupVar, order=groupVar), stat="identity", position="dodge", width = scale_bars())
         } #End if else for side-by-side comparion
 
-        if(length(yr())>1 & min(yr())<2011 & max(yr())>2010){
-          if(yr()[1]==2009&yr()[2]==2010){
-            if(length(yr())==3){
-              g <- g + geom_rect(aes(xmin=.1, xmax=2.5, ymin=-Inf, ymax=Inf), fill="grey50", alpha=.05/length(yr()))+ 
-                geom_text(aes(x=0.4,y=scale_geom_text()/1000+scale_geom_text()/10000, label="Pre-catch shares"), family="serif",fontface="italic",hjust=0, color="grey40", size=4/scale_text()) + 
-                geom_text(aes(x=table(yr()<2011)[[2]]+table(yr()>2010)[[2]]/1,y=scale_geom_text()/1000+scale_geom_text()/10000,label="Post-catch shares"), family="serif",fontface="italic",hjust=1, size=4/scale_text(), color="grey40")# +
-              
-            } else {
-              g <- g + geom_rect(aes_string(xmin=.1, xmax=2.5, ymin=-Inf, ymax=Inf), fill="grey50", alpha=.05/length(yr()))+ 
-                geom_text(aes(x=0.3,y=scale_geom_text()/1000+scale_geom_text()/10000, label="Pre-catch shares"), family="serif",fontface="italic",hjust=0, color="grey40", size=4/scale_text()) + 
-                geom_text(aes(x=table(yr()<2011)[[2]]+table(yr()>2010)[[2]]/1.75,y=scale_geom_text()/1000+scale_geom_text()/10000,label="Post-catch shares"),family="serif",fontface="italic",hjust=0, size=4/scale_text(), color="grey40")# +
-              
-            }} else  {
-              if(table(yr()>2010)[[2]]==1){
-                g <- g + geom_rect(aes(xmin=.1, xmax=1.5, ymin=-Inf, ymax=Inf), fill="grey50", alpha=.05/length(yr()))+ 
-                  geom_text(aes(x=.25,y=scale_geom_text()/1000+scale_geom_text()/10000, label="Pre-catch shares"), family="serif",fontface="italic",hjust=0, size=4/scale_text(), color="grey40") + 
-                  geom_text(aes(x=table(yr()<2011)[[2]]+table(yr()>2010)[[2]]/.75,y=scale_geom_text()/1000+scale_geom_text()/10000,label="Post-catch shares"), family="serif",fontface="italic",hjust=1, size=4/scale_text(), color="grey40") #+
-              } else {
-                g <- g + geom_rect(aes(xmin=.1, xmax=1.5, ymin=-Inf, ymax=Inf), fill="grey50", alpha=.05/length(yr()))+ 
-                  geom_text(aes(x=.15,y=scale_geom_text()/1000+scale_geom_text()/10000, label="Pre-catch shares"), family="serif",fontface="italic",hjust=0, size=4/scale_text(), color="grey40") + 
-                  geom_text(aes(x=table(yr()<2011)[[2]]+table(yr()>2010)[[2]]/1.75,y=scale_geom_text()/1000+scale_geom_text()/10000,label="Post-catch shares"), family="serif",fontface="italic",hjust=0, size=4/scale_text(), color="grey40") #+
-              }
-            }} # end if-else for adding dashed lines or not (pre- and post- catch shares)
-        else {
-          g <- g
-        }
       }#End standard plots
     
       if(input$DodgeSelect != "Economic measures side-by-side"){          
@@ -211,31 +194,6 @@ doPlotDownload <- function(dat, x, y, type){
         #  geom_bar(aes_string(fill = groupVar), stat = "identity", position = "stack", width = scale_bars())
         #    }  
         g <- g + geom_bar(aes_string(fill = groupVar, order=groupVar), stat="identity", position="stack", width = scale_bars())
-        
-        if(length(yr())>1 & min(yr())<2011 & max(yr())>2010){
-          if(yr()[1]==2009&yr()[2]==2010){
-            if(table(yr()>2010)[[2]]==1){
-              g <- g + geom_rect(aes(xmin=.1, xmax=2.5, ymin=-Inf, ymax=Inf), fill="grey50", alpha=.05/length(yr()))+ 
-                geom_text(aes(x=.4,y=scale_geom_text()/500, label="Pre-catch shares"),family="serif",fontface="italic",hjust=0, size=4/scale_text(), color="grey40") + 
-                geom_text(aes(x=table(yr()<2011)[[2]]+table(yr()>2010)[[2]]/1,y=scale_geom_text()/500,label="Post-catch shares"),family="serif",fontface="italic",hjust=1, size=4/scale_text(), color="grey40")# +
-            } else {
-              g <- g + geom_rect(aes(xmin=.1, xmax=2.5, ymin=-Inf, ymax=Inf), fill="grey50", alpha=.05/length(yr()))+ 
-                geom_text(aes(x=.3,y=scale_geom_text()/500, label="Pre-catch shares"),family="serif",fontface="italic", hjust=0, size=4/scale_text(), color="grey40") + 
-                geom_text(aes(x=table(yr()<2011)[[2]]+table(yr()>2010)[[2]]/1.5,y=scale_geom_text()/500,label="Post-catch shares"),family="serif",fontface="italic",hjust=0, size=4/scale_text(), color="grey40")# +
-            }
-          } else  {
-            if(table(yr()>2010)[[2]]==1){  
-              g <- g + geom_rect(aes(xmin=.1, xmax=1.5, ymin=-Inf, ymax=Inf), fill="grey50", alpha=.05/length(yr()))+ 
-                geom_text(aes(x=.25,y=scale_geom_text()/500, label="Pre-catch shares"),family="serif",fontface="italic",hjust=0, size=4/scale_text(), color="grey40") + 
-                geom_text(aes(x=table(yr()<2011)[[2]]+table(yr()>2010)[[2]]/1,y=scale_geom_text()/500,label="Post-catch shares"),family="serif",fontface="italic",hjust=1, size=4/scale_text(), color="grey40") #+
-            } else {
-              g <- g + geom_rect(aes(xmin=.1, xmax=1.5, ymin=-Inf, ymax=Inf), fill="grey50", alpha=.05/length(yr()))+ 
-                geom_text(aes(x=.15,y=scale_geom_text()/500, label="Pre-catch shares"),family="serif",fontface="italic",hjust=0, size=4/scale_text(), color="grey40") + 
-                geom_text(aes(x=table(yr()<2011)[[2]]+table(yr()>2010)[[2]]/1.5,y=scale_geom_text()/500,label="Post-catch shares"),family="serif",fontface="italic",hjust=0, size=4/scale_text(), color="grey40") #+
-            }
-          }}   else {
-            g <- g 
-          }
       }
       g <- g + geom_text(aes(label=star), colour="black", vjust=0, size=10)
       } # end if statement for variable cost revenue figure
@@ -244,42 +202,17 @@ doPlotDownload <- function(dat, x, y, type){
     # Begin Variability analysis figure
     if(type!="summary"){
       if(length(yr()) > 1){
-        if(length(yr())>1 & min(yr())<2011 & max(yr())>2010){
-          if(yr()[1]==2009&yr()[2]==2010){
-            if(table(yr()>2010)[[2]]==1){
-              g <- g + geom_line(aes_string(colour = groupVar), size=1.5)+  
-                geom_rect(aes(xmin=.2, xmax=2.5, ymin=-Inf, ymax=Inf),fill="grey50", alpha=.05/length(yr()))+ 
-                geom_text(aes(x=.5,y=scale_geom_text()/1000+scale_geom_text()/10000, label="Pre-catch shares"),hjust=0, size=4/scale_text2(), color="grey40",family="serif", fontface="italic") + 
-                geom_text(aes(x=length(yr())+.7,y=scale_geom_text()/1000+scale_geom_text()/10000,label="Post-catch shares"),hjust=1, size=4/scale_text2(), color="grey40",family="serif", fontface="italic") #+
-            } else {
-              g <- g + geom_line(aes_string(colour = groupVar), size=1.5)+  
-                geom_rect(aes(xmin=.1, xmax=2.5, ymin=-Inf, ymax=Inf),fill="grey50", alpha=.05/length(yr()))+ 
-                geom_text(aes(x=.25,y=scale_geom_text()/1000+scale_geom_text()/10000, label="Pre-catch shares"),hjust=0, size=4/scale_text2(), color="grey40",family="serif", fontface="italic") + 
-                geom_text(aes(x=length(yr())-1.5,y=scale_geom_text()/1000+scale_geom_text()/10000,label="Post-catch shares"),hjust=0, size=4/scale_text2(), color="grey40",family="serif", fontface="italic") #+
-            }  }  else {
-              if(table(yr()>2010)[[2]]==1){              
-                g <- g + geom_line(aes_string(colour = groupVar), size=1.5)+ 
-                  geom_rect(aes(xmin=.1, xmax=1.5, ymin=-Inf, ymax=Inf),fill="grey50", alpha=.05/length(yr()))+ 
-                  geom_text(aes(x=.25,y=scale_geom_text()/1000+scale_geom_text()/10000, label="Pre-catch shares"),hjust=0, size=4/scale_text2(), color="grey40",family="serif", fontface="italic") + 
-                  geom_text(aes(x=length(yr())+.2,y=scale_geom_text()/1000+scale_geom_text()/10000,label="Post-catch shares"),hjust=1, size=4/scale_text2(), color="grey40",family="serif", fontface="italic") #+
-              } else {
-                g <- g + geom_line(aes_string(colour = groupVar), size=1.5)+ 
-                  geom_rect(aes(xmin=.1, xmax=1.5, ymin=-Inf, ymax=Inf),fill="grey50", alpha=.05/length(yr()))+ 
-                  geom_text(aes(x=.25,y=scale_geom_text()/1000+scale_geom_text()/10000, label="Pre-catch shares"),hjust=0, size=4/scale_text2(), color="grey40",family="serif", fontface="italic") + 
-                  geom_text(aes(x=table(yr()<2011)[[2]]+table(yr()>2010)[[2]]/1.5,y=scale_geom_text()/1000+scale_geom_text()/10000,label="Post-catch shares"),hjust=0, size=4/scale_text2(), color="grey40",family="serif", fontface="italic") #+
-              }
-            }} else {
               g <- g + geom_line(aes_string(colour = groupVar), size=1.5)
-            }} else{
+            } else{
               g <- g + geom_point(aes_string(colour = groupVar), size=4)
             }
     } # end variability figure   
     
     # define facet
     if(type =="summary"){
-      g <- g + facet_wrap(~ sort2, as.table = TRUE, scales="free_x")
+      g <- g + facet_wrap(~ sort2, as.table = TRUE, scales="free_y")
     } else {
-      g <- g + facet_wrap(~ sort2, scales="free_x")
+      g <- g + facet_wrap(~ sort2, scales="free_y")
     }
     
 
@@ -355,20 +288,73 @@ doPlotDownload <- function(dat, x, y, type){
             
     g <- g + labs(y=ylab(), x=xlab(), title=main())
     
-
+    # Plot geom-rect and geom_text
+    ##--------------Begin geom_rect-----------------------###
+    if(type == "summary"){    
+      if(input$DodgeSelect == "Economic measures side-by-side"){
+        if(length(yr())>1 & min(yr())<2011 & max(yr())>2010){
+          g <- g + geom_rect(aes(xmin=-Inf, xmax=table(yr()<=2010)[[2]]+.5, ymin=-Inf, ymax=Inf), alpha=.02, fill="grey50") +
+            geom_text(aes(x=table(yr()<=2010)[[2]]/4,y=scale_geom_text()/1000+scale_geom_text()/10000, label="Pre-catch shares"), family="serif",fontface="italic", hjust=0, color = "grey40", size=7/scale_text()) +
+            geom_text(aes(x=table(yr()<=2010)[[2]]+table(yr()>2010)[[2]]/1.5,y=scale_geom_text()/1000+scale_geom_text()/10000,label="Post-catch shares"), family = "serif", fontface="italic",hjust=0, 
+                      color = "grey40", size=7/scale_text())  
+        } else {
+          g <- g  
+        }
+      } # end economics measure side by side plots
+      
+      
+      if(input$DodgeSelect != "Economic measures side-by-side"){          
+        if(length(yr())>1 & min(yr())<2011 & max(yr())>2010){
+          if(yr()[2]==2010){
+            if(table(yr()>2010)[[2]]==1){
+              g <- g + geom_rect(aes(xmin=-Inf, xmax=table(yr()<=2010)[[2]]+.5, ymin=-Inf, ymax=Inf), fill="grey50", alpha=.02)+ 
+                geom_text(aes(x=.4,y=scale_geom_text()/500, label="Pre-catch shares"),family="serif",fontface="italic",hjust=0, size=6/scale_text(), color="grey40") + 
+                geom_text(aes(x=table(yr()<=2010)[[2]]+table(yr()>2010)[[2]]/1,y=scale_geom_text()/500,label="Post-catch shares"),family="serif",fontface="italic",hjust=1, size=7/scale_text(), color="grey40")# +
+            } else {
+              g <- g + geom_rect(aes(xmin=.1, xmax=table(yr()<=2010)[[2]]+.5, ymin=-Inf, ymax=Inf), fill="grey50", alpha=.02)+ 
+                geom_text(aes(x=.3,y=scale_geom_text()/500, label="Pre-catch shares"),family="serif",fontface="italic",hjust=0, size=6/scale_text(), color="grey40") + 
+                geom_text(aes(x=table(yr()<=2010)[[2]]+table(yr()>2010)[[2]]/1.5,y=scale_geom_text()/500,label="Post-catch shares"),family="serif",fontface="italic",hjust=0, size=7/scale_text(), color="grey40")# +
+            }
+          } else  {
+            if(table(yr()>2010)[[2]]==1){  
+              g <- g + geom_rect(aes(xmin=.1, xmax=table(yr()<=2010)[[2]]+.5, ymin=-Inf, ymax=Inf), fill="grey50", alpha=.02)+ 
+                geom_text(aes(x=.25,y=scale_geom_text()/500, label="Pre-catch shares"),family="sans",fontface="italic",hjust=0, size=6/scale_text(), color="grey40") + 
+                geom_text(aes(x=table(yr()<=2010)[[2]]+table(yr()>2010)[[2]]/1,y=scale_geom_text()/500,label="Post-catch shares"),family="serif",fontface="italic",hjust=1, size=6/scale_text(), color="grey40") #+
+            } else {
+              g <- g + geom_rect(aes(xmin=.1, xmax=table(yr()<=2010)[[2]]+.5, ymin=-Inf, ymax=Inf), fill="grey50", alpha=.02)+ 
+                geom_text(aes(x=.15,y=scale_geom_text()/500, label="Pre-catch shares"),family="sans",fontface="italic",hjust=0, size=6/scale_text(), color="grey40") + 
+                geom_text(aes(x=table(yr()<=2010)[[2]]+table(yr()>2010)[[2]]/1.5,y=scale_geom_text()/500,label="Post-catch shares"),family="serif",fontface="italic",hjust=0, size=6/scale_text(), color="grey40") #+
+            }
+          }}   
+        else {
+          g <- g 
+        }
+      }#end net revenue figures
+    }# end Summary loop for total and variable revenue figures
+    
+    else if(type != "summary"){    # Begin Variability analysis figure
+      if(length(yr())>1 & min(yr())<2011 & max(yr())>2010){
+        g <- g + geom_rect(aes(xmin=-Inf, xmax=table(yr()<=2010)[[2]]+.5, ymin=-Inf, ymax=Inf),fill="grey50", alpha=.02)
+        g <- g + geom_text(aes(x=table(yr()<=2010)[[2]]/2.5,y=scale_geom_text()/1000+scale_geom_text()/10000, label="Pre-catch shares"), family="serif",fontface="italic",hjust=0,color = "grey40", size=6/scale_text()) + 
+          geom_text(es(x=table(yr()<=2010)[[2]]+table(yr()>2010)[[2]]/1.6,y=scale_geom_text()/1000+scale_geom_text()/10000,label="Post-catch shares"),fontface="italic",hjust=0, family="serif",color = "grey40", size=6/scale_text()) #+
+      } else {
+        g <- g 
+      }
+      #            g <- g + geom_text(aes(label=star), colour="black", vjust=0, size=10)
+      
+    } # end variability figure
     
     # define theme
     g <- g + theme(
-      plot.title = element_text(size=rel(1.2), vjust=1, colour="grey25"), 
-      plot.title = element_text(family = "sans", face = "bold", vjust = 1),
+      plot.title = element_text(size=rel(1.2), vjust=1, colour="grey25",family = "sans", face = "bold"),
       #plot.margin = unit(c(0.5, 0.5, 1, 0.5), "cm"),
       panel.background = element_rect(fill = "white"),
-      panel.margin = unit(1.1, "lines"),
+      #panel.margin = unit(1.1, "lines"),
       panel.grid.minor = element_line(linetype = "blank"),
       panel.grid.major.x = element_line(linetype = "blank"),
       panel.grid.major.y = element_line(color = "#656C70", linetype = "dotted"),
       strip.text = element_text(family = "sans", 
-                                size = 11, color = "grey25", vjust=1),
+                                size = 10, color = "grey25", vjust=1),
       strip.background = element_rect(fill = "lightgrey"),
       axis.ticks = element_blank(),
       axis.title.x = element_text(size=rel(.7), face="italic", vjust=0, colour="grey25"),
