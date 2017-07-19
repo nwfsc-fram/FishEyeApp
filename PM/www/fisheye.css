@@ -20,7 +20,7 @@
 }
 
 .navbar {
-  float: left;
+  float: center
   min-height: 20px;
   margin-bottom: 0;
   border: 0px solid transparent;
@@ -142,7 +142,6 @@ height:50px;
 
 .nav-tabs > li {
     border-left: 1px solid #ddd;
-    border-right: 1px solid #ddd;
     padding: 0px;
 }
 .nav-tabs > .active > a, .nav-tabs > .active > a:hover {
@@ -151,6 +150,16 @@ height:50px;
 .navbar {
    height: 50px;
    min-height: 50px;
+}
+@media (min-width: 768px) {
+  .container > .navbar-header,
+  .container-fluid > .navbar-header,
+  .container > .navbar-collapse,
+  .container-fluid > .navbar-collapse {
+    margin-left: 20px;
+    margin-right:0px;
+    float:center;
+  }
 }
 .date {
     height:45px;
@@ -174,3 +183,4 @@ height:50px;
 .day {
     font-size: 16px;
 }
+

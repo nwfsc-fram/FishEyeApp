@@ -17,7 +17,7 @@ output$Email <- renderUI({
   tags$div(style = "margin: 15px 15px 30px; width: 60%",
            h3("Contact us"),
            tags$p("We look forward to receiving feedback and questions.", tags$br()),
-           tags$p(h4("Please email us at", strong("nwfsc.fisheye@noaa.gov")),
+           tags$p(h4("Please email us at", strong("nmfs.nwfsc.fisheye@noaa.gov")),
                   # tags$a(href="mailto:nwfsc.fisheye@noaa.gov?subject=FISHEyE", 'nwfsc.fisheye@noaa.gov'),
                   tags$br()),
            
@@ -56,6 +56,30 @@ output$BlogUpdates <- renderUI({
   tags$div(style = "margin-top:0; padding-top:0;background-color:#F8F8E9;",
            tags$h3("Updates"),
   #Major update - adding other sectors
+
+  tags$div( class='date', style='height:45px;width:30px; font-family:Arial; font-weight:bold;background-color:#ffffff;text-align:center; border-top:1px solid #c0c0c0;
+                     border-left:1px solid #c0c0c0;border-right:1px solid #c0c0c0;position:absolute;z-index:3;line-height: 13px;',
+            HTML("<span class='month' style='text-transform:uppercase;font-size:11px;'>July</span><br />
+                 <span class='day' style='font-size:16px;'>12</span><br />
+                 <span class='year' style='font-size:11px;line-height: 10px;'>2017</span>")
+  ),
+  tags$p(HTML("<span style='margin-left:60px;font-size:18px;font-weight:bold'>Percentiles around the median</span>")), 
+  tags$p(tags$br(),"We have been asked to provide percentiles as a measure of variance. All plots and tables now show the 25th and 75th percentiles when median is selected and the standard deviation when average is selected."),
+  tags$hr(),
+  
+
+  tags$div( class='date', style='height:45px;width:30px; font-family:Arial; font-weight:bold;background-color:#ffffff;text-align:center; border-top:1px solid #c0c0c0;
+                     border-left:1px solid #c0c0c0;border-right:1px solid #c0c0c0;position:absolute;z-index:3;line-height: 13px;',
+            HTML("<span class='month' style='text-transform:uppercase;font-size:11px;'>Jun</span><br />
+                 <span class='day' style='font-size:16px;'>23</span><br />
+                 <span class='year' style='font-size:11px;line-height: 10px;'>2017</span>")
+            ),
+  tags$p(HTML("<span style='margin-left:60px;font-size:18px;font-weight:bold'>Updates to economic metrics calculations</span>")), 
+  tags$p(tags$br(),"We have updated the analysis of the economic metrics. We now provide the fleet-wide or industry-wide average rather than the 
+         total for rate measurements (per day, per metric-ton). The fleet-wide average is calculated as the sum of the economic measure divided by the
+         sum of days at sea or metric-tons."),
+  tags$hr(),
+
   tags$div( class='date', style='height:45px;width:30px; font-family:Arial; font-weight:bold;background-color:#ffffff;text-align:center; border-top:1px solid #c0c0c0;
                      border-left:1px solid #c0c0c0;border-right:1px solid #c0c0c0;position:absolute;z-index:3;line-height: 13px;',
             HTML("<span class='month' style='text-transform:uppercase;font-size:11px;'>Dec</span><br />
@@ -119,6 +143,18 @@ output$BlogResponses <- renderUI({
            #          tags$li("We look forward to receiving feedback and questions. Please send questions and feedback to", tags$strong('nwfsc.fisheye@noaa.gov.'))
            #       ),
            tags$div( class='date', style='height:45px;width:30px;font-family:Arial;font-weight:bold;background-color:#ffffff;text-align:center;border-top:1px solid #c0c0c0;
+                     border-left:1px solid #c0c0c0;border-right:1px solid #c0c0c0;position:absolute;z-index:3;line-height: 13px;',
+                     HTML("<span class='month' style='text-transform:uppercase;font-size:11px;'>July</span><br />
+                          <span class='day' style='font-size:16px;'>12</span><br />
+                          <span class='year' style='font-size:11px;line-height: 10px;'>2017</span>")
+           ),
+           tags$p(HTML("<span style='margin-left:60px;font-size:18px;font-weight:bold'>What exactly is the proportion of revenue from catch share fishery showing?</span>")), 
+           tags$p(tags$br(),
+                  'Vessels participate in multiple fisheries. With this metric you are subsetting to vessels that participated in the selected fishery. The presented values are the proportion of revenue from ALL catch share fisheries for the subsetted vessels. You can further subset to vessels that did not fish for whiting or vessels that did fish for whiting.',
+                  tags$br()),
+           
+
+   tags$div( class='date', style='height:45px;width:30px;font-family:Arial;font-weight:bold;background-color:#ffffff;text-align:center;border-top:1px solid #c0c0c0;
                      border-left:1px solid #c0c0c0;border-right:1px solid #c0c0c0;position:absolute;z-index:3;line-height: 13px;',
                      HTML("<span class='month' style='text-transform:uppercase;font-size:11px;'>Feb</span><br />
                           <span class='day' style='font-size:16px;'>17</span><br />
@@ -204,3 +240,38 @@ output$GetStartedText <- renderUI({
           # tags$p('The number of years for which data is available and the choice to include activities in Alaskan fisheries depend upon the metric and sector selected.')
   )
 })
+
+
+##--------------- Case Study text:-------------------------###
+
+output$CaseStudy1 <- renderUI({
+  tags$div(style = "margin: 15px 15px 30px; width: 90%",
+           tags$p("Annual variable cost net revenue (VCNR; a measure of shorter-term operating profit) tends to be greater from trawl activities than from fixed gear activities. This is 
+                  evident whether comparing the median (black line in plot below) or average (not shown) vessel or the range in VCNR (25th percentile-representation of a vessel that is 
+                  making more than 25 percent of vessels, but less than 75 percent of vessels- and 75th percentile- representative of a vessel making more than 50% of vessels but no more 
+                  than 75%- shown), VCNR has been relatively stable at around $50,000. Note, we do not show 2009-2010 as fixed gear levels are not directly comparable because of TNC EFP. 
+                  Total cost net revenue (TCNR), a longer-term measure of profitability that includes both fixed and variable costs, is also greater in trawl gear activities."),
+            tags$p(
+                  "How as net revenue changed since catch share program implementation? For groundfish trawl activities, the median VCNR has been relatively stable at around $100,000 per 
+                   year. Similarly, VCNR for lower earners (25th percentile but see THIRDS ANALYSIS) has remained relatively stable. In contrast, for upper earners (75th percentiles). If we 
+                  divide vessels based on revenue earned annually, you will see that net revenue (VCNR or TCNR) has increased at the most rapid rate of the top third of revenue earners but 
+                  that the lower revenue earners have shown improvements, particularly in TCNR."),
+            tags$p(
+                  "In contrast to VCNR, TCNR has increased for the entire distribution shown, although for the lower income earners, TCNR was negative in some years. Total cost net revenue 
+                  has increased more than variable cost net revenue because of a decrease in the number of vessels participating in this activity or consolidation. As the number of vessels 
+                  decreases, fewer vessels are catching a larger proportion of the catch, and incurring fewer fixed costs, leading to greater overall efficiency. In addition to 
+                  consolidation, these vessels are fishing fewer days in the groundfish trawl fishery. Although revenue and costs have changed little on an annual basis, revenue per day
+                   of fishing has increased, meaning that this fleet is experiencing the same level of profitability despite less effort (fewer fishing days). For fixed gear with a trawl 
+                  permit activities, pre- and post-catch shares outcomes are not easily compared as pre-catch shares participation in the fixed gear fishery was through a TNC Exempted Fishing Permit program. 
+                  Since 2011, there has been no clear trend in profitability (VCNR, TCNR) or income potential (crew wage). The high variability between years may reflect annual variation 
+                  in sablefish prices or that this is a new fisheries activity."),
+            tags$p(
+                  "Although net revenue has been positive for the median and top-earning (75th percentile represented by upper greyed area) vessels, lower earning vessels (25th percentile 
+                  is the lower grey band) reported negative VCNR. The variation in earnings across the fleet is even more evident when we divide vessels into groups based on annual revenue. 
+                  Vessels with the lowest revenue tend to report negative VCNR whereas vessels with the highest revenue reported positive VCNR. TCNR was lower, as it takes fixed costs into 
+                  account as well. TCNR was also less variable between years compared with VCNR. The peak in 2011 and dip in 2013 observed in VCNR is not present in TCNR, this is because 
+                  greater fixed costs in 2011 offset greater revenue and lower fixed costs in 2013 offset lower revenue. Similar to VCNR, TCNR was negative for lower earning vessels. Net 
+                  revenue per day shows largely the same pattern as net revenue per year, as days at sea per vessel in the fixed gear fishery has varied but with no clear directional trend.")           
+  )
+})
+##--------------- End Case Study text:-------------------------###

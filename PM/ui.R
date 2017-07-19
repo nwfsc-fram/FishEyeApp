@@ -101,23 +101,24 @@ fluidPage(title = "FISHEyE",
             #tags$style(HTML(".met_mod label{font-style:italic;margin-bottom:20px;margin-top:-90px;padding-top:0;}")),#{margin-top:-40px;margin-bottom:50px; height:12px;}
             tags$style(HTML(".met_mod  input[type=radio] {border: 0px;    width: 0%;    height:0em;}#")),
            
-            tags$style(HTML(".sectselect >li{position:relative; z-index:10000; background-color:black !important; display:inline; vertical-align:middle}")),
+            tags$style(HTML(".sectselect >li{position:relative; z-index:10000; background-color:black !important; display:inline; vertical-align:middle;}")),
 #            tags$style(HTML(".sectselect{font-size:28px; line-height:28px;}")),
 
             tags$style(HTML(".actbutton {margin-bottom:5px}")),
             tags$style(HTML(".rbutton {margin-top:15px}")),
-           tags$style(HTML('#iof{width:20px; height:19px; margin:0px;border:none; padding:0px;border-radius:25px;background-color:transparent;font-size:12px; color:RoyalBlue}')),
-           tags$style(HTML('#isummed{width:20px; height:19px; margin:0px;border:none; padding:0px;border-radius:25px;background-color:transparent;font-size:12px; color:RoyalBlue}')),
-           tags$style(HTML('#ifg{width:20px; height:19px; margin:0px;border:none; padding:0px;border-radius:25px;background-color:transparent;font-size:12px; color:RoyalBlue}')),
-           tags$style(HTML('#istat{width:20px; height:19px; margin:0px;border:none; padding:0px;border-radius:25px;background-color:transparent;font-size:12px; color:RoyalBlue}')),
+            tags$style(HTML('#iof{width:20px; height:19px; margin:0px;border:none; padding:0px;border-radius:25px;background-color:transparent;font-size:12px; color:RoyalBlue}')),
+            tags$style(HTML('#isummed{width:20px; height:19px; margin:0px;border:none; padding:0px;border-radius:25px;background-color:transparent;font-size:12px; color:RoyalBlue}')),
+            tags$style(HTML('#ifg{width:20px; height:19px; margin:0px;border:none; padding:0px;border-radius:25px;background-color:transparent;font-size:12px; color:RoyalBlue}')),
+            tags$style(HTML('#istat{width:20px; height:19px; margin:0px;border:none; padding:0px;border-radius:25px;background-color:transparent;font-size:12px; color:RoyalBlue}')),
           
-           tags$style(HTML('#ipo{width:20px; height:19px; margin:0px;border:none; padding:0px;border-radius:25px;background-color:transparent;font-size:12px; color:RoyalBlue}')),
-           tags$style(HTML('#ivs{width:20px; height:19px; margin:0px;border:none; padding:0px;border-radius:25px;background-color:transparent;font-size:12px; color:RoyalBlue}')),
-           tags$style(HTML('#iem{width:20px; height:19px; margin:0px;border:none; padding:0px;border-radius:25px;background-color:transparent;font-size:12px; color:RoyalBlue}')),
-           tags$style(HTML('#FRr{width:20px; height:19px; margin:0px;border:none; padding:0px;border-radius:25px;background-color:transparent;font-size:12px; color:RoyalBlue}')),
-           tags$style(HTML('#FRs{width:20px; height:19px; margin:0px;border:none; padding:0px;border-radius:25px;background-color:transparent;font-size:12px; color:RoyalBlue}')),
-           tags$style(HTML('#FRi{width:20px; height:19px; margin:0px;border:none; padding:0px;border-radius:25px;background-color:transparent;font-size:12px; color:RoyalBlue}')),
-           tags$style(HTML('#icompare{width:20px; height:19px; margin:0px;border:none; padding:0px;border-radius:25px;background-color:transparent;font-size:12px; color:RoyalBlue}'))),
+            tags$style(HTML('#ipo{width:20px; height:19px; margin:0px;border:none; padding:0px;border-radius:25px;background-color:transparent;font-size:12px; color:RoyalBlue}')),
+            tags$style(HTML('#ivs{width:20px; height:19px; margin:0px;border:none; padding:0px;border-radius:25px;background-color:transparent;font-size:12px; color:RoyalBlue}')),
+            tags$style(HTML('#iem{width:20px; height:19px; margin:0px;border:none; padding:0px;border-radius:25px;background-color:transparent;font-size:12px; color:RoyalBlue}')),
+            tags$style(HTML('#ivariance{width:20px; height:19px; margin:0px;border:none; padding:0px;border-radius:25px;background-color:transparent;font-size:12px; color:RoyalBlue}')),
+            tags$style(HTML('#FRr{width:20px; height:19px; margin:0px;border:none; padding:0px;border-radius:25px;background-color:transparent;font-size:12px; color:RoyalBlue}')),
+            tags$style(HTML('#FRs{width:20px; height:19px; margin:0px;border:none; padding:0px;border-radius:25px;background-color:transparent;font-size:12px; color:RoyalBlue}')),
+            tags$style(HTML('#FRi{width:20px; height:19px; margin:0px;border:none; padding:0px;border-radius:25px;background-color:transparent;font-size:12px; color:RoyalBlue}')),
+            tags$style(HTML('#icompare{width:20px; height:19px; margin:0px;border:none; padding:0px;border-radius:25px;background-color:transparent;font-size:12px; color:RoyalBlue}'))),
 #           tags$style(HTML('#iVesSum{width:20px; height:19px; margin:0px;border:none; padding:0px;border-radius:25px;background-color:transparent;font-size:12px; color:RoyalBlue}'))),
 # java script 
           tags$style(type='text/css', "#data2, 
@@ -149,8 +150,7 @@ fluidPage(title = "FISHEyE",
           navbarPage(id="page", collapsible=TRUE, inverse=F,
             title="",
 
-
-          tabPanel("Explore the data", value="results",    
+         tabPanel("Explore the data", value="results",    
             sidebarLayout(
               mainPanel(         
                 tabsetPanel(id = "tabs", 
@@ -167,10 +167,17 @@ fluidPage(title = "FISHEyE",
                                      )),
                             tabPanel('Get started',
                                      fluidRow(column(12, htmlOutput('GetStartedText')))))))))), 
-                            conditionalPanel(condition="input.VariableSelect!=''",  fluidRow(
-                              column(2, uiOutput("DataButton")),  
-                              column(12, dataTableOutput("TableMain"), plotOutput("PlotMain", height="auto",width="auto"))
-                            ))))),
+                            conditionalPanel(condition="input.VariableSelect!=''",  
+                              fluidRow(column(2, uiOutput("DataButton")),  
+                                       column(12, dataTableOutput("TableMain"), plotOutput("PlotMain", height="auto",width="auto"))
+                            ))),
+###--------------Case Study -------------------------------####
+                tabPanel(title='Case studies', value='Panel2', padding='10px',
+                         tags$h3('Does net revenue differ between trawl gear and fixed gear for vessels with a trawl permit?'),
+                         fluidRow(column(12, htmlOutput('CaseStudy1'),plotOutput("PlotMain2", height="auto",width="auto")))
+                         )
+###-----------End case study-------------------------------######
+              )),
                             
                   sidebarPanel( 
                    wellPanel( 
@@ -239,15 +246,19 @@ fluidPage(title = "FISHEyE",
 
                                      ),#end sub panel
                              
-                              wellPanelSub( wellPanelSub(conditionalPanel(condition="input.LayoutSelect!='Metrics'&&input.Sect_sel=='CV'&&input.Ind_sel=='Demographic'&&input.demSelect=='Exponential Shannon Index'
+                              wellPanelSub( 
+                                  wellPanelSub(
+                                  conditionalPanel(condition="input.LayoutSelect!='Metrics'&&input.Sect_sel=='CV'&&input.Ind_sel=='Demographic'&&input.demSelect=='Exponential Shannon Index'
                                                                           ||input.LayoutSelect!='Metrics'&&input.Sect_sel=='CV'&&input.Ind_sel=='Demographic'&&input.demSelect=='Proportion of revenue from CS fishery'
-                                                                          ||input.LayoutSelect!='Metrics'&&input.Sect_sel=='CV'&&input.Ind_sel=='Demographic'&&input.demSelect=='Fishery participation'
-                                                                          ||input.LayoutSelect!='Metrics'&&input.Ind_sel=='Demographic'&&input.demSelect=='Days at sea'", 
+                                                                          ||input.LayoutSelect!='Metrics'&&input.Sect_sel=='CV'&&input.Ind_sel=='Demographic'&&input.demSelect=='Fishery participation'", 
                                                  uiOutput("FishAkselect")), style = "padding: 0px;margin-bottom:0px; border: 3px solid #D3D3D3;border-radius:10px;"),
-                              wellPanelSub(
-                                  conditionalPanel(condition="input.Ind_sel!='Economic'&input.AVE_MED2!='Total'||input.Ind_sel=='Economic'&input.AVE_MED!='T'",
-                                                   uiOutput("Plotselect")), style = "padding: 0px;margin-bottom:0px; border: 3px solid #D3D3D3;border-radius:10px;"
-                                    )
+                                  wellPanelSub(
+                                  conditionalPanel(condition="input.Ind_sel!='Economic'&input.AVE_MED2!='Total'&input.socSelect!='Seasonality'&input.socSelect!='Share of landings by state'||input.Ind_sel=='Economic'&input.AVE_MED!='T'",
+                                                   uiOutput("Plotselect")), style = "padding: 0px;margin-bottom:0px; border: 3px solid #D3D3D3;border-radius:10px;")#,
+                                  #wellPanelSub(
+                                  #conditionalPanel(condition="input.Ind_sel!='Economic'&input.AVE_MED2!='Total'&input.socSelect!='Seasonality'&input.socSelect!='Share of landings by state'||
+                                  #                 input.PlotSelect=='T' &input.Ind_sel=='Economic'&input.AVE_MED!='T'", 
+                                  #                 uiOutput('Plotselectoption')), style = "padding: 0px;margin-bottom:0px; border: 3px solid #D3D3D3;border-radius:10px;")
                                     ) , #end sub panel
                               wellPanelSub(
                                 
@@ -274,8 +285,6 @@ fluidPage(title = "FISHEyE",
                               ))
                        ) #end Fluid row
             ),      style = "padding: 0px;border: 1px solid #000000;") # end right side column
-
-
 
 )),
         navbarMenu("Instructions",

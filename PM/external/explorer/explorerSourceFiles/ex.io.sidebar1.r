@@ -63,6 +63,9 @@ output$Yearselect <- renderUI({
     if(input$socSelect!='Seasonality'&input$socSelect!='Share of landings by state'){
       tags$div(class="ckbox", checkboxGroupInput( "YearSelect","Years:", choices = DatVars()$YEAR[6:length(DatVars()$YEAR)], selected = DatVars()$YEAR[6:length(DatVars()$YEAR)]))
     } else{
+      if(input$CategorySelect=='Homeport'|input$CategorySelect=='State'){
+        tags$div(class="ckbox", checkboxGroupInput( "YearSelect","Years:", choices = DatVars()$YEAR[6:length(DatVars()$YEAR)], selected = DatVars()$YEAR[6:length(DatVars()$YEAR)]))
+      } else {
       if(input$moreOptions=="FALSE"){
          tags$div(class="ckbox", checkboxGroupInput( "YearSelect","Years:", choices = DatVars()$YEAR[6:length(DatVars()$YEAR)], selected = DatVars()$YEAR[6:length(DatVars()$YEAR)]))
     } else{
@@ -71,7 +74,7 @@ output$Yearselect <- renderUI({
       } else {
         tags$div(class="ckbox", checkboxGroupInput( "YearSelect","Years:", choices = DatVars()$YEAR[2:length(DatVars()$YEAR)], selected = DatVars()$YEAR[6:length(DatVars()$YEAR)], inline=T))
       }
-    }}
+    }}}
     } else if(input$Ind_sel=='Economic'){
 #    if(input$ShortdescrSelect[1]!="Revenue"){
       if(!input$ShortdescrSelect[1] %in% "Revenue"){
@@ -259,8 +262,8 @@ output$Variableselect <- renderUI({
           }
           else {
             tagList(
-             tags$div(class="ckbox2", radioButtons("VariableSelect", div("Select one fisheries:", style="margin-top:0; padding:-10px"),#HTML("<div style='font-style:italic; font-size:10.87pt; font-weight:normal; margin-top:8.5pt'> 
-                                                  choices=c("All fisheries combined"="All fisheries"," All catch share fisheries combined"="All catch share fisheries",fish.var[3:14]), selected="")))
+             tags$div(class="ckbox3", radioButtons("VariableSelect", div("Select one fisheries:", style="margin-top:0; padding:-10px"),#HTML("<div style='font-style:italic; font-size:10.87pt; font-weight:normal; margin-top:8.5pt'> 
+                                                  choices=c("No fishery selected"="","All fisheries combined"="All fisheries"," All catch share fisheries combined"="All catch share fisheries",fish.var[3:14]), selected="")))
           }  
           }else {
             tags$div(class="ckbox3", radioButtons("VariableSelect", div("Select one fisheries:", style="margin-top:0; padding:-10px"), 
@@ -279,9 +282,11 @@ output$Variableselect <- renderUI({
                                                        <i class='fa fa-info-circle fa-fw'></i></button></div>"),
                                                          choices = c('Washington and Oregon','California'), selected="")))
           } else {
-            tags$div(class="ckbox", checkboxGroupInput("VariableSelect", HTML("<div> Select one or more region:<button id='FRr' type='button' class='btn btn-default action-button shiny-bound-input'> 
+            tagList(
+              tags$div(class="select", selectInput("inSelect","",c("All production")), style="margin-bottom:-10px"),
+              tags$div(class="ckbox", checkboxGroupInput("VariableSelect", HTML("<div> Select one or more region:<button id='FRr' type='button' class='btn btn-default action-button shiny-bound-input'> 
                                                        <i class='fa fa-info-circle fa-fw'></i></button></div>"),
-                                                       choices = c('Washington and Oregon','California'), selected="")) 
+                                                       choices = c('Washington and Oregon','California'), selected=""))) 
           }  
         } else if(input$Ind_sel=="Economic"){
             tagList(
@@ -290,9 +295,11 @@ output$Variableselect <- renderUI({
                                                        <i class='fa fa-info-circle fa-fw'></i></button></div>"),
                                                        choices = c('Washington and Oregon','California'), selected="")))
             } else {
-            tags$div(class="ckbox", checkboxGroupInput("VariableSelect", HTML("<div> Select one or more region:<button id='FRr' type='button' class='btn btn-default action-button shiny-bound-input'> 
+              tagList(
+                tags$div(class="select", selectInput("inSelect","",c("All production")), style="margin-bottom:-10px"),
+                tags$div(class="ckbox", checkboxGroupInput("VariableSelect", HTML("<div> Select one or more region:<button id='FRr' type='button' class='btn btn-default action-button shiny-bound-input'> 
                                                        <i class='fa fa-info-circle fa-fw'></i></button></div>"),
-                                                         choices = c('Washington and Oregon','California'), selected="")) 
+                                                         choices = c('Washington and Oregon','California'), selected="")) )
             }
           } #ENd compare processors
         else {
@@ -304,9 +311,11 @@ output$Variableselect <- renderUI({
                                                         'Washington and Oregon','California'), selected=""))
                 )
           } else {
-            tags$div(class="rbutton3",radioButtons("VariableSelect", HTML("<div> Select one region:<button id='FRr' type='button' class='btn btn-default action-button shiny-bound-input'> 
+            tagList(
+              tags$div(class="select", selectInput("inSelect","",c("All production")), style="margin-bottom:-10px"),
+              tags$div(class="rbutton3",radioButtons("VariableSelect", HTML("<div> Select one region:<button id='FRr' type='button' class='btn btn-default action-button shiny-bound-input'> 
                                                        <i class='fa fa-info-circle fa-fw'></i></button></div>"), choices = c("No region selected"="",
-                                                                                                                             'Washington and Oregon','California'), selected="")) 
+                                                                                                                             'Washington and Oregon','California'), selected=""))) 
           }
           }
       } else if(input$CategorySelect =="Processor size"){
@@ -319,8 +328,10 @@ output$Variableselect <- renderUI({
                                                        <i class='fa fa-info-circle fa-fw'></i></button></div>"), choices=c("Large",'Medium','Small'), selected=""))
             )
           } else {
-            tags$div(checkboxGroupInput("VariableSelect",  HTML("<div> Select one size class:<button id='FRs' type='button' class='btn btn-default action-button shiny-bound-input'> 
-                                                       <i class='fa fa-info-circle fa-fw'></i></button></div>"), choices=c("Large",'Medium','Small'), selected=""))
+            tagList(
+              tags$div(class="select", selectInput("inSelect","",c("All production")), style="margin-bottom:-10px"),
+              tags$div(checkboxGroupInput("VariableSelect",  HTML("<div> Select one size class:<button id='FRs' type='button' class='btn btn-default action-button shiny-bound-input'> 
+                                                       <i class='fa fa-info-circle fa-fw'></i></button></div>"), choices=c("Large",'Medium','Small'), selected="")))
           }
           } else if(input$Ind_sel=='Economic'){
             tagList(
@@ -329,8 +340,10 @@ output$Variableselect <- renderUI({
                                                        <i class='fa fa-info-circle fa-fw'></i></button></div>"), choices=c("Large",'Medium','Small'), selected=""))
             )  
           } else {
-            tags$div(checkboxGroupInput("VariableSelect",  HTML("<div> Select one size class:<button id='FRs' type='button' class='btn btn-default action-button shiny-bound-input'> 
-                                                       <i class='fa fa-info-circle fa-fw'></i></button></div>"), choices=c("Large",'Medium','Small'), selected=""))
+            tagList(
+              tags$div(class="select", selectInput("inSelect","",c("All production")), style="margin-bottom:-10px"),
+              tags$div(checkboxGroupInput("VariableSelect",  HTML("<div> Select one size class:<button id='FRs' type='button' class='btn btn-default action-button shiny-bound-input'> 
+                                                       <i class='fa fa-info-circle fa-fw'></i></button></div>"), choices=c("Large",'Medium','Small'), selected="")))
           }
           }else {
             if(input$Ind_sel!="Social and Regional"){
@@ -340,8 +353,10 @@ output$Variableselect <- renderUI({
                                                        <i class='fa fa-info-circle fa-fw'></i></button></div>"), choices=c("No processor size selected"="","Large",'Medium','Small'), selected=""))
                   )
             } else {                   
-                    tags$div(class="rbutton3",radioButtons("VariableSelect",  HTML("<div> Select one size class:<button id='FRs' type='button' class='btn btn-default action-button shiny-bound-input'> 
-                               <i class='fa fa-info-circle fa-fw'></i></button></div>"), choices=c("No processor size selected"="","Large",'Medium','Small'), selected=""))
+              tagList(
+                tags$div(class="select", selectInput("inSelect","",c("All production")), style="margin-bottom:-10px"),
+                tags$div(class="rbutton3",radioButtons("VariableSelect",  HTML("<div> Select one size class:<button id='FRs' type='button' class='btn btn-default action-button shiny-bound-input'> 
+                               <i class='fa fa-info-circle fa-fw'></i></button></div>"), choices=c("No processor size selected"="","Large",'Medium','Small'), selected="")))
             }
                   }
       } #End processor class
@@ -458,9 +473,9 @@ output$socselect <- renderUI({
     if(input$LayoutSelect=='Metrics'){
       if(input$Sect_sel=="CV"){
         if(input$AVE_MED2!="Total"){
-        tags$div(class="ckbox",checkboxGroupInput("socSelect","", choices = c(DatVars()$METRIC[8:11]), selected=DatVars()$METRIC[8]))
+        tags$div(class="ckbox",checkboxGroupInput("socSelect","", choices = c(DatVars()$METRIC[8:10]), selected=DatVars()$METRIC[8]))
        } else {
-        tags$div(class="ckboxSOC",checkboxGroupInput("socSelect","", choices = c(DatVars()$METRIC[8:11]), selected=DatVars()$METRIC[8])) 
+        tags$div(class="ckboxSOC",checkboxGroupInput("socSelect","", choices = c(DatVars()$METRIC[8:10]), selected=DatVars()$METRIC[8])) 
        }
     }else {
       if(input$AVE_MED2!="Total"){
@@ -546,7 +561,7 @@ output$StatSelect2 <- renderUI({
   if(input$LayoutSelect=='Metrics'){
     tagList(
     radioButtons("AVE_MED2", HTML("<div> Statistic: <button id='istat' type='button' class='btn btn-default action-button shiny-bound-input'> <i class='fa fa-info-circle fa-fw' ></i></button> </div>"),
-                   choices=c("Average","Median",'Total'), select='Average'))
+                   choices=c("Average","Median",'Total'), select='Median'))
   } #nd Metrics
     else {
       if(input$Ind_sel=="Demographic"){
@@ -555,28 +570,29 @@ output$StatSelect2 <- renderUI({
             tags$div(class='StatGrey', radioButtons("AVE_MED2", HTML("<div> Statistic: <button id='istat' type='button' class='btn btn-default action-button shiny-bound-input'> <i class='fa fa-info-circle fa-fw' ></i></button> </div>"),
                          choices=c("Average","Median",'Total'), select='Total'))
             )
-        } else if(input$demSelect=="Vessel length"|input$demSelect=="Exponential Shannon Index"|input$demSelect=="Fishery participation"){
+        } else if(input$demSelect=="Vessel length"|input$demSelect=="Exponential Shannon Index"|input$demSelect=="Fishery participation"|
+                  input$demSelect=="Proportion of revenue from CS fishery"|input$demSelect=="Proportion of revenue from catch share species"|input$demSelect=="Proportion of landings from CS fishery"){
           tagList(
             tags$div(class='StatGrey2', radioButtons("AVE_MED2", HTML("<div> Statistic: <button id='istat' type='button' class='btn btn-default action-button shiny-bound-input'> <i class='fa fa-info-circle fa-fw' ></i></button> </div>"),
-                                                    choices=c("Average","Median",'Total'), select='Average'))
+                                                    choices=c("Average","Median",'Total'), select='Median'))
           )
         } else{
         tagList(
           radioButtons("AVE_MED2", HTML("<div> Statistic: <button id='istat' type='button' class='btn btn-default action-button shiny-bound-input'> <i class='fa fa-info-circle fa-fw' ></i></button> </div>"),
-                       choices=c("Average","Median",'Total'), select='Average'))
+                       choices=c("Average","Median",'Total'), select='Median'))
       }
         } #End demographic
       else if(input$Ind_sel=="Social and Regional"){
-        if(input$socSelect[1]=="Share of landings by state"|input$socSelect[1]=="Seasonality") { 
+        if(input$socSelect %in% c("Share of landings by state","Seasonality")) { 
           tags$div(class='met_mod', radioButtons("AVE_MED2","", choices =""), style="margin-bottom:20px;margin-top:-32px;margin-left:-15px;padding-top:0;")
       } else if (input$socSelect == "Hourly compensation"| input$socSelect == "Crew wage per day"| input$socSelect == "Revenue per crew day"){
           tagList(
             tags$div(class='StatGrey2', radioButtons("AVE_MED2", HTML("<div> Statistic: <button id='istat' type='button' class='btn btn-default action-button shiny-bound-input'> <i class='fa fa-info-circle fa-fw' ></i></button> </div>"),
-                         choices=c("Average","Median",'Total'), select='Average')))            
+                         choices=c("Average","Median",'Total'), select='Median')))            
       } else {
         tagList(
           radioButtons("AVE_MED2", HTML("<div> Statistic: <button id='istat' type='button' class='btn btn-default action-button shiny-bound-input'> <i class='fa fa-info-circle fa-fw' ></i></button> </div>"),
-                       choices=c("Average","Median",'Total'), select='Average'))            
+                       choices=c("Average","Median",'Total'), select='Median'))            
         }
         } #End social and regional
     } #end compare vessels
@@ -609,11 +625,15 @@ output$Layoutselect <- renderUI({
 
 #======================================
 output$Plotselect <- renderUI({
-  tags$div(class="ckbox", checkboxInput("PlotSelect", p(span("Plot options: ", style="font-weight:bold;font-size:12pt"),span("Show variance", style="font-style:italic;font-size:10pt")), value=FALSE))
+  tags$div(class="ckbox", checkboxInput("PlotSelect", HTML("<div> <span' style='font-weight:bold;font-size:12pt'>Show variance: </span>
+                                        <span style='font-weight:normal;font-style:italic;font-size:10pt'>Shaded area represents 1SD about average or 25th and 75th percentiles about median. </span>
+                                      <button id='ivariance' type='button' class='btn btn-dafault action-button shiny-bound-input'> 
+                                      <i class='fa fa-info-circle fa-fw'></i></button></div>"),
+                                      TRUE))
 })
 output$Plotselectoption <- renderUI({
   tags$div(class="ckbox", radioButtons("PlotSelectOption", span("", style="font-weight:bold;font-size:12pt"),
-                                                            choices=c("Standard deviation or Median average deviation","Percentiles (25th and 75th)"), selected=''))
+                                                            choices=c("Standard deviation or Median average deviation","Percentiles (25th and 75th)"), selected='Standard deviation or Median average deviation'))
 })
 
 

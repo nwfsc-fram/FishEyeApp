@@ -127,13 +127,14 @@ tags$div(style = "margin: 15px 15px 30px; width: 60%",
                       
                       tags$li(strong("Median or Average")),
                       tags$ul(
-                        tags$li(strong("Per vessel:"),"Median or Average for all vessels that participated in the catch share program."),
-                        tags$li(strong("Per vessel per day:"),
-                                "Median or Average per day for all vessels that participated in the catch share program."),
-                        tags$li(strong("Per vessel per metric-ton:"),
-                                "Median or Average per metric ton of fish caught for all vessels that participated in the catch share program.")
+                        tags$li(strong("Per vessel or processor:"),"Median or Average for all vessels or processors that participated in the catch share program."),
+                        tags$li(strong("Per vessel or processor per day:"),
+                                "Median or Average per day for all vessels or processors that participated in the catch share program."),
+                        tags$li(strong("Per vessel or processors per metric-ton:"),
+                                "Median or Average per metric-ton of fish caught or processed for all vessels or processors that participated in the catch share program.")
                         ),tags$br(),
-                      tags$li(strong("Fleet-wide total:"),"Summed over all vessels that participated in the catch share program.") 
+                      tags$li(strong("Fleet-wide total:"),"Summed over all vessels or processors that participated in the catch share program. For rates measurements (per day at sea or metric-ton), we show the fleet-wide or industry-wide average.
+                              The fleet-wide average is the economic value summed over all vessels or processors divided by days at sea or metric tons summed over all vessels or processors.") 
                       ),tags$br(),
                     tags$ul(tags$p(tags$strong("What is the purpose of using median, average, and fleet-wide total values when looking at the data?"), "The median and average provide information about a representative vessel; 
                                    however, they do it in different ways.  The ",  tags$strong("median"), "means that half of the vessels have a larger result than the median, and half are smaller.  The ", tags$strong("average "),"
@@ -179,7 +180,7 @@ tags$div(style = "margin: 15px 15px 30px; width: 60%",
                                       measure includes activity in all fisheries or only in the catch share fisheries or the non-catch share fisheries.'),
                       tags$li(strong('Production Category:'), 'This variable is relevant for when processors are grouped by region or processor size. It indicates whether the reported value of the selected metric or economic 
                                       measure includes all production or only groundfish production or other species production.'),
-                      tags$li(strong('Variance:'), 'A measure of the spread of values. We report the standard deviation (SD) when vessel averages are selected and the median absolute deviation (MAD) when vessel medians are selected.'),
+                      tags$li(strong('Variance:'), 'A measure of the spread of values. We report the standard deviation (SD) when vessel/processor averages are selected and upper and lower quartiles (25th/75th percentiles) when vessel/processor medians are selected.'),
                       tags$li(strong('Delivery location:'), 'This variable is only relevant for the', tags$em('Share of landings by state'), 'metric. This variable indicates location of landings.'),
                       tags$p(tags$br(),
                              tags$br(),
