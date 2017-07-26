@@ -470,13 +470,12 @@ DatSub <- reactive({
                    paste('Sorry, the selected statistic is not available for the selected metric. Try selecting a different statistic.
                   ')))
               
-      
-      if(input$Ind_sel=="Economic"){
-          datSub$VALUE <-datSub$VALUE/1000
-          datSub$VARIANCE <- datSub$VARIANCE/1000
-          datSub$q25 <- datSub$q25/1000
-          datSub$q75 <- datSub$q75/1000
-        } else if(input$Ind_sel=="Social and Regional") {
+      if(input$Ind_sel=='Demographic'){
+        datSub$VALUE <- datSub$VALUE
+        datSub$VARIANCE <- datSub$VARIANCE
+        datSub$q25 <- datSub$q25
+        datSub$q75 <- datSub$q75
+      }else if(input$Ind_sel=="Social and Regional") {
           if(input$socSelect=="Revenue per crew day"|input$socSelect=="Crew wage per day"){
           datSub$VALUE <- datSub$VALUE/1000
           datSub$VARIANCE <- datSub$VARIANCE/1000  
@@ -490,7 +489,14 @@ DatSub <- reactive({
           datSub$VARIANCE <- datSub$VARIANCE
           datSub$q25 <- datSub$q25
           datSub$q75 <- datSub$q75
-      }}else {
+      }}
+     else if(input$Ind_sel=="Economic"&input$StatSelect!='Average per vessel/metric-ton caught'&input$StatSelect!='Median per vessel/metric-ton caught'&input$StatSelect!='Fleet-wide average/metric-ton caught'&
+         input$StatSelect!='Average per processor/metric-ton produced'&input$StatSelect!='Median per processor/metric-ton produced'&input$StatSelect!='Industry-wide average/metric-ton produced'){
+          datSub$VALUE <-datSub$VALUE/1000
+          datSub$VARIANCE <- datSub$VARIANCE/1000
+          datSub$q25 <- datSub$q25/1000
+          datSub$q75 <- datSub$q75/1000
+        } else {
         datSub$VALUE <- datSub$VALUE
         datSub$VARIANCE <- datSub$VARIANCE
         datSub$q25 <- datSub$q25
@@ -643,7 +649,7 @@ DatSub <- reactive({
             datSub
           }
 
-#      datSub$YEAR2 <- factor(datSub$YEAR, levels = min(DatSub$YEAR), max(datSub$YEAR))
+      #      datSub$YEAR2 <- factor(datSub$YEAR, levels = min(DatSub$YEAR), max(datSub$YEAR))
       
     
       return(datSub)
@@ -707,8 +713,7 @@ output$resetButton <- renderUI({
   }
 })
 
-#output$VCNRButton <- renderUI({
-
+#Show Plot/Show data buttons
 vars = reactiveValues(counter = 0.5)
 output$DataButton <- renderUI({
   if(PermitPlot()){
@@ -755,4 +760,49 @@ label2 <- reactive({
     else label2 <- "Show Plot(s)"
   }
 })
+
+
+###-------------Case study buttons --------------------------###
+#values <- reactiveValues(shouldShow = FALSE)
+#observeEvent(input$hideshow2, {
+#    values$shouldShow = TRUE
+#})
+
+vars3 = reactiveValues(counter = 0.5)
+observeEvent(input$hideshow1, {
+  toggle("PlotMain2")
+#  hide('CaseStudyFig2')
+#  hide('PlotMain3')
+#  isolate({
+#    vars3$counter <- vars3$counter + .5
+#  })
+})
+vars4 = reactiveValues(counter = 0.5)
+observeEvent(input$hideshow2, {
+  toggle('CaseStudyFig2')
+#  hide('PlotMain2') 
+#  hide('PlotMain3')
+  })
+observeEvent(input$hideshow3, {
+toggle('PlotMain3')
+  #  toggle('CaseStudyFig3')
+#  hide('PlotMain2') 
+##  isolate({
+#    vars4$counter <- vars4$counter + .5
+#  })
+#  hide('CaseStudyFig2')
+})
+
+observeEvent(input$hideshow4, {
+  toggle('CaseStudyFig3')
+})
+
+observeEvent(input$hideshow5, {
+  toggle('CaseStudyFig4')
+})
+
+observeEvent(input$hideshow6, {
+  toggle('CaseStudyFig5')
+})
+###-------------End Case study buttons --------------------------###
 

@@ -254,9 +254,13 @@ doPlot <- function(dat, x, y){
     }
     
     ylab <- function(){
-      if(input$Ind_sel=="Economic") {
+      if(input$Ind_sel=="Economic"){
+        if(input$StatSelect!='Average per vessel/metric-ton caught'&input$StatSelect!='Median per vessel/metric-ton caught'&input$StatSelect!='Fleet-wide average/metric-ton caught'&
+         input$StatSelect!='Average per processor/metric-ton produced'&input$StatSelect!='Median per processor/metric-ton produced'&input$StatSelect!='Industry-wide average/metric-ton produced') {
           expression(paste(bold("Thousands of 2015 $","(",input$StatSelect, ")")))  
-      } else if(input$Ind_sel=="Social and Regional") {
+      } else {
+        expression(paste(bold("2015 $","(",input$StatSelect, ")")))  
+        }}else if(input$Ind_sel=="Social and Regional") {
            if(input$LayoutSelect!='Metrics'){
                 if(input$socSelect=="Crew wage per day"|input$socSelect=="Revenue per crew day"){
                     expression(paste(bold("Thousands of 2015 $","(",input$AVE_MED2, ")")))    
@@ -494,9 +498,9 @@ doPlot <- function(dat, x, y){
 
 #----- define facet -----#
    if (input$LayoutSelect!='Metrics') {
-     g <- g + facet_wrap(~ sort2, ncol=2, scales='free_y')
+     g <- g + facet_wrap(~ sort2, ncol=2)
    } else {
-     g <- g + facet_wrap(~sort2, ncol=2, scales="free_y")
+     g <- g + facet_wrap(~sort2, ncol=2)
      }
    
      # define scale
@@ -505,17 +509,23 @@ doPlot <- function(dat, x, y){
         g <- g + geom_hline(yintercept = 0)
     
 #---- define labels ------#
+        if(input$tabs=='Panel1'){
     g <- g + labs(y = ylab(), x=xlab(), title = main())   
-      
+        } else {
+          g <- g + labs(y = ylab(), x='', title = main())   
+        }
+     
+    
+    labeltext <- ifelse(input$tabs=='Panel1', 7,5)
 #----- Define rectangles and labels ------#
     if(length(yr())>1 & min(yr())<2011 & max(yr())>2010){
       g <- g + geom_rect(aes(xmin=-Inf, xmax=table(yr()<=2010)[[2]]+.5, ymin=-Inf, ymax=Inf), alpha=.05, fill="grey50")
-      g <- g + geom_text(aes(x=table(yr()<=2010)[[2]]/3.5,y=max(upper())+scale_geom_text()/20, label="Pre-catch shares", family="serif"),hjust=0,color = "grey20", size=7/scale_text()) 
+      g <- g + geom_text(aes(x=table(yr()<=2010)[[2]]/3.5,y=max(upper())+scale_geom_text()/20, label="Pre-catch shares", family="serif"),hjust=0,color = "grey20", size=labeltext/scale_text()) 
       if(length(yr()<2010)==6&length(yr()>=2010)<=4){
-        g <- g + geom_text(aes(x=table(yr()<=2010)[[2]]+table(yr()>2010)[[2]]/1.5,y=max(upper()+scale_geom_text()/20,label="Post-catch"),hjust=0, family="serif"),color = "grey20", size=7/scale_text())+
-          geom_text(aes(x=table(yr()<=2010)[[2]]+table(yr()>2010)[[2]]/1.5,y=max(upper())-max(upper())/100,label="shares"),hjust=0, family="serif",color = "grey20", size=7/scale_text())
+        g <- g + geom_text(aes(x=table(yr()<=2010)[[2]]+table(yr()>2010)[[2]]/1.5,y=max(upper()+scale_geom_text()/20,label="Post-catch"),hjust=0, family="serif"),color = "grey20", size=labeltext/scale_text())+
+          geom_text(aes(x=table(yr()<=2010)[[2]]+table(yr()>2010)[[2]]/1.5,y=max(upper())-max(upper())/100,label="shares"),hjust=0, family="serif",color = "grey20", size=labeltext/scale_text())
       } else {
-        g <- g + geom_text(aes(x=table(yr()<=2010)[[2]]+table(yr()>2010)[[2]]/1.5,y=max(upper())+scale_geom_text()/20,label="Post-catch shares"),hjust=0, family="serif",color = "grey20", size=7/scale_text())
+        g <- g + geom_text(aes(x=table(yr()<=2010)[[2]]+table(yr()>2010)[[2]]/1.5,y=max(upper())+scale_geom_text()/20,label="Post-catch shares"),hjust=0, family="serif",color = "grey20", size=labeltext/scale_text())
       }
       #g <- g + geom_rect(data=rectvars,aes(x=NULL, y=NULL, xmin=-Inf, xmax=xmaxscale+.5, ymin=-Inf, ymax=Inf), alpha=.05, fill="grey50")
       #g <- g + geom_text(data=rectvars,aes(x=xmaxscale/3.5,y=max(upper())+scale_geom_text()/20, label="Pre-catch shares", family="serif"),hjust=0,color = "grey20", size=7/scale_text()) 
@@ -529,6 +539,11 @@ doPlot <- function(dat, x, y){
        g <- g  
       }
 
+    if(input$tabs=='Panel1'){
+      strptextsize <- 18
+    } else {
+      strptextsize <- 14
+    }
 ##############################################################    
     # define theme
 ##############################################################
@@ -540,8 +555,7 @@ doPlot <- function(dat, x, y){
       panel.grid.minor = element_line(linetype = "blank"),
       panel.grid.major.x = element_line(linetype = "blank"),
       panel.grid.major.y = element_line(color = "#656C70", linetype = "dotted"),
-      strip.text = element_text(family = "sans", 
-                                size = 18, color = "grey25", vjust=1),
+      strip.text = element_text(family = "sans",size = strptextsize, color = "grey25", vjust=1),
       strip.background = element_rect(fill = "lightgrey"),
       axis.ticks = element_blank(),
       axis.title.x = element_text(size=rel(1.1),  face="italic", vjust=-1, hjust=.05, colour="grey25"),
