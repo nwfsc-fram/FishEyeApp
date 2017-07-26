@@ -1,6 +1,7 @@
 .libPaths(c("/usr/lib64/R/shiny_library", .libPaths()))
 
 library(appFrame)
+library(shinyjs)
 
 # custom css functions
 # calls .css selector for well-sub
@@ -10,8 +11,9 @@ wellPanelHeading <- function(...){div(class = "well-radioHeading", ...)}
 
 
 fluidPage(title = "FISHEyE",
-            # create a CSS to modify style of validation test error (for Variability analysis)
-          tags$head(tags$body(includeHTML("google-analytics.noaa.js"))),
+          useShinyjs(),
+          # create a CSS to modify style of validation test error (for Variability analysis)
+          #tags$head(tags$body(includeHTML("google-analytics.noaa.js"))),
           tags$head(
             tags$style(HTML(".select {margin-top:-20px}"),tags$textarea(id="message", rows=3, cols=40, "Default value")),
           #  tags$style(HTML(".navbar .nav > li { position:relative; z-index: 10000;}")),
@@ -169,13 +171,38 @@ fluidPage(title = "FISHEyE",
                                      fluidRow(column(12, htmlOutput('GetStartedText')))))))))), 
                             conditionalPanel(condition="input.VariableSelect!=''",  
                               fluidRow(column(2, uiOutput("DataButton")),  
-                                       column(12, dataTableOutput("TableMain"), plotOutput("PlotMain", height="auto",width="auto"))
-                            ))),
+                                       column(12, dataTableOutput("TableMain"), 
+                                             plotOutput("PlotMain", height="auto",width="auto"))
+                            )))
 ###--------------Case Study -------------------------------####
-                tabPanel(title='Case studies', value='Panel2', padding='10px',
-                         tags$h3('Does net revenue differ between trawl gear and fixed gear for vessels with a trawl permit?'),
-                         fluidRow(column(12, htmlOutput('CaseStudy1'),plotOutput("PlotMain2", height="auto",width="auto")))
-                         )
+                ,tabPanel(title='Case studies', value='Panel2', padding='10px',
+                         tags$h3('Does net revenue differ between trawl gear and fixed gear for catcher vessels with a trawl permit?'),
+                         fluidRow(column(12, htmlOutput('CaseStudyp1')),
+                                  column(12,  actionButton("hideshow1", "Show/Hide VCNR plot for catcher vessels with trawl permit", style='color:#fff; background-color:#5bc0de;border-color:#46b8da')),
+                                  column(12, # conditionalPanel(condition="input.hideshow1 % 2 !=0 & values$shouldShow != TRUE", 
+                                         hidden(plotOutput("PlotMain2"))), 
+                                  column(12, htmlOutput('CaseStudyp6')),
+                                 column(12,  actionButton("hideshow6", "Show/Hide Days at sea plots for catcher vessels with trawl permit", style='color:#fff; background-color:#5bc0de;border-color:#46b8da')),
+                                 column(12,  hidden(htmlOutput("CaseStudyFig5"))),
+                                 
+                                 column(12,  htmlOutput('CaseStudyp2')),       
+                                  column(12,  actionButton("hideshow2", "Show/Hide Thirds plot for Groundfish with trawl endorsement fishery", style='color:#fff; background-color:#5bc0de;border-color:#46b8da')),
+                                  column(12,  #conditionalPanel(condition="input.hideshow2 % 2 !=0",  
+                                         hidden(htmlOutput('CaseStudyFig2'))),#tags$img(src="TrawlThirds.png", height=350))),
+                                  
+                                  #column(12,  actionButton("hideshow3", "Show/Hide TCNR plot for catcher vessels with trawl permit", style='color:#fff; background-color:#5bc0de;border-color:#46b8da')),
+                                  #column(12,  hidden(plotOutput("PlotMain3"))),#htmlOutput('CaseStudyFig3'))),
+                                  column(12,  htmlOutput('CaseStudyp4')),
+                                  column(12,  actionButton("hideshow4", "Show/Hide Thirds plot for Groundfish fixed gear with trawl endorsement fishery", style='color:#fff; background-color:#5bc0de;border-color:#46b8da')),
+                                  column(12,  hidden(htmlOutput('CaseStudyFig3'))),
+                                 
+                                   column(12,  htmlOutput('CaseStudyp5')),
+                                  column(12,  actionButton("hideshow5", "Show/Hide Costs plot for catcher vessels with trawl permit", style='color:#fff; background-color:#5bc0de;border-color:#46b8da')),
+                                 column(12,  hidden(htmlOutput("CaseStudyFig4")))
+                                 
+                                 
+                                  )
+)
 ###-----------End case study-------------------------------######
               )),
                             
@@ -299,17 +326,17 @@ fluidPage(title = "FISHEyE",
                               source("external/explorer/explorerSourceFiles/definitions.R")$value
                      )
             ), # end right side column     
-          tabPanel("Bulletin Board", 
+          tabPanel(HTML('<i class="fa fa-thumb-tack" style="margin-right:2ex;display:inline-block;vertical-align:bottom;float:left;white-space:nowrap"> Bulletin Board</i>'),
                               fluidRow(
                                 column(12, htmlOutput("BlogText")),
                                      column(5,  htmlOutput("BlogUpdates")),
                                      column(1),
                                 column(5,  htmlOutput("BlogResponses")))),
-           tabPanel("Contact us",
+           tabPanel(HTML('<i class="fa fa-envelope-o fa-fw" style="margin-right:9ex;display:inline-block;vertical-align:bottom;float:left;white-space:nowrap"> Contact us</i>'),
                    fluidRow(
                      column(12, htmlOutput("Email")))
                    ),
-          tabPanel("FISHEyE Applications",
+          tabPanel(HTML('<i class="fa fa-folder-open-o fa-fw" style="margin-right:18ex;display:inline-block;vertical-align:bottom;float:left;white-space:nowrap"> FISHEyE Applications</i>'),
                    fluidRow(
                      column(12, htmlOutput("ApplicationsText"))
                    )),

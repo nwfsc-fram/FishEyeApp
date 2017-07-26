@@ -244,34 +244,93 @@ output$GetStartedText <- renderUI({
 
 ##--------------- Case Study text:-------------------------###
 
-output$CaseStudy1 <- renderUI({
-  tags$div(style = "margin: 15px 15px 30px; width: 90%",
-           tags$p("Annual variable cost net revenue (VCNR; a measure of shorter-term operating profit) tends to be greater from trawl activities than from fixed gear activities. This is 
-                  evident whether comparing the median (black line in plot below) or average (not shown) vessel or the range in VCNR (25th percentile-representation of a vessel that is 
-                  making more than 25 percent of vessels, but less than 75 percent of vessels- and 75th percentile- representative of a vessel making more than 50% of vessels but no more 
-                  than 75%- shown), VCNR has been relatively stable at around $50,000. Note, we do not show 2009-2010 as fixed gear levels are not directly comparable because of TNC EFP. 
-                  Total cost net revenue (TCNR), a longer-term measure of profitability that includes both fixed and variable costs, is also greater in trawl gear activities."),
-            tags$p(
-                  "How as net revenue changed since catch share program implementation? For groundfish trawl activities, the median VCNR has been relatively stable at around $100,000 per 
-                   year. Similarly, VCNR for lower earners (25th percentile but see THIRDS ANALYSIS) has remained relatively stable. In contrast, for upper earners (75th percentiles). If we 
-                  divide vessels based on revenue earned annually, you will see that net revenue (VCNR or TCNR) has increased at the most rapid rate of the top third of revenue earners but 
-                  that the lower revenue earners have shown improvements, particularly in TCNR."),
-            tags$p(
-                  "In contrast to VCNR, TCNR has increased for the entire distribution shown, although for the lower income earners, TCNR was negative in some years. Total cost net revenue 
-                  has increased more than variable cost net revenue because of a decrease in the number of vessels participating in this activity or consolidation. As the number of vessels 
-                  decreases, fewer vessels are catching a larger proportion of the catch, and incurring fewer fixed costs, leading to greater overall efficiency. In addition to 
-                  consolidation, these vessels are fishing fewer days in the groundfish trawl fishery. Although revenue and costs have changed little on an annual basis, revenue per day
-                   of fishing has increased, meaning that this fleet is experiencing the same level of profitability despite less effort (fewer fishing days). For fixed gear with a trawl 
-                  permit activities, pre- and post-catch shares outcomes are not easily compared as pre-catch shares participation in the fixed gear fishery was through a TNC Exempted Fishing Permit program. 
-                  Since 2011, there has been no clear trend in profitability (VCNR, TCNR) or income potential (crew wage). The high variability between years may reflect annual variation 
-                  in sablefish prices or that this is a new fisheries activity."),
-            tags$p(
-                  "Although net revenue has been positive for the median and top-earning (75th percentile represented by upper greyed area) vessels, lower earning vessels (25th percentile 
-                  is the lower grey band) reported negative VCNR. The variation in earnings across the fleet is even more evident when we divide vessels into groups based on annual revenue. 
-                  Vessels with the lowest revenue tend to report negative VCNR whereas vessels with the highest revenue reported positive VCNR. TCNR was lower, as it takes fixed costs into 
-                  account as well. TCNR was also less variable between years compared with VCNR. The peak in 2011 and dip in 2013 observed in VCNR is not present in TCNR, this is because 
-                  greater fixed costs in 2011 offset greater revenue and lower fixed costs in 2013 offset lower revenue. Similar to VCNR, TCNR was negative for lower earning vessels. Net 
-                  revenue per day shows largely the same pattern as net revenue per year, as days at sea per vessel in the fixed gear fishery has varied but with no clear directional trend.")           
-  )
+output$CaseStudyp1 <- renderUI({
+         tags$div(style = "margin: 15px 15px 30px; width: 90%",
+           tags$p(tags$em('(All plots displayed can be generated using FISHEyE, see italics for directions on how to create figure.)')),
+          tags$p("Annual variable cost net revenue (VCNR; a measure of shorter-term operating profit) tends to be greater from trawl activities than from fixed gear activities. As shown in the figure 
+                  below, using the Performance Metrics module, this is evident whether comparing the median (black line in plot below) vessel, or the range in VCNR (in grey), in all years except for 2011. 
+                The median VCNR was closer between the two fisheries in 2015 than in previous years. The range shows outcomes between the 25th and 75th percentiles
+                  (representation of vessels that make more than the lowest 25% of vessels and less than the highest 25%).
+                 By using the panel on the right, you can toggle between the median outcome and the average outcome, which illustrates a similar trend. 
+                 Note, we do not show 2009-2010 as fixed gear levels are not directly comparable because vessels were fishing under an Exempted Fishing Permit.  
+                   Total cost net revenue (TCNR), a longer-term measure of profitability that includes both fixed and variable costs, is also greater in trawl gear activities. Use the panel
+                  on the right to display TCNR."))
 })
+output$CaseStudyp2 <- renderUI({
+        tags$div(style = "margin: 15px 15px 30px; width: 90%",
+                  tags$p(tags$strong(tags$h4("How has net revenue changed since catch share program implementation?"))),
+                 tags$p("For groundfish trawl activities, the median VCNR", tags$em('(see uppermost plot)'), "has been relatively stable at around $100,000 per 
+                   year and VCNR for lower earners (25th percentile) has also remained relatively stable. In contrast, TCNR has increased over the time 
+period shown, although, for the lower income earners, TCNR was negative in some years.",
+                        tags$em('(click on Total Cost Net Revenue in the panel on the right to see this figure in the uppermost plot above.)'),"TCNR has increased more than VCNR because of 
+consolidation, a decrease in the number of vessels  fishing",
+tags$em('(click on  Demographic under Indicator Category and then select the  Number of Vessels metric in the panel on the right to see this figure in the plot above)'),". 
+As the number of vessels decreases, fewer vessels are catching a larger proportion of the catch, and incurring fewer fixed costs, leading to greater overall efficiency. In addition to 
+consolidation, these vessels are fishing fewer days in the groundfish trawl fishery. Although revenue and costs have changed little on an annual basis, revenue per day
+of fishing has increased, meaning that this fleet is experiencing the same level of profitability despite less effort (fewer fishing days). 
+"),
+
+                  tags$p("If vessels are partitioned differently, in 33.3rd, 66.6th and 100th percentiles
+                  based on revenue earned annually, you will see in the", tags$em('plot below'), "that net revenue (VCNR or TCNR) has increased most rapidly for the top third of revenue earners but 
+                  that the lower third of revenue earners have also shown improvements, particularly in TCNR. This figure came from the Thirds Analysis in the ", 
+tags$a(href="http://dataexplorer.northwestscience.fisheries.noaa.gov/fisheye/NetRevExplorer/",  " Net Revenue Explorer.", target="_blank")))
+})
+#  output$CaseStudyp3 <- renderUI({            
+#        tags$div(style = "margin: 15px 15px 30px; width: 90%",tags$p(
+
+#  })
+  output$CaseStudyp4 <- renderUI({            
+        tags$div(style = "margin: 15px 15px 30px; width: 90%",
+                 tags$p("For fixed gear with a trawl permit activities, there has been no clear trend in profitability (VCNR, TCNR) or 
+                  income potential (crew wage) since 2011.", 
+                  tags$em('See the first plot on this page or use then panel on the right to show these figures. Crew wage is under the Social and Regional Indicator Category.'), 
+                  "The high variability between years may reflect annual variation in sablefish prices or that this is a new 
+                   fisheries activity."),
+                 tags$p("Net revenue has differed between revenue earners", tags$em('(Thirds Analysis, see plot below)'), 
+          ". Vessels are divided annually into 33.3rd, 66.6th and 99.9th percentile groups based on revenue. 
+                  Vessels in the lowest revenue group tend to report negative VCNR whereas vessels in the highest revenue group reported positive VCNR. TCNR was lower, as it takes fixed costs into 
+                  account as well. TCNR was also less variable between years compared with VCNR. The peak in 2011 and dip in 2013 observed in VCNR is not present in TCNR, this is because 
+                  greater fixed costs in 2011 offset greater revenue, and lower fixed costs in 2013 offset lower revenue. Similar to VCNR, TCNR was negative for lower earning vessels.")           
+  
+)
+    })
+  output$CaseStudyp5 <- renderUI({            
+    tags$div(style = "margin: 15px 15px 30px; width: 90%",
+             tags$p("Variable and fixed costs can be further explored using the", tags$a(href='','Costs Explorer Application.', target="_blank"),
+             "In the", tags$em('plot below,'), "we show the fleet-wide average per dollar of revenue for all fixed costs combined along with three individual fixed cost categories. 
+             The statistic is calculated as the sum of the costs across the fleet divided by the sum of revenue across the fleet and
+              is useful to evaluate how costs affect net revenue. Net revenue tends to be lower when fleet-wide average per dollar of revenue costs are higher.
+             For both fisheries, fishing gear costs have decreased over time. It is also worth noting that on-board equipment (includes machinery and equipment not used to harvest or process fish)
+             can include large costs such as motors and new vessels."       
+             ))})
+    output$CaseStudyp6 <- renderUI({
+      tags$div(style = "margin: 15px 15px 30px; width: 90%",
+          tags$p('We can also look at effort to understand differences between the two fisheries activities', tags$em('See plot below or use the panel on the right. In the panel on the right, click on
+                     Economic under Indicator Category and select either VCNR or TCNR and then select Median per vessel/day. The figure will
+                    show in the uppermost plot on this page. To view Days at Sea fishing, click on the Demograhic option under Indicator Category and
+                    then select the Days at Sea metric and the Median statistic.'), 'Although the median VCNR per day tends be lower for trawl gear with a trawl permit
+compared to groundfish trawl, the upper VCRN (75th percentile) tends be greater for fixed gear. These plots suggest that the greater net revenue 
+                    by groundfish trawl activities compared to fixed gear with a trawl permit activities reflects, in part, greater effort.
+                 Looking at the 75th percentile for fixed gear vessels , it is important to note that some fixed gear vessels earn more than trawl vessels on a per day basis.')
+    )
+  })
+  
+
+  output$CaseStudyFig2 <- renderUI({
+    tags$img(src="TrawlThirds.png", height=325)
+  })
+  output$CaseStudyFig3 <- renderUI({  
+    tags$img(src="TCNRTrawl.png", height=350)
+  })
+  
+  output$CaseStudyFig3 <- renderUI({  
+    tags$img(src="FixedTrawlThirds.png", height=320)
+  })
+  output$CaseStudyFig4 <- renderUI({  
+    tags$img(src="TrawlCosts.png", height=325)
+  })
+  output$CaseStudyFig5 <- renderUI({  
+    tags$img(src="TrawlDAS.png", height=525)
+  })
+  
 ##--------------- End Case Study text:-------------------------###

@@ -134,6 +134,16 @@ output$PlotMain <- renderPlot({
 #   doPlot(dat = DatSub(), x = "YEAR", y = "VALUE/1000")}
  },  height=scale_height, width = "auto")
 
+output$PlotMain2 <- renderPlot({
+  input$data
+  doPlot(dat = DatSub(), x = "YEAR", y = "VALUE")
+},  height=400, width = 700)
+
+
+output$PlotMain3 <- renderPlot({
+  input$data
+  doPlot(dat = DatSub(), x = "YEAR", y = "VALUE")
+},  height=400, width = 700)
 
 output$TableMain <- renderDataTable({  
   input$data

@@ -42,6 +42,11 @@ output$moreOptions <- renderUI({
 ########################################################
 
 output$Yearselect <- renderUI({
+  if(input$tabs=='Panel2'){
+    tags$div(class="ckbox", checkboxGroupInput( "YearSelect","Years:", choices = DatVars()$YEAR[6:length(DatVars()$YEAR)], selected = DatVars()$YEAR[8:length(DatVars()$YEAR)]))
+    
+  }
+  else {
   if(input$LayoutSelect=='Metrics'){
       tags$div(class="ckbox", checkboxGroupInput( "YearSelect","Years:", choices = DatVars()$YEAR[6:length(DatVars()$YEAR)], selected = DatVars()$YEAR[6:length(DatVars()$YEAR)]))
   } else {
@@ -95,7 +100,7 @@ output$Yearselect <- renderUI({
       }
     }
     }}
-}
+}}
 })  
 #END YEAR
 ##############################################
@@ -120,10 +125,16 @@ output$Categoryselect <- renderUI({
 #INDICATOR SELECT - DEMOGRAPHIC, ECONOMIC, SOCIAL
 ###################################################
 output$IndicatorSelect <- renderUI({
-  #  tagList(
+#    tagList(
+  if(input$tabs=='Panel1'){
   selectInput("Ind_sel", HTML("<div> Select an indicator category: <button id='ipo' type='button' class='btn btn-default action-button shiny-bound-input'> 
                               <i class='fa fa-info-circle fa-fw' ></i></button> </div>"), c('Demographic',"Economic","Social and Regional"), selected='Demographic',selectize=T)#,
-})  #END INDICATOR SELECT
+  } else {
+    selectInput("Ind_sel", HTML("<div> Select an indicator category: <button id='ipo' type='button' class='btn btn-default action-button shiny-bound-input'> 
+                              <i class='fa fa-info-circle fa-fw' ></i></button> </div>"), c('Demographic',"Economic","Social and Regional"), selected='Economic',selectize=T)#,
+    
+  }
+    })  #END INDICATOR SELECT
 ###################################################
 #End indicator select
 ###################################################
@@ -257,9 +268,13 @@ output$Variableselect <- renderUI({
       else if(input$CategorySelect=="Fisheries"){
         if(input$LayoutSelect!='Metrics'){
           if(input$Ind_sel=="Economic"||input$Ind_sel=="Demographic"||input$Ind_sel=="Social and Regional" &input$socSelect[1]!="Share of landings by state"){
+            if(input$tabs=='Panel1'){
            tags$div(class="ckbox2", checkboxGroupInput("VariableSelect", div("Select one or more fisheries:", style="margin-top:0; padding:-10px"),#HTML("<div style='font-style:italic; font-size:10.87pt; font-weight:normal; margin-top:8.5pt'> 
                                                         choices=c("All fisheries combined"="All fisheries"," All catch share fisheries combined"="All catch share fisheries",fish.var[3:14])))
-          }
+            } else {
+              tags$div(class="ckbox2", checkboxGroupInput("VariableSelect", div("Select one or more fisheries:", style="margin-top:0; padding:-10px"),#HTML("<div style='font-style:italic; font-size:10.87pt; font-weight:normal; margin-top:8.5pt'> 
+                                                          choices=c("All fisheries combined"="All fisheries"," All catch share fisheries combined"="All catch share fisheries",fish.var[3:14]), selected=c('Groundfish with trawl gear','Groundfish fixed gear with trawl endorsement')))
+          }}
           else {
             tagList(
              tags$div(class="ckbox3", radioButtons("VariableSelect", div("Select one fisheries:", style="margin-top:0; padding:-10px"),#HTML("<div style='font-style:italic; font-size:10.87pt; font-weight:normal; margin-top:8.5pt'> 
@@ -425,11 +440,18 @@ output$Shortdescrselect <- renderUI({
                                                                         </button></div>"), 
                                                choices = DatVars()$SHORTDESCR, selected = DatVars()$SHORTDESCR))
   } else {
+    if(input$tabs=='Panel1'){
     tags$div(class="ckbox", radioButtons("ShortdescrSelect", HTML("<div> Economic measures:<button id='iem' type='button' class='btn btn-default action-button shiny-bound-input'> <i class='fa fa-info-circle fa-fw' ></i> 
                                                                   </button></div>"), 
                                          choices = DatVars()$SHORTDESCR, selected =DatVars()$SHORTDESCR[1]))
+    } else {
+      tags$div(class="ckbox", radioButtons("ShortdescrSelect", HTML("<div> Economic measures:<button id='iem' type='button' class='btn btn-default action-button shiny-bound-input'> <i class='fa fa-info-circle fa-fw' ></i> 
+                                                                  </button></div>"), 
+                                           choices = DatVars()$SHORTDESCR, selected =DatVars()$SHORTDESCR[4]))
+    }
   }
 })
+
 ###################################################
 #End economic measure select
 ###################################################
