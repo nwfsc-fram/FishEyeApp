@@ -68,7 +68,8 @@ tags$head(tags$body(includeHTML("google-analytics.noaa.js"))),
                              #istat      {width:20px; height:19px; margin:0px;border:none; padding:0px;border-radius:25px;background-color:transparent;font-size:12px; color:RoyalBlue}
                              #ivs     {width:20px; height:19px; margin:0px;border:none; padding:0px;border-radius:25px;background-color:transparent;font-size:12px; color:RoyalBlue}
                              #iem     {width:20px; height:19px; margin:0px;border:none; padding:0px;border-radius:25px;background-color:transparent;font-size:12px; color:RoyalBlue}
-                             #iprod   {width:20px; height:19px; margin:0px;border:none; padding:0px;border-radius:25px;background-color:transparent;font-size:12px; color:RoyalBlue}'))
+                             #iprod   {width:20px; height:19px; margin:0px;border:none; padding:0px;border-radius:25px;background-color:transparent;font-size:12px; color:RoyalBlue}
+                            #iwhiting{width:20px; height:19px; margin:0px;border:none; padding:0px;border-radius:25px;background-color:transparent;font-size:12px; color:RoyalBlue}'))
        ),#end tags head
           # stylize show data and show plots buttons
    
@@ -103,7 +104,8 @@ tags$head(tags$body(includeHTML("google-analytics.noaa.js"))),
                      tabPanel("Explore the data", value="results",    
                               sidebarLayout(
                                 mainPanel(         
-                                  tabsetPanel(tabPanel(title=HTML("Summary Plots <br> and Data"), value="Panel1", padding='10px',
+                                  tabsetPanel(id = "tabs",
+                                    tabPanel(title=HTML("Summary Plots <br> and Data"), value="Panel1", padding='10px',
                                                        fluidRow(column(12,'',
                                                                        fluidRow(column(12,
                                                                                        conditionalPanel(condition="input.VariableSelect==''",
@@ -117,7 +119,18 @@ tags$head(tags$body(includeHTML("google-analytics.noaa.js"))),
                                                       conditionalPanel(condition="input.VariableSelect!=''",  fluidRow(
                                                         column(2, uiOutput("DataButton")),  
                                                         column(12, dataTableOutput("TableMain"), plotOutput("PlotMain", height="auto",width="auto"))
-                                                      ))))),
+                                                      )))
+############################
+#----Case Study -----#
+############################
+                                              ,                                             
+                                                tabPanel(title='Case studies', value='Panel2', padding='10px',
+                                                                                                     tags$h3('For vessels that did not fish for whiting, how do average variable costs per day at sea fishing for catch share fisheries compare between state of homeport?'),
+                                                                                                 fluidRow(column(12, htmlOutput('CaseStudy1'),plotOutput("PlotMain2", height="auto",width="auto")
+                                                                                                                 )))
+###---- End case Study -----###
+############################
+                                  )),
                                 sidebarPanel(
                                   wellPanel( #left side panel  
                                     tags$head(
@@ -197,17 +210,17 @@ tags$head(tags$body(includeHTML("google-analytics.noaa.js"))),
                                          source("external/explorer/explorerSourceFiles/definitions.R")$value
                                 )
                      ), # end right side column     
-                     tabPanel("Bulletin Board", 
+                     tabPanel(HTML('<i class="fa fa-thumb-tack" style="margin-right:2ex;display:inline-block;vertical-align:bottom;float:left;white-space:nowrap"> Bulletin Board</i>'),
                               fluidRow(
                                 column(12, htmlOutput("BlogText")),
                                 column(5,  htmlOutput("BlogUpdates")),
                                 column(1),
                                 column(5,  htmlOutput("BlogResponses")))),
-                     tabPanel("Contact us",
+                     tabPanel(HTML('<i class="fa fa-envelope-o fa-fw" style="margin-right:9ex;display:inline-block;vertical-align:bottom;float:left;white-space:nowrap"> Contact us</i>'),
                               fluidRow(
                                 column(12, htmlOutput("Email")))
                      ),
-                     tabPanel("FISHEyE Applications",
+                     tabPanel(HTML('<i class="fa fa-folder-open-o fa-fw" style="margin-right:18ex;display:inline-block;vertical-align:bottom;float:left;white-space:nowrap"> FISHEyE Applications</i>'),
                               fluidRow(
                                 column(12, htmlOutput("ApplicationsText"))
                               )),
