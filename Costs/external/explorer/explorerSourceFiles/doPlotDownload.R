@@ -41,7 +41,13 @@ doPlotDownload <- function(dat, x, y){
     
     thresh <- function(){
       if(input$PlotSelect != "Stacked bar"){
+        if(input$StatSelect=='Mean per vessel'|input$StatSelect=='Median per vessel'|input$StatSelect=='Fleet-wide total'|
+           input$StatSelect=="Mean per processor"|input$StatSelect=='Median per processor'|input$StatSelect=='Industry-wide total'|
+           input$StatSelect=='Mean per vessel/day'|input$StatSelect=='Median per vessel/day'|input$StatSelect=='Fleet-wide average/day'){
         return(max(dat$VALUE,na.rm=T)/1000+max(dat$VALUE,na.rm=T)/10000)
+        } else {
+          return(max(dat$VALUE,na.rm=T)+max(dat$VALUE,na.rm=T)/10) 
+        }
       } else {
         return(
           max(data.frame(
@@ -160,8 +166,17 @@ doPlotDownload <- function(dat, x, y){
     
     
     ylab <- function(){
-        paste("Thousands of", currentyear, "$", "(",input$StatSelect, ")")
-        }
+      if(input$StatSelect=='Mean per vessel'|input$StatSelect=='Median per vessel'|input$StatSelect=='Fleet-wide total'|
+         input$StatSelect=="Mean per processor"|input$StatSelect=='Median per processor'|input$StatSelect=='Industry-wide total'|
+         input$StatSelect=='Mean per vessel/day'|input$StatSelect=='Median per vessel/day'|input$StatSelect=='Fleet-wide average/day'){
+        paste("Thousands of", currentyear, " $ (",input$StatSelect, ")")
+      } else if(input$StatSelect=='Mean per vessel/dollar of revenue'|input$StatSelect=='Median per vessel/dollar of revenue'|input$StatSelect=='Fleet-wide average/dollar of revenue'|
+                input$StatSelect=="Mean per processor/dollar of revenue"|input$StatSelect=='Median per processor/dollar of revenue'|input$StatSelect=='Industry-wide average/dollar of revenue'){
+        input$StatSelect
+      } else {
+        paste(currentyear, " $ (",input$StatSelect, ")")
+      }
+    }
     
     stacked_bar_mess <- function(){
       "For the stacked bar plot, we show either the individual cost categories or the total cost categories (All variable or All fixed costs). \nIf you select a total cost category and an individual cost category, only the individual cost category will be shown."
@@ -198,7 +213,7 @@ doPlotDownload <- function(dat, x, y){
     g <- g + labs(y=ylab(), x=xlab(), title=main())
     
      if(length(yr())>1 & min(yr())<2011 & max(yr())>2010){
-      g <- g + geom_rect(aes(xmin=-Inf, xmax=table(yr()<=2010)[[2]]+.5, ymin=-Inf, ymax=Inf), fill="grey50", alpha=.05) +
+      g <- g + geom_rect(aes(xmin=-Inf, xmax=table(yr()<=2010)[[2]]+.5, ymin=-Inf, ymax=Inf), fill="grey50", alpha=.02) +
                geom_text(aes(x=table(yr()<=2010)[[2]]/3.5,y=thresh(), label="Pre-Catch shares"), family="serif",fontface="italic", hjust=0,color = "grey40", size=4/scale_text()) + 
                geom_text(aes(x=table(yr()<=2010)[[2]]+table(yr()>2010)[[2]]/1.5,y=thresh(),label="Post-Catch shares"),hjust=0, 
                          family = "serif", fontface="italic", color = "grey40", size=4/scale_text())  
@@ -208,24 +223,24 @@ doPlotDownload <- function(dat, x, y){
   
     # define theme
     g <- g + theme(
-      plot.title = element_text( vjust=1, hjust=0.5,size=rel(1.5), colour="grey25", family = "sans", face = "bold"),# 
+      plot.title = element_text( vjust=1, hjust=0.5,size=rel(1.4), colour="grey25", family = "sans", face = "bold"),# 
       panel.background = element_rect(fill = "white"),
       #panel.spacing = unit(1.1, "lines"),
       panel.grid.minor = element_line(linetype = "blank"),
       panel.grid.major.x = element_line(linetype = "blank"),
       panel.grid.major.y = element_line(color = "#656C70", linetype = "dotted"),
       strip.text = element_text(family = "sans", 
-                                size = 9, color = "grey25", vjust=1),
+                                size = 13, color = "grey25", vjust=1),
       strip.background = element_rect(fill = "lightgrey"),
       axis.ticks = element_blank(),
       axis.title.x = element_text(size=rel(.7), face="italic", vjust=0, colour="grey25"),
       axis.title.y = element_text(size=rel(1.2), vjust=2, colour="grey25"),
       axis.line.x = element_line(size = 2, colour = "black", linetype = "solid"),
-      axis.text = element_text(size = 10),
+      axis.text = element_text(size = 11),
       legend.position = "top",
       legend.key = element_rect(fill = "white"),
       legend.text = element_text(family = "sans", 
-                                 color = "grey25", face = "bold", size = 7),
+                                 color = "grey25", face = "bold", size = 9),
       legend.key.size=unit(1,'line'),
       legend.title = element_blank())
     

@@ -19,9 +19,11 @@ doPlot <- function(dat, x, y, type){
     colourThirds <- c('Top third'="#253494",'Middle third'="#41b6c4",'Lower third'="#a1dab4")
 
     if(type == "summary"){
-      rectvars <- dat %>% distinct(sort2,YEAR,SHORTDESCR) %>% group_by(sort2,SHORTDESCR) %>% transmute(minx=as.numeric(min(YEAR)), xmaxscale=length(YEAR[YEAR<2011]), maxx=max(YEAR))  %>% data.frame()%>% distinct
+      rectvars <- dat %>% distinct(sort2,YEAR,SHORTDESCR) %>% group_by(sort2,SHORTDESCR) %>% transmute(minx=as.numeric(min(YEAR)), xmaxscale=length(YEAR[YEAR<2011]), maxx=max(YEAR))  %>% 
+        data.frame()%>% distinct
     } else {
-      rectvars <- dat %>% distinct(sort2,YEAR,THIRDS) %>% group_by(sort2,THIRDS) %>% transmute(minx=as.numeric(min(YEAR)), xmaxscale=length(YEAR[YEAR<2011]), maxx=max(YEAR))  %>% data.frame()%>% distinct
+      rectvars <- dat %>% distinct(sort2,YEAR,THIRDS) %>% group_by(sort2,THIRDS) %>% transmute(minx=as.numeric(min(YEAR)), xmaxscale=length(YEAR[YEAR<2011]), maxx=max(YEAR))  %>% 
+        data.frame()%>% distinct
     }
     rectvars$xmaxscale <- max(rectvars$xmaxscale)
     
@@ -149,16 +151,18 @@ doPlot <- function(dat, x, y, type){
           return(1.4)
       }}   
     
+
     scale_geom_text <- function() {
-      if(sum(dat$VALUE, na.rm=T)!=0) {
-        return(max(dat$VALUE, na.rm=T))
-      } else {
-        return(0)
+      if(type == "summary"){    
+      if(input$DodgeSelect == "Economic measures side-by-side"){
+          return(max(dat$VALUE, na.rm=T)/850)
+        } else{
+          dat %>% group_by(YEAR, SHORTDESCR) %>% summarise(VALUE=max(VALUE, na.rm=T)) %>% group_by(YEAR) %>% summarise(VALUE=sum(VALUE, na.rm=T)/900) %>% summarise(max(VALUE)) %>% return()
+           }} else {
+        return(max(dat$VALUE, na.rm=T)/850)
       }
     }
 
-#    dat$pretty_label <- gsub("([.])", "\\ ", dat$sort)
-    
     
 # Begin ggplot    
     g <- ggplot(dat[!is.na(dat$VALUE),], aes_string(x = x, y = y , group = groupVar), environment=environment())
@@ -223,7 +227,13 @@ doPlot <- function(dat, x, y, type){
     
     # define x- and y-axis labels
     ylab <- function(){
+      if(input$StatSelect=='Median per vessel/metric-ton caught'|input$StatSelect=='Mean per vessel/metric-ton caught'|
+         input$StatSelect=='Mean per vessel/metric-ton produced'|input$StatSelect=='Median per vessel/metric-ton produced'|
+         input$StatSelect=='Mean per processor/metric-ton produced'|input$StatSelect=='Median per processor/metric-ton produced'){
+        paste(currentyear, "$", "(",input$StatSelect, ")")
+      } else {
         paste("Thousands of", currentyear, "$", "(",input$StatSelect, ")")
+      }
     }
     
     supp_obs <- function(){
@@ -267,65 +277,22 @@ doPlot <- function(dat, x, y, type){
     
               
 ##--------------Define geom_rect and labels-----------------------###
-    if(type == "summary"){    
-      if(input$DodgeSelect == "Economic measures side-by-side"){
                if(length(yr())>1 & min(yr())<2011 & max(yr())>2010){
-          g <- g + geom_rect(aes(xmin=-Inf, xmax=table(yr()<=2010)[[2]]+.5, ymin=-Inf, ymax=Inf), alpha=.025, fill="grey50") +
-              geom_text(aes(x=table(yr()<=2010)[[2]]/4,y=scale_geom_text()/1000+scale_geom_text()/10000, label="Pre-catch shares"), family="serif",fontface="italic", hjust=0, color = "grey40", size=7/scale_text()) +
-              geom_text(aes(x=table(yr()<=2010)[[2]]+table(yr()>2010)[[2]]/1.5,y=scale_geom_text()/1000+scale_geom_text()/10000,label="Post-catch shares"), family = "serif", fontface="italic",hjust=0, 
+          g <- g + geom_rect(aes(xmin=-Inf, xmax=table(yr()<=2010)[[2]]+.5, ymin=-Inf, ymax=Inf), alpha=.015, fill="grey50") +
+              geom_text(aes(x=table(yr()<=2010)[[2]]/4,y=scale_geom_text(), label="Pre-catch shares"), family="serif",fontface="italic", hjust=0, color = "grey40", size=7/scale_text()) +
+              geom_text(aes(x=table(yr()<=2010)[[2]]+table(yr()>2010)[[2]]/1.5,y=scale_geom_text(),label="Post-catch shares"), family = "serif", fontface="italic",hjust=0, 
                       color = "grey40", size=7/scale_text())  
         } else {
           g <- g  
         }
-      } # end economics measure side by side plots
+ # End geom_rect and labels
       
-      
-      if(input$DodgeSelect != "Economic measures side-by-side"){          
-        if(length(yr())>1 & min(yr())<2011 & max(yr())>2010){
-          if(yr()[2]==2010){
-            if(table(yr()>2010)[[2]]==1){
-              g <- g + geom_rect(aes(xmax=table(yr()<=2010)[[2]]+.5, ymin=-Inf, ymax=Inf), fill="grey50", alpha=.02)+ 
-                geom_text(aes(x=.4,y=scale_geom_text()/500, label="Pre-catch shares"),family="serif",fontface="italic",hjust=0, size=7/scale_text(), color="grey40") + 
-                geom_text(aes(x=table(yr()<=2010)[[2]]+table(yr()>2010)[[2]]/1,y=scale_geom_text()/500,label="Post-catch shares"),family="serif",fontface="italic",hjust=1, size=7/scale_text(), color="grey40")# +
-            } else {
-              g <- g + geom_rect(aes(xmin=.1, xmax=table(yr()<=2010)[[2]]+.5, ymin=-Inf, ymax=Inf), fill="grey50", alpha=.02)+ 
-                geom_text(aes(x=.3,y=scale_geom_text()/500, label="Pre-catch shares"),family="serif",fontface="italic",hjust=0, size=7/scale_text(), color="grey40") + 
-                geom_text(aes(x=table(yr()<=2010)[[2]]+table(yr()>2010)[[2]]/1.5,y=scale_geom_text()/500,label="Post-catch shares"),family="serif",fontface="italic",hjust=0, size=7/scale_text(), color="grey40")# +
-            }
-          } else  {
-            if(table(yr()>2010)[[2]]==1){  
-              g <- g + geom_rect(aes(xmin=.1, xmax=table(yr()<=2010)[[2]]+.5, ymin=-Inf, ymax=Inf), fill="grey50", alpha=.02)+ 
-                geom_text(aes(x=.25,y=scale_geom_text()/500, label="Pre-catch shares"),family="sans",fontface="italic",hjust=0, size=7/scale_text(), color="grey40") + 
-                geom_text(aes(x=table(yr()<=2010)[[2]]+table(yr()>2010)[[2]]/1,y=scale_geom_text()/500,label="Post-catch shares"),family="serif",fontface="italic",hjust=1, size=7/scale_text(), color="grey40") #+
-            } else {
-              g <- g + geom_rect(aes(xmin=.1, xmax=table(yr()<=2010)[[2]]+.5, ymin=-Inf, ymax=Inf), fill="grey50", alpha=.02)+ 
-                geom_text(aes(x=.15,y=scale_geom_text()/500, label="Pre-catch shares"),family="sans",fontface="italic",hjust=0, size=7/scale_text(), color="grey40") + 
-                geom_text(aes(x=table(yr()<=2010)[[2]]+table(yr()>2010)[[2]]/1.5,y=scale_geom_text()/500,label="Post-catch shares"),family="serif",fontface="italic",hjust=0, size=7/scale_text(), color="grey40") #+
-            }
-          }}   
-    else {
-            g <- g 
-          }
-      }#end net revenue figures
-    }# end Summary loop for total and variable revenue figures
-    
-    else if(type != "summary"){    # Begin Variability analysis figure
-        if(length(yr())>1 & min(yr())<2011 & max(yr())>2010){
-          g <- g + geom_rect(aes(xmin=-Inf, xmax=table(yr()<=2010)[[2]]+.5, ymin=-Inf, ymax=Inf),fill="grey50", alpha=.02)
-          g <- g + geom_text(aes(x=table(yr()<=2010)[[2]]/2,y=scale_geom_text()/1000+scale_geom_text()/10000, label="Pre-catch shares"), family="serif",fontface="italic",hjust=0,color = "grey40", size=7/scale_text()) + 
-                   geom_text(aes(x=table(yr()<=2010)[[2]]+table(yr()>2010)[[2]]/1.5,y=scale_geom_text()/1000+scale_geom_text()/10000,label="Post-catch shares"),fontface="italic",hjust=0, family="serif",color = "grey40", size=7/scale_text()) #+
-        } else {
-          g <- g 
-      }
-#            g <- g + geom_text(aes(label=star), colour="black", vjust=0, size=10)
-      
-    } # end variability figure
     
     
-    
-    # define theme
+##--------------Define theme-----------------------###
+
     g <- g + theme(
-      plot.title = element_text( vjust=1, size=rel(1.5), colour="grey25", family = "sans", face = "bold"),# 
+      plot.title = element_text( vjust=1, hjust=.5, size=rel(1.5), colour="grey25", family = "sans", face = "bold"),# 
       panel.background = element_rect(fill = "white"),
       #plot.margin = unit(c(0.5, 0.5, 1, 0.5), "cm"),
       panel.grid.minor = element_line(linetype = "blank"),

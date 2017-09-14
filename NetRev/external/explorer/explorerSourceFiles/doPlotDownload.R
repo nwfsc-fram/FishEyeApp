@@ -164,13 +164,19 @@ doPlotDownload <- function(dat, x, y, type){
     }   
     
     scale_geom_text <- function() {
-      if(sum(dat$VALUE, na.rm=T)!=0) {
-        return(max(dat$VALUE, na.rm=T))
-      } else {
-        return(0)
-      }
+      if(type == "summary"){    
+        if(input$DodgeSelect == "Economic measures side-by-side"){
+          return(max(dat$VALUE, na.rm=T)/850)
+        } else{
+#          dat %>% group_by(YEAR, SHORTDESCR) %>% summarise(VALUE=max(VALUE)) %>% group_by(YEAR) %>% summarise(VALUE=sum(VALUE)/900) %>% summarise(max(VALUE)) %>% return()
+          return(max(dat$VALUE, na.rm=T)/485)
+        }} else {
+          return(max(dat$VALUE, na.rm=T)/850)
+        }
     }
-    g <- ggplot(dat[!is.na(dat$VALUE),], aes_string(x = x, y = y , group = groupVar), environment=environment()) 
+
+    print(scale_geom_text())
+        g <- ggplot(dat[!is.na(dat$VALUE),], aes_string(x = x, y = y , group = groupVar), environment=environment()) 
     
     if(type == "summary"){
       if(input$DodgeSelect == "Economic measures side-by-side"){
@@ -210,9 +216,9 @@ doPlotDownload <- function(dat, x, y, type){
     
     # define facet
     if(type =="summary"){
-      g <- g + facet_wrap(~ sort2, as.table = TRUE, scales="free_y")
+      g <- g + facet_wrap(~ sort2, as.table = TRUE)
     } else {
-      g <- g + facet_wrap(~ sort2, scales="free_y")
+      g <- g + facet_wrap(~ sort2)
     }
     
 
@@ -235,7 +241,13 @@ doPlotDownload <- function(dat, x, y, type){
     
     
     ylab <- function(){
-        paste("Thousands of 2015 $", "(",input$StatSelect, ")")
+      if(input$StatSelect=='Median per vessel/metric-ton caught'|input$StatSelect=='Mean per vessel/metric-ton caught'|
+         input$StatSelect=='Mean per vessel/metric-ton produced'|input$StatSelect=='Median per vessel/metric-ton produced'|
+         input$StatSelect=='Mean per processor/metric-ton produced'|input$StatSelect=='Median per processor/metric-ton produced'){
+        paste(currentyear, "$", "(",input$StatSelect, ")")
+      } else {
+        paste("Thousands of", currentyear, "$", "(",input$StatSelect, ")")
+      }
     }
     
     source_lab <- function(){
@@ -289,64 +301,22 @@ doPlotDownload <- function(dat, x, y, type){
     g <- g + labs(y=ylab(), x=xlab(), title=main())
     
     # Plot geom-rect and geom_text
-    ##--------------Begin geom_rect-----------------------###
-    if(type == "summary"){    
-      if(input$DodgeSelect == "Economic measures side-by-side"){
-        if(length(yr())>1 & min(yr())<2011 & max(yr())>2010){
-          g <- g + geom_rect(aes(xmin=-Inf, xmax=table(yr()<=2010)[[2]]+.5, ymin=-Inf, ymax=Inf), alpha=.02, fill="grey50") +
-            geom_text(aes(x=table(yr()<=2010)[[2]]/4,y=scale_geom_text()/1000+scale_geom_text()/10000, label="Pre-catch shares"), family="serif",fontface="italic", hjust=0, color = "grey40", size=7/scale_text()) +
-            geom_text(aes(x=table(yr()<=2010)[[2]]+table(yr()>2010)[[2]]/1.5,y=scale_geom_text()/1000+scale_geom_text()/10000,label="Post-catch shares"), family = "serif", fontface="italic",hjust=0, 
-                      color = "grey40", size=7/scale_text())  
-        } else {
-          g <- g  
-        }
-      } # end economics measure side by side plots
-      
-      
-      if(input$DodgeSelect != "Economic measures side-by-side"){          
-        if(length(yr())>1 & min(yr())<2011 & max(yr())>2010){
-          if(yr()[2]==2010){
-            if(table(yr()>2010)[[2]]==1){
-              g <- g + geom_rect(aes(xmin=-Inf, xmax=table(yr()<=2010)[[2]]+.5, ymin=-Inf, ymax=Inf), fill="grey50", alpha=.02)+ 
-                geom_text(aes(x=.4,y=scale_geom_text()/500, label="Pre-catch shares"),family="serif",fontface="italic",hjust=0, size=6/scale_text(), color="grey40") + 
-                geom_text(aes(x=table(yr()<=2010)[[2]]+table(yr()>2010)[[2]]/1,y=scale_geom_text()/500,label="Post-catch shares"),family="serif",fontface="italic",hjust=1, size=7/scale_text(), color="grey40")# +
-            } else {
-              g <- g + geom_rect(aes(xmin=.1, xmax=table(yr()<=2010)[[2]]+.5, ymin=-Inf, ymax=Inf), fill="grey50", alpha=.02)+ 
-                geom_text(aes(x=.3,y=scale_geom_text()/500, label="Pre-catch shares"),family="serif",fontface="italic",hjust=0, size=6/scale_text(), color="grey40") + 
-                geom_text(aes(x=table(yr()<=2010)[[2]]+table(yr()>2010)[[2]]/1.5,y=scale_geom_text()/500,label="Post-catch shares"),family="serif",fontface="italic",hjust=0, size=7/scale_text(), color="grey40")# +
-            }
-          } else  {
-            if(table(yr()>2010)[[2]]==1){  
-              g <- g + geom_rect(aes(xmin=.1, xmax=table(yr()<=2010)[[2]]+.5, ymin=-Inf, ymax=Inf), fill="grey50", alpha=.02)+ 
-                geom_text(aes(x=.25,y=scale_geom_text()/500, label="Pre-catch shares"),family="sans",fontface="italic",hjust=0, size=6/scale_text(), color="grey40") + 
-                geom_text(aes(x=table(yr()<=2010)[[2]]+table(yr()>2010)[[2]]/1,y=scale_geom_text()/500,label="Post-catch shares"),family="serif",fontface="italic",hjust=1, size=6/scale_text(), color="grey40") #+
-            } else {
-              g <- g + geom_rect(aes(xmin=.1, xmax=table(yr()<=2010)[[2]]+.5, ymin=-Inf, ymax=Inf), fill="grey50", alpha=.02)+ 
-                geom_text(aes(x=.15,y=scale_geom_text()/500, label="Pre-catch shares"),family="sans",fontface="italic",hjust=0, size=6/scale_text(), color="grey40") + 
-                geom_text(aes(x=table(yr()<=2010)[[2]]+table(yr()>2010)[[2]]/1.5,y=scale_geom_text()/500,label="Post-catch shares"),family="serif",fontface="italic",hjust=0, size=6/scale_text(), color="grey40") #+
-            }
-          }}   
-        else {
-          g <- g 
-        }
-      }#end net revenue figures
-    }# end Summary loop for total and variable revenue figures
+###--------------Define geom_rect and labels-----------------------###
+    if(length(yr())>1 & min(yr())<2011 & max(yr())>2010){
+      g <- g + geom_rect(aes(xmin=-Inf, xmax=table(yr()<=2010)[[2]]+.5, ymin=-Inf, ymax=Inf), alpha=.015, fill="grey50") +
+        geom_text(aes(x=table(yr()<=2010)[[2]]/4,y=scale_geom_text(), label="Pre-catch shares"), family="serif",fontface="italic", hjust=0, color = "grey40", size=7/scale_text()) +
+        geom_text(aes(x=table(yr()<=2010)[[2]]+table(yr()>2010)[[2]]/1.5,y=scale_geom_text(),label="Post-catch shares"), family = "serif", fontface="italic",hjust=0, 
+                  color = "grey40", size=7/scale_text())  
+    } else {
+      g <- g  
+    }
+    # End geom_rect and labels
     
-    else if(type != "summary"){    # Begin Variability analysis figure
-      if(length(yr())>1 & min(yr())<2011 & max(yr())>2010){
-        g <- g + geom_rect(aes(xmin=-Inf, xmax=table(yr()<=2010)[[2]]+.5, ymin=-Inf, ymax=Inf),fill="grey50", alpha=.02)
-        g <- g + geom_text(aes(x=table(yr()<=2010)[[2]]/2.5,y=scale_geom_text()/1000+scale_geom_text()/10000, label="Pre-catch shares"), family="serif",fontface="italic",hjust=0,color = "grey40", size=6/scale_text()) + 
-          geom_text(es(x=table(yr()<=2010)[[2]]+table(yr()>2010)[[2]]/1.6,y=scale_geom_text()/1000+scale_geom_text()/10000,label="Post-catch shares"),fontface="italic",hjust=0, family="serif",color = "grey40", size=6/scale_text()) #+
-      } else {
-        g <- g 
-      }
-      #            g <- g + geom_text(aes(label=star), colour="black", vjust=0, size=10)
       
-    } # end variability figure
     
     # define theme
     g <- g + theme(
-      plot.title = element_text(size=rel(1.2), vjust=1, colour="grey25",family = "sans", face = "bold"),
+      plot.title = element_text(size=rel(1.2), vjust=1,hjust=0.5, colour="grey25",family = "sans", face = "bold"),
       #plot.margin = unit(c(0.5, 0.5, 1, 0.5), "cm"),
       panel.background = element_rect(fill = "white"),
       #panel.margin = unit(1.1, "lines"),
@@ -359,8 +329,9 @@ doPlotDownload <- function(dat, x, y, type){
       axis.ticks = element_blank(),
       axis.title.x = element_text(size=rel(.7), face="italic", vjust=0, colour="grey25"),
       axis.title.y = element_text(size=rel(1.2), vjust=2, colour="grey25"),
-      axis.line.x = element_line(size = 2, colour = "black", linetype = "solid"),
-      axis.text = element_text(size = 11),
+      axis.line.x = element_line(size = 1, colour = "black", linetype = "solid"),
+      axis.text.y = element_text(size = 11),
+      axis.text.x = element_text(size = 9),
       legend.position = "top",
       legend.key = element_rect(fill = "white"),
       legend.text = element_text(family = "sans", 

@@ -75,7 +75,13 @@ doPlot <- function(dat, x, y){
 
      thresh <- function(){
        if(input$PlotSelect != "Stacked bar"){
+         if(input$StatSelect=='Mean per vessel'|input$StatSelect=='Median per vessel'|input$StatSelect=='Fleet-wide total'|
+            input$StatSelect=="Mean per processor"|input$StatSelect=='Median per processor'|input$StatSelect=='Industry-wide total'|
+            input$StatSelect=='Mean per vessel/day'|input$StatSelect=='Median per vessel/day'|input$StatSelect=='Fleet-wide average/day'){
        return(max(dat$VALUE,na.rm=T)/1000+max(dat$VALUE,na.rm=T)/10000)
+         } else {
+           return(max(dat$VALUE,na.rm=T)+max(dat$VALUE,na.rm=T)/10)  
+         }
        } else {
        return(
          max(data.frame(
@@ -87,7 +93,7 @@ doPlot <- function(dat, x, y){
        )
        }
      }
-     print(thresh())
+ 
  # Plot title construction
      plot.title <- function(){
           return(paste("Summary Cost Measures for West Coast ", sect()))
@@ -158,7 +164,7 @@ doPlot <- function(dat, x, y){
     
  
     # define facet
-      g <- g + facet_wrap(~sort2, ncol=2, as.table = TRUE, scales="free_y")#
+      g <- g + facet_wrap(~sort2, ncol=2, as.table = TRUE)#
     
     
     # define colors and order
@@ -171,8 +177,17 @@ doPlot <- function(dat, x, y){
     
     # define x- and y-axis labels
     ylab <- function(){
+      if(input$StatSelect=='Mean per vessel'|input$StatSelect=='Median per vessel'|input$StatSelect=='Fleet-wide total'|
+         input$StatSelect=="Mean per processor"|input$StatSelect=='Median per processor'|input$StatSelect=='Industry-wide total'|
+         input$StatSelect=='Mean per vessel/day'|input$StatSelect=='Median per vessel/day'|input$StatSelect=='Fleet-wide average/day'){
         paste("Thousands of", currentyear, " $ (",input$StatSelect, ")")
+      } else if(input$StatSelect=='Mean per vessel/dollar of revenue'|input$StatSelect=='Median per vessel/dollar of revenue'|input$StatSelect=='Fleet-wide average/dollar of revenue'|
+                input$StatSelect=="Mean per processor/dollar of revenue"|input$StatSelect=='Median per processor/dollar of revenue'|input$StatSelect=='Industry-wide average/dollar of revenue'){
+        input$StatSelect
+      } else {
+        paste(currentyear, " $ (",input$StatSelect, ")")
       }
+    }
     
     stacked_bar_mess <- function(){
       "For the stacked bar plot, we show either the individual cost categories or the total cost categories (All variable or All fixed costs). \nIf you select a total cost category and an individual cost category, only the individual cost category will be shown."
