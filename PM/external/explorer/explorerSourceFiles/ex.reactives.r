@@ -28,7 +28,7 @@ DatVars <- reactive({
         CATEGORY = c("Fisheries","Homeport","State of homeport"="State","Vessel length class"),
         FISHAK = unique(FISHAK),
         whitingv = c("All vessels","Non-whiting vessels","Whiting vessels"),
-        STAT =  c("Average per vessel","Average per vessel/day","Average per vessel/metric-ton caught",
+        STAT =  c("Mean per vessel","Mean per vessel/day","Mean per vessel/metric-ton caught",
                   "Median per vessel","Median per vessel/day","Median per vessel/metric-ton caught",
                   "Fleet-wide total","Fleet-wide average/day","Fleet-wide average/metric-ton caught"),
         METRIC =  c("Number of vessels","Vessel length","Fishery participation","Proportion of revenue from catch share fishery"="Proportion of revenue from CS fishery",
@@ -42,7 +42,7 @@ DatVars <- reactive({
                       SHORTDESCR = c("Revenue","Variable costs","Fixed costs","Variable Cost Net Revenue","Total Cost Net Revenue"),
                       CATEGORY = c("Production activities"="Fisheries","Region","Processor size"),
                       whitingv = c("All processors", "Whiting processors","Non-whiting processors"),
-                      STAT =  c("Average per processor","Average per processor/metric-ton of groundfish products produced"="Average per processor/metric-ton produced",
+                      STAT =  c("Mean per processor","Mean per processor/metric-ton of groundfish products produced"="Mean per processor/metric-ton produced",
                                 "Median per processor", "Median per processor/metric-ton of groundfish products produced"="Median per processor/metric-ton produced",
                                 "Industry-wide total","Industry-wide average/metric-ton of groundfish products produced"="Industry-wide average/metric-ton produced"),
                       METRIC =  c("Number of processors","Number of species processed","Proportion of production value from West Coast groundfish"="Proportion of revenue from catch share species",
@@ -56,7 +56,7 @@ DatVars <- reactive({
                 CATEGORY = "Fisheries",
                 FISHAK = unique(FISHAK),
                 whitingv = "Whiting vessels",
-                STAT =  c("Average per vessel","Average per vessel/day","Average per vessel/metric-ton produced",
+                STAT =  c("Mean per vessel","Mean per vessel/day","Mean per vessel/metric-ton produced",
                           "Median per vessel","Median per vessel/day","Median per vessel/metric-ton produced",
                             "Fleet-wide total",'Fleet-wide average/day','Fleet-wide average/metric-ton produced'),
                 METRIC =  c("Number of vessels","Vessel length",
@@ -74,7 +74,15 @@ DatVars <- reactive({
 # build dcast formula using if controls and using the quoted method in dcast
 DatSubTable <- reactive({
     dat <- DatMain()      
-
+    dat$SUMSTAT <- ifelse(dat$SUMSTAT=='Average', 'Mean', as.character(dat$SUMSTAT))
+    dat$STAT <- ifelse(dat$STAT=="Average per vessel", "Mean per vessel",
+                       ifelse(dat$STAT=="Average per vessel/day","Mean per vessel/day",
+                              ifelse(dat$STAT=="Average per vessel/metric-ton produced","Mean per vessel/metric-ton produced",
+                                     ifelse(dat$STAT=="Average per vessel/metric-ton caught","Mean per vessel/metric-ton caught",
+                                            ifelse(dat$STAT=="Average per processor","Mean per processor",
+                                                   ifelse(dat$STAT=="Average per processor/metric-ton produced","Mean per processor/metric-ton produced",as.character(dat$STAT)))))))
+    dat$VARIABLE <- ifelse(dat$VARIABLE=='Small vessel (< 60 ft)', 'Small vessel (<= 60 ft)', as.character(dat$VARIABLE))
+    
     #subsetting
     if(input$Sect_sel=="CV"|input$Sect_sel=="FR"){    
     datSub <- subset(dat, YEAR %in% input$YearSelect &  
@@ -312,7 +320,6 @@ if(input$LayoutSelect!="Metrics"){
                }
       }} 
   
-          print(datSub)
   
         validate(
            need(dim(datSub)[1]>0, 
@@ -330,8 +337,17 @@ if(input$LayoutSelect!="Metrics"){
 # selecting plot variables, subsetting the data AND casting for individual level ID (fun.agg=sum)
 # build dcast formula using if controls and using the quoted method in dcast
 DatSub <- reactive({
-      dat <- DatMain()      
-      if(input$Sect_sel=="CV"|input$Sect_sel=='FR'){    
+      dat <- DatMain()    
+      dat$SUMSTAT <- ifelse(dat$SUMSTAT=='Average', 'Mean', as.character(dat$SUMSTAT))
+      dat$STAT <- ifelse(dat$STAT=="Average per vessel", "Mean per vessel",
+                         ifelse(dat$STAT=="Average per vessel/day","Mean per vessel/day",
+                                ifelse(dat$STAT=="Average per vessel/metric-ton produced","Mean per vessel/metric-ton produced",
+                                       ifelse(dat$STAT=="Average per vessel/metric-ton caught","Mean per vessel/metric-ton caught",
+                                              ifelse(dat$STAT=="Average per processor","Mean per processor",
+                                                     ifelse(dat$STAT=="Average per processor/metric-ton produced","Mean per processor/metric-ton produced",as.character(dat$STAT)))))))
+      dat$VARIABLE <- ifelse(dat$VARIABLE=='Small vessel (< 60 ft)', 'Small vessel (<= 60 ft)', as.character(dat$VARIABLE))
+      
+        if(input$Sect_sel=="CV"|input$Sect_sel=='FR'){    
         datSub <- subset(dat, YEAR %in% input$YearSelect &  
                             CATEGORY == input$CategorySelect &
                             VARIABLE %in% input$VariableSelect &
@@ -400,48 +416,48 @@ DatSub <- reactive({
       validate(
         need(datSub$METRIC!="Vessel length",
              need(datSub$SUMSTAT!="Total", 
-             paste('Sorry, this plot could not be generated as total vessel length is not calculated. Try selecting the average or median statistic.
+             paste('Sorry, this plot could not be generated as total vessel length is not calculated. Try selecting the mean or median statistic.
                   '))))
  
       validate(
         need(datSub$METRIC!="Exponential Shannon Index",
              need(datSub$SUMSTAT!="Total", 
-                  paste('Sorry, this plot could not be generated as the total exponential shannon index is not calculated. Try selecting the average or median statistic.
+                  paste('Sorry, this plot could not be generated as the total exponential shannon index is not calculated. Try selecting the mean or median statistic.
                   '))))
  
       validate(
         need(datSub$METRIC!="Fishery participation",
              need(datSub$SUMSTAT!="Total", 
-                  paste('Sorry, this plot could not be generated as the total fishery participation is not calculated. Try selecting the average or median statistic.
+                  paste('Sorry, this plot could not be generated as the total fishery participation is not calculated. Try selecting the mean or median statistic.
                   '))))
       
       validate(
         need(datSub$METRIC!="Number of vessels",
-             need(datSub$SUMSTAT!="Average"&datSub$SUMSTAT!="Median", 
-                  paste('Sorry, this plot could not be generated as the average and median number of vessels are not calculated. Try selecting the total statistic.
+             need(datSub$SUMSTAT!="Mean"&datSub$SUMSTAT!="Median", 
+                  paste('Sorry, this plot could not be generated as the mean and median number of vessels are not calculated. Try selecting the total statistic.
                   '))))
 
       validate(
         need(datSub$METRIC!="Number of processors",
-             need(datSub$SUMSTAT!="Average"&datSub$SUMSTAT!="Median", 
-                  paste('Sorry, this plot could not be generated as the average and median number of processors are not calculated. Try selecting the total statistic.
+             need(datSub$SUMSTAT!="Mean"&datSub$SUMSTAT!="Median", 
+                  paste('Sorry, this plot could not be generated as the mean and median number of processors are not calculated. Try selecting the total statistic.
                   '))))
       
       validate(
         need(datSub$METRIC!="Gini coefficient",
-                     need(datSub$SUMSTAT!="Average"&datSub$SUMSTAT!="Median", 
-                  paste('Sorry, this plot could not be generated as the average and median Gini coefficient are not calculated. Try selecting the total statistic.
+                     need(datSub$SUMSTAT!="Mean"&datSub$SUMSTAT!="Median", 
+                  paste('Sorry, this plot could not be generated as the mean and median Gini coefficient are not calculated. Try selecting the total statistic.
                   '))))
       validate(
         need(datSub$METRIC!="Hourly compensation",
              need(datSub$SUMSTAT!="Total", 
-                  paste('Sorry, this plot could not be generated as the total hourly compensation is not calculated. Try selecting the average or median statistic.
+                  paste('Sorry, this plot could not be generated as the total hourly compensation is not calculated. Try selecting the mean or median statistic.
                   '))))
 
       validate(
         need(datSub$METRIC!="Crew wage per day",
              need(datSub$SUMSTAT!="Total", 
-                  paste('Sorry, this plot could not be generated as the crew wage per day is not calculated. Try selecting the average or median statistic.
+                  paste('Sorry, this plot could not be generated as the crew wage per day is not calculated. Try selecting the mean or median statistic.
                   '))))
       
       
@@ -490,8 +506,8 @@ DatSub <- reactive({
           datSub$q25 <- datSub$q25
           datSub$q75 <- datSub$q75
       }}
-     else if(input$Ind_sel=="Economic"&input$StatSelect!='Average per vessel/metric-ton caught'&input$StatSelect!='Median per vessel/metric-ton caught'&input$StatSelect!='Fleet-wide average/metric-ton caught'&
-         input$StatSelect!='Average per processor/metric-ton produced'&input$StatSelect!='Median per processor/metric-ton produced'&input$StatSelect!='Industry-wide average/metric-ton produced'){
+     else if(input$Ind_sel=="Economic"&input$StatSelect!='Mean per vessel/metric-ton caught'&input$StatSelect!='Median per vessel/metric-ton caught'&input$StatSelect!='Fleet-wide average/metric-ton caught'&
+         input$StatSelect!='Mean per processor/metric-ton produced'&input$StatSelect!='Median per processor/metric-ton produced'&input$StatSelect!='Industry-wide average/metric-ton produced'){
           datSub$VALUE <-datSub$VALUE/1000
           datSub$VARIANCE <- datSub$VARIANCE/1000
           datSub$q25 <- datSub$q25/1000

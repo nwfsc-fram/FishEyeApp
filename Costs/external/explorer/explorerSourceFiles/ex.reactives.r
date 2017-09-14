@@ -35,7 +35,7 @@ DatVars <- reactive({
                        CATEGORY = c("Fisheries","Homeport","State of homeport"="State","Vessel length class"),
                        FISHAK = '',#unique(FISHAK),
                        whitingv = c("All vessels","Non-whiting vessels","Whiting vessels"),
-                       STAT =  c("Average per vessel","Average per vessel/day","Average per vessel/metric-ton caught",'Average per vessel/dollar of revenue',
+                       STAT =  c("Mean per vessel","Mean per vessel/day","Mean per vessel/metric-ton caught",'Mean per vessel/dollar of revenue',
                                  "Median per vessel","Median per vessel/day","Median per vessel/metric-ton caught",'Median per vessel/dollar of revenue',
                                  "Fleet-wide total","Fleet-wide average/day","Fleet-wide average/metric-ton caught",'Fleet-wide average/dollar of revenue')
                    ))
@@ -46,7 +46,7 @@ DatVars <- reactive({
                                         "All fixed costs",'Buildings','Equipment','Other fixed costs'),
                          whitingv = c("All processors","Whiting processors","Non-whiting processors"),
                          CATEGORY = c("Production activities","Region","Processor size"),
-                         STAT =  c("Average per processor","Average per processor/metric-ton of groundfish products produced"="Average per processor/metric-ton produced",'Average per processor/dollar of revenue',
+                         STAT =  c("Mean per processor","Mean per processor/metric-ton of groundfish products produced"="Mean per processor/metric-ton produced",'Mean per processor/dollar of revenue',
                                    "Median per processor", "Median per processor/metric-ton of groundfish products produced"="Median per processor/metric-ton produced",'Median per processor/dollar of revenue',
                                    "Industry-wide total","Industry-wide average/metric-ton of groundfish products produced"="Industry-wide average/metric-ton produced",'Industry-wide average/dollar of revenue')
                     ))
@@ -57,7 +57,7 @@ DatVars <- reactive({
                                         "All fixed costs","Fishing gear","On-board equipment","Processing equipment",'Other fixed costs'),
                          whitingv = c("Whiting vessels"),
                          CATEGORY = c("Fisheries"),
-                         STAT =  c("Average per vessel","Average per vessel/day","Average per vessel/metric-ton produced",'Average per vessel/dollar of revenue',
+                         STAT =  c("Mean per vessel","Mean per vessel/day","Mean per vessel/metric-ton produced",'Mean per vessel/dollar of revenue',
                                    "Median per vessel","Median per vessel/day","Median per vessel/metric-ton produced",'Median per vessel/dollar of revenue',
                                    "Fleet-wide total","Fleet-wide average/day","Fleet-wide average/metric-ton produced",'Fleet-wide average/dollar of revenue')
                          
@@ -69,7 +69,7 @@ DatVars <- reactive({
                                         "All fixed costs","Fishing gear","On-board equipment","Processing equipment",'Other fixed costs'),
                          whitingv = c("Whiting vessels"),
                          CATEGORY = c("Fisheries"),
-                         STAT =  c("Average per vessel","Average per vessel/day","Average per vessel/metric-ton produced",'Average per vessel/dollar of revenue',
+                         STAT =  c("Mean per vessel","Mean per vessel/day","Mean per vessel/metric-ton produced",'Mean per vessel/dollar of revenue',
                                    "Median per vessel","Median per vessel/day","Median per vessel/metric-ton produced",'Median per vessel/dollar of revenue',
                                    "Fleet-wide total","Fleet-wide average/day","Fleet-wide average/metric-ton produced",'Fleet-wide average/dollar of revenue')
                     ))
@@ -125,13 +125,18 @@ DatSubTable <- reactive({
       } else{
     datSub <- subset(datSub, YEAR %in% input$YearSelect2 ) 
       }
-  if(input$StatSelect %in% c('Average per vessel/dollar of revenue','Median per vessel/dollar of revenue','Fleet-wide total/dollar of revenue','Average per processor/dollar of revenue',
+  if(input$StatSelect %in% c('Mean per vessel/dollar of revenue','Median per vessel/dollar of revenue','Fleet-wide total/dollar of revenue','Mean per processor/dollar of revenue',
                              'Median per processor/dollar of revenue','Industry-wide total/dollar of revenue')){
   datSub$VALUE <- round(as.numeric(datSub$VALUE),3)
   datSub$VARIANCE <- round(as.numeric(datSub$VARIANCE),3)
+  datSub$q25 <- round(as.numeric(as.character(datSub$q25)),3)
+  datSub$q75 <- round(as.numeric(as.character(datSub$q75)),3)
   } else{
     datSub$VALUE <- round(as.numeric(datSub$VALUE),0)
     datSub$VARIANCE <- round(as.numeric(datSub$VARIANCE),0)
+    datSub$q25 <- round(as.numeric(as.character(datSub$q25)),3)
+    datSub$q75 <- round(as.numeric(as.character(datSub$q75)),3)
+    
   }
 
   if(input$Sect_sel=='CV' & input$CategorySelect != "Fisheries" || input$Sect_sel=='FR' & input$CategorySelect != "Production activities") {
@@ -141,6 +146,13 @@ DatSubTable <- reactive({
   datSub$VALUE <- ifelse(datSub$N<3, NA, datSub$VALUE)
 #  datSub$N <- ifelse(datSub$N>2&is.na(datSub$VALUE)==T, NA, datSub$N)
   datSub$VARIANCE <- ifelse(datSub$N<3, NA, datSub$VARIANCE)
+  datSub$q25 <- ifelse(datSub$N<3, NA, datSub$q25)
+  datSub$q75 <- ifelse(datSub$N<3, NA, datSub$q75)
+
+  datSub <- unique(datSub)
+  
+  datSub$VARIANCE <- 
+      ifelse(grepl('Median',datSub$STAT), paste(datSub$q25, ',', datSub$q75), datSub$VARIANCE)
   
   if(input$Sect_sel=="CV"){
   #datSub$FISHAK <- ifelse(datSub$FISHAK=="TRUE", "Vessels included", "Vessels not included")
@@ -158,6 +170,7 @@ DatSubTable <- reactive({
                         which(colnames(datSub)=="STAT"),
                         which(colnames(datSub)=="SHORTDESCR"),which(colnames(datSub)=="whitingv"),which(colnames(datSub)=="N"),which(colnames(datSub)=="VALUE"),which(colnames(datSub)=="VARIANCE"))]
   }
+  
   
   validate(
     need(dim(datSub)[1]>0, #min(datSub$N)>2,
@@ -311,7 +324,7 @@ DatSub <- reactive({
     else {
       datSub$sort <- datSub$VARIABLE 
     }
- print(datSub[1:5,])
+
       
     validate(
       need(dim(datSub)[1]>0 & max(datSub$N)>2,

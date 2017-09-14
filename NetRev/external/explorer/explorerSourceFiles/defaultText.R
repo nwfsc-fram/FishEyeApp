@@ -1,5 +1,7 @@
 
-#
+##############################
+#Email
+###############################
 output$Email <- renderUI({
   
   tags$div(style = "margin: 15px 15px 30px; width: 60%",
@@ -30,7 +32,7 @@ output$Email <- renderUI({
                   tags$br()
   ))
 })
-
+######################################
 output$ApplicationsText <- renderUI({
   tags$div(style="margin:15px 15px 30px; with: 60%",
            tags$br(),
@@ -52,10 +54,25 @@ tags$div(style = "margin-top: 15px;margin-bottom:0; width: 80%; ",
 )
   }) #        tags$br(),
   #       ,
+##########################
+##Blog
+############################
 output$BlogUpdates <- renderUI({  
-
   tags$div(style = "margin-top:0; padding-top:0;background-color:#F8F8E9;",
            tags$h3("Updates"),
+           #Major update - adding other sectors
+           
+           tags$div( class='date', style='height:45px;width:30px; font-family:Arial; font-weight:bold;background-color:#ffffff;text-align:center; border-top:1px solid #c0c0c0;
+                     border-left:1px solid #c0c0c0;border-right:1px solid #c0c0c0;position:absolute;z-index:3;line-height: 13px;',
+                     HTML("<span class='month' style='text-transform:uppercase;font-size:11px;'>Aug</span><br />
+                 <span class='day' style='font-size:16px;'>07</span><br />
+                 <span class='year' style='font-size:11px;line-height: 10px;'>2017</span>")
+           ),
+           tags$p(HTML("<span style='margin-left:60px;font-size:18px;font-weight:bold'>Percentiles around the median</span>")), 
+           tags$p(tags$br(),"We have been asked to provide percentiles as a measure of variance. All plots and tables now show the 25th and 75th percentiles when median is selected and the standard deviation when mean is selected."),
+           tags$hr(),
+           
+          
    tags$div( class='date', style='height:45px;width:30px; font-family:Arial; font-weight:bold;background-color:#ffffff;text-align:center; border-top:1px solid #c0c0c0;
                  border-left:1px solid #c0c0c0;border-right:1px solid #c0c0c0;position:absolute;z-index:3;line-height: 13px;',
                  HTML("<span class='month' style='text-transform:uppercase;font-size:11px;'>Jan</span><br />
@@ -93,14 +110,11 @@ output$BlogUpdates <- renderUI({
               
        )#,
 })
-     #    tags$p("10.21.15"),
-      #              tags$ul(   tags$li("Started this blog"),
-      #     tags$li("Added a", tags$em('clear all'), 'button')),
-      #   tags$p("10.28.15"),
-      #   tags$ul(
-      #     tags$li("Restructured this bulletin board.")
-       #  ),
- #        HTML("<hr color='red'/>"),
+
+
+###############################################
+#Response to questions
+###############################################
 output$BlogResponses <- renderUI({    
   tags$div(style = "background-color:#F8F8E9",
          tags$h3("Responses to questions"),
@@ -135,7 +149,9 @@ tags$div( class='date', style='height:45px;width:30px;font-family:Arial;font-wei
    
 })
 
-
+############################################
+#Default Plot text
+##############################################
 output$DefaultPlotText <- renderUI({
   if(PermitPlot()) return()
   tags$div(style = "margin: 15px 15px 30px; width: 60%",
@@ -176,7 +192,9 @@ output$DefaultPlotText <- renderUI({
  
 })
 
-
+##########################################
+#Thirds text
+#########################################
 output$DefaultThirdsText <- renderUI({
   if(PermitPlot()) return()
   tags$div(style = "margin: 15px 15px 30px; width: 60%",
@@ -189,7 +207,7 @@ output$DefaultThirdsText <- renderUI({
             tags$p(strong('Background:'), 'Catcher vessels that participate in the', 
                   tags$a(href="https://www.nwfsc.noaa.gov/research/divisions/fram/catch_shares.cfm", target="_blank", "West Coast Groundfish Trawl Catch Share Program"), 
                     'span a very broad range in terms of the scale of their operations. To view the heterogeneity within the catcher vessel fleet while taking into account confidentiality rules,
-                    we group the vessels into three tiered categories annually: top, middle, and lower revenue earners.   We then calculate the median, average, or total of the selected 
+                    we group the vessels into three tiered categories annually: top, middle, and lower revenue earners.   We then calculate the median, mean, or total of the selected 
                     statistic (per vessel, vessel/day, or vessel/metric-ton) for vessels within each tiered category.'), 
 
            tags$br(),

@@ -35,7 +35,7 @@ tags$div(style = "margin: 15px; 15px; 30px; width: 60%",
               tags$em('Visualize the variability within the selected sector.'),
               tags$p('Participants in the catch share program span a very broad range in terms of the scale of their operations. 
                 For instance, the revenue earned ranges from around $10,000 to well over $1.5 million. To view the heterogeneity within the selected sector while taking into account confidentiality 
-                     rules, we group the vessels or processors into three tiered categories annually: top, middle, and lower revenue earners.   We then calculate the median, average, or total of the selected statistic 
+                     rules, we group the vessels or processors into three tiered categories annually: top, middle, and lower revenue earners.   We then calculate the median, mean, or total of the selected statistic 
                      (per vessel or processor, vessel/day, or vessel or processor/metric-ton) for vessels or processors within each tiered category. 
                      This analysis is only available for the Catcher Vessel and First Receivers and Shorebased Processors sectors.', tags$br()),
                 tags$strong('Plots'), tags$p('Results are shown if there are at least three vessels or processors in a group. Results are plotted as a dot plot if a single year is selected or a line plot if multiple years are selected.'),

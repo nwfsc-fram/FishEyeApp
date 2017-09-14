@@ -1,5 +1,7 @@
 
-#
+####################################
+#Email
+######################################
 output$Email <- renderUI({
   
   tags$div(style = "margin: 15px 15px 30px; width: 60%",
@@ -31,6 +33,9 @@ output$Email <- renderUI({
   ))
 })
 
+################################
+#Other applications
+###############################
 output$ApplicationsText <- renderUI({
   tags$div(style="margin:15px 15px 30px; with: 60%",
            tags$br(),
@@ -42,7 +47,7 @@ output$ApplicationsText <- renderUI({
                 padding-bottom:10px"> FISHEyE Performance Metrics</a>' )
   )
 })
-
+############################################
 output$BlogText <- renderUI({
 
 tags$div(style = "margin-top: 15px;margin-bottom:0; width: 80%; ",
@@ -52,18 +57,31 @@ tags$div(style = "margin-top: 15px;margin-bottom:0; width: 80%; ",
 )
   }) #        tags$br(),
   #       ,
+#########################################
+#Blog
+########################################
 output$BlogUpdates <- renderUI({  
 
   tags$div(style = "margin-top:0; padding-top:0;background-color:#F8F8E9;",
            tags$h3("Updates"),
 
+           tags$div( class='date', style='height:45px;width:30px; font-family:Arial; font-weight:bold;background-color:#ffffff;text-align:center; border-top:1px solid #c0c0c0;
+                     border-left:1px solid #c0c0c0;border-right:1px solid #c0c0c0;position:absolute;z-index:3;line-height: 13px;',
+                     HTML("<span class='month' style='text-transform:uppercase;font-size:11px;'>Aug</span><br />
+                 <span class='day' style='font-size:16px;'>07</span><br />
+                 <span class='year' style='font-size:11px;line-height: 10px;'>2017</span>")
+           ),
+           tags$p(HTML("<span style='margin-left:60px;font-size:18px;font-weight:bold'>Percentiles around the median</span>")), 
+           tags$p(tags$br(),"We have been asked to provide percentiles as a measure of variance. All plots and tables now show the 25th and 75th percentiles when median is selected and the standard deviation when mean is selected."),
+           tags$hr(),
+           
          tags$div( class='date', style='height:45px;width:30px;font-family:Arial;font-weight:bold;background-color:#ffffff;text-align:center;border-top:1px solid #c0c0c0;
                    border-left:1px solid #c0c0c0;border-right:1px solid #c0c0c0;position:absolute;z-index:3;line-height: 13px;',
                    HTML("<span class='month' style='text-transform:uppercase;font-size:11px;'>Apr</span><br />
                         <span class='day' style='font-size:16px;'>21</span><br />
                         <span class='year' style='font-size:11px;line-height: 10px;'>2017</span>")
          ),
-         tags$p(HTML("<span style='margin-left:60px;font-size:18px;font-weight:bold'>Welcome to the Net Revenue Explorer!</span>")), 
+         tags$p(HTML("<span style='margin-left:60px;font-size:18px;font-weight:bold'>Welcome to the Costs Explorer!</span>")), 
          tags$p(tags$br(),
                 "Welcome to the Costs Explorer. If you have any difficulties accessing or using this application, please contact us at nwfsc.fisheye@noaa.gov. 
                 Your comments will help us improve performance of this application."),
@@ -81,6 +99,9 @@ output$BlogUpdates <- renderUI({
       #     tags$li("Restructured this bulletin board.")
        #  ),
  #        HTML("<hr color='red'/>"),
+#####################################################
+#Question Responses
+##########################################################
 output$BlogResponses <- renderUI({    
   tags$div(style = "background-color:#F8F8E9",
          tags$h3("Responses to questions"),
@@ -114,7 +135,9 @@ tags$div( class='date', style='height:45px;width:30px;font-family:Arial;font-wei
    
 })
 
-
+###############################################
+#Default Plot text
+###############################################
 output$DefaultPlotText <- renderUI({
   if(PermitPlot()) return()
   tags$div(style = "margin: 15px 15px 30px; width: 60%",
@@ -155,7 +178,9 @@ output$DefaultPlotText <- renderUI({
 
 
 
-
+##########################################
+#Get started text
+#########################################
 output$GetStartedText <- renderUI({
   if(PermitPlot()) return()
   tags$div(style = "margin: 15px 15px 30px; width: 60%",
@@ -174,9 +199,20 @@ output$GetStartedText <- renderUI({
            tags$p(strong('This tutorial will disappear once this selection is made. Selections can be made in any order.'), 
                   paste('Multiple subgroups of the selected vessel or processor grouping category (such as fishery) can be selected.')),
            tags$h4("4. Select a statistic"),
-           tags$p('Three statistics are calculated: average, median, and fleet- or processor-wide total.'),
+           tags$p('Three statistics are calculated: mean, median, and fleet- or processor-wide total.'),
            tags$h4("5. Select a cost category"),
            tags$h4('6. Select years')#,
            #tags$p('The choice to include activities in Alaskan fisheries depend upon the sector selected.')
   )
 })
+##################################################
+
+###---------Begin Case Study text---------------------###
+output$CaseStudy1 <- renderUI({
+  tags$div(style = "margin: 15px 15px 30px; width: 90%",
+           tags$p('For catcher vessels that fished in non-whiting catch share fisheries, the median variable costs per vessel has been similar between vessels that define their homeport to be in Washington, Oregon, or California. In addition, since catch share implementation, variable costs have remained fairly consistent between years, although with greater interannual variation for vessels that homeport in Washington. This trend can be viewed for variable costs per vessel, per day at sea, per metric-ton caught, or per dollar of revenue.', tags$em('Use the control panel to view the different rates. Choices are under the Statistic option.'),
+                  'For all three homeport states, the variable costs per vessel per day at sea increased after implementation of the catch share program.',br(), tags$em('To view which costs have increased since catch share implementation, unclick all variable costs categories in the control panel and then view each cost category on its own. For instance, look at buyback fees, crew, and observer costs on their own. The plot will display below.'), br(),
+                  'The median variable costs per vessel per day at sea in the catch share fisheries have remained relatively consistent between years since 2011 for all states of homeport. However, in Oregon and California, variable costs were higher in 2015. ')           
+           )
+})
+###---------End Case Study text---------------------###

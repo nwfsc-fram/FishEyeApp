@@ -169,7 +169,7 @@ output$Variableselect <- renderUI({
         tagList(           
           tags$div(class="select", selectInput("inSelect","",
                                                c("All fisheries","All catch share fisheries","All non-catch share fisheries")), style="margin-bottom:-10px"),
-          checkboxGroupInput("VariableSelect",  "Select one or more vessel length class:", choices=factorOrder$lengths, selected="")
+          checkboxGroupInput("VariableSelect",  "Select one or more vessel length class:", choices=c("Large vessel (> 80 ft)","Medium vessel (> 60ft, <= 80ft)",'Small vessel (<= 60ft)'), selected="")
         )
       }
       else if(input$CategorySelect == "Processor size"){
@@ -241,9 +241,10 @@ output$Variableselect <- renderUI({
           tags$div(class="select", selectInput("inSelect","",
                                                c("All fisheries","All catch share fisheries","All non-catch share fisheries")), style="margin-bottom:-10px"),
           if(input$LayoutSelect=='Economic measures'){
-            tags$div(class="rbutton2", radioButtons("VariableSelect",  "Select ONE vessel length class", choices=c("No vessel length selected"="",factorOrder$lengths), selected=""))
+            tags$div(class="rbutton2", radioButtons("VariableSelect",  "Select ONE vessel length class", choices=c("No vessel length selected"="","Large vessel (> 80 ft)","Medium vessel (> 60ft, <= 80ft)",'Small vessel (<= 60ft)'), selected=""))
         } else {
-          tags$div(checkboxGroupInput("VariableSelect",  "Select one or more vessel length class", choices=factorOrder$lengths, selected=""))
+          tags$div(checkboxGroupInput("VariableSelect",  "Select one or more vessel length class", 
+                                      choices=c("Large vessel (> 80 ft)","Medium vessel (> 60ft, <= 80ft)","Small vessel (<= 60ft)"), selected=""))
         })
       } 
       else if(input$CategorySelect == "Processor size"){
@@ -393,11 +394,12 @@ output$FishAkselect <- renderUI({
 ################################################################
 #--------Exclude vessels that fished for whiting-------------------------
 output$FishWhitingselect <- renderUI({
-  tags$div(class="ckbox", checkboxInput("FishWhitingSelect", p("Include vessels that fished for Pacific whiting: ", 
-                                                               span("By selecting this, you will include vessels that also fished for Pacific whiting. 
-                                                                    Data from their activities are included if this box is selected.", style="font-style:italic;font-size:10pt")), 
+  tags$div(class="ckbox", checkboxInput("FishWhitingSelect", HTML("<div> Include vessels that fished for Pacific whiting:
+                                                              <button id='iwhiting' type='button' class='btn btn-default action-button shiny-bound-input'><i class='fa fa-info-circle fa-fw'></i></button> <p style='font-style:italic;font-size:10pt'>By selecting this, you will include vessels that also fished for Pacific whiting. Data from their activities are included if this box is selected.</p></div>"), 
                                         value = TRUE))
 })
+#
+#HTML("<div> Show data summed across:<button id='iwhiting' type='button' class='btn btn-default action-button shiny-bound-input'> <i #class='fa fa-info-circle fa-fw'></i></button></div>")
 #################################################################
 
 ################################################################
@@ -415,7 +417,7 @@ output$Productionselect <- renderUI({
 output$Statselect <- renderUI({
   tagList(
     selectInput("AVE_MED", HTML("<div> Statistic: <button id='istat' type='button' class='btn btn-default action-button shiny-bound-input'> <i class='fa fa-info-circle fa-fw' ></i></button> </div>"),
-                c('Choose Median, Average, or Total'="", Average="A", Median="M", Total="T"), selectize=F),
+                c('Choose Median, Mean, or Total'="", Mean="A", Median="M", Total="T"), selectize=F),
     #    actionButton("MED", "Median", style="default",size="extra-small", block=F, type="action"),
     #    if(input$AVE_MED!="A"){
     if(input$Sect_sel=='FR'){

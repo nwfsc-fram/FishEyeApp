@@ -48,7 +48,7 @@ tags$div(style = "margin: 15px 15px 30px; width: 60%",
                               ),
                       tags$li(strong("Region:"), "The region corresponding to each processor. For first receivers and shorebased processors, two regions are recognized:", tags$em('Washington and Oregon'), 'and', tags$em("California.")
                       ),
-                      tags$li(strong("Vessel length class:"),"Three categories of vessel length representing the range of catcher vessel length: large vessels (> 80 ft), medium vessels (> 60 ft, <= 80 ft), and small vessels (< 60 ft)."),
+                      tags$li(strong("Vessel length class:"),"Three categories of vessel length representing the range of catcher vessel length: large vessels (> 80 ft), medium vessels (> 60 ft, <= 80 ft), and small vessels (<= 60 ft)."),
                       tags$li(strong("Processor size:"),"First receivers and shorebased processors are grouped into three size classes based on the average number of workers: large (> 200 workers), medium (100 - 200 workers), and small (< 100 workers).
                               Processor size was determined by examining the maximum weekly number of production workers employed by a processor (as reported on the EDC form) for each year. Then the
                               weekly maximum was averaged across all EDC years to place processors in one size category for all years.")
@@ -122,30 +122,32 @@ tags$div(style = "margin: 15px 15px 30px; width: 60%",
                            Total impacts include, direct, indirect, and induced employment effects, as measured by IO-PAC model.'),
                     tags$br(),
                     h4("Statistics"),
-                    tags$p(strong('The statistic provided depends upon the metric selected. '),'For instance, the average or median per day or per metric-ton is only available for economic metrics.'),
+                    tags$p(strong('The statistic provided depends upon the metric selected. '),'For instance, the mean or median per day or per metric-ton is only available for economic metrics.'),
                     tags$ul(
                       
-                      tags$li(strong("Median or Average")),
+                      tags$li(strong("Median or Mean")),
                       tags$ul(
-                        tags$li(strong("Per vessel or processor:"),"Median or Average for all vessels or processors that participated in the catch share program."),
+                        tags$li(strong("Per vessel or processor:"),"Median or Mean for all vessels or processors that participated in the catch share program."),
                         tags$li(strong("Per vessel or processor per day:"),
-                                "Median or Average per day for all vessels or processors that participated in the catch share program."),
+                                "Median or Mean per day for all vessels or processors that participated in the catch share program."),
                         tags$li(strong("Per vessel or processors per metric-ton:"),
-                                "Median or Average per metric-ton of fish caught or processed for all vessels or processors that participated in the catch share program.")
+                                "Median or Mean per metric-ton of fish caught or processed for all vessels or processors that participated in the catch share program.")
                         ),tags$br(),
                       tags$li(strong("Fleet-wide total:"),"Summed over all vessels or processors that participated in the catch share program. For rates measurements (per day at sea or metric-ton), we show the fleet-wide or industry-wide average.
                               The fleet-wide average is the economic value summed over all vessels or processors divided by days at sea or metric tons summed over all vessels or processors.") 
                       ),tags$br(),
-                    tags$ul(tags$p(tags$strong("What is the purpose of using median, average, and fleet-wide total values when looking at the data?"), "The median and average provide information about a representative vessel; 
-                                   however, they do it in different ways.  The ",  tags$strong("median"), "means that half of the vessels have a larger result than the median, and half are smaller.  The ", tags$strong("average "),"
-                                   is the sum of the values divided by the number of responses.  If the data do not have many extreme responses in a particular direction, the median and average will be very similar.  However, if the data are ", 
+                    tags$ul(tags$p(tags$strong("What is the purpose of using median, mean, and fleet-wide total values when looking at the data?"), "The median and mean provide information about a representative vessel; 
+                                   however, they do it in different ways.  The ",  tags$strong("median"), "means that half of the vessels have a larger result than the median, and half are smaller.  The ", tags$strong("mean "),"
+                                   is the sum of the values divided by the number of responses.  If the data do not have many extreme responses in a particular direction, the median and mean will be very similar.  However, if the data are ", 
                                    tags$em('skewed'), "by extreme responses, then the median is a better measure for a typical vessel.  The ", tags$strong("fleet-wide total"), "measures how the entire fleet is doing, rather than a representative vessel.")
                             ),tags$br(),
                     
                     h4("Pacific whiting vessel category"),
                     tags$ul(
                       tags$p("For the catcher vessel sector, the selected metric is calculated at three levels: 1) for the fleet as a whole, 2) for vessels that fished for Pacific whiting, and 3) for vessels that participate in the non-whiting groundfish sector of the limited entry trawl fishery. 
-                             Vessels that fished for both whiting and non-whiting are included in the whiting level. The purpose of separating the whiting from the non-whiting vessels is that the whiting vessels tend to be larger and catch a higher volume of fish. In addition, total allowable catch for Pacific whiting has more annual variation than total annual catch for species targeted in the non-whiting groundfish sector. 
+                             Vessels that fished for both whiting and non-whiting are included in the whiting level."),
+                             tags$img(src='WhitingFigure.png', height=250),
+                              tags$p("The purpose of separating the whiting from the non-whiting vessels is that the whiting vessels tend to be larger and catch a higher volume of fish. In addition, total allowable catch for Pacific whiting has more annual variation than total annual catch for species targeted in the non-whiting groundfish sector. 
                              Note that there are several fisheries where vessels only participated in whiting or non-whiting fisheries."),
                       tags$p('This division is not appropriate for the mothership and catcher-processor sectors. For these sectors, only pacific whiting is shown.'),
                       tags$p('There are some cases where there are not enough vessels to separate the vessels into the whiting and non-whiting vessel categories. This occurs when there is less than three vessels at either the whiting or non-whiting level. When this happens, we only report the "All vessels" category and indicate that we have done so in a message below the plot and in the data table. More information on data confidentiality requirements can be found in the EDC Administration and Operations Report.')
@@ -180,7 +182,7 @@ tags$div(style = "margin: 15px 15px 30px; width: 60%",
                                       measure includes activity in all fisheries or only in the catch share fisheries or the non-catch share fisheries.'),
                       tags$li(strong('Production Category:'), 'This variable is relevant for when processors are grouped by region or processor size. It indicates whether the reported value of the selected metric or economic 
                                       measure includes all production or only groundfish production or other species production.'),
-                      tags$li(strong('Variance:'), 'A measure of the spread of values. We report the standard deviation (SD) when vessel/processor averages are selected and upper and lower quartiles (25th/75th percentiles) when vessel/processor medians are selected.'),
+                      tags$li(strong('Variance:'), 'A measure of the spread of values. We report the standard deviation (SD) when vessel/processor mean are selected and upper and lower quartiles (25th/75th percentiles) when vessel/processor medians are selected.'),
                       tags$li(strong('Delivery location:'), 'This variable is only relevant for the', tags$em('Share of landings by state'), 'metric. This variable indicates location of landings.'),
                       tags$p(tags$br(),
                              tags$br(),

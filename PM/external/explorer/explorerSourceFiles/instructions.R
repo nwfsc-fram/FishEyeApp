@@ -15,7 +15,7 @@ tags$div(style = "margin: 15px; 15px; 30px; width: 60%",
                  tags$li(tags$h4("Summary Plots and Data")),
                  tags$p('Visualize performance metrics for vessels that participate in the',tags$a(href="http://www.nwfsc.noaa.gov/research/divisions/fram/catch_shares.cfm", 'catch share program. ', target="_blank")),
                  
-                 tags$strong('Plots'),tags$p('To aid visualizing changes over time, we show line plots for all selected metrics. You can select whether or not to show the variance around the average or median values. 
+                 tags$strong('Plots'),tags$p('To aid visualizing changes over time, we show line plots for all selected metrics. You can select whether or not to show the variance around the mean or median values. 
                                              A figure demonstrating how to interpret the plot output is located on the', tags$em('Explore the Data'), 'page. 
                                              The catch share program began in 2011.'),
                  tags$strong("Data Table"),

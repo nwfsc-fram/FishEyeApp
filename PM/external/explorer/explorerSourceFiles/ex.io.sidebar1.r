@@ -235,16 +235,18 @@ output$Variableselect <- renderUI({
           if(input$Ind_sel=="Demographic"||input$Ind_sel=="Economic"||input$Ind_sel=="Social and Regional"&input$socSelect!="Share of landings by state"){
             tagList(           
             tags$div(class="select", selectInput("inSelect","",c("All fisheries", "All catch share fisheries", "All non-catch share fisheries")), style="margin-bottom:-10px"),
-            checkboxGroupInput("VariableSelect",  "Select one vessel length class:", choices=factorOrder$lengths, selected="")) 
+            checkboxGroupInput("VariableSelect",  "Select one vessel length class:", 
+                               choices=c("Large vessel (> 80 ft)","Medium vessel (> 60ft, <= 80ft)","Small vessel (<= 60 ft)"), selected="")) 
           }  
           else {
            tagList(           
               tags$div(class="select", selectInput("inSelect","",c("All fisheries", "All catch share fisheries", "All non-catch share fisheries")), style="margin-bottom:-10px"),
-              radioButtons("VariableSelect",  "Select one vessel length class:", choices=factorOrder$lengths, selected="")) 
+              radioButtons("VariableSelect",  "Select one vessel length class:", choices=c("Large vessel (> 80 ft)","Medium vessel (> 60ft, <= 80ft)","Small vessel (<= 60 ft)"), selected="")) 
           }}else {
             tagList(           
               tags$div(class="select", selectInput("inSelect","",c("All fisheries", "All catch share fisheries", "All non-catch share fisheries")), style="margin-bottom:-10px"),
-              tags$div(class="rbutton3", radioButtons("VariableSelect",  "Select one vessel length class:", choices=c("No vessel length selected"="",factorOrder$lengths), selected=""))) 
+              tags$div(class="rbutton3", radioButtons("VariableSelect",  "Select one vessel length class:", 
+                                                      choices=c("No vessel length selected"="","Large vessel (> 80 ft)","Medium vessel (> 60ft, <= 80ft)","Small vessel (<= 60 ft)"), selected=""))) 
           }
       } else if(input$CategorySelect == "Homeport"){
         if(input$LayoutSelect!="Metrics"){
@@ -425,7 +427,8 @@ output$FishAkselect <- renderUI({
 #Select whiting (data summed across category)
 ###################################################
 output$FishWhitingselect <- renderUI({
-  tags$div(class="ckbox", checkboxGroupInput("FishWhitingSelect", "Show data summed across:", choices=DatVars()$whitingv, selected=DatVars()$whitingv[1]))
+  tags$div(class="ckbox", checkboxGroupInput("FishWhitingSelect", HTML("<div> Show data summed across:<button id='iwhiting' type='button' class='btn btn-default action-button shiny-bound-input'> <i class='fa fa-info-circle fa-fw'></i>
+                                                                       </button></div>"), choices=DatVars()$whitingv, selected=DatVars()$whitingv[1]))
 })
 ###################################################
 #end whiting
@@ -542,12 +545,12 @@ output$Statselect <- renderUI({
   if(input$Sect_sel=="FR")  { 
     tagList(
       selectInput("AVE_MED", HTML("<div> Statistic: <button id='istat' type='button' class='btn btn-default action-button shiny-bound-input'> <i class='fa fa-info-circle fa-fw' ></i></button> </div>"),
-                  c('Median, Average, or Total values'="", Average="A", Median="M", Total="T"), selectize=F),
+                  c('Median, Mean, or Total values'="", Mean="A", Median="M", Total="T"), selectize=F),
       tags$div(class="statbox", radioButtons("StatSelect","",  choices = c(DatVars()$STAT[3:4]))))
   } else {
     tagList(
       selectInput("AVE_MED", HTML("<div> Statistic: <button id='istat' type='button' class='btn btn-default action-button shiny-bound-input'> <i class='fa fa-info-circle fa-fw' ></i></button> </div>"),
-                  c('Median, Average, or Total values'="", Average="A", Median="M", Total="T"), selectize=F),
+                  c('Median, Mean, or Total values'="", Mean="A", Median="M", Total="T"), selectize=F),
       tags$div(class="statbox", radioButtons("StatSelect","",  choices = c(DatVars()$STAT[4:6]), selected=DatVars()$STAT[4])))
   }
 })
@@ -583,25 +586,25 @@ output$StatSelect2 <- renderUI({
   if(input$LayoutSelect=='Metrics'){
     tagList(
     radioButtons("AVE_MED2", HTML("<div> Statistic: <button id='istat' type='button' class='btn btn-default action-button shiny-bound-input'> <i class='fa fa-info-circle fa-fw' ></i></button> </div>"),
-                   choices=c("Average","Median",'Total'), select='Median'))
+                   choices=c("Mean","Median",'Total'), select='Median'))
   } #nd Metrics
     else {
       if(input$Ind_sel=="Demographic"){
         if(input$demSelect %in% c("Number of vessels","Number of processors","Gini coefficient")){
           tagList(
             tags$div(class='StatGrey', radioButtons("AVE_MED2", HTML("<div> Statistic: <button id='istat' type='button' class='btn btn-default action-button shiny-bound-input'> <i class='fa fa-info-circle fa-fw' ></i></button> </div>"),
-                         choices=c("Average","Median",'Total'), select='Total'))
+                         choices=c("Mean","Median",'Total'), select='Total'))
             )
         } else if(input$demSelect=="Vessel length"|input$demSelect=="Exponential Shannon Index"|input$demSelect=="Fishery participation"|
                   input$demSelect=="Proportion of revenue from CS fishery"|input$demSelect=="Proportion of revenue from catch share species"|input$demSelect=="Proportion of landings from CS fishery"){
           tagList(
             tags$div(class='StatGrey2', radioButtons("AVE_MED2", HTML("<div> Statistic: <button id='istat' type='button' class='btn btn-default action-button shiny-bound-input'> <i class='fa fa-info-circle fa-fw' ></i></button> </div>"),
-                                                    choices=c("Average","Median",'Total'), select='Median'))
+                                                    choices=c("Mean","Median",'Total'), select='Median'))
           )
         } else{
         tagList(
           radioButtons("AVE_MED2", HTML("<div> Statistic: <button id='istat' type='button' class='btn btn-default action-button shiny-bound-input'> <i class='fa fa-info-circle fa-fw' ></i></button> </div>"),
-                       choices=c("Average","Median",'Total'), select='Median'))
+                       choices=c("Mean","Median",'Total'), select='Median'))
       }
         } #End demographic
       else if(input$Ind_sel=="Social and Regional"){
@@ -610,11 +613,11 @@ output$StatSelect2 <- renderUI({
       } else if (input$socSelect == "Hourly compensation"| input$socSelect == "Crew wage per day"| input$socSelect == "Revenue per crew day"){
           tagList(
             tags$div(class='StatGrey2', radioButtons("AVE_MED2", HTML("<div> Statistic: <button id='istat' type='button' class='btn btn-default action-button shiny-bound-input'> <i class='fa fa-info-circle fa-fw' ></i></button> </div>"),
-                         choices=c("Average","Median",'Total'), select='Median')))            
+                         choices=c("Mean","Median",'Total'), select='Median')))            
       } else {
         tagList(
           radioButtons("AVE_MED2", HTML("<div> Statistic: <button id='istat' type='button' class='btn btn-default action-button shiny-bound-input'> <i class='fa fa-info-circle fa-fw' ></i></button> </div>"),
-                       choices=c("Average","Median",'Total'), select='Median'))            
+                       choices=c("Mean","Median",'Total'), select='Median'))            
         }
         } #End social and regional
     } #end compare vessels
@@ -648,7 +651,7 @@ output$Layoutselect <- renderUI({
 #======================================
 output$Plotselect <- renderUI({
   tags$div(class="ckbox", checkboxInput("PlotSelect", HTML("<div> <span' style='font-weight:bold;font-size:12pt'>Show variance: </span>
-                                        <span style='font-weight:normal;font-style:italic;font-size:10pt'>Shaded area represents 1SD about average or 25th and 75th percentiles about median. </span>
+                                        <span style='font-weight:normal;font-style:italic;font-size:10pt'>Shaded area represents 1SD about mean or 25th and 75th percentiles about median. </span>
                                       <button id='ivariance' type='button' class='btn btn-dafault action-button shiny-bound-input'> 
                                       <i class='fa fa-info-circle fa-fw'></i></button></div>"),
                                       TRUE))

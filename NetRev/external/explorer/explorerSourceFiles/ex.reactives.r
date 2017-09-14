@@ -1,4 +1,5 @@
 #This file handles the reactive expressions for data management and statistical operations.
+  # data is loaded from serverHead.R load call
 
 # creating the dat() reactive function that contains the user selected dataset
 # The re-classification of data types can be transfered to the read-in file
@@ -15,11 +16,6 @@ DatMain <- reactive({ # data load moved to serverhead
   } 
 })
 
-#DatMain <- reactive({ # data load moved to serverhead
-  # data is loaded from serverHead.R load call
-#  dat <- netrevTable
-  #dat <- subset(dat, YEAR<2014)
-#})
 
 DatThirds <- reactive({
   if(input$Sect_sel=="CV"){
@@ -40,7 +36,7 @@ DatVars <- reactive({
                        CATEGORY = c("Fisheries","Homeport","State of homeport"="State","Vessel length class"),
                        FISHAK = unique(FISHAK),
                        whitingv = unique(whitingv),
-                       STAT =  c("Average per vessel","Average per vessel/day","Average per vessel/metric-ton caught","Median per vessel","Median per vessel/day","Median per vessel/metric-ton caught","Fleet-wide total")#="Total"
+                       STAT =  c("Mean per vessel","Mean per vessel/day","Mean per vessel/metric-ton caught","Median per vessel","Median per vessel/day","Median per vessel/metric-ton caught","Fleet-wide total")#="Total"
                    ))
   } else if(input$Sect_sel=="FR"){
     
@@ -49,35 +45,17 @@ DatVars <- reactive({
                          SHORTDESCR = c("Revenue","Variable costs","Fixed costs","Variable Cost Net Revenue","Total Cost Net Revenue"),
                          CATEGORY = c("Production activities","Region","Processor size"),
                          FISHAK = unique(FISHAK),
-                         STAT =  c("Average per processor","Average per processor/metric-ton produced","Median per processor","Median per processor/metric-ton produced","Industry-wide total")#="Total"
+                         STAT =  c("Mean per processor","Mean per processor/metric-ton produced","Median per processor","Median per processor/metric-ton produced","Industry-wide total")#="Total"
                     ))
   } else {
     datVars <- with(dat, 
                     list(YEAR =  2009:2015,
                          SHORTDESCR = c("Revenue","Variable costs","Fixed costs","Variable Cost Net Revenue","Total Cost Net Revenue"),
                          CATEGORY = c("Fisheries"),
-                         STAT =  c("Average per vessel","Average per vessel/day","Average per vessel/metric-ton produced","Median per vessel","Median per vessel/day","Median per vessel/metric-ton produced","Fleet-wide total")#="Total"
+                         STAT =  c("Mean per vessel","Mean per vessel/day","Mean per vessel/metric-ton produced","Median per vessel","Median per vessel/day","Median per vessel/metric-ton produced","Fleet-wide total")#="Total"
                     ))
   }
 })
-
-
-#Variable <- reactive({
-#  dat <- DatMain()
-#  if(input$CategorySelect == "Fisheries"){
-#    variable = c("All Fisheries", "All Catch Share Fisheries","At-sea Pacific whiting","Shoreside Pacific whiting","DTS trawl with trawl endorsement","Non-whiting, non-DTS trawl with trawl endorsement",
-#                 "Groundfish fixed gear with trawl endorsement","Groundfish fixed gear with fixed gear endorsement",
-#                 "All Non-Catch Share Fisheries", "Crab","Shrimp","Other fisheries")
-#  } else if(input$CategorySelect == "State"){
-#    variable = factorOrder$state
-#  } else if(input$CategorySelect == "Homeport"){
-#    variable = factorOrder$port
-#  } else {
-#    variable = factorOrder$lengths
-    #       subByCategory <- dat[dat$CATEGORY == input$CategorySelect,] 
-#  }
-#  return(variable)
-#})
 
 
 # Subset data for table
@@ -88,13 +66,16 @@ DatSubTable <- reactive({
   dat <- DatMain()      
   dat <- dat[-c(which(colnames(dat)=="con_flag"),which(colnames(dat)=="flag"))]
  
-   if(input$Sect_sel=="FR") {
-     dat$STAT <- ifelse(dat$STAT=="Fleet-wide total", "Industry-wide total", as.character(dat$STAT))
-     dat$STAT <- ifelse(dat$STAT=="Average per vessel", "Average per processor", as.character(dat$STAT))
-     dat$STAT <- ifelse(dat$STAT=="Average per vessel/metric-ton", "Average per processor/metric-ton", as.character(dat$STAT))
-     dat$STAT <- ifelse(dat$STAT=="Median per vessel", "Median per processor", as.character(dat$STAT))
-     dat$STAT <- ifelse(dat$STAT=="Median per vessel/metric-ton", "Median per processor/metric-ton", as.character(dat$STAT))
-   }
+
+  dat$STAT <- ifelse(dat$STAT=="Average per vessel", "Mean per vessel", 
+                        ifelse(dat$STAT=="Average per vessel/day", "Mean per vessel/day", 
+                               ifelse(dat$STAT=="Average per vessel/metric-ton caught", "Mean per vessel/metric-ton caught", 
+                                      ifelse(dat$STAT=="Average per vessel/metric-ton produced", "Mean per vessel/metric-ton produced",
+                                             ifelse(dat$STAT=="Average per processor", "Mean per processor",
+                                                    ifelse(dat$STAT=="Average per processor/metric-ton produced", "Mean per processor/metric-ton produced",as.character(dat$STAT)))))))
+
+  dat$VARIABLE <- ifelse(dat$VARIABLE=='Small vessel (< 60 ft)', 'Small vessel (<= 60ft)', as.character(dat$VARIABLE))
+  
   #subsetting
   datSub <- with(dat, dat[which(SHORTDESCR %in% input$ShortdescrSelect & 
                      CATEGORY %in% input$CategorySelect &
@@ -129,6 +110,11 @@ DatSubTable <- reactive({
   datSub$VALUE <- ifelse(datSub$N<3, NA, datSub$VALUE)
 #  datSub$N <- ifelse(datSub$N>2&is.na(datSub$VALUE)==T, NA, datSub$N)
   datSub$VARIANCE <- ifelse(datSub$N<3, NA, datSub$VARIANCE)
+  datSub$q25 <- round(as.numeric(datSub$q25),0)
+  datSub$q75 <- round(as.numeric(datSub$q75),0)
+  
+  datSub$VARIANCE <- 
+    ifelse(grepl('Median',datSub$STAT), paste(datSub$q25, ',', datSub$q75), datSub$VARIANCE)
   
   if(input$Sect_sel=="CV"){
   datSub$FISHAK <- ifelse(datSub$FISHAK=="TRUE", "Vessels included", "Vessels not included")
@@ -166,13 +152,14 @@ DatThirdsTable <- reactive({
   #  if(!is.null(DatMain())  ){
   dat <- DatThirds()      
   dat <- dat[,-which(colnames(dat)=="con_flag")]
-   if(input$Sect_sel=="FR") {
-    dat$STAT <- ifelse(dat$STAT=="Fleet-wide total", "Industry-wide total", as.character(dat$STAT))
-    dat$STAT <- ifelse(dat$STAT=="Average per vessel", "Average per processor", as.character(dat$STAT))
-    dat$STAT <- ifelse(dat$STAT=="Average per vessel/metric-ton", "Average per processor/metric-ton", as.character(dat$STAT))
-    dat$STAT <- ifelse(dat$STAT=="Median per vessel", "Median per processor", as.character(dat$STAT))
-    dat$STAT <- ifelse(dat$STAT=="Median per vessel/metric-ton", "Median per processor/metric-ton", as.character(dat$STAT))
-  }
+  dat$STAT <- ifelse(dat$STAT=="Average per vessel", "Mean per vessel", 
+                     ifelse(dat$STAT=="Average per vessel/day", "Mean per vessel/day", 
+                            ifelse(dat$STAT=="Average per vessel/metric-ton caught", "Mean per vessel/metric-ton caught", 
+                                   ifelse(dat$STAT=="Average per vessel/metric-ton produced", "Mean per vessel/metric-ton produced",
+                                          ifelse(dat$STAT=="Average per processor", "Mean per processor",
+                                                 ifelse(dat$STAT=="Average per processor/metric-ton produced", "Mean per processor/metric-ton produced",as.character(dat$STAT)))))))
+  
+  dat$VARIABLE <- ifelse(dat$VARIABLE=='Small vessel (< 60 ft)', 'Small vessel (<= 60ft)', as.character(dat$VARIABLE))
   
   #subsetting
   datSub <- subset(dat, SHORTDESCR %in% input$ShortdescrSelect & 
@@ -194,7 +181,11 @@ DatThirdsTable <- reactive({
   
   datSub$VALUE <- as.numeric(datSub$VALUE)
   datSub$VARIANCE <- as.numeric(datSub$VARIANCE)
- 
+  datSub$q25 <- round(as.numeric(datSub$q25),0)
+  datSub$q75 <- round(as.numeric(datSub$q75),0)
+  
+  datSub$VARIANCE <- 
+    ifelse(grepl('Median',datSub$STAT), paste(datSub$q25, ',', datSub$q75), datSub$VARIANCE)
   
   # order for plotting
   datSub$SHORTDESCR <- factor(datSub$SHORTDESCR, 
@@ -243,13 +234,14 @@ DatThirdsTable <- reactive({
 DatSub <- reactive({
   
     dat <- DatMain() 
-    if(input$Sect_sel=="FR") {
-      dat$STAT <- ifelse(dat$STAT=="Fleet-wide total", "Industry-wide total", as.character(dat$STAT))
-      dat$STAT <- ifelse(dat$STAT=="Average per vessel", "Average per processor", as.character(dat$STAT))
-      dat$STAT <- ifelse(dat$STAT=="Average per vessel/metric-ton", "Average per processor/metric-ton", as.character(dat$STAT))
-      dat$STAT <- ifelse(dat$STAT=="Median per vessel", "Median per processor", as.character(dat$STAT))
-      dat$STAT <- ifelse(dat$STAT=="Median per vessel/metric-ton", "Median per processor/metric-ton", as.character(dat$STAT))
-    }
+    dat$STAT <- ifelse(dat$STAT=="Average per vessel", "Mean per vessel", 
+                       ifelse(dat$STAT=="Average per vessel/day", "Mean per vessel/day", 
+                              ifelse(dat$STAT=="Average per vessel/metric-ton caught", "Mean per vessel/metric-ton caught", 
+                                     ifelse(dat$STAT=="Average per vessel/metric-ton produced", "Mean per vessel/metric-ton produced",
+                                            ifelse(dat$STAT=="Average per processor", "Mean per processor",
+                                                   ifelse(dat$STAT=="Average per processor/metric-ton produced", "Mean per processor/metric-ton produced",as.character(dat$STAT)))))))
+    
+    dat$VARIABLE <- ifelse(dat$VARIABLE=='Small vessel (< 60 ft)', 'Small vessel (<= 60ft)', as.character(dat$VARIABLE))
     
       datSub <- subset(dat, CATEGORY == input$CategorySelect &
                             VARIABLE %in% input$VariableSelect &
@@ -428,13 +420,14 @@ if(input$CategorySelect=="Fisheries"&input$Sect_sel=="CV"){
 # create an additional subset for thirds plot
 DatSubThirds <- reactive({
   dat <- DatThirds()
-  if(input$Sect_sel=="FR") {
-    dat$STAT <- ifelse(dat$STAT=="Fleet-wide total", "Industry-wide total", as.character(dat$STAT))
-    dat$STAT <- ifelse(dat$STAT=="Average per vessel", "Average per processor", as.character(dat$STAT))
-    dat$STAT <- ifelse(dat$STAT=="Average per vessel/metric-ton", "Average per processor/metric-ton", as.character(dat$STAT))
-    dat$STAT <- ifelse(dat$STAT=="Median per vessel", "Median per processor", as.character(dat$STAT))
-    dat$STAT <- ifelse(dat$STAT=="Median per vessel/metric-ton", "Median per processor/metric-ton", as.character(dat$STAT))
-  }
+  dat$STAT <- ifelse(dat$STAT=="Average per vessel", "Mean per vessel", 
+                     ifelse(dat$STAT=="Average per vessel/day", "Mean per vessel/day", 
+                            ifelse(dat$STAT=="Average per vessel/metric-ton caught", "Mean per vessel/metric-ton caught", 
+                                   ifelse(dat$STAT=="Average per vessel/metric-ton produced", "Mean per vessel/metric-ton produced",
+                                          ifelse(dat$STAT=="Average per processor", "Mean per processor",
+                                                 ifelse(dat$STAT=="Average per processor/metric-ton produced", "Mean per processor/metric-ton produced",as.character(dat$STAT)))))))
+  
+  dat$VARIABLE <- ifelse(dat$VARIABLE=='Small vessel (< 60 ft)', 'Small vessel (<= 60ft)', as.character(dat$VARIABLE))
   
   #subsetting
   datSub <- subset(dat, 
