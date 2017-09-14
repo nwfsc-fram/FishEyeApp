@@ -10,7 +10,7 @@ source("external/explorer/explorerSourceFiles/defaultText.R", local = TRUE)
 
 observeEvent(input$istat, {
   session$sendCustomMessage(type = 'testmessage',
-                            message = 'The median and average both attempt to provide information about the results for a representative vessel, however they do it in different ways. The median means that half of the vessels have a larger result than the median, and half are smaller. The average, or mean, is the sum of the values divided by the number of responses. If the data do not have many extreme responses in a particular direction, the median and mean will be very similar. However, if the data are skewed by extreme responses, then the median is a better measure of the result for a typical vessel. The total provides a measure of the fleet as a whole. The fleet-wide total is used to measure how the entire fleet is doing, rather than a representative vessel.')
+                            message = 'The median and mean both attempt to provide information about the results for a representative vessel, however they do it in different ways. The median means that half of the vessels have a larger result than the median, and half are smaller. The mean, is the sum of the values divided by the number of responses. If the data do not have many extreme responses in a particular direction, the median and mean will be very similar. However, if the data are skewed by extreme responses, then the median is a better measure of the result for a typical vessel. The total provides a measure of the fleet as a whole. The fleet-wide total is used to measure how the entire fleet is doing, rather than a representative vessel.')
 })
 observeEvent(input$ipo, {
   session$sendCustomMessage(type = 'testmessage',
@@ -37,7 +37,7 @@ observeEvent(input$ipo, {
                             }else if(input$SocSelect=="Seasonality"){
                               message = 'The date (day of year, Jan. 1 = 1) on which 50% of the total volume of catch was landed in the fishery. Metric measures broad-scale changes in the seasonality of fishing for catch shares fish. It can also indicate changes in total allowable catch (TAC); it may take the fleet longer to catch a higher TAC/ACL.'
                             }else if(input$SocSelect=="Share of landings by state"){
-                              message = 'Share of total landings, share of landings by whiting vessels, and share of landings by non-whiting groundfish vessels in each state or at sea. Shares are in terms of revenue.'
+                              message = 'Share of total landings, share of landings by whiting vessels, and share of landings by non-whiting groundfish vessels in each state or at sea. Shares are in terms of revenue. Vessels may deliver to more than one location.'
                             }#else if(input$demSelect=="Herfindahl-Hirschman Index"){
                             #  message = 'The Herfindahl-Hirschman Index is a measure of market concentration. It is calculated as the sum of the squares of the market shares, defined here by the share of the catch share revenues earned by each vessel. Values range from 0 to 10,000. Lower values indicate low market concentration (and higher competition).'
                             #}
@@ -103,9 +103,16 @@ observeEvent(input$icompare, {
 
 observeEvent(input$ivariance, {
   session$sendCustomMessage(type = 'testmessage',
-                            message = 'When AVERAGE is selected, we show one standard deviation about the average When MEDIAN is selected, we show the upper and lower quartiles (25th/75th percentiles). We use algorithm 8 from Hyndman and Fan (1996), which is particularly suited to non-normally distributed data. m=(p+1)/3. p_k = (k - 1/3)/(n+1/3). Then p_k =~ median[F(x_k)]. ')
+                            message = 'When MEAN is selected, we show one standard deviation about the mean, When MEDIAN is selected, we show the upper and lower quartiles (25th/75th percentiles). We use algorithm 8 from Hyndman and Fan (1996), which is particularly suited to non-normally distributed data. m=(p+1)/3. p_k = (k - 1/3)/(n+1/3). Then p_k =~ median[F(x_k)]. ')
 })
 
+observeEvent(input$iwhiting, {
+  session$sendCustomMessage(type = 'testmessage'#'JsonObject'
+                            ,message= 'See the Definitions Page for a diagram of how vessels are divided into whiting or non-whiting categories.'#
+                             # ('www/WhitingFigure.png',200,150,'alt text')
+                            )
+})
+##bsPopover('iwhiting', 'Title', content='test', trigger='click')
 
 scale_height <- function(){
  if(length(input$VariableSelect)<=2){ 
@@ -227,7 +234,7 @@ output$TableMain <- renderDataTable({
               } 
             }else if(input$socSelect=="Share of landings by state"){
             table$VALUE <- paste(prettyNum((table$VALUE), big.mark = ",", format = 'f', digits = 5, trim=T), '%')
-            names(table) <- c("Year", "Summary Variable", "Statistic", "Metric","Data summed\nacross","Number of vessels", "Value", "Delivery \nlocation")
+            names(table) <- c("Year", "Summary Variable", "Statistic", "Metric","Data summed\nacross",("Number of vessels;\nVessels may deliver\nto multiple locations"), "Value", "Delivery \nlocation")
           } else {
               table$VALUE <- prettyNum(table$VALUE, big.mark = ",", format = 'f', digits = 5, trim=T)
               table$VARIANCE <- prettyNum(table$VARIANCE, big.mark = ",", format = 'f', digits = 5, trim=T)
@@ -250,7 +257,7 @@ output$TableMain <- renderDataTable({
                 } else if(input$socSelect=="Share of landings by state"){
             table$VALUE <- paste('%', prettyNum((table$VALUE), big.mark = ",", format = 'f', digits = 5, trim=T))
             table$YEAR <- factor(table$YEAR, levels=c(min(table$YEAR):max(table$YEAR)))
-            names(table) <- c("Year", "Summary Variable","Fisheries Category", "Statistic", "Metric","Data summed\nacross","Number of vessels", "Value", "Delivery \nlocation")
+            names(table) <- c("Year", "Summary Variable","Fisheries Category", "Statistic", "Metric","Data summed\nacross","Number of vessels \nVessels may deliver \nto multiple locations", "Value", "Delivery \nlocation")
           } else {
                table <- subset(DatSubTable(), select = -CATEGORY)    
                table$VALUE <- prettyNum(table$VALUE, big.mark = ",", format = 'f', digits = 5, trim=T)
@@ -421,7 +428,7 @@ output$dlTable <- downloadHandler(
                 temp <- data.frame("Year", "Summary Variable", "Statistic", "Metric","Data summed across", "Number of vessels","Value",  "Variance (Quartiles or SD)","Sector")
               } 
             }else if(input$socSelect=="Share of landings by state"){
-              temp <- data.frame("Year", "Summary Variable", "Statistic", "Metric","Data summed across","Number of vessels", "Value", "Delivery location","Sector")
+              temp <- data.frame("Year", "Summary Variable", "Statistic", "Metric","Data summed across","Number of vessels; Vessels may deliver to multiple locations", "Value", "Delivery location","Sector")
             } else {
               if(input$Sect_sel=="FR"){
                 temp <- data.frame("Year", "Summary Variable", "Statistic", "Metric","Data summed across", "Number of processors","Value",  "Variance (Quartiles or SD)","Sector")
@@ -437,7 +444,7 @@ output$dlTable <- downloadHandler(
                 temp <- data.frame("Year", "Summary Variable","Fisheries Category", "Statistic", "Metric", "Data summed across","Number of vessels", "Value", "Variance (Quartiles or SD)","Sector")
               }
             } else if(input$socSelect=="Share of landings by state"){
-              temp <- data.frame("Year", "Summary Variable","Fisheries Category", "Statistic", "Metric","Data summed across","Number of vessels", "Value", "Delivery location","Sector")
+              temp <- data.frame("Year", "Summary Variable","Fisheries Category", "Statistic", "Metric","Data summed across","Number of vessels\nVessels may deliver\nto multiple locations", "Value", "Delivery location","Sector")
             } else {
                if(input$Sect_sel=="FR"){
                  temp <- data.frame("Year", "Summary Variable","Fisheries Category", "Statistic", "Metric","Data summed across", "Number of processors","Value",  "Variance (Quartiles or SD)","Sector")

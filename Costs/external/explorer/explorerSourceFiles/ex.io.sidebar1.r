@@ -53,9 +53,14 @@ output$Shortdescrselect <- renderUI({
 #        tags$div(class="statboxC", checkboxGroupInput("ShortdescrSelect",'Cost categories:',
 #                                             choices = DatVars()$SHORTDESCR,selected = DatVars()$SHORTDESCR))
 #      } else {
-        tags$div(class="statboxC", checkboxGroupInput("ShortdescrSelect",'Cost categories:',
+   if(input$tabs=="Panel1"){        
+     tags$div(class="statboxC", checkboxGroupInput("ShortdescrSelect",'Cost categories:',
                                                       choices = DatVars()$SHORTDESCR,selected = c('All fixed costs','All variable costs')))
-        
+   } else {
+        tags$div(class="statboxC", checkboxGroupInput("ShortdescrSelect",'Cost categories:',
+                                                      choices = DatVars()$SHORTDESCR, selected = DatVars()$SHORTDESCR[c(2:8)])) 
+      }
+      
 #      }
     } else if(input$Sect_sel=='FR'){
 #      if(input$PlotSelect!='Stacked bar'){
@@ -130,10 +135,16 @@ output$Yearselect2 <- renderUI({
 #-------------------Category Select
 #################################################################################
 output$Categoryselect <- renderUI({
-  if(input$Sect_sel[1]!="FR"){
-    tags$div(class="ckbox", radioButtons("CategorySelect", "Group vessels according to:", choices = DatVars()$CATEGORY, selected=DatVars()$CATEGORY[1]))
-  } else if(input$Sect_sel[1]=="FR"){ 
+  if(input$Sect_sel[1]=="FR"){ 
     tags$div(class="ckbox", radioButtons("CategorySelect", "Group processors according to:", choices = DatVars()$CATEGORY, selected=DatVars()$CATEGORY[1]))
+  } else if(input$Sect_sel[1]!="CV"){
+    tags$div(class="ckbox", radioButtons("CategorySelect", "Group vessels according to:", choices = DatVars()$CATEGORY, selected=DatVars()$CATEGORY[1]))
+  } else {
+    if(input$tabs=='Panel1'){
+    tags$div(class="ckbox", radioButtons("CategorySelect", "Group vessels according to:", choices = DatVars()$CATEGORY, selected=DatVars()$CATEGORY[1])) 
+    } else {
+    tags$div(class="ckbox", radioButtons("CategorySelect", "Group vessels according to:", choices = DatVars()$CATEGORY, selected=DatVars()$CATEGORY[3]))
+    } 
   }
 #  tags$div(class="ckbox", radioButtons("CategorySelect", "Group vessels according to:", choices = DatVars()$CATEGORY))
 })
@@ -153,9 +164,19 @@ output$Variableselect <- renderUI({
     if(!is.null(input$CategorySelect)){
       if(input$CategorySelect == "State"){
         tagList(           
-          tags$div(class="select", selectInput("inSelect","",
-                                               c("All fisheries","All catch share fisheries","All non-catch share fisheries")), style="margin-bottom:-10px"),
-          checkboxGroupInput("VariableSelect", "Select one or more state:", choices = factorOrder$state, selected="")
+if(input$tabs=='Panel1'){
+  tagList(           
+    tags$div(class="select", selectInput("inSelect","",
+                                         c("All fisheries","All catch share fisheries","All non-catch share fisheries")), style="margin-bottom:-10px"),
+    checkboxGroupInput("VariableSelect", "Select one or more state:", choices = factorOrder$state, selected="")
+  )
+} else {
+  tagList(           
+    tags$div(class="select", selectInput("inSelect","",
+                                         c("All fisheries","All catch share fisheries","All non-catch share fisheries"), selected='All catch share fisheries'), style="margin-bottom:-10px"),
+    checkboxGroupInput("VariableSelect", "Select one or more state:", choices = factorOrder$state, selected=factorOrder$state)
+  )  
+}
         )
         } else if (input$CategorySelect=="Region"){
           tagList(           
@@ -168,7 +189,7 @@ output$Variableselect <- renderUI({
         tagList(           
           tags$div(class="select", selectInput("inSelect","",
                                                c("All fisheries","All catch share fisheries","All non-catch share fisheries")), style="margin-bottom:-10px"),
-          checkboxGroupInput("VariableSelect",  "Select one or more vessel length class:", choices=factorOrder$lengths, selected="")
+          checkboxGroupInput("VariableSelect",  "Select one or more vessel length class:", choices=c("Large vessel (> 80 ft)","Medium vessel (> 60ft, <= 80ft)", "Small vessel (<= 60 ft)"), selected="")
         )
       }else if(input$CategorySelect == "Processor size"){
         tagList(           
@@ -264,8 +285,14 @@ output$FishAkselect <- renderUI({
 #Select whiting (data summed across category)
 ###################################################
 output$FishWhitingselect <- renderUI({
-  tags$div(class="ckbox", radioButtons("FishWhitingSelect", "Show data summed across:", choices=DatVars()$whitingv, selected=DatVars()$whitingv[1]))
+  if(input$tabs=='Panel1'){
+  tags$div(class="ckbox", radioButtons("FishWhitingSelect",  HTML("<div> Show data summed across:<button id='iwhiting' type='button' class='btn btn-default action-button shiny-bound-input'> <i class='fa fa-info-circle fa-fw'></i>                                                                       </button></div>"), choices=DatVars()$whitingv, selected=DatVars()$whitingv[1]))
+  } else {
+    tags$div(class="ckbox", radioButtons("FishWhitingSelect",  HTML("<div> Show data summed across:<button id='iwhiting' type='button' class='btn btn-default action-button shiny-bound-input'> <i class='fa fa-info-circle fa-fw'></i>                                                                       </button></div>"), choices=DatVars()$whitingv, selected=DatVars()$whitingv[2]))
+  }
 })
+
+
 #--------Exclude vessels that fished for whiting-------------------------
 #output$FishWhitingselect <- renderUI({
 #  tags$div(class="ckbox", checkboxInput("FishWhitingSelect", p("Include vessels that fished for Pacific whiting: ", 
@@ -298,20 +325,28 @@ output$Statselect <- renderUI({
   if(input$Sect_sel=="FR")  { 
     tagList(
       selectInput("AVE_MED", HTML("<div> Statistic: <button id='istat' type='button' class='btn btn-default action-button shiny-bound-input'> <i class='fa fa-info-circle fa-fw' ></i></button> </div>"),
-                  c('Median, Average, or Total values'="", Average="A", Median="M", Total="T"), selectize=F),
+                  c('Median, Mean, or Total values'="", Mean="A", Median="M", Total="T"), selectize=F),
       tags$div(class="statbox", radioButtons("StatSelect","",  choices = c(DatVars()$STAT[4:6]))))
   } else if (input$Sect_sel=='CP'|input$Sect_sel=='M') {
     tagList(
       selectInput("AVE_MED", HTML("<div> Statistic: <button id='istat' type='button' class='btn btn-default action-button shiny-bound-input'> <i class='fa fa-info-circle fa-fw' ></i></button> </div>"),
-                  c('Median, Average, or Total values'="", Average="A", Median="M", Total="T"), selectize=F),
+                  c('Median, Mean, or Total values'="", Mean="A", Median="M", Total="T"), selectize=F),
       tags$div(class="statbox", radioButtons("StatSelect","",  choices = c(DatVars()$STAT[5:8]), selected=DatVars()$STAT[5])))
   }else {
+    if(input$tabs=='Panel1'){
     tagList(
       selectInput("AVE_MED", HTML("<div> Statistic: <button id='istat' type='button' class='btn btn-default action-button shiny-bound-input'> <i class='fa fa-info-circle fa-fw' ></i></button> </div>"),
-                  c('Median, Average, or Total values'="", Average="A", Median="M", Total="T"), selectize=F),
+                  c('Median, Mean, or Total values'="", Mean="A", Median="M", Total="T"), selectize=F),
       tags$div(class="statbox", radioButtons("StatSelect","",  choices = c(DatVars()$STAT[5:8]), selected=DatVars()$STAT[5])))
+    } else {
+      tagList(
+        selectInput("AVE_MED", HTML("<div> Statistic: <button id='istat' type='button' class='btn btn-default action-button shiny-bound-input'> <i class='fa fa-info-circle fa-fw' ></i></button> </div>"),
+                    c('Median, Mean, or Total values'="", Mean="A", Median="M", Total="T"), selectize=F),
+        tags$div(class="statbox", radioButtons("StatSelect","",  choices = c(DatVars()$STAT[5:8]), selected=DatVars()$STAT[6])))
+    }
   }
 })
+
 
 #select whether to show values per vessel, /vessel/day, or /vessel/metric-ton
 observe({
@@ -348,7 +383,11 @@ observe({
 ##################################################
 #-------------- Plot options------------------------------
 output$Plotselect <- renderUI({
+  if(input$tabs=='Panel1'){
       tags$div(class="ckbox", selectInput("PlotSelect", "Plot options:", choices= c("Bar", "Stacked bar", "Line"), selected='Line'))
+  } else {
+    tags$div(class="ckbox", selectInput("PlotSelect", "Plot options:", choices= c("Bar", "Stacked bar", "Line"), selected='Stacked bar'))
+  }
 })
 
 ##############################################################

@@ -1,3 +1,4 @@
+
 .libPaths(c("/usr/lib64/R/shiny_library", .libPaths()))
 library(appFrame)
 # custom css functions
@@ -72,7 +73,8 @@ tags$head(tags$body(includeHTML("google-analytics.noaa.js"))),
                              #ivs{width:20px; height:19px; margin:0px;border:none; padding:0px;border-radius:25px;background-color:transparent;font-size:12px; color:RoyalBlue}
                              #iem{width:20px; height:19px; margin:0px;border:none; padding:0px;border-radius:25px;background-color:transparent;font-size:12px; color:RoyalBlue}
                              #iprod{width:20px; height:19px; margin:0px;border:none; padding:0px;border-radius:25px;background-color:transparent;font-size:12px; color:RoyalBlue}
-                             #icompare{width:20px; height:19px; margin:0px;border:none; padding:0px;border-radius:25px;background-color:transparent;font-size:12px; color:RoyalBlue}'))),
+                             #icompare{width:20px; height:19px; margin:0px;border:none; padding:0px;border-radius:25px;background-color:transparent;font-size:12px; color:RoyalBlue}
+                            #iwhiting{width:20px; height:19px; margin:0px;border:none; padding:0px;border-radius:25px;background-color:transparent;font-size:12px; color:RoyalBlue}'))),
 #         ),#end tags head
           
           # stylize show data and show plots buttons

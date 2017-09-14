@@ -11,28 +11,28 @@ wellPanelHeading <- function(...){div(class = "well-radioHeading", ...)}
 
 
 fluidPage(title = "FISHEyE",
-          useShinyjs(),
+#          useShinyjs(),
           # create a CSS to modify style of validation test error (for Variability analysis)
-          #tags$head(tags$body(includeHTML("google-analytics.noaa.js"))),
+          tags$head(tags$body(includeHTML("google-analytics.noaa.js"))),
           tags$head(
-            tags$style(HTML(".select {margin-top:-20px}"),tags$textarea(id="message", rows=3, cols=40, "Default value")),
+           tags$style(HTML(".shiny-output-error-validation {color: red;font-size: 120%;}")),
+             tags$style(HTML(".select {margin-top:-20px}"),tags$textarea(id="message", rows=3, cols=40, "Default value")),
           #  tags$style(HTML(".navbar .nav > li { position:relative; z-index: 10000;}")),
-            tags$style(HTML(".shiny-output-error-validation {color: red;font-size: 120%;}")),
             tags$style(HTML(".navbar {position:static}")),
             tags$style(HTML(".ckbox {margin-top: 0px; margin-bottom: -15px}")),
             tags$style(HTML(".statbox {margin-top: -30px; margin-bottom: -15px}")),
           
-          tags$style(HTML(".ckboxCV  .checkbox:nth-child(2) label{color:grey;} .checkbox.input:nth-child(2) {border: 0px;    width: 0%;    height:0em;}#")),
-          tags$style(HTML(".ckboxCV  .checkbox:nth-child(6) label{color:grey;} .checkbox.input:nth-child(6) {border: 0px;    width: 0%;    height:0em;}#")),
-          tags$style(HTML(".ckboxCV  .checkbox:nth-child(3) label{color:grey;} .checkbox.input:nth-child(3) {border: 0px;    width: 0%;    height:0em;}#")),
-          tags$style(HTML(".ckboxCV2  .checkbox:nth-child(1) label{color:grey;} .checkbox.input:nth-child(1) {border: 0px;    width: 0%;    height:0em;}#")),
-          tags$style(HTML(".ckboxCV2  .checkbox:nth-child(7) label{color:grey;} .checkbox.input:nth-child(7) {border: 0px;    width: 0%;    height:0em;}#")),
-          tags$style(HTML(".ckboxCPFR  .checkbox:nth-child(1) label{color:grey;} .checkbox.input:nth-child(1) {border: 0px;    width: 0%;    height:0em;}#")),
-          tags$style(HTML(".ckboxCPFR  .checkbox:nth-child(5) label{color:grey;} .checkbox.input:nth-child(5) {border: 0px;    width: 0%;    height:0em;}#")),
-          tags$style(HTML(".ckboxCP  .checkbox:nth-child(2) label{color:grey;} .checkbox.input:nth-child(2) {border: 0px;    width: 0%;    height:0em;}#")),
-          tags$style(HTML(".ckboxFR  .checkbox:nth-child(4) label{color:grey;} .checkbox.input:nth-child(4) {border: 0px;    width: 0%;    height:0em;}#")),
-          tags$style(HTML(".ckboxSOC  .checkbox:nth-child(2) label{color:grey;} .checkbox.input:nth-child(2) {border: 0px;    width: 0%;    height:0em;}#")),
-          tags$style(HTML(".StatGrey  .radio:nth-child(-n+2) label{color:grey;} .radio.input:nth-child(-n+2) {border: 0px;    width: 0%;    height:0em;}#")),
+          tags$style(HTML(".ckboxCV  .checkbox:nth-child(2) label{color:grey;} .checkbox.input:nth-child(2) {border: 0px;    width: 0%;    height:0em;}#,
+                           .ckboxCV  .checkbox:nth-child(6) label{color:grey;} .checkbox.input:nth-child(6) {border: 0px;    width: 0%;    height:0em;}#,
+                           .ckboxCV  .checkbox:nth-child(3) label{color:grey;} .checkbox.input:nth-child(3) {border: 0px;    width: 0%;    height:0em;}#,
+                           .ckboxCV2  .checkbox:nth-child(1) label{color:grey;} .checkbox.input:nth-child(1) {border: 0px;    width: 0%;    height:0em;}#,
+                           .ckboxCV2  .checkbox:nth-child(7) label{color:grey;} .checkbox.input:nth-child(7) {border: 0px;    width: 0%;    height:0em;}#,
+                           .ckboxCPFR  .checkbox:nth-child(1) label{color:grey;} .checkbox.input:nth-child(1) {border: 0px;    width: 0%;    height:0em;}#,
+                           .ckboxCPFR  .checkbox:nth-child(5) label{color:grey;} .checkbox.input:nth-child(5) {border: 0px;    width: 0%;    height:0em;}#,
+                           .ckboxCP  .checkbox:nth-child(2) label{color:grey;} .checkbox.input:nth-child(2) {border: 0px;    width: 0%;    height:0em;}#,
+                           .ckboxFR  .checkbox:nth-child(4) label{color:grey;} .checkbox.input:nth-child(4) {border: 0px;    width: 0%;    height:0em;}#,
+                           .ckboxSOC  .checkbox:nth-child(2) label{color:grey;} .checkbox.input:nth-child(2) {border: 0px;    width: 0%;    height:0em;}#,
+                           .StatGrey  .radio:nth-child(-n+2) label{color:grey;} .radio.input:nth-child(-n+2) {border: 0px;    width: 0%;    height:0em;}#")),
        
            tags$style(HTML(".StatGrey  .radio:first-child  input[type=radio],
                                             .StatGrey  .radio:nth-child(2) input[type=radio],
@@ -108,20 +108,22 @@ fluidPage(title = "FISHEyE",
 
             tags$style(HTML(".actbutton {margin-bottom:5px}")),
             tags$style(HTML(".rbutton {margin-top:15px}")),
+            
             tags$style(HTML('#iof{width:20px; height:19px; margin:0px;border:none; padding:0px;border-radius:25px;background-color:transparent;font-size:12px; color:RoyalBlue}')),
             tags$style(HTML('#isummed{width:20px; height:19px; margin:0px;border:none; padding:0px;border-radius:25px;background-color:transparent;font-size:12px; color:RoyalBlue}')),
             tags$style(HTML('#ifg{width:20px; height:19px; margin:0px;border:none; padding:0px;border-radius:25px;background-color:transparent;font-size:12px; color:RoyalBlue}')),
             tags$style(HTML('#istat{width:20px; height:19px; margin:0px;border:none; padding:0px;border-radius:25px;background-color:transparent;font-size:12px; color:RoyalBlue}')),
           
-            tags$style(HTML('#ipo{width:20px; height:19px; margin:0px;border:none; padding:0px;border-radius:25px;background-color:transparent;font-size:12px; color:RoyalBlue}')),
-            tags$style(HTML('#ivs{width:20px; height:19px; margin:0px;border:none; padding:0px;border-radius:25px;background-color:transparent;font-size:12px; color:RoyalBlue}')),
-            tags$style(HTML('#iem{width:20px; height:19px; margin:0px;border:none; padding:0px;border-radius:25px;background-color:transparent;font-size:12px; color:RoyalBlue}')),
-            tags$style(HTML('#ivariance{width:20px; height:19px; margin:0px;border:none; padding:0px;border-radius:25px;background-color:transparent;font-size:12px; color:RoyalBlue}')),
-            tags$style(HTML('#FRr{width:20px; height:19px; margin:0px;border:none; padding:0px;border-radius:25px;background-color:transparent;font-size:12px; color:RoyalBlue}')),
-            tags$style(HTML('#FRs{width:20px; height:19px; margin:0px;border:none; padding:0px;border-radius:25px;background-color:transparent;font-size:12px; color:RoyalBlue}')),
-            tags$style(HTML('#FRi{width:20px; height:19px; margin:0px;border:none; padding:0px;border-radius:25px;background-color:transparent;font-size:12px; color:RoyalBlue}')),
-            tags$style(HTML('#icompare{width:20px; height:19px; margin:0px;border:none; padding:0px;border-radius:25px;background-color:transparent;font-size:12px; color:RoyalBlue}'))),
-#           tags$style(HTML('#iVesSum{width:20px; height:19px; margin:0px;border:none; padding:0px;border-radius:25px;background-color:transparent;font-size:12px; color:RoyalBlue}'))),
+            tags$style(HTML('#ipo{width:20px; height:19px; margin:0px;border:none; padding:0px;border-radius:25px;background-color:transparent;font-size:12px; color:RoyalBlue}
+                             #ivs{width:20px; height:19px; margin:0px;border:none; padding:0px;border-radius:25px;background-color:transparent;font-size:12px; color:RoyalBlue}
+                             #iem{width:20px; height:19px; margin:0px;border:none; padding:0px;border-radius:25px;background-color:transparent;font-size:12px; color:RoyalBlue}
+                             #ivariance{width:20px; height:19px; margin:0px;border:none; padding:0px;border-radius:25px;background-color:transparent;font-size:12px; color:RoyalBlue}
+                             #FRr{width:20px; height:19px; margin:0px;border:none; padding:0px;border-radius:25px;background-color:transparent;font-size:12px; color:RoyalBlue}
+                             #FRs{width:20px; height:19px; margin:0px;border:none; padding:0px;border-radius:25px;background-color:transparent;font-size:12px; color:RoyalBlue}
+                             #FRi{width:20px; height:19px; margin:0px;border:none; padding:0px;border-radius:25px;background-color:transparent;font-size:12px; color:RoyalBlue}
+                             #icompare{width:20px; height:19px; margin:0px;border:none; padding:0px;border-radius:25px;background-color:transparent;font-size:12px; color:RoyalBlue}
+                             #iwhiting{width:20px; height:19px; margin:0px;border:none; padding:0px;border-radius:25px;background-color:transparent;font-size:12px; color:RoyalBlue}'))),
+#           tags$style(HTML('#iVesSum{width:20px; height:19px; margin:0px;border:none; padding:0px;border-radius:25px;background-color:transparent;font-size:12px; color:RoyalBlue}
 # java script 
           tags$style(type='text/css', "#data2, 
                                        #data  { background-color:RoyalBlue; color:white; height:37px;position:absolute;bottom:170%;left:425%;}"),
@@ -178,26 +180,27 @@ fluidPage(title = "FISHEyE",
                 ,tabPanel(title='Case studies', value='Panel2', padding='10px',
                          tags$h3('Does net revenue differ between trawl gear and fixed gear for catcher vessels with a trawl permit?'),
                          fluidRow(column(12, htmlOutput('CaseStudyp1')),
-                                  column(12,  actionButton("hideshow1", "Show/Hide VCNR plot for catcher vessels with trawl permit", style='color:#fff; background-color:#5bc0de;border-color:#46b8da')),
+                                  column(12,  actionButton("hideshow1", "Show/Hide VCNR plot", style='color:#fff; background-color:#5bc0de;border-color:#46b8da')),
                                   column(12, # conditionalPanel(condition="input.hideshow1 % 2 !=0 & values$shouldShow != TRUE", 
                                          hidden(plotOutput("PlotMain2"))), 
-                                  column(12, htmlOutput('CaseStudyp6')),
-                                 column(12,  actionButton("hideshow6", "Show/Hide Days at sea plots for catcher vessels with trawl permit", style='color:#fff; background-color:#5bc0de;border-color:#46b8da')),
+                                
+                                   column(12, htmlOutput('CaseStudyp6')),
+                                 column(12,  actionButton("hideshow6", "Show/Hide Days at sea and VCNR/day plots", style='color:#fff; background-color:#5bc0de;border-color:#46b8da')),
                                  column(12,  hidden(htmlOutput("CaseStudyFig5"))),
                                  
                                  column(12,  htmlOutput('CaseStudyp2')),       
-                                  column(12,  actionButton("hideshow2", "Show/Hide Thirds plot for Groundfish with trawl endorsement fishery", style='color:#fff; background-color:#5bc0de;border-color:#46b8da')),
+                                  column(12,  actionButton("hideshow2", "Show/Hide Thirds plot", style='color:#fff; background-color:#5bc0de;border-color:#46b8da')),
                                   column(12,  #conditionalPanel(condition="input.hideshow2 % 2 !=0",  
                                          hidden(htmlOutput('CaseStudyFig2'))),#tags$img(src="TrawlThirds.png", height=350))),
                                   
                                   #column(12,  actionButton("hideshow3", "Show/Hide TCNR plot for catcher vessels with trawl permit", style='color:#fff; background-color:#5bc0de;border-color:#46b8da')),
                                   #column(12,  hidden(plotOutput("PlotMain3"))),#htmlOutput('CaseStudyFig3'))),
                                   column(12,  htmlOutput('CaseStudyp4')),
-                                  column(12,  actionButton("hideshow4", "Show/Hide Thirds plot for Groundfish fixed gear with trawl endorsement fishery", style='color:#fff; background-color:#5bc0de;border-color:#46b8da')),
-                                  column(12,  hidden(htmlOutput('CaseStudyFig3'))),
+#                                  column(12,  actionButton("hideshow4", "Show/Hide Thirds plot for Groundfish fixed gear with trawl endorsement fishery", style='color:#fff; background-color:#5bc0de;border-color:#46b8da')),
+#                                  column(12,  hidden(htmlOutput('CaseStudyFig3'))),
                                  
                                    column(12,  htmlOutput('CaseStudyp5')),
-                                  column(12,  actionButton("hideshow5", "Show/Hide Costs plot for catcher vessels with trawl permit", style='color:#fff; background-color:#5bc0de;border-color:#46b8da')),
+                                  column(12,  actionButton("hideshow5", "Show/Hide Costs plot", style='color:#fff; background-color:#5bc0de;border-color:#46b8da')),
                                  column(12,  hidden(htmlOutput("CaseStudyFig4")))
                                  
                                  
