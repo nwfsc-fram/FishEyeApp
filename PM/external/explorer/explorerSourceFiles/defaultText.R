@@ -254,58 +254,44 @@ output$GetStartedText <- renderUI({
 output$CaseStudyp1 <- renderUI({
          tags$div(style = "margin: 15px 15px 30px; width: 90%",
            tags$p(tags$em('(All plots displayed can be generated using FISHEyE, see italics for directions on how to create figure.)')),
-          tags$p("In the first five years of the catch share program, annual variable cost net revenue (VCNR; a measure of shorter-term operating profit) has generally been greater from trawl gear non-whiting 
-                    groundfish activities than from fixed gear activities. As shown in the figure below, using the Performance Metrics module, this is the case whether comparing the median vessel (black line in plot 
-                  below), or the range of VCNR (in grey), in all years except 2011. In 2015, the difference in VCNR between the two fishing activities was smaller than in previous years. The 
-                  range (in grey) shows outcomes between the 25th and 75th percentiles (a statistical representation of vessels that make more than the lowest 25% of vessels and less than the highest 25%).",
-                 "The 25th percentile of groundfish fixed gear with trawl endorsement VCNR was negative in 2013-2015, meaning that about 25% of vessels participating in this activity were not making an operating 
-                 profit in their fixed gear with trawl endorsement operations (they may have profits in other activities, however).",
-                 tags$em("Using the selection panel on the right, you can toggle between the median and mean outcomes (under 'Statistic'), which illustrates a similar trend."),
-                 "Note that we do not compare 2009-2010; the outcomes of fixed gear vessels fishing in 2009-2010 are not directly comparable because they were fishing under the Nature Conservancy Exempted 
-                  Fishing Permit. Total cost net revenue (TCNR), a longer-term measure of profitability that includes both fixed and variable costs, is also greater in trawl gear activities.", 
-                tags$em("Use the selection panel on the right to display TCNR (under 'Economic Measures').")))
+          tags$p(style='line-height:70%',"We can measure 'profitability' with two general indicators:",
+                 tags$ul(style='line-height:75%', "Annual", tags$strong("variable"), "cost net revenue (VCNR; a measure of shorter-term operating profit that includes only variable costs)"),
+                 tags$ul(style='line-height:75%',"Annual", tags$strong("total"), "cost net revenue (TNCR; a longer-term measure of profitability that includes both fixed and variable costs)")),
+          tags$p("In the first five years of the catch share program, VCNR and TCNR have generally been greater from trawl gear non-whiting 
+                    groundfish activities than from fixed gear activities. The only exception is 2011. The figure below shows VCNR for the median vessel (black line) and the range of VCNR  (25th to 75th percentiles; in grey). The percentiles are a statistical representation of vessels that make more than the lowest 25% of vessels and less than the highest 25%."), 
+                 
+          tags$p("Although the median vessel reported a profit in all years for both fisheries activities, around 25% of vessels were not making an operating provit in their fixed gear operations for 2013-2015 (25th percentile of VCNR was negative). They may, however, have profits in other activities. The means illustrate a similar trend.",
+                tags$br(), tags$em(style='font-size:85%', "Using the selection panel on the right, you can toggle between the median and mean outcomes (under 'Statistic'). "),tags$br(),
+                 "Note that we do not compare 2009-2010; the outcomes of fixed gear vessels fishing in these years are not directly comparable because they were fishing under the Nature Conservancy Exempted Fishing Permit." 
+)
+)
 })
 #2nd paragraph
     output$CaseStudyp6 <- renderUI({
       tags$div(style = "margin: 15px 15px 30px; width: 90%",
-          tags$p("To more fully understand the differences between the two fisheries activities, we can also look at the amount of effort (days at sea) and per-day profit levels in each.", 
-          tags$em("See the plot below or use the selection panel on the right. In the selection panel, click on the Demographic option under 'Select an indicator category', then select Days at Sea under
-                    'Select a metric', and select Median under 'Statistic'. The figure will show in the uppermost plot on this page."),
-          "Vessels spend more days fishing for groundfish with trawl gear in the catch share fishery than they do fishing with fixed gear.
-          The distribution is also broader, meaning that there is greater variation in the number of days fished with trawl gear. At the 75th percentile, vessels spend about 75 days per year fishing 
-          groundfish with trawl gear, compared to about 40 days with fixed gear."),
-          tags$p( #
-          
-                 "Per day at sea, the median VCNR is again higher for trawl gear activities, with the exception of 2011, when sablefish prices were very high.", 
-                 tags$em("To view VCNR per day, open the figure below or click on Economic under 'Select an indicator category' and select VCNR under 'Economic measures', and then select Median per vessel/day under 'Statistic'."), 
-                  "However, the distribution of outcomes is much larger for fixed gear activities. This means that for trawl gear activities, the majority of vessels  (those vessels within the 25th to 75th percentiles)
-                 are making between $2,000 and $5,000 of variable cost net revenue per day fishing (in 2015). For fixed gear activities, the vessels between the 25th and 75th percentile are making between -$300 and
-                 $5,000 per day.")
+               tags$h4('Further exploration: effort and profits per-day'),
+          tags$p("To more fully understand the differences between the two fisheries activities, we can also look at the amount of effort (days at sea) and per-day profit levels in each fishery.", 
+          tags$br(),tags$em(style='font-size:85%',"See the plot below or use the selection panel on the right. In the selection panel, click on the Demographic option under 'Select an indicator category', then select Days at Sea under 'Select a metric', and select Median under 'Statistic'. The figure will show in the uppermost plot on this page."),tags$br(),
+          "Vessels in the trawl gear fishery spend more days fishing for groundfish than vessels with fixed gear. The distribution is also broader for trawl gear, meaning that there is greater variation in the number of days fished with trawl gear. Across the displayed range (25th to 75th percentiles), vessels spend about 40-75 days per year fishing groundfish with trawl gear, compared to about 25-40 days with fixed gear."),
+          tags$p("Per day at sea, the median VCNR is again higher for trawl gear activities, with the exception of 2011, when sablefish prices were very high. However, the distribution of outcomes is much larger for fixed gear activities. This means that there is more variation in operating profits between vessels in fixed gear than in trawl gear activities. For instance, in 2015, the majority of vessels (those within the 25th to 75th percentiles) in the trawl gear fishery made between $2000 and $5000 of VCNR per day fishing. For fixed gear activities, the vessels between the 25th and 75th percentile maade between -$300 and $5000 per day.", 
+                 tags$br(),tags$em(style='font-size:85%',"To view VCNR per day, open the figure below or click on Economic under 'Select an indicator category' and select VCNR under 'Economic measures', and then select Median per vessel/day under 'Statistic'.")
+    )
     )
   })
 #Third paragraph
     output$CaseStudyp2 <- renderUI({
         tags$div(style = "margin: 15px 15px 30px; width: 90%",
-                  tags$p(tags$strong(tags$h4("How has net revenue from trawl gear non-whiting groundfish activities changed since catch share program implementation?"))),
-                 tags$p("For  trawl gear non-whiting groundfish activities, the median VCNR", tags$em('(see uppermost plot)'), "has been relatively stable at around $100,000 per 
-                   year and VCNR at the 25th percentile has also remained relatively stable. In contrast, TCNR has increased over the time 
-period shown, although TCNR was negative for the lowest 25% of earners in some years",
-                        tags$em('(click on TCNR in the panel on the right to see this figure in the uppermost plot above).'),"TCNR has increased more than VCNR because of 
-consolidation, meaning that there has been a decrease in the number of vessels  fishing",
-tags$em("(click on  Demographic under 'Select an indicator category' and then select the  Number of Vessels metric in the selection panel on the right to see this figure in the plot above).")," 
-As the number of vessels decreases, fewer vessels are catching a larger proportion of the catch and incurring fewer fixed costs, leading to greater overall efficiency. In addition to 
-consolidation, these vessels are fishing fewer days in the groundfish trawl fishery, which likely leads to lower costs and greater efficiency. Although revenue and costs have changed relatively little on an annual basis, revenue per day
-of fishing has increased, meaning that the fleet is experiencing the same level of profitability despite less effort (fewer fishing days).", tags$em("To view this figure in the uppermost plot, click on Economic under 'Select an indicator 
-                                                                                                                                                     category', Revenue under 'Economic measures', and Median per vessel/day under 'Statistic'.")
+                  tags$p(tags$h4("Further exploration: Focusing on trawl gear, how has net revenue changed over time?")),
+                  tags$p("For  trawl gear non-whiting groundfish activities, the median VCNR", tags$em('(see uppermost plot)'), "has been relatively stable at around $100,000 per year. In contrast, TCNR has increased over the time-period shown, although TCNR was negative for the lowest 25% of earners in some years", 
+                         tags$br(),tags$em(style='font-size:85%','(click on TCNR in the panel on the right to see this figure in the uppermost plot above).'), tags$br(),
+                         "TCNR has increased more than VCNR because of consolidation, meaning that there has been a decrease in the number of vessels  fishing",tags$br(),
+tags$em(style='font-size:85%',"(click on  Demographic under 'Select an indicator category' and then select the  Number of Vessels metric in the selection panel on the right to see this figure in the plot above)."),tags$br(),
+" As the number of vessels decreases, fewer vessels are catching a larger proportion of the catch and incurring fewer fixed costs, leading to greater overall efficiency. In addition to consolidation, these vessels are fishing fewer days in the groundfish trawl fishery, which likely leads to lower costs and greater efficiency. Although revenue and costs have changed relatively little on an annual basis, revenue per day of fishing has increased, meaning that the fleet is experiencing the same level of profitability despite fishing fewer days.", tags$br(),tags$em(style='font-size:85%',"To view this figure in the uppermost plot, click on Economic under 'Select an indicator category', Revenue under 'Economic measures', and Median per vessel/day under 'Statistic'.")
 ),
 
-                  tags$p("There is considerable heterogeneity within the catch share fishery. For instance, in 2015 the median revenue per vessel within the trawl gear fishery ranged between $132,000 (25th percentile) and $657,000 (75th percentile). To view the heterogeneity within the fishery, we group vessels anually into three tiered categories (33.3rd, 66.6th and 100th percentiles)
-                  based on revenue earned", tags$em('(see plot below).'), "For the top third of revenue earners, median net revenue (VCNR or TCNR) per vessel has increased over time.  
-                  For the middle revenue earners, median VCNR has fluctuated around $100,000 per vessel per year and VCNR has slightly increased from $41,000 in 2009 to $70,000 in 2015. 
-                  However, the lower third of revenue earners have not reported increased net revenue Median VCNR per vessel has fluctuated around $29,000 per year and median TCNR per vessel has fluctuated around $0 per year.
-                         This plot shows that net revenue has increased more for the highest revenue earners than the lower revenue earners."), 
-                  tags$em("This figure came from the Thirds Analysis in the "), 
-tags$a(href="http://dataexplorer.northwestscience.fisheries.noaa.gov/fisheye/NetRevExplorer/",  " Net Revenue Explorer.", target="_blank"))
+                  tags$p("There is considerable heterogeneity within the catch share fishery. For instance, in 2015 the median revenue per vessel within the trawl gear fishery ranged between $132,000 (25th percentile) and $657,000 (75th percentile). To view the heterogeneity within the fishery, we group vessels annually into three categories (33.3rd, 66.6th and 100th percentiles) based on revenue earned", tags$em(style='font-size:85%','(see plot below).'), "For the top third of revenue earners, median net revenue (VCNR or TCNR) per vessel has increased over time. For the middle revenue earners, median TCNR has fluctuated around $100,000 per vessel per year and VCNR has slightly increased from $41,000 in 2009 to $70,000 in 2015. However, the lower third of revenue earners have not experienced similar increases. Median VCNR per vessel has fluctuated around $29,000 per year and median TCNR per vessel has fluctuated around $0 per year. This plot shows that net revenue has increased more for the highest revenue earners than the lower revenue earners."), 
+tags$br(),tags$em(style='font-size:85%',"This figure came from the Thirds Analysis in the "),
+tags$a(href="http://dataexplorer.northwestscience.fisheries.noaa.gov/fisheye/NetRevExplorer/",  " Net Revenue Explorer application.", target="_blank"))
 })
 #  output$CaseStudyp3 <- renderUI({            
 #        tags$div(style = "margin: 15px 15px 30px; width: 90%",tags$p(
@@ -328,15 +314,14 @@ tags$a(href="http://dataexplorer.northwestscience.fisheries.noaa.gov/fisheye/Net
 #    })
   output$CaseStudyp5 <- renderUI({            
     tags$div(style = "margin: 15px 15px 30px; width: 90%",
-             tags$p("Changes in costs, which affect net revenue, can be further explored using the", tags$a(href='','Costs Explorer Application.', target="_blank"),
-             "In the", tags$em('plot below,'), "we show the fleet-wide average expense per dollar of revenue for all fixed costs combined along with three individual fixed cost categories. 
-             The statistic is calculated as the sum of the costs across the fleet divided by the sum of revenue across the fleet and is useful to evaluate how costs affect net revenue.
-             Net revenue tends to be lower when fleet-wide average cost per dollar of revenue is higher.
-             For the groundfish trawl gear fishery, all fixed costs (darkest blue line) have decreased over time. Fishing gear and other fixed costs have remained relatively stable over time. 
-             On-board equipment (includes machinery and equipment not used to harvest or process fish) can include large costs such as motors and new vessels and has varied, and was highest in 2012. 
-             This corresponds with a dip in TCNR in 2012. Variable costs (all or individual categories) fluctuated little over the time frame in which data is available, suggesting that changes in 
-             net revenue have resulted primarily from changes in revenue and on-board equipment costs."       
-             ))})
+             tags$h4("Further exploration: changes in fishing costs using the Costs Explorer Application"),
+             tags$p("The first plot below shows fleet-wide average expense per dollar of revenue. It is shown for all fixed costs and for three individual fixed cost categories. 
+             The statistic is calculated as the sum of the costs across the fleet divided by revenue summed over all vessels and is used to evaluate how costs affect net revenue.
+             Net revenue tends to be lower when fleet-wide average cost per dollar of revenue is higher. For the groundfish trawl gear fishery, all fixed costs (darkest blue line) have decreased over time. Fishing gear and other fixed costs have remained relatively stable over time. On-board equipment (includes machinery and equipment not used to harvest or process fish) can include large costs such as motors and new vessels and has varied, and was highest in 2012. This corresponds with a dip in TCNR in 2012. Variable costs (shown in the figure on the right) fluctuated little over the timeframe observed, suggesting that changes in net revenue have resulted primarily from changes in revenue and on-board equipment costs.",
+                    tags$br(),tags$em(style='font-size:85%',"This figure came from the  "),
+                    tags$a(href="http://dataexplorer.northwestscience.fisheries.noaa.gov/fisheye/Costs/",  " Costs Explorer application.", target="_blank"))
+             
+             )})
   
 
   output$CaseStudyFig2 <- renderUI({

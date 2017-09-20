@@ -11,7 +11,7 @@ wellPanelHeading <- function(...){div(class = "well-radioHeading", ...)}
 
 
 fluidPage(title = "FISHEyE",
-#          useShinyjs(),
+          useShinyjs(),
           # create a CSS to modify style of validation test error (for Variability analysis)
           tags$head(tags$body(includeHTML("google-analytics.noaa.js"))),
           tags$head(
@@ -174,16 +174,17 @@ fluidPage(title = "FISHEyE",
                             conditionalPanel(condition="input.VariableSelect!=''",  
                               fluidRow(column(2, uiOutput("DataButton")),  
                                        column(12, dataTableOutput("TableMain"), 
-                                             plotOutput("PlotMain", height="auto",width="auto"))
+                                             plotOutput("PlotMain", hover=hoverOpts(id='plot_hover'), height="auto",width="auto"),
+                                             verbatimTextOutput('info'))
                             )))
 ###--------------Case Study -------------------------------####
                 ,tabPanel(title='Case studies', value='Panel2', padding='10px',
-                         tags$h3('Does net revenue differ between trawl gear and fixed gear for catcher vessels with a trawl permit?'),
+                         tags$h3('How does profitability compare between vessels with trawl gear and fixed gear in the catch share program?'),
                          fluidRow(column(12, htmlOutput('CaseStudyp1')),
                                   column(12,  actionButton("hideshow1", "Show/Hide VCNR plot", style='color:#fff; background-color:#5bc0de;border-color:#46b8da')),
                                   column(12, # conditionalPanel(condition="input.hideshow1 % 2 !=0 & values$shouldShow != TRUE", 
                                          hidden(plotOutput("PlotMain2"))), 
-                                
+                                 
                                    column(12, htmlOutput('CaseStudyp6')),
                                  column(12,  actionButton("hideshow6", "Show/Hide Days at sea and VCNR/day plots", style='color:#fff; background-color:#5bc0de;border-color:#46b8da')),
                                  column(12,  hidden(htmlOutput("CaseStudyFig5"))),
