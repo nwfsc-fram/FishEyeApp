@@ -135,7 +135,8 @@ output$PlotMain <- renderPlot({
 #   else if(input$MetricSelect=="Share of landings by state"){
 #     doPlot(dat = DatSub(), x = "YEAR", y = "VALUE*100")
 # }  else { 
-        doPlot(dat = DatSub(), x = "YEAR", y = "VALUE")}
+        doPlot(dat = DatSub(), x = "YEAR", y = "VALUE")
+               }
 #      }
 #else if(PermitPlot() & input$Ind_sel=="Economic"){
 #   doPlot(dat = DatSub(), x = "YEAR", y = "VALUE/1000")}
@@ -345,68 +346,48 @@ output$TableMain <- renderDataTable({
 
 
 # download buttons ------------------------------------------------------------
+##---Table-----#
+#####
 output$dlTable <- downloadHandler(
     filename = function() { 'perfmetricsTable.csv' },
     content = function(file) {
-      
-      if(input$Ind_sel=="Economic"){
+ #Remove columns that do not need to be displayed     
+#      if(input$Ind_sel=="Economic"){
           if(input$CategorySelect == "Fisheries"){
               table <- subset(DatSubTable(), select = -c(CATEGORY, CS)) %>% mutate(Sector =input$Sect_sel)
           } else {
               table <- subset(DatSubTable(), select = -CATEGORY)  %>% mutate(Sector =input$Sect_sel) 
           }
-      } else if(input$Ind_sel!="Economic"){
-          if(input$CategorySelect == "Fisheries"){
-            table <- subset(DatSubTable(), select = -c(CATEGORY, CS)) %>% mutate(Sector =input$Sect_sel)
-          } 
-          else {
-              table <- subset(DatSubTable(), select = -CATEGORY) %>% mutate(Sector =input$Sect_sel)  
-          }
-      }
       table$Sector <-c('Catcher Vessels','First Receivers and Shorebased Processors','Mothership vessels','Catcher-Processor vessels')[match(table$Sector, c('CV','FR','M','CP'))]
-      
-      # some wonky code to insert a timestamp. xtable has a more straightfoward approach but not supported with current RStudio version on the server
+#Rename the columns      
       if(input$LayoutSelect=="Metrics"){
         if(input$Ind_sel=="Economic"){
-           if(input$Sect_sel=="CV"|input$Sect_sel=="FR"){
-            if(input$CategorySelect == "Fisheries"){
-             if(input$Sect_sel=="CV"){
-                temp <- data.frame("Year", "Summary Variable", "Statistic", "Economic measure","Data summed across", "Number of vessels","Value",  "Variance (Quartiles or SD)","Sector")
-              } else {
-                temp <- data.frame("Year", "Summary Variable", "Statistic", "Economic measure","Data summed across", "Number of processors","Value",  "Variance (Quartiles or SD)","Sector")
-              }
-            } else {
-              if(input$Sect_sel=="CV"){
-                temp <- data.frame("Year", "Summary Variable","Fisheries Category", "Statistic", "Economic measure", "Data summed across","Number of vessels", "Value", "Variance (Quartiles or SD)","Sector")
-              } else {
-                temp <- data.frame("Year", "Summary Variable","Production Category", "Statistic", "Economic measure", "Data summed across","Number of processors", "Value", "Variance (Quartiles or SD)","Sector")
-              }
-            }
+          if(input$Sect_sel=='CV'&input$CategorySelect!='Fisheries'){
+            temp <- data.frame("Year", "Summary Variable","Fisheries Category", "Statistic", "Economic measure", "Data summed across","Number of vessels", "Value", "Variance (Quartiles or SD)","Sector")
+          } else if(input$Sect_sel=='FR'&input$CategorySelect!='Fisheries'){
+            temp <- data.frame("Year", "Summary Variable","Production Category", "Statistic", "Economic measure", "Data summed across","Number of processors", "Value", "Variance (Quartiles or SD)","Sector")
+          }else if(input$Sect_sel=='FR'&input$CategorySelect=='Fisheries'){
+            temp <- data.frame("Year", "Summary Variable", "Statistic", "Economic measure", "Data summed across","Number of processors", "Value", "Variance (Quartiles or SD)","Sector")
           } else {
             temp <- data.frame("Year", "Summary Variable", "Statistic", "Economic measure","Data summed across", "Number of vessels","Value",  "Variance (Quartiles or SD)","Sector")
           }
         } #End Economic
         else {
-          if(input$Sect_sel=="CV"|input$Sect_sel=="FR"){
-            if(input$CategorySelect == "Fisheries"){
-               if(input$Sect_sel=="CV"){
-                 temp <- data.frame("Year", "Summary Variable", "Statistic", "Metric","Data summed across","Number of vessels","Value",  "Variance (Quartiles or SD)","Sector")
-              } else {
-                temp <- data.frame("Year", "Summary Variable", "Statistic", "Metric","Data summed across","Number of processors","Value",  "Variance (Quartiles or SD)","Sector")
-              }
-            } else{
-              if(input$Sect_sel=="CV"){
+             if(input$Sect_sel=="CV"&input$CategorySelect!='Fisheries'){
                 temp <- data.frame("Year", "Summary Variable","Fisheries Category", "Statistic", "Metric","Data summed across","Number of vessels","Value",  "Variance (Quartiles or SD)","Sector")
-              } else {
+              } else if(input$Sect_sel=="FR"&input$CategorySelect!='Fisheries') {
                 temp <- data.frame("Year", "Summary Variable","Production Category", "Statistic", "Metric","Data summed across","Number of Processors","Value",  "Variance (Quartiles or SD)","Sector")
+              }else if(input$Sect_sel=="FR"&input$CategorySelect=='Fisheries') {
+                temp <- data.frame("Year", "Summary Variable", "Statistic", "Metric","Data summed across","Number of Processors","Value",  "Variance (Quartiles or SD)","Sector")
               }
-            }}  else {
+                else {
               temp <- data.frame("Year", "Summary Variable","Statistic", "Metric","Data summed across","Number of vessels","Value",  "Variance (Quartiles or SD)","Sector")
             }
-        }
+        } #End demographic and social and regional categories
       } # End compare metrics
-      #Begin Compare vessles
+      #Begin Compare vessels
       else {
+        #Economic
         if(input$Ind_sel=="Economic"){
           if(input$Sect_sel=="CV"&input$CategorySelect != "Fisheries"){
             temp <- data.frame("Year", "Summary Variable","Fisheries Category", "Statistic", "Economic measure", "Data summed across","Number of vessels", "Value", "Variance (Quartiles or SD)","Sector")
@@ -419,15 +400,10 @@ output$dlTable <- downloadHandler(
             temp <- data.frame("Year", "Summary Variable", "Statistic", "Economic measure","Data summed across", "Number of vessels","Value",  "Variance (Quartiles or SD)","Sector")
           }
         } #end economic for non-metrics comparison
+        #Social and Regional
         else if(input$Ind_sel=="Social and Regional"){
           if(input$CategorySelect == "Fisheries"){
-             if(input$socSelect=="Revenue per crew day"|input$socSelect=="Crew wage per day"){
-              if(input$Sect_sel=="FR"){
-                temp <- data.frame("Year", "Summary Variable", "Statistic", "Metric","Data summed across", "Number of processors","Value",  "Variance (Quartiles or SD)","Sector")
-              } else {
-                temp <- data.frame("Year", "Summary Variable", "Statistic", "Metric","Data summed across", "Number of vessels","Value",  "Variance (Quartiles or SD)","Sector")
-              } 
-            }else if(input$socSelect=="Share of landings by state"){
+             if(input$socSelect=="Share of landings by state"){
               temp <- data.frame("Year", "Summary Variable", "Statistic", "Metric","Data summed across","Number of vessels; Vessels may deliver to multiple locations", "Value", "Delivery location","Sector")
             } else {
               if(input$Sect_sel=="FR"){
@@ -437,24 +413,18 @@ output$dlTable <- downloadHandler(
             }}
           } # end fisheries
           else {
-            if(input$socSelect=="Revenue per crew day"|input$socSelect=="Crew wage per day"){
-              if(input$Sect_sel=="FR"){
-                temp <- data.frame("Year", "Summary Variable","Fisheries Category", "Statistic", "Metric", "Data summed across","Number of processors", "Value", "Variance (Quartiles or SD)","Sector")
-              }else {
-                temp <- data.frame("Year", "Summary Variable","Fisheries Category", "Statistic", "Metric", "Data summed across","Number of vessels", "Value", "Variance (Quartiles or SD)","Sector")
-              }
-            } else if(input$socSelect=="Share of landings by state"){
+           if(input$socSelect=="Share of landings by state"){
               temp <- data.frame("Year", "Summary Variable","Fisheries Category", "Statistic", "Metric","Data summed across","Number of vessels\nVessels may deliver\nto multiple locations", "Value", "Delivery location","Sector")
             } else {
                if(input$Sect_sel=="FR"){
-                 temp <- data.frame("Year", "Summary Variable","Fisheries Category", "Statistic", "Metric","Data summed across", "Number of processors","Value",  "Variance (Quartiles or SD)","Sector")
+                 temp <- data.frame("Year", "Summary Variable","Production Category", "Statistic", "Metric","Data summed across", "Number of processors","Value",  "Variance (Quartiles or SD)","Sector")
               } else {
                 temp <- data.frame("Year", "Summary Variable","Fisheries Category", "Statistic", "Metric","Data summed across", "Number of vessels","Value",  "Variance (Quartiles or SD)","Sector")
               }
             }
           }
         } #End social and regional
-        
+        #Demographic
         else if(input$Ind_sel=="Demographic"){
           if(input$CategorySelect == "Fisheries"){
             if(input$demSelect=="Number of vessels"){
@@ -470,12 +440,7 @@ output$dlTable <- downloadHandler(
                 } else {
                   temp <- data.frame("Year", "Summary Variable", "Statistic", "Metric","Data summed across","Number of vessels","Value",  "Variance (Quartiles or SD)","Sector")
                 }
-              }else if(input$demSelect=="Days at sea"){
-                if(input$Sect_sel!="FR"){
-                  temp <- data.frame("Year", "Summary Variable", "Statistic", "Metric","Data summed across", "Alaskan fisheries","Number of vessels","Value",  "Variance (Quartiles or SD)","Sector")
-                } else {
-                  temp <- data.frame("Year", "Summary Variable", "Statistic", "Metric","Data summed across", "Number of processors","Value",  "Variance (Quartiles or SD)","Sector")
-                }}
+              }
               else {
                 if(input$Sect_sel=="FR"){
                   temp <- data.frame("Year", "Summary Variable", "Statistic", "Metric","Data summed across", "Number of processors","Value",  "Variance (Quartiles or SD)","Sector")
@@ -487,9 +452,9 @@ output$dlTable <- downloadHandler(
           else {
             if(input$demSelect=="Number of vessels"){
                 temp <- data.frame("Year", "Summary Variable","Fisheries Category", "Statistic", "Metric","Data summed across","Number of vessels","Sector")
-              } else if(input$demSelect=="Number of Processors"){
-                names(table) <- data.frame("Year", "Summary Variable","Production Category", "Statistic", "Metric","Data summed across","Number of processors","Sector")
-            } else if(input$demSelect=="Exponential Shannon Index"|input$demSelect=="Proportion of revenue from CS fishery"|input$demSelect=="Fishery participation"|input$demSelect=="Days at sea"){
+              } else if(input$demSelect=="Number of processors"){
+                temp <- data.frame("Year", "Summary Variable","Production Category", "Statistic", "Metric","Data summed across","Number of processors","Sector")
+            } else if(input$demSelect=="Exponential Shannon Index"|input$demSelect=="Proportion of revenue from CS fishery"|input$demSelect=="Fishery participation"){
               if(input$Sect_sel=="FR"){
                 temp <- data.frame("Year", "Summary Variable","Production Category", "Statistic", "Metric","Data summed across", "Number of vessels","Value",  "Variance (Quartiles or SD)","Sector")
               } else {
@@ -504,154 +469,19 @@ output$dlTable <- downloadHandler(
           } 
         }#End Dempgraphic
       }#end compare vessels 
-      
-  #    if(input$Ind_sel=="Economic"){
-#        if(input$LayoutSelect=="Metrics"){
-#            if(input$CategorySelect == "Fisheries"){
-#                temp <- data.frame("Year", "Summary Variable", "Statistic", "Economic measure","Fished for whiting","Number of vessels","Value", "Variance (Quartiles or SD)")
-#            } else if(input$Sect_sel=="CV") {
-#                temp <- data.frame("Year", "Summary Variable","Fisheries Category", "Statistic", "Economic measure","Number of vessels", "Value","Variance (Quartiles or SD)")
-#            }  else {
-#                temp <- data.frame("Year", "Summary Variable","Production Category", "Statistic", "Economic measure","Number of vessels", "Value","Variance (Quartiles or SD)")
-#            }
-#        } else {
-#            if(input$CategorySelect == "Fisheries"){
-#                temp <- data.frame("Year", "Summary Variable", "Statistic", "Economic measure","Data summed across", "Number of vessels","Value","Variance (Quartiles or SD)")
-#            } else if(input$Sect_sel=="CV"){
-#                temp <- data.frame("Year", "Summary Variable","Fisheries Category", "Statistic", "Economic measure", "Data summed across","Number of vessels", "Value", "Variance (Quartiles or SD)")
-#            } else {
-#                temp <- data.frame("Year", "Summary Variable","Production Category", "Statistic", "Economic measure", "Data summed across","Number of vessels", "Value", "Variance (Quartiles or SD)")
-#            }
-#        }
-#      } #End economic
-#      else if(input$Ind_sel!="Economic"){
-#          if(input$CategorySelect == "Fisheries"){
-#           table <- subset(DatSubTable(), select = -c(CATEGORY, CS))
-#              if(input$LayoutSelect=="Metrics"){
-#                    temp <- data.frame("Year", "Summary Variable", "Statistic", "Metric", "Fished for whiting","Number of vessels","Value",  "Variance (Quartiles or SD)")
-#              } else if(input$LayoutSelect!="Metrics"){
-#               if(input$Sect_sel=="M"|input$Sect_sel=="CP"){
-#                 if(input$demSelect=="Days at sea"){
-#                temp <- data.frame("Year", "Summary Variable", "Statistic", "Metric","Data summed across","Fished in Alaska", "Number of vessels","Value",  "Variance (Quartiles or SD)")
-#                 } else if(input$demSelect=="Number of vessels"){
-#                   temp <- data.frame("Year", "Summary Variable", "Statistic", "Metric","Data summed across", "Number of vessels")
-#                } else {
-#                   temp <- data.frame("Year", "Summary Variable", "Statistic", "Metric","Data summed across", "Number of vessels","Value",  "Variance (Quartiles or SD)")
-#                 }
-#                 }else {
-#                  if(input$Ind_sel=="Social and Regional"){
-#                    if(input$socSelect=="Revenue per crew day"|input$socSelect=="Crew wage per day"){
-#                    temp <- data.frame("Year", "Summary Variable", "Statistic", "Metric","Data summed across", "Number of vessels","Value",  "Variance (Quartiles or SD)")
-#                    } else if(input$socSelect=="Share of landings by state"){
-#                    temp <- data.frame("Year", "Summary Variable", "Statistic", "Metric","Data summed across","Number of vessels", "Value", "Delivery location")
-#                    }else {
-#                     temp <- data.frame("Year", "Summary Variable", "Statistic", "Metric","Data summed across", "Number of vessels","Value",  "Variance (Quartiles or SD)")
-#                    } 
-#                } else if(input$Ind_sel=="Demographic"){
-#                    if(input$demSelect=="Number of vessels"|input$demSelect=="Number of processors"){
-#                    temp <- data.frame("Year", "Summary Variable", "Statistic", "Metric","Data summed across","Number of vessels")
-#                    }  else if(input$demSelect=="Exponential Shannon Index"|input$demSelect=="Proportion of revenue from CS fishery"|input$demSelect=="Fishery participation"|input$demSelect=="Days at sea"){
-#                    temp <- data.frame("Year", "Summary Variable", "Statistic", "Metric","Fished for whiting", "Alaskan fisheries activities","Number of vessels","Value",  "Variance (Quartiles or SD)")
-#                    } else {
-#                    temp <- data.frame("Year", "Summary Variable", "Statistic", "Metric","Fished for whiting", "Number of vessels","Value",  "Variance (Quartiles or SD)")
-#                }}
-#              }}#End not metrics
-#          }#End fisheries
-#        else if(input$CategorySelect != "Fisheries"){
-#          if(input$LayoutSelect=="Metrics"){
-#                if(input$Sect_sel!="CV"){
-#                    temp <- data.frame("Year", "Summary Variable","Production Category", "Statistic", "Metric", "Fished for whiting","Number of vessels","Value",  "Variance (Quartiles or SD)")
-#                } else {
-#                    temp <- data.frame("Year", "Summary Variable","Fisheries Category", "Statistic", "Metric", "Fished for whiting","Number of vessels","Value",  "Variance (Quartiles or SD)")
-#                }
-#           } #end compare metrics
-#          else {
-#              if(input$Ind_sel=="Social and Regional"){
-#                  if(input$socSelect=="Revenue per crew day"|input$socSelect=="Crew wage per day"){
-#                  if(input$Sect_sel!="CV"){
-#                      temp <- data.frame("Year", "Summary Variable","Production Category", "Statistic", "Metric", "Data summed across","Number of vessels", "Value", "Variance (Quartiles or SD)")
-#                    } else {
-#                      temp <- data.frame("Year", "Summary Variable","Fisheries Category", "Statistic", "Metric", "Data summed across","Number of vessels", "Value", "Variance (Quartiles or SD)")
-#                  }
-#              } else if(input$socSelect=="Share of landings by state"){
-#                  if(input$Sect_sel!="CV"){ 
-#                    temp <- data.frame("Year", "Summary Variable","Production Category", "Statistic", "Metric","Data summed across","Number of vessels", "Value", "Delivery location")
-#                  } else {
-#                    temp <- data.frame("Year", "Summary Variable","Fisheries Category", "Statistic", "Metric","Data summed across","Number of vessels", "Value", "Delivery location")
-#                  }  
-#              } else {
-#                temp <- data.frame("Year", "Summary Variable","Fisheries Category", "Statistic", "Metric","Data summed across","Number of vessels", "Value", "Delivery location")
-#                
-#              }} else if(input$Ind_sel=="Demographic"){
-#                if(input$demSelect=="Number of vessels"|input$demSelect=='Number of processors'){
-#                  if(input$Sect_sel!="CV"){ 
-#                    temp <- data.frame("Year", "Summary Variable","Production Category", "Statistic", "Metric","Data summed across","Number of vessels")
-#                  } else {
-#                    temp <- data.frame("Year", "Summary Variable","Fisheries Category", "Statistic", "Metric","Data summed across","Number of vessels")
-#                  }
-#          } else if(input$demSelect=="Exponential Shannon Index"|input$demSelect=="Proportion of revenue from CS fishery"|input$demSelect=="Fishery participation"|input$demSelect=="Days at sea"){
-#                  if(input$Sect_sel!="CV"){ 
-#                    temp <- data.frame("Year", "Summary Variable","Production Category", "Statistic", "Metric","Fished for whiting", "Alaskan fisheries activities","Number of vessels","Value",  "Variance (Quartiles or SD)")
-#                  } else {
-#                    temp <- data.frame("Year", "Summary Variable","Fisheries Category", "Statistic", "Metric","Fished for whiting", "Alaskan fisheries activities","Number of vessels","Value",  "Variance (Quartiles or SD)")
-#                  }
-#           }else {
-#                if(input$Sect_sel!="CV"){ 
-#                  temp <- data.frame("Year", "Summary Variable","Production Category", "Statistic", "Metric","Data summed across", "Number of vessels","Value",  "Variance (Quartiles or SD)")
-#                } else {
-#                  temp <- data.frame("Year", "Summary Variable","Fisheries Category", "Statistic", "Metric","Data summed across", "Number of vessels","Value",  "Variance (Quartiles or SD)")
-#         }
-#        }}
- #     }}}
-        
-      
+ #Final Formatting code chunk     
       colnames(temp)=colnames(table)
+      # some wonky code to insert a timestamp. xtable has a more straightfoward approach but not supported with current RStudio version on the server
 
 table <- rbindCommonCols(temp, table) 
-            if(input$LayoutSelect=="Metrics"){
-              if(input$CategorySelect == "Fisheries"){
                 names(table) <- c(paste("Sourced from the FISHEyE application (http://dataexplorer.northwestscience.fisheries.noaa.gov/fisheye/PerformanceMetrics/) maintained by NOAA Fisheriess NWFSC on ",
-                                        format(Sys.Date(), format="%B %d %Y")),"", "", "", "","", "","","")
-              } else {
-                names(table) <- c(paste("Sourced from the FISHEyE application (http://dataexplorer.northwestscience.fisheries.noaa.gov/fisheye/PerformanceMetrics/) maintained by NOAA Fisheriess NWFSC on ",
-                                        format(Sys.Date(), format="%B %d %Y")),"", "", "", "","", "","","","")
-              }
-            } else {
-        if(input$CategorySelect == "Fisheries"){
-         if(input$Sect_sel=="CP"|input$Sect_sel=="M"){
-          names(table) <- c(paste("Sourced from the FISHEyE application (http://dataexplorer.northwestscience.fisheries.noaa.gov/fisheye/PerformanceMetrics/) maintained by NOAA Fisheriess NWFSC on ",
-                                  format(Sys.Date(), format="%B %d %Y")),"", "", "", "","","")
-          }  #End CP or MS
-          else {
-          if(input$Ind_sel=="Demographic"&input$demSelect=="Number of vessels"|input$Ind_sel=="Demographic"&input$demSelect=="Number of processors"){
-          names(table) <- c(paste("Sourced from the FISHEyE application (http://dataexplorer.northwestscience.fisheries.noaa.gov/fisheye/PerformanceMetrics/) maintained by NOAA Fisheriess NWFSC on ",
-                                  format(Sys.Date(), format="%B %d %Y")),"", "", "","","","")
-        }  else if(input$Ind_sel=="Demographic"&input$demSelect=="Exponential Shannon Index"|input$Ind_sel=="Demographic"&input$demSelect=="Proportion of revenue from CS fishery"|input$Ind_sel=="Demographic"&input$demSelect=="Fishery participation"|input$Ind_sel=="Demographic"&input$demSelect=="Days at sea"){
-          names(table) <- c(paste("Sourced from the FISHEyE application (http://dataexplorer.northwestscience.fisheries.noaa.gov/fisheye/PerformanceMetrics/) maintained by NOAA Fisheriess NWFSC on ",
-                                  format(Sys.Date(), format="%B %d %Y")),"", "", "", "","", "","","","")
-        }else {
-          names(table) <- c(paste("Sourced from the FISHEyE application (http://dataexplorer.northwestscience.fisheries.noaa.gov/fisheye/PerformanceMetrics/) maintained by NOAA Fisheriess NWFSC on ",
-                                  format(Sys.Date(), format="%B %d %Y")),"", "", "", "","", "","","")
-        }
-        } #End CP and MS
-        }# End fisheries
-      else {
-        if(input$Ind_sel=="Demographic"&input$demSelect=="Number of vessels"|input$Ind_sel=="Demographic"&input$demSelect=="Number of processors"){
-          names(table) <- c(paste("Sourced from the FISHEyE application (http://dataexplorer.northwestscience.fisheries.noaa.gov/fisheye/PerformanceMetrics/) maintained by NOAA Fisheriess NWFSC on ",
-                                  format(Sys.Date(), format="%B %d %Y")),"", "","","","", "","")
-        } else if(input$Ind_sel=="Demographic"&input$demSelect=="Exponential Shannon Index"|input$Ind_sel=="Demographic"&input$demSelect=="Proportion of revenue from CS fishery"|input$Ind_sel=="Demographic"&input$demSelect=="Fishery participation"|input$Ind_sel=="Demographic"&input$demSelect=="Days at sea"){
-          names(table) <- c(paste("Sourced from the FISHEyE application (http://dataexplorer.northwestscience.fisheries.noaa.gov/fisheye/PerformanceMetrics/) maintained by NOAA Fisheriess NWFSC on ",
-                                  format(Sys.Date(), format="%B %d %Y")),"", "","", "", "","", "","","")
-        }else {
-          names(table) <- c(paste("Sourced from the FISHEyE application (http://dataexplorer.northwestscience.fisheries.noaa.gov/fisheye/PerformanceMetrics/) maintained by NOAA Fisheriess NWFSC on ",
-                                  format(Sys.Date(), format="%B %d %Y")),"", "","", "", "","", "","","")
-        }
-      }
-            }
+                                        format(Sys.Date(), format="%B %d %Y")), rep("", dim(temp)[2]-1))
            write.csv(table, file)
    })
+#####
 
 # render plot from  to pdf for download
+#######
 output$dlFigure <- downloadHandler(
   filename = function() {'perfmetricsPlot.pdf'},
   content = function(file){
@@ -671,3 +501,14 @@ output$dlFigure <- downloadHandler(
     dev.off()
  })
 
+#Interactives plots trial
+#output$info <- renderPrint({
+#  if(!is.null(input$plot_hover)){
+#    dat <- DatSub()
+#    lvls <- levels(dat$YEAR)
+#    name <- lvls[round(input$plot_hover$x)]
+#    hover=input$plot_hover
+#  paste0(input$demSelect, "=", hover$y, br(),
+#         'Year is', name, '')
+#  }
+#})
