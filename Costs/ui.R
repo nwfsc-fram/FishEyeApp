@@ -16,7 +16,8 @@ wellPanelSub <- function(...){div(class = "well-sub", ...)}
 # calls .css selector for radioButton header
 wellPanelHeading <- function(...){div(class = "well-radioHeading", ...)} 
 
-fluidPage(
+#function(request){
+  fluidPage(
 title = "FISHEyE",
           #stylize the appearance of different aspects of the website
 tags$head(tags$body(includeHTML("google-analytics.noaa.js"))),
@@ -123,11 +124,11 @@ tags$head(tags$body(includeHTML("google-analytics.noaa.js"))),
 ############################
 #----Case Study -----#
 ############################
-                                              ,                                             
-                                                tabPanel(title='Case studies', value='Panel2', padding='10px',
-                                                                                                     tags$h3('For vessels that did not fish for whiting, how do average variable costs per day at sea fishing for catch share fisheries compare between state of homeport?'),
-                                                                                                 fluidRow(column(12, htmlOutput('CaseStudy1'),plotOutput("PlotMain2", height="auto",width="auto")
-                                                                                                                 )))
+#                                              ,                                             
+#                                                tabPanel(title='Case studies', value='Panel2', padding='10px',
+#                                                                                                     tags$h3('For vessels that did not fish for whiting, how do average #variable costs per day at sea fishing for catch share fisheries compare between state of homeport?'),
+#                                                                                                 fluidRow(column(12, htmlOutput('CaseStudy1'),plotOutput("PlotMain2", height#="auto",width="auto")
+#                                                                                                                 )))
 ###---- End case Study -----###
 ############################
                                   )),
@@ -138,12 +139,13 @@ tags$head(tags$body(includeHTML("google-analytics.noaa.js"))),
                                       )),
                                     
                                     fluidRow(
-                                      column(12, HTML("<p style = 'font-size: 160%'><strong>Control Panel </strong></p> <p style='font-size: 110%'><strong>Make selections in each of the panels below </strong></p>"))#,
+                                      column(8, HTML("<p style = 'font-size: 160%'><strong>Control Panel </strong></p> <p style='font-size: 110%'><strong>Make selections in each of the panels below </strong></p>")),
+                                      column(4,bookmarkButton()
+                                             )#,
                                      ),#end fluidRow
                                     fluidRow(
                                       column(12,uiOutput("resetButton"),
-                                             uiOutput('Button')
-                                             )),
+                                             uiOutput('Button'))),
                                     fluidRow(
                                       column(12,
                                              uiOutput("Sectorselect"),
@@ -231,3 +233,4 @@ tags$head(tags$body(includeHTML("google-analytics.noaa.js"))),
                             ), #end app level fluid row#, target="_blank"
           appFrameFooterScrolling()
                      ) # end fluid Page
+#}#end function request

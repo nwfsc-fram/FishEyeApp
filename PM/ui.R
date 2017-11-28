@@ -9,11 +9,11 @@ wellPanelSub <- function(...){div(class = "well-sub", ...)}
 # calls .css selector for radioButton header
 wellPanelHeading <- function(...){div(class = "well-radioHeading", ...)} 
 
-
+function(request) {
 fluidPage(title = "FISHEyE",
           useShinyjs(),
           # create a CSS to modify style of validation test error (for Variability analysis)
-          tags$head(tags$body(includeHTML("google-analytics.noaa.js"))),
+#          tags$head(tags$body(includeHTML("google-analytics.noaa.js"))),
           tags$head(
            tags$style(HTML(".shiny-output-error-validation {color: red;font-size: 120%;}")),
              tags$style(HTML(".select {margin-top:-20px}"),tags$textarea(id="message", rows=3, cols=40, "Default value")),
@@ -22,17 +22,28 @@ fluidPage(title = "FISHEyE",
             tags$style(HTML(".ckbox {margin-top: 0px; margin-bottom: -15px}")),
             tags$style(HTML(".statbox {margin-top: -30px; margin-bottom: -15px}")),
           
-          tags$style(HTML(".ckboxCV  .checkbox:nth-child(2) label{color:grey;} .checkbox.input:nth-child(2) {border: 0px;    width: 0%;    height:0em;}#,
-                           .ckboxCV  .checkbox:nth-child(6) label{color:grey;} .checkbox.input:nth-child(6) {border: 0px;    width: 0%;    height:0em;}#,
-                           .ckboxCV  .checkbox:nth-child(3) label{color:grey;} .checkbox.input:nth-child(3) {border: 0px;    width: 0%;    height:0em;}#,
-                           .ckboxCV2  .checkbox:nth-child(1) label{color:grey;} .checkbox.input:nth-child(1) {border: 0px;    width: 0%;    height:0em;}#,
-                           .ckboxCV2  .checkbox:nth-child(7) label{color:grey;} .checkbox.input:nth-child(7) {border: 0px;    width: 0%;    height:0em;}#,
-                           .ckboxCPFR  .checkbox:nth-child(1) label{color:grey;} .checkbox.input:nth-child(1) {border: 0px;    width: 0%;    height:0em;}#,
-                           .ckboxCPFR  .checkbox:nth-child(5) label{color:grey;} .checkbox.input:nth-child(5) {border: 0px;    width: 0%;    height:0em;}#,
-                           .ckboxCP  .checkbox:nth-child(2) label{color:grey;} .checkbox.input:nth-child(2) {border: 0px;    width: 0%;    height:0em;}#,
-                           .ckboxFR  .checkbox:nth-child(4) label{color:grey;} .checkbox.input:nth-child(4) {border: 0px;    width: 0%;    height:0em;}#,
-                           .ckboxSOC  .checkbox:nth-child(2) label{color:grey;} .checkbox.input:nth-child(2) {border: 0px;    width: 0%;    height:0em;}#,
-                           .StatGrey  .radio:nth-child(-n+2) label{color:grey;} .radio.input:nth-child(-n+2) {border: 0px;    width: 0%;    height:0em;}#")),
+          tags$style(HTML(".ckboxCV .checkbox:nth-child(2) label{color:grey;} .checkbox.input:nth-child(2) {
+                                border: 0px;  width: 0%; height:0em;}#,
+                           .ckboxCV .checkbox:nth-child(6) label{color:grey;} .checkbox.input:nth-child(6) {
+                                border: 0px;  width: 0%; height:0em;}#,
+                           .ckboxCV .checkbox:nth-child(3) label{color:grey;} .checkbox.input:nth-child(3) {
+                                border: 0px;  width: 0%; height:0em;}#,
+                           .ckboxCV2 .checkbox:nth-child(1) label{color:grey;} .checkbox.input:nth-child(1) {
+                                border: 0px;  width: 0%; height:0em;}#,
+                           .ckboxCV2 .checkbox:nth-child(7) label{color:grey;} .checkbox.input:nth-child(7) {
+                                border: 0px;  width: 0%; height:0em;}#,
+                           .ckboxCPFR .checkbox:nth-child(1) label{color:grey;} .checkbox.input:nth-child(1) {
+                                border: 0px;  width: 0%; height:0em;}#,
+                           .ckboxCPFR .checkbox:nth-child(5) label{color:grey;} .checkbox.input:nth-child(5) {
+                                border: 0px;  width: 0%; height:0em;}#,
+                           .ckboxCP .checkbox:nth-child(2) label{color:grey;} .checkbox.input:nth-child(2) {
+                                border: 0px;  width: 0%; height:0em;}#,
+                           .ckboxFR .checkbox:nth-child(4) label{color:grey;} .checkbox.input:nth-child(4) {
+                                border: 0px; width: 0%; height:0em;}#,
+                           .ckboxSOC .checkbox:nth-child(2) label{color:grey;} .checkbox.input:nth-child(2) {
+                                border: 0px; width: 0%; height:0em;}#,
+                           .StatGrey .radio:nth-child(-n+2) label{color:grey;} .radio.input:nth-child(-n+2) {
+                                border: 0px; width: 0%; height:0em;}#")),
        
            tags$style(HTML(".StatGrey  .radio:first-child  input[type=radio],
                                             .StatGrey  .radio:nth-child(2) input[type=radio],
@@ -93,37 +104,48 @@ fluidPage(title = "FISHEyE",
           tags$style(HTML(".StatGrey2 .radio:nth-child(3) label{color:grey;}")),
              
           #check boxes and radio buttons that are greyed out and not usuable (because the option is not available)       
-            tags$style(HTML(".StatGrey3  .checkbox:nth-child(n+3) label{margin-left:17px;color:grey;} .checkbox.input:nth-child(n+3) {border: 0px;    width: 0%;    height:0em;}")),
-            tags$style(HTML(".StatGrey3  .checkbox:nth-child(5) label{margin-left:0px;color:grey;} .checkbox.input:nth-child(5) {border: 0px;    width: 0%;    height:0em;}")),
-            tags$style(HTML(".StatGrey4  .radio:nth-child(n+4) label{margin-left:17px;color:grey;} .radio.input:nth-child(n+4) {border: 0px;    width: 0%;    height:0em;}")),
+            tags$style(HTML(".StatGrey3  .checkbox:nth-child(n+3) label{margin-left:17px;color:grey;} 
+                                         .checkbox.input:nth-child(n+3) {border: 0px;    width: 0%;    height:0em;}")),
+            tags$style(HTML(".StatGrey3  .checkbox:nth-child(5) label{margin-left:0px;color:grey;} 
+                                         .checkbox.input:nth-child(5) {border: 0px;    width: 0%;    height:0em;}")),
+            tags$style(HTML(".StatGrey4  .radio:nth-child(n+4) label{margin-left:17px;color:grey;} 
+                                         .radio.input:nth-child(n+4) {border: 0px;    width: 0%;    height:0em;}")),
             tags$style(HTML(".StatGrey4  .radio:nth-child(6) label{margin-left:0px;color:grey;} .radio.input:nth-child(6) {border: 0px;    width: 0%;    height:0em;}")),
             
           
-          
             #tags$style(HTML(".met_mod label{font-style:italic;margin-bottom:20px;margin-top:-90px;padding-top:0;}")),#{margin-top:-40px;margin-bottom:50px; height:12px;}
             tags$style(HTML(".met_mod  input[type=radio] {border: 0px;    width: 0%;    height:0em;}#")),
-           
             tags$style(HTML(".sectselect >li{position:relative; z-index:10000; background-color:black !important; display:inline; vertical-align:middle;}")),
 #            tags$style(HTML(".sectselect{font-size:28px; line-height:28px;}")),
-
             tags$style(HTML(".actbutton {margin-bottom:5px}")),
             tags$style(HTML(".rbutton {margin-top:15px}")),
-            
-            tags$style(HTML('#iof{width:20px; height:19px; margin:0px;border:none; padding:0px;border-radius:25px;background-color:transparent;font-size:12px; color:RoyalBlue}')),
-            tags$style(HTML('#isummed{width:20px; height:19px; margin:0px;border:none; padding:0px;border-radius:25px;background-color:transparent;font-size:12px; color:RoyalBlue}')),
-            tags$style(HTML('#ifg{width:20px; height:19px; margin:0px;border:none; padding:0px;border-radius:25px;background-color:transparent;font-size:12px; color:RoyalBlue}')),
-            tags$style(HTML('#istat{width:20px; height:19px; margin:0px;border:none; padding:0px;border-radius:25px;background-color:transparent;font-size:12px; color:RoyalBlue}')),
-          
-            tags$style(HTML('#ipo{width:20px; height:19px; margin:0px;border:none; padding:0px;border-radius:25px;background-color:transparent;font-size:12px; color:RoyalBlue}
-                             #ivs{width:20px; height:19px; margin:0px;border:none; padding:0px;border-radius:25px;background-color:transparent;font-size:12px; color:RoyalBlue}
-                             #iem{width:20px; height:19px; margin:0px;border:none; padding:0px;border-radius:25px;background-color:transparent;font-size:12px; color:RoyalBlue}
-                             #ivariance{width:20px; height:19px; margin:0px;border:none; padding:0px;border-radius:25px;background-color:transparent;font-size:12px; color:RoyalBlue}
-                             #FRr{width:20px; height:19px; margin:0px;border:none; padding:0px;border-radius:25px;background-color:transparent;font-size:12px; color:RoyalBlue}
-                             #FRs{width:20px; height:19px; margin:0px;border:none; padding:0px;border-radius:25px;background-color:transparent;font-size:12px; color:RoyalBlue}
-                             #FRi{width:20px; height:19px; margin:0px;border:none; padding:0px;border-radius:25px;background-color:transparent;font-size:12px; color:RoyalBlue}
-                             #icompare{width:20px; height:19px; margin:0px;border:none; padding:0px;border-radius:25px;background-color:transparent;font-size:12px; color:RoyalBlue}
-                             #iwhiting{width:20px; height:19px; margin:0px;border:none; padding:0px;border-radius:25px;background-color:transparent;font-size:12px; color:RoyalBlue}'))),
-#           tags$style(HTML('#iVesSum{width:20px; height:19px; margin:0px;border:none; padding:0px;border-radius:25px;background-color:transparent;font-size:12px; color:RoyalBlue}
+            tags$style(HTML('#iof{width:20px; height:19px; margin:0px;border:none; padding:0px;border-radius:25px;background-color:transparent;font-size:12px; 
+                              color:RoyalBlue}')),
+            tags$style(HTML('#isummed{width:20px; height:19px; margin:0px;border:none; padding:0px;border-radius:25px;background-color:transparent;font-size:12px; 
+                              color:RoyalBlue}')),
+            tags$style(HTML('#ifg{width:20px; height:19px; margin:0px;border:none; padding:0px;border-radius:25px;background-color:transparent;font-size:12px; 
+                              color:RoyalBlue}')),
+            tags$style(HTML('#istat{width:20px; height:19px; margin:0px;border:none; padding:0px;border-radius:25px;background-color:transparent;font-size:12px; 
+                              color:RoyalBlue}')),
+            tags$style(HTML('#ipo{width:20px; height:19px; margin:0px;border:none; padding:0px;border-radius:25px;background-color:transparent;font-size:12px; 
+                              color:RoyalBlue}
+                             #ivs{width:20px; height:19px; margin:0px;border:none; padding:0px;border-radius:25px;background-color:transparent;font-size:12px; 
+                              color:RoyalBlue}
+                             #iem{width:20px; height:19px; margin:0px;border:none; padding:0px;border-radius:25px;background-color:transparent;font-size:12px; 
+                              color:RoyalBlue}
+                             #ivariance{width:20px; height:19px; margin:0px;border:none; padding:0px;border-radius:25px;background-color:transparent;font-size:12px; 
+                              color:RoyalBlue}
+                             #FRr{width:20px; height:19px; margin:0px;border:none; padding:0px;border-radius:25px;background-color:transparent;font-size:12px; 
+                              color:RoyalBlue}
+                             #FRs{width:20px; height:19px; margin:0px;border:none; padding:0px;border-radius:25px;background-color:transparent;font-size:12px; 
+                              color:RoyalBlue}
+                             #FRi{width:20px; height:19px; margin:0px;border:none; padding:0px;border-radius:25px;background-color:transparent;font-size:12px; 
+                              color:RoyalBlue}
+                             #icompare{width:20px; height:19px; margin:0px;border:none; padding:0px;border-radius:25px;background-color:transparent;font-size:12px; 
+                              color:RoyalBlue}
+                             #iwhiting{width:20px; height:19px; margin:0px;border:none; padding:0px;border-radius:25px;background-color:transparent;font-size:12px; 
+                              color:RoyalBlue}'))),
+#tags$style(HTML('#iVesSum{width:20px; height:19px; margin:0px;border:none; padding:0px;border-radius:25px;background-color:transparent;font-size:12px; color:RoyalBlue}
 # java script 
           tags$style(type='text/css', "#data2, 
                                        #data  { background-color:RoyalBlue; color:white; height:37px;position:absolute;bottom:170%;left:425%;}"),
@@ -174,14 +196,15 @@ fluidPage(title = "FISHEyE",
                             conditionalPanel(condition="input.VariableSelect!=''",  
                               fluidRow(column(2, uiOutput("DataButton")),  
                                        column(12, dataTableOutput("TableMain"), 
-                                             plotOutput("PlotMain", hover=hoverOpts(id='plot_hover'), height="auto",width="auto"),
-                                             verbatimTextOutput('info'))
-                            )))
+                                             plotOutput("PlotMain", height="auto",width="auto", hover=hoverOpts(id='plot_hover'),click=clickOpts(id='plot_click')
+                                                        ),
+                                             conditionalPanel(condition="input.Ind_sel=='Economic'",uiOutput('hover_info'),uiOutput('click_info'))
+                            ))))
 ###--------------Case Study -------------------------------####
                 ,tabPanel(title='Case studies', value='Panel2', padding='10px',
                          tags$h3('How does profitability compare between vessels with trawl gear and fixed gear in the catch share program?'),
                          fluidRow(column(12, htmlOutput('CaseStudyp1')),
-                                  column(12,  actionButton("hideshow1", "Show/Hide VCNR plot", style='color:#fff; background-color:#5bc0de;border-color:#46b8da')),
+                                  column(12,  actionButton("hideshow1", "Show/Hide VCNR plot", style='color:#fff; background-color:#5bc0de;border-color#:#46b8da')),
                                   column(12, # conditionalPanel(condition="input.hideshow1 % 2 !=0 & values$shouldShow != TRUE", 
                                          hidden(plotOutput("PlotMain2"))), 
                                  
@@ -197,10 +220,10 @@ fluidPage(title = "FISHEyE",
                                   #column(12,  actionButton("hideshow3", "Show/Hide TCNR plot for catcher vessels with trawl permit", style='color:#fff; background-color:#5bc0de;border-color:#46b8da')),
                                   #column(12,  hidden(plotOutput("PlotMain3"))),#htmlOutput('CaseStudyFig3'))),
                                   column(12,  htmlOutput('CaseStudyp4')),
-#                                  column(12,  actionButton("hideshow4", "Show/Hide Thirds plot for Groundfish fixed gear with trawl endorsement fishery", style='color:#fff; background-color:#5bc0de;border-color:#46b8da')),
-#                                  column(12,  hidden(htmlOutput('CaseStudyFig3'))),
+                                  #column(12,  actionButton("hideshow4", "Show/Hide Thirds plot for Groundfish fixed gear with trawl endorsement fishery", style='color:#fff; background-color:#5bc0de;border-color:#46b8da')),
+                                  column(12,  hidden(htmlOutput('CaseStudyFig3'))),
                                  
-                                   column(12,  htmlOutput('CaseStudyp5')),
+                                  column(12,  htmlOutput('CaseStudyp5')),
                                   column(12,  actionButton("hideshow5", "Show/Hide Costs plot", style='color:#fff; background-color:#5bc0de;border-color:#46b8da')),
                                  column(12,  hidden(htmlOutput("CaseStudyFig4")))
                                  
@@ -219,7 +242,8 @@ fluidPage(title = "FISHEyE",
                         column(8, HTML("<p style = 'font-size: 160%'><strong>Control Panel </strong></p> <p style='font-size: 110%'><strong>Make selections in each of the panels below </strong></p>")),
                         column(4,
                                uiOutput("resetButton"),
-                               uiOutput('Button'))),#end fluidRow
+                               uiOutput('Button'),
+                               bookmarkButton())),#end fluidRow
                      
                      fluidRow(
                        column(12,uiOutput("SectorSelect"),
@@ -252,7 +276,8 @@ fluidPage(title = "FISHEyE",
                                wellPanelSub(
                                     conditionalPanel(condition="input.Sect_sel=='CV'||
                                                      input.Sect_sel=='FR'&input.Ind_sel=='Economic'||
-                                                     input.Sect_sel=='FR'&input.Ind_sel=='Demographic'&input.demSelect!='Proportion of revenue from catch share species'",
+                                                     input.Sect_sel=='FR'&input.Ind_sel=='Demographic'&
+                                                     input.demSelect!='Proportion of revenue from catch share species'",
                                                      uiOutput("SelectText")),
                                     uiOutput("Variableselect")
                                  
@@ -279,29 +304,37 @@ fluidPage(title = "FISHEyE",
                              
                               wellPanelSub( 
                                   wellPanelSub(
-                                  conditionalPanel(condition="input.LayoutSelect!='Metrics'&&input.Sect_sel=='CV'&&input.Ind_sel=='Demographic'&&input.demSelect=='Exponential Shannon Index'
-                                                                          ||input.LayoutSelect!='Metrics'&&input.Sect_sel=='CV'&&input.Ind_sel=='Demographic'&&input.demSelect=='Proportion of revenue from CS fishery'
-                                                                          ||input.LayoutSelect!='Metrics'&&input.Sect_sel=='CV'&&input.Ind_sel=='Demographic'&&input.demSelect=='Fishery participation'", 
+                                  conditionalPanel(condition="input.LayoutSelect!='Metrics'&&input.Sect_sel=='CV'&&input.Ind_sel=='Demographic'&&
+                                                                            input.demSelect=='Exponential Shannon Index'
+                                                                          ||input.LayoutSelect!='Metrics'&&input.Sect_sel=='CV'&&input.Ind_sel=='Demographic'&&
+                                                                            input.demSelect=='Proportion of revenue from CS fishery'
+                                                                          ||input.LayoutSelect!='Metrics'&&input.Sect_sel=='CV'&&input.Ind_sel=='Demographic'&&
+                                                                            input.demSelect=='Fishery participation'", 
                                                  uiOutput("FishAkselect")), style = "padding: 0px;margin-bottom:0px; border: 3px solid #D3D3D3;border-radius:10px;"),
                                   wellPanelSub(
-                                  conditionalPanel(condition="input.Ind_sel!='Economic'&input.AVE_MED2!='Total'&input.socSelect!='Seasonality'&input.socSelect!='Share of landings by state'||input.Ind_sel=='Economic'&input.AVE_MED!='T'",
+                                  conditionalPanel(condition="input.Ind_sel!='Economic'&input.AVE_MED2!='Total'&
+                                                              input.socSelect!='Seasonality'&
+                                                              input.socSelect!='Share of landings by state'||
+                                                              input.Ind_sel=='Economic'&input.AVE_MED!='T'",
                                                    uiOutput("Plotselect")), style = "padding: 0px;margin-bottom:0px; border: 3px solid #D3D3D3;border-radius:10px;")#,
-                                  #wellPanelSub(
-                                  #conditionalPanel(condition="input.Ind_sel!='Economic'&input.AVE_MED2!='Total'&input.socSelect!='Seasonality'&input.socSelect!='Share of landings by state'||
-                                  #                 input.PlotSelect=='T' &input.Ind_sel=='Economic'&input.AVE_MED!='T'", 
-                                  #                 uiOutput('Plotselectoption')), style = "padding: 0px;margin-bottom:0px; border: 3px solid #D3D3D3;border-radius:10px;")
-                                    ) , #end sub panel
+                                     ) , #end sub panel
                               wellPanelSub(
                                 
                                  uiOutput("Yearselect"),
                                  wellPanelSub(
                                     conditionalPanel(condition=
-                                         "input.Sect_sel=='CV'&&input.CategorySelect!='Homeport'&&input.CategorySelect!='State'&&input.Ind_sel=='Economic'&&input.ShortdescrSelect=='Revenue'||
-                                          input.Sect_sel=='CV'&&input.CategorySelect!='Homeport'&&input.CategorySelect!='State'&&input.Ind_sel=='Demographic'&&input.demSelect=='Gini coefficient'||
-                                          input.Sect_sel!='FR'&&input.CategorySelect!='Homeport'&&input.CategorySelect!='State'&&input.Ind_sel=='Demographic'&&input.demSelect=='Number of vessels'||
-                                          input.Sect_sel=='CV'&&input.CategorySelect!='Homeport'&&input.CategorySelect!='State'&&input.Ind_sel=='Demographic'&&input.demSelect=='Vessel length'||
-                                          input.Sect_sel!='FR'&&input.CategorySelect!='Homeport'&&input.CategorySelect!='State'&&input.Ind_sel=='Social and Regional'&&input.socSelect=='Seasonality'||
-                                          input.Sect_sel!='FR'&&input.CategorySelect!='Homeport'&&input.CategorySelect!='State'&&input.Ind_sel=='Social and Regional'&&input.socSelect=='Share of landings by state'",
+                                         "input.Sect_sel=='CV'&&input.CategorySelect!='Homeport'&&input.CategorySelect!='State'&&
+                                          input.Ind_sel=='Economic'&&input.ShortdescrSelect=='Revenue'||
+                                          input.Sect_sel=='CV'&&input.CategorySelect!='Homeport'&&input.CategorySelect!='State'&&
+                                          input.Ind_sel=='Demographic'&&input.demSelect=='Gini coefficient'||
+                                          input.Sect_sel!='FR'&&input.CategorySelect!='Homeport'&&input.CategorySelect!='State'&&
+                                          input.Ind_sel=='Demographic'&&input.demSelect=='Number of vessels'||
+                                          input.Sect_sel=='CV'&&input.CategorySelect!='Homeport'&&input.CategorySelect!='State'&&
+                                          input.Ind_sel=='Demographic'&&input.demSelect=='Vessel length'||
+                                          input.Sect_sel!='FR'&&input.CategorySelect!='Homeport'&&input.CategorySelect!='State'&&
+                                          input.Ind_sel=='Social and Regional'&&input.socSelect=='Seasonality'||
+                                          input.Sect_sel!='FR'&&input.CategorySelect!='Homeport'&&input.CategorySelect!='State'&&
+                                          input.Ind_sel=='Social and Regional'&&input.socSelect=='Share of landings by state'",
                                     uiOutput('moreOptions')),
                                     style = "padding: 0px;margin-bottom:0px; border: 3px solid #D3D3D3;border-radius:10px;"#,
                                    #conditionalPanel(condition="",uiOutput('moreOptions'))#&&input.ShortdescrSelect=='Revenue'
@@ -318,6 +351,7 @@ fluidPage(title = "FISHEyE",
             ),      style = "padding: 0px;border: 1px solid #000000;") # end right side column
 
 )),
+        tabPanel(HTML('History'), htmlOutput('HistoryText')),
         navbarMenu("Instructions",
                      tabPanel("About", 
                               source("external/explorer/explorerSourceFiles/about.R")$value
@@ -345,8 +379,10 @@ fluidPage(title = "FISHEyE",
                      column(12, htmlOutput("ApplicationsText"))
                    )),
           tabPanel(HTML('<a class="btn btn-warning", href="http://dataexplorer.northwestscience.fisheries.noaa.gov/fisheye/"
-                        style="height:37px;border-radius:25px;margin: -24px -50px; float:top;position:absolute;right:-100px;font-familiy: Arial, Helvetica, sans-serif;font-size: 12pt; padding-top:7px;
+                        style="height:37px;border-radius:25px;margin: -24px -50px; float:top;position:absolute;right:-100px;
+                              font-familiy: Arial, Helvetica, sans-serif;font-size: 12pt; padding-top:7px;
                         padding-bottom:10px"> FISHEyE Homepage</a>' ),style='width:1000px')
           ), #end app level fluid row#, target="_blank"
           appFrameFooterScrolling()
 ) # end fluid Page
+}

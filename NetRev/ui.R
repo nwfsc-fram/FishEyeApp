@@ -10,7 +10,7 @@ wellPanelHeading <- function(...){div(class = "well-radioHeading", ...)}
 fluidPage(
 title = "FISHEyE",
           #stylize the appearance of different aspects of the website
-tags$head(tags$body(includeHTML("google-analytics.noaa.js"))),
+  tags$head(tags$body(includeHTML("google-analytics.noaa.js"))),
             tags$head(
             tags$style(HTML(".shiny-output-error-validation {color: red; font-size: 120%;}")), #validation error
            # modify spacing of labels for specified widgits
@@ -65,16 +65,26 @@ tags$head(tags$body(includeHTML("google-analytics.noaa.js"))),
                              .ckbox2 .checkbox:nth-child(11) label{margin-left:0px;}")),
             
             #stylize information icons
-            tags$style(HTML('#iof{width:20px; height:19px; margin:0px;border:none; padding:0px;border-radius:25px;background-color:transparent;font-size:12px; color:RoyalBlue}
-                             #isummed{width:20px; height:19px; margin:0px;border:none; padding:0px;border-radius:25px;background-color:transparent;font-size:12px; color:RoyalBlue}
-                             #ifg{width:20px; height:19px; margin:0px;border:none; padding:0px;border-radius:25px;background-color:transparent;font-size:12px; color:RoyalBlue}
-                             #istat{width:20px; height:19px; margin:0px;border:none; padding:0px;border-radius:25px;background-color:transparent;font-size:12px; color:RoyalBlue}
-                             #ipo{width:20px; height:19px; margin:0px;border:none; padding:0px;border-radius:25px;background-color:transparent;font-size:12px; color:RoyalBlue}
-                             #ivs{width:20px; height:19px; margin:0px;border:none; padding:0px;border-radius:25px;background-color:transparent;font-size:12px; color:RoyalBlue}
-                             #iem{width:20px; height:19px; margin:0px;border:none; padding:0px;border-radius:25px;background-color:transparent;font-size:12px; color:RoyalBlue}
-                             #iprod{width:20px; height:19px; margin:0px;border:none; padding:0px;border-radius:25px;background-color:transparent;font-size:12px; color:RoyalBlue}
-                             #icompare{width:20px; height:19px; margin:0px;border:none; padding:0px;border-radius:25px;background-color:transparent;font-size:12px; color:RoyalBlue}
-                            #iwhiting{width:20px; height:19px; margin:0px;border:none; padding:0px;border-radius:25px;background-color:transparent;font-size:12px; color:RoyalBlue}'))),
+            tags$style(HTML('#iof{width:20px; height:19px; margin:0px;border:none; padding:0px;border-radius:25px;
+                                  background-color:transparent;font-size:12px; color:RoyalBlue}
+                             #isummed{width:20px; height:19px; margin:0px;border:none; padding:0px;border-radius:25px;
+                                  background-color:transparent;font-size:12px; color:RoyalBlue}
+                             #ifg{width:20px; height:19px; margin:0px;border:none; padding:0px;border-radius:25px;
+                                  background-color:transparent;font-size:12px; color:RoyalBlue}
+                             #istat{width:20px; height:19px; margin:0px;border:none; padding:0px;border-radius:25px;
+                                  background-color:transparent;font-size:12px; color:RoyalBlue}
+                             #ipo{width:20px; height:19px; margin:0px;border:none; padding:0px;border-radius:25px;
+                                  background-color:transparent;font-size:12px; color:RoyalBlue}
+                             #ivs{width:20px; height:19px; margin:0px;border:none; padding:0px;border-radius:25px;
+                                  background-color:transparent;font-size:12px; color:RoyalBlue}
+                             #iem{width:20px; height:19px; margin:0px;border:none; padding:0px;border-radius:25px;
+                                  background-color:transparent;font-size:12px; color:RoyalBlue}
+                             #iprod{width:20px; height:19px; margin:0px;border:none; padding:0px;border-radius:25px;
+                                  background-color:transparent;font-size:12px; color:RoyalBlue}
+                             #icompare{width:20px; height:19px; margin:0px;border:none; padding:0px;border-radius:25px;
+                                  background-color:transparent;font-size:12px; color:RoyalBlue}
+                            #iwhiting{width:20px; height:19px; margin:0px;border:none; padding:0px;border-radius:25px;
+                                  background-color:transparent;font-size:12px; color:RoyalBlue}'))),
 #         ),#end tags head
           
           # stylize show data and show plots buttons
@@ -101,7 +111,8 @@ tags$head(tags$body(includeHTML("google-analytics.noaa.js"))),
                    tags$h2(style = "margin-left: 15px", 
                            HTML("<div>
                                 
-                                <p style='font-size:120%'><strong><a style='color:white; background-color:#1a5d99;  font-family:Cambria; border-radius:25px; padding:5px' href='https://dataexplorer.northwestscience.fisheries.noaa.gov/fisheye/'> FISHEyE</a> 
+                                <p style='font-size:120%'><strong><a style='color:white; background-color:#1a5d99;  font-family:Cambria; border-radius:25px; padding:5px' 
+                                          href='https://dataexplorer.northwestscience.fisheries.noaa.gov/fisheye/'> FISHEyE</a> 
                                         - Net Revenue Explorer</strong></p> 
                                 </div>")), htmlOutput("SectPrint")#,
 #                   uiOutput("SectorSelect") 
@@ -137,7 +148,9 @@ tags$head(tags$body(includeHTML("google-analytics.noaa.js"))),
                                       )),
                                     
                                     fluidRow(
-                                      column(12, HTML("<p style = 'font-size: 160%'><strong>Control Panel </strong></p> <p style='font-size: 110%'><strong>Make selections in each of the panels below </strong></p>"))#,
+                                      column(8, HTML("<p style = 'font-size: 160%'><strong>Control Panel </strong></p> <p style='font-size: 110%'>
+                                                     <strong>Make selections in each of the panels below </strong></p>")),
+                                      column(4,bookmarkButton())#,
                                      ),#end fluidRow
                                     fluidRow(
                                       column(12,uiOutput("resetButton"),
@@ -146,12 +159,14 @@ tags$head(tags$body(includeHTML("google-analytics.noaa.js"))),
                                     fluidRow(
                                       column(12,
                                              uiOutput("SectorSelect"),
-                                             style = "background:white; padding:0px;padding-bottom:-15px;margin-bottom:0px;margin-left:1px; border: 3px solid #D3D3D3;border-radius:10px;width:95%;font-size:110%")
+                                             style = "background:white; padding:0px;padding-bottom:-15px;margin-bottom:0px;margin-left:1px; 
+                                             border: 3px solid #D3D3D3;border-radius:10px;width:95%;font-size:110%")
                                       ),
                                     fluidRow( column(12,
                                       conditionalPanel(condition="input.tabs!='Panel1'",
                                          
-                                             uiOutput('Layoutselect'),style = "background:white; padding: 0px;margin-left:-12px;margin-right:12px; border: 3px solid #D3D3D3;border-radius:10px;"
+                                             uiOutput('Layoutselect'),style = "background:white; padding: 0px;margin-left:-12px;margin-right:12px; 
+                                             border: 3px solid #D3D3D3;border-radius:10px;"
                                       ))),
                                     fluidRow(
                                       column(6,
@@ -182,8 +197,7 @@ tags$head(tags$body(includeHTML("google-analytics.noaa.js"))),
                                       column(6,
                                             wellPanelSub(
                                                uiOutput("Statselect"),
-                                             #conditionalPanel(condition ="input.tabs == 'Panel2'|| input.tabs== 'Panel1' & input.DodgeSelect == 'Economic measures side-by-side'",
-                                                               uiOutput("Shortdescrselect")#)
+                                               uiOutput("Shortdescrselect")
                                              ),
                                             conditionalPanel(condition="input.Sect_sel=='CV'", 
                                                               wellPanelSub(uiOutput("Yearselect")
@@ -207,7 +221,6 @@ tags$head(tags$body(includeHTML("google-analytics.noaa.js"))),
                                   ,       style = "padding: 0px;border: 1px solid #000000;") # end left side column
                               )), #End explore the data
                      navbarMenu("Instructions",
-                                #HTML("<div> <p style= 'color:black; margin-bottom:-65px; margin-top:-15px; padding:19px; border-left: 1px solid black;border-right: 1px solid black; width:250px'>About, Instructions, Definitions</p></div>"),
                                 tabPanel("About", 
                                          source("external/explorer/explorerSourceFiles/about.R")$value
                                 ),
@@ -249,7 +262,8 @@ tags$head(tags$body(includeHTML("google-analytics.noaa.js"))),
                               )),
                      
                      tabPanel(HTML('<a class="btn btn-warning", href="https://dataexplorer.northwestscience.fisheries.noaa.gov/fisheye/"
-                                   style="height:37px;border-radius:25px;margin: -24px -50px; float:top;position:absolute;right:-100px;font-familiy: Arial, Helvetica, sans-serif;font-size: 12pt; padding-top:7px;
+                                   style="height:37px;border-radius:25px;margin: -24px -50px; float:top;position:absolute;right:-100px;
+                                          font-familiy: Arial, Helvetica, sans-serif;font-size: 12pt; padding-top:7px;
                                    padding-bottom:10px"> FISHEyE Homepage</a>' ),style='width:1000px')
                             ), #end app level fluid row#, target="_blank"
           appFrameFooterScrolling()
