@@ -8,6 +8,9 @@ source("external/explorer/explorerSourceFiles/doPlot.R", local = TRUE)
 source("external/explorer/explorerSourceFiles/doPlotDownload.R", local = TRUE)
 source("external/explorer/explorerSourceFiles/defaultText.R", local = TRUE)
 
+enableBookmarking("url")
+
+
 observeEvent(input$istat, {
   session$sendCustomMessage(type = 'testmessage',
                             message = 'The median and mean both attempt to provide information about the results for a representative vessel, however they do it in different ways. The median means that half of the vessels have a larger result than the median, and half are smaller. The mean, is the sum of the values divided by the number of responses. If the data do not have many extreme responses in a particular direction, the median and mean will be very similar. However, if the data are skewed by extreme responses, then the median is a better measure of the result for a typical vessel. The total provides a measure of the fleet as a whole. The fleet-wide total is used to measure how the entire fleet is doing, rather than a representative vessel.')
@@ -43,7 +46,6 @@ observeEvent(input$ipo, {
                             #}
                               )
 })
-
 observeEvent(input$FRr, {
   session$sendCustomMessage(type = 'testmessage',
                             message = 'The region corresponding to each processors. For First Receivers and Shorebased Processors, two regions are recognized: Washington/Oregon and California.')
@@ -73,24 +75,19 @@ observeEvent(input$isummed, {
                             message = 'For each region or processor size class, you can select to show activities across all production, only groundfish production, or only other species production.'
                             })
 })
-
 observeEvent(input$iem, {
   session$sendCustomMessage(type = 'testmessage',
                             message = 'Variable cost net revenue is revenue minus variable costs. Total cost net revenue is revenue minus fixed and total costs. Further information on the economic measures can be found in the Definitions page.'
   )
 })
-
 observeEvent(input$ivs, {
   session$sendCustomMessage(type = 'testmessage',
                             message = 'We provide the options to view activities for individual fisheries and activities combined over a group of fisheries. For example, the option All catch share fisheries shows the combined activies across the five catch share fisheries.')
 })
-
-
 observeEvent(input$iVesSum, {
   session$sendCustomMessage(type = 'testmessage',
                             message = 'For all vessels that fished within selected fisheries, show data for activities either within the selected fisheries, across all catch share fisheries, or across all West Coast fisheries. ')
 })
-
 observeEvent(input$icompare, {
   session$sendCustomMessage(type= 'testmessage',
                             if(input$Sect_sel=="CV"){
@@ -100,12 +97,10 @@ observeEvent(input$icompare, {
                             }
                             )
                             })
-
 observeEvent(input$ivariance, {
   session$sendCustomMessage(type = 'testmessage',
                             message = 'When MEAN is selected, we show one standard deviation about the mean, When MEDIAN is selected, we show the upper and lower quartiles (25th/75th percentiles). We use algorithm 8 from Hyndman and Fan (1996), which is particularly suited to non-normally distributed data. m=(p+1)/3. p_k = (k - 1/3)/(n+1/3). Then p_k =~ median[F(x_k)]. ')
 })
-
 observeEvent(input$iwhiting, {
   session$sendCustomMessage(type = 'testmessage'#'JsonObject'
                             ,message= 'See the Definitions Page for a diagram of how vessels are divided into whiting or non-whiting categories.'#
@@ -128,16 +123,16 @@ output$PlotMain <- renderPlot({
   input$data
   if(vars$counter%%2 == 0) return()
    else if(!PermitPlot()) return()
-      if(PermitPlot() #& input$Ind_sel!="Economic"
-    ){
+      if(PermitPlot()) #& input$Ind_sel!="Economic")
+    {
 #   if(input$MetricSelect=="revpcrewday"|input$MetricSelect=="wage"){
 #      doPlot(dat = DatSub(), x = "YEAR", y = "VALUE/1000")}  
 #   else if(input$MetricSelect=="Share of landings by state"){
 #     doPlot(dat = DatSub(), x = "YEAR", y = "VALUE*100")
 # }  else { 
         doPlot(dat = DatSub(), x = "YEAR", y = "VALUE")
-               }
-#      }
+               
+      }
 #else if(PermitPlot() & input$Ind_sel=="Economic"){
 #   doPlot(dat = DatSub(), x = "YEAR", y = "VALUE/1000")}
  },  height=scale_height, width = "auto")
@@ -500,15 +495,124 @@ output$dlFigure <- downloadHandler(
       }
     dev.off()
  })
+#######
 
 #Interactives plots trial
-#output$info <- renderPrint({
-#  if(!is.null(input$plot_hover)){
-#    dat <- DatSub()
-#    lvls <- levels(dat$YEAR)
-#    name <- lvls[round(input$plot_hover$x)]
-#    hover=input$plot_hover
-#  paste0(input$demSelect, "=", hover$y, br(),
-#         'Year is', name, '')
-#  }
-#})
+#######
+output$hover_info <- renderUI({
+  if(!is.null(input$plot_hover)){
+    dat <- DatSub()
+    if(input$LayoutSelect!='Metrics'&length(input$VariableSelect)==1||
+       input$LayoutSelect=='Metrics'&length(input$ShortdescrSelect)==1){
+      lvls <- levels(as.factor(dat$YEAR))
+    } else {
+      lvls <- rep(levels(as.factor(dat$YEAR)),2) 
+    }
+    hover=input$plot_hover
+
+    # calculate point position INSIDE the image as percent of total dimensions
+    # from left (horizontal) and from top (vertical)
+    left_pct <-
+      (.125+hover$domain$left) / (hover$domain$right - hover$domain$left)
+ #     if(hover$x<.89){
+ #         (hover$x - hover$domain$left) / (hover$domain$right - hover$domain$left)
+ #     } else {
+ #         (hover$x-.2 - hover$domain$left) / (hover$domain$right - hover$domain$left) 
+ #       }#
+#    top_pct <- (hover$domain$top - hover$y) / (hover$domain$top - hover$domain$bottom)
+    top_pct <- .15#hover$domain$top
+    
+    # calculate distance from left and bottom side of the picture in pixels
+    #left_px <- hover$range$left + left_pct * (hover$range$right - hover$range$left)
+    left_px <- hover$range$left + left_pct * (hover$range$right - hover$range$left)
+    top_px <- hover$range$top + top_pct * (hover$range$bottom - hover$range$top)
+  
+    # create style property fot tooltip
+    # background color is set so tooltip is a bit transparent
+    # z-index is set so we are sure are tooltip will be on top
+    style1 <- paste0("position:absolute; z-index:100; background-color: rgba(245, 245, 245, 0.85); ",
+                    "left:", left_px-16, #left_px -5,
+                    "px; top:", top_px + .1, "px;"
+                   )
+    
+    
+#  # actual tooltip created as wellPanel
+    ###WITHIN PLOT
+    wellPanel(
+      style = style1,
+      if (lvls[round(length(lvls)*input$plot_hover$x)]==2015) {
+    tags$div(tags$p('The Blob and El', HTML("Ni&ntilde;o"), 'converge. Biomass is low.',tags$br(),
+             'Council establishes catch limits for unfished and unmanaged forage fish.',tags$br(),
+             'Canary rockfish and petrale sole are declared rebult.', tags$br(),
+             'Dover sole and thornyhead limits increased.'))
+      } else if(lvls[round(length(lvls)*input$plot_hover$x)]==2014) {
+        tags$div('Fishery participants can buy and sell quota shares.', tags$br(), 
+                 'Non-whiting groundfish gets MSC certification',tags$br(),
+                 'Russia implements ongoing trade sanctions.')  
+      }else if(lvls[round(length(lvls)*input$plot_hover$x)]==2013) {
+        paste0('Ban on year-end quota pound transfers is lifted.')  
+      }else if(lvls[round(length(lvls)*input$plot_hover$x)]==2012) {
+        paste0('Widow rockfish is declared rebuilt.')  
+      }else if(lvls[round(length(lvls)*input$plot_hover$x)]==2011) {
+        tags$div(HTML("T&#333;hoku earthquake and tsunami hits Japan."), tags$br(), 
+                 "Sablefish prices are high.", tags$br(), 
+                 "Fishery participants can lease quota pounds.")  
+      }else if(lvls[round(length(lvls)*input$plot_hover$x)]==2010) {
+        paste0('Petrale sole is declared overfished.')  
+      }else if(lvls[round(length(lvls)*input$plot_hover$x)]==2009) {
+        tags$div('Sector-specific quota allocation for bycatch species.', tags$br(),
+        'Pacific whiting gets MSC certification.')
+      }
+    )
+  }
+})
+
+    
+    #Interactives plots trial
+    #######
+    output$click_info <- renderUI({
+      if(!is.null(input$plot_click)){
+        dat <- DatSub()
+        if(input$LayoutSelect!='Metrics'&length(input$VariableSelect)==1||
+           input$LayoutSelect=='Metrics'&length(input$ShortdescrSelect)==1){
+          lvls <- levels(as.factor(dat$YEAR))
+        } else {
+          lvls <- rep(levels(as.factor(dat$YEAR)),2) 
+        }
+        click=input$plot_click
+        
+        #  # actual tooltip created as wellPanel
+        ####BELOW PLOT 
+    wellPanel(
+      if (lvls[round(length(lvls)*input$plot_click$x)]==2015) {
+        tags$div(tags$p('The Blob (first detected in 2013) and El', HTML("Ni&ntilde;o"), 'converge, leading to record low biomass of key prey species for many catch share species; catch attainment is lower for Pacific whiting.', tags$a(href='http://www.nationalgeographic.com/magazine/2016/09/warm-water-pacific-coast-algae-nino/', 'Click here for more details.', target='_blank'),tags$br(),
+                        'Council establishes catch limits for unfished and unmanaged forage fish.
+                        Dover sole limits increased by over 100% and Longspine thornyhead limits increased by 60%.'))
+      } else if(lvls[round(length(lvls)*input$plot_click$x)]==2014) {
+        tags$div('Fishery participants can buy and sell quota shares.', tags$br(), 
+                 'Russia implements an import ban on agricultural and processed food exports from the USA, EU, Norway, Canada, and Australia.', 
+                  tags$a(href='https://www.nytimes.com/2014/08/08/world/europe/russia-sanctions.html','Read this NYTimes article for background.', target='_blank'), 
+                  'The ban is still in place.
+                 According to a', tags$a(href='http://trade.ec.europa.eu/doclib/docs/2015/december/tradoc_154025.pdf' , 'paper in Chief Economist Note,', target='_blank'), 
+                 'the impact of the ban on the US fisheries industry has been minimal.', tags$br(),
+                 'Non-whiting groundfish gets Marine Stewardship Council certification.')  
+      }else if(lvls[round(length(lvls)*input$plot_click$x)]==2013) {
+        paste0('Ban on year-end quota pound transfers is lifted')  
+      }else if(lvls[round(length(lvls)*input$plot_click$x)]==2012) {
+        paste0('Widow rockfish, a species that was constraining co-occurring target species, is declared rebuilt.')  
+      }else if(lvls[round(length(lvls)*input$plot_click$x)]==2011) {
+        tags$div(HTML("T&#333;hoku earthquake and tsunami hits Japan."), tags$br(), 
+                 "Sablefish prices are high.", tags$br(), 
+                 "Fishery participants can lease quota pounds but cannot yet purchase quota shares.")  
+      }else if(lvls[round(length(lvls)*input$plot_click$x)]==2010) {
+        paste0('Petrale sole is declared overfished.')  
+      }else if(lvls[round(length(lvls)*input$plot_click$x)]==2009) {
+        paste0('Sector-specific bycatch species quota allocation ends race-to-fish for constraining species between at-sea motherships.
+               Pacific whiting gets MSC certification.')  
+      }
+    )
+    
+  }
+})
+#######
+#End interactive plots code
