@@ -5,7 +5,6 @@
 #  2. handles the reactive expressions for data management and statistical operations.
 #  3. 
 #======================================
-currentyear<- 2015
 
 # creating the dat() reactive function that contains the user selected dataset
 # The re-classification of data types can be transfered to the read-in file
@@ -35,9 +34,9 @@ DatVars <- reactive({
                        CATEGORY = c("Fisheries","Homeport","State of homeport"="State","Vessel length class"),
                        FISHAK = '',#unique(FISHAK),
                        whitingv = c("All vessels","Non-whiting vessels","Whiting vessels"),
-                       STAT =  c("Mean per vessel","Mean per vessel/day","Mean per vessel/metric-ton caught",'Mean per vessel/dollar of revenue',
-                                 "Median per vessel","Median per vessel/day","Median per vessel/metric-ton caught",'Median per vessel/dollar of revenue',
-                                 "Fleet-wide total","Fleet-wide average/day","Fleet-wide average/metric-ton caught",'Fleet-wide average/dollar of revenue')
+                       STAT =  c("Mean per vessel","Mean per vessel/day","Mean per vessel/metric ton caught",'Mean per vessel/dollar of revenue',
+                                 "Median per vessel","Median per vessel/day","Median per vessel/metric ton caught",'Median per vessel/dollar of revenue',
+                                 "Fleet-wide total","Fleet-wide average/day","Fleet-wide average/metric ton caught",'Fleet-wide average/dollar of revenue')
                    ))
   } else if(input$Sect_sel=="FR"){
     datVars <- with(dat, 
@@ -46,9 +45,9 @@ DatVars <- reactive({
                                         "All fixed costs",'Buildings','Equipment','Other fixed costs'),
                          whitingv = c("All processors","Whiting processors","Non-whiting processors"),
                          CATEGORY = c("Production activities","Region","Processor size"),
-                         STAT =  c("Mean per processor","Mean per processor/metric-ton of groundfish products produced"="Mean per processor/metric-ton produced",'Mean per processor/dollar of revenue',
-                                   "Median per processor", "Median per processor/metric-ton of groundfish products produced"="Median per processor/metric-ton produced",'Median per processor/dollar of revenue',
-                                   "Industry-wide total","Industry-wide average/metric-ton of groundfish products produced"="Industry-wide average/metric-ton produced",'Industry-wide average/dollar of revenue')
+                         STAT =  c("Mean per processor","Mean per processor/metric ton of groundfish products produced"="Mean per processor/metric ton produced",'Mean per processor/dollar of revenue',
+                                   "Median per processor", "Median per processor/metric ton of groundfish products produced"="Median per processor/metric ton produced",'Median per processor/dollar of revenue',
+                                   "Industry-wide total","Industry-wide average/metric ton of groundfish products produced"="Industry-wide average/metric ton produced",'Industry-wide average/dollar of revenue')
                     ))
   } else if(input$Sect_sel=='M') {
     datVars <- with(dat, 
@@ -57,9 +56,9 @@ DatVars <- reactive({
                                         "All fixed costs","Fishing gear","On-board equipment","Processing equipment",'Other fixed costs'),
                          whitingv = c("Whiting vessels"),
                          CATEGORY = c("Fisheries"),
-                         STAT =  c("Mean per vessel","Mean per vessel/day","Mean per vessel/metric-ton produced",'Mean per vessel/dollar of revenue',
-                                   "Median per vessel","Median per vessel/day","Median per vessel/metric-ton produced",'Median per vessel/dollar of revenue',
-                                   "Fleet-wide total","Fleet-wide average/day","Fleet-wide average/metric-ton produced",'Fleet-wide average/dollar of revenue')
+                         STAT =  c("Mean per vessel","Mean per vessel/day","Mean per vessel/metric ton produced",'Mean per vessel/dollar of revenue',
+                                   "Median per vessel","Median per vessel/day","Median per vessel/metric ton produced",'Median per vessel/dollar of revenue',
+                                   "Fleet-wide total","Fleet-wide average/day","Fleet-wide average/metric ton produced",'Fleet-wide average/dollar of revenue')
                          
                     ))
   } else {
@@ -69,9 +68,9 @@ DatVars <- reactive({
                                         "All fixed costs","Fishing gear","On-board equipment","Processing equipment",'Other fixed costs'),
                          whitingv = c("Whiting vessels"),
                          CATEGORY = c("Fisheries"),
-                         STAT =  c("Mean per vessel","Mean per vessel/day","Mean per vessel/metric-ton produced",'Mean per vessel/dollar of revenue',
-                                   "Median per vessel","Median per vessel/day","Median per vessel/metric-ton produced",'Median per vessel/dollar of revenue',
-                                   "Fleet-wide total","Fleet-wide average/day","Fleet-wide average/metric-ton produced",'Fleet-wide average/dollar of revenue')
+                         STAT =  c("Mean per vessel","Mean per vessel/day","Mean per vessel/metric ton produced",'Mean per vessel/dollar of revenue',
+                                   "Median per vessel","Median per vessel/day","Median per vessel/metric ton produced",'Median per vessel/dollar of revenue',
+                                   "Fleet-wide total","Fleet-wide average/day","Fleet-wide average/metric ton produced",'Fleet-wide average/dollar of revenue')
                     ))
   }
 })
@@ -125,15 +124,15 @@ DatSubTable <- reactive({
       } else{
     datSub <- subset(datSub, YEAR %in% input$YearSelect2 ) 
       }
-  if(input$StatSelect %in% c('Mean per vessel/dollar of revenue','Median per vessel/dollar of revenue','Fleet-wide total/dollar of revenue','Mean per processor/dollar of revenue',
-                             'Median per processor/dollar of revenue','Industry-wide total/dollar of revenue')){
+  if(input$StatSelect %in% c('Mean per vessel/dollar of revenue','Median per vessel/dollar of revenue','Fleet-wide average/dollar of revenue','Mean per processor/dollar of revenue',
+                             'Median per processor/dollar of revenue','Industry-wide average/dollar of revenue')){
   datSub$VALUE <- round(as.numeric(datSub$VALUE),3)
   datSub$VARIANCE <- round(as.numeric(datSub$VARIANCE),3)
   datSub$q25 <- round(as.numeric(as.character(datSub$q25)),3)
   datSub$q75 <- round(as.numeric(as.character(datSub$q75)),3)
   } else{
-    datSub$VALUE <- round(as.numeric(datSub$VALUE),0)
-    datSub$VARIANCE <- round(as.numeric(datSub$VARIANCE),0)
+    datSub$VALUE <- round(as.numeric(datSub$VALUE),3)
+    datSub$VARIANCE <- round(as.numeric(datSub$VARIANCE),3)
     datSub$q25 <- round(as.numeric(as.character(datSub$q25)),3)
     datSub$q75 <- round(as.numeric(as.character(datSub$q75)),3)
     

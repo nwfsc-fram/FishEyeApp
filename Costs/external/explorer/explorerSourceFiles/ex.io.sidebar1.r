@@ -189,7 +189,7 @@ if(input$tabs=='Panel1'){
         tagList(           
           tags$div(class="select", selectInput("inSelect","",
                                                c("All fisheries","All catch share fisheries","All non-catch share fisheries")), style="margin-bottom:-10px"),
-          checkboxGroupInput("VariableSelect",  "Select one or more vessel length class:", choices=c("Large vessel (> 80 ft)","Medium vessel (> 60ft, <= 80ft)", "Small vessel (<= 60 ft)"), selected="")
+          checkboxGroupInput("VariableSelect",  "Select one or more vessel length class:", choices=c("Large vessel (> 80 ft)","Medium vessel (> 60ft, <= 80ft)", "Small vessel (<= 60ft)"), selected="")
         )
       }else if(input$CategorySelect == "Processor size"){
         tagList(           

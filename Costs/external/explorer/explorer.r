@@ -14,6 +14,10 @@ source("external/explorer/explorerSourceFiles/doPlot.R", local = TRUE)
 source("external/explorer/explorerSourceFiles/doPlotDownload.R", local = TRUE)
 source("external/explorer/explorerSourceFiles/defaultText.R", local = TRUE)
 
+enableBookmarking("url")
+
+
+
 observeEvent(input$iprod, {
   session$sendCustomMessage(type = 'testmessage',
                             message = 'Although all processors included in FISHEyE hold a site license for the catch share program, not all processors process catch share species. Select CATCH SHARE PROCESSORS to show activities only for processors that processed catch share species or ALL PROCESSORS to show activities for all processors regardless of whether they processed catch share species.')
@@ -100,23 +104,27 @@ output$TableMain <- renderDataTable({
     if(input$CategorySelect == "Fisheries"){
             if(input$Sect_sel=="CV"){
                 table <- subset(table, select = -CS)
-                names(table) <- c("Year", "Summary Variable", "Statistic", "Costs measure", "Data summed across","Number of vessels","Value",  "Variance \n\n(Quartiles or SD)")
+                names(table) <- c("Year", "Summary Variable", "Statistic", "Costs measure", "Data summed across",
+                                  "Number of vessels","Value",  "Variance \n\n(Quartiles or SD)")
             } else {
-                names(table) <- c("Year", "Summary Variable", "Statistic", "Costs measure","Data summed across","Number of vessels","Value", 
-                                  "Variance \n\n(Quartiles or SD)")
+                names(table) <- c("Year", "Summary Variable", "Statistic", "Costs measure","Data summed across",
+                                  "Number of vessels","Value",  "Variance \n\n(Quartiles or SD)")
             }
        } else {
             if(input$Sect_sel=="CV"){
-                names(table) <- c("Year", "Summary Variable","Fisheries Category", "Statistic", "Costs measure","Data summed across", "Number of vessels", "Value", "Variance \n\n(Quartiles or SD)")
+                names(table) <- c("Year", "Summary Variable","Fisheries Category", "Statistic", "Costs measure",
+                                  "Data summed across", "Number of vessels", "Value", "Variance \n\n(Quartiles or SD)")
             } else if(input$Sect_sel=="M"|input$Sect_sel=="CP"){
-              names(table) <- c("Year","Summary Variable","Statistic", "Costs measure","Data summed across","Number of vessels", "Value", "Variance \n(Quartiles or SD)")
+              names(table) <- c("Year","Summary Variable","Statistic", "Costs measure","Data summed across","Number of vessels",
+                                "Value", "Variance \n(Quartiles or SD)")
             } else {
        if(input$CategorySelect=="Production activities"){
         table <- subset(table, select = -CS)
-                names(table) <- c("Year", "Summary Variable","Statistic", "Costs measure","Data summed across","Number of processors", "Value", 
-                                  "Variance \n\n(Quartiles or SD)")
+                names(table) <- c("Year", "Summary Variable","Statistic", "Costs measure","Data summed across",
+                                  "Number of processors", "Value","Variance \n\n(Quartiles or SD)")
        }else {
-                names(table) <- c("Year","Summary Variable","Production Category", "Statistic", "Costs measure","Data summed across","Number of processors", "Value", "Variance \n\n(Quartiles or SD)")
+                names(table) <- c("Year","Summary Variable","Production Category", "Statistic", "Costs measure",
+                                  "Data summed across","Number of processors", "Value", "Variance \n\n(Quartiles or SD)")
        }}}
     table
   }
