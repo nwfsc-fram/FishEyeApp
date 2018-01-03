@@ -21,6 +21,10 @@ library(dplyr)
 options(shiny.sanitize.errors = FALSE)
 options(shiny.trace=FALSE)
 #options(error=browser) # debugging
+
+###!! -- Need to change this on Definitions.R too -- !!###
+currentyear <- 2016
+
 source("external/serverHead.R")
 
 shinyServer(

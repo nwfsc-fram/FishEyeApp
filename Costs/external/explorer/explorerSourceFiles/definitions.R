@@ -1,4 +1,5 @@
 # Text for definitions page
+currentyear <- 2016
 
 tags$div(style = "margin: 15px 15px 30px; width: 60%",    
          HTML("<div style='display:inline-block;width:100%;padding:0;line-height: 0.72em; margin-top:5px; margin-bottom:5px;'>
@@ -56,9 +57,9 @@ tags$div(style = "margin: 15px 15px 30px; width: 60%",
       tags$li(strong("Per vessel or processor:"),"Median or Mean for all vessels or processors that participated in the catch share program."),
 #      tags$li(strong("Per vessel per day:"),
 #      "Median or Average per day for all vessels that participated in the Catch Share program."),
-#    tags$li(strong("Per vessel or processor per metric-ton:"),
+#    tags$li(strong("Per vessel or processor per metric ton:"),
 #      "Median or Average per metric ton of fish caught or processed for all vessels or processors that participated in the Catch Share program.")),tags$br(),
-    tags$li(strong("Fleet-wide and industry-wide total:"),"Summed over all vessels or processors that participated in the catch share program. For rates measurements (per day at sea or metric-ton), we show the fleet-wide or industry-wide average
+    tags$li(strong("Fleet-wide and industry-wide total:"),"Summed over all vessels or processors that participated in the catch share program. For rates measurements (per day at sea or metric ton), we show the fleet-wide or industry-wide average
                               The fleet-wide average is the economic value summed over all vessels or processors divided by days at sea or metric tons summed over all vessels or processors.") ),tags$br(),
 
     tags$ul(tags$p(tags$strong("What is the purpose of using median, mean, and total values when looking at the data?"), "The median and mean provide information about a representative vessel or processor; 
@@ -70,7 +71,7 @@ tags$div(style = "margin: 15px 15px 30px; width: 60%",
     tags$br(),
 
       h4("Costs Measures"),
-      tags$ul(tags$em("Values reported in inflation-adjusted 2015 dollars.")),
+      tags$ul(tags$em("Values reported in inflation-adjusted", currentyear, "dollars.")),
       tags$ul('Quota earnings and costs are currently excluded due to data limitations. It is not possible to convert quota data to the calendar year format like the rest of the cost categories.
               Additionally, many quota trades are non-cash transactions and therefore cannot be included in the calculations.'),
        tags$ul('Please note that the availability of cost measures will vary by sector.'),
