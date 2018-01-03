@@ -217,10 +217,12 @@ fluidPage(title = "FISHEyE",
                                   column(12,  #conditionalPanel(condition="input.hideshow2 % 2 !=0",  
                                          hidden(htmlOutput('CaseStudyFig2'))),#tags$img(src="TrawlThirds.png", height=350))),
                                   
-                                  #column(12,  actionButton("hideshow3", "Show/Hide TCNR plot for catcher vessels with trawl permit", style='color:#fff; background-color:#5bc0de;border-color:#46b8da')),
+                                  #column(12,  actionButton("hideshow3", "Show/Hide TCNR plot for catcher vessels with trawl permit", style='color:#fff; 
+                                  #background-color:#5bc0de;border-color:#46b8da')),
                                   #column(12,  hidden(plotOutput("PlotMain3"))),#htmlOutput('CaseStudyFig3'))),
                                   column(12,  htmlOutput('CaseStudyp4')),
-                                  #column(12,  actionButton("hideshow4", "Show/Hide Thirds plot for Groundfish fixed gear with trawl endorsement fishery", style='color:#fff; background-color:#5bc0de;border-color:#46b8da')),
+                                  #column(12,  actionButton("hideshow4", "Show/Hide Thirds plot for Groundfish fixed gear with trawl endorsement fishery", style='color:#fff; 
+                                  #background-color:#5bc0de;border-color:#46b8da')),
                                   column(12,  hidden(htmlOutput('CaseStudyFig3'))),
                                  
                                   column(12,  htmlOutput('CaseStudyp5')),
