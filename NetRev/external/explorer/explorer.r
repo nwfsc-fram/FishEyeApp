@@ -11,6 +11,9 @@ source("external/explorer/explorerSourceFiles/doPlot.R", local = TRUE)
 source("external/explorer/explorerSourceFiles/doPlotDownload.R", local = TRUE)
 source("external/explorer/explorerSourceFiles/defaultText.R", local = TRUE)
 
+
+enableBookmarking("url")
+
 observeEvent(input$iprod, {
   session$sendCustomMessage(type = 'testmessage',
                             message = 'Although all processors included in FISHEyE hold a site license for the catch share program, not all processors process catch share species. Select CATCH SHARE PROCESSORS to show activities only for processors that processed catch share species or ALL PROCESSORS to show activities for all processors regardless of whether they processed catch share species.')
@@ -201,48 +204,28 @@ output$dlTable <- downloadHandler(
       if(input$Sect_sel=="FR"){
       names(table) <- c(4,1,3,2,"a "," b","c ","d "," e","f","g","h")
       temp <-    data.frame("Year", "Data summed across","Summary variable","Summary Variable category","Production Category","Statistic", "Economic Measure", "Thirds", "Number of processors", "Value","Variance \n(Quartiles or SD)","Sector")
-      colnames(temp)=colnames(table)
-      table <- rbindCommonCols(temp, table) 
-      names(table) <- c(paste("Sourced from the FISHEyE application (http://dataexplorer.northwestscience.fisheries.noaa.gov/fisheye/NetRevExplorer/) maintained by NOAA Fisheriess NWFSC on ",
-                              format(Sys.Date(), format="%B %d %Y")),"","","","","","","","","","","")
       } else {
         names(table) <- c(4,1,3,2,"a "," b","c ","d "," e","f","g","h","i")
         temp <-    data.frame("Year","Summary variable","Summary Variable category","Fisheries Category","Statistic", "Economic Measure", "Thirds", "Fished in Alaska","Fished for whiting",  "Number of vessels", "Value","Variance \n(Quartiles or SD)","Sector")
-        colnames(temp)=colnames(table)
-        table <- rbindCommonCols(temp, table) 
-        names(table) <- c(paste("Sourced from the FISHEyE application (http://dataexplorer.northwestscience.fisheries.noaa.gov/fisheye/NetRevExplorer/) maintained by NOAA Fisheriess NWFSC on ",
-                                format(Sys.Date(), format="%B %d %Y")),"","","","","","","","","","","","")
       }
     }else {
-      table <- DatSubTable() %>% mutate(Sector =input$Sect_sel)
+      table <- DatSubTable() %>% mutate(Sector = input$Sect_sel)
       table$Sector <-c('Catcher Vessels','First Receivers and Shorebased Processors','Mothership vessels','Catcher Processor vessels')[match(table$Sector, c('CV','FR','M','CP'))]
       if(input$Sect_sel=="CV"){
-      # some wonky code to insert a timestamp. xtable has a more straightfoward approach but not supported with current RStudio version on the server
-      names(table) <- c(4,1,3,2,"a "," b","c ","d "," e","g","h","i")##c("Year", "Summary variable","FishAK", "Summary Variable category","Fisheries Category", "Value","Statistic",  "N", "Economic Measure")
+      names(table) <- c(4,1,3,2,"a "," b","c ","d "," e","g","h","i")
       temp <-    data.frame("Year", "Summary variable","Summary Variable category", "Fisheries Category","Statistic", "Economic Measure", "Fished in Alaska", "Fished for whiting","Number of vessels","Value", "Variance \n(Quartiles or SD)","Sector")
-      colnames(temp)=colnames(table)
-      table <- rbindCommonCols(temp, table) 
-      names(table) <- c(paste("Sourced from the FISHEyE application (http://dataexplorer.northwestscience.fisheries.noaa.gov/fisheye/NetRevExplorer/) maintained by NOAA Fisheriess NWFSC on ",
-                              format(Sys.Date(), format="%B %d %Y")),"","","","","","","","","","","")
       } else if(input$Sect_sel=="FR"){
-        # some wonky code to insert a timestamp. xtable has a more straightfoward approach but not supported with current RStudio version on the server
-        names(table) <- c(4,1,3,2,"a "," b","c ","d "," e","g","h")##c("Year", "Summary variable","FishAK", "Summary Variable category","Fisheries Category", "Value","Statistic",  "N", "Economic Measure")
+        names(table) <- c(4,1,3,2,"a "," b","c ","d "," e","g","h")
         temp <-    data.frame("Year", "Data summed across",'Summary variable',"Summary Variable category", "Production Category","Statistic", "Economic Measure","Number of processors","Value", "Variance \n(Quartiles or SD)","Sector")
-        colnames(temp)=colnames(table)
-        table <- rbindCommonCols(temp, table) 
-        names(table) <- c(paste("Sourced from the FISHEyE application (http://dataexplorer.northwestscience.fisheries.noaa.gov/fisheye/NetRevExplorer/) maintained by NOAA Fisheriess NWFSC on ",
-                                format(Sys.Date(), format="%B %d %Y")),"","","","","","","","","","")
-      } else {
+        } else {
         names(table) <- c(4,1,3,2,"a "," b","c ","d "," e","g")
         temp <-    data.frame("Year", "Summary variable","Summary Variable category", "Fisheries Category","Statistic", "Economic Measure","Number of vessels","Value", "Variance \n(Quartiles or SD)","Sector")
-        colnames(temp)=colnames(table)
-        table <- rbindCommonCols(temp, table) 
-        names(table) <- c(paste("Sourced from the FISHEyE application (http://dataexplorer.northwestscience.fisheries.noaa.gov/fisheye/NetRevExplorer/) maintained by NOAA Fisheriess NWFSC on ",
-                                format(Sys.Date(), format="%B %d %Y")),"","","","","","","","","")
         
       }
        } 
-    print(table[1,])
+    colnames(temp)=colnames(table)
+        table <- rbindCommonCols(temp, table) 
+        names(table) <- c(paste("Sourced from the FISHEyE application (http://dataexplorer.northwestscience.fisheries.noaa.gov/fisheye/NetRevExplorer/) maintained by NOAA Fisheriess NWFSC on ",format(Sys.Date(), format="%B %d %Y")),rep("",dim(temp)[2]-1))
     write.csv(table, file)
   }
 )
