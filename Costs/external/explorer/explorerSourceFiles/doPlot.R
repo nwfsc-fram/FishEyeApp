@@ -2,8 +2,6 @@
 doPlot <- function(dat, x, y){
   if(PermitPlot()){
     dat <- subset(dat, is.na(dat$VALUE)==FALSE)
-   
-    currentyear <- 2015
  
     dat$sort2 <- reorder(dat$VARIABLE, dat$sort) 
    
@@ -66,11 +64,6 @@ doPlot <- function(dat, x, y){
     
      yr <- function(){
        as.numeric(unique(dat$YEAR))
-#     if(sect()=="Catcher Vessels"){
-#    return(input$YearSelect)  
-#    } else {
-#    return(input$YearSelect2)
-#   }
      }
 
      thresh <- function(){
