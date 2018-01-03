@@ -62,9 +62,21 @@ tags$div(style = "margin-top: 15px;margin-bottom:0; width: 80%; ",
 ########################################
 output$BlogUpdates <- renderUI({  
 
-  tags$div(style = "margin-top:0; padding-top:0;background-color:#F8F8E9;",
+ tags$div(style = "margin-top:0; padding-top:0;background-color:#F8F8E9;",
            tags$h3("Updates"),
-
+ 
+ div( class='date', style='height:45px;width:30px; font-family:Arial; font-weight:bold;background-color:#ffffff;text-align:center; border-top:1px solid #c0c0c0;
+       border-left:1px solid #c0c0c0;border-right:1px solid #c0c0c0;position:absolute;z-index:3;line-height: 13px;',
+       HTML("<span class='month' style='text-transform:uppercase;font-size:11px;'>Oct</span><br />
+            <span class='day' style='font-size:16px;'>12</span><br />
+            <span class='year' style='font-size:11px;line-height: 10px;'>2017</span>")
+       ),
+  p(HTML("<span style='margin-left:60px;font-size:18px;font-weight:bold'>Bookmarking feature</span>")), 
+  p(br(),"We have added a bookmarking feature. The bookmarking feature allows you to return to a previously saved state, share the output of a query on FISHEyE without downloading the plot, continue your data exploration at a later date without having to remember selections, etc. A url will be provided when you click the bookmark button on the top right hand corner of control panel. This url is specific to the selections you made in the control panel."),
+  hr(),
+  
+  
+ 
            tags$div( class='date', style='height:45px;width:30px; font-family:Arial; font-weight:bold;background-color:#ffffff;text-align:center; border-top:1px solid #c0c0c0;
                      border-left:1px solid #c0c0c0;border-right:1px solid #c0c0c0;position:absolute;z-index:3;line-height: 13px;',
                      HTML("<span class='month' style='text-transform:uppercase;font-size:11px;'>Aug</span><br />
@@ -210,7 +222,7 @@ output$GetStartedText <- renderUI({
 ###---------Begin Case Study text---------------------###
 output$CaseStudy1 <- renderUI({
   tags$div(style = "margin: 15px 15px 30px; width: 90%",
-           tags$p('For catcher vessels that fished in non-whiting catch share fisheries, the median variable costs per vessel has been similar between vessels that define their homeport to be in Washington, Oregon, or California. In addition, since catch share implementation, variable costs have remained fairly consistent between years, although with greater interannual variation for vessels that homeport in Washington. This trend can be viewed for variable costs per vessel, per day at sea, per metric-ton caught, or per dollar of revenue.', tags$em('Use the control panel to view the different rates. Choices are under the Statistic option.'),
+           tags$p('For catcher vessels that fished in non-whiting catch share fisheries, the median variable costs per vessel has been similar between vessels that define their homeport to be in Washington, Oregon, or California. In addition, since catch share implementation, variable costs have remained fairly consistent between years, although with greater interannual variation for vessels that homeport in Washington. This trend can be viewed for variable costs per vessel, per day at sea, per metric ton caught, or per dollar of revenue.', tags$em('Use the control panel to view the different rates. Choices are under the Statistic option.'),
                   'For all three homeport states, the variable costs per vessel per day at sea increased after implementation of the catch share program.',br(), tags$em('To view which costs have increased since catch share implementation, unclick all variable costs categories in the control panel and then view each cost category on its own. For instance, look at buyback fees, crew, and observer costs on their own. The plot will display below.'), br(),
                   'The median variable costs per vessel per day at sea in the catch share fisheries have remained relatively consistent between years since 2011 for all states of homeport. However, in Oregon and California, variable costs were higher in 2015. ')           
            )
