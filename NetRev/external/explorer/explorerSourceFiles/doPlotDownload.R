@@ -3,8 +3,6 @@
 doPlotDownload <- function(dat, x, y, type){
   if(PermitPlot()){
     
-    currentyear <- 2015
-
     # Reorder the facet variable by the column sort. Will order alphabetically otherwise 
     dat$sort2 <- if(input$tabs=="Panel1") {
       reorder(dat$VARIABLE, dat$sort) 
@@ -17,11 +15,13 @@ doPlotDownload <- function(dat, x, y, type){
     }
     
     if(type == "summary"){
-      rectvars <- dat %>% distinct(sort2,YEAR) %>% group_by(sort2) %>% transmute(minx=as.numeric(min(YEAR)), xmaxscale=length(YEAR[YEAR<2011]), maxx=max(YEAR))  %>% data.frame()%>% distinct %>%
-                          merge(dat %>% distinct(sort2,SHORTDESCR))
+      rectvars <- dat %>% distinct(sort2,YEAR) %>% group_by(sort2) %>% 
+                  transmute(minx=as.numeric(min(YEAR)), xmaxscale=length(YEAR[YEAR<2011]), maxx=max(YEAR)) %>%
+                  data.frame()%>% distinct %>% merge(dat %>% distinct(sort2,SHORTDESCR))
     } else {
-      rectvars <- dat %>% distinct(sort2,YEAR,THIRDS) %>% group_by(sort2,THIRDS) %>% transmute(minx=as.numeric(min(YEAR)), xmaxscale=length(YEAR[YEAR<2011]), maxx=max(YEAR))  %>% data.frame()%>% distinct %>%
-                           merge(dat %>% distinct(sort2,SHORTDESCR))
+      rectvars <- dat %>% distinct(sort2,YEAR,THIRDS) %>% group_by(sort2,THIRDS) %>% 
+                  transmute(minx=as.numeric(min(YEAR)), xmaxscale=length(YEAR[YEAR<2011]), maxx=max(YEAR)) %>% 
+                  data.frame()%>% distinct %>% merge(dat %>% distinct(sort2,SHORTDESCR))
     }
    
     
@@ -30,7 +30,8 @@ doPlotDownload <- function(dat, x, y, type){
 
     ## Change color palette to printer-friendly colors that are color-blind friendly. Want consistent colors with what Erin is using
     colourThirds <- c('Top third'="#253494",'Middle third'="#41b6c4",'Lower third'="#a1dab4")
-    colourList <- c('Revenue'="#256D36",'Variable costs'="#fed25d",'Fixed costs'="#fca836",'Variable Cost Net Revenue'="#4B958D", 'Total Cost Net Revenue'="#4575B4")
+    colourList <- c('Revenue'="#256D36",'Variable costs'="#fed25d",'Fixed costs'="#fca836",
+                    'Variable Cost Net Revenue'="#4B958D", 'Total Cost Net Revenue'="#4575B4")
     
     sect <- function(){
       if(input$Sect_sel == "CV"){
@@ -61,22 +62,30 @@ doPlotDownload <- function(dat, x, y, type){
       if(type == "summary"){
         if(input$CategorySelect=="Fisheries"){
           if(input$Sect_sel=="CV"){
-            sprintf(paste("Group variable:", input$CategorySelect, "     Statistic: ", input$StatSelect, "    Fished in AK included:", input$FishAkSelect, "    Fished for whiting included:", input$FishWhitingSelect))
+            sprintf(paste("Group variable:", input$CategorySelect, "     Statistic: ", input$StatSelect,
+                          "    Fished in AK included:", input$FishAkSelect, "    Fished for whiting included:",
+                          input$FishWhitingSelect))
           } else {
             sprintf(paste("Group variable:", input$CategorySelect, "     Statistic: ", input$StatSelect))
           }} else if(input$CategorySelect=="Production activities"){
-            sprintf(paste("Group variable:", input$CategorySelect, "     Statistic: ", input$StatSelect,  "   Data shown for:", input$ProductionSelect))
+            sprintf(paste("Group variable:", input$CategorySelect, "     Statistic: ", input$StatSelect,
+                          "   Data shown for:", input$ProductionSelect))
           } else {
             if(input$Sect_sel=="CV"){
-              sprintf(paste("Group variable:", input$CategorySelect, "     Statistic: ", input$StatSelect, "    Fished in AK included:", input$FishAkSelect,"    Fished for whiting included:", input$FishWhitingSelect,"    Summed across:", input$inSelect))
+              sprintf(paste("Group variable:", input$CategorySelect, "     Statistic: ", input$StatSelect, 
+                            "    Fished in AK included:", input$FishAkSelect,"    Fished for whiting included:",
+                            input$FishWhitingSelect,"    Summed across:", input$inSelect))
             } else {
-              sprintf(paste("Group variable:", input$CategorySelect, "     Statistic: ", input$StatSelect,   "   Summed across:", input$inSelect, ' for', input$ProductionSelect))
+              sprintf(paste("Group variable:", input$CategorySelect, "     Statistic: ", input$StatSelect,
+                            "   Summed across:", input$inSelect, ' for', input$ProductionSelect))
             }}
       } else {
         if(input$CategorySelect=="Fisheries"){
           if(input$Sect_sel=="CV"){
             if(input$LayoutSelect=="Economic measures"){
-              sprintf(paste(input$CategorySelect, ":", input$VariableSelect, "     Statistic: ", input$StatSelect, "    Fished in AK included:", input$FishAkSelect,"    Fished for whiting included:", input$FishWhitingSelect))
+              sprintf(paste(input$CategorySelect, ":", input$VariableSelect, "     Statistic: ", input$StatSelect,
+                            "    Fished in AK included:", input$FishAkSelect,"    Fished for whiting included:",
+                            input$FishWhitingSelect))
             } else {
               sprintf(paste("Economic measure:", input$ShortdescrSelect, "     Statistic: ", input$StatSelect, "    Fished in AK included:", input$FishAkSelect, "    Fished for whiting included:", input$FishWhitingSelect))
               
@@ -84,22 +93,31 @@ doPlotDownload <- function(dat, x, y, type){
               sprintf(paste(input$CategorySelect, ":", input$VariableSelect, "     Statistic: ", input$StatSelect))
             }} else if(input$CategorySelect=="Production activities"){
               if(input$LayoutSelect=='Economic measures'){
-                sprintf(paste(input$CategorySelect, ":", input$VariableSelect, "     Statistic: ", input$StatSelect,  "   Data shown for:", input$ProductionSelect))
+                sprintf(paste(input$CategorySelect, ":", input$VariableSelect, "     Statistic: ", input$StatSelect,
+                              "   Data shown for:", input$ProductionSelect))
               } else {
-                sprintf(paste("Economic measure:", input$ShortdescrSelect, "   Statistic: ", input$StatSelect,  "  Data shown for:", input$ProductionSelect)) 
+                sprintf(paste("Economic measure:", input$ShortdescrSelect, "   Statistic: ", input$StatSelect,
+                              "  Data shown for:", input$ProductionSelect)) 
               }
             } else {
               if(input$Sect_sel=="CV"){
                 if(input$LayoutSelect=='Economic measures'){
-                  sprintf(paste(input$CategorySelect, ":", input$VariableSelect, "     Statistic: ", input$StatSelect, "    Fished in AK included:", input$FishAkSelect,"    Fished for whiting included:", input$FishWhitingSelect,"    Summed across:", input$inSelect))   
+                  sprintf(paste(input$CategorySelect, ":", input$VariableSelect, "     Statistic: ",
+                                input$StatSelect, "    Fished in AK included:", input$FishAkSelect,
+                                "    Fished for whiting included:", input$FishWhitingSelect,"    Summed across:",
+                                input$inSelect))   
                 } else {
-                  sprintf(paste("Economic measure:", input$ShortdescrSelect, "     Statistic: ", input$StatSelect, "    Fished in AK included:", input$FishAkSelect,"    Fished for whiting included:", input$FishWhitingSelect,"    Summed across:", input$inSelect)) 
+                  sprintf(paste("Economic measure:", input$ShortdescrSelect, "     Statistic: ", input$StatSelect,
+                                "    Fished in AK included:", input$FishAkSelect,"    Fished for whiting included:",
+                                input$FishWhitingSelect,"    Summed across:", input$inSelect)) 
                 }
               } else {
                 if(input$LayoutSelect=='Economic measures'){
-                  sprintf(paste(input$CategorySelect, ":", input$VariableSelect, "     Statistic: ", input$StatSelect,  "   Summed across:", input$inSelect, ' for', input$ProductionSelect))   
+                  sprintf(paste(input$CategorySelect, ":", input$VariableSelect, "     Statistic: ", input$StatSelect,
+                                "   Summed across:", input$inSelect, ' for', input$ProductionSelect))   
                 } else {
-                  sprintf(paste("Economic measure:", input$ShortdescrSelect, "     Statistic: ", input$StatSelect,   "   Summed across:", input$inSelect, ' for', input$ProductionSelect))
+                  sprintf(paste("Economic measure:", input$ShortdescrSelect, "     Statistic: ", input$StatSelect,
+                                "   Summed across:", input$inSelect, ' for', input$ProductionSelect))
                 }
               }}
       }
@@ -168,7 +186,6 @@ doPlotDownload <- function(dat, x, y, type){
         if(input$DodgeSelect == "Economic measures side-by-side"){
           return(max(dat$VALUE, na.rm=T)/850)
         } else{
-#          dat %>% group_by(YEAR, SHORTDESCR) %>% summarise(VALUE=max(VALUE)) %>% group_by(YEAR) %>% summarise(VALUE=sum(VALUE)/900) %>% summarise(max(VALUE)) %>% return()
           return(max(dat$VALUE, na.rm=T)/485)
         }} else {
           return(max(dat$VALUE, na.rm=T)/850)
@@ -189,17 +206,14 @@ doPlotDownload <- function(dat, x, y, type){
           }} # end if statement for line figure
         
         if(input$PlotSelect == "Bar"){
-          g <- g + geom_bar(aes_string(fill = groupVar, order=groupVar), stat="identity", position="dodge", width = scale_bars())
+          g <- g + geom_bar(aes_string(fill = groupVar, order=groupVar), 
+                            stat="identity", position="dodge", width = scale_bars())
         } #End if else for side-by-side comparion
-
       }#End standard plots
     
       if(input$DodgeSelect != "Economic measures side-by-side"){          
-        #dat <- dat[order(dat$SHORTDESCR),]
-       #g <- ggplot(dat, aes_string(x = x, y = y , group = groupVar, fill=groupVar, order=groupVar)) + 
-        #  geom_bar(aes_string(fill = groupVar), stat = "identity", position = "stack", width = scale_bars())
-        #    }  
-        g <- g + geom_bar(aes_string(fill = groupVar, order=groupVar), stat="identity", position="stack", width = scale_bars())
+        g <- g + geom_bar(aes_string(fill = groupVar, order=groupVar), 
+                          stat="identity", position="stack", width = scale_bars())
       }
       g <- g + geom_text(aes(label=star), colour="black", vjust=0, size=10)
       } # end if statement for variable cost revenue figure
@@ -241,9 +255,12 @@ doPlotDownload <- function(dat, x, y, type){
     
     
     ylab <- function(){
-      if(input$StatSelect=='Median per vessel/metric-ton caught'|input$StatSelect=='Mean per vessel/metric-ton caught'|
-         input$StatSelect=='Mean per vessel/metric-ton produced'|input$StatSelect=='Median per vessel/metric-ton produced'|
-         input$StatSelect=='Mean per processor/metric-ton produced'|input$StatSelect=='Median per processor/metric-ton produced'){
+      if(input$StatSelect=='Median per vessel/metric ton caught'|
+         input$StatSelect=='Mean per vessel/metric ton caught'|
+         input$StatSelect=='Mean per vessel/metric ton produced'|
+         input$StatSelect=='Median per vessel/metric ton produced'|
+         input$StatSelect=='Mean per processor/metric ton produced'|
+         input$StatSelect=='Median per processor/metric ton produced'){
         paste(currentyear, "$", "(",input$StatSelect, ")")
       } else {
         paste("Thousands of", currentyear, "$", "(",input$StatSelect, ")")
@@ -303,9 +320,12 @@ doPlotDownload <- function(dat, x, y, type){
     # Plot geom-rect and geom_text
 ###--------------Define geom_rect and labels-----------------------###
     if(length(yr())>1 & min(yr())<2011 & max(yr())>2010){
-      g <- g + geom_rect(aes(xmin=-Inf, xmax=table(yr()<=2010)[[2]]+.5, ymin=-Inf, ymax=Inf), alpha=.015, fill="grey50") +
-        geom_text(aes(x=table(yr()<=2010)[[2]]/4,y=scale_geom_text(), label="Pre-catch shares"), family="serif",fontface="italic", hjust=0, color = "grey40", size=7/scale_text()) +
-        geom_text(aes(x=table(yr()<=2010)[[2]]+table(yr()>2010)[[2]]/1.5,y=scale_geom_text(),label="Post-catch shares"), family = "serif", fontface="italic",hjust=0, 
+      g <- g + geom_rect(aes(xmin=-Inf, xmax=table(yr()<=2010)[[2]]+.5, ymin=-Inf, ymax=Inf), 
+                         alpha=.015, fill="grey50") +
+        geom_text(aes(x=table(yr()<=2010)[[2]]/4,y=scale_geom_text(), label="Pre-catch shares"),
+                  family="serif",fontface="italic", hjust=0, color = "grey40", size=7/scale_text()) +
+        geom_text(aes(x=table(yr()<=2010)[[2]]+table(yr()>2010)[[2]]/1.5,y=scale_geom_text(),
+                      label="Post-catch shares"), family = "serif", fontface="italic",hjust=0, 
                   color = "grey40", size=7/scale_text())  
     } else {
       g <- g  
@@ -334,8 +354,7 @@ doPlotDownload <- function(dat, x, y, type){
       axis.text.x = element_text(size = 9),
       legend.position = "top",
       legend.key = element_rect(fill = "white"),
-      legend.text = element_text(family = "sans", 
-                                 color = "grey25", face = "bold", size = 10),
+      legend.text = element_text(family = "sans", color = "grey25", face = "bold", size = 10),
       legend.title = element_blank())
     
     ##function to wrapping facet labels

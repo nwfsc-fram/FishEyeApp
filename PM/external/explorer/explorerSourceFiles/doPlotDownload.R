@@ -261,15 +261,15 @@ doPlotDownload <- function(dat, x, y){
     
       ylab <- function(){
         if(input$Ind_sel=="Economic") {
-          if(input$StatSelect!='Mean per vessel/metric-ton caught'&input$StatSelect!='Median per vessel/metric-ton caught'&input$StatSelect!='Fleet-wide average/metric-ton caught'&
-             input$StatSelect!='Mean per processor/metric-ton produced'&input$StatSelect!='Median per processor/metric-ton produced'&input$StatSelect!='Industry-wide average/metric-ton produced') {
-            expression(paste(bold("Thousands of 2015 $","(",input$StatSelect, ")")))  
+          if(input$StatSelect!='Mean per vessel/metric ton caught'&input$StatSelect!='Median per vessel/metric ton caught'&input$StatSelect!='Fleet-wide average/metric ton caught'&
+             input$StatSelect!='Mean per processor/metric ton produced'&input$StatSelect!='Median per processor/metric ton produced'&input$StatSelect!='Industry-wide average/metric ton produced') {
+            paste("Thousands of", currentyear, "$","(",input$StatSelect, ")")  
         } else {
-            expression(paste(bold("2015 $","(",input$StatSelect, ")")))  
+            paste(currentyear, "$","(",input$StatSelect, ")")  
         } }else if(input$Ind_sel=="Social and Regional") {
           if(input$LayoutSelect!='Metrics'){
             if(input$socSelect=="Crew wage per day"|input$socSelect=="Revenue per crew day"){
-                expression(paste(bold("Thousands of 2015 $","(",input$AVE_MED2, ")")))    
+                paste("Thousands of", currentyear, "$","(",input$AVE_MED2, ")")    
             }  else if(input$socSelect=="Seasonality"){
               expression(bold("Day of year when 50% of catch was landed"))
             }  else if(input$socSelect=="Share of landings by state"){

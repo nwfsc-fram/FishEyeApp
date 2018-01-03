@@ -2,7 +2,7 @@ doPlot <- function(dat, x, y){
   if(PermitPlot()){
 
     dat <- subset(dat, is.na(dat$VALUE)==FALSE)
-
+    #currentyear <- 2015
     ######################################################
     
     dat$sort2 <- if(input$LayoutSelect!="Metrics"){
@@ -77,19 +77,21 @@ doPlot <- function(dat, x, y){
     upper <- function(){
 #      if(input$PlotSelectOption=="Standard deviation or Median average deviation") 
       if(input$Ind_sel=="Economic"){
+        if(input$PlotSelect==T){
         if(input$AVE_MED=='A'){
           max(dat$VALUE+dat$VARIANCE)
-        } else if(input$AVE_MED=='T'){ 
-          max(dat$VALUE)
-        } else {
+        } else { 
           max(dat$q75)
+        }} else {
+          max(dat$VALUE)
         }
         } else if(input$Ind_sel!="Economic"){
-          if(input$AVE_MED2=='Mean'){
+          if(input$AVE_MED2=='Mean'&input$PlotSelect==T){
             max(dat$VALUE+dat$VARIANCE)
-          } else if(input$AVE_MED2=='Median') { 
+          } else if(input$AVE_MED2=='Median'&input$PlotSelect==T) { 
             max(dat$q75)
-          } else {max(dat$VALUE)}}
+          } else {max(dat$VALUE)}
+      }
     }
       
 
@@ -255,15 +257,15 @@ doPlot <- function(dat, x, y){
     
     ylab <- function(){
       if(input$Ind_sel=="Economic"){
-        if(input$StatSelect!='Mean per vessel/metric-ton caught'&input$StatSelect!='Median per vessel/metric-ton caught'&input$StatSelect!='Fleet-wide average/metric-ton caught'&
-         input$StatSelect!='Mean per processor/metric-ton produced'&input$StatSelect!='Median per processor/metric-ton produced'&input$StatSelect!='Industry-wide average/metric-ton produced') {
-          expression(paste(bold("Thousands of 2015 $","(",input$StatSelect, ")")))  
+        if(input$StatSelect!='Mean per vessel/metric ton caught'&input$StatSelect!='Median per vessel/metric ton caught'&input$StatSelect!='Fleet-wide average/metric ton caught'&
+         input$StatSelect!='Mean per processor/metric ton produced'&input$StatSelect!='Median per processor/metric ton produced'&input$StatSelect!='Industry-wide average/metric ton produced') {
+          paste("Thousands of", currentyear, "$","(",input$StatSelect, ")")  
       } else {
-        expression(paste(bold("2015 $","(",input$StatSelect, ")")))  
+        paste(currentyear, "$","(",input$StatSelect, ")") 
         }}else if(input$Ind_sel=="Social and Regional") {
            if(input$LayoutSelect!='Metrics'){
                 if(input$socSelect=="Crew wage per day"|input$socSelect=="Revenue per crew day"){
-                    expression(paste(bold("Thousands of 2015 $","(",input$AVE_MED2, ")")))    
+                    paste("Thousands of", currentyear, "$","(",input$AVE_MED2, ")")    
              }  else if(input$socSelect=="Seasonality"){
                expression(bold("Day of year when 50% of catch was landed"))
              }  else if(input$socSelect=="Share of landings by state"){
@@ -458,16 +460,16 @@ doPlot <- function(dat, x, y){
 #     return(1.2)
  #  } 
  }}   
- 
+
  scale_geom_text <- function() {
    if(sum(dat$VALUE, na.rm=T)!=0) {
      return(max(dat$VALUE, na.rm=T))
-   } else {
+   }else {
      return(0)
    }
  }
- 
-# if(input$MetricSelect=="Date 50 percent of total catch landed"){
+
+ # if(input$MetricSelect=="Date 50 percent of total catch landed"){
 #    g <-    g <- ggplot(dat, aes_string(x = x, y = as.Date(origin="1970-01-01", y), group = groupVar, order='sort'), environment=environment())#+ scale_y_date(breaks=date_breaks("month"), labels=date_format("%d %m"))
 #   } else {
 #     dat <- dat[order(dat$sort),]
@@ -496,36 +498,43 @@ doPlot <- function(dat, x, y){
 #       g <- g
 #     }
 
+ 
 #----- define facet -----#
    if (input$LayoutSelect!='Metrics') {
      g <- g + facet_wrap(~ sort2, ncol=2)
    } else {
-     g <- g + facet_wrap(~sort2, ncol=2)
+     g <- g + facet_wrap(~sort2, scales='free_y', ncol=2)
      }
    
-     # define scale
-    g <- g + scale_fill_manual(values = colourThirds) + scale_colour_manual(values = colourThirds) #+ scale_x_discrete('YEAR2', drop=FALSE)
-
-        g <- g + geom_hline(yintercept = 0)
-    
-#---- define labels ------#
-        if(input$tabs=='Panel1'){
-    g <- g + labs(y = ylab(), x=xlab(), title = main())   
-        } else {
-          g <- g + labs(y = ylab(), x='', title = main())   
-        }
-     
-    
+ #----- Define rectangles and labels ------#
     labeltext <- ifelse(input$tabs=='Panel1', 7,5)
-#----- Define rectangles and labels ------#
     if(length(yr())>1 & min(yr())<2011 & max(yr())>2010){
-      g <- g + geom_rect(aes(xmin=-Inf, xmax=table(yr()<=2010)[[2]]+.5, ymin=-Inf, ymax=Inf), alpha=.05, fill="grey50")
-      g <- g + geom_text(aes(x=table(yr()<=2010)[[2]]/3.5,y=max(upper())+scale_geom_text()/20, label="Pre-catch shares", family="serif"),hjust=0,color = "grey20", size=labeltext/scale_text()) 
-      if(length(yr()<2010)==6&length(yr()>=2010)<=4){
-        g <- g + geom_text(aes(x=table(yr()<=2010)[[2]]+table(yr()>2010)[[2]]/1.5,y=max(upper()+scale_geom_text()/20,label="Post-catch"),hjust=0, family="serif"),color = "grey20", size=labeltext/scale_text())+
-          geom_text(aes(x=table(yr()<=2010)[[2]]+table(yr()>2010)[[2]]/1.5,y=max(upper())-max(upper())/100,label="shares"),hjust=0, family="serif",color = "grey20", size=labeltext/scale_text())
+      if (input$LayoutSelect!='Metrics') {
+          g <- g + geom_rect(aes(xmin=-Inf, xmax=table(yr()<=2010)[[2]]+.5, ymin=-Inf, ymax=Inf), alpha=.05, fill="grey50")
+          g <- g + geom_text(aes(x=table(yr()<=2010)[[2]]/3.5,y=max(upper())+scale_geom_text()/5, 
+                                 label="Pre-catch shares", family="serif"),hjust=0,color = "grey20", size=labeltext/scale_text()) 
+          if(length(yr()<2010)==6&length(yr()>=2010)<=4){
+            g <- g + geom_text(aes(x=table(yr()<=2010)[[2]]+table(yr()>2010)[[2]]/1.5,y=max(upper())+scale_geom_text()/5,
+                                 label="Post-catch"),hjust=0, family="serif",color = "grey20", size=labeltext/scale_text())+
+                 geom_text(aes(x=table(yr()<=2010)[[2]]+table(yr()>2010)[[2]]/1.5,y=max(upper())-max(upper())/100,
+                          label="shares"),hjust=0, family="serif",color = "grey20", size=labeltext/scale_text())
+          } else {
+            g <- g + geom_text(aes(x=table(yr()<=2010)[[2]]+table(yr()>2010)[[2]]/1.5,y=max(upper())+scale_geom_text()/5,
+                               label="Post-catch shares"),hjust=0, family="serif",color = "grey20", size=labeltext/scale_text())
+          }
       } else {
-        g <- g + geom_text(aes(x=table(yr()<=2010)[[2]]+table(yr()>2010)[[2]]/1.5,y=max(upper())+scale_geom_text()/20,label="Post-catch shares"),hjust=0, family="serif",color = "grey20", size=labeltext/scale_text())
+            g <- g + geom_rect(aes(xmin=-Inf, xmax=table(yr()<=2010)[[2]]+.5, ymin=-Inf, ymax=Inf), alpha=.05, fill="grey50")
+            g <- g + geom_text(aes(x=table(yr()<=2010)[[2]]/3.5,y=Inf, vjust=1.5
+                               , label="Pre-catch shares", family="serif"),hjust=0,color = "grey20", size=labeltext/scale_text()) 
+          if(length(yr()<2010)==6&length(yr()>=2010)<=4){
+            g <- g + geom_text(aes(x=table(yr()<=2010)[[2]]+table(yr()>2010)[[2]]/1.5,y=Inf, vjust=1.5,
+                                 label="Post-catch"),hjust=0, family="serif",color = "grey20", size=labeltext/scale_text())+
+            geom_text(aes(x=table(yr()<=2010)[[2]]+table(yr()>2010)[[2]]/1.5,y=Inf, vjust=1.5,label="shares"),
+                      hjust=0, family="serif",color = "grey20", size=labeltext/scale_text())
+          } else {
+            g <- g + geom_text(aes(x=table(yr()<=2010)[[2]]+table(yr()>2010)[[2]]/1.5,y=Inf, vjust=1.5,
+                                 label="Post-catch shares"),hjust=0, family="serif",color = "grey20", size=labeltext/scale_text())
+        }
       }
       #g <- g + geom_rect(data=rectvars,aes(x=NULL, y=NULL, xmin=-Inf, xmax=xmaxscale+.5, ymin=-Inf, ymax=Inf), alpha=.05, fill="grey50")
       #g <- g + geom_text(data=rectvars,aes(x=xmaxscale/3.5,y=max(upper())+scale_geom_text()/20, label="Pre-catch shares", family="serif"),hjust=0,color = "grey20", size=7/scale_text()) 
@@ -538,7 +547,22 @@ doPlot <- function(dat, x, y){
       else {
        g <- g  
       }
+    #----- Define rectangles and labels ------#
+ 
+       # define scale
+    g <- g + scale_fill_manual(values = colourThirds) + scale_colour_manual(values = colourThirds) #+ scale_x_discrete('YEAR2', drop=FALSE)
 
+        g <- g + geom_hline(yintercept = 0)
+    
+#---- define labels ------#
+        if(input$tabs=='Panel1'){
+    g <- g + labs(y = ylab(), x=xlab(), title = main())   
+        } else {
+          g <- g + labs(y = ylab(), x='', title = main())   
+        }
+     
+    
+    
     if(input$tabs=='Panel1'){
       strptextsize <- 18
     } else {
@@ -571,8 +595,7 @@ doPlot <- function(dat, x, y){
  ############################################################################################################
 
 #################################################################################################################################
-    
- 
+    #ggplotly(g)
     print(g) 
    
    

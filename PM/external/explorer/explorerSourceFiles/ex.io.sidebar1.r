@@ -105,9 +105,12 @@ output$Yearselect <- renderUI({
 #END YEAR
 ##############################################
 
-fish.var <- c("All fisheries combined"="All fisheries"," All catch share fisheries combined"="All catch share fisheries","Pacific whiting","At-sea Pacific whiting","Shoreside Pacific whiting",
-              "Groundfish with trawl gear","DTS trawl with trawl endorsement","Non-whiting midwater trawl","Non-whiting, non-DTS trawl with trawl endorsement",  "Groundfish fixed gear with trawl endorsement",
-              "All non-catch share fisheries combined"="All non-catch share fisheries", "Groundfish fixed gear with fixed gear endorsement","Crab","Shrimp","Other fisheries")
+fish.var <- c("All fisheries combined"="All fisheries"," All catch share fisheries combined"="All catch share fisheries","Pacific whiting",
+              "At-sea Pacific whiting","Shoreside Pacific whiting",
+              "Groundfish with trawl gear","DTS trawl with trawl endorsement","Non-whiting midwater trawl","Non-whiting, non-DTS trawl with trawl endorsement", 
+              "Groundfish fixed gear with trawl endorsement",
+              "All non-catch share fisheries combined"="All non-catch share fisheries", "Groundfish fixed gear with fixed gear endorsement","Crab","Shrimp",
+              "Other fisheries")
 ###################################################
 #CATEGORY SELECT
 ###################################################
@@ -241,7 +244,8 @@ output$Variableselect <- renderUI({
           else {
            tagList(           
               tags$div(class="select", selectInput("inSelect","",c("All fisheries", "All catch share fisheries", "All non-catch share fisheries")), style="margin-bottom:-10px"),
-              radioButtons("VariableSelect",  "Select one vessel length class:", choices=c("Large vessel (> 80 ft)","Medium vessel (> 60ft, <= 80ft)","Small vessel (<= 60 ft)"), selected="")) 
+              radioButtons("VariableSelect",  "Select one vessel length class:", choices=c("Large vessel (> 80 ft)","Medium vessel (> 60ft, <= 80ft)",
+                                                                                           "Small vessel (<= 60 ft)"), selected="")) 
           }}else {
             tagList(           
               tags$div(class="select", selectInput("inSelect","",c("All fisheries", "All catch share fisheries", "All non-catch share fisheries")), style="margin-bottom:-10px"),

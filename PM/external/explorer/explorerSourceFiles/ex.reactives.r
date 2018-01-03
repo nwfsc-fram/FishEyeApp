@@ -3,6 +3,7 @@
 # creating the dat() reactive function that contains the user selected dataset
 # The re-classification of data types can be transfered to the read-in file
 
+
 DatMain <- reactive({ # data load moved to serverhead
   # data is loaded from serverHead.R load call
   if(input$Sect_sel=="CV"){
@@ -23,14 +24,14 @@ DatVars <- reactive({
   if(input$Sect_sel=="CV"){
     datVars <- with(dat, 
       list(
-        YEAR = 2004:2015,
+        YEAR = 2004:currentyear,
         SHORTDESCR = c("Revenue","Variable costs","Fixed costs","Variable Cost Net Revenue","Total Cost Net Revenue"),
         CATEGORY = c("Fisheries","Homeport","State of homeport"="State","Vessel length class"),
         FISHAK = unique(FISHAK),
         whitingv = c("All vessels","Non-whiting vessels","Whiting vessels"),
-        STAT =  c("Mean per vessel","Mean per vessel/day","Mean per vessel/metric-ton caught",
-                  "Median per vessel","Median per vessel/day","Median per vessel/metric-ton caught",
-                  "Fleet-wide total","Fleet-wide average/day","Fleet-wide average/metric-ton caught"),
+        STAT =  c("Mean per vessel","Mean per vessel/day","Mean per vessel/metric ton caught",
+                  "Median per vessel","Median per vessel/day","Median per vessel/metric ton caught",
+                  "Fleet-wide total","Fleet-wide average/day","Fleet-wide average/metric ton caught"),
         METRIC =  c("Number of vessels","Vessel length","Fishery participation","Proportion of revenue from catch share fishery"="Proportion of revenue from CS fishery",
                   "Days at sea","Exponential Shannon Index","Gini coefficient","Number of positions (captain and crew)"='Number of positions',"Crew wage per day","Revenue per crew day",
                   "Seasonality","Share of landings by state")
@@ -38,27 +39,27 @@ DatVars <- reactive({
   } else if(input$Sect_sel=="FR"){
     datVars <- with(dat, 
                     list(
-                      YEAR = 2004:2015,
+                      YEAR = 2004:currentyear,
                       SHORTDESCR = c("Revenue","Variable costs","Fixed costs","Variable Cost Net Revenue","Total Cost Net Revenue"),
                       CATEGORY = c("Production activities"="Fisheries","Region","Processor size"),
                       whitingv = c("All processors", "Whiting processors","Non-whiting processors"),
-                      STAT =  c("Mean per processor","Mean per processor/metric-ton of groundfish products produced"="Mean per processor/metric-ton produced",
-                                "Median per processor", "Median per processor/metric-ton of groundfish products produced"="Median per processor/metric-ton produced",
-                                "Industry-wide total","Industry-wide average/metric-ton of groundfish products produced"="Industry-wide average/metric-ton produced"),
+                      STAT =  c("Mean per processor","Mean per processor/metric ton of groundfish products produced"="Mean per processor/metric ton produced",
+                                "Median per processor", "Median per processor/metric ton of groundfish products produced"="Median per processor/metric ton produced",
+                                "Industry-wide total","Industry-wide average/metric ton of groundfish products produced"="Industry-wide average/metric ton produced"),
                       METRIC =  c("Number of processors","Number of species processed","Proportion of production value from West Coast groundfish"="Proportion of revenue from catch share species",
                                   "Exponential Shannon Index","Gini coefficient",'Number of workers',"Hourly compensation")#, "Share of landings by state")
                     ))
   }else if(input$Sect_sel=="M"|input$Sect_sel=="CP"){
       datVars <- with(dat, 
            list(
-                YEAR = 2004:2015,
+                YEAR = 2004:currentyear,
                 SHORTDESCR = c("Revenue","Variable costs","Fixed costs","Variable Cost Net Revenue","Total Cost Net Revenue"),
                 CATEGORY = "Fisheries",
                 FISHAK = unique(FISHAK),
                 whitingv = "Whiting vessels",
-                STAT =  c("Mean per vessel","Mean per vessel/day","Mean per vessel/metric-ton produced",
-                          "Median per vessel","Median per vessel/day","Median per vessel/metric-ton produced",
-                            "Fleet-wide total",'Fleet-wide average/day','Fleet-wide average/metric-ton produced'),
+                STAT =  c("Mean per vessel","Mean per vessel/day","Mean per vessel/metric ton produced",
+                          "Median per vessel","Median per vessel/day","Median per vessel/metric ton produced",
+                            "Fleet-wide total",'Fleet-wide average/day','Fleet-wide average/metric ton produced'),
                 METRIC =  c("Number of vessels","Vessel length",
                             "Proportion of landings from catch share fishery"="Proportion of landings from CS fishery","Days at sea","Gini coefficient",
                              "Number of positions (captain and crew)"='Number of positions',
@@ -77,10 +78,10 @@ DatSubTable <- reactive({
     dat$SUMSTAT <- ifelse(dat$SUMSTAT=='Average', 'Mean', as.character(dat$SUMSTAT))
     dat$STAT <- ifelse(dat$STAT=="Average per vessel", "Mean per vessel",
                        ifelse(dat$STAT=="Average per vessel/day","Mean per vessel/day",
-                              ifelse(dat$STAT=="Average per vessel/metric-ton produced","Mean per vessel/metric-ton produced",
-                                     ifelse(dat$STAT=="Average per vessel/metric-ton caught","Mean per vessel/metric-ton caught",
+                              ifelse(dat$STAT=="Average per vessel/metric ton produced","Mean per vessel/metric ton produced",
+                                     ifelse(dat$STAT=="Average per vessel/metric ton caught","Mean per vessel/metric ton caught",
                                             ifelse(dat$STAT=="Average per processor","Mean per processor",
-                                                   ifelse(dat$STAT=="Average per processor/metric-ton produced","Mean per processor/metric-ton produced",as.character(dat$STAT)))))))
+                                                   ifelse(dat$STAT=="Average per processor/metric ton produced","Mean per processor/metric ton produced",as.character(dat$STAT)))))))
     dat$VARIABLE <- ifelse(dat$VARIABLE=='Small vessel (< 60 ft)', 'Small vessel (<= 60 ft)', as.character(dat$VARIABLE))
     
     #subsetting
@@ -337,16 +338,18 @@ if(input$LayoutSelect!="Metrics"){
 # selecting plot variables, subsetting the data AND casting for individual level ID (fun.agg=sum)
 # build dcast formula using if controls and using the quoted method in dcast
 DatSub <- reactive({
-      dat <- DatMain()    
+      dat <- DatMain()   
+      
       dat$SUMSTAT <- ifelse(dat$SUMSTAT=='Average', 'Mean', as.character(dat$SUMSTAT))
+
       dat$STAT <- ifelse(dat$STAT=="Average per vessel", "Mean per vessel",
                          ifelse(dat$STAT=="Average per vessel/day","Mean per vessel/day",
-                                ifelse(dat$STAT=="Average per vessel/metric-ton produced","Mean per vessel/metric-ton produced",
-                                       ifelse(dat$STAT=="Average per vessel/metric-ton caught","Mean per vessel/metric-ton caught",
+                                ifelse(dat$STAT=="Average per vessel/metric ton produced","Mean per vessel/metric ton produced",
+                                       ifelse(dat$STAT=="Average per vessel/metric ton caught","Mean per vessel/metric ton caught",
                                               ifelse(dat$STAT=="Average per processor","Mean per processor",
-                                                     ifelse(dat$STAT=="Average per processor/metric-ton produced","Mean per processor/metric-ton produced",as.character(dat$STAT)))))))
+                                                     ifelse(dat$STAT=="Average per processor/metric ton produced","Mean per processor/metric ton produced",as.character(dat$STAT)))))))
       dat$VARIABLE <- ifelse(dat$VARIABLE=='Small vessel (< 60 ft)', 'Small vessel (<= 60 ft)', as.character(dat$VARIABLE))
-      
+    
         if(input$Sect_sel=="CV"|input$Sect_sel=='FR'){    
         datSub <- subset(dat, YEAR %in% input$YearSelect &  
                             CATEGORY == input$CategorySelect &
@@ -355,7 +358,7 @@ DatSub <- reactive({
       } else {
         datSub <- subset(dat, YEAR %in% input$YearSelect)
       }
-
+      
       if(input$Ind_sel=="Economic") {
                 datSub <- subset(datSub,  SHORTDESCR %in% input$ShortdescrSelect & STAT == input$StatSelect) 
      } else if(input$Ind_sel=="Demographic")  {
@@ -402,7 +405,7 @@ DatSub <- reactive({
                   }
       } #End Social and Regional
       
-     
+        print(head(datSub))
           
         validate(
         need(dim(datSub)[1]>0, 
@@ -506,8 +509,8 @@ DatSub <- reactive({
           datSub$q25 <- datSub$q25
           datSub$q75 <- datSub$q75
       }}
-     else if(input$Ind_sel=="Economic"&input$StatSelect!='Mean per vessel/metric-ton caught'&input$StatSelect!='Median per vessel/metric-ton caught'&input$StatSelect!='Fleet-wide average/metric-ton caught'&
-         input$StatSelect!='Mean per processor/metric-ton produced'&input$StatSelect!='Median per processor/metric-ton produced'&input$StatSelect!='Industry-wide average/metric-ton produced'){
+     else if(input$Ind_sel=="Economic"&input$StatSelect!='Mean per vessel/metric ton caught'&input$StatSelect!='Median per vessel/metric ton caught'&input$StatSelect!='Fleet-wide average/metric ton caught'&
+         input$StatSelect!='Mean per processor/metric ton produced'&input$StatSelect!='Median per processor/metric ton produced'&input$StatSelect!='Industry-wide average/metric ton produced'){
           datSub$VALUE <-datSub$VALUE/1000
           datSub$VARIANCE <- datSub$VARIANCE/1000
           datSub$q25 <- datSub$q25/1000

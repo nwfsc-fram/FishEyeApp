@@ -33,6 +33,10 @@ output$Email <- renderUI({
   ))
 })
 ######################################
+
+####################
+#Other applications
+###############
 output$ApplicationsText <- renderUI({
   tags$div(style="margin:15px 15px 30px; with: 60%",
            tags$br(),
@@ -44,6 +48,8 @@ output$ApplicationsText <- renderUI({
        padding-bottom:10px"> FISHEyE Costs Explorer</a>' )
   )
 })
+##############################
+
 
 output$BlogText <- renderUI({
 
@@ -61,6 +67,16 @@ output$BlogUpdates <- renderUI({
   tags$div(style = "margin-top:0; padding-top:0;background-color:#F8F8E9;",
            tags$h3("Updates"),
            #Major update - adding other sectors
+           
+           div( class='date', style='height:45px;width:30px; font-family:Arial; font-weight:bold;background-color:#ffffff;text-align:center; border-top:1px solid #c0c0c0;
+       border-left:1px solid #c0c0c0;border-right:1px solid #c0c0c0;position:absolute;z-index:3;line-height: 13px;',
+                HTML("<span class='month' style='text-transform:uppercase;font-size:11px;'>Oct</span><br />
+            <span class='day' style='font-size:16px;'>12</span><br />
+            <span class='year' style='font-size:11px;line-height: 10px;'>2017</span>")
+           ),
+           p(HTML("<span style='margin-left:60px;font-size:18px;font-weight:bold'>Bookmarking feature</span>")), 
+           p(br(),"We have added a bookmarking feature. The bookmarking feature allows you to return to a previously saved state, share the output of a query on FISHEyE without downloading the plot, continue your data exploration at a later date without having to remember selections, etc. A url will be provided when you click the bookmark button on the top right hand corner of control panel. This url is specific to the selections you made in the control panel."),
+           hr(),
            
            tags$div( class='date', style='height:45px;width:30px; font-family:Arial; font-weight:bold;background-color:#ffffff;text-align:center; border-top:1px solid #c0c0c0;
                      border-left:1px solid #c0c0c0;border-right:1px solid #c0c0c0;position:absolute;z-index:3;line-height: 13px;',
@@ -208,7 +224,7 @@ output$DefaultThirdsText <- renderUI({
                   tags$a(href="https://www.nwfsc.noaa.gov/research/divisions/fram/catch_shares.cfm", target="_blank", "West Coast Groundfish Trawl Catch Share Program"), 
                     'span a very broad range in terms of the scale of their operations. To view the heterogeneity within the catcher vessel fleet while taking into account confidentiality rules,
                     we group the vessels into three tiered categories annually: top, middle, and lower revenue earners.   We then calculate the median, mean, or total of the selected 
-                    statistic (per vessel, vessel/day, or vessel/metric-ton) for vessels within each tiered category.'), 
+                    statistic (per vessel, vessel/day, or vessel/metric ton) for vessels within each tiered category.'), 
 
            tags$br(),
               img(src="ExampThirds.png", height=375, width=750),tags$br(),tags$br(),tags$br(),tags$br(),

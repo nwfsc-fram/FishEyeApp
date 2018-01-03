@@ -6,7 +6,7 @@
 # These reactive expressions are then called in ex.reactives.R 
 #======================================
 
-
+###This section commented out. Kept in case decide to use direct email form
 #observe({
 #  if(is.null(input$send) || input$send==0) return(NULL)
 #  from <- isolate(input$from)
@@ -20,28 +20,42 @@
 ###################################################
 output$SectorSelect <- renderUI({
   if(input$tabs=="Panel1"){
-  tags$div(class="sectselect", selectInput("Sect_sel", span("Select a sector:", style="font-style:strong;display:inline-block;vertical-align:middle"), 
-                                           c('Catcher Vessels'="CV", 'Mothership Vessels'="M", 'Catcher Processor Vessels'="CP", 'First Receivers and Shorebased Processors'="FR"),selected='CV', width='90%')
-  )
+  tags$div(class="sectselect", 
+           selectInput("Sect_sel", span("Select a sector:", 
+                                       style="font-style:strong;display:inline-block; vertical-align:middle"), 
+                                           c('Catcher Vessels'="CV", 'Mothership Vessels'="M", 
+                                             'Catcher Processor Vessels'="CP", 
+                                             'First Receivers and Shorebased Processors'="FR"),
+                       selected='CV', width='90%')
+          )
   } else {
-    tags$div(class="sectselect", selectInput("Sect_sel", span("Select a sector:", style="font-style:strong;display:inline-block;vertical-align:middle"), 
-                                             c('Catcher Vessels'="CV", 'First Receivers and Shorebased Processors'="FR"), width='90%')
-    )
-  }
+    tags$div(class="sectselect", 
+             selectInput("Sect_sel", span("Select a sector:", 
+                                         style="font-style:strong;display:inline-block;vertical-align:middle"), 
+                                             c('Catcher Vessels'="CV", 
+                                               'First Receivers and Shorebased Processors'="FR"), width='90%')
+          )
+         }
 })
 
 output$SectPrint <- renderUI({
-  #tags$div(#style="font-size:210%;font-style:italic; padding:10px; padding-left:15px;display:inline-block;vertical-align:middle",
            if(input$Sect_sel=="CV") {
-             span('West Coast Trawl Catch Share Program:  Catcher Vessels', style="font-size:210%;font-style:italic; padding:10px; padding-left:15px;display:inline-block;vertical-align:middle")
+             span('West Coast Trawl Catch Share Program:  Catcher Vessels', 
+                  style="font-size:210%;font-style:italic; padding:10px; padding-left:15px;
+                  display:inline-block;vertical-align:middle")
            } else if(input$Sect_sel=="M"){
-             span('West Coast Trawl Catch Share Program:  Mothership Vessels', style="font-size:210%;font-style:italic; padding:10px; padding-left:15px;display:inline-block;vertical-align:middle")
+             span('West Coast Trawl Catch Share Program:  Mothership Vessels', 
+                  style="font-size:210%;font-style:italic; padding:10px; padding-left:15px;
+                  display:inline-block;vertical-align:middle")
            } else if(input$Sect_sel=="CP"){
-             span('West Coast Trawl Catch Share Program:  Catcher Processor Vessels', style="font-size:210%;font-style:italic; padding:10px; padding-left:15px;display:inline-block;vertical-align:middle")
+             span('West Coast Trawl Catch Share Program:  Catcher Processor Vessels', 
+                  style="font-size:210%;font-style:italic; padding:10px; padding-left:15px;
+                  display:inline-block;vertical-align:middle")
            } else{
-             span('West Coast Trawl Catch Share Program:  First Receivers and Shorebased Processors', style="font-size:210%;font-style:italic; padding:10px; padding-left:15px;display:inline-block;vertical-align:middle")
+             span('West Coast Trawl Catch Share Program:  First Receivers and Shorebased Processors', 
+                  style="font-size:210%;font-style:italic; padding:10px; padding-left:15px;
+                  display:inline-block;vertical-align:middle")
            }
-#  )
 })
 ###################################################
 
@@ -58,8 +72,9 @@ observeEvent(input$reset_input, {
 #Layout select (Compare vessels or compare metrics)
 ###################################################
 output$Layoutselect <- renderUI({
-  
-  tags$div(radioButtons("LayoutSelect", HTML("<div> Compare: <button id='icompare' type='button' class='btn btn-default action-button shiny-bound-input'>
+  tags$div(radioButtons("LayoutSelect", 
+                            HTML("<div> Compare: <button id='icompare' type='button' 
+                                              class='btn btn-default action-button shiny-bound-input'>
                                              <i class='fa fa-info-circle fa-fw'></i></button></div>"),
                         if(input$Sect_sel=='CV'){ choices = c('Groups of Catcher Vessels','Economic measures')}
                         else if(input$Sect_sel=='M'){ choices = c('Groups of Motherships','Economic measures')} 
@@ -78,15 +93,19 @@ output$Layoutselect <- renderUI({
 output$Shortdescrselect <- renderUI({
   if(input$tabs=='Panel1'){
     if(input$DodgeSelect == 'Composition of Variable Cost Net Revenue'){
-    tags$div(class="ckbox3", checkboxGroupInput("ShortdescrSelect",  HTML("<div> Economic measures:<button id='iem' type='button' class='btn btn-default action-button shiny-bound-input'> 
-                                                                      <i class='fa fa-info-circle fa-fw' ></i> </button></div>"), 
+    tags$div(class="ckbox3", checkboxGroupInput("ShortdescrSelect",  
+                                HTML("<div> Economic measures:<button id='iem' type='button' 
+                                          class='btn btn-default action-button shiny-bound-input'> 
+                                          <i class='fa fa-info-circle fa-fw' ></i> </button></div>"), 
                                                choices = c("Variable costs",  "Variable Cost Net Revenue"),
                                                selected = c("Variable costs", "Variable Cost Net Revenue")))
   }else if(input$DodgeSelect == 'Composition of Total Cost Net Revenue'){
-    tags$div(class="ckbox3", checkboxGroupInput("ShortdescrSelect",HTML("<div> Economic measures:<button id='iem' type='button' class='btn btn-default action-button shiny-bound-input'> 
-                                                                      <i class='fa fa-info-circle fa-fw' ></i> </button></div>"), 
-                                               choices = c("Variable costs", "Fixed costs",  "Total Cost Net Revenue"),
-                                               selected = c("Variable costs",  "Fixed costs","Total Cost Net Revenue")))
+    tags$div(class="ckbox3", checkboxGroupInput("ShortdescrSelect",
+                                HTML("<div> Economic measures:<button id='iem' type='button' 
+                                            class='btn btn-default action-button shiny-bound-input'> 
+                                            <i class='fa fa-info-circle fa-fw' ></i> </button></div>"), 
+                                              choices = c("Variable costs", "Fixed costs",  "Total Cost Net Revenue"),
+                                              selected = c("Variable costs",  "Fixed costs","Total Cost Net Revenue")))
   }else if(input$DodgeSelect == 'Economic measures side-by-side') {
       tags$div(class="ckbox", checkboxGroupInput("ShortdescrSelect", HTML("<div> Economic measures:<button id='iem' type='button' class='btn btn-default action-button shiny-bound-input'> 
                                                                       <i class='fa fa-info-circle fa-fw' ></i> </button></div>"), 

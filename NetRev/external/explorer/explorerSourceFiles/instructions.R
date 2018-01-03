@@ -14,7 +14,7 @@ tags$div(style = "margin: 15px; 15px; 30px; width: 60%",
            tags$ul(style="margin-top:15px;" ,
                    
            tags$li(tags$h4("Summary Plots and Data")),
-           tags$p('Visualize', tags$a(href="https://www.nwfsc.noaa.gov/research/divisions/fram/economic/overview.cfm",'Economic Data Collection (EDC)', target="_blank"), 'summary statistics for revenue, costs, and net revenue of catcher vessels (both at-sea and shoreside) that participate in the',
+           tags$p('Visualize', tags$a(href="https://www.nwfsc.noaa.gov/research/divisions/fram/economic/overview.cfm",'Economic Data Collection (EDC)', target="_blank"), 'summary statistics for revenue, costs, and net revenue of catcher vessels (both at-sea and shoreside), motherships, catcher processors, and first receivers and shorebased processors that participate in the',
                   tags$a(href="https://www.nwfsc.noaa.gov/research/divisions/fram/catch_shares.cfm", 'catch share program. ', target="_blank")),
                  
                 tags$strong('Plots'),tags$p('Plotting options can be found at the bottom of the Control Panel. There are three plot options:', tags$br(),
@@ -36,7 +36,7 @@ tags$div(style = "margin: 15px; 15px; 30px; width: 60%",
               tags$p('Participants in the catch share program span a very broad range in terms of the scale of their operations. 
                 For instance, the revenue earned ranges from around $10,000 to well over $1.5 million. To view the heterogeneity within the selected sector while taking into account confidentiality 
                      rules, we group the vessels or processors into three tiered categories annually: top, middle, and lower revenue earners.   We then calculate the median, mean, or total of the selected statistic 
-                     (per vessel or processor, vessel/day, or vessel or processor/metric-ton) for vessels or processors within each tiered category. 
+                     (per vessel or processor, vessel/day, or vessel or processor/metric ton) for vessels or processors within each tiered category. 
                      This analysis is only available for the Catcher Vessel and First Receivers and Shorebased Processors sectors.', tags$br()),
                 tags$strong('Plots'), tags$p('Results are shown if there are at least three vessels or processors in a group. Results are plotted as a dot plot if a single year is selected or a line plot if multiple years are selected.'),
                 tags$strong('Data Table'),tags$p('View data used to generate the plots.', tags$br(),
