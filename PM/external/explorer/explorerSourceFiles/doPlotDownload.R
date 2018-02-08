@@ -20,19 +20,20 @@ doPlotDownload <- function(dat, x, y){
         }}
     
     dat$thresh <-  if(input$Ind_sel=="Economic"){   
-      data.frame(dat %>% group_by(SHORTDESCR) %>% transmute(threshold=length(table(YEAR[YEAR<=2010]))))[,2]
+      data.frame(dat %>% group_by(SHORTDESCR) %>% mutate(threshold=length(table(YEAR[YEAR<=2010]))))%>% subset(select=c(threshold))
     } else if(input$Ind_sel!="Economic"){ 
       if(input$LayoutSelect=="Metrics"){   
         if(input$PlotSelect==T&!is.na(max(dat$VARIANCE))) { 
-          as.numeric(data.frame(dat %>% group_by(METRIC) %>% transmute(threshold=max(VALUE, na.rm=T)+max(VARIANCE, na.rm=T)+max(VALUE, na.rm=T)/10))[,2])
+          as.numeric(data.frame(dat %>% group_by(METRIC) %>% mutate(threshold=max(VALUE, na.rm=T)+max(VARIANCE, na.rm=T)+max(VALUE, na.rm=T)/10))%>% subset(select=c(threshold)))
         } else {
-          as.numeric(data.frame(dat %>% group_by(METRIC) %>% transmute(threshold=max(VALUE, na.rm=T)+max(VALUE, na.rm=T)/10))[,2])
+          as.numeric(data.frame(dat %>% group_by(METRIC) %>% mutate(threshold=max(VALUE, na.rm=T)+max(VALUE, na.rm=T)/10))%>% subset(select=c(threshold)))
         }
       } else {
         0
       }}
 
-    rectvars <- dat %>% distinct(sort2,YEAR) %>% group_by(sort2) %>% transmute(minx=min(as.numeric(YEAR)), xmaxscale=length(YEAR[YEAR<2011]), maxx=max(YEAR))  %>% data.frame()%>% distinct %>% 
+    rectvars <- dat %>% distinct(sort2,YEAR) %>% group_by(sort2) %>% mutate(minx=min(as.numeric(YEAR)), xmaxscale=length(YEAR[YEAR<2011]), maxx=max(YEAR))  %>% 
+      subset(select=c(sort2, minx,xmaxscale, maxx)) %>%data.frame()%>% distinct %>% 
       merge(dat %>% distinct(sort2,whitingv))
     
     dat$upper <- 

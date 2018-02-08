@@ -5,28 +5,13 @@ doPlot <- function(dat, x, y){
  
     dat$sort2 <- reorder(dat$VARIABLE, dat$sort) 
    
-    rectvars <- dat %>% distinct(sort2,YEAR) %>% group_by(sort2) %>% transmute(minx=min(as.numeric(YEAR)), xmaxscale=length(YEAR[YEAR<2011]), maxx=max(YEAR))  %>% data.frame()%>% distinct %>%
-      merge(dat %>% distinct(sort2, SHORTDESCR))
+    rectvars <- dat %>% distinct(sort2,YEAR) %>% group_by(sort2) %>% transmute(minx=min(as.numeric(YEAR)), xmaxscale=length(YEAR[YEAR<2011]), maxx=max(YEAR))  %>% 
+      data.frame()%>% distinct %>% merge(dat %>% distinct(sort2, SHORTDESCR))
     
     groupVar <- "SHORTDESCR"
     facetVar <- "VARIABLE"
     
-#   if(input$Sect_sel=="CV"){
-#     levels(groupVar) <- c('All variable costs','Buyback fees','Captain','Cost recovery fees',
-#                                         'Crew','Fuel','Observers','Other variable costs',
-#                                         'All fixed costs','Fishing gear','On-board equipment','Other fixed costs')
-#    } else if(input$Sect_sel=="M"){
-#      groupVar <- reorder('SHORTDESCR', levels=c("All variable costs","Fish purchases","Fuel","Non-processing crew","Observers","Processing crew","Other variable costs",
-#                                         "All fixed costs","Fishing gear","On-board equipment","Processing equipment",'Other fixed costs'))
-#    } else 
-#    if(input$Sect_sel=='CP'){ 
-#      groupVar <- reorder('SHORTDESCR', levels=c("All variable costs",'Cost recovery fees', "Fish purchases","Fuel","Non-processing crew","Observers","Processing crew","Other variable costs",
-#                                         "All fixed costs","Fishing gear","On-board equipment","Processing equipment",'Other fixed costs'))
-#    } else {
-#      groupVar <- reorder('SHORTDESCR', levels=c("All variable costs",'Fish purchases','Freight','Labor','Monitoring','Off-site freezing & storage','Packing materials','Utilities','Other variable costs',
-#                                         "All fixed costs",'Buildings','Equipment','Other fixed costs'))
-#    }
-    
+
     ## Change color palette to printer-friendly colors that are color-blind friendly. Want consistent colors with what Erin is using
     colourList <- c('All variable costs'='#590014',
                     'Buyback fees'="#8f0007","Fish purchases"="#8f0007","Processing crew"="#8f0007",#'Freight'="#8f0007", #a50026
@@ -174,8 +159,10 @@ doPlot <- function(dat, x, y){
          input$StatSelect=="Mean per processor"|input$StatSelect=='Median per processor'|input$StatSelect=='Industry-wide total'|
          input$StatSelect=='Mean per vessel/day'|input$StatSelect=='Median per vessel/day'|input$StatSelect=='Fleet-wide average/day'){
         paste("Thousands of", currentyear, " $ (",input$StatSelect, ")")
-      } else if(input$StatSelect=='Mean per vessel/dollar of revenue'|input$StatSelect=='Median per vessel/dollar of revenue'|input$StatSelect=='Fleet-wide average/dollar of revenue'|
-                input$StatSelect=="Mean per processor/dollar of revenue"|input$StatSelect=='Median per processor/dollar of revenue'|input$StatSelect=='Industry-wide average/dollar of revenue'){
+      } else if(input$StatSelect=='Mean per vessel/dollar of revenue'|input$StatSelect=='Median per vessel/dollar of revenue'|
+                input$StatSelect=='Fleet-wide average/dollar of revenue'|
+                input$StatSelect=="Mean per processor/dollar of revenue"|input$StatSelect=='Median per processor/dollar of revenue'|
+                input$StatSelect=='Industry-wide average/dollar of revenue'){
         input$StatSelect
       } else {
         paste(currentyear, " $ (",input$StatSelect, ")")
@@ -183,11 +170,13 @@ doPlot <- function(dat, x, y){
     }
     
     stacked_bar_mess <- function(){
-      "For the stacked bar plot, we show either the individual cost categories or the total cost categories (All variable or All fixed costs). \nIf you select a total cost category and an individual cost category, only the individual cost category will be shown."
+      "For the stacked bar plot, we show either the individual cost categories or the total cost categories (All variable or All fixed costs). 
+      \nIf you select a total cost category and an individual cost category, only the individual cost category will be shown."
     }
     conf_mess <- function(){
       if(input$Sect_sel=="CV"){
-        "\nNOTE: Your selection would reveal confidential data for years with sufficient observations.  The results have been suppressed. See the confidentiality section under the ABOUT tab for more information."
+        "\nNOTE: Your selection would reveal confidential data for years with sufficient observations.  The results have been suppressed.
+        See the confidentiality section under the ABOUT tab for more information."
       } else {
         ""
       }
@@ -218,8 +207,10 @@ doPlot <- function(dat, x, y){
      #   reorder(groupVar, dat$barorder    
         if(length(yr())>1 & min(yr())<2011 & max(yr())>2010){
                  g <- g + geom_rect(aes(xmin=-Inf, xmax=table(yr()<=2010)[[2]]+.5, ymin=-Inf, ymax=Inf), alpha=.02, fill="grey50") +
-                          geom_text(aes(x=table(yr()<=2010)[[2]]/3.5,y=thresh(), label="Pre-Catch shares"), family="serif",fontface="italic", hjust=0,color = "grey40", size=7/scale_text()) +
-                          geom_text(aes(x=table(yr()<=2010)[[2]]+table(yr()>2010)[[2]]/1.5,y=thresh(),label="Post-Catch shares"),hjust=0, family = "serif", fontface="italic", color = "grey40", size=7/scale_text())  
+                          geom_text(aes(x=table(yr()<=2010)[[2]]/3.5,y=thresh(), label="Pre-Catch shares"), family="serif",fontface="italic", 
+                                    hjust=0,color = "grey40", size=7/scale_text()) +
+                          geom_text(aes(x=table(yr()<=2010)[[2]]+table(yr()>2010)[[2]]/1.5,y=thresh(),label="Post-Catch shares"),
+                                    hjust=0, family = "serif", fontface="italic", color = "grey40", size=7/scale_text())  
             } else {
               g <- g  
      } # end 

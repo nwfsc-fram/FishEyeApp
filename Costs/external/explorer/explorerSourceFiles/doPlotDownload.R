@@ -7,7 +7,8 @@ doPlotDownload <- function(dat, x, y){
 
     dat$sort2 <- reorder(dat$VARIABLE, dat$sort) 
 
-    rectvars <- dat %>% distinct(sort2,YEAR) %>% group_by(sort2) %>% transmute(minx=min(as.numeric(YEAR)), xmaxscale=length(YEAR[YEAR<2011]), maxx=max(YEAR))  %>% data.frame()%>% distinct %>%
+    rectvars <- dat %>% distinct(sort2,YEAR) %>% group_by(sort2) %>% transmute(minx=min(as.numeric(YEAR)), xmaxscale=length(YEAR[YEAR<2011]), maxx=max(YEAR)) %>% 
+                      data.frame()%>% distinct %>%
                       merge(dat %>% distinct(sort2, SHORTDESCR))
     
     yr <- function(){
@@ -170,8 +171,10 @@ doPlotDownload <- function(dat, x, y){
          input$StatSelect=="Mean per processor"|input$StatSelect=='Median per processor'|input$StatSelect=='Industry-wide total'|
          input$StatSelect=='Mean per vessel/day'|input$StatSelect=='Median per vessel/day'|input$StatSelect=='Fleet-wide average/day'){
         paste("Thousands of", currentyear, " $ (",input$StatSelect, ")")
-      } else if(input$StatSelect=='Mean per vessel/dollar of revenue'|input$StatSelect=='Median per vessel/dollar of revenue'|input$StatSelect=='Fleet-wide average/dollar of revenue'|
-                input$StatSelect=="Mean per processor/dollar of revenue"|input$StatSelect=='Median per processor/dollar of revenue'|input$StatSelect=='Industry-wide average/dollar of revenue'){
+      } else if(input$StatSelect=='Mean per vessel/dollar of revenue'|input$StatSelect=='Median per vessel/dollar of revenue'|
+                input$StatSelect=='Fleet-wide average/dollar of revenue'|
+                input$StatSelect=="Mean per processor/dollar of revenue"|input$StatSelect=='Median per processor/dollar of revenue'|
+                input$StatSelect=='Industry-wide average/dollar of revenue'){
         input$StatSelect
       } else {
         paste(currentyear, " $ (",input$StatSelect, ")")
@@ -182,11 +185,13 @@ doPlotDownload <- function(dat, x, y){
       "For the stacked bar plot, we show either the individual cost categories or the total cost categories (All variable or All fixed costs). \nIf you select a total cost category and an individual cost category, only the individual cost category will be shown."
     }
     source_lab <- function(){
-      paste("\nSourced from the FISHEyE application (https://dataexplorer.northwestscience.fisheries.noaa.gov/fisheye/Costs/) maintained by NOAA Fisheries NWFSC on ",format(Sys.Date(), format="%B %d %Y"))
+      paste("\nSourced from the FISHEyE application (https://dataexplorer.northwestscience.fisheries.noaa.gov/fisheye/Costs/) maintained by NOAA Fisheries NWFSC on ",
+            format(Sys.Date(), format="%B %d %Y"))
     }
     conf_mess <- function(){
       if(input$Sect_sel=="CV"){
-        "\nNOTE: Your selection would reveal confidential data for years with sufficient observations.  The results have been suppressed. See the confidentiality section under the ABOUT tab for more information."
+        "\nNOTE: Your selection would reveal confidential data for years with sufficient observations.  
+        The results have been suppressed. See the confidentiality section under the ABOUT tab for more information."
       } else {
         ""
       }
@@ -214,7 +219,8 @@ doPlotDownload <- function(dat, x, y){
     
      if(length(yr())>1 & min(yr())<2011 & max(yr())>2010){
       g <- g + geom_rect(aes(xmin=-Inf, xmax=table(yr()<=2010)[[2]]+.5, ymin=-Inf, ymax=Inf), fill="grey50", alpha=.02) +
-               geom_text(aes(x=table(yr()<=2010)[[2]]/3.5,y=thresh(), label="Pre-Catch shares"), family="serif",fontface="italic", hjust=0,color = "grey40", size=4/scale_text()) + 
+               geom_text(aes(x=table(yr()<=2010)[[2]]/3.5,y=thresh(), label="Pre-Catch shares"), family="serif",fontface="italic", 
+                         hjust=0,color = "grey40", size=4/scale_text()) + 
                geom_text(aes(x=table(yr()<=2010)[[2]]+table(yr()>2010)[[2]]/1.5,y=thresh(),label="Post-Catch shares"),hjust=0, 
                          family = "serif", fontface="italic", color = "grey40", size=4/scale_text())  
     } else {
