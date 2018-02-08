@@ -41,13 +41,16 @@ DatVars <- reactive({
   } else if(input$Sect_sel=="FR"){
     datVars <- with(dat, 
                     list(YEAR =  2009:currentyear,
-                         SHORTDESCR = c("All variable costs",'Fish purchases','Freight','Labor','Monitoring','Off-site freezing & storage','Packing materials','Utilities','Other variable costs',
-                                        "All fixed costs",'Buildings','Equipment','Other fixed costs'),
+                         SHORTDESCR = c("All variable costs",'Fish purchases','Freight','Labor','Monitoring','Off-site freezing & storage','Packing materials',
+                                        'Utilities','Other variable costs',"All fixed costs",'Buildings','Equipment','Other fixed costs'),
                          whitingv = c("All processors","Whiting processors","Non-whiting processors"),
                          CATEGORY = c("Production activities","Region","Processor size"),
-                         STAT =  c("Mean per processor","Mean per processor/metric ton of groundfish products produced"="Mean per processor/metric ton produced",'Mean per processor/dollar of revenue',
-                                   "Median per processor", "Median per processor/metric ton of groundfish products produced"="Median per processor/metric ton produced",'Median per processor/dollar of revenue',
-                                   "Industry-wide total","Industry-wide average/metric ton of groundfish products produced"="Industry-wide average/metric ton produced",'Industry-wide average/dollar of revenue')
+                         STAT =  c("Mean per processor","Mean per processor/metric ton of groundfish products produced"="Mean per processor/metric ton produced",
+                                   'Mean per processor/dollar of revenue',
+                                   "Median per processor", "Median per processor/metric ton of groundfish products produced"="Median per processor/metric ton produced",
+                                   'Median per processor/dollar of revenue',
+                                   "Industry-wide total","Industry-wide average/metric ton of groundfish products produced"="Industry-wide average/metric ton produced",
+                                   'Industry-wide average/dollar of revenue')
                     ))
   } else if(input$Sect_sel=='M') {
     datVars <- with(dat, 
@@ -99,43 +102,39 @@ DatSubTable <- reactive({
                                                           'Crew','Fuel','Observers','Other variable costs',
                                                           'All fixed costs','Fishing gear','On-board equipment','Other fixed costs'))
                          } else if(input$Sect_sel=="M"){
-                                                  factor(datSub$SHORTDESCR, levels=c("All variable costs","Fish purchases","Fuel","Non-processing crew","Observers","Processing crew","Other variable costs",
-                                                                                     "All fixed costs","Fishing gear","On-board equipment","Processing equipment",'Other fixed costs'))
+                                                  factor(datSub$SHORTDESCR, levels=c("All variable costs","Fish purchases","Fuel","Non-processing crew","Observers",
+                                                                                     "Processing crew","Other variable costs","All fixed costs",
+                                                                                     "Fishing gear","On-board equipment","Processing equipment",'Other fixed costs'))
                          } else if(input$Sect_sel=='CP'){ 
-                                                  factor(datSub$SHORTDESCR, levels=c("All variable costs",'Cost recovery fees', "Fish purchases","Fuel","Non-processing crew","Observers","Processing crew","Other variable costs",
-                                                              "All fixed costs","Fishing gear","On-board equipment","Processing equipment",'Other fixed costs'))
+                                                  factor(datSub$SHORTDESCR, levels=c("All variable costs",'Cost recovery fees', "Fish purchases","Fuel","Non-processing crew",
+                                                                                     "Observers","Processing crew","Other variable costs","All fixed costs",
+                                                                                     "Fishing gear","On-board equipment","Processing equipment",'Other fixed costs'))
                          } else {
-                                                  factor(datSub$SHORTDESCR, levels=c("All variable costs",'Fish purchases','Freight','Labor','Monitoring','Off-site freezing & storage','Packing materials','Utilities','Other variable costs',
+                                                  factor(datSub$SHORTDESCR, levels=c("All variable costs",'Fish purchases','Freight','Labor','Monitoring',
+                                                                                     'Off-site freezing & storage','Packing materials','Utilities','Other variable costs',
                                                                                      "All fixed costs",'Buildings','Equipment','Other fixed costs'))
                                                   }
 
   if(input$Sect_sel=="CV"){
-    datSub <- with(datSub, datSub[which(YEAR %in% input$YearSelect #&  
-                                        #FISHAK == input$FishAkSelect &
-                                        #whitingv == input$FishWhitingSelect
-                                        ),])
-  #datSub$FISHAK <- ifelse(datSub$AK_FLAG==0, datSub$FISHAK, datSub$repFISHAK)
-  #datSub$whitingv <- ifelse(datSub$AK_FLAG==0, as.character(datSub$whitingv), datSub$repwhitingv)
-  datSub <- datSub[,-c(#which(colnames(datSub)=="repFISHAK"), which(colnames(datSub)=="repwhitingv"),
-                        which(colnames(dat)=="AK_FLAG"))]
-  } else if(input$Sect_sel=="FR") {
-    datSub <- subset(datSub, whitingv == input$FishWhitingSelect & #ACS == input$ProductionSelect &
-                             YEAR %in% input$YearSelect2) 
-      } else{
-    datSub <- subset(datSub, YEAR %in% input$YearSelect2 ) 
-      }
-  if(input$StatSelect %in% c('Mean per vessel/dollar of revenue','Median per vessel/dollar of revenue','Fleet-wide average/dollar of revenue','Mean per processor/dollar of revenue',
-                             'Median per processor/dollar of revenue','Industry-wide average/dollar of revenue')){
-  datSub$VALUE <- round(as.numeric(datSub$VALUE),3)
-  datSub$VARIANCE <- round(as.numeric(datSub$VARIANCE),3)
-  datSub$q25 <- round(as.numeric(as.character(datSub$q25)),3)
-  datSub$q75 <- round(as.numeric(as.character(datSub$q75)),3)
+      datSub <- with(datSub, datSub[which(YEAR %in% input$YearSelect),])
+      datSub <- datSub[,-c(which(colnames(dat)=="AK_FLAG"))]
+   } else if(input$Sect_sel=="FR") {
+      datSub <- subset(datSub, whitingv == input$FishWhitingSelect & YEAR %in% input$YearSelect2) 
+   } else{
+      datSub <- subset(datSub, YEAR %in% input$YearSelect2 ) 
+   }
+    
+  if(input$StatSelect %in% c('Mean per vessel/dollar of revenue','Median per vessel/dollar of revenue','Fleet-wide average/dollar of revenue',
+                             'Mean per processor/dollar of revenue','Median per processor/dollar of revenue','Industry-wide average/dollar of revenue')){
+    datSub$VALUE <- round(as.numeric(datSub$VALUE),3)
+    datSub$VARIANCE <- round(as.numeric(datSub$VARIANCE),3)
+    datSub$q25 <- round(as.numeric(as.character(datSub$q25)),3)
+    datSub$q75 <- round(as.numeric(as.character(datSub$q75)),3)
   } else{
     datSub$VALUE <- round(as.numeric(datSub$VALUE),3)
     datSub$VARIANCE <- round(as.numeric(datSub$VARIANCE),3)
     datSub$q25 <- round(as.numeric(as.character(datSub$q25)),3)
     datSub$q75 <- round(as.numeric(as.character(datSub$q75)),3)
-    
   }
 
   if(input$Sect_sel=='CV' & input$CategorySelect != "Fisheries" || input$Sect_sel=='FR' & input$CategorySelect != "Production activities") {
@@ -156,18 +155,20 @@ DatSubTable <- reactive({
   if(input$Sect_sel=="CV"){
   #datSub$FISHAK <- ifelse(datSub$FISHAK=="TRUE", "Vessels included", "Vessels not included")
   #datSub$whitingv <- ifelse(datSub$whitingv=="TRUE", "Vessels included", "Vessels not included") 
-  datSub <- datSub[,c(which(colnames(datSub)=="YEAR"),which(colnames(datSub)=="VARIABLE"),which(colnames(datSub)=="CATEGORY"),which(colnames(datSub)=="CS"),which(colnames(datSub)=="STAT"),
-                      which(colnames(datSub)=="SHORTDESCR"),#which(colnames(datSub)=="FISHAK"),
+  datSub <- datSub[,c(which(colnames(datSub)=="YEAR"),which(colnames(datSub)=="VARIABLE"),which(colnames(datSub)=="CATEGORY"),which(colnames(datSub)=="CS"),
+                      which(colnames(datSub)=="STAT"), which(colnames(datSub)=="SHORTDESCR"),
+                     #which(colnames(datSub)=="FISHAK"),
                       which(colnames(datSub)=="whitingv"),which(colnames(datSub)=="N"),which(colnames(datSub)=="VALUE"),which(colnames(datSub)=="VARIANCE"))]
   } else if(input$Sect_sel=='FR'){
     datSub <- datSub[,c(which(colnames(datSub)=="YEAR"),#which(colnames(datSub)=="ACS"),
                         which(colnames(datSub)=="VARIABLE"),which(colnames(datSub)=="CATEGORY"),which(colnames(datSub)=="CS"),which(colnames(datSub)=="STAT"),
-                        which(colnames(datSub)=="SHORTDESCR"),which(colnames(datSub)=="whitingv"),which(colnames(datSub)=="N"),which(colnames(datSub)=="VALUE"),which(colnames(datSub)=="VARIANCE"))]
+                        which(colnames(datSub)=="SHORTDESCR"),which(colnames(datSub)=="whitingv"),which(colnames(datSub)=="N"),which(colnames(datSub)=="VALUE"),
+                        which(colnames(datSub)=="VARIANCE"))]
   } 
   else {
     datSub <- datSub[,c(which(colnames(datSub)=="YEAR"),which(colnames(datSub)=="VARIABLE"),which(colnames(datSub)=="CATEGORY"),#which(colnames(datSub)=="CS"),
-                        which(colnames(datSub)=="STAT"),
-                        which(colnames(datSub)=="SHORTDESCR"),which(colnames(datSub)=="whitingv"),which(colnames(datSub)=="N"),which(colnames(datSub)=="VALUE"),which(colnames(datSub)=="VARIANCE"))]
+                        which(colnames(datSub)=="STAT"),which(colnames(datSub)=="SHORTDESCR"),which(colnames(datSub)=="whitingv"),
+                        which(colnames(datSub)=="N"),which(colnames(datSub)=="VALUE"),which(colnames(datSub)=="VARIANCE"))]
   }
   
   
@@ -196,24 +197,30 @@ DatSub <- reactive({
       
       
       if(input$Sect_sel=="CV"){
-        if(input$PlotSelect=='Stacked bar'& input$ShortdescrSelect[2] %in% c('Buyback fees','Buildings','Cost recovery fees','Crew','Equipment',"Fish purchases",'Fishing gear','Freight','Fuel', 'Captain','Labor','Monitoring',"Non-processing crew",'Observers','On-board equipment','Other fixed costs','Other variable costs','Packing materials','Utilities',
-                                                                        'Off-site freezing & storage',"Processing crew", "Processing equipment")|
-           input$PlotSelect=='Stacked bar'&input$ShortdescrSelect[3] %in% c('Buyback fees','Buildings','Cost recovery fees','Crew','Equipment',"Fish purchases",'Fishing gear','Freight','Fuel', 'Captain','Labor','Monitoring',"Non-processing crew",'Observers','On-board equipment','Other fixed costs','Other variable costs','Packing materials','Utilities',
-                                                                            'Off-site freezing & storage',"Processing crew", "Processing equipment")#'Buildings','Cost recovery fees','Crew','Equipment',"Fish purchases",'Fishing gear','Freight','Fuel', 
-                                                                       # )
+        if(input$PlotSelect=='Stacked bar'& input$ShortdescrSelect[2] %in% c('Buyback fees','Buildings','Cost recovery fees','Crew','Equipment',"Fish purchases",'Fishing gear',
+                                                                             'Freight','Fuel', 'Captain','Labor','Monitoring',"Non-processing crew",'Observers',
+                                                                             'On-board equipment','Other fixed costs','Other variable costs','Packing materials','Utilities',
+                                                                             'Off-site freezing & storage',"Processing crew", "Processing equipment")|
+           input$PlotSelect=='Stacked bar'&input$ShortdescrSelect[3] %in% c('Buyback fees','Buildings','Cost recovery fees','Crew','Equipment',"Fish purchases",'Fishing gear',
+                                                                            'Freight','Fuel', 'Captain','Labor','Monitoring',"Non-processing crew",'Observers',
+                                                                            'On-board equipment','Other fixed costs','Other variable costs','Packing materials','Utilities',
+                                                                            'Off-site freezing & storage',"Processing crew", "Processing equipment") 
         ){
-          datSub <- subset(datSub,  YEAR %in% input$YearSelect & !SHORTDESCR %in% c('All variable costs','All fixed costs'))                                                                 
+            datSub <- subset(datSub,  YEAR %in% input$YearSelect & !SHORTDESCR %in% c('All variable costs','All fixed costs'))                
         } else{
-          datSub <- subset(datSub,  YEAR %in% input$YearSelect)
-      }
+            datSub <- subset(datSub,  YEAR %in% input$YearSelect)
+        }
                                   #FISHAK == input$FishAkSelect #&
                                   #whitingv == input$FishWhitingSelect
-      } else if(input$Sect_sel=="FR") {
-        if(input$PlotSelect=='Stacked bar'& input$ShortdescrSelect[2] %in% c('Buyback fees','Buildings','Cost recovery fees','Crew','Equipment',"Fish purchases",'Fishing gear','Freight','Fuel', 'Captain','Labor','Monitoring',"Non-processing crew",'Observers','On-board equipment','Other fixed costs','Other variable costs','Packing materials','Utilities',
+        } else if(input$Sect_sel=="FR") {
+        if(input$PlotSelect=='Stacked bar'& input$ShortdescrSelect[2] %in% c('Buyback fees','Buildings','Cost recovery fees','Crew','Equipment',"Fish purchases",
+                                                                             'Fishing gear','Freight','Fuel', 'Captain','Labor','Monitoring',"Non-processing crew",'Observers',
+                                                                             'On-board equipment','Other fixed costs','Other variable costs','Packing materials','Utilities',
                                                                              'Off-site freezing & storage',"Processing crew", "Processing equipment")|
-           input$PlotSelect=='Stacked bar'&input$ShortdescrSelect[3] %in% c('Buyback fees','Buildings','Cost recovery fees','Crew','Equipment',"Fish purchases",'Fishing gear','Freight','Fuel', 'Captain','Labor','Monitoring',"Non-processing crew",'Observers','On-board equipment','Other fixed costs','Other variable costs','Packing materials','Utilities',
-                                                                            'Off-site freezing & storage',"Processing crew", "Processing equipment")#'Buildings','Cost recovery fees','Crew','Equipment',"Fish purchases",'Fishing gear','Freight','Fuel', 
-           # )
+           input$PlotSelect=='Stacked bar'&input$ShortdescrSelect[3] %in% c('Buyback fees','Buildings','Cost recovery fees','Crew','Equipment',"Fish purchases",
+                                                                            'Fishing gear','Freight','Fuel', 'Captain','Labor','Monitoring',"Non-processing crew",'Observers',
+                                                                            'On-board equipment','Other fixed costs','Other variable costs','Packing materials','Utilities',
+                                                                            'Off-site freezing & storage',"Processing crew", "Processing equipment")
         ){
         datSub <- subset(datSub, whitingv == input$FishWhitingSelect & #ACS == input$ProductionSelect &
                            YEAR %in% input$YearSelect2& !SHORTDESCR %in% c('All variable costs','All fixed costs'))
@@ -223,11 +230,14 @@ DatSub <- reactive({
         }
       } else {
         
-        if(input$PlotSelect=='Stacked bar'& input$ShortdescrSelect[2] %in% c('Buyback fees','Buildings','Cost recovery fees','Crew','Equipment',"Fish purchases",'Fishing gear','Freight','Fuel', 'Captain','Labor','Monitoring',"Non-processing crew",'Observers','On-board equipment','Other fixed costs','Other variable costs','Packing materials','Utilities',
+        if(input$PlotSelect=='Stacked bar'& input$ShortdescrSelect[2] %in% c('Buyback fees','Buildings','Cost recovery fees','Crew','Equipment',"Fish purchases",
+                                                                             'Fishing gear','Freight','Fuel', 'Captain','Labor','Monitoring',"Non-processing crew",'Observers',
+                                                                             'On-board equipment','Other fixed costs','Other variable costs','Packing materials','Utilities',
                                                                              'Off-site freezing & storage',"Processing crew", "Processing equipment")|
-           input$PlotSelect=='Stacked bar'&input$ShortdescrSelect[3] %in% c('Buyback fees','Buildings','Cost recovery fees','Crew','Equipment',"Fish purchases",'Fishing gear','Freight','Fuel', 'Captain','Labor','Monitoring',"Non-processing crew",'Observers','On-board equipment','Other fixed costs','Other variable costs','Packing materials','Utilities',
-                                                                            'Off-site freezing & storage',"Processing crew", "Processing equipment")#'Buildings','Cost recovery fees','Crew','Equipment',"Fish purchases",'Fishing gear','Freight','Fuel', 
-           # )
+           input$PlotSelect=='Stacked bar'&input$ShortdescrSelect[3] %in% c('Buyback fees','Buildings','Cost recovery fees','Crew','Equipment',"Fish purchases",
+                                                                            'Fishing gear','Freight','Fuel', 'Captain','Labor','Monitoring',"Non-processing crew",'Observers',
+                                                                            'On-board equipment','Other fixed costs','Other variable costs','Packing materials','Utilities',
+                                                                            'Off-site freezing & storage',"Processing crew", "Processing equipment")
         ){
         datSub <- subset(datSub, YEAR %in% input$YearSelect2 & !SHORTDESCR %in% c('All variable costs','All fixed costs'))  
         } else {
@@ -249,9 +259,10 @@ DatSub <- reactive({
       datSub$VARIABLE <- factor(datSub$VARIABLE, levels = factorOrder$state)
     } else if(input$CategorySelect == "Fisheries"){
       if(input$Sect_sel=="CV"){
-      datSub$VARIABLE <- factor(datSub$VARIABLE, levels = c("All fisheries","All catch share fisheries","All non-catch share fisheries","Pacific whiting","At-sea Pacific whiting",                      
-                                                            "Shoreside Pacific whiting","Groundfish with trawl gear","DTS trawl with trawl endorsement","Non-whiting, non-DTS trawl with trawl endorsement",
-                                                            "Non-whiting midwater trawl","Groundfish fixed gear with trawl endorsement","Groundfish fixed gear with fixed gear endorsement",
+      datSub$VARIABLE <- factor(datSub$VARIABLE, levels = c("All fisheries","All catch share fisheries","All non-catch share fisheries","Pacific whiting","At-sea Pacific whiting",
+                                                            "Shoreside Pacific whiting","Groundfish with trawl gear","DTS trawl with trawl endorsement",
+                                                            "Non-whiting, non-DTS trawl with trawl endorsement","Non-whiting midwater trawl",
+                                                            "Groundfish fixed gear with trawl endorsement","Groundfish fixed gear with fixed gear endorsement",
                                                             "Crab","Shrimp"))
       }else{
         datSub$VARIABLE <- factor(datSub$VARIABLE)
@@ -266,11 +277,11 @@ DatSub <- reactive({
       factor(datSub$SHORTDESCR, levels=c("All variable costs","Fish purchases","Fuel","Non-processing crew","Observers","Processing crew","Other variable costs",
                                          "All fixed costs","Fishing gear","On-board equipment","Processing equipment",'Other fixed costs'))
     } else if(input$Sect_sel=='CP'){ 
-      factor(datSub$SHORTDESCR, levels=c("All variable costs",'Cost recovery fees', "Fish purchases","Fuel","Non-processing crew","Observers","Processing crew","Other variable costs",
-                                         "All fixed costs","Fishing gear","On-board equipment","Processing equipment",'Other fixed costs'))
+      factor(datSub$SHORTDESCR, levels=c("All variable costs",'Cost recovery fees', "Fish purchases","Fuel","Non-processing crew","Observers","Processing crew",
+                                         "Other variable costs","All fixed costs","Fishing gear","On-board equipment","Processing equipment",'Other fixed costs'))
     } else {
-      factor(datSub$SHORTDESCR, levels=c("All variable costs",'Fish purchases','Freight','Labor','Monitoring','Off-site freezing & storage','Packing materials','Utilities','Other variable costs',
-                                         "All fixed costs",'Buildings','Equipment','Other fixed costs'))
+      factor(datSub$SHORTDESCR, levels=c("All variable costs",'Fish purchases','Freight','Labor','Monitoring','Off-site freezing & storage','Packing materials','Utilities',
+                                         'Other variable costs',"All fixed costs",'Buildings','Equipment','Other fixed costs'))
     }
    
 

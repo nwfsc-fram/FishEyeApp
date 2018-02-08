@@ -9,6 +9,7 @@ wellPanelSub <- function(...){div(class = "well-sub", ...)}
 # calls .css selector for radioButton header
 wellPanelHeading <- function(...){div(class = "well-radioHeading", ...)} 
 
+  
 function(request) {
 fluidPage(title = "FISHEyE",
           useShinyjs(),
@@ -22,28 +23,18 @@ fluidPage(title = "FISHEyE",
             tags$style(HTML(".ckbox {margin-top: 0px; margin-bottom: -15px}")),
             tags$style(HTML(".statbox {margin-top: -30px; margin-bottom: -15px}")),
           
-          tags$style(HTML(".ckboxCV .checkbox:nth-child(2) label{color:grey;} .checkbox.input:nth-child(2) {
-                                border: 0px;  width: 0%; height:0em;}#,
-                           .ckboxCV .checkbox:nth-child(6) label{color:grey;} .checkbox.input:nth-child(6) {
-                                border: 0px;  width: 0%; height:0em;}#,
-                           .ckboxCV .checkbox:nth-child(3) label{color:grey;} .checkbox.input:nth-child(3) {
-                                border: 0px;  width: 0%; height:0em;}#,
-                           .ckboxCV2 .checkbox:nth-child(1) label{color:grey;} .checkbox.input:nth-child(1) {
-                                border: 0px;  width: 0%; height:0em;}#,
-                           .ckboxCV2 .checkbox:nth-child(7) label{color:grey;} .checkbox.input:nth-child(7) {
-                                border: 0px;  width: 0%; height:0em;}#,
-                           .ckboxCPFR .checkbox:nth-child(1) label{color:grey;} .checkbox.input:nth-child(1) {
-                                border: 0px;  width: 0%; height:0em;}#,
-                           .ckboxCPFR .checkbox:nth-child(5) label{color:grey;} .checkbox.input:nth-child(5) {
-                                border: 0px;  width: 0%; height:0em;}#,
-                           .ckboxCP .checkbox:nth-child(2) label{color:grey;} .checkbox.input:nth-child(2) {
-                                border: 0px;  width: 0%; height:0em;}#,
-                           .ckboxFR .checkbox:nth-child(4) label{color:grey;} .checkbox.input:nth-child(4) {
-                                border: 0px; width: 0%; height:0em;}#,
-                           .ckboxSOC .checkbox:nth-child(2) label{color:grey;} .checkbox.input:nth-child(2) {
-                                border: 0px; width: 0%; height:0em;}#,
-                           .StatGrey .radio:nth-child(-n+2) label{color:grey;} .radio.input:nth-child(-n+2) {
-                                border: 0px; width: 0%; height:0em;}#")),
+          tags$style(HTML(".ckboxCV .checkbox:nth-child(2) label{color:grey;} .checkbox.input:nth-child(2),
+                           .ckboxCV .checkbox:nth-child(6) label{color:grey;} .checkbox.input:nth-child(6),
+                           .ckboxCV .checkbox:nth-child(3) label{color:grey;} .checkbox.input:nth-child(3),
+                           .ckboxCV2 .checkbox:nth-child(1) label{color:grey;} .checkbox.input:nth-child(1),
+                           .ckboxCV2 .checkbox:nth-child(7) label{color:grey;} .checkbox.input:nth-child(7),
+                           .ckboxCPFR .checkbox:nth-child(1) label{color:grey;} .checkbox.input:nth-child(1),
+                           .ckboxCPFR .checkbox:nth-child(5) label{color:grey;} .checkbox.input:nth-child(5),
+                           .ckboxCP .checkbox:nth-child(2) label{color:grey;} .checkbox.input:nth-child(2),
+                           .ckboxFR .checkbox:nth-child(4) label{color:grey;} .checkbox.input:nth-child(4),
+                           .ckboxSOC .checkbox:nth-child(2) label{color:grey;} .checkbox.input:nth-child(2),
+                           .StatGrey .radio:nth-child(-n+2) label{color:grey;} .radio.input:nth-child(-n+2) {border: 0px; width: 0%; height:0em;}#"
+                          )),
        
            tags$style(HTML(".StatGrey  .radio:first-child  input[type=radio],
                                             .StatGrey  .radio:nth-child(2) input[type=radio],
@@ -119,30 +110,18 @@ fluidPage(title = "FISHEyE",
 #            tags$style(HTML(".sectselect{font-size:28px; line-height:28px;}")),
             tags$style(HTML(".actbutton {margin-bottom:5px}")),
             tags$style(HTML(".rbutton {margin-top:15px}")),
-            tags$style(HTML('#iof{width:20px; height:19px; margin:0px;border:none; padding:0px;border-radius:25px;background-color:transparent;font-size:12px; 
-                              color:RoyalBlue}')),
-            tags$style(HTML('#isummed{width:20px; height:19px; margin:0px;border:none; padding:0px;border-radius:25px;background-color:transparent;font-size:12px; 
-                              color:RoyalBlue}')),
-            tags$style(HTML('#ifg{width:20px; height:19px; margin:0px;border:none; padding:0px;border-radius:25px;background-color:transparent;font-size:12px; 
-                              color:RoyalBlue}')),
-            tags$style(HTML('#istat{width:20px; height:19px; margin:0px;border:none; padding:0px;border-radius:25px;background-color:transparent;font-size:12px; 
-                              color:RoyalBlue}')),
-            tags$style(HTML('#ipo{width:20px; height:19px; margin:0px;border:none; padding:0px;border-radius:25px;background-color:transparent;font-size:12px; 
-                              color:RoyalBlue}
-                             #ivs{width:20px; height:19px; margin:0px;border:none; padding:0px;border-radius:25px;background-color:transparent;font-size:12px; 
-                              color:RoyalBlue}
-                             #iem{width:20px; height:19px; margin:0px;border:none; padding:0px;border-radius:25px;background-color:transparent;font-size:12px; 
-                              color:RoyalBlue}
-                             #ivariance{width:20px; height:19px; margin:0px;border:none; padding:0px;border-radius:25px;background-color:transparent;font-size:12px; 
-                              color:RoyalBlue}
-                             #FRr{width:20px; height:19px; margin:0px;border:none; padding:0px;border-radius:25px;background-color:transparent;font-size:12px; 
-                              color:RoyalBlue}
-                             #FRs{width:20px; height:19px; margin:0px;border:none; padding:0px;border-radius:25px;background-color:transparent;font-size:12px; 
-                              color:RoyalBlue}
-                             #FRi{width:20px; height:19px; margin:0px;border:none; padding:0px;border-radius:25px;background-color:transparent;font-size:12px; 
-                              color:RoyalBlue}
-                             #icompare{width:20px; height:19px; margin:0px;border:none; padding:0px;border-radius:25px;background-color:transparent;font-size:12px; 
-                              color:RoyalBlue}
+            tags$style(HTML('#iof,
+                             #isummed,
+                             #ifg,
+                             #istat,
+                             #ipo,
+                             #ivs,
+                             #iem,
+                             #ivariance,
+                             #FRr,
+                             #FRs,
+                             #FRi,
+                             #icompare,
                              #iwhiting{width:20px; height:19px; margin:0px;border:none; padding:0px;border-radius:25px;background-color:transparent;font-size:12px; 
                               color:RoyalBlue}'))),
 #tags$style(HTML('#iVesSum{width:20px; height:19px; margin:0px;border:none; padding:0px;border-radius:25px;background-color:transparent;font-size:12px; color:RoyalBlue}
@@ -163,8 +142,12 @@ fluidPage(title = "FISHEyE",
             ),
           
          # source("www/shiny_framebuster/framebuster.R")$value,
+## example R framebusting code
           appFrameHeaderScrolling(),
-          ## example R framebusting code
+### #-- Government Shutdown banner --- ###
+#tags$div(class='header', #tags$syle(HTML('background-color:white;color:blue;width:auto; text-align:left;float:center;margin:0 auto; padding: 0.3em 0 0.5em;font-size:large">
+#  tags$p("The Federal Government is closed. The site will not be updated; however NOAA websites and social media channels necessary to protect lives and property will be maintained. See", tags$a(href="https://www.weather.gov", "www.weather.gov."), "Learn more at", tags$a(href="https://noaa.gov", "NOAA.gov."))),
+### #-- Government Shutdown banner --- ###
           fluidRow(div(style = "padding-bottom: 5px;margin-bottom:0"),
                    tags$h2(style = "margin-left: 15px", 
                      HTML("<div><p style='font-size:120%'><strong><a style='color:white; background-color:#1a5d99;  font-family:Cambria; border-radius:25px; padding:5px' 
@@ -179,7 +162,7 @@ fluidPage(title = "FISHEyE",
          tabPanel("Explore the data", value="results",    
             sidebarLayout(
               mainPanel(         
-                tabsetPanel(id = "tabs", 
+                tabsetPanel(id = "tabs", selected='Panel1',
                             tabPanel(title=HTML("Summary Plots <br> and Data"), value="Panel1", padding='10px',
                                    fluidRow(column(12,'',
                                             fluidRow(column(12,
@@ -196,42 +179,42 @@ fluidPage(title = "FISHEyE",
                             conditionalPanel(condition="input.VariableSelect!=''",  
                               fluidRow(column(2, uiOutput("DataButton")),  
                                        column(12, dataTableOutput("TableMain"), 
-                                             plotOutput("PlotMain", height="auto",width="auto", hover=hoverOpts(id='plot_hover'),click=clickOpts(id='plot_click')
-                                                        ),
-                                             conditionalPanel(condition="input.Ind_sel=='Economic'",uiOutput('hover_info'),uiOutput('click_info'))
+                                                  plotOutput("PlotMain", height="auto",width="auto"#, hover=hoverOpts(id='plot_hover'),click=clickOpts(id='plot_click')
+                                                        )
+                                            # ,conditionalPanel(condition="input.Ind_sel=='Economic'",uiOutput('hover_info'),uiOutput('click_info'))
                             ))))
 ###--------------Case Study -------------------------------####
-                ,tabPanel(title='Case studies', value='Panel2', padding='10px',
-                         tags$h3('How does profitability compare between vessels with trawl gear and fixed gear in the catch share program?'),
-                         fluidRow(column(12, htmlOutput('CaseStudyp1')),
-                                  column(12,  actionButton("hideshow1", "Show/Hide VCNR plot", style='color:#fff; background-color:#5bc0de;border-color#:#46b8da')),
-                                  column(12, # conditionalPanel(condition="input.hideshow1 % 2 !=0 & values$shouldShow != TRUE", 
-                                         hidden(plotOutput("PlotMain2"))), 
-                                 
-                                   column(12, htmlOutput('CaseStudyp6')),
-                                 column(12,  actionButton("hideshow6", "Show/Hide Days at sea and VCNR/day plots", style='color:#fff; background-color:#5bc0de;border-color:#46b8da')),
-                                 column(12,  hidden(htmlOutput("CaseStudyFig5"))),
-                                 
-                                 column(12,  htmlOutput('CaseStudyp2')),       
-                                  column(12,  actionButton("hideshow2", "Show/Hide Thirds plot", style='color:#fff; background-color:#5bc0de;border-color:#46b8da')),
-                                  column(12,  #conditionalPanel(condition="input.hideshow2 % 2 !=0",  
-                                         hidden(htmlOutput('CaseStudyFig2'))),#tags$img(src="TrawlThirds.png", height=350))),
-                                  
-                                  #column(12,  actionButton("hideshow3", "Show/Hide TCNR plot for catcher vessels with trawl permit", style='color:#fff; 
-                                  #background-color:#5bc0de;border-color:#46b8da')),
-                                  #column(12,  hidden(plotOutput("PlotMain3"))),#htmlOutput('CaseStudyFig3'))),
-                                  column(12,  htmlOutput('CaseStudyp4')),
-                                  #column(12,  actionButton("hideshow4", "Show/Hide Thirds plot for Groundfish fixed gear with trawl endorsement fishery", style='color:#fff; 
-                                  #background-color:#5bc0de;border-color:#46b8da')),
-                                  column(12,  hidden(htmlOutput('CaseStudyFig3'))),
-                                 
-                                  column(12,  htmlOutput('CaseStudyp5')),
-                                  column(12,  actionButton("hideshow5", "Show/Hide Costs plot", style='color:#fff; background-color:#5bc0de;border-color:#46b8da')),
-                                 column(12,  hidden(htmlOutput("CaseStudyFig4")))
-                                 
-                                 
-                                  )
-)
+#                ,tabPanel(title='Case studies', value='Panel2', padding='10px',
+#                         tags$h3('How does profitability compare between vessels with trawl gear and fixed gear in the catch share program?'),
+#                         fluidRow(column(12, htmlOutput('CaseStudyp1')),
+#                                  column(12,  actionButton("hideshow1", "Show/Hide VCNR plot", style='color:#fff; background-color:#5bc0de;border-color#:#46b8da')),
+#                                  column(12, # conditionalPanel(condition="input.hideshow1 % 2 !=0 & values$shouldShow != TRUE", 
+#                                         hidden(plotOutput("PlotMain2"))), 
+#                                 
+#                                   column(12, htmlOutput('CaseStudyp6')),
+#                                 column(12,  actionButton("hideshow6", "Show/Hide Days at sea and VCNR/day plots", style='color:#fff; background-color:#5bc0de;border-color:#46b8da')),
+#                                 column(12,  hidden(htmlOutput("CaseStudyFig5"))),
+#                                 
+#                                 column(12,  htmlOutput('CaseStudyp2')),       
+#                                  column(12,  actionButton("hideshow2", "Show/Hide Thirds plot", style='color:#fff; background-color:#5bc0de;border-color:#46b8da')),
+#                                  column(12,  #conditionalPanel(condition="input.hideshow2 % 2 !=0",  
+#                                         hidden(htmlOutput('CaseStudyFig2'))),#tags$img(src="TrawlThirds.png", height=350))),
+#                                  
+#                                  #column(12,  actionButton("hideshow3", "Show/Hide TCNR plot for catcher vessels with trawl permit", style='color:#fff; 
+#                                  #background-color:#5bc0de;border-color:#46b8da')),
+#                                  #column(12,  hidden(plotOutput("PlotMain3"))),#htmlOutput('CaseStudyFig3'))),
+#                                  column(12,  htmlOutput('CaseStudyp4')),
+#                                  #column(12,  actionButton("hideshow4", "Show/Hide Thirds plot for Groundfish fixed gear with trawl endorsement fishery", style='color:#fff; 
+#                                  #background-color:#5bc0de;border-color:#46b8da')),
+#                                  column(12,  hidden(htmlOutput('CaseStudyFig3'))),
+#                                 
+#                                  column(12,  htmlOutput('CaseStudyp5')),
+#                                  column(12,  actionButton("hideshow5", "Show/Hide Costs plot", style='color:#fff; background-color:#5bc0de;border-color:#46b8da')),
+#                                 column(12,  hidden(htmlOutput("CaseStudyFig4")))
+#                                 
+#                                 
+#                                  )
+#)
 ###-----------End case study-------------------------------######
               )),
                             

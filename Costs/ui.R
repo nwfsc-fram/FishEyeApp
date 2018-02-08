@@ -16,7 +16,7 @@ wellPanelSub <- function(...){div(class = "well-sub", ...)}
 # calls .css selector for radioButton header
 wellPanelHeading <- function(...){div(class = "well-radioHeading", ...)} 
 
-#function(request){
+function(request){
   fluidPage(
 title = "FISHEyE",
           #stylize the appearance of different aspects of the website
@@ -63,14 +63,15 @@ tags$head(tags$body(includeHTML("google-analytics.noaa.js"))),
           #Stylize variable select check box
                       
             #stylize information icons
-            tags$style(HTML('#iof {width:20px; height:19px; margin:0px;border:none; padding:0px;border-radius:25px;background-color:transparent;font-size:12px; color:RoyalBlue}
-                             #isummed  {width:20px; height:19px; margin:0px;border:none; padding:0px;border-radius:25px;background-color:transparent;font-size:12px; color:RoyalBlue}
-                             #ifg {width:20px; height:19px; margin:0px;border:none; padding:0px;border-radius:25px;background-color:transparent;font-size:12px; color:RoyalBlue}
-                             #istat      {width:20px; height:19px; margin:0px;border:none; padding:0px;border-radius:25px;background-color:transparent;font-size:12px; color:RoyalBlue}
-                             #ivs     {width:20px; height:19px; margin:0px;border:none; padding:0px;border-radius:25px;background-color:transparent;font-size:12px; color:RoyalBlue}
-                             #iem     {width:20px; height:19px; margin:0px;border:none; padding:0px;border-radius:25px;background-color:transparent;font-size:12px; color:RoyalBlue}
-                             #iprod   {width:20px; height:19px; margin:0px;border:none; padding:0px;border-radius:25px;background-color:transparent;font-size:12px; color:RoyalBlue}
-                            #iwhiting{width:20px; height:19px; margin:0px;border:none; padding:0px;border-radius:25px;background-color:transparent;font-size:12px; color:RoyalBlue}'))
+            tags$style(HTML('#iof,
+                             #isummed,
+                             #ifg,
+                             #istat,
+                             #ivs,
+                             #iem,
+                             #iprod,
+                            #iwhiting{width:20px; height:19px; margin:0px;border:none; padding:0px;border-radius:25px;background-color:
+                                      transparent;font-size:12px; color:RoyalBlue}'))
        ),#end tags head
           # stylize show data and show plots buttons
    
@@ -105,7 +106,7 @@ tags$head(tags$body(includeHTML("google-analytics.noaa.js"))),
                      tabPanel("Explore the data", value="results",    
                               sidebarLayout(
                                 mainPanel(         
-                                  tabsetPanel(id = "tabs",
+                                  tabsetPanel(id = "tabs",selected='Panel1',
                                     tabPanel(title=HTML("Summary Plots <br> and Data"), value="Panel1", padding='10px',
                                                        fluidRow(column(12,'',
                                                                        fluidRow(column(12,
@@ -212,25 +213,29 @@ tags$head(tags$body(includeHTML("google-analytics.noaa.js"))),
                                          source("external/explorer/explorerSourceFiles/definitions.R")$value
                                 )
                      ), # end right side column     
-                     tabPanel(HTML('<i class="fa fa-thumb-tack" style="margin-right:2ex;display:inline-block;vertical-align:bottom;float:left;white-space:nowrap"> Bulletin Board</i>'),
+                     tabPanel(HTML('<i class="fa fa-thumb-tack" style="margin-right:2ex;display:inline-block;vertical-align:bottom;float:left;white-space:nowrap"> 
+                                   Bulletin Board</i>'),
                               fluidRow(
                                 column(12, htmlOutput("BlogText")),
                                 column(5,  htmlOutput("BlogUpdates")),
                                 column(1),
                                 column(5,  htmlOutput("BlogResponses")))),
-                     tabPanel(HTML('<i class="fa fa-envelope-o fa-fw" style="margin-right:9ex;display:inline-block;vertical-align:bottom;float:left;white-space:nowrap"> Contact us</i>'),
+                     tabPanel(HTML('<i class="fa fa-envelope-o fa-fw" style="margin-right:9ex;display:inline-block;vertical-align:bottom;float:left;white-space:nowrap">
+                                   Contact us</i>'),
                               fluidRow(
                                 column(12, htmlOutput("Email")))
                      ),
-                     tabPanel(HTML('<i class="fa fa-folder-open-o fa-fw" style="margin-right:18ex;display:inline-block;vertical-align:bottom;float:left;white-space:nowrap"> FISHEyE Applications</i>'),
+                     tabPanel(HTML('<i class="fa fa-folder-open-o fa-fw" style="margin-right:18ex;display:inline-block;vertical-align:bottom;float:left;white-space:nowrap">
+                                   FISHEyE Applications</i>'),
                               fluidRow(
                                 column(12, htmlOutput("ApplicationsText"))
                               )),
                      
                      tabPanel(HTML('<a class="btn btn-warning", href="http://dataexplorer.northwestscience.fisheries.noaa.gov/fisheye/"
-                                   style="height:37px;border-radius:25px;margin: -24px -50px; float:top;position:absolute;right:-100px;font-familiy: Arial, Helvetica, sans-serif;font-size: 12pt; padding-top:7px;
+                                   style="height:37px;border-radius:25px;margin: -24px -50px; float:top;position:absolute;right:-100px;
+                                    font-familiy: Arial, Helvetica, sans-serif;font-size: 12pt; padding-top:7px;
                                    padding-bottom:10px"> FISHEyE Homepage</a>' ),style='width:1000px')
                             ), #end app level fluid row#, target="_blank"
           appFrameFooterScrolling()
                      ) # end fluid Page
-#}#end function request
+}#end function request

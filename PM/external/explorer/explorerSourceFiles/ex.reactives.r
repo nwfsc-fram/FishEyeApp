@@ -94,10 +94,7 @@ DatSubTable <- reactive({
       datSub <- subset(dat, YEAR %in% input$YearSelect)
     } 
    
-    if(input$Ind_sel=="Economic") {
-         datSub <- subset(datSub,  SHORTDESCR %in% input$ShortdescrSelect & STAT == input$StatSelect)
-    } 
-    else if(input$Ind_sel=="Demographic") {
+    if(input$Ind_sel=="Demographic") {
       if(input$LayoutSelect!="Metrics"){
         #        if(input$MetricSelect!="Number of vessels"&input$MetricSelect!="Seasonality"&input$MetricSelect!="Share of landings by state"&input$MetricSelect!="Gini coefficient"){
         #           if(input$LayoutSelect!="Metrics"){}
@@ -120,7 +117,9 @@ DatSubTable <- reactive({
           datSub <- subset(datSub,  METRIC %in% input$demSelect & SUMSTAT == input$AVE_MED2 & FISHAK!='TRUE')
         }
       }
-    } else if(input$Ind_sel=="Social and Regional")  {
+    } else if(input$Ind_sel=="Economic"){
+      datSub <- subset(datSub,  SHORTDESCR %in% input$ShortdescrSelect & STAT == input$StatSelect)
+    }else if(input$Ind_sel=="Social and Regional")  {
       if(input$LayoutSelect!="Metrics"){
         #        if(input$MetricSelect!="Number of vessels"&input$MetricSelect!="Seasonality"&input$MetricSelect!="Share of landings by state"&input$MetricSelect!="Gini coefficient"){
         if(input$socSelect!="Share of landings by state"&input$socSelect!="Seasonality"){
@@ -162,11 +161,21 @@ DatSubTable <- reactive({
      datSub$q75 <- round(as.numeric(as.character(datSub$q75)),2)
      datSub$N <- as.numeric(datSub$N)
 #     datSub$PCHANGE <- as.numeric(datSub$PCHANGE)
+ 
+#When to subset by CS (All fisheries, all CS fisheries, all non-CS fisheries)    
+     if(input$Sect_sel=="CV" &input$CategorySelect != "Fisheries"){
+       datSub <- subset(datSub, CS == input$inSelect)
+     }
+     if(input$Sect_sel=="FR"){
+       if(!input$Ind_sel=='Demographic') {
+         if(input$CategorySelect != "Fisheries") {
+           datSub <- subset(datSub, CS == input$inSelect)}
+       } else {
+         if (input$CategorySelect != "Fisheries"&&input$demSelect!="Proportion of revenue from catch share species"){
+           datSub <- subset(datSub, CS == input$inSelect)}
+       }}
      
-      if(input$Sect_sel=="CV" & input$CategorySelect != "Fisheries"|
-         input$Sect_sel=="FR" & input$CategorySelect != "Fisheries"&input$demSelect!="Proportion of revenue from catch share species") {
-        datSub <- subset(datSub, CS == input$inSelect)
-      }
+     
      if(input$Sect_sel=="FR"){
        datSub[datSub$METRIC!="Number of processors",'VALUE'] <- ifelse(datSub$N[datSub$METRIC!="Number of processors"]<3, NA, datSub$VALUE)
        datSub[datSub$METRIC!="Number of processors",'VARIANCE'] <- ifelse(datSub$N[datSub$METRIC!="Number of processors"]<3, NA, datSub$VARIANCE)
@@ -265,46 +274,62 @@ DatSubTable <- reactive({
            
        
 if(input$LayoutSelect!="Metrics"){   
-  if(input$Ind_sel=="Economic") {
-      datSub <- datSub[,c(which(colnames(datSub)=="YEAR"),which(colnames(datSub)=="VARIABLE"),which(colnames(datSub)=="CATEGORY"),which(colnames(datSub)=="CS"),which(colnames(datSub)=="STAT"),
-                        which(colnames(datSub)=="SHORTDESCR"),which(colnames(datSub)=="whitingv"),which(colnames(datSub)=="N"),which(colnames(datSub)=="VALUE"),which(colnames(datSub)=="VARIANCE"))]
-      }  else if(input$Ind_sel=="Demographic") {
-           if(input$demSelect[1]=="Exponential Shannon Index"|input$demSelect[1]=="Fishery participation"| input$Sect_sel=="CV"&input$demSelect[1]=="Proportion of revenue from CS fishery"
+   if(input$Ind_sel=="Demographic") {
+           if(input$demSelect[1]=="Exponential Shannon Index"|input$demSelect[1]=="Fishery participation"| 
+              input$Sect_sel=="CV"&input$demSelect[1]=="Proportion of revenue from CS fishery"
             ){
              if(input$Sect_sel!="FR"){
-             datSub <- datSub[,c(which(colnames(datSub)=="YEAR"),which(colnames(datSub)=="VARIABLE"),which(colnames(datSub)=="CATEGORY"),which(colnames(datSub)=="CS"),which(colnames(datSub)=="SUMSTAT"),
-                                 which(colnames(datSub)=="METRIC"),which(colnames(datSub)=="whitingv"),which(colnames(datSub)=="FISHAK"),which(colnames(datSub)=="N"),which(colnames(datSub)=="VALUE"),which(colnames(datSub)=="VARIANCE"))]
+             datSub <- datSub[,c(which(colnames(datSub)=="YEAR"),which(colnames(datSub)=="VARIABLE"),which(colnames(datSub)=="CATEGORY"),which(colnames(datSub)=="CS")
+                                 ,which(colnames(datSub)=="SUMSTAT"),
+                                 which(colnames(datSub)=="METRIC"),which(colnames(datSub)=="whitingv"),which(colnames(datSub)=="FISHAK"),which(colnames(datSub)=="N"),
+                                 which(colnames(datSub)=="VALUE"),which(colnames(datSub)=="VARIANCE"))]
              datSub$FISHAK <- ifelse(datSub$FISHAK=="TRUE","Included","Not included")
              } else {
-               datSub <- datSub[,c(which(colnames(datSub)=="YEAR"),which(colnames(datSub)=="VARIABLE"),which(colnames(datSub)=="CATEGORY"),which(colnames(datSub)=="CS"),which(colnames(datSub)=="SUMSTAT"),
-                                   which(colnames(datSub)=="METRIC"),which(colnames(datSub)=="whitingv"),which(colnames(datSub)=="N"),which(colnames(datSub)=="VALUE"),which(colnames(datSub)=="VARIANCE"))]
+               datSub <- datSub[,c(which(colnames(datSub)=="YEAR"),which(colnames(datSub)=="VARIABLE"),which(colnames(datSub)=="CATEGORY"),which(colnames(datSub)=="CS"),
+                                   which(colnames(datSub)=="SUMSTAT"),
+                                   which(colnames(datSub)=="METRIC"),which(colnames(datSub)=="whitingv"),which(colnames(datSub)=="N"),which(colnames(datSub)=="VALUE")
+                                   ,which(colnames(datSub)=="VARIANCE"))]
              }
              }
           else if(input$demSelect=="Number of vessels"|input$demSelect=="Number of processors"){
-             datSub <- datSub[,c(which(colnames(datSub)=="YEAR"),which(colnames(datSub)=="VARIABLE"),which(colnames(datSub)=="CATEGORY"),which(colnames(datSub)=="CS"),which(colnames(datSub)=="SUMSTAT"),
+             datSub <- datSub[,c(which(colnames(datSub)=="YEAR"),which(colnames(datSub)=="VARIABLE"),which(colnames(datSub)=="CATEGORY"),which(colnames(datSub)=="CS"),
+                                 which(colnames(datSub)=="SUMSTAT"),
                             which(colnames(datSub)=="METRIC"),which(colnames(datSub)=="whitingv"),which(colnames(datSub)=="N"))]
             }else {
-             datSub <- datSub[,c(which(colnames(datSub)=="YEAR"),which(colnames(datSub)=="VARIABLE"),which(colnames(datSub)=="CATEGORY"),which(colnames(datSub)=="CS"),which(colnames(datSub)=="SUMSTAT"),
-                                 which(colnames(datSub)=="METRIC"),which(colnames(datSub)=="whitingv"),which(colnames(datSub)=="N"),which(colnames(datSub)=="VALUE"),which(colnames(datSub)=="VARIANCE"))]
+             datSub <- datSub[,c(which(colnames(datSub)=="YEAR"),which(colnames(datSub)=="VARIABLE"),which(colnames(datSub)=="CATEGORY"),which(colnames(datSub)=="CS"),
+                                 which(colnames(datSub)=="SUMSTAT"),
+                                 which(colnames(datSub)=="METRIC"),which(colnames(datSub)=="whitingv"),which(colnames(datSub)=="N"),which(colnames(datSub)=="VALUE"),
+                                 which(colnames(datSub)=="VARIANCE"))]
            }}# End Demographic 
-      else if(input$Ind_sel=="Social and Regional") {
+      else if(input$Ind_sel=="Economic") {
+      datSub <- datSub[,c(which(colnames(datSub)=="YEAR"),which(colnames(datSub)=="VARIABLE"),which(colnames(datSub)=="CATEGORY"),which(colnames(datSub)=="CS"),
+                          which(colnames(datSub)=="STAT"),which(colnames(datSub)=="SHORTDESCR"),which(colnames(datSub)=="whitingv"),which(colnames(datSub)=="N"),
+                        which(colnames(datSub)=="VALUE"),which(colnames(datSub)=="VARIANCE"))]
+      } else if(input$Ind_sel=="Social and Regional") {
         if(input$socSelect=="Share of landings by state"){
-          datSub <- datSub[,c(which(colnames(datSub)=="YEAR"),which(colnames(datSub)=="VARIABLE"),which(colnames(datSub)=="CATEGORY"),which(colnames(datSub)=="CS"),which(colnames(datSub)=="SUMSTAT"),
-                          which(colnames(datSub)=="METRIC"),which(colnames(datSub)=="whitingv"),which(colnames(datSub)=="N"),which(colnames(datSub)=="VALUE"),which(colnames(datSub)=="AGID"))]
+          datSub <- datSub[,c(which(colnames(datSub)=="YEAR"),which(colnames(datSub)=="VARIABLE"),which(colnames(datSub)=="CATEGORY"),which(colnames(datSub)=="CS"),
+                              which(colnames(datSub)=="SUMSTAT"),
+                          which(colnames(datSub)=="METRIC"),which(colnames(datSub)=="whitingv"),which(colnames(datSub)=="N"),which(colnames(datSub)=="VALUE"),
+                          which(colnames(datSub)=="AGID"))]
         }else {
-          datSub <- datSub[,c(which(colnames(datSub)=="YEAR"),which(colnames(datSub)=="VARIABLE"),which(colnames(datSub)=="CATEGORY"),which(colnames(datSub)=="CS"),which(colnames(datSub)=="SUMSTAT"),
-                          which(colnames(datSub)=="METRIC"),which(colnames(datSub)=="whitingv"),which(colnames(datSub)=="N"),which(colnames(datSub)=="VALUE"),which(colnames(datSub)=="VARIANCE"))]
+          datSub <- datSub[,c(which(colnames(datSub)=="YEAR"),which(colnames(datSub)=="VARIABLE"),which(colnames(datSub)=="CATEGORY"),which(colnames(datSub)=="CS"),
+                              which(colnames(datSub)=="SUMSTAT"),
+                          which(colnames(datSub)=="METRIC"),which(colnames(datSub)=="whitingv"),which(colnames(datSub)=="N"),which(colnames(datSub)=="VALUE"),
+                          which(colnames(datSub)=="VARIANCE"))]
         }}
-  
-  
  } # Compare vessels
+          
   else if(input$LayoutSelect=="Metrics"){
     if(input$Ind_sel=="Economic") {
-      datSub <- datSub[,c(which(colnames(datSub)=="YEAR"),which(colnames(datSub)=="VARIABLE"),which(colnames(datSub)=="CATEGORY"),which(colnames(datSub)=="CS"),which(colnames(datSub)=="STAT"),
-                        which(colnames(datSub)=="SHORTDESCR"),which(colnames(datSub)=="whitingv"),which(colnames(datSub)=="N"),which(colnames(datSub)=="VALUE"),which(colnames(datSub)=="VARIANCE"))]
+      datSub <- datSub[,c(which(colnames(datSub)=="YEAR"),which(colnames(datSub)=="VARIABLE"),which(colnames(datSub)=="CATEGORY"),which(colnames(datSub)=="CS"),
+                          which(colnames(datSub)=="STAT"),
+                        which(colnames(datSub)=="SHORTDESCR"),which(colnames(datSub)=="whitingv"),which(colnames(datSub)=="N"),which(colnames(datSub)=="VALUE"),
+                        which(colnames(datSub)=="VARIANCE"))]
     } else {
-      datSub <- datSub[,c(which(colnames(datSub)=="YEAR"),which(colnames(datSub)=="VARIABLE"),which(colnames(datSub)=="CATEGORY"),which(colnames(datSub)=="CS"),which(colnames(datSub)=="SUMSTAT"),
-                      which(colnames(datSub)=="METRIC"),which(colnames(datSub)=="whitingv"),which(colnames(datSub)=="N"),which(colnames(datSub)=="VALUE"),which(colnames(datSub)=="VARIANCE"))]
+      datSub <- datSub[,c(which(colnames(datSub)=="YEAR"),which(colnames(datSub)=="VARIABLE"),which(colnames(datSub)=="CATEGORY"),which(colnames(datSub)=="CS"),
+                          which(colnames(datSub)=="SUMSTAT"),
+                      which(colnames(datSub)=="METRIC"),which(colnames(datSub)=="whitingv"),which(colnames(datSub)=="N"),which(colnames(datSub)=="VALUE"),
+                      which(colnames(datSub)=="VARIANCE"))]
   }}
      if(input$Ind_sel!="Economic"){
              if(input$LayoutSelect=="Metrics"){
@@ -339,7 +364,6 @@ if(input$LayoutSelect!="Metrics"){
 # build dcast formula using if controls and using the quoted method in dcast
 DatSub <- reactive({
       dat <- DatMain()   
-      
       dat$SUMSTAT <- ifelse(dat$SUMSTAT=='Average', 'Mean', as.character(dat$SUMSTAT))
 
       dat$STAT <- ifelse(dat$STAT=="Average per vessel", "Mean per vessel",
@@ -366,7 +390,8 @@ DatSub <- reactive({
              if(input$Sect_sel=='FR'){
               datSub <- subset(datSub,  METRIC %in% input$demSelect & SUMSTAT == input$AVE_MED2)
             }
-            else if(input$demSelect[1]=="Exponential Shannon Index"|input$Sect_sel=="CV" &input$demSelect[1]=="Proportion of revenue from CS fishery"|input$Sect_sel=="CV" &input$demSelect[1]=="Fishery participation"){
+            else if(input$demSelect[1]=="Exponential Shannon Index"|input$Sect_sel=="CV" &input$demSelect[1]=="Proportion of revenue from CS fishery"|
+                    input$Sect_sel=="CV" &input$demSelect[1]=="Fishery participation"){
               datSub <- subset(datSub,  METRIC %in% input$demSelect & SUMSTAT==input$AVE_MED2& FISHAK==input$FishAkSelect)
             } else if(input$Sect_sel=="CV" &input$demSelect[1]=="Days at sea"){
               datSub <- subset(datSub,  METRIC %in% input$demSelect & SUMSTAT==input$AVE_MED2& FISHAK=='FALSE')
@@ -405,7 +430,6 @@ DatSub <- reactive({
                   }
       } #End Social and Regional
       
-        print(head(datSub))
           
         validate(
         need(dim(datSub)[1]>0, 
@@ -463,13 +487,19 @@ DatSub <- reactive({
                   paste('Sorry, this plot could not be generated as the crew wage per day is not calculated. Try selecting the mean or median statistic.
                   '))))
       
-      
-      if(input$Sect_sel=="CV" &input$CategorySelect != "Fisheries"|
-         input$Sect_sel=="FR" & input$CategorySelect != "Fisheries"&input$demSelect!="Proportion of revenue from catch share species") {
-        datSub <- subset(datSub, CS == input$inSelect)
-      }
 
-       
+      if(input$Sect_sel=="CV" &input$CategorySelect != "Fisheries"){
+              datSub <- subset(datSub, CS == input$inSelect)
+      }
+      if(input$Sect_sel=="FR"){
+        if(input$Ind_sel !='Demographic') {
+          if(input$CategorySelect != "Fisheries") {
+              datSub <- subset(datSub, CS == input$inSelect)}
+        } else {
+          if (input$CategorySelect != "Fisheries"&&input$demSelect!="Proportion of revenue from catch share species"){
+              datSub <- subset(datSub, CS == input$inSelect)}
+        }}
+ 
       datSub$N <- as.numeric(datSub$N)
       datSub$VALUE <- as.numeric(datSub$VALUE)
       datSub$VARIANCE <- as.numeric(datSub$VARIANCE)

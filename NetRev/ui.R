@@ -1,4 +1,13 @@
 
+#======================================
+#
+# this page  
+#  1. Defines layout of the page
+#  2. 
+#  3. 
+#======================================
+
+
 .libPaths(c("/usr/lib64/R/shiny_library", .libPaths()))
 library(appFrame)
 # custom css functions
@@ -60,8 +69,8 @@ title = "FISHEyE",
                              .rbutton .radio:nth-child(6) label,
                              .rbutton .radio:nth-child(8) label,
                              .rbutton .radio:nth-child(9) label,
-                             .rbutton .radio:nth-child(10) label
-                              .rbutton .radio:nth-child(11) label{margin-left:34px;}
+                             .rbutton .radio:nth-child(10) label,
+                             .rbutton .radio:nth-child(11) label{margin-left:34px;}
                             
                              .rbutton .radio:nth-child(-n+3) label,
                              .rbutton .radio:nth-child(12) label,
@@ -69,24 +78,15 @@ title = "FISHEyE",
                              .ckbox2 .checkbox:nth-child(11) label{margin-left:0px;}")),
             
             #stylize information icons
-            tags$style(HTML('#iof{width:20px; height:19px; margin:0px;border:none; padding:0px;border-radius:25px;
-                                  background-color:transparent;font-size:12px; color:RoyalBlue}
-                            #isummed{width:20px; height:19px; margin:0px;border:none; padding:0px;border-radius:25px;
-                                  background-color:transparent;font-size:12px; color:RoyalBlue}
-                            #ifg{width:20px; height:19px; margin:0px;border:none; padding:0px;border-radius:25px;
-                                  background-color:transparent;font-size:12px; color:RoyalBlue}
-                            #istat{width:20px; height:19px; margin:0px;border:none; padding:0px;border-radius:25px;
-                                  background-color:transparent;font-size:12px; color:RoyalBlue}
-                            #ipo{width:20px; height:19px; margin:0px;border:none; padding:0px;border-radius:25px;
-                                  background-color:transparent;font-size:12px; color:RoyalBlue}
-                            #ivs{width:20px; height:19px; margin:0px;border:none; padding:0px;border-radius:25px;
-                                  background-color:transparent;font-size:12px; color:RoyalBlue}
-                            #iem{width:20px; height:19px; margin:0px;border:none; padding:0px;border-radius:25px;
-                                  background-color:transparent;font-size:12px; color:RoyalBlue}
-                            #iprod{width:20px; height:19px; margin:0px;border:none; padding:0px;border-radius:25px;
-                                  background-color:transparent;font-size:12px; color:RoyalBlue}
-                            #icompare{width:20px; height:19px; margin:0px;border:none; padding:0px;border-radius:25px;
-                                  background-color:transparent;font-size:12px; color:RoyalBlue}
+            tags$style(HTML('#iof,
+                            #isummed,
+                            #ifg,
+                            #istat,
+                            #ipo,
+                            #ivs,
+                            #iem,
+                            #iprod,
+                            #icompare,
                             #iwhiting{width:20px; height:19px; margin:0px;border:none; padding:0px;border-radius:25px;
                                   background-color:transparent;font-size:12px; color:RoyalBlue}'))),
 #         ),#end tags head
@@ -145,7 +145,7 @@ title = "FISHEyE",
 #Begin Main Panel - where plots appear
 #####
                                 mainPanel(         
-                                  tabsetPanel(id = "tabs", 
+                                  tabsetPanel(id = "tabs",selected='Panel1', 
                                               tabPanel(title=HTML("Summary Plots <br> and Data"), value="Panel1", 
                                                        fluidRow(
                                                          column(12, htmlOutput("DefaultPlotText")),                                
