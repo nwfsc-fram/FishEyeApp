@@ -129,14 +129,14 @@ output$Categoryselect <- renderUI({
 ###################################################
 output$IndicatorSelect <- renderUI({
 #    tagList(
-  if(input$tabs=='Panel1'){
-  selectInput("Ind_sel", HTML("<div> Select an indicator category: <button id='ipo' type='button' class='btn btn-default action-button shiny-bound-input'> 
-                              <i class='fa fa-info-circle fa-fw' ></i></button> </div>"), c('Demographic',"Economic","Social and Regional"), selected='Demographic',selectize=T)#,
-  } else {
+#  if(input$tabs=='Panel2'){
+#  selectInput("Ind_sel", HTML("<div> Select an indicator category: <button id='ipo' type='button' class='btn btn-default action-button shiny-bound-input'> 
+#                              <i class='fa fa-info-circle fa-fw' ></i></button> </div>"), c('Demographic',"Economic","Social and Regional"), selected='Economic',selectize=T)#,
+#  } else {
     selectInput("Ind_sel", HTML("<div> Select an indicator category: <button id='ipo' type='button' class='btn btn-default action-button shiny-bound-input'> 
-                              <i class='fa fa-info-circle fa-fw' ></i></button> </div>"), c('Demographic',"Economic","Social and Regional"), selected='Economic',selectize=T)#,
+                              <i class='fa fa-info-circle fa-fw' ></i></button> </div>"), c('Demographic',"Economic","Social and Regional"), selected='Demographic',selectize=T)#,
     
-  }
+#  }
     })  #END INDICATOR SELECT
 ###################################################
 #End indicator select

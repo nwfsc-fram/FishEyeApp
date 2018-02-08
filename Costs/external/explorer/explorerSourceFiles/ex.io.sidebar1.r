@@ -46,74 +46,26 @@ output$CostCategoryselect <- renderUI({
                c("All cost categories", "Variable costs", "Fixed costs"), 
                selected='All cost categories',selectize=F)
 })
+
 output$Shortdescrselect <- renderUI({
-#  if(input$CostCategorySelect=="All cost categories"){
-    if(input$Sect_sel=='CV'){
-#      if(input$PlotSelect!='Stacked bar'){
-#        tags$div(class="statboxC", checkboxGroupInput("ShortdescrSelect",'Cost categories:',
-#                                             choices = DatVars()$SHORTDESCR,selected = DatVars()$SHORTDESCR))
-#      } else {
-   if(input$tabs=="Panel1"){        
-     tags$div(class="statboxC", checkboxGroupInput("ShortdescrSelect",'Cost categories:',
+   if(input$Sect_sel=='CV'){
+      if(input$tabs=="Panel1"){        
+          tags$div(class="statboxC", checkboxGroupInput("ShortdescrSelect",'Cost categories:',
                                                       choices = DatVars()$SHORTDESCR,selected = c('All fixed costs','All variable costs')))
-   } else {
-        tags$div(class="statboxC", checkboxGroupInput("ShortdescrSelect",'Cost categories:',
+        } else {
+          tags$div(class="statboxC", checkboxGroupInput("ShortdescrSelect",'Cost categories:',
                                                       choices = DatVars()$SHORTDESCR, selected = DatVars()$SHORTDESCR[c(2:8)])) 
-      }
-      
-#      }
+        }
     } else if(input$Sect_sel=='FR'){
-#      if(input$PlotSelect!='Stacked bar'){
-#        tags$div(class="statboxF", checkboxGroupInput("ShortdescrSelect",'Cost categories:',
-#                                                      choices = DatVars()$SHORTDESCR,selected = DatVars()$SHORTDESCR))
-#      } else{
       tags$div(class="statboxF", checkboxGroupInput("ShortdescrSelect",'Cost categories:',
                                                    choices = DatVars()$SHORTDESCR,selected = c('All fixed costs','All variable costs')))
-#    }
-      }else if(input$Sect_sel=='M'){
-#        if(input$PlotSelect!='Stacked bar'){
-#          tags$div(class="statboxM", checkboxGroupInput("ShortdescrSelect",'Cost categories:',
-#                                                        choices = DatVars()$SHORTDESCR,selected = DatVars()$SHORTDESCR))
-#        } else {
+    } else if(input$Sect_sel=='M'){
           tags$div(class="statboxM", checkboxGroupInput("ShortdescrSelect",'Cost categories:',
                                                     choices = DatVars()$SHORTDESCR,selected = c('All fixed costs', 'All variable costs')))
-#        }
     } else {
-#      if(input$PlotSelect!='Stacked bar'){
-#        tags$div(class="statboxM", checkboxGroupInput("ShortdescrSelect",'Cost categories:',
-#                                                      choices = DatVars()$SHORTDESCR,selected = DatVars()$SHORTDESCR))
-#      } else{
       tags$div(class="statboxM", checkboxGroupInput("ShortdescrSelect",'Cost categories:',
                                                    choices = DatVars()$SHORTDESCR,selected =  c('All fixed costs', 'All variable costs')))
-      }
-#      }
-#}  else if(input$CostCategorySelect=="Variable costs"){
-#  if(input$Sect_sel=='CV'|input$Sect_sel=='FR'){
-#    tags$div(class="statbox", checkboxGroupInput("ShortdescrSelect","",
-#                                                 choices = DatVars()$SHORTDESCR[1:8],selected = DatVars()$SHORTDESCR[1:8]))
-#  } else if(input$Sect_sel=='M'){
-#    tags$div(class="statbox", checkboxGroupInput("ShortdescrSelect","",
-#                                                 choices = DatVars()$SHORTDESCR[1:7],selected = DatVars()$SHORTDESCR[1:7]))
-#  } else {
-#    tags$div(class="statbox", checkboxGroupInput("ShortdescrSelect","",
-#                                                 choices = DatVars()$SHORTDESCR[1:6],selected = DatVars()$SHORTDESCR[1:6]))
-    
-#  }
-#} else if(input$CostCategorySelect=="Fixed costs"){
-#  if(input$Sect_sel=="CV"){
-#    tags$div(class="statbox", checkboxGroupInput("ShortdescrSelect","",
-#                                                choices = DatVars()$SHORTDESCR[9:12],selected = DatVars()$SHORTDESCR[9:12]))
-#  } else if(input$Sect_sel=="FR"){
-#    tags$div(class="statbox", checkboxGroupInput("ShortdescrSelect","",
-#                                                 choices = DatVars()$SHORTDESCR[9:11],selected = DatVars()$SHORTDESCR[9:11]))
-#  } else if(input$Sect_sel=='M'){
-#    tags$div(class="statbox", checkboxGroupInput("ShortdescrSelect","",
-#                                                 choices = DatVars()$SHORTDESCR[8:12],selected = DatVars()$SHORTDESCR[8:12]))
-#  } else{    
-#    tags$div(class="statbox", checkboxGroupInput("ShortdescrSelect","",
-#                                                          choices = DatVars()$SHORTDESCR[7:11],selected = DatVars()$SHORTDESCR[7:11]))
-#  }
-#}
+    }
 })
 ################################################################################
 
@@ -151,8 +103,10 @@ output$Categoryselect <- renderUI({
 #################################################################################
 
 
-fish.var <- c("All fisheries combined"="All fisheries"," All catch share fisheries combined"="All catch share fisheries","Pacific whiting","At-sea Pacific whiting","Shoreside Pacific whiting",
-              "Groundfish with trawl gear","DTS trawl with trawl endorsement","Non-whiting, non-DTS trawl with trawl endorsement",  "Non-whiting midwater trawl","Groundfish fixed gear with trawl endorsement",
+fish.var <- c("All fisheries combined"="All fisheries"," All catch share fisheries combined"="All catch share fisheries",
+              "Pacific whiting","At-sea Pacific whiting","Shoreside Pacific whiting",
+              "Groundfish with trawl gear","DTS trawl with trawl endorsement","Non-whiting, non-DTS trawl with trawl endorsement",  "Non-whiting midwater trawl",
+              "Groundfish fixed gear with trawl endorsement",
               "All non-catch share fisheries combined"="All non-catch share fisheries", "Groundfish fixed gear with fixed gear endorsement","Crab","Shrimp")
 
 
@@ -164,70 +118,70 @@ output$Variableselect <- renderUI({
     if(!is.null(input$CategorySelect)){
       if(input$CategorySelect == "State"){
         tagList(           
-if(input$tabs=='Panel1'){
-  tagList(           
-    tags$div(class="select", selectInput("inSelect","",
+          if(input$tabs=='Panel1'){
+            tagList(           
+                tags$div(class="select", selectInput("inSelect","",
                                          c("All fisheries","All catch share fisheries","All non-catch share fisheries")), style="margin-bottom:-10px"),
-    checkboxGroupInput("VariableSelect", "Select one or more state:", choices = factorOrder$state, selected="")
-  )
-} else {
-  tagList(           
-    tags$div(class="select", selectInput("inSelect","",
-                                         c("All fisheries","All catch share fisheries","All non-catch share fisheries"), selected='All catch share fisheries'), style="margin-bottom:-10px"),
-    checkboxGroupInput("VariableSelect", "Select one or more state:", choices = factorOrder$state, selected=factorOrder$state)
-  )  
-}
+              checkboxGroupInput("VariableSelect", "Select one or more state:", choices = factorOrder$state, selected="")
+                    )
+          } else {
+            tagList(           
+                tags$div(class="select", selectInput("inSelect","",
+                                         c("All fisheries","All catch share fisheries","All non-catch share fisheries"), selected='All catch share fisheries'), 
+                                          style="margin-bottom:-10px"),
+              checkboxGroupInput("VariableSelect", "Select one or more state:", choices = factorOrder$state, selected=factorOrder$state)
+                    )  
+          }
         )
-        } else if (input$CategorySelect=="Region"){
-          tagList(           
-            tags$div(class="select", selectInput("inSelect","",
+       } else if (input$CategorySelect=="Region"){
+            tagList(           
+              tags$div(class="select", selectInput("inSelect","",
                                                  c("All production","Groundfish production","Other species production")), style="margin-bottom:-10px"),
-          checkboxGroupInput("VariableSelect", "Select one or more regions:", choices = c('Washington and Oregon','California'), selected="")
-          )
-        
+              checkboxGroupInput("VariableSelect", "Select one or more regions:", choices = c('Washington and Oregon','California'), selected="")
+              )
        } else if(input$CategorySelect == "Vessel length class"){
-        tagList(           
-          tags$div(class="select", selectInput("inSelect","",
+            tagList(           
+                tags$div(class="select", selectInput("inSelect","",
                                                c("All fisheries","All catch share fisheries","All non-catch share fisheries")), style="margin-bottom:-10px"),
-          checkboxGroupInput("VariableSelect",  "Select one or more vessel length class:", choices=c("Large vessel (> 80 ft)","Medium vessel (> 60ft, <= 80ft)", "Small vessel (<= 60ft)"), selected="")
-        )
+                checkboxGroupInput("VariableSelect",  "Select one or more vessel length class:", choices=c("Large vessel (> 80 ft)","Medium vessel (> 60ft, <= 80ft)",
+                                                                                                           "Small vessel (<= 60ft)"), selected="")
+                  )
       }else if(input$CategorySelect == "Processor size"){
-        tagList(           
-          tags$div(class="select", selectInput("inSelect","",
+            tagList(           
+              tags$div(class="select", selectInput("inSelect","",
                                                c("All production","Groundfish production","Other species production")), style="margin-bottom:-10px"),
-          checkboxGroupInput("VariableSelect",  "Select one or more processor size class:", choices=c('Large','Medium','Small'), selected=""))
+              checkboxGroupInput("VariableSelect",  "Select one or more processor size class:", choices=c('Large','Medium','Small'), selected=""))
       } else if(input$CategorySelect == "Homeport"){
-        tagList(           
-          tags$div(class="select", selectInput("inSelect","",
+            tagList(           
+              tags$div(class="select", selectInput("inSelect","",
                                                c("All fisheries", "All catch share fisheries", "All non-catch share fisheries")), style="margin-bottom:-10px"),
-          #$bsButton("selectall", "Select all", style="primary", size="extra-small",block=F, type="action"),
-          tags$div(checkboxGroupInput("VariableSelect", div("Select one or more homeport:", style="margin-top:0; padding:-10px"), choices=factorOrder$port, selected=""))
-        )
+            tags$div(checkboxGroupInput("VariableSelect", div("Select one or more homeport:", style="margin-top:0; padding:-10px"), choices=factorOrder$port, selected=""))
+             )
       } else if(input$CategorySelect=="Fisheries"){
-        if(input$Sect_sel=="M"|input$Sect_sel=="CP"){
-          tags$div(checkboxGroupInput("VariableSelect","",choices=c("At-sea Pacific whiting"), selected="")) 
-        } else if(input$Sect_sel=="CV"){
-        tagList(
-          #              selectInput("fishCatSelect","", c("Catch share fisheries"="CSF", "Non-Catch Shares fisheries"="NSF", "All fisheries"="AF"), selected="AF"),
-          actionButton("selectall2", "All fisheries", style="default", size="extra-small",block=F, type="action"),
-          actionButton("selectallcs", "All catch share fisheries", style="default",size="extra-small", block=F, type="action"),
-          actionButton("selectallncs", "All non-catch share fisheries", style="default", size="extra-small", block=F, type="action"),
-          #  conditionalPanel("input.fishCatSelect==AF", 
-          tags$div(class="ckbox2", checkboxGroupInput("VariableSelect", HTML("<div style='font-style:italic; font-size:10.87pt; font-weight:normal; margin-top:8.5pt'> 
-                                                                             or select fisheries individually:  <button id='ivs' type='button' class='btn btn-default action-button shiny-bound-input'> <i class='fa fa-info-circle fa-fw' ></i></button> </div>"), 
-                                                      choices=c("All fisheries combined"="All fisheries"," All catch share fisheries combined"="All catch share fisheries",fish.var[3:14])#div(fish.var, stlye="font-style:bold")#fish.var
-                                                      , selected=""))
-          #tags$div(class="ckbox", checkboxGroupInput("ShortdescrSelect", HTML("<div> Economic measures:<button id='iem' type='button' class='btn btn-default action-button shiny-bound-input'> <i class='fa fa-info-circle fa-fw' ></i> 
-          
-          )
-      }}
-        else if(input$CategorySelect=="Production activities"){
+          if(input$Sect_sel=="M"|input$Sect_sel=="CP"){
+            tags$div(checkboxGroupInput("VariableSelect","",choices=c("At-sea Pacific whiting"), selected="")) 
+          } else if(input$Sect_sel=="CV"){
+              tagList(
+              #              selectInput("fishCatSelect","", c("Catch share fisheries"="CSF", "Non-Catch Shares fisheries"="NSF", "All fisheries"="AF"), selected="AF"),
+                actionButton("selectall2", "All fisheries", style="default", size="extra-small",block=F, type="action"),
+                actionButton("selectallcs", "All catch share fisheries", style="default",size="extra-small", block=F, type="action"),
+                actionButton("selectallncs", "All non-catch share fisheries", style="default", size="extra-small", block=F, type="action"),
+              #  conditionalPanel("input.fishCatSelect==AF", 
+                tags$div(class="ckbox2", checkboxGroupInput("VariableSelect", HTML("<div style='font-style:italic; font-size:10.87pt; font-weight:normal; margin-top:8.5pt'> 
+                                                                             or select fisheries individually:  <button id='ivs' type='button' 
+                                                                                   class='btn btn-default action-button shiny-bound-input'> 
+                                                                                   <i class='fa fa-info-circle fa-fw' ></i></button> </div>"), 
+                                                            choices=c("All fisheries combined"="All fisheries"," All catch share fisheries combined"="All catch share fisheries",
+                                                            fish.var[3:14]), selected=""))
+              )
+      }} else if(input$CategorySelect=="Production activities"){
           tags$div(class='frckbox',checkboxGroupInput("VariableSelect",  'Select one or more production activities:',
-                                                      choices=c("All production","Groundfish production","Pacific whiting production","Non-whiting groundfish production","Other species production")
+                                                      choices=c("All production","Groundfish production","Pacific whiting production","Non-whiting groundfish production",
+                                                                "Other species production")
                                                       , selected="")
           )
       } # end fisheries
-    } else return ()
+   } else return ()
 })
 #############################################################################################################
 
@@ -286,9 +240,13 @@ output$FishAkselect <- renderUI({
 ###################################################
 output$FishWhitingselect <- renderUI({
   if(input$tabs=='Panel1'){
-  tags$div(class="ckbox", radioButtons("FishWhitingSelect",  HTML("<div> Show data summed across:<button id='iwhiting' type='button' class='btn btn-default action-button shiny-bound-input'> <i class='fa fa-info-circle fa-fw'></i>                                                                       </button></div>"), choices=DatVars()$whitingv, selected=DatVars()$whitingv[1]))
+      tags$div(class="ckbox", radioButtons("FishWhitingSelect",  
+                                           HTML("<div> Show data summed across:<button id='iwhiting' type='button' class='btn btn-default action-button shiny-bound-input'> 
+                                                <i class='fa fa-info-circle fa-fw'></i></button></div>"), choices=DatVars()$whitingv, selected=DatVars()$whitingv[1]))
   } else {
-    tags$div(class="ckbox", radioButtons("FishWhitingSelect",  HTML("<div> Show data summed across:<button id='iwhiting' type='button' class='btn btn-default action-button shiny-bound-input'> <i class='fa fa-info-circle fa-fw'></i>                                                                       </button></div>"), choices=DatVars()$whitingv, selected=DatVars()$whitingv[2]))
+      tags$div(class="ckbox", radioButtons("FishWhitingSelect",  
+                                           HTML("<div> Show data summed across:<button id='iwhiting' type='button' class='btn btn-default action-button shiny-bound-input'> 
+                                                <i class='fa fa-info-circle fa-fw'></i></button></div>"), choices=DatVars()$whitingv, selected=DatVars()$whitingv[2]))
   }
 })
 
@@ -323,26 +281,30 @@ output$FishWhitingselect <- renderUI({
 
 output$Statselect <- renderUI({
   if(input$Sect_sel=="FR")  { 
-    tagList(
-      selectInput("AVE_MED", HTML("<div> Statistic: <button id='istat' type='button' class='btn btn-default action-button shiny-bound-input'> <i class='fa fa-info-circle fa-fw' ></i></button> </div>"),
+      tagList(
+        selectInput("AVE_MED", HTML("<div> Statistic: <button id='istat' type='button' class='btn btn-default action-button shiny-bound-input'> 
+                                  <i class='fa fa-info-circle fa-fw' ></i></button> </div>"),
                   c('Median, Mean, or Total values'="", Mean="A", Median="M", Total="T"), selectize=F),
-      tags$div(class="statbox", radioButtons("StatSelect","",  choices = c(DatVars()$STAT[4:6]))))
+        tags$div(class="statbox", radioButtons("StatSelect","",  choices = c(DatVars()$STAT[4:6]))))
   } else if (input$Sect_sel=='CP'|input$Sect_sel=='M') {
-    tagList(
-      selectInput("AVE_MED", HTML("<div> Statistic: <button id='istat' type='button' class='btn btn-default action-button shiny-bound-input'> <i class='fa fa-info-circle fa-fw' ></i></button> </div>"),
+      tagList(
+        selectInput("AVE_MED", HTML("<div> Statistic: <button id='istat' type='button' class='btn btn-default action-button shiny-bound-input'> 
+                                  <i class='fa fa-info-circle fa-fw' ></i></button> </div>"),
                   c('Median, Mean, or Total values'="", Mean="A", Median="M", Total="T"), selectize=F),
-      tags$div(class="statbox", radioButtons("StatSelect","",  choices = c(DatVars()$STAT[5:8]), selected=DatVars()$STAT[5])))
+        tags$div(class="statbox", radioButtons("StatSelect","",  choices = c(DatVars()$STAT[5:8]), selected=DatVars()$STAT[5])))
   }else {
     if(input$tabs=='Panel1'){
-    tagList(
-      selectInput("AVE_MED", HTML("<div> Statistic: <button id='istat' type='button' class='btn btn-default action-button shiny-bound-input'> <i class='fa fa-info-circle fa-fw' ></i></button> </div>"),
-                  c('Median, Mean, or Total values'="", Mean="A", Median="M", Total="T"), selectize=F),
-      tags$div(class="statbox", radioButtons("StatSelect","",  choices = c(DatVars()$STAT[5:8]), selected=DatVars()$STAT[5])))
-    } else {
       tagList(
-        selectInput("AVE_MED", HTML("<div> Statistic: <button id='istat' type='button' class='btn btn-default action-button shiny-bound-input'> <i class='fa fa-info-circle fa-fw' ></i></button> </div>"),
+        selectInput("AVE_MED", HTML("<div> Statistic: <button id='istat' type='button' class='btn btn-default action-button shiny-bound-input'> 
+                                  <i class='fa fa-info-circle fa-fw' ></i></button> </div>"),
+                  c('Median, Mean, or Total values'="", Mean="A", Median="M", Total="T"), selectize=F),
+        tags$div(class="statbox", radioButtons("StatSelect","",  choices = c(DatVars()$STAT[5:8]), selected=DatVars()$STAT[5])))
+    } else {
+        tagList(
+          selectInput("AVE_MED", HTML("<div> Statistic: <button id='istat' type='button' class='btn btn-default action-button shiny-bound-input'> 
+                                    <i class='fa fa-info-circle fa-fw' ></i></button> </div>"),
                     c('Median, Mean, or Total values'="", Mean="A", Median="M", Total="T"), selectize=F),
-        tags$div(class="statbox", radioButtons("StatSelect","",  choices = c(DatVars()$STAT[5:8]), selected=DatVars()$STAT[6])))
+          tags$div(class="statbox", radioButtons("StatSelect","",  choices = c(DatVars()$STAT[5:8]), selected=DatVars()$STAT[6])))
     }
   }
 })
@@ -353,28 +315,28 @@ observe({
   if (is.null(input$AVE_MED)) {return()}
   else 
     if(input$Sect_sel=='CP'|input$Sect_sel=='M'){
-      if(input$AVE_MED=="M"){
-        updateRadioButtons(session,"StatSelect", choices = c(DatVars()$STAT[5:8]))
-      }  else if(input$AVE_MED=="A"){
-        updateRadioButtons(session,"StatSelect",   choices = c(DatVars()$STAT[1:4]))
-      } else  if(input$AVE_MED=="T"){
-        updateRadioButtons(session,"StatSelect", choices = c(DatVars()$STAT[9:12]))
-      } 
+        if(input$AVE_MED=="M"){
+          updateRadioButtons(session,"StatSelect", choices = c(DatVars()$STAT[5:8]))
+        }  else if(input$AVE_MED=="A"){
+          updateRadioButtons(session,"StatSelect",   choices = c(DatVars()$STAT[1:4]))
+        } else  if(input$AVE_MED=="T"){
+          updateRadioButtons(session,"StatSelect", choices = c(DatVars()$STAT[9:12]))
+        } 
     } else if(input$Sect_sel=='CV'){
-      if(input$AVE_MED=="M"){
-        updateRadioButtons(session,"StatSelect", choices = c(DatVars()$STAT[5:8]))
-      }  else if(input$AVE_MED=="A"){
-        updateRadioButtons(session,"StatSelect",   choices = c(DatVars()$STAT[1:4]))
-      } else  if(input$AVE_MED=="T"){
-        updateRadioButtons(session,"StatSelect", choices = c(DatVars()$STAT[9:12]))
-      } 
+        if(input$AVE_MED=="M"){
+          updateRadioButtons(session,"StatSelect", choices = c(DatVars()$STAT[5:8]))
+        }  else if(input$AVE_MED=="A"){
+          updateRadioButtons(session,"StatSelect",   choices = c(DatVars()$STAT[1:4]))
+        } else  if(input$AVE_MED=="T"){
+          updateRadioButtons(session,"StatSelect", choices = c(DatVars()$STAT[9:12]))
+        } 
     } else if(input$AVE_MED=="M"){
-      updateRadioButtons(session,"StatSelect", choices = c(DatVars()$STAT[4:6]))
-    }  else if(input$AVE_MED=="A"){
-      updateRadioButtons(session,"StatSelect",   choices = c(DatVars()$STAT[1:3]))
-    } else  if(input$AVE_MED=="T"){
-      updateRadioButtons(session,"StatSelect", choices = c(DatVars()$STAT[7:9]))
-    } 
+        updateRadioButtons(session,"StatSelect", choices = c(DatVars()$STAT[4:6]))
+      }  else if(input$AVE_MED=="A"){
+        updateRadioButtons(session,"StatSelect",   choices = c(DatVars()$STAT[1:3]))
+      } else  if(input$AVE_MED=="T"){
+        updateRadioButtons(session,"StatSelect", choices = c(DatVars()$STAT[7:9]))
+      } 
 })
 
 ################################################################################
@@ -398,7 +360,8 @@ output$Plotselect <- renderUI({
 output$SelectText <- renderText ({ 
   if(input$CategorySelect[1]!="Fisheries"&input$Sect_sel[1]=="CV"){
     HTML("<div style='display:inline-block;width:100%; margin-top:10px'>
-                                       <b>Show data summed across these fisheries: </b><button id='isummed' type='button' class='btn btn-default action-button shiny-bound-input'> <i class='fa fa-info-circle fa-fw' ></i></button></div>")
+                                       <b>Show data summed across these fisheries: </b><button id='isummed' type='button' class='btn btn-default action-button shiny-bound-input'> 
+         <i class='fa fa-info-circle fa-fw' ></i></button></div>")
   } else  if(input$Sect_sel=="CV"&input$CategorySelect=="Fisheries"){
     HTML("<div style='display:inline-block;width:100%;padding:0;line-height: 0.72em; margin-top:20px; margin-bottom:-25px;'>
                                        <b>Select fisheries:</b> 
@@ -406,7 +369,8 @@ output$SelectText <- renderText ({
        <button id='ifg' type='button' class='btn btn-default action-button shiny-bound-input'> <i class='fa fa-info-circle fa-fw' ></i></button></h5></div>")#,
   }else if(input$Sect_sel=="FR"&input$CategorySelect!="Production activities"){
     HTML("<div style='display:inline-block;width:100%; margin-top:10px'>
-                                       <b>Show data summed across these production categories: </b><button id='isummed' type='button' class='btn btn-default action-button shiny-bound-input'> <i class='fa fa-info-circle fa-fw' ></i></button></div>")
+                                       <b>Show data summed across these production categories: </b><button id='isummed' type='button' 
+         class='btn btn-default action-button shiny-bound-input'> <i class='fa fa-info-circle fa-fw' ></i></button></div>")
   }
   
 })

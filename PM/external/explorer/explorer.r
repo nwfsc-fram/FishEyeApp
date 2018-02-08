@@ -284,7 +284,8 @@ output$TableMain <- renderDataTable({
               table$YEAR <- factor(table$YEAR, levels=c(min(table$YEAR):max(table$YEAR)))
                 if(input$demSelect=="Exponential Shannon Index"|input$demSelect=="Proportion of revenue from CS fishery"|input$demSelect=="Fishery participation"){
                 if(input$Sect_sel=="CV"){
-                  names(table) <- c("Year", "Summary Variable", "Statistic", "Metric","Data summed\nacross", "Alaskan fisheries","Number of vessels","Value",  "Variance \n\n(Quartiles or SD)")
+                  names(table) <- c("Year", "Summary Variable", "Statistic", "Metric","Data summed\nacross", "Alaskan fisheries","Number of vessels","Value",  
+                                    "Variance \n\n(Quartiles or SD)")
                 } else if(input$Sect_sel=="FR"){                
                   names(table) <- c("Year", "Summary Variable", "Statistic", "Metric","Data summed\nacross","Number of processors","Value",  "Variance \n\n(Quartiles or SD)")
                 } else {
@@ -319,24 +320,28 @@ output$TableMain <- renderDataTable({
               table$VARIANCE <- prettyNum(table$VARIANCE, big.mark = ",", format = 'f', digits = 5, trim=T)
               table$YEAR <- factor(table$YEAR, levels=c(min(table$YEAR):max(table$YEAR)))
               if(input$Sect_sel=="FR"){
-                names(table) <- c("Year", "Summary Variable","Production Category", "Statistic", "Metric","Data summed\nacross", "Number of vessels","Value",  "Variance \n\n(Quartiles or SD)")
+                names(table) <- c("Year", "Summary Variable","Production Category", "Statistic", "Metric","Data summed\nacross", "Number of vessels","Value", 
+                                  "Variance \n\n(Quartiles or SD)")
               } else {
-                names(table) <- c("Year", "Summary Variable","Fisheries Category", "Statistic", "Metric","Data summed\nacross", "Alaskan fisheries","Number of vessels","Value",  "Variance \n\n(Quartiles or SD)")
+                names(table) <- c("Year", "Summary Variable","Fisheries Category", "Statistic", "Metric","Data summed\nacross", "Alaskan fisheries","Number of vessels","Value",
+                                  "Variance \n\n(Quartiles or SD)")
               }
             }else {
               table$VALUE <- prettyNum(table$VALUE, big.mark = ",", format = 'f', digits = 5, trim=T)
               table$VARIANCE <- prettyNum(table$VARIANCE, big.mark = ",", format = 'f', digits = 5, trim=T)
               table$YEAR <- factor(table$YEAR, levels=c(min(table$YEAR):max(table$YEAR)))
               if(input$Sect_sel=="FR"){
-                names(table) <- c("Year", "Summary Variable","Production Category", "Statistic", "Metric","Data summed\nacross", "Number of processors",'Value',"Variance \n\n(Quartiles or SD)")
+                names(table) <- c("Year", "Summary Variable","Production Category", "Statistic", "Metric","Data summed\nacross", "Number of processors",'Value',
+                                  "Variance \n\n(Quartiles or SD)")
               }else {
-              names(table) <- c("Year", "Summary Variable","Fisheries Category", "Statistic", "Metric","Data summed\nacross", "Number of vessels","Value",  "Variance \n\n(Quartiles or SD)")
+              names(table) <- c("Year", "Summary Variable","Fisheries Category", "Statistic", "Metric","Data summed\nacross", "Number of vessels","Value",  
+                                "Variance \n\n(Quartiles or SD)")
             }}
           } 
         }#End Dempgraphic
       }#end compare vessels 
            table
-    }
+    } 
 })
 
 
@@ -399,7 +404,8 @@ output$dlTable <- downloadHandler(
         else if(input$Ind_sel=="Social and Regional"){
           if(input$CategorySelect == "Fisheries"){
              if(input$socSelect=="Share of landings by state"){
-              temp <- data.frame("Year", "Summary Variable", "Statistic", "Metric","Data summed across","Number of vessels; Vessels may deliver to multiple locations", "Value", "Delivery location","Sector")
+              temp <- data.frame("Year", "Summary Variable", "Statistic", "Metric","Data summed across","Number of vessels; Vessels may deliver to multiple locations", "Value",
+                                 "Delivery location","Sector")
             } else {
               if(input$Sect_sel=="FR"){
                 temp <- data.frame("Year", "Summary Variable", "Statistic", "Metric","Data summed across", "Number of processors","Value",  "Variance (Quartiles or SD)","Sector")
@@ -409,12 +415,15 @@ output$dlTable <- downloadHandler(
           } # end fisheries
           else {
            if(input$socSelect=="Share of landings by state"){
-              temp <- data.frame("Year", "Summary Variable","Fisheries Category", "Statistic", "Metric","Data summed across","Number of vessels\nVessels may deliver\nto multiple locations", "Value", "Delivery location","Sector")
+              temp <- data.frame("Year", "Summary Variable","Fisheries Category", "Statistic", "Metric","Data summed across",
+                                 "Number of vessels\nVessels may deliver\nto multiple locations", "Value", "Delivery location","Sector")
             } else {
                if(input$Sect_sel=="FR"){
-                 temp <- data.frame("Year", "Summary Variable","Production Category", "Statistic", "Metric","Data summed across", "Number of processors","Value",  "Variance (Quartiles or SD)","Sector")
+                 temp <- data.frame("Year", "Summary Variable","Production Category", "Statistic", "Metric","Data summed across", "Number of processors","Value",  
+                                    "Variance (Quartiles or SD)","Sector")
               } else {
-                temp <- data.frame("Year", "Summary Variable","Fisheries Category", "Statistic", "Metric","Data summed across", "Number of vessels","Value",  "Variance (Quartiles or SD)","Sector")
+                temp <- data.frame("Year", "Summary Variable","Fisheries Category", "Statistic", "Metric","Data summed across", "Number of vessels","Value",  
+                                   "Variance (Quartiles or SD)","Sector")
               }
             }
           }
@@ -429,7 +438,8 @@ output$dlTable <- downloadHandler(
             }  else {
               if(input$demSelect=="Exponential Shannon Index"|input$demSelect=="Proportion of revenue from CS fishery"|input$demSelect=="Fishery participation"){
                 if(input$Sect_sel=="CV"){
-                  temp <- data.frame("Year", "Summary Variable", "Statistic", "Metric","Data summed across", "Alaskan fisheries","Number of vessels","Value",  "Variance (Quartiles or SD)","Sector")
+                  temp <- data.frame("Year", "Summary Variable", "Statistic", "Metric","Data summed across", "Alaskan fisheries","Number of vessels","Value",  
+                                     "Variance (Quartiles or SD)","Sector")
                 } else if(input$Sect_sel=="FR"){                
                   temp <- data.frame("Year", "Summary Variable", "Statistic", "Metric","Data summed across","Number of processors","Value","Variance (Quartiles or SD)","Sector")
                 } else {
@@ -451,15 +461,19 @@ output$dlTable <- downloadHandler(
                 temp <- data.frame("Year", "Summary Variable","Production Category", "Statistic", "Metric","Data summed across","Number of processors","Sector")
             } else if(input$demSelect=="Exponential Shannon Index"|input$demSelect=="Proportion of revenue from CS fishery"|input$demSelect=="Fishery participation"){
               if(input$Sect_sel=="FR"){
-                temp <- data.frame("Year", "Summary Variable","Production Category", "Statistic", "Metric","Data summed across", "Number of vessels","Value",  "Variance (Quartiles or SD)","Sector")
+                temp <- data.frame("Year", "Summary Variable","Production Category", "Statistic", "Metric","Data summed across", "Number of vessels","Value",  
+                                   "Variance (Quartiles or SD)","Sector")
               } else {
-                temp <- data.frame("Year", "Summary Variable","Fisheries Category", "Statistic", "Metric","Data summed across", "Alaskan fisheries","Number of vessels","Value",  "Variance (Quartiles or SD)","Sector")
+                temp <- data.frame("Year", "Summary Variable","Fisheries Category", "Statistic", "Metric","Data summed across", "Alaskan fisheries","Number of vessels","Value", 
+                                   "Variance (Quartiles or SD)","Sector")
               }
             }else {
               if(input$Sect_sel=="FR"){
-                temp <- data.frame("Year", "Summary Variable","Production Category", "Statistic", "Metric","Data summed cross", "Number of processors",'Value',"Variance (Quartiles or SD)","Sector")
+                temp <- data.frame("Year", "Summary Variable","Production Category", "Statistic", "Metric","Data summed cross", "Number of processors",'Value',
+                                   "Variance (Quartiles or SD)","Sector")
               }else {
-                temp <- data.frame("Year", "Summary Variable","Fisheries Category", "Statistic", "Metric","Data summed across", "Number of vessels","Value",  "Variance (Quartiles or SD)","Sector")
+                temp <- data.frame("Year", "Summary Variable","Fisheries Category", "Statistic", "Metric","Data summed across", "Number of vessels","Value", 
+                                   "Variance (Quartiles or SD)","Sector")
               }}
           } 
         }#End Dempgraphic
