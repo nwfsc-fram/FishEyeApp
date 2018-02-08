@@ -208,62 +208,65 @@ output$DefaultPlotText <- renderUI({
   withTags(
   div(style = "margin: 15px 15px 30px; width: 60%",
            h3("Summary Plots and Data"),
-           p('The performance metrics in this web application provide a set of measures that can be used to gauge and track changes in the West Coast groundfish trawl limited entry fishery  following implementation of the',
-                  a(href="http://www.westcoast.fisheries.noaa.gov/fisheries/groundfish_catch_shares/index.html", 'West Coast Groundfish Trawl Catch Share Program ', target="_blank"),
-                  'in 2011. Select whether to view results for catcher vessels, motherships, catcher-processors, or first receivers and shorebased processors. Metrics are grouped into three broad indicator categories: demographic, economic, and social. Information on how metrics were chosen can be found in the', em('About'), 'tab.',
-                  strong('Information on the individual metrics can be found by clicking the blue information icon above the list of metrics'), 'or in the Definitions tab.' 
-                  ),
+           p('The performance metrics in this web application provide a set of measures that can be used to gauge and track changes in the 
+              West Coast groundfish trawl limited entry fishery  following implementation of the',
+              a(href="http://www.westcoast.fisheries.noaa.gov/fisheries/groundfish_catch_shares/index.html", 'West Coast Groundfish Trawl Catch Share Program ', target="_blank"),
+              'in 2011. Select whether to view results for catcher vessels, motherships, catcher-processors, or first receivers and shorebased processors.
+              Metrics are grouped into three broad indicator categories: demographic, economic, and social. Information on how metrics were chosen can be found in the',
+              em('About'), 'tab.',
+              strong('Information on the individual metrics can be found by clicking the blue information icon above the list of metrics'), 'or in the Definitions tab.' 
+            ),
            p(strong("To get started, make at least one selection in each of the fields in the Control Panel.")),
            #          tags$br(),
            HTML("<div style='display:inline-block;width:100%;padding:0;line-height: 0.8em; margin-top:15px; margin-bottom:-2px;font-size:11.5pt'>
                 <b>Plot Options:</b></div>"),
            
           
-           p(strong('Show Plot(s):'),'The', em('Show Plot(s)'), 'button returns the display to the plot output. Pre- and post- implementation of the catch share program is distinguished with shading. 
-                  You can select whether or not to show the variance around the mean or median values.'),
+           p(strong('Show Plot(s):'),'The', em('Show Plot(s)'), 'button returns the display to the plot output. Pre- and post- implementation of the catch share program 
+                is distinguished with shading. You can select whether or not to show the variance around the mean or median values.'
+             ),
             br(),
            img(src="indicators_example2.png", height=300),  #  img(src="EconInd4.png", height=350),       
            br(), 
            br(),
-             p(strong('Show Data:'), 'The', em('Show Data'), 'button displays a data table that can be filtered using the Search box or the boxes at the bottom of the table.'),
-         
-           
-           p(strong('Download Plots and Data:'),'Once selections have been made and a plot or data table is visible, use these buttons to download the plot and the data used to generate the plot.'),
-            p(strong('To view these instructions'), 'at any time, visit the', em('Instructions'), 'tab.')
-                   )
+           p(strong('Show Data:'), 'The', em('Show Data'), 'button displays a data table that can be filtered using the Search box or the boxes at the bottom of the table.'),
+           p(strong('Download Plots and Data:'),'Once selections have been made and a plot or data table is visible, use these buttons to download the plot and the data 
+             used to generate the plot.'),
+           p(strong('To view these instructions'), 'at any time, visit the', em('Instructions'), 'tab.')
+      ) # End DIV
       ) #end withTags
 })
 
 ###--------------Get Started Text----------------------####
 output$GetStartedText <- renderUI({
-  if(PermitPlot()) return()
-  withTags(
-  div(style = "margin: 15px 15px 30px; width: 60%",
-           p(strong(paste('Note this tutorial will disappear once you select a',input$CategorySelect,'. Selections can be made in any order.'))),
-           h4("1. Select a sector."),
-           p("Select whether to show results for catcher vessels, mothership vessels, catcher-processor vessels, or first receivers and shorebased processors."),
-           h4("2. Compare groups of vessels/processors or metrics"),
-           p('Choose whether to view a single metric for multiple vessel or processor groups or view multiple metrics for a single vessel or processor group.'), 
-           h4("3. Select general categories to view data by"),
-           p("First, select the vessel or processor grouping category (Fisheries, State, Homeport, Vessel length class, Production activities, Region, Processor size). 
+  #if(PermitPlot()) return()
+#  withTags(
+  tags$div(style = "margin: 15px 15px 30px; width: 60%",
+           tags$p(strong(paste('Note this tutorial will disappear once you select a',input$CategorySelect,'. Selections can be made in any order.'))),
+           tags$h4("1. Select a sector."),
+           tags$p("Select whether to show results for catcher vessels, mothership vessels, catcher-processor vessels, or first receivers and shorebased processors."),
+           tags$h4("2. Compare groups of vessels/processors or metrics"),
+           tags$p('Choose whether to view a single metric for multiple vessel or processor groups or view multiple metrics for a single vessel or processor group.'), 
+           tags$h4("3. Select general categories to view data by"),
+           tags$p("First, select the vessel or processor grouping category (Fisheries, State, Homeport, Vessel length class, Production activities, Region, Processor size). 
                   Categories will depend upon the selected sector."),
-           p("Second, for catcher vessels, select whether to subset the data by whether", a(href='whiting figure.png','vessels fished for whiting or not.', target='_blank'), "You can show results for all vessels, just vessels that fished for pacific 
-                  whiting, and/or just vessels that did not fish for pacific whiting.
-                  For first receivers and shorebased processors, select whether to show results for all processors, just processors that 
-                  process whiting, and/or just processors that process non-whiting species. For motherships and catcher-processors, only 
-                  the pacific whiiting category is available."),
-           h4(paste("4. Select one more more subgroups.")),
-           p(strong('Once this selection is made, this tutorial will disappear. This selection can be made last.'), 
-                  paste('Multiple subgroups of the selected vessel or processor grouping category (such as fishery) can be selected if, in step 1, you chose to compare groups of vessels or processors. 
-                        If you chose to compare metrics, only a single subgroup can be selected.')),
-           h4("5. Select an indicator category"),
-           p("This drop down menu divides metrics into three categories:",em('Demographic,'), em("Economic,"),'and',em('Social and regional.'), 'The choice of metrics to be displayed depends on which indicator category is selected.'),
-           h4("6. Select a statistic and a metric"),
-           p('Which statistic is calculated depends on the metric. If a selected metric is not shown, try a different statistic.'),
-           h4('7. Select years')#,
+           tags$p("Second, for catcher vessels, select whether to subset the data by whether", tags$a(href='WhitingFigure.png','vessels fished for whiting or not.', target='_blank'), 
+                  "You can show results for all vessels, just vessels that fished for pacific whiting, and/or just vessels that did not fish for pacific whiting.
+                  For first receivers and shorebased processors, select whether to show results for all processors, just processors that process whiting, and/or 
+                  just processors that process non-whiting species. For motherships and catcher-processors, only the pacific whiting category is available."),
+           tags$h4("4. Select one more more subgroups."),
+           tags$p(strong('Once this selection is made, this tutorial will disappear. This selection can be made last.'), 
+                  'Multiple subgroups of the selected vessel or processor grouping category (such as fishery) can be selected if, in step 1, you chose
+                        to compare groups of vessels or processors. If you chose to compare metrics, only a single subgroup can be selected.'),
+           tags$h4("5. Select an indicator category"),
+           tags$p("This drop down menu divides metrics into three categories:",em('Demographic,'), em("Economic,"),'and',em('Social and regional.'), 
+             'The choice of metrics to be displayed depends on which indicator category is selected.'),
+           tags$h4("6. Select a statistic and a metric"),
+           tags$p('Which statistic is calculated depends on the metric. If a selected metric is not shown, try a different statistic.'),
+           tags$h4('7. Select years')#,
           # tags$p('The number of years for which data is available and the choice to include activities in Alaskan fisheries depend upon the metric and sector selected.')
-  )
-  )#end withTags
+  )#End DIV
+#  )#end withTags
 })
 
 

@@ -65,27 +65,31 @@ output$BlogUpdates <- renderUI({
  tags$div(style = "margin-top:0; padding-top:0;background-color:#F8F8E9;",
            tags$h3("Updates"),
  
- div( class='date', style='height:45px;width:30px; font-family:Arial; font-weight:bold;background-color:#ffffff;text-align:center; border-top:1px solid #c0c0c0;
-       border-left:1px solid #c0c0c0;border-right:1px solid #c0c0c0;position:absolute;z-index:3;line-height: 13px;',
-       HTML("<span class='month' style='text-transform:uppercase;font-size:11px;'>Oct</span><br />
+        div( class='date', style='height:45px;width:30px; font-family:Arial; font-weight:bold;background-color:#ffffff;text-align:center; border-top:1px solid #c0c0c0;
+          border-left:1px solid #c0c0c0;border-right:1px solid #c0c0c0;position:absolute;z-index:3;line-height: 13px;',
+          HTML("<span class='month' style='text-transform:uppercase;font-size:11px;'>Oct</span><br />
             <span class='day' style='font-size:16px;'>12</span><br />
             <span class='year' style='font-size:11px;line-height: 10px;'>2017</span>")
-       ),
-  p(HTML("<span style='margin-left:60px;font-size:18px;font-weight:bold'>Bookmarking feature</span>")), 
-  p(br(),"We have added a bookmarking feature. The bookmarking feature allows you to return to a previously saved state, share the output of a query on FISHEyE without downloading the plot, continue your data exploration at a later date without having to remember selections, etc. A url will be provided when you click the bookmark button on the top right hand corner of control panel. This url is specific to the selections you made in the control panel."),
-  hr(),
-  
-  
- 
-           tags$div( class='date', style='height:45px;width:30px; font-family:Arial; font-weight:bold;background-color:#ffffff;text-align:center; border-top:1px solid #c0c0c0;
+          ),
+        p(HTML("<span style='margin-left:60px;font-size:18px;font-weight:bold'>Bookmarking feature</span>")
+          ), 
+        p(br(),"We have added a bookmarking feature. The bookmarking feature allows you to return to a previously saved state, share the output of a query on FISHEyE without 
+          downloading the plot, continue your data exploration at a later date without having to remember selections, etc. A url will be provided when you click the 
+          bookmark button on the top right hand corner of control panel. This url is specific to the selections you made in the control panel."
+          ),
+        hr(),
+        tags$div(class='date', style='height:45px;width:30px; font-family:Arial; font-weight:bold;background-color:#ffffff;text-align:center; border-top:1px solid #c0c0c0;
                      border-left:1px solid #c0c0c0;border-right:1px solid #c0c0c0;position:absolute;z-index:3;line-height: 13px;',
                      HTML("<span class='month' style='text-transform:uppercase;font-size:11px;'>Aug</span><br />
-                 <span class='day' style='font-size:16px;'>07</span><br />
-                 <span class='year' style='font-size:11px;line-height: 10px;'>2017</span>")
+                      <span class='day' style='font-size:16px;'>07</span><br />
+                      <span class='year' style='font-size:11px;line-height: 10px;'>2017</span>")
            ),
-           tags$p(HTML("<span style='margin-left:60px;font-size:18px;font-weight:bold'>Percentiles around the median</span>")), 
-           tags$p(tags$br(),"We have been asked to provide percentiles as a measure of variance. All plots and tables now show the 25th and 75th percentiles when median is selected and the standard deviation when mean is selected."),
-           tags$hr(),
+         tags$p(HTML("<span style='margin-left:60px;font-size:18px;font-weight:bold'>Percentiles around the median</span>")
+                  ), 
+         tags$p(tags$br(),"We have been asked to provide percentiles as a measure of variance. All plots and tables now show the 25th and 75th percentiles when 
+                  median is selected and the standard deviation when mean is selected."
+                  ),
+         tags$hr(),
            
          tags$div( class='date', style='height:45px;width:30px;font-family:Arial;font-weight:bold;background-color:#ffffff;text-align:center;border-top:1px solid #c0c0c0;
                    border-left:1px solid #c0c0c0;border-right:1px solid #c0c0c0;position:absolute;z-index:3;line-height: 13px;',
