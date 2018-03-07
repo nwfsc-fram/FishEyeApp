@@ -118,9 +118,10 @@ tags$head(tags$body(includeHTML("google-analytics.noaa.js"))),
                                                       tabPanel('Get started',
                                                                fluidRow(column(12, htmlOutput('GetStartedText')))))))))),
                                 
-                                                      conditionalPanel(condition="input.VariableSelect!=''",  fluidRow(
-                                                        column(2, uiOutput("DataButton")),  
-                                                        column(12, dataTableOutput("TableMain"), plotOutput("PlotMain", height="auto",width="auto"))
+                                                      conditionalPanel(condition="input.VariableSelect!=''",  
+                                                        fluidRow(column(2, uiOutput("DataButton")),  
+                                                                column(12, dataTableOutput("TableMain"), 
+                                                                       plotOutput("PlotMain", height="auto",width="auto"))
                                                       )))
 ############################
 #----Case Study -----#

@@ -289,12 +289,15 @@ fluidPage(title = "FISHEyE",
                              
                               wellPanelSub( 
                                   wellPanelSub(
-                                  conditionalPanel(condition="input.LayoutSelect!='Metrics'&&input.Sect_sel=='CV'&&input.Ind_sel=='Demographic'&&
-                                                                            input.demSelect=='Exponential Shannon Index'
-                                                                          ||input.LayoutSelect!='Metrics'&&input.Sect_sel=='CV'&&input.Ind_sel=='Demographic'&&
-                                                                            input.demSelect=='Proportion of revenue from CS fishery'
-                                                                          ||input.LayoutSelect!='Metrics'&&input.Sect_sel=='CV'&&input.Ind_sel=='Demographic'&&
-                                                                            input.demSelect=='Fishery participation'", 
+                                  conditionalPanel(condition="input.LayoutSelect!='Metrics'&&input.Sect_sel=='CV'&&
+                                                                        input.Ind_sel=='Demographic'&&
+                                                                        input.demSelect=='Exponential Shannon Index'
+                                                                    ||input.LayoutSelect!='Metrics'&&input.Sect_sel=='CV'&&
+                                                                        input.Ind_sel=='Demographic'&&
+                                                                        input.demSelect=='Proportion of revenue from CS fishery'
+                                                                    ||input.LayoutSelect!='Metrics'&&input.Sect_sel=='CV'&&
+                                                                        input.Ind_sel=='Demographic'&&
+                                                                        input.demSelect=='Fishery participation'", 
                                                  uiOutput("FishAkselect")), style = "padding: 0px;margin-bottom:0px; border: 3px solid #D3D3D3;border-radius:10px;"),
                                   wellPanelSub(
                                   conditionalPanel(condition="input.Ind_sel!='Economic'&input.AVE_MED2!='Total'&
@@ -308,18 +311,20 @@ fluidPage(title = "FISHEyE",
                                  uiOutput("Yearselect"),
                                  wellPanelSub(
                                     conditionalPanel(condition=
-                                         "input.Sect_sel=='CV'&&input.CategorySelect!='Homeport'&&input.CategorySelect!='State'&&
-                                          input.Ind_sel=='Economic'&&input.ShortdescrSelect=='Revenue'||
+                                         "input.Sect_sel=='CV'&&input.CategorySelect!='Homeport'&&
+                                                  input.CategorySelect!='State'&&
+                                          input.CategorySelect!='Vessel length class'&&input.Ind_sel=='Economic'&&
+                                                  input.ShortdescrSelect=='Revenue'||
                                           input.Sect_sel=='CV'&&input.CategorySelect!='Homeport'&&input.CategorySelect!='State'&&
-                                          input.Ind_sel=='Demographic'&&input.demSelect=='Gini coefficient'||
+                                          input.CategorySelect!='Vessel length class'&&input.Ind_sel=='Demographic'&&input.demSelect=='Gini coefficient'||
                                           input.Sect_sel!='FR'&&input.CategorySelect!='Homeport'&&input.CategorySelect!='State'&&
-                                          input.Ind_sel=='Demographic'&&input.demSelect=='Number of vessels'||
+                                          input.CategorySelect!='Vessel length class'&&input.Ind_sel=='Demographic'&&input.demSelect=='Number of vessels'||
                                           input.Sect_sel=='CV'&&input.CategorySelect!='Homeport'&&input.CategorySelect!='State'&&
-                                          input.Ind_sel=='Demographic'&&input.demSelect=='Vessel length'||
+                                          input.CategorySelect!='Vessel length class'&&input.Ind_sel=='Demographic'&&input.demSelect=='Vessel length'||
                                           input.Sect_sel!='FR'&&input.CategorySelect!='Homeport'&&input.CategorySelect!='State'&&
-                                          input.Ind_sel=='Social and Regional'&&input.socSelect=='Seasonality'||
+                                          input.CategorySelect!='Vessel length class'&&input.Ind_sel=='Social and Regional'&&input.socSelect=='Seasonality'||
                                           input.Sect_sel!='FR'&&input.CategorySelect!='Homeport'&&input.CategorySelect!='State'&&
-                                          input.Ind_sel=='Social and Regional'&&input.socSelect=='Share of landings by state'",
+                                          input.CategorySelect!='Vessel length class'&&input.Ind_sel=='Social and Regional'&&input.socSelect=='Share of landings by state'",
                                     uiOutput('moreOptions')),
                                     style = "padding: 0px;margin-bottom:0px; border: 3px solid #D3D3D3;border-radius:10px;"#,
                                    #conditionalPanel(condition="",uiOutput('moreOptions'))#&&input.ShortdescrSelect=='Revenue'
@@ -336,7 +341,7 @@ fluidPage(title = "FISHEyE",
             ),      style = "padding: 0px;border: 1px solid #000000;") # end right side column
 
 )),
-        tabPanel(HTML('History'), htmlOutput('HistoryText')),
+        #tabPanel(HTML('History'), htmlOutput('HistoryText')),
         navbarMenu("Instructions",
                      tabPanel("About", 
                               source("external/explorer/explorerSourceFiles/about.R")$value
