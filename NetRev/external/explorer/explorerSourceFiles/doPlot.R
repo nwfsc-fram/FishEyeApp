@@ -1,13 +1,15 @@
 #https://github.com/hadley/ggplot2/issues/1301  #use website for dealing with stacked bar plot order issue
 doPlot <- function(dat, x, y, type){
   if(PermitPlot()){
+    if(is.na(dat$VALUE)==T) {
      dat <- subset(dat, is.na(dat$VALUE)==FALSE)
+    } else (dat <- dat)
 
     # Reorder the facet variable by the column sort. Will order alphabetically otherwise 
      dat$sort2 <- if(input$tabs=="Panel1") {
                         reorder(dat$VARIABLE, dat$sort) 
-                  } else {
-                        if(input$LayoutSelect=='Economic measures'){
+               } else {
+                  if(input$LayoutSelect=='Economic measures'){
                             reorder(dat$SHORTDESCR, dat$sort)} else {reorder(dat$VARIABLE, dat$sort)}}
      
     groupVar <- ifelse(type=="summary", "SHORTDESCR", "THIRDS")
@@ -21,12 +23,14 @@ doPlot <- function(dat, x, y, type){
 
     if(type == "summary"){
       rectvars <- dat %>% distinct(sort2,YEAR,SHORTDESCR) %>% group_by(sort2,SHORTDESCR) %>% 
-                          transmute(minx=as.numeric(min(YEAR)), xmaxscale=length(YEAR[YEAR<2011]),
-                                    maxx=max(YEAR)) %>% data.frame()%>% distinct
+                          mutate(minx=as.numeric(min(YEAR)), xmaxscale=length(YEAR[YEAR<2011]),
+                                    maxx=max(YEAR)) %>% subset(select=c(sort2,SHORTDESCR, minx,xmaxscale,maxx)) %>% 
+                                    data.frame()%>% distinct
     } else {
       rectvars <- dat %>% distinct(sort2,YEAR,THIRDS) %>% group_by(sort2,THIRDS) %>% 
-                          transmute(minx=as.numeric(min(YEAR)), xmaxscale=length(YEAR[YEAR<2011]), 
-                                    maxx=max(YEAR)) %>% data.frame()%>% distinct
+                          mutate(minx=as.numeric(min(YEAR)), xmaxscale=length(YEAR[YEAR<2011]), 
+                                    maxx=max(YEAR)) %>% subset(select=c(sort2,THIRDS,minx,xmaxscale,maxx)) %>% 
+                                    data.frame()%>% distinct
     }
     rectvars$xmaxscale <- max(rectvars$xmaxscale)
     
@@ -186,7 +190,8 @@ doPlot <- function(dat, x, y, type){
       }
     }
 
-    
+     
+    print(head(dat))
 # Begin ggplot    
     g <- ggplot(dat[!is.na(dat$VALUE),], aes_string(x = x, y = y , group = groupVar), environment=environment())
     if(type == "summary"){    
@@ -218,7 +223,7 @@ doPlot <- function(dat, x, y, type){
       if(length(yr()) > 1){
         g <- g + geom_line(aes_string(colour = groupVar), size=1.5)
             } else{
-              g <- g + geom_point(aes_string(colour =groupVar), size=4)
+        g <- g + geom_point(aes_string(colour =groupVar), size=4)
             }
           } # end variability figure
 

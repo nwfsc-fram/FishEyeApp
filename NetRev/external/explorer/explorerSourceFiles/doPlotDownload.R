@@ -15,15 +15,18 @@ doPlotDownload <- function(dat, x, y, type){
     }
     
     if(type == "summary"){
-      rectvars <- dat %>% distinct(sort2,YEAR) %>% group_by(sort2) %>% 
-                  transmute(minx=as.numeric(min(YEAR)), xmaxscale=length(YEAR[YEAR<2011]), maxx=max(YEAR)) %>%
-                  data.frame()%>% distinct %>% merge(dat %>% distinct(sort2,SHORTDESCR))
+      rectvars <- dat %>% distinct(sort2,YEAR,SHORTDESCR) %>% group_by(sort2,SHORTDESCR) %>% 
+        mutate(minx=as.numeric(min(YEAR)), xmaxscale=length(YEAR[YEAR<2011]),
+               maxx=max(YEAR)) %>% subset(select=c(sort2,SHORTDESCR, minx,xmaxscale,maxx)) %>% 
+        data.frame()%>% distinct
     } else {
       rectvars <- dat %>% distinct(sort2,YEAR,THIRDS) %>% group_by(sort2,THIRDS) %>% 
-                  transmute(minx=as.numeric(min(YEAR)), xmaxscale=length(YEAR[YEAR<2011]), maxx=max(YEAR)) %>% 
-                  data.frame()%>% distinct %>% merge(dat %>% distinct(sort2,SHORTDESCR))
+        mutate(minx=as.numeric(min(YEAR)), xmaxscale=length(YEAR[YEAR<2011]), 
+               maxx=max(YEAR)) %>% subset(select=c(sort2,THIRDS,minx,xmaxscale,maxx)) %>% 
+        data.frame()%>% distinct
     }
-   
+    rectvars$xmaxscale <- max(rectvars$xmaxscale)
+    
     
     groupVar <- ifelse(type=="summary", "SHORTDESCR", "THIRDS")
     facetVar <- ifelse(type== "summary" , "VARIABLE", "SHORTDESCR")

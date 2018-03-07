@@ -51,20 +51,21 @@ output$Yearselect <- renderUI({
       tags$div(class="ckbox", checkboxGroupInput( "YearSelect","Years:", choices = DatVars()$YEAR[6:length(DatVars()$YEAR)], selected = DatVars()$YEAR[6:length(DatVars()$YEAR)]))
   } else {
     if(input$Ind_sel=="Demographic"){
-    if(input$Sect_sel=="CV"&input$demSelect=='Gini coefficient'|input$demSelect=='Number of vessels'|input$Sect_sel=="CV"&input$demSelect=='Vessel length'){
+    if(input$Sect_sel=="CV"&input$demSelect=='Gini coefficient'&input$CategorySelect=='Fisheries'|input$demSelect=='Number of vessels'&input$CategorySelect=='Fisheries'&input$Sect_sel=='CV'|input$demSelect=='Number of vessels'&input$Sect_sel!='CV'|input$Sect_sel=="CV"&input$demSelect=='Vessel length'&input$CategorySelect=='Fisheries'){
        if(input$moreOptions=="FALSE"){
           tags$div(class="ckbox", checkboxGroupInput( "YearSelect","Years:", choices = DatVars()$YEAR[6:length(DatVars()$YEAR)], selected = DatVars()$YEAR[6:length(DatVars()$YEAR)]))
     } else{
-      if(input$Sect_sel=="FR"){  
-        tags$div(class="ckbox", checkboxGroupInput( "YearSelect","Years:", choices = DatVars()$YEAR[6:length(DatVars()$YEAR)], selected = DatVars()$YEAR[6:length(DatVars()$YEAR)], inline=T))
-      } else {
+#      if(input$Sect_sel=="FR"){  
         tags$div(class="ckbox", checkboxGroupInput( "YearSelect","Years:", choices = DatVars()$YEAR[2:length(DatVars()$YEAR)], selected = DatVars()$YEAR[6:length(DatVars()$YEAR)], inline=T))
-      }
+#      } else {
+#        tags$div(class="ckbox", checkboxGroupInput( "YearSelect","Years:", choices = DatVars()$YEAR[2:length(DatVars()$YEAR)], selected = DatVars()$YEAR[6:length(DatVars()$YEAR)], inline=T))
+#      }
     } 
     } else{
       tags$div(class="ckbox", checkboxGroupInput( "YearSelect","Years:", choices = DatVars()$YEAR[6:length(DatVars()$YEAR)], selected = DatVars()$YEAR[6:length(DatVars()$YEAR)]))
       }
-    } else if(input$Ind_sel=="Social and Regional"){ 
+    } # END DEMOGRAPHIC
+    else if(input$Ind_sel=="Social and Regional"){ 
     if(input$socSelect!='Seasonality'&input$socSelect!='Share of landings by state'){
       tags$div(class="ckbox", checkboxGroupInput( "YearSelect","Years:", choices = DatVars()$YEAR[6:length(DatVars()$YEAR)], selected = DatVars()$YEAR[6:length(DatVars()$YEAR)]))
     } else{
@@ -80,7 +81,8 @@ output$Yearselect <- renderUI({
         tags$div(class="ckbox", checkboxGroupInput( "YearSelect","Years:", choices = DatVars()$YEAR[2:length(DatVars()$YEAR)], selected = DatVars()$YEAR[6:length(DatVars()$YEAR)], inline=T))
       }
     }}}
-    } else if(input$Ind_sel=='Economic'){
+    } #END SOCIAL AND REGIONAL 
+    else if(input$Ind_sel=='Economic'){
 #    if(input$ShortdescrSelect[1]!="Revenue"){
       if(!input$ShortdescrSelect[1] %in% "Revenue"){
         if(input$Sect_sel=="FR"){  
@@ -99,7 +101,7 @@ output$Yearselect <- renderUI({
         tags$div(class="ckbox", checkboxGroupInput( "YearSelect","Years:", choices = DatVars()$YEAR[2:length(DatVars()$YEAR)], selected = DatVars()$YEAR[6:length(DatVars()$YEAR)], inline=T))
       }
     }
-    }}
+    }} #END ECONOMIC
 }}
 })  
 #END YEAR

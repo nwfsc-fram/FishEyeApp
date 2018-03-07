@@ -25,9 +25,10 @@ doPlot <- function(dat, x, y){
     }    else if(input$Ind_sel!="Economic"){ 
       if(input$LayoutSelect=="Metrics"){   
         if(input$PlotSelect==T&!is.na(max(dat$VARIANCE))) { 
-          as.numeric(data.frame(dat %>% group_by(METRIC) %>% mutate(threshold=max(VALUE, na.rm=T)+max(VARIANCE, na.rm=T)+max(VALUE, na.rm=T)/10))%>% subset(select=c(threshold)))
+          data.frame(dat %>% group_by(METRIC) %>% mutate(threshold=max(VALUE, na.rm=T)+max(VARIANCE, na.rm=T)+max(VALUE, na.rm=T)/10))%>% 
+                       subset(select=c(threshold))
         } else {
-          as.numeric(data.frame(dat %>% group_by(METRIC) %>% mutate(threshold=max(VALUE, na.rm=T)+max(VALUE, na.rm=T)/10))%>% subset(select=c(threshold)))
+          data.frame(dat %>% group_by(METRIC) %>% mutate(threshold=max(VALUE, na.rm=T)+max(VALUE, na.rm=T)/10)) %>% subset(select=c(threshold))
         }
           } else {
           0
