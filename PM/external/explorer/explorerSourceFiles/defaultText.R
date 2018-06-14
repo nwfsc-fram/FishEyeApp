@@ -61,6 +61,16 @@ output$BlogUpdates <- renderUI({
   withTags(
   div(style = "margin-top:0; padding-top:0;background-color:#F8F8E9;",
            h3("Updates"),
+  # Data updates
+  div( class='date', style='height:45px;width:30px; font-family:Arial; font-weight:bold;background-color:#ffffff;text-align:center; border-top:1px solid #c0c0c0;
+       border-left:1px solid #c0c0c0;border-right:1px solid #c0c0c0;position:absolute;z-index:3;line-height: 13px;',
+       HTML("<span class='month' style='text-transform:uppercase;font-size:11px;'>May</span><br />
+            <span class='day' style='font-size:16px;'>15</span><br />
+            <span class='year' style='font-size:11px;line-height: 10px;'>2018</span>")
+       ),
+  p(HTML("<span style='margin-left:60px;font-size:18px;font-weight:bold'>Data updated</span>")), 
+  p(br(),"Data are periodically updated. Please check back here for updates on data. Data last updated on 05/14/2018."),
+  hr(),
   #Major update - adding other sectors
   
   div( class='date', style='height:45px;width:30px; font-family:Arial; font-weight:bold;background-color:#ffffff;text-align:center; border-top:1px solid #c0c0c0;
@@ -117,17 +127,7 @@ div( class='date', style='height:45px;width:30px; font-family:Arial; font-weight
                   In addition, we revised the functionality of the application. You can now compare by vessel or by metrics. 
                   When comparing metrics, the metrics displayed will depend upon the selected statistics."),
            hr(),
-  # Data updates
-           div( class='date', style='height:45px;width:30px; font-family:Arial; font-weight:bold;background-color:#ffffff;text-align:center; border-top:1px solid #c0c0c0;
-                     border-left:1px solid #c0c0c0;border-right:1px solid #c0c0c0;position:absolute;z-index:3;line-height: 13px;',
-                     HTML("<span class='month' style='text-transform:uppercase;font-size:11px;'>Jun</span><br />
-                          <span class='day' style='font-size:16px;'>20</span><br />
-                          <span class='year' style='font-size:11px;line-height: 10px;'>2016</span>")
-                     ),
-           p(HTML("<span style='margin-left:60px;font-size:18px;font-weight:bold'>Data updated</span>")), 
-           p(br(),"Data are periodically updated. Please check back here for updates on data."),
-           hr(),
-  # Welcome to fisheye
+   # Welcome to fisheye
            div( class='date', style='height:45px;width:30px;font-family:Arial;font-weight:bold;background-color:#ffffff;text-align:center;border-top:1px solid #c0c0c0;
                      border-left:1px solid #c0c0c0;border-right:1px solid #c0c0c0;position:absolute;z-index:3;line-height: 13px;',
                      HTML("<span class='month' style='text-transform:uppercase;font-size:11px;'>Jun</span><br />
