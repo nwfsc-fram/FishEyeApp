@@ -65,7 +65,19 @@ output$BlogUpdates <- renderUI({
  tags$div(style = "margin-top:0; padding-top:0;background-color:#F8F8E9;",
            tags$h3("Updates"),
  
-        div( class='date', style='height:45px;width:30px; font-family:Arial; font-weight:bold;background-color:#ffffff;text-align:center; border-top:1px solid #c0c0c0;
+          div( class='date', style='height:45px;width:30px; font-family:Arial; font-weight:bold;background-color:#ffffff;text-align:center; border-top:1px solid #c0c0c0;
+          border-left:1px solid #c0c0c0;border-right:1px solid #c0c0c0;position:absolute;z-index:3;line-height: 13px;',
+               HTML("<span class='month' style='text-transform:uppercase;font-size:11px;'>May</span><br />
+                    <span class='day' style='font-size:16px;'>15</span><br />
+                    <span class='year' style='font-size:11px;line-height: 10px;'>2018</span>")
+               ),
+          p(HTML("<span style='margin-left:60px;font-size:18px;font-weight:bold'>Data updates</span>")
+          ), 
+          p(br(),"Data are periodically updated. 2016 data was added on 5/14/2018. Check back here for further notices of data updates."
+          ),
+          hr(),
+          
+div( class='date', style='height:45px;width:30px; font-family:Arial; font-weight:bold;background-color:#ffffff;text-align:center; border-top:1px solid #c0c0c0;
           border-left:1px solid #c0c0c0;border-right:1px solid #c0c0c0;position:absolute;z-index:3;line-height: 13px;',
           HTML("<span class='month' style='text-transform:uppercase;font-size:11px;'>Oct</span><br />
             <span class='day' style='font-size:16px;'>12</span><br />
