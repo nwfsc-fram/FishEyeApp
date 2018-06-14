@@ -10,12 +10,9 @@ library(scales)
 library(dplyr)
 #library(mail) #for sending email
 
-currentyear <- 2016
-
 options(shiny.sanitize.errors = FALSE)
 #options(error=browser) # debugging
 source("external/serverHead.R")
-
 
 shinyServer(
   function(input, output, session) {    

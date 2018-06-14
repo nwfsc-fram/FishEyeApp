@@ -1,7 +1,6 @@
 doPlot <- function(dat, x, y){
   if(PermitPlot()){
     dat <- subset(dat, is.na(dat$VALUE)==FALSE)
-    #currentyear <- 2015
     ######################################################
     
     dat$sort2 <- if(input$LayoutSelect!="Metrics"){

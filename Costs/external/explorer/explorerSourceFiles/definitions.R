@@ -1,5 +1,5 @@
 # Text for definitions page
-currentyear <- 2016
+#currentyear <- 2016
 
 tags$div(style = "margin: 15px 15px 30px; width: 60%",    
          HTML("<div style='display:inline-block;width:100%;padding:0;line-height: 0.72em; margin-top:5px; margin-bottom:5px;'>
@@ -11,7 +11,7 @@ tags$div(style = "margin: 15px 15px 30px; width: 60%",
     p("The variables and their definitions used in 
       this application are from the", tags$a(href="https://www.nwfsc.noaa.gov/research/divisions/fram/economic/economic_data_reports.cfm", '2014 Economic Data Collection (EDC) reports. ', target="_blank")#, 
 #      " A copy of this report and reports from other years can be found on the", tags$a(href="http://www.nwfsc.noaa.gov/research/divisions/fram/economic/economic_data_reports.cfm", "EDC reports webpage. ", target="_blank"), 
-#      " Updated EDC reports that include the 2013 and 2014 data will be available in early 2016. For an overview of catcher vessels activities, vessel characteristics, and vessel economic
+#      " Updated EDC reports that include the 2016 and 2017 data will be available in early 2019. For an overview of catcher vessels activities, vessel characteristics, and vessel economic
 #      performance measures, please visit this ",
 #      tags$a(href="2012CatcherVessel.jpg", 'infographic.', target="_blank")) 
   ),  
