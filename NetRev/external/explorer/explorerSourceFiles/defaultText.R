@@ -1,6 +1,6 @@
 
 ##############################
-#Email
+#Contact us
 ###############################
 output$Email <- renderUI({
   
@@ -75,7 +75,8 @@ output$BlogUpdates <- renderUI({
                       <span class='year' style='font-size:11px;line-height: 10px;'>2018</span>")
                  ),
        tags$p(HTML("<span style='margin-left:60px;font-size:18px;font-weight:bold'>Data updated</span>")), 
-       tags$p(tags$br(),"Data are periodically updated. We uploaded 2016 data today. Data were previously updated 1/30/17, 12/02/16, 5/25/16, 4/25/16, 3/7/16, 2/24/16, 2/15/16. On February 24th, we added vessels that reported Alaska as their homeport. 
+       tags$p(tags$br(),"Data are periodically updated. We uploaded 2016 data today. Data were previously updated 1/30/17, 12/02/16, 5/25/16, 4/25/16, 3/7/16, 2/24/16, 2/15/16. 
+              On February 24th, we added vessels that reported Alaska as their homeport. 
               These vessels are grouped into the Puget Sound port. Only their activities in a West Coast fishery are included; activities in Alaskan fisheries are not included."),
               tags$hr(),
     div( class='date', style='height:45px;width:30px; font-family:Arial; font-weight:bold;background-color:#ffffff;text-align:center; border-top:1px solid #c0c0c0;

@@ -171,18 +171,20 @@ DatThirdsTable <- reactive({
                         CATEGORY %in% input$CategorySelect &
                         VARIABLE %in% input$VariableSelect &
                         STAT == input$StatSelect)
-  
-  if(input$Sect_sel=="CV"){
-      datSub <- subset(datSub, YEAR %in% input$YearSelect &  
-                           FISHAK == input$FishAkSelect &
-                           whitingv == input$FishWhitingSelect)
-      datSub$FISHAK <- ifelse(datSub$AK_FLAG==1, datSub$repFISHAK, datSub$FISHAK)
-      datSub$whitingv <- ifelse(datSub$AK_FLAG==1, datSub$repwhitingv, as.character(datSub$whitingv))
+ 
+   if(input$Sect_sel=="CV"){
+  datSub <- with(datSub, datSub[which(YEAR %in% input$YearSelect &  
+                                        FISHAK == input$FishAkSelect &
+                                        whitingv == input$FishWhitingSelect),])
+      datSub$FISHAK <- ifelse(datSub$AK_FLAG==0, as.character(datSub$FISHAK), datSub$repFISHAK)
+      datSub$whitingv <- ifelse(datSub$AK_FLAG==0, as.character(datSub$whitingv), datSub$repwhitingv)
       datSub <- datSub %>% subset(select=-c(repFISHAK,repwhitingv,AK_FLAG))
   } else if(input$Sect_sel=="FR") {
       datSub <- subset(datSub, ACS == input$ProductionSelect &
                        YEAR %in% input$YearSelect2) 
   }
+  
+  
   
   datSub$VALUE <- as.numeric(datSub$VALUE)
   datSub$VARIANCE <- as.numeric(datSub$VARIANCE)

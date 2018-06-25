@@ -14,7 +14,7 @@ function(request) {
 fluidPage(title = "FISHEyE",
           useShinyjs(),
           # create a CSS to modify style of validation test error (for Variability analysis)
-#          tags$head(tags$body(includeHTML("google-analytics.noaa.js"))),
+          tags$head(tags$body(includeHTML("google-analytics.noaa.js"))),
           tags$head(
            tags$style(HTML(".shiny-output-error-validation {color: red;font-size: 120%;}")),
              tags$style(HTML(".select {margin-top:-20px}"),tags$textarea(id="message", rows=3, cols=40, "Default value")),
