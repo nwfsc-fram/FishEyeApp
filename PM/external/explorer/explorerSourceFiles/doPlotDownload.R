@@ -108,7 +108,7 @@ doPlotDownload <- function(dat, x, y){
     
     
     yr <- function(){
-      return(as.numeric(unique(dat$YEAR)))
+      return(unique(as.numeric(dat$YEAR)))
     }
     
     groupVar <- "whitingv"

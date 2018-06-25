@@ -114,9 +114,9 @@ doPlot <- function(dat, x, y){
     
     
     yr <- function(){
-      return(as.numeric(unique(dat$YEAR)))
+      return(unique(as.numeric(dat$YEAR)))
     }
-    
+    print(yr())
     groupVar <- "whitingv"
 
 

@@ -1,5 +1,7 @@
 
-###--------Links to other fisheye apps----------------####
+################################
+#Other applications
+################################
 output$ApplicationsText <- renderUI({
   tags$div(style="margin:15px 15px 30px; with: 60%",
            tags$br(),
@@ -11,8 +13,11 @@ output$ApplicationsText <- renderUI({
        padding-bottom:10px"> FISHEyE Costs Explorer</a>' )
   )
 })
+####################################
 
-###--------------Email----------------####
+####################################
+#Contact us
+######################################
 output$Email <- renderUI({
   withTags(
   div(style = "margin: 15px 15px 30px; width: 60%",
@@ -44,8 +49,11 @@ output$Email <- renderUI({
            ))
   ) #end withTags
 })
+####################################
 
-###--------Blog page intro text--------------####
+####################################
+#Blog page intro text
+####################################
 output$BlogText <- renderUI({
   withTags(
   div(style = "margin-top: 15px;margin-bottom:0; width: 80%; ",
@@ -55,8 +63,12 @@ output$BlogText <- renderUI({
   )
   ) #end withTags
 }) #        br(),
+####################################
+
 #       ,
-###-------------------------Blog response-----------------------####
+####################################
+#Blog
+####################################
 output$BlogUpdates <- renderUI({ 
   withTags(
   div(style = "margin-top:0; padding-top:0;background-color:#F8F8E9;",
@@ -153,8 +165,11 @@ div( class='date', style='height:45px;width:30px; font-family:Arial; font-weight
 #     tags$li("Restructured this bulletin board.")
 #  ),
 #        HTML("<hr color='red'/>"),
+####################################
 
-###--------------------FAQ--------------------####
+####################################
+#FAQ
+####################################
 output$BlogResponses <- renderUI({   
   withTags(
   div(style = "background-color:#F8F8E9",
@@ -200,9 +215,12 @@ output$BlogResponses <- renderUI({
   )#end withTags
   
 })
+####################################
 
 
-###--------------Default Plot Text----------------------####
+####################################
+#Default Plot Text
+####################################
 output$DefaultPlotText <- renderUI({
   if(PermitPlot()) return()
   withTags(
@@ -236,8 +254,11 @@ output$DefaultPlotText <- renderUI({
       ) # End DIV
       ) #end withTags
 })
+####################################
 
-###--------------Get Started Text----------------------####
+####################################
+#Get Started Text
+####################################
 output$GetStartedText <- renderUI({
   #if(PermitPlot()) return()
 #  withTags(
@@ -268,9 +289,12 @@ output$GetStartedText <- renderUI({
   )#End DIV
 #  )#end withTags
 })
+####################################
 
 
-###--------------- Case Study text:-------------------------####
+####################################
+#Case Study text
+####################################
 #1st paragraph
 output$CaseStudyp1 <- renderUI({
   withTags(
@@ -349,11 +373,11 @@ a(href="http://dataexplorer.northwestscience.fisheries.noaa.gov/fisheye/NetRevEx
   output$CaseStudyFig5 <- renderUI({  
     tags$img(src="TrawlDAS.png", height=525)
   })
+####################################
   
-##--------------- End Case Study text:-------------------------###
-
-###-------------- CS History Text-------------------------###
-#####
+####################################
+# CS History Text
+####################################
 output$HistoryText <- renderUI({
   withTags(
     div(style = "margin: 15px 15px 30px; width: 60%",
@@ -376,4 +400,4 @@ output$HistoryText <- renderUI({
     )#end DIV
   )#end withTags
 })
-####
+########################################
