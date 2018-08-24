@@ -195,7 +195,7 @@ doPlotDownload <- function(dat, x, y, type){
         }
     }
 
-    print(scale_geom_text())
+ #   print(scale_geom_text())
         g <- ggplot(dat[!is.na(dat$VALUE),], aes_string(x = x, y = y , group = groupVar), environment=environment()) 
     
     if(type == "summary"){

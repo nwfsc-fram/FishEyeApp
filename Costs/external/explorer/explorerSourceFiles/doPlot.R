@@ -5,17 +5,24 @@ doPlot <- function(dat, x, y){
  
     dat$sort2 <- reorder(dat$VARIABLE, dat$sort) 
    
-    rectvars <- dat %>% distinct(sort2,YEAR) %>% group_by(sort2) %>% transmute(minx=min(as.numeric(YEAR)), xmaxscale=length(YEAR[YEAR<2011]), maxx=max(YEAR))  %>% 
-      data.frame()%>% distinct %>% merge(dat %>% distinct(sort2, SHORTDESCR))
+    rectvars <- dat %>% distinct(sort2,YEAR) %>% 
+      group_by(sort2) %>% 
+      transmute(minx=min(as.numeric(YEAR)), xmaxscale=length(YEAR[YEAR<2011]), maxx=max(YEAR)) %>% 
+      data.frame()%>% distinct %>%
+      merge(dat %>% distinct(sort2, SHORTDESCR))
     
+     yr <- function(){
+       as.numeric(unique(dat$YEAR))
+     }
+     
     groupVar <- "SHORTDESCR"
     facetVar <- "VARIABLE"
     
 
     ## Change color palette to printer-friendly colors that are color-blind friendly. Want consistent colors with what Erin is using
     colourList <- c('All variable costs'='#590014',
-                    'Buyback fees'="#8f0007","Fish purchases"="#8f0007","Processing crew"="#8f0007",#'Freight'="#8f0007", #a50026
-                    'Captain'="#d73027","Non-processing crew"="#d73027",'Freight'='#d73027',#''='#d73027',
+                    'Buyback fees'="#8f0007","Fish purchases"="#8f0007","Processing crew"="#8f0007",
+                    'Captain'="#d73027","Non-processing crew"="#d73027",'Freight'='#d73027',
                     'Cost recovery fees'='#FE8181','Labor'='#FE8181',
                     'Fuel'="#fdae61",'Off-site freezing & storage'="#fdae61",
                     
@@ -33,10 +40,36 @@ doPlot <- function(dat, x, y){
                      "Processing equipment"="#3690c0",
                     'Other fixed costs'="#74a9cf"
                     )
-    
 
+    thresh <- function(){
+      if(input$PlotSelect != "Stacked bar"){
+        if(input$StatSelect=='Mean per vessel'|
+           input$StatSelect=='Median per vessel'|
+           input$StatSelect=='Fleet-wide total'|
+           input$StatSelect=="Mean per processor"|
+           input$StatSelect=='Median per processor'|
+           input$StatSelect=='Industry-wide total'|
+           input$StatSelect=='Mean per vessel/day'|
+           input$StatSelect=='Median per vessel/day'|input$StatSelect=='Fleet-wide average/day'){
+          return(max(dat$VALUE,na.rm=T)/1000+max(dat$VALUE,na.rm=T)/10000)
+        } else {
+          return(max(dat$VALUE,na.rm=T)+max(dat$VALUE,na.rm=T)/10) 
+        }
+      } else {
+        return(
+          max(data.frame(
+            dat %>% group_by(VARIABLE, YEAR, SHORTDESCR) %>% 
+              summarise(VALUE=max(VALUE, na.rm=T)) %>% 
+              group_by(VARIABLE,YEAR) %>% 
+              summarise(VALUE=sum(VALUE, na.rm=T))
+          )[,'VALUE'])/900
+        )
+      }
+    }
     
-    sect <- function(){
+    
+     print(thresh())
+      sect <- function(){
       if(input$Sect_sel == "CV"){
         return("Catcher Vessels")
       } else if(input$Sect_sel == "M"){
@@ -47,31 +80,9 @@ doPlot <- function(dat, x, y){
         return("First Receivers and Shorebased Processors")
       }}
     
-     yr <- function(){
-       as.numeric(unique(dat$YEAR))
-     }
 
-     thresh <- function(){
-       if(input$PlotSelect != "Stacked bar"){
-         if(input$StatSelect=='Mean per vessel'|input$StatSelect=='Median per vessel'|input$StatSelect=='Fleet-wide total'|
-            input$StatSelect=="Mean per processor"|input$StatSelect=='Median per processor'|input$StatSelect=='Industry-wide total'|
-            input$StatSelect=='Mean per vessel/day'|input$StatSelect=='Median per vessel/day'|input$StatSelect=='Fleet-wide average/day'){
-       return(max(dat$VALUE,na.rm=T)/1000+max(dat$VALUE,na.rm=T)/10000)
-         } else {
-           return(max(dat$VALUE,na.rm=T)+max(dat$VALUE,na.rm=T)/10)  
-         }
-       } else {
-       return(
-         max(data.frame(
-           dat %>% group_by(VARIABLE, YEAR, SHORTDESCR) %>% 
-                       summarise(VALUE=max(VALUE, na.rm=T)) %>% 
-                       group_by(VARIABLE,YEAR) %>% 
-                       summarise(VALUE=sum(VALUE, na.rm=T))
-           )[,'VALUE'])/900
-       )
-       }
-     }
- 
+  
+
  # Plot title construction
      plot.title <- function(){
           return(paste("Summary Cost Measures for West Coast ", sect()))
@@ -82,14 +93,19 @@ doPlot <- function(dat, x, y){
               if(input$Sect_sel=="CV"){
                     sprintf(paste("Group variable:", input$CategorySelect,"  Summed across:", input$FishWhitingSelect))
               } else {
-                    sprintf(paste("Group variable:", input$CategorySelect, "     Statistic: ", input$StatSelect, "  Summed across:", input$FishWhitingSelect))
+                    sprintf(paste("Group variable:", input$CategorySelect, "     Statistic: ", 
+                                  input$StatSelect, "  Summed across:", input$FishWhitingSelect))
            }} else if(input$CategorySelect=="Production activities"){
-                    sprintf(paste("Group variable:", input$CategorySelect, "     Statistic: ", input$StatSelect, "  Summed across:", input$inSelect,' and ', input$FishWhitingSelect))
+                    sprintf(paste("Group variable:", input$CategorySelect, "     Statistic: ", 
+                                  input$StatSelect, "  Summed across:", input$inSelect,' and ', input$FishWhitingSelect))
             } else {
               if(input$Sect_sel=="CV"){
-                    sprintf(paste("Group variable:", input$CategorySelect, "     Statistic: ", input$StatSelect, "  Summed across:", input$inSelect, ' and ', input$FishWhitingSelect))
+                    sprintf(paste("Group variable:", input$CategorySelect, "     Statistic: ", 
+                                  input$StatSelect, "  Summed across:", input$inSelect, ' and ', 
+                                  input$FishWhitingSelect))
               } else {
-                    sprintf(paste("Group variable:", input$CategorySelect, "     Statistic: ", input$StatSelect, "  Summed across:", input$inSelect, ' and ', input$FishWhitingSelect))
+                    sprintf(paste("Group variable:", input$CategorySelect, "     Statistic: ", 
+                                  input$StatSelect, "  Summed across:", input$inSelect, ' and ', input$FishWhitingSelect))
               }}
       }
 
@@ -99,9 +115,9 @@ doPlot <- function(dat, x, y){
     }
     
     
-    # simple scaling for bar charts based on number of inputs
     scale_bars <- function(){
-        b = length(yr())  
+      b = length(input$YearSelect)
+      
       if(b == 1){
         return(0.25)
       } else if(b == 2){
@@ -113,34 +129,35 @@ doPlot <- function(dat, x, y){
       }
     }
     
-# Scaling of "Pre and Post catch shares" text based on number of variables selected    
     scale_text <- function() {
-      #if(input$CategorySelect =="Fisheries" | input$CategorySelect == "Homeport") {
-       # b <- table(table(dat$VARIABLE)>1)[[1]]
-       # if(b >= 5 & b <=11){
-          return(1.3)
-       # } else if(b<5 | b == 12){
-      #    return(1.45)
-      #  } 
-     #   } else {
-     #   return(1.3)
-     # }
-    }    
-
-# Beging ggplot    
-    g <- ggplot(dat[!is.na(dat$VALUE),], aes_string(x = x, y = y , group = groupVar), environment=environment())
-        
-      if(input$PlotSelect=="Line"){
-                g <- g + geom_line(aes_string(colour = groupVar), size=1.5)
-        } # end if statement for line figure
-      else if(input$PlotSelect == "Bar"){
-                g <- g + geom_bar(aes_string(fill = groupVar, order=groupVar), stat="identity", position="dodge", width = scale_bars())
-        } #End if else for side-by-side comparison
-      else {
-                g <- g + geom_bar(aes_string(fill = groupVar, order=groupVar), stat="identity", position="stack", width = scale_bars())
+      if(input$CategorySelect =="Fisheries" | input$CategorySelect == "Homeport") {
+        b <- table(table(dat$VARIABLE)>1)[[1]]
+        if(b<=8 | b==12){
+          return(1.2)
+        }   else {
+          return(1.1)
         }
+      } else {
+        return(1.2)
+      }
+    }   
     
- 
+    # Beging ggplot    
+    g <- ggplot(dat[!is.na(dat$VALUE),], aes_string(x = x, y = y , group = groupVar), environment=environment()) 
+    
+    
+    if(input$PlotSelect=="Line"){
+      g <- g + geom_line(aes_string(colour = groupVar), size=1.5)
+    } # end if statement for line figure
+    else if(input$PlotSelect == "Bar"){
+      g <- g + geom_bar(aes_string(fill = groupVar, order=groupVar), stat="identity", position="dodge", width = scale_bars())
+    } #End if else for side-by-side comparion
+    else {
+      g <- g + geom_bar(aes_string(fill = groupVar, order=groupVar), stat="identity", position="stack", width = scale_bars())
+    }
+
+
+
     # define facet
       g <- g + facet_wrap(~sort2, ncol=2, as.table = TRUE)#
     
@@ -151,17 +168,22 @@ doPlot <- function(dat, x, y){
       
     
     # define solid line y=0
-    g <- g + geom_hline(yintercept = 0) + ylim(0, thresh())
-    
+        g <- g + geom_hline(yintercept = 0)
+        
     # define x- and y-axis labels
     ylab <- function(){
-      if(input$StatSelect=='Mean per vessel'|input$StatSelect=='Median per vessel'|input$StatSelect=='Fleet-wide total'|
-         input$StatSelect=="Mean per processor"|input$StatSelect=='Median per processor'|input$StatSelect=='Industry-wide total'|
-         input$StatSelect=='Mean per vessel/day'|input$StatSelect=='Median per vessel/day'|input$StatSelect=='Fleet-wide average/day'){
+      if(input$StatSelect=='Mean per vessel'|input$StatSelect=='Median per vessel'|
+         input$StatSelect=='Fleet-wide total'|
+         input$StatSelect=="Mean per processor"|input$StatSelect=='Median per processor'|
+         input$StatSelect=='Industry-wide total'|
+         input$StatSelect=='Mean per vessel/day'|input$StatSelect=='Median per vessel/day'|
+         input$StatSelect=='Fleet-wide average/day'){
         paste("Thousands of", currentyear, " $ (",input$StatSelect, ")")
-      } else if(input$StatSelect=='Mean per vessel/dollar of revenue'|input$StatSelect=='Median per vessel/dollar of revenue'|
+      } else if(input$StatSelect=='Mean per vessel/dollar of revenue'|
+                input$StatSelect=='Median per vessel/dollar of revenue'|
                 input$StatSelect=='Fleet-wide average/dollar of revenue'|
-                input$StatSelect=="Mean per processor/dollar of revenue"|input$StatSelect=='Median per processor/dollar of revenue'|
+                input$StatSelect=="Mean per processor/dollar of revenue"|
+                input$StatSelect=='Median per processor/dollar of revenue'|
                 input$StatSelect=='Industry-wide average/dollar of revenue'){
         input$StatSelect
       } else {
@@ -206,10 +228,13 @@ doPlot <- function(dat, x, y){
     
      #   reorder(groupVar, dat$barorder    
         if(length(yr())>1 & min(yr())<2011 & max(yr())>2010){
-                 g <- g + geom_rect(aes(xmin=-Inf, xmax=table(yr()<=2010)[[2]]+.5, ymin=-Inf, ymax=Inf), alpha=.02, fill="grey50") +
-                          geom_text(aes(x=table(yr()<=2010)[[2]]/3.5,y=thresh(), label="Pre-Catch shares"), family="serif",fontface="italic", 
+                 g <- g + geom_rect(aes(xmin=-Inf, xmax=table(yr()<=2010)[[2]]+.5, ymin=-Inf, ymax=Inf), 
+                                    alpha=.02, fill="grey50") +
+                          geom_text(aes(x=table(yr()<=2010)[[2]]/3.5,y=thresh(), label="Pre-Catch shares"), 
+                                    family="serif",fontface="italic", 
                                     hjust=0,color = "grey40", size=7/scale_text()) +
-                          geom_text(aes(x=table(yr()<=2010)[[2]]+table(yr()>2010)[[2]]/1.5,y=thresh(),label="Post-Catch shares"),
+                          geom_text(aes(x=table(yr()<=2010)[[2]]+table(yr()>2010)[[2]]/1.5,y=thresh(),
+                                        label="Post-Catch shares"),
                                     hjust=0, family = "serif", fontface="italic", color = "grey40", size=7/scale_text())  
             } else {
               g <- g  

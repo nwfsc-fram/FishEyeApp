@@ -346,9 +346,11 @@ observe({
 #-------------- Plot options------------------------------
 output$Plotselect <- renderUI({
   if(input$tabs=='Panel1'){
-      tags$div(class="ckbox", selectInput("PlotSelect", "Plot options:", choices= c("Bar", "Stacked bar", "Line"), selected='Line'))
+      tags$div(class="ckbox", selectInput("PlotSelect", "Plot options:", choices= c("Bar", "Stacked bar", "Line"),
+                                          selected='Line'))
   } else {
-    tags$div(class="ckbox", selectInput("PlotSelect", "Plot options:", choices= c("Bar", "Stacked bar", "Line"), selected='Stacked bar'))
+    tags$div(class="ckbox", selectInput("PlotSelect", "Plot options:", choices= c("Bar", "Stacked bar", "Line"), 
+                                        selected='Stacked bar'))
   }
 })
 
@@ -360,16 +362,19 @@ output$Plotselect <- renderUI({
 output$SelectText <- renderText ({ 
   if(input$CategorySelect[1]!="Fisheries"&input$Sect_sel[1]=="CV"){
     HTML("<div style='display:inline-block;width:100%; margin-top:10px'>
-                                       <b>Show data summed across these fisheries: </b><button id='isummed' type='button' class='btn btn-default action-button shiny-bound-input'> 
+                                       <b>Show data summed across these fisheries: </b>
+          <button id='isummed' type='button' class='btn btn-default action-button shiny-bound-input'> 
          <i class='fa fa-info-circle fa-fw' ></i></button></div>")
   } else  if(input$Sect_sel=="CV"&input$CategorySelect=="Fisheries"){
     HTML("<div style='display:inline-block;width:100%;padding:0;line-height: 0.72em; margin-top:20px; margin-bottom:-25px;'>
                                        <b>Select fisheries:</b> 
                                        <h5><i>Select a fishery group,  </i>
-       <button id='ifg' type='button' class='btn btn-default action-button shiny-bound-input'> <i class='fa fa-info-circle fa-fw' ></i></button></h5></div>")#,
+       <button id='ifg' type='button' class='btn btn-default action-button shiny-bound-input'> 
+         <i class='fa fa-info-circle fa-fw' ></i></button></h5></div>")#,
   }else if(input$Sect_sel=="FR"&input$CategorySelect!="Production activities"){
     HTML("<div style='display:inline-block;width:100%; margin-top:10px'>
-                                       <b>Show data summed across these production categories: </b><button id='isummed' type='button' 
+                                       <b>Show data summed across these production categories: </b>
+        <button id='isummed' type='button' 
          class='btn btn-default action-button shiny-bound-input'> <i class='fa fa-info-circle fa-fw' ></i></button></div>")
   }
   

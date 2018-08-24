@@ -7,9 +7,11 @@ doPlotDownload <- function(dat, x, y){
 
     dat$sort2 <- reorder(dat$VARIABLE, dat$sort) 
 
-    rectvars <- dat %>% distinct(sort2,YEAR) %>% group_by(sort2) %>% transmute(minx=min(as.numeric(YEAR)), xmaxscale=length(YEAR[YEAR<2011]), maxx=max(YEAR)) %>% 
-                      data.frame()%>% distinct %>%
-                      merge(dat %>% distinct(sort2, SHORTDESCR))
+    rectvars <- dat %>% distinct(sort2,YEAR) %>% 
+                        group_by(sort2) %>% 
+                        transmute(minx=min(as.numeric(YEAR)), xmaxscale=length(YEAR[YEAR<2011]), maxx=max(YEAR)) %>% 
+                        data.frame()%>% distinct %>%
+                        merge(dat %>% distinct(sort2, SHORTDESCR))
     
     yr <- function(){
       as.numeric(unique(dat$YEAR))
@@ -42,9 +44,14 @@ doPlotDownload <- function(dat, x, y){
     
     thresh <- function(){
       if(input$PlotSelect != "Stacked bar"){
-        if(input$StatSelect=='Mean per vessel'|input$StatSelect=='Median per vessel'|input$StatSelect=='Fleet-wide total'|
-           input$StatSelect=="Mean per processor"|input$StatSelect=='Median per processor'|input$StatSelect=='Industry-wide total'|
-           input$StatSelect=='Mean per vessel/day'|input$StatSelect=='Median per vessel/day'|input$StatSelect=='Fleet-wide average/day'){
+        if(input$StatSelect=='Mean per vessel'|
+           input$StatSelect=='Median per vessel'|
+           input$StatSelect=='Fleet-wide total'|
+           input$StatSelect=="Mean per processor"|
+           input$StatSelect=='Median per processor'|
+           input$StatSelect=='Industry-wide total'|
+           input$StatSelect=='Mean per vessel/day'|
+           input$StatSelect=='Median per vessel/day'|input$StatSelect=='Fleet-wide average/day'){
         return(max(dat$VALUE,na.rm=T)/1000+max(dat$VALUE,na.rm=T)/10000)
         } else {
           return(max(dat$VALUE,na.rm=T)+max(dat$VALUE,na.rm=T)/10) 

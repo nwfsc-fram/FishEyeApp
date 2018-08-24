@@ -12,11 +12,9 @@
 library(appFrame)
 library(shiny)
 library(ggplot2)
-library(reshape2)
 library(grid)
-#library(scales)
+#library(reshape2)
 library(dplyr)
-#library(mail) #for sending email
 
 options(shiny.sanitize.errors = FALSE)
 options(shiny.trace=FALSE)

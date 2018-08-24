@@ -178,18 +178,27 @@ doPlot <- function(dat, x, y, type){
       }}   
     
 
+#    scale_geom_text <- function() {
+#      if(type == "summary"){    
+#      if(input$DodgeSelect == "Economic measures side-by-side"){
+##          return(max(dat$VALUE, na.rm=T)/850)
+#        } else{
+#          dat %>% group_by(YEAR, SHORTDESCR) %>% summarise(VALUE=max(VALUE, na.rm=T)) %>% group_by(YEAR) %>% 
+#            summarise(VALUE=sum(VALUE, na.rm=T)/900) %>% summarise(max(VALUE)) %>% return()
+#           }} else {
+#        return(max(dat$VALUE, na.rm=T)/850)
+#      }
+ #   }
     scale_geom_text <- function() {
       if(type == "summary"){    
-      if(input$DodgeSelect == "Economic measures side-by-side"){
+        if(input$DodgeSelect == "Economic measures side-by-side"){
           return(max(dat$VALUE, na.rm=T)/850)
         } else{
-          dat %>% group_by(YEAR, SHORTDESCR) %>% summarise(VALUE=max(VALUE, na.rm=T)) %>% group_by(YEAR) %>% 
-            summarise(VALUE=sum(VALUE, na.rm=T)/900) %>% summarise(max(VALUE)) %>% return()
-           }} else {
-        return(max(dat$VALUE, na.rm=T)/850)
-      }
-    }
-
+          return(max(dat$VALUE, na.rm=T)/485)
+        }} else {
+          return(max(dat$VALUE, na.rm=T)/850)
+        }}
+      
      
     print(head(dat))
 # Begin ggplot    
