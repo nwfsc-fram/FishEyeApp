@@ -2,34 +2,40 @@
 ####################################
 #Contact us
 ######################################
-output$Email <- renderUI({
-  
-  tags$div(style = "margin: 15px 15px 30px; width: 60%",
-           h3("Contact us"),
-           tags$p("We look forward to receiving feedback and questions.", tags$br()),
-                  tags$p("Please email us at", strong("nmfs.nwfsc.fisheye@noaa.gov"),
-                         # tags$a(href="mailto:nwfsc.fisheye@noaa.gov?subject=FISHEyE", 'nwfsc.fisheye@noaa.gov'),
-                         tags$br()),
-                  
-#                  tags$p(
-#                    "Lisa Pfeiffer", tags$br(),
-#                    "Economist", tags$br(),
-#                    "Northwest Fisheries Science Center", tags$br(),tags$br(),
 
-#                    "Melanie Harsch", tags$br(), 
-#                    "Contractor-ECS Federal, Inc.", tags$br(),
-#                    "In support of NMFS", tags$br(),
-#                    "Northwest Fisheries Science Center", tags$br(),
-#                    tags$br(),
-#                  tags$hr(),
-                  
-                  # "You can send comments and questions directly to us by clicking",
- #                 tags$a(href="mailto:nwfsc.fisheye@noaa.gov?subject=FISHEyE", 'contact us'), 'or by copying our email address', 
- #                 tags$em('nwfsc.fisheye@noaa.gov'), 'and using your favorite email program.',
-                  tags$br(),
-                  tags$br()
-  )#)
+output$Email <- renderUI({
+  withTags(
+  div(style = "margin: 15px 15px 30px; width: 60%",
+           h3("Contact us"),
+           p("We look forward to receiving feedback and questions.", br()),
+           p(h4("Please email us at", strong("nmfs.nwfsc.fisheye@noaa.gov")),
+                  # tags$a(href="mailto:nwfsc.fisheye@noaa.gov?subject=FISHEyE", 'nwfsc.fisheye@noaa.gov'),
+                  br()),
+
+           p(
+             "Erin Steiner", br(),
+             "Economist", br(),
+             "206-860-3202", br(),
+             "Northwest Fisheries Science Center", br(),br(),
+             #                    "nwfsc.fisheye@noaa.gov",
+
+             "Ashley Vizek", br(),
+             "Contractor-ECS Federal, Inc.", br(),
+             "In support of NMFS", br(),
+             "Northwest Fisheries Science Center", br(),
+             #                    "nwfsc.fisheye@noaa.gov", tags$br(),
+             br(),
+             hr(),
+
+             # "You can send comments and questions directly to us by clicking",
+             #                 tags$a(href="mailto:nwfsc.fisheye@noaa.gov?subject=FISHEyE", 'contact us'), 'or by copying our email address',
+             #                 tags$em('nwfsc.fisheye@noaa.gov'), 'and using your favorite email program.',
+             br(),
+             br()
+           ))
+  ) #end withTags
 })
+
 
 ################################
 #Other applications

@@ -26,27 +26,28 @@ output$Email <- renderUI({
            p(h4("Please email us at", strong("nmfs.nwfsc.fisheye@noaa.gov")),
                   # tags$a(href="mailto:nwfsc.fisheye@noaa.gov?subject=FISHEyE", 'nwfsc.fisheye@noaa.gov'),
                   br()),
-           
-#           p(
-#             "Lisa Pfeiffer", br(),
-#             "Economist", br(),
-#             "Northwest Fisheries Science Center", br(),br(),
 
-             
-#             "Melanie Harsch", br(), 
-#             "Contractor-ECS Federal, Inc.", br(),
-#             "In support of NMFS", br(),
-#             "Northwest Fisheries Science Center", br(),
+           p(
+             "Erin Steiner", br(),
+             "Economist", br(),
+             "206-860-3202", br(),
+             "Northwest Fisheries Science Center", br(),br(),
+             #                    "nwfsc.fisheye@noaa.gov",
 
+             "Ashley Vizek", br(),
+             "Contractor-ECS Federal, Inc.", br(),
+             "In support of NMFS", br(),
+             "Northwest Fisheries Science Center", br(),
+             #                    "nwfsc.fisheye@noaa.gov", tags$br(),
              br(),
              hr(),
-             
+
              # "You can send comments and questions directly to us by clicking",
-             #                 tags$a(href="mailto:nwfsc.fisheye@noaa.gov?subject=FISHEyE", 'contact us'), 'or by copying our email address', 
+             #                 tags$a(href="mailto:nwfsc.fisheye@noaa.gov?subject=FISHEyE", 'contact us'), 'or by copying our email address',
              #                 tags$em('nwfsc.fisheye@noaa.gov'), 'and using your favorite email program.',
              br(),
              br()
-           )#)
+           ))
   ) #end withTags
 })
 ####################################
