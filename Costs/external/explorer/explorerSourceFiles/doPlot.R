@@ -234,7 +234,7 @@ doPlot <- function(dat, x, y){
                                     family="serif",fontface="italic", 
                                     hjust=0,color = "grey40", size=7/scale_text()) +
                           geom_text(aes(x=table(yr()<=2010)[[2]]+table(yr()>2010)[[2]]/1.5,y=thresh(),
-                                        label="Post-Catch shares"),
+                                        label="Catch shares"),
                                     hjust=0, family = "serif", fontface="italic", color = "grey40", size=7/scale_text())  
             } else {
               g <- g  

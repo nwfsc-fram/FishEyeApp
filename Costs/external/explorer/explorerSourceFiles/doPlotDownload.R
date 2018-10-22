@@ -228,7 +228,7 @@ doPlotDownload <- function(dat, x, y){
       g <- g + geom_rect(aes(xmin=-Inf, xmax=table(yr()<=2010)[[2]]+.5, ymin=-Inf, ymax=Inf), fill="grey50", alpha=.02) +
                geom_text(aes(x=table(yr()<=2010)[[2]]/3.5,y=thresh(), label="Pre-Catch shares"), family="serif",fontface="italic", 
                          hjust=0,color = "grey40", size=4/scale_text()) + 
-               geom_text(aes(x=table(yr()<=2010)[[2]]+table(yr()>2010)[[2]]/1.5,y=thresh(),label="Post-Catch shares"),hjust=0, 
+               geom_text(aes(x=table(yr()<=2010)[[2]]+table(yr()>2010)[[2]]/1.5,y=thresh(),label="Catch shares"),hjust=0, 
                          family = "serif", fontface="italic", color = "grey40", size=4/scale_text())  
     } else {
       g <- g  
