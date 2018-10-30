@@ -74,8 +74,8 @@ Hash: 1f202ebd812ac7192be3739245746a13
 
 Package: dplyr
 Source: CRAN
-Version: 0.7.6
-Hash: c3ab15fec1303345fea300dfbc34d995
+Version: 0.7.7
+Hash: 3ada60e3a36439785c66ab549c4a2510
 Requires: BH, R6, Rcpp, assertthat, bindrcpp, glue, magrittr,
     pkgconfig, plogr, rlang, tibble, tidyselect
 
