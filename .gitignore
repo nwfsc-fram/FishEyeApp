@@ -12,6 +12,7 @@ rstudio*.Rproj
 .Rproj.user
 .Rprofile
 packrat/lib*/
+packrat/src/
 
 # RStudio files
 .Rproj.user/
