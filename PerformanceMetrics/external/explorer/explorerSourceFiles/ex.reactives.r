@@ -86,12 +86,12 @@ DatSubTable <- reactive({
     
     #subsetting
     if(input$Sect_sel=="CV"|input$Sect_sel=="FR"){    
-    datSub <- subset(dat, YEAR %in% input$YearSelect &  
+    datSub <- subset(dat, YEAR %in% seq(input$YearSelect[1], input$YearSelect[2], 1) &  
                        CATEGORY == input$CategorySelect &
                        VARIABLE %in% input$VariableSelect &
                        whitingv %in% input$FishWhitingSelect)
     } else {
-      datSub <- subset(dat, YEAR %in% input$YearSelect)
+      datSub <- subset(dat, YEAR %in% seq(input$YearSelect[1], input$YearSelect[2], 1))
     } 
    
     if(input$Ind_sel=="Demographic") {
@@ -375,12 +375,12 @@ DatSub <- reactive({
       dat$VARIABLE <- ifelse(dat$VARIABLE=='Small vessel (< 60 ft)', 'Small vessel (<= 60 ft)', as.character(dat$VARIABLE))
     
         if(input$Sect_sel=="CV"|input$Sect_sel=='FR'){    
-        datSub <- subset(dat, YEAR %in% input$YearSelect &  
+        datSub <- subset(dat, YEAR %in% seq(input$YearSelect[1], input$YearSelect[2], 1) &  
                             CATEGORY == input$CategorySelect &
                             VARIABLE %in% input$VariableSelect &
                             whitingv %in% input$FishWhitingSelect)
       } else {
-        datSub <- subset(dat, YEAR %in% input$YearSelect)
+        datSub <- subset(dat, YEAR %in% seq(input$YearSelect[1], input$YearSelect[2], 1))
       }
       
       if(input$Ind_sel=="Economic") {
