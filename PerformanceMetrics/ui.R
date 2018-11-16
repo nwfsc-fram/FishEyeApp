@@ -306,30 +306,10 @@ fluidPage(title = "FISHEyE",
                                                               input.Ind_sel=='Economic'&input.AVE_MED!='T'",
                                                    uiOutput("Plotselect")), style = "padding: 0px;margin-bottom:0px; border: 3px solid #D3D3D3;border-radius:10px;")#,
                                      ) , #end sub panel
-                              wellPanelSub(
+                              wellPanelSub( # problem panel open
                                 
-                                 uiOutput("Yearselect"),
-                                 wellPanelSub(
-                                    conditionalPanel(condition=
-                                         "input.Sect_sel=='CV'&&input.CategorySelect!='Homeport'&&
-                                                  input.CategorySelect!='State'&&
-                                          input.CategorySelect!='Vessel length class'&&input.Ind_sel=='Economic'&&
-                                                  input.ShortdescrSelect=='Revenue'||
-                                          input.Sect_sel=='CV'&&input.CategorySelect!='Homeport'&&input.CategorySelect!='State'&&
-                                          input.CategorySelect!='Vessel length class'&&input.Ind_sel=='Demographic'&&input.demSelect=='Gini coefficient'||
-                                          input.Sect_sel!='FR'&&input.CategorySelect!='Homeport'&&input.CategorySelect!='State'&&
-                                          input.CategorySelect!='Vessel length class'&&input.Ind_sel=='Demographic'&&input.demSelect=='Number of vessels'||
-                                          input.Sect_sel=='CV'&&input.CategorySelect!='Homeport'&&input.CategorySelect!='State'&&
-                                          input.CategorySelect!='Vessel length class'&&input.Ind_sel=='Demographic'&&input.demSelect=='Vessel length'||
-                                          input.Sect_sel!='FR'&&input.CategorySelect!='Homeport'&&input.CategorySelect!='State'&&
-                                          input.CategorySelect!='Vessel length class'&&input.Ind_sel=='Social and Regional'&&input.socSelect=='Seasonality'||
-                                          input.Sect_sel!='FR'&&input.CategorySelect!='Homeport'&&input.CategorySelect!='State'&&
-                                          input.CategorySelect!='Vessel length class'&&input.Ind_sel=='Social and Regional'&&input.socSelect=='Share of landings by state'",
-                                    uiOutput('moreOptions')),
-                                    style = "padding: 0px;margin-bottom:0px; border: 3px solid #D3D3D3;border-radius:10px;"#,
-                                   #conditionalPanel(condition="",uiOutput('moreOptions'))#&&input.ShortdescrSelect=='Revenue'
-                                                    )       
-                                 ),
+                                 uiOutput("Yearselect")
+                                 ), # problem panel close
                             style = "padding-right:2px;margin-right:0px; padding-left:2px;,width:100%"
                              ),#end column
                         column(4,

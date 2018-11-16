@@ -116,12 +116,12 @@ DatSubTable <- reactive({
                                                   }
 
   if(input$Sect_sel=="CV"){
-      datSub <- with(datSub, datSub[which(YEAR %in% input$YearSelect),])
+      datSub <- with(datSub, datSub[which(YEAR %in% seq(input$YearSelect[1], input$YearSelect[2], 1)),])
       datSub <- datSub[,-c(which(colnames(dat)=="AK_FLAG"))]
    } else if(input$Sect_sel=="FR") {
-      datSub <- subset(datSub, whitingv == input$FishWhitingSelect & YEAR %in% input$YearSelect2) 
+      datSub <- subset(datSub, whitingv == input$FishWhitingSelect & YEAR %in% seq(input$YearSelect2[1], input$YearSelect[2], 1)) 
    } else{
-      datSub <- subset(datSub, YEAR %in% input$YearSelect2 ) 
+      datSub <- subset(datSub, YEAR %in% seq(input$YearSelect2[1], input$YearSelect[2], 1)) 
    }
     
   if(input$StatSelect %in% c('Mean per vessel/dollar of revenue','Median per vessel/dollar of revenue','Fleet-wide average/dollar of revenue',
@@ -206,9 +206,10 @@ DatSub <- reactive({
                                                                             'On-board equipment','Other fixed costs','Other variable costs','Packing materials','Utilities',
                                                                             'Off-site freezing & storage',"Processing crew", "Processing equipment") 
         ){
-            datSub <- subset(datSub,  YEAR %in% input$YearSelect & !SHORTDESCR %in% c('All variable costs','All fixed costs'))                
+            datSub <- subset(datSub,  YEAR %in% seq(input$YearSelect[1], input$YearSelect[2], 1) 
+                             & !SHORTDESCR %in% c('All variable costs','All fixed costs'))                
         } else{
-            datSub <- subset(datSub,  YEAR %in% input$YearSelect)
+            datSub <- subset(datSub,  YEAR %in% seq(input$YearSelect[1], input$YearSelect[2], 1))
         }
                                   #FISHAK == input$FishAkSelect #&
                                   #whitingv == input$FishWhitingSelect
@@ -223,10 +224,11 @@ DatSub <- reactive({
                                                                             'Off-site freezing & storage',"Processing crew", "Processing equipment")
         ){
         datSub <- subset(datSub, whitingv == input$FishWhitingSelect & #ACS == input$ProductionSelect &
-                           YEAR %in% input$YearSelect2& !SHORTDESCR %in% c('All variable costs','All fixed costs'))
+                           YEAR %in% seq(input$YearSelect2[1], input$YearSelect2[2], 1)
+                         & !SHORTDESCR %in% c('All variable costs','All fixed costs'))
         } else {
           datSub <- subset(datSub, whitingv == input$FishWhitingSelect & #ACS == input$ProductionSelect &
-                             YEAR %in% input$YearSelect2)
+                             YEAR %in% seq(input$YearSelect2[1], input$YearSelect2[2], 1))
         }
       } else {
         
@@ -239,9 +241,10 @@ DatSub <- reactive({
                                                                             'On-board equipment','Other fixed costs','Other variable costs','Packing materials','Utilities',
                                                                             'Off-site freezing & storage',"Processing crew", "Processing equipment")
         ){
-        datSub <- subset(datSub, YEAR %in% input$YearSelect2 & !SHORTDESCR %in% c('All variable costs','All fixed costs'))  
+        datSub <- subset(datSub, YEAR %in% seq(input$YearSelect2[1], input$YearSelect2[2], 1) 
+                         & !SHORTDESCR %in% c('All variable costs','All fixed costs'))  
         } else {
-          datSub <- subset(datSub, YEAR %in% input$YearSelect2 )   
+          datSub <- subset(datSub, YEAR %in% seq(input$YearSelect2[1], input$YearSelect2[2], 1))   
       }
       }
       

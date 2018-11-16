@@ -32,77 +32,44 @@ output$SectPrint <- renderUI({
 #End
 ###################################################
 
-output$moreOptions <- renderUI({
-  tags$div(class="ckbox", checkboxInput("moreOptions", "I can't figure out how to drop this box - Erin", value = FALSE))
-})
+#output$moreOptions <- renderUI({
+  #tags$div(class="ckbox", checkboxInput("moreOptions", "I can't figure out how to drop this box - Erin", value = FALSE))
+#})
 
 ########################################################
 ##YEAR
 ########################################################
 
 output$Yearselect <- renderUI({
-  if(input$tabs=='Panel2'){
-    tags$div(class="ckbox", sliderInput( "YearSelect","Years:", min = min(DatVars()$YEAR), max = max(DatVars()$YEAR), value = c(2009, max(DatVars()$YEAR)), step = 1, sep ='', ticks = F))
-    
-  }
-  else {
-  if(input$LayoutSelect=='Metrics'){
-      tags$div(class="ckbox", sliderInput( "YearSelect","Years:", min = min(DatVars()$YEAR), max = max(DatVars()$YEAR), value = c(2009, max(DatVars()$YEAR)), step = 1, sep ='', ticks = F))
+  if(input$Ind_sel=="Demographic"){
+  if(input$Sect_sel=="CV" & input$CategorySelect=='Fisheries' & input$demSelect %in% c('Number of vessels', 'Vessel length', 'Gini coefficient')){
+    tags$div(class="ckbox", sliderInput( "YearSelect","Years:", min = 2004, max = max(DatVars()$YEAR), 
+                                         value = c(2009, max(DatVars()$YEAR)), step = 1, sep ='', ticks = F)) 
   } else {
-    if(input$Ind_sel=="Demographic"){
-    if(input$Sect_sel=="CV"&input$demSelect=='Gini coefficient'&input$CategorySelect=='Fisheries'|input$demSelect=='Number of vessels'&input$CategorySelect=='Fisheries'&input$Sect_sel=='CV'|input$demSelect=='Number of vessels'&input$Sect_sel!='CV'|input$Sect_sel=="CV"&input$demSelect=='Vessel length'&input$CategorySelect=='Fisheries'){
-       if(input$moreOptions=="FALSE"){
-          tags$div(class="ckbox", sliderInput( "YearSelect","Years:", min = min(DatVars()$YEAR), max = max(DatVars()$YEAR), value = c(2009, max(DatVars()$YEAR)), step = 1, sep ='', ticks = F))
-    } else{
-#      if(input$Sect_sel=="FR"){  
-        tags$div(class="ckbox", sliderInput( "YearSelect","Years:", min = min(DatVars()$YEAR), max = max(DatVars()$YEAR), value = c(2009, max(DatVars()$YEAR)), step = 1, sep ='', ticks = F))
-#      } else {
-#        tags$div(class="ckbox", checkboxGroupInput( "YearSelect","Years:", choices = DatVars()$YEAR[2:length(DatVars()$YEAR)], selected = DatVars()$YEAR, inline=T))
-#      }
-    } 
-    } else{
-      tags$div(class="ckbox", sliderInput( "YearSelect","Years:", min = min(DatVars()$YEAR), max = max(DatVars()$YEAR), value = c(2009, max(DatVars()$YEAR)), step = 1, sep ='', ticks = F))
-      }
-    } # END DEMOGRAPHIC
-    else if(input$Ind_sel=="Social and Regional"){ 
-    if(input$socSelect!='Seasonality'&input$socSelect!='Share of landings by state'){
-      tags$div(class="ckbox", sliderInput( "YearSelect","Years:", min = min(DatVars()$YEAR), max = max(DatVars()$YEAR), value = c(2009, max(DatVars()$YEAR)), step = 1, sep ='', ticks = F))
-    } else{
-      if(input$CategorySelect=='Homeport'|input$CategorySelect=='State'){
-        tags$div(class="ckbox", sliderInput( "YearSelect","Years:", min = min(DatVars()$YEAR), max = max(DatVars()$YEAR), value = c(2009, max(DatVars()$YEAR)), step = 1, sep ='', ticks = F))
-      } else {
-      if(input$moreOptions=="FALSE"){
-         tags$div(class="ckbox", sliderInput( "YearSelect","Years:", min = min(DatVars()$YEAR), max = max(DatVars()$YEAR), value = c(2009, max(DatVars()$YEAR)), step = 1, sep ='', ticks = F))
-    } else{
-      if(input$Sect_sel=="FR"){  
-        tags$div(class="ckbox", sliderInput( "YearSelect","Years:", min = min(DatVars()$YEAR), max = max(DatVars()$YEAR), value = c(2009, max(DatVars()$YEAR)), step = 1, sep ='', ticks = F))
-      } else {
-        tags$div(class="ckbox", sliderInput( "YearSelect","Years:", min = min(DatVars()$YEAR), max = max(DatVars()$YEAR), value = c(2009, max(DatVars()$YEAR)), step = 1, sep ='', ticks = F))
-      }
-    }}}
-    } #END SOCIAL AND REGIONAL 
-    else if(input$Ind_sel=='Economic'){
-#    if(input$ShortdescrSelect[1]!="Revenue"){
-      if(!input$ShortdescrSelect[1] %in% "Revenue"){
-        if(input$Sect_sel=="FR"){  
-          tags$div(class="ckbox", sliderInput( "YearSelect","Years:", min = min(DatVars()$YEAR), max = max(DatVars()$YEAR), value = c(2009, max(DatVars()$YEAR)), step = 1, sep ='', ticks = F))
-        } else {
-          tags$div(class="ckbox", sliderInput( "YearSelect","Years:", min = min(DatVars()$YEAR), max = max(DatVars()$YEAR), value = c(2009, max(DatVars()$YEAR)), step = 1, sep ='', ticks = F))
-        }
-    } 
-    else {
-      if(input$moreOptions=="FALSE"){
-          tags$div(class="ckbox", sliderInput( "YearSelect","Years:", min = min(DatVars()$YEAR), max = max(DatVars()$YEAR), value = c(2009, max(DatVars()$YEAR)), step = 1, sep ='', ticks = F))
-    } else{
-      if(input$Sect_sel!="CV"){  
-        tags$div(class="ckbox", sliderInput( "YearSelect","Years:", min = min(DatVars()$YEAR), max = max(DatVars()$YEAR), value = c(2009, max(DatVars()$YEAR)), step = 1, sep ='', ticks = F))
-      } else {
-        tags$div(class="ckbox", sliderInput( "YearSelect","Years:", min = min(DatVars()$YEAR), max = max(DatVars()$YEAR), value = c(2009, max(DatVars()$YEAR)), step = 1, sep ='', ticks = F))
-      }
+    tags$div(class="ckbox", sliderInput( "YearSelect","Years:", min = 2009, max = max(DatVars()$YEAR), 
+                                         value = c(2009, max(DatVars()$YEAR)), step = 1, sep ='', ticks = F))
+  }}
+  else if(input$Ind_sel == 'Social and Regional') {
+    if(input$Sect_sel=="CV" & input$CategorySelect=='Fisheries'& input$socSelect %in% c('Seasonality','Share of landings by state')){
+      tags$div(class="ckbox", sliderInput( "YearSelect","Years:", min = 2004, max = max(DatVars()$YEAR), 
+                                           value = c(2009, max(DatVars()$YEAR)), step = 1, sep ='', ticks = F))
     }
-    }} #END ECONOMIC
-}}
-})  
+    else {
+      tags$div(class="ckbox", sliderInput( "YearSelect","Years:", min = 2009, max = max(DatVars()$YEAR), 
+                                           value = c(2009, max(DatVars()$YEAR)), step = 1, sep ='', ticks = F))
+    }
+  }
+  else if(input$Ind_sel == 'Economic') {
+    if(input$Sect_sel == 'CV' & input$CategorySelect == 'Fisheries' & input$ShortdescrSelect[1] %in% 'Revenue') {
+      tags$div(class="ckbox", sliderInput( "YearSelect","Years:", min = 2004, max = max(DatVars()$YEAR), 
+                                           value = c(2009, max(DatVars()$YEAR)), step = 1, sep ='', ticks = F))
+    }
+    else {tags$div(class="ckbox", sliderInput( "YearSelect","Years:", min = 2009, max = max(DatVars()$YEAR), 
+                                               value = c(2009, max(DatVars()$YEAR)), step = 1, sep ='', ticks = F))
+      }
+  }
+})
+     
 #END YEAR
 ##############################################
 

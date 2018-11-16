@@ -92,16 +92,16 @@ DatSubTable <- reactive({
                      STAT == input$StatSelect),])
   
   if(input$Sect_sel=="CV"){
-      datSub <- with(datSub, datSub[which(YEAR %in% input$YearSelect &  
+      datSub <- with(datSub, datSub[which(YEAR %in% seq(input$YearSelect[1], input$YearSelect[2], 1) &  
                                         FISHAK == input$FishAkSelect &
                                         whitingv == input$FishWhitingSelect),])
       datSub$FISHAK <- ifelse(datSub$AK_FLAG==0, datSub$FISHAK, datSub$repFISHAK)
       datSub$whitingv <- ifelse(datSub$AK_FLAG==0, as.character(datSub$whitingv), datSub$repwhitingv)
       datSub <- datSub %>% subset(select=-c(repFISHAK,repwhitingv,AK_FLAG))
   } else if(input$Sect_sel=="FR") {
-    datSub <- subset(datSub, ACS == input$ProductionSelect & YEAR %in% input$YearSelect2) 
+    datSub <- subset(datSub, ACS == input$ProductionSelect & YEAR %in% seq(input$YearSelect2[1], input$YearSelect2[2], 1)) 
       } else{
-    datSub <- subset(datSub, YEAR %in% input$YearSelect2) 
+    datSub <- subset(datSub, YEAR %in% seq(input$YearSelect2[1], input$YearSelect2[2], 1)) 
       }
   
   datSub$VALUE <- as.numeric(datSub$VALUE)
@@ -173,7 +173,7 @@ DatThirdsTable <- reactive({
                         STAT == input$StatSelect)
  
    if(input$Sect_sel=="CV"){
-  datSub <- with(datSub, datSub[which(YEAR %in% input$YearSelect &  
+  datSub <- with(datSub, datSub[which(YEAR %in% seq(input$YearSelect[1], input$YearSelect[2], 1) &  
                                         FISHAK == input$FishAkSelect &
                                         whitingv == input$FishWhitingSelect),])
       datSub$FISHAK <- ifelse(datSub$AK_FLAG==0, as.character(datSub$FISHAK), datSub$repFISHAK)
@@ -181,7 +181,7 @@ DatThirdsTable <- reactive({
       datSub <- datSub %>% subset(select=-c(repFISHAK,repwhitingv,AK_FLAG))
   } else if(input$Sect_sel=="FR") {
       datSub <- subset(datSub, ACS == input$ProductionSelect &
-                       YEAR %in% input$YearSelect2) 
+                       YEAR %in% seq(input$YearSelect2[1], input$YearSelect2[2], 1)) 
   }
   
   
@@ -256,14 +256,14 @@ DatSub <- reactive({
                             STAT == input$StatSelect)
       
       if(input$Sect_sel=="CV"){
-        datSub <- subset(datSub,  YEAR %in% input$YearSelect & 
+        datSub <- subset(datSub,  YEAR %in% seq(input$YearSelect[1], input$YearSelect[2], 1) & 
                                   FISHAK == input$FishAkSelect &
                                   whitingv == input$FishWhitingSelect )
       } else if(input$Sect_sel=="FR") {
         datSub <- subset(datSub, ACS == input$ProductionSelect &
-                                 YEAR %in% input$YearSelect2) 
+                                 YEAR %in% seq(input$YearSelect2[1], input$YearSelect2[2], 1)) 
       } else {
-        datSub <- subset(datSub, YEAR %in% input$YearSelect2)  
+        datSub <- subset(datSub, YEAR %in% seq(input$YearSelect2[1], input$YearSelect2[2], 1))  
       }
 
 #subset the shortdescr data based on the type of plot chosen and then define the order for plotting
@@ -395,12 +395,12 @@ DatSubThirds <- reactive({
                      STAT == input$StatSelect)
 
   if(input$Sect_sel=="CV"){
-    datSub <- subset(datSub, YEAR %in% input$YearSelect &
+    datSub <- subset(datSub, YEAR %in% seq(input$YearSelect[1], input$YearSelect[2], 1) &
                           FISHAK == input$FishAkSelect &
                           whitingv == input$FishWhitingSelect)
   } else {#if(input$Sect_sel=="FR") 
     datSub <- subset(datSub, ACS == input$ProductionSelect &
-                       YEAR %in% input$YearSelect2) 
+                       YEAR %in% seq(input$YearSelect2[1], input$YearSelect2[2], 1)) 
   }
   if(input$Sect_sel=="CV" & input$CategorySelect != "Fisheries"){
     datSub <- subset(datSub, CS == input$inSelect)
