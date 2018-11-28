@@ -479,11 +479,14 @@ doPlot <- function(dat, x, y){
      
      
      
-  if(length(yr())>1){
-        g <- g + geom_line(aes_string(colour = groupVar), size=1.5)
-  } else {
-        g <- g + geom_point(aes_string(colour = groupVar), size=4)
-  }   
+  #if(length(yr())>1){
+ g <- g + geom_line(aes_string(colour = groupVar), size=1.5) +
+   geom_point(aes_string(colour = groupVar), size=4) 
+   
+   
+  #} else {
+        #g <- g + geom_point(aes_string(colour = groupVar), size=4)
+  #}   
          
    if(input$PlotSelect==T&is.na(max(dat$VARIANCE))==F) { 
            g <- g + geom_ribbon(aes(ymax=upper, ymin=lower, fill=whitingv), alpha=.25)#show.legend = FALSE, 
