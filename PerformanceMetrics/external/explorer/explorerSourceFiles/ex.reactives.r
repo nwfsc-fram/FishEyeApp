@@ -611,7 +611,7 @@ DatSub <- reactive({
                                                                                  ifelse(datSub$VARIABLE=="Non-whiting, non-DTS trawl with trawl endorsement", 9,  
                                                                                         ifelse(datSub$VARIABLE=="Groundfish fixed gear with trawl endorsement", 10,  
                                                                                                ifelse(datSub$VARIABLE=="All non-catch share fisheries", 11,  
-                                                                                                       ifelse(datSub$VARIABLE=="Groundfish fixed gear with fixed gear endorsement", 12,  
+                                                                                                       ifelse(datSub$VARIABLE=="Other fisheries", 12,  
                                                                                                                ifelse(datSub$VARIABLE=="Crab", 13,  
                                                                                                                       ifelse(datSub$VARIABLE=="Shrimp", 14,  15
                                                                                                                              ))))))))))))))

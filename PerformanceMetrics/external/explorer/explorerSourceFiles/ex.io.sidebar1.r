@@ -77,7 +77,7 @@ fish.var <- c("All fisheries combined"="All fisheries"," All catch share fisheri
               "At-sea Pacific whiting","Shoreside Pacific whiting",
               "Groundfish with trawl gear","DTS trawl with trawl endorsement","Non-whiting midwater trawl","Non-whiting, non-DTS trawl with trawl endorsement", 
               "Groundfish fixed gear with trawl endorsement",
-              "All non-catch share fisheries combined"="All non-catch share fisheries", "Groundfish fixed gear with fixed gear endorsement","Crab","Shrimp",
+              "All non-catch share fisheries combined"="All non-catch share fisheries", "Crab","Shrimp",
               "Other fisheries")
 ###################################################
 #CATEGORY SELECT
