@@ -35,8 +35,8 @@ observeEvent(input$ipo, {
                               message = 'Number of positions (including captain and crew) is a lower bound for employment in the fishery, and is affected by positions per vessel and the number of vessels fishing.'
                             }else if(input$SocSelect=="Crew wage per day"){
                               message = 'Daily wage paid to a crewmember operating in the limited entry/catch shares fishery.'
-                            }else if(input$SocSelect=="Revenue per crew day"){
-                              message = 'Revenue divided by crew day, where crew days are calculated as days at sea multipled by number of crew per vessel. This metric is a measure of productivity (in terms of revenue generation) of a crew member.'
+                            }else if(input$SocSelect=="Revenue per position day"){
+                              message = 'Revenue divided by position day, where position days are calculated as days at sea multipled by number of positions per vessel. This metric is a measure of productivity (in terms of revenue generation) of captain and crew.'
                             }else if(input$SocSelect=="Seasonality"){
                               message = 'The date (day of year, Jan. 1 = 1) on which 50% of the total volume of catch was landed in the fishery. Metric measures broad-scale changes in the seasonality of fishing for catch shares fish. It can also indicate changes in total allowable catch (TAC); it may take the fleet longer to catch a higher TAC/ACL.'
                             }else if(input$SocSelect=="Share of landings by state"){
