@@ -33,7 +33,7 @@ DatVars <- reactive({
                   "Median per vessel","Median per vessel/day","Median per vessel/metric ton caught",
                   "Fleet-wide total","Fleet-wide average/day","Fleet-wide average/metric ton caught"),
         METRIC =  c("Number of vessels","Vessel length","Fishery participation","Proportion of revenue from catch share fishery"="Proportion of revenue from CS fishery",
-                  "Days at sea","Exponential Shannon Index","Gini coefficient","Number of positions (captain and crew)"='Number of positions',"Crew wage per day","Revenue per crew day",
+                  "Days at sea","Exponential Shannon Index","Gini coefficient","Number of positions (captain and crew)"='Number of positions',"Crew wage per day","Revenue per position-day",
                   "Seasonality","Share of landings by state")
   ))
   } else if(input$Sect_sel=="FR"){
@@ -63,7 +63,7 @@ DatVars <- reactive({
                 METRIC =  c("Number of vessels","Vessel length",
                             "Proportion of landings from catch share fishery"="Proportion of landings from CS fishery","Days at sea","Gini coefficient",
                              "Number of positions (captain and crew)"='Number of positions',
-                            "Crew wage per day", "Revenue per crew day", "Seasonality")
+                            "Crew wage per day", "Revenue per crew-day", "Seasonality")
                     ))
   }
 })
@@ -93,6 +93,7 @@ DatSubTable <- reactive({
     } else {
       datSub <- subset(dat, YEAR %in% seq(input$YearSelect[1], input$YearSelect[2], 1))
     } 
+    
    
     if(input$Ind_sel=="Demographic") {
       if(input$LayoutSelect!="Metrics"){
@@ -525,7 +526,9 @@ DatSub <- reactive({
         datSub$q25 <- datSub$q25
         datSub$q75 <- datSub$q75
       }else if(input$Ind_sel=="Social and Regional") {
-          if(input$socSelect=="Revenue per crew day"|input$socSelect=="Crew wage per day"){
+          if(input$socSelect=="Revenue per crew-day" |
+             input$socSelect=="Crew wage per day" |
+             input$socSelect=="Revenue per position-day"){
           datSub$VALUE <- datSub$VALUE/1000
           datSub$VARIANCE <- datSub$VARIANCE/1000  
           datSub$q25 <- datSub$q25/1000

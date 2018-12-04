@@ -269,7 +269,9 @@ doPlotDownload <- function(dat, x, y){
             paste(currentyear, "$","(",input$StatSelect, ")")  
         } }else if(input$Ind_sel=="Social and Regional") {
           if(input$LayoutSelect!='Metrics'){
-            if(input$socSelect=="Crew wage per day"|input$socSelect=="Revenue per crew day"){
+            if(input$socSelect=="Crew wage per day" | 
+               input$socSelect=="Revenue per crew-day" |
+               input$socSelect=="Revenue per position-day"){
                 paste("Thousands of", currentyear, "$","(",input$AVE_MED2, ")")    
             }  else if(input$socSelect=="Seasonality"){
               expression(bold("Day of year when 50% of catch was landed"))

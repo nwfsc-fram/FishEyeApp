@@ -582,7 +582,10 @@ output$StatSelect2 <- renderUI({
       else if(input$Ind_sel=="Social and Regional"){
         if(input$socSelect %in% c("Share of landings by state","Seasonality")) { 
           tags$div(class='met_mod', radioButtons("AVE_MED2","", choices =""), style="margin-bottom:20px;margin-top:-32px;margin-left:-15px;padding-top:0;")
-      } else if (input$socSelect == "Hourly compensation"| input$socSelect == "Crew wage per day"| input$socSelect == "Revenue per crew day"){
+      } else if (input$socSelect == "Hourly compensation" | 
+                 input$socSelect == "Crew wage per day" | 
+                 input$socSelect == "Revenue per crew-day" |
+                 input$socSelect == "Revenue per position-day"){
           tagList(
             tags$div(class='StatGrey2', radioButtons("AVE_MED2", HTML("<div> Statistic: <button id='istat' type='button' class='btn btn-default action-button shiny-bound-input'> <i class='fa fa-info-circle fa-fw' ></i></button> </div>"),
                          choices=c("Mean","Median",'Total'), select='Median')))            
