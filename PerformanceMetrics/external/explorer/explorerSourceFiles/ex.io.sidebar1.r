@@ -398,10 +398,59 @@ output$FishAkselect <- renderUI({
 ###################################################
 #Select whiting (data summed across category)
 ###################################################
+##grey out the Non-whiting and Whiting vessel type selections for the Days at Sea metric for Level A CS fisheries and Level B non-CS fisheries due to confidentiality
+##All economic metrics
+##Social and Regional: Number of positions, crew wage per day, revenue per position day
+
 output$FishWhitingselect <- renderUI({
-  tags$div(class="ckbox", checkboxGroupInput("FishWhitingSelect", HTML("<div> Show data summed across:<button id='iwhiting' type='button' class='btn btn-default action-button shiny-bound-input'> <i class='fa fa-info-circle fa-fw'></i>
+  if(input$Sect_sel == 'CV') {
+    if(input$Ind_sel=='Demographic') {
+      if(input$demSelect == 'Days at sea') {
+        if(is.null(input$VariableSelect)){
+          tags$div(class="ckbox", checkboxGroupInput("FishWhitingSelect", HTML("<div> Show data summed across:<button id='iwhiting' type='button' class='btn btn-default action-button shiny-bound-input'> <i class='fa fa-info-circle fa-fw'></i>
+                                                                               </button></div>"), choices=DatVars()$whitingv, selected=DatVars()$whitingv[1]))
+        }else if(!input$VariableSelect %in% c('At-sea Pacific whiting','Shoreside Pacific whiting','DTS trawl with trawl endorsement','Non-whiting midwater trawl',
+                                              'Non-whiting, non-DTS trawl with trawl endorsement','Other fisheries','Crab','Shrimp')){
+          tags$div(class="ckbox", checkboxGroupInput("FishWhitingSelect", HTML("<div> Show data summed across:<button id='iwhiting' type='button' class='btn btn-default action-button shiny-bound-input'> <i class='fa fa-info-circle fa-fw'></i>
+                                                                               </button></div>"), choices=DatVars()$whitingv, selected=DatVars()$whitingv[1]))
+        }else if(input$VariableSelect %in% c('At-sea Pacific whiting','Shoreside Pacific whiting','DTS trawl with trawl endorsement','Non-whiting midwater trawl',
+                                       'Non-whiting, non-DTS trawl with trawl endorsement','Other fisheries','Crab','Shrimp')) {tags$div(class='StatGrey1',checkboxGroupInput("FishWhitingSelect", HTML("<div> Show data summed across:<button id='iwhiting' type='button' class='btn btn-default action-button shiny-bound-input'> <i class='fa fa-info-circle fa-fw'></i>
+                                                                       </button> <style margin-top:0; padding:-10px> </style></div>"), choices=c("All vessels","Non-whiting vessels", "Whiting vessels"), selected= "All vessels"))
+      
+          }}else{tags$div(class="ckbox", checkboxGroupInput("FishWhitingSelect", HTML("<div> Show data summed across:<button id='iwhiting' type='button' class='btn btn-default action-button shiny-bound-input'> <i class='fa fa-info-circle fa-fw'></i>
                                                                        </button></div>"), choices=DatVars()$whitingv, selected=DatVars()$whitingv[1]))
-})
+      }}else if(input$Ind_sel == 'Economic') {
+        if(is.null(input$VariableSelect)){
+          tags$div(class="ckbox", checkboxGroupInput("FishWhitingSelect", HTML("<div> Show data summed across:<button id='iwhiting' type='button' class='btn btn-default action-button shiny-bound-input'> <i class='fa fa-info-circle fa-fw'></i>
+                                                                               </button></div>"), choices=DatVars()$whitingv, selected=DatVars()$whitingv[1]))
+        }else if(!input$VariableSelect %in% c('At-sea Pacific whiting','Shoreside Pacific whiting','DTS trawl with trawl endorsement','Non-whiting midwater trawl',
+                                              'Non-whiting, non-DTS trawl with trawl endorsement','Other fisheries','Crab','Shrimp')){
+          tags$div(class="ckbox", checkboxGroupInput("FishWhitingSelect", HTML("<div> Show data summed across:<button id='iwhiting' type='button' class='btn btn-default action-button shiny-bound-input'> <i class='fa fa-info-circle fa-fw'></i>
+                                                                               </button></div>"), choices=DatVars()$whitingv, selected=DatVars()$whitingv[1]))
+        }else if(input$VariableSelect %in% c('At-sea Pacific whiting','Shoreside Pacific whiting','DTS trawl with trawl endorsement','Non-whiting midwater trawl',
+                                             'Non-whiting, non-DTS trawl with trawl endorsement','Other fisheries','Crab','Shrimp')) {tags$div(class='StatGrey1',checkboxGroupInput("FishWhitingSelect", HTML("<div> Show data summed across:<button id='iwhiting' type='button' class='btn btn-default action-button shiny-bound-input'> <i class='fa fa-info-circle fa-fw'></i>
+                                                                                                                                                                                                              </button> <style margin-top:0; padding:-10px> </style></div>"), choices=c("All vessels","Non-whiting vessels", "Whiting vessels"), selected= "All vessels"))
+        }else{tags$div(class="ckbox", checkboxGroupInput("FishWhitingSelect", HTML("<div> Show data summed across:<button id='iwhiting' type='button' class='btn btn-default action-button shiny-bound-input'> <i class='fa fa-info-circle fa-fw'></i>
+                                                                       </button></div>"), choices=DatVars()$whitingv, selected=DatVars()$whitingv[1]))
+        }}else if(input$Ind_sel == 'Social and Regional') {
+        if(!input$socSelect %in% c('Seasonality','Share of landings by state')){
+          if(is.null(input$VariableSelect)){
+            tags$div(class="ckbox", checkboxGroupInput("FishWhitingSelect", HTML("<div> Show data summed across:<button id='iwhiting' type='button' class='btn btn-default action-button shiny-bound-input'> <i class='fa fa-info-circle fa-fw'></i>
+                                                                                 </button></div>"), choices=DatVars()$whitingv, selected=DatVars()$whitingv[1]))
+          }else if(!input$VariableSelect %in% c('At-sea Pacific whiting','Shoreside Pacific whiting','DTS trawl with trawl endorsement','Non-whiting midwater trawl',
+                                                'Non-whiting, non-DTS trawl with trawl endorsement','Other fisheries','Crab','Shrimp')){
+            tags$div(class="ckbox", checkboxGroupInput("FishWhitingSelect", HTML("<div> Show data summed across:<button id='iwhiting' type='button' class='btn btn-default action-button shiny-bound-input'> <i class='fa fa-info-circle fa-fw'></i>
+                                                                                 </button></div>"), choices=DatVars()$whitingv, selected=DatVars()$whitingv[1]))
+          }else if(input$VariableSelect %in% c('At-sea Pacific whiting','Shoreside Pacific whiting','DTS trawl with trawl endorsement','Non-whiting midwater trawl',
+                                               'Non-whiting, non-DTS trawl with trawl endorsement','Other fisheries','Crab','Shrimp')) {tags$div(class='StatGrey1',checkboxGroupInput("FishWhitingSelect", HTML("<div> Show data summed across:<button id='iwhiting' type='button' class='btn btn-default action-button shiny-bound-input'> <i class='fa fa-info-circle fa-fw'></i>
+                                                                                                                                                                                                                </button> <style margin-top:0; padding:-10px> </style></div>"), choices=c("All vessels","Non-whiting vessels", "Whiting vessels"), selected= "All vessels"))
+        
+        }}else{tags$div(class="ckbox", checkboxGroupInput("FishWhitingSelect", HTML("<div> Show data summed across:<button id='iwhiting' type='button' class='btn btn-default action-button shiny-bound-input'> <i class='fa fa-info-circle fa-fw'></i>
+                                                                       </button></div>"), choices=DatVars()$whitingv, selected=DatVars()$whitingv[1]))
+          }}
+  else{tags$div(class="ckbox", checkboxGroupInput("FishWhitingSelect", HTML("<div> Show data summed across:<button id='iwhiting' type='button' class='btn btn-default action-button shiny-bound-input'> <i class='fa fa-info-circle fa-fw'></i>
+                                                                       </button></div>"), choices=DatVars()$whitingv, selected=DatVars()$whitingv[1]))
+}}})
 ###################################################
 #end whiting
 ###################################################

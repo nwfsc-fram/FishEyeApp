@@ -593,7 +593,7 @@ DatSub <- reactive({
         datSub$star <- ""
       }}} else { datSub$star <- ""}
          datSub$VARIANCE <- ifelse(datSub$N<3, NA, datSub$VARIANCE)
-         if(!datSub$METRIC %in% "Number of processors"){
+         if(!"Number of processors" %in% datSub$METRIC){
          datSub$VALUE <- ifelse(datSub$N<3, NA, datSub$VALUE)
          }
 
