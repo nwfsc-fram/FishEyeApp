@@ -679,6 +679,7 @@ DatSub <- reactive({
       datSub$flag <- max(datSub$flag, na.rm=T)
       datSub$metric_flag <- max(datSub$metric_flag, na.rm=T)
       datSub$conf <- ifelse(datSub$CS=="All fisheries", 0, datSub$conf)
+      datSub$conf <- max(datSub$conf, na.rm=T)
  
 #      if(input$Ind_sel=="Demographic"&input$demSelect=="Number of vessels"){#    if(datSub$METRIC=="Number of vessels"){
 #        datSub$VALUE <- ifelse(datSub$N<3, NA, datSub$VALUE)
