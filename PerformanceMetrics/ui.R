@@ -38,6 +38,7 @@ fluidPage(title = "FISHEyE",
        
            tags$style(HTML(".StatGrey  .radio:first-child  input[type=radio],
                                             .StatGrey  .radio:nth-child(2) input[type=radio],
+                                            .StatGrey1 .checkbox:nth-child(n+2) input[type=checkbox],
                                             .StatGrey2  .radio:nth-child(3) input[type=radio],
                                             .StatGrey3  .checkbox:nth-child(n+3) input[type=checkbox],
                                             .StatGrey4  .radio:nth-child(n+4) input[type=radio],
@@ -102,7 +103,9 @@ fluidPage(title = "FISHEyE",
             tags$style(HTML(".StatGrey4  .radio:nth-child(n+4) label{margin-left:17px;color:grey;} 
                                          .radio.input:nth-child(n+4) {border: 0px;    width: 0%;    height:0em;}")),
             tags$style(HTML(".StatGrey4  .radio:nth-child(6) label{margin-left:0px;color:grey;} .radio.input:nth-child(6) {border: 0px;    width: 0%;    height:0em;}")),
-            
+            tags$style(HTML(".StatGrey1  .checkbox:nth-child(n+2) label{margin-left:0px;color:grey;} 
+                                           .checkbox.input:nth-child(n+2) {border: 0px;    width: 0%;    height:0em;}")),
+
           
             #tags$style(HTML(".met_mod label{font-style:italic;margin-bottom:20px;margin-top:-90px;padding-top:0;}")),#{margin-top:-40px;margin-bottom:50px; height:12px;}
             tags$style(HTML(".met_mod  input[type=radio] {border: 0px;    width: 0%;    height:0em;}#")),
