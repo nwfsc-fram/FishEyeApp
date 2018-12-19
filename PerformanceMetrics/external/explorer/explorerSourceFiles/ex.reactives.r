@@ -319,7 +319,7 @@ if(input$LayoutSelect!="Metrics"){
                           which(colnames(datSub)=="VARIANCE"))]
         }}
  } # Compare vessels
-          
+##I think this is where I need to trouble shoot##Ashley###      
   else if(input$LayoutSelect=="Metrics"){
     if(input$Ind_sel=="Economic") {
       datSub <- datSub[,c(which(colnames(datSub)=="YEAR"),which(colnames(datSub)=="VARIABLE"),which(colnames(datSub)=="CATEGORY"),which(colnames(datSub)=="CS"),
@@ -334,7 +334,7 @@ if(input$LayoutSelect!="Metrics"){
   }}
      if(input$Ind_sel!="Economic"){
              if(input$LayoutSelect=="Metrics"){
-                  if(input$AVE_MED2=="Average"|input$AVE_MED2=="Median"){
+                  if(input$AVE_MED2=="Average"|input$AVE_MED2 == 'Mean' | input$AVE_MED2=="Median"){
                       if(table(table(datSub$METRIC)>1)[2]>1){
                       datSub <- subset(datSub,  !METRIC %in% c("Number of vessels","Gini coefficient","Number of processors"))
                   }}
@@ -692,7 +692,7 @@ DatSub <- reactive({
           datSub <- subset(datSub,  !METRIC %in% c("Number of vessels","Gini coefficient","Number of processors"))
          }}}else {
           datSub
-        }
+         }
 
       if(input$LayoutSelect=="Metrics"){
         if(input$AVE_MED2=="Total"){
