@@ -420,22 +420,21 @@ DatSub <- reactive({
             }
           }   else {
           datSub <- subset(datSub,  METRIC %in% input$socSelect & !is.na(input$socSelect))
-          }} else {
+          }} else { # Compare: Metrics
             if(input$Sect_sel=="CV"){
-          datSub <- subset(datSub,  METRIC %in% input$socSelect & SUMSTAT == input$AVE_MED2 & FISHAK!='FALSE')
-            }else if(input$Sect_sel=="FR") {
+          
+              datSub <- subset(datSub,  METRIC %in% input$socSelect & SUMSTAT == input$AVE_MED2)
+            } else if(input$Sect_sel=="FR") {
               datSub <- subset(datSub,  METRIC %in% input$socSelect & SUMSTAT == input$AVE_MED2)
             } else {
-              datSub <- subset(datSub,  METRIC %in% input$socSelect & SUMSTAT == input$AVE_MED2 & FISHAK!='TRUE')
+              datSub <- subset(datSub,  METRIC %in% input$socSelect & SUMSTAT == input$AVE_MED2)
             }
                   }
       } #End Social and Regional
-      
-          
         validate(
         need(dim(datSub)[1]>0, 
              if(input$Sect_sel!="FR"){
-               paste('Sorry, this plot could not be generated as no vessels matched your selections. Try selecting a different variable.')
+               paste('6Sorry, this plot could not be generated as no vessels matched your selections. Try selecting a different variable.')
              } else {
                paste('Sorry, this plot could not be generated as no processors matched your selections. Try selecting a different variable.')
              }
