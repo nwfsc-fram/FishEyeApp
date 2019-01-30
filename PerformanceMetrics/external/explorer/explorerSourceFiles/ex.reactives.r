@@ -770,13 +770,11 @@ DatSub <- reactive({
       }
     } else {
       # Compare: Metrics
+      # NEED TO ADD AN IF STATEMENT FOR DAYS AT SEA
       if (input$Sect_sel == "CV") {
+        browser()
         datSub <-
-          subset(
-            datSub,
-            METRIC %in% input$demSelect &
-              SUMSTAT == input$AVE_MED2 & FISHAK != 'FALSE'
-          )
+          subset(datSub, METRIC %in% input$demSelect & SUMSTAT == input$AVE_MED2 & (FISHAK == 'TRUE' | is.na(FISHAK)))
       } else if (input$Sect_sel == "FR") {
         datSub <-
           subset(datSub,
@@ -822,7 +820,7 @@ DatSub <- reactive({
         datSub <-
           subset(datSub,
             METRIC %in% input$socSelect & SUMSTAT == input$AVE_MED2)
-      } else {
+      } else { # MS & CP
         datSub <-
           subset(datSub,
             METRIC %in% input$socSelect & SUMSTAT == input$AVE_MED2)
