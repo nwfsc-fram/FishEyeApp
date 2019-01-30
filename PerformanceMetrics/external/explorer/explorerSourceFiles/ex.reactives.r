@@ -387,7 +387,7 @@ DatSub <- reactive({
       if(input$Ind_sel=="Economic") {
                 datSub <- subset(datSub,  SHORTDESCR %in% input$ShortdescrSelect & STAT == input$StatSelect) 
      } else if(input$Ind_sel=="Demographic")  {
-        if(input$LayoutSelect!="Metrics"){
+        if(input$LayoutSelect!="Metrics"){ # Compare: Groups of vessels/companies
              if(input$Sect_sel=='FR'){
               datSub <- subset(datSub,  METRIC %in% input$demSelect & SUMSTAT == input$AVE_MED2)
             }
@@ -398,7 +398,7 @@ DatSub <- reactive({
               datSub <- subset(datSub,  METRIC %in% input$demSelect & SUMSTAT==input$AVE_MED2& FISHAK=='FALSE')
               }else {
               datSub <- subset(datSub,  METRIC %in% input$demSelect & SUMSTAT == input$AVE_MED2 )}
-            } else {
+            } else { # Compare: Metrics
             if(input$Sect_sel=="CV"){
               datSub <- subset(datSub,  METRIC %in% input$demSelect & SUMSTAT == input$AVE_MED2 & FISHAK!='FALSE')
             } else if(input$Sect_sel=="FR") {
@@ -408,11 +408,13 @@ DatSub <- reactive({
             }
           }
       } else if(input$Ind_sel=="Social and Regional")  {
-        if(input$LayoutSelect!="Metrics"){
+        if(input$LayoutSelect!="Metrics"){ # Compare: Groups of vessels/companies
+
 #        if(input$MetricSelect!="Number of vessels"&input$MetricSelect!="Seasonality"&input$MetricSelect!="Share of landings by state"&input$MetricSelect!="Gini coefficient"){
           if(input$socSelect!="Share of landings by state"){
  #           if(input$LayoutSelect!="Metrics"){}
             if(input$Sect_sel=='FR'){
+              
               datSub <- subset(datSub,  METRIC %in% input$socSelect & SUMSTAT == input$AVE_MED2)
             }
              else {
