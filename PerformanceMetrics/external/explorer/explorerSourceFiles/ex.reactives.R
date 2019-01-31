@@ -188,9 +188,8 @@ DatSubTable <- reactive({
       subset(dat, YEAR %in% seq(input$YearSelect[1], input$YearSelect[2], 1))
   }
   
-  
   if (input$Ind_sel == "Demographic") {
-    if (input$LayoutSelect != "Metrics") {
+    if (input$LayoutSelect != "Metrics") { # Compare: Groups of vessels/companies
       #        if(input$MetricSelect!="Number of vessels"&input$MetricSelect!="Seasonality"&input$MetricSelect!="Share of landings by state"&input$MetricSelect!="Gini coefficient"){
       #           if(input$LayoutSelect!="Metrics"){}
       if (input$Sect_sel == "FR") {
@@ -222,19 +221,19 @@ DatSubTable <- reactive({
           subset(datSub,
             METRIC %in% input$demSelect & SUMSTAT == input$AVE_MED2)
       }
-    }  else {
+    }  else { # Compare: Metrics
       if (input$Sect_sel == "CV") {
         datSub <-
           subset(
             datSub,
             METRIC %in% input$demSelect &
-              SUMSTAT == input$AVE_MED2 & FISHAK != 'FALSE'
+              SUMSTAT == input$AVE_MED2 & (FISHAK != 'FALSE' | is.na(FISHAK))
           )
       } else if (input$Sect_sel == "FR") {
         datSub <-
           subset(datSub,
             METRIC %in% input$demSelect & SUMSTAT == input$AVE_MED2)
-      } else {
+      } else { # MS & CP
         datSub <-
           subset(
             datSub,
@@ -308,7 +307,6 @@ DatSubTable <- reactive({
   #      }}
   
   
-  
   datSub$VALUE <- round(as.numeric(as.character(datSub$VALUE)), 2)
   datSub$VARIANCE <-
     round(as.numeric(as.character(datSub$VARIANCE)), 2)
@@ -366,11 +364,11 @@ DatSubTable <- reactive({
     ifelse(datSub$N > 2 & is.na(datSub$VALUE) == T, NA, datSub$q75)
   #datSub$FISHAK <- ifelse(datSub$FISHAK=="TRUE", "Vessels included", "Vessels not included")
   # datSub$whitingv <- ifelse(datSub$whitingv=="TRUE", "Vessels included", "Vessels not included")
-  
+
   validate(need(
     sum(!is.na(as.numeric(datSub$VALUE))) != 0,
     paste(
-      'Sorry, the selected statistic is not available for the selected metric. Try selecting a different statistic.
+      'Sorry, the selected statistic is not available for the selected metric. Try selecting a different statistic. 12
       '
     )
     ))
@@ -381,7 +379,7 @@ DatSubTable <- reactive({
     need(
       datSub$SUMSTAT != "Total",
       paste(
-        'Sorry, this plot could not be generated as total vessel length is not calculated. Try selecting the average or median statistic.
+        'Sorry, this plot could not be generated as total vessel length is not calculated. Try selecting the average or median statistic. 13
         '
       )
       )
@@ -392,7 +390,7 @@ DatSubTable <- reactive({
     need(
       datSub$SUMSTAT != "Total",
       paste(
-        'Sorry, this plot could not be generated as the total exponential shannon index is not calculated. Try selecting the average or median statistic.
+        'Sorry, this plot could not be generated as the total exponential shannon index is not calculated. Try selecting the average or median statistic. 14
         '
       )
       )
@@ -403,7 +401,7 @@ DatSubTable <- reactive({
     need(
       datSub$SUMSTAT != "Total",
       paste(
-        'Sorry, this plot could not be generated as the total fishery participation is not calculated. Try selecting the average or median statistic.
+        'Sorry, this plot could not be generated as the total fishery participation is not calculated. Try selecting the average or median statistic. 15
         '
       )
       )
@@ -414,7 +412,7 @@ DatSubTable <- reactive({
     need(
       datSub$SUMSTAT != "Average" & datSub$SUMSTAT != "Median",
       paste(
-        'Sorry, this plot could not be generated as the average and median number of vessels are not calculated. Try selecting the total statistic.
+        'Sorry, this plot could not be generated as the average and median number of vessels are not calculated. Try selecting the total statistic. 16
         '
       )
       )
@@ -425,7 +423,7 @@ DatSubTable <- reactive({
     need(
       datSub$SUMSTAT != "Average" & datSub$SUMSTAT != "Median",
       paste(
-        'Sorry, this plot could not be generated as the average and median number of processors are not calculated. Try selecting the total statistic.
+        'Sorry, this plot could not be generated as the average and median number of processors are not calculated. Try selecting the total statistic. 17
         '
       )
       )
@@ -436,7 +434,7 @@ DatSubTable <- reactive({
     need(
       datSub$SUMSTAT != "Average" & datSub$SUMSTAT != "Median",
       paste(
-        'Sorry, this plot could not be generated as the average and median Gini coefficient are not calculated. Try selecting the total statistic.
+        'Sorry, this plot could not be generated as the average and median Gini coefficient are not calculated. Try selecting the total statistic. 18
         '
       )
       )
@@ -446,7 +444,7 @@ DatSubTable <- reactive({
     need(
       datSub$SUMSTAT != "Total",
       paste(
-        'Sorry, this plot could not be generated as the total hourly compensation is not calculated. Try selecting the average or median statistic.
+        'Sorry, this plot could not be generated as the total hourly compensation is not calculated. Try selecting the average or median statistic. 19
         '
       )
       )
@@ -457,7 +455,7 @@ DatSubTable <- reactive({
     need(
       datSub$SUMSTAT != "Total",
       paste(
-        'Sorry, this plot could not be generated as the crew wage per day is not calculated. Try selecting the average or median statistic.
+        'Sorry, this plot could not be generated as the crew wage per day is not calculated. Try selecting the average or median statistic. 20
         '
       )
       )
@@ -684,11 +682,11 @@ DatSubTable <- reactive({
   validate(need(dim(datSub)[1] > 0,
     if (input$Sect_sel != "FR") {
       paste(
-        'Sorry, this output could not be generated as no vessels matched your selections. Try selecting a different variable.'
+        'Sorry, this output could not be generated as no vessels matched your selections. Try selecting a different variable. 21'
       )
     } else {
       paste(
-        'Sorry, this output could not be generated as no processors matched your selections. Try selecting a different variable.'
+        'Sorry, this output could not be generated as no processors matched your selections. Try selecting a different variable. 22'
       )
     }))
   return(datSub)
@@ -829,11 +827,11 @@ DatSub <- reactive({
   validate(need(dim(datSub)[1] > 0,
     if (input$Sect_sel != "FR") {
       paste(
-        'Sorry, this plot could not be generated as no vessels matched your selections. Try selecting a different variable.'
+        'Sorry, this plot could not be generated as no vessels matched your selections. Try selecting a different variable. 23'
       )
     } else {
       paste(
-        'Sorry, this plot could not be generated as no processors matched your selections. Try selecting a different variable.'
+        'Sorry, this plot could not be generated as no processors matched your selections. Try selecting a different variable. 24'
       )
     }))
   
@@ -842,7 +840,7 @@ DatSub <- reactive({
     need(
       datSub$SUMSTAT != "Total",
       paste(
-        'Sorry, this plot could not be generated as total vessel length is not calculated. Try selecting the mean or median statistic.
+        'Sorry, this plot could not be generated as total vessel length is not calculated. Try selecting the mean or median statistic. 25
         '
       )
       )
@@ -853,7 +851,7 @@ DatSub <- reactive({
     need(
       datSub$SUMSTAT != "Total",
       paste(
-        'Sorry, this plot could not be generated as the total exponential shannon index is not calculated. Try selecting the mean or median statistic.
+        'Sorry, this plot could not be generated as the total exponential shannon index is not calculated. Try selecting the mean or median statistic. 26
         '
       )
       )
@@ -864,7 +862,7 @@ DatSub <- reactive({
     need(
       datSub$SUMSTAT != "Total",
       paste(
-        'Sorry, this plot could not be generated as the total fishery participation is not calculated. Try selecting the mean or median statistic.
+        'Sorry, this plot could not be generated as the total fishery participation is not calculated. Try selecting the mean or median statistic. 27
         '
       )
       )
@@ -875,7 +873,7 @@ DatSub <- reactive({
     need(
       datSub$SUMSTAT != "Mean" & datSub$SUMSTAT != "Median",
       paste(
-        'Sorry, this plot could not be generated as the mean and median number of vessels are not calculated. Try selecting the total statistic.
+        'Sorry, this plot could not be generated as the mean and median number of vessels are not calculated. Try selecting the total statistic. 28
         '
       )
       )
@@ -886,7 +884,7 @@ DatSub <- reactive({
     need(
       datSub$SUMSTAT != "Mean" & datSub$SUMSTAT != "Median",
       paste(
-        'Sorry, this plot could not be generated as the mean and median number of processors are not calculated. Try selecting the total statistic.
+        'Sorry, this plot could not be generated as the mean and median number of processors are not calculated. Try selecting the total statistic. 29
         '
       )
       )
@@ -897,7 +895,7 @@ DatSub <- reactive({
     need(
       datSub$SUMSTAT != "Mean" & datSub$SUMSTAT != "Median",
       paste(
-        'Sorry, this plot could not be generated as the mean and median Gini coefficient are not calculated. Try selecting the total statistic.
+        'Sorry, this plot could not be generated as the mean and median Gini coefficient are not calculated. Try selecting the total statistic. 30
         '
       )
       )
@@ -907,7 +905,7 @@ DatSub <- reactive({
     need(
       datSub$SUMSTAT != "Total",
       paste(
-        'Sorry, this plot could not be generated as the total hourly compensation is not calculated. Try selecting the mean or median statistic.
+        'Sorry, this plot could not be generated as the total hourly compensation is not calculated. Try selecting the mean or median statistic. 31
         '
       )
       )
@@ -918,7 +916,7 @@ DatSub <- reactive({
     need(
       datSub$SUMSTAT != "Total",
       paste(
-        'Sorry, this plot could not be generated as the crew wage per day is not calculated. Try selecting the mean or median statistic.
+        'Sorry, this plot could not be generated as the crew wage per day is not calculated. Try selecting the mean or median statistic. 32
         '
       )
       )
@@ -949,19 +947,19 @@ DatSub <- reactive({
   validate(need(max(datSub$N, na.rm = T) > 2,
     if (input$Sect_sel != 'FR') {
       paste(
-        'Sorry, this plot could not be generated as data has been suppressed to protect confidentiality.
+        'Sorry, this plot could not be generated as data has been suppressed to protect confidentiality. 33
         Try selecting "All fisheries" in the "Show data summed across these fisheries" button or a different variable.'
       )
     } else {
       paste(
-        'Sorry, this plot could not be generated as data has been suppressed to protect confidentiality.
+        'Sorry, this plot could not be generated as data has been suppressed to protect confidentiality. 34
         Try selecting "All processors" in the "Show data summed across:" checkbox option or a different variable.'
       )
     }))
   validate(need(
     sum(!is.na(as.numeric(datSub$VALUE))) != 0,
     paste(
-      'Sorry, the selected statistic is not available for the selected metric. Try selecting a different statistic.
+      'Sorry, the selected statistic is not available for the selected metric. Try selecting a different statistic. 35
       '
     )
     ))

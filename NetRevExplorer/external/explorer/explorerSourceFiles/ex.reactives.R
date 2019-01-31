@@ -137,7 +137,7 @@ DatSubTable <- reactive({
   
   validate(
     need(dim(datSub)[1]>0, #min(datSub$N)>2,
-         paste('Sorry, this plot could not be generated as no vessels matched your selections. 
+         paste('Sorry, this plot could not be generated as no vessels matched your selections.4 
                Try clicking the box to include all vessels that fished in AK or 
                 include all vessels that fished for whiting. 
                ')))
@@ -217,15 +217,15 @@ DatThirdsTable <- reactive({
   
   validate(
     need(dim(datSub)[1]>0, #min(datSub$N)>2,
-         'Sorry, this plot could not be generated as no vessels matched your selections. 
+         'Sorry, this plot could not be generated as no vessels matched your selections.5 
           Try clicking the box to include all vessels that fished in AK or 
           include all vessels that fished for whiting.'),
     need(datSub$VARIABLE!='Large',
-         'Sorry, this plot could not be generated as an insufficient number of processors matched your selections. 
+         'Sorry, this plot could not be generated as an insufficient number of processors matched your selections.6 
           Try selecting a different processor size.'),
     need(input$VariableSelect!='Small',
          need(input$ProductionSelect!="Catch share processors",
-            "Sorry, this plot could not be generated as an insufficient number of processors matched your selections. 
+            "Sorry, this plot could not be generated as an insufficient number of processors matched your selections.7 
             Try selecting  'All processors' or selecting a different processor size. "))
     )
   
@@ -362,7 +362,7 @@ if(input$CategorySelect=="Fisheries"&input$Sect_sel=="CV"){
 
     validate(
       need(dim(datSub)[1]>0, #min(datSub$N)>2,
-           'Sorry, this plot could not be generated as no vessels matched your selections. 
+           'Sorry, this plot could not be generated as no vessels matched your selections.8 
                  Try clicking the box to include all vessels that fished in Alaska or 
                  include all vessels that fished for Pacific whiting. 
                  '))
@@ -536,15 +536,15 @@ DatSubThirds <- reactive({
     
   validate(
     need(dim(datSub)[1]>0, 
-         'Sorry, this plot could not be generated as no vessels matched your selections. 
+         'Sorry, this plot could not be generated as no vessels matched your selections.9 
           Try clicking the box to include all vessels that fished in Alaska or 
          include all vessels that fished for Pacific whiting.'),
     need(datSub$VARIABLE!='Large',
-         'Sorry, this plot could not be generated as an insufficient number of processors matched your selections. 
+         'Sorry, this plot could not be generated as an insufficient number of processors matched your selections.10 
           Try selecting a different processor size.'),
     need(input$VariableSelect!='Small',
          need(input$ProductionSelect!="Catch share processors",
-          "Sorry, this plot could not be generated as an insufficient number of processors matched your selections. 
+          "Sorry, this plot could not be generated as an insufficient number of processors matched your selections.11 
           Try selecting  'All processors' or selecting a different processor size."))
   )
   
