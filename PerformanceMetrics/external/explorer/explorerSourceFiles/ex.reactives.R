@@ -188,7 +188,6 @@ DatSubTable <- reactive({
         YEAR %in% seq(input$YearSelect[1], input$YearSelect[2], 1))
   }
 
-
   if (input$Ind_sel == "Demographic") {
     if (input$LayoutSelect != "Metrics") { # Compare: Groups of vessels/companies
       #        if(input$MetricSelect!="Number of vessels"&input$MetricSelect!="Seasonality"&input$MetricSelect!="Share of landings by state"&input$MetricSelect!="Gini coefficient"){
@@ -225,8 +224,9 @@ DatSubTable <- reactive({
         datSub <-
           subset(datSubforSector,
             METRIC %in% input$demSelect &
-              SUMSTAT == input$AVE_MED2 & (FISHAK != 'FALSE' | is.na(FISHAK))
+              SUMSTAT == input$AVE_MED2 & (FISHAK == 'FALSE' | is.na(FISHAK))
           )
+
       } else if (input$Sect_sel == "FR") {
         datSub <-
           subset(datSubforSector,
@@ -298,7 +298,7 @@ DatSubTable <- reactive({
   #      }   else {
   #        datSub <- subset(datSub,  METRIC %in% input$MetricSelect & !is.na(input$MetricSelect))
   #      }}
-  
+
   datSub$VALUE <- round(as.numeric(as.character(datSub$VALUE)), 2)
   datSub$VARIANCE <-
     round(as.numeric(as.character(datSub$VARIANCE)), 2)
@@ -760,7 +760,6 @@ DatSub <- reactive({
       }
     } else {
       # Compare: Metrics
-      # NEED TO ADD AN IF STATEMENT FOR DAYS AT SEA
       if (input$Sect_sel == "CV") {
         datSub <-
           subset(datSubforSector, METRIC %in% input$demSelect & SUMSTAT == input$AVE_MED2 & (FISHAK == 'FALSE' | is.na(FISHAK)))
