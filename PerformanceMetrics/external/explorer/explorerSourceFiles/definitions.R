@@ -80,7 +80,7 @@ tags$div(style = "margin: 15px 15px 30px; width: 60%",
                                     "The proportion of a vessels total revenue that comes from fish caught in the limited entry/catch share fishery. Metric measures how reliant vessels 
                                     are on revenue from the limited entry/catch shares fishery."),
                             tags$li(strong('Vessel length: '),
-                                    'The length (ft) of vessels reflects the mix of active participants in the fishery in each year.')
+                                    'The length (ft) of vessels.')
                                                ),
                     tags$br(),
                     
