@@ -568,7 +568,7 @@ output$hover_info <- renderUI({
       } else if(lvls[round(length(lvls)*input$plot_hover$x)]==2014) {
         tags$div('Fishery participants can buy and sell quota shares.', tags$br(), 
                  'Non-whiting groundfish gets MSC certification',tags$br(),
-                 'Russia implements ongoing trade sanctions.')  ]
+                 'Russia implements ongoing trade sanctions.')  
       }else if(lvls[round(length(lvls)*input$plot_hover$x)]==2013) {
         paste0('Ban on year-end quota pound transfers is lifted.')  
       }else if(lvls[round(length(lvls)*input$plot_hover$x)]==2012) {
