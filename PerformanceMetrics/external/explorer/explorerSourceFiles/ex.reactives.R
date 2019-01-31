@@ -3,7 +3,7 @@
 # creating the dat() reactive function that contains the user selected dataset
 # The re-classification of data types can be transfered to the read-in file
 
-
+# DatMain: data load ####
 DatMain <- reactive({
   # data load moved to serverhead
   # data is loaded from serverHead.R load call
@@ -19,7 +19,7 @@ DatMain <- reactive({
   }
 })
 
-
+# DatVars: sidebar inputs ####
 DatVars <- reactive({
   # create a list of variable names used in the sidebar inputs
   dat <- DatMain()
@@ -152,7 +152,7 @@ DatVars <- reactive({
 })
 
 
-
+# DatSubTable: HUGE reactive for subsetting for data table####
 # Subset data for table
 # selecting plot variables, subsetting the data AND casting for individual level ID (fun.agg=sum)
 # build dcast formula using if controls and using the quoted method in dcast
@@ -172,29 +172,30 @@ DatSubTable <- reactive({
   dat$VARIABLE <- case_when(
     dat$VARIABLE == 'Small vessel (< 60 ft)' ~  'Small vessel (<= 60 ft)',
     T ~ as.character(dat$VARIABLE))
-  
-  #subsetting
+
+  # data filter differs whether it is CV/FR module or CP/MS module
   if (input$Sect_sel == "CV" | input$Sect_sel == "FR") {
-    datSub <-
-      subset(
-        dat,
+    datSubforSector <-
+      subset(dat,
         YEAR %in% seq(input$YearSelect[1], input$YearSelect[2], 1) &
           CATEGORY == input$CategorySelect &
           VARIABLE %in% input$VariableSelect &
           whitingv %in% input$FishWhitingSelect
       )
   } else {
-    datSub <-
-      subset(dat, YEAR %in% seq(input$YearSelect[1], input$YearSelect[2], 1))
+    datSubforSector <-
+      subset(dat, 
+        YEAR %in% seq(input$YearSelect[1], input$YearSelect[2], 1))
   }
-  
+
+
   if (input$Ind_sel == "Demographic") {
     if (input$LayoutSelect != "Metrics") { # Compare: Groups of vessels/companies
       #        if(input$MetricSelect!="Number of vessels"&input$MetricSelect!="Seasonality"&input$MetricSelect!="Share of landings by state"&input$MetricSelect!="Gini coefficient"){
       #           if(input$LayoutSelect!="Metrics"){}
       if (input$Sect_sel == "FR") {
         datSub <-
-          subset(datSub,
+          subset(datSubforSector,
             METRIC %in% input$demSelect & SUMSTAT == input$AVE_MED2)
       }
       else if (input$demSelect[1] == "Exponential Shannon Index" |
@@ -203,40 +204,36 @@ DatSubTable <- reactive({
           input$Sect_sel == "CV" &
           input$demSelect[1] == "Fishery participation") {
         datSub <-
-          subset(
-            datSub,
+          subset(datSubforSector,
             METRIC %in% input$demSelect &
               SUMSTAT == input$AVE_MED2 &  FISHAK == input$FishAkSelect
           )
       } else if (input$Sect_sel == "CV" &
           input$demSelect[1] == "Days at sea") {
         datSub <-
-          subset(
-            datSub,
+          subset(datSubforSector,
             METRIC %in% input$demSelect &
               SUMSTAT == input$AVE_MED2 & FISHAK == 'FALSE'
           )
       }  else {
         datSub <-
-          subset(datSub,
+          subset(datSubforSector,
             METRIC %in% input$demSelect & SUMSTAT == input$AVE_MED2)
       }
     }  else { # Compare: Metrics
       if (input$Sect_sel == "CV") {
         datSub <-
-          subset(
-            datSub,
+          subset(datSubforSector,
             METRIC %in% input$demSelect &
               SUMSTAT == input$AVE_MED2 & (FISHAK != 'FALSE' | is.na(FISHAK))
           )
       } else if (input$Sect_sel == "FR") {
         datSub <-
-          subset(datSub,
+          subset(datSubforSector,
             METRIC %in% input$demSelect & SUMSTAT == input$AVE_MED2)
       } else { # MS & CP
         datSub <-
-          subset(
-            datSub,
+          subset(datSubforSector,
             METRIC %in% input$demSelect &
               SUMSTAT == input$AVE_MED2 & FISHAK != 'TRUE'
           )
@@ -244,7 +241,7 @@ DatSubTable <- reactive({
     }
   } else if (input$Ind_sel == "Economic") {
     datSub <-
-      subset(datSub,
+      subset(datSubforSector,
         SHORTDESCR %in% input$ShortdescrSelect & STAT == input$StatSelect)
   } else if (input$Ind_sel == "Social and Regional")  {
     if (input$LayoutSelect != "Metrics") {
@@ -252,37 +249,33 @@ DatSubTable <- reactive({
       if (input$socSelect != "Share of landings by state" &
           input$socSelect != "Seasonality") {
         datSub <-
-          subset(
-            datSub,
+          subset(datSubforSector,
             METRIC %in% input$socSelect &
               SUMSTAT == input$AVE_MED2 & !is.na(input$socSelect)
           )
         
       }   else {
         datSub <-
-          subset(datSub,
+          subset(datSubforSector,
             METRIC %in% input$socSelect & !is.na(input$socSelect))
       }
     } else {
       if (input$Sect_sel == "CV") {
         datSub <-
-          subset(
-            datSub,
+          subset(datSubforSector,
             METRIC %in% input$socSelect &
               SUMSTAT == input$AVE_MED2 &
               !is.na(input$socSelect) & FISHAK != 'FALSE'
           )
       } else if (input$Sect_sel == "FR") {
         datSub <-
-          subset(
-            datSub,
+          subset(datSubforSector,
             METRIC %in% input$socSelect &
               SUMSTAT == input$AVE_MED2 & !is.na(input$socSelect)
           )
       } else {
         datSub <-
-          subset(
-            datSub,
+          subset(datSubforSector,
             METRIC %in% input$socSelect &
               SUMSTAT == input$AVE_MED2 &
               !is.na(input$socSelect) & FISHAK != 'TRUE'
@@ -306,7 +299,6 @@ DatSubTable <- reactive({
   #        datSub <- subset(datSub,  METRIC %in% input$MetricSelect & !is.na(input$MetricSelect))
   #      }}
   
-  
   datSub$VALUE <- round(as.numeric(as.character(datSub$VALUE)), 2)
   datSub$VARIANCE <-
     round(as.numeric(as.character(datSub$VARIANCE)), 2)
@@ -314,7 +306,7 @@ DatSubTable <- reactive({
   datSub$q75 <- round(as.numeric(as.character(datSub$q75)), 2)
   datSub$N <- as.numeric(datSub$N)
   #     datSub$PCHANGE <- as.numeric(datSub$PCHANGE)
-  
+
   #When to subset by CS (All fisheries, all CS fisheries, all non-CS fisheries)
   if (input$Sect_sel == "CV" &
       input$CategorySelect != "Fisheries") {
@@ -332,7 +324,6 @@ DatSubTable <- reactive({
       }
     }
   }
-  
   
   if (input$Sect_sel == "FR") {
     datSub[datSub$METRIC != "Number of processors", 'VALUE'] <-
@@ -373,7 +364,7 @@ DatSubTable <- reactive({
     )
     ))
   
-  
+# data table Sorry messages ####  
   validate(need(
     datSub$METRIC != "Vessel length",
     need(
@@ -461,7 +452,6 @@ DatSubTable <- reactive({
       )
     ))
   
-  
   if (input$Ind_sel == "Social and Regional") {
     if (input$socSelect[1] == "Share of landings by state") {
       datSub$VALUE <- datSub$VALUE * 100
@@ -478,6 +468,7 @@ DatSubTable <- reactive({
   
   
   #           datSub$VARIANCE <- ifelse(input$Ind_sel=="Economic"&input$AVE_MED=='T'||input$Ind_sel=="Economic"&input$AVE_MED=='A'||datSub$VARIANCE, paste(datSub$q25, ',', datSub$q75))
+  
   datSub$VARIANCE <- if (input$Ind_sel != 'Economic') {
     ifelse(
       datSub$SUMSTAT %in% c('Median'),
@@ -492,8 +483,8 @@ DatSubTable <- reactive({
     )
   }
   
-  
-  if (input$LayoutSelect != "Metrics") {
+# choosing which columns to display  
+  if (input$LayoutSelect != "Metrics") { # Compare Vessels/companies
     if (input$Ind_sel == "Demographic") {
       if (input$demSelect[1] == "Exponential Shannon Index" |
           input$demSelect[1] == "Fishery participation" |
@@ -608,8 +599,7 @@ DatSubTable <- reactive({
           )]
       }
     }
-  } # Compare vessels
-  ##I think this is where I need to trouble shoot##Ashley###
+  } # Compare: Metrics
   else if (input$LayoutSelect == "Metrics") {
     if (input$Ind_sel == "Economic") {
       datSub <-
@@ -641,6 +631,8 @@ DatSubTable <- reactive({
         )]
     }
   }
+  
+# not sure what this is ####
   if (input$Ind_sel != "Economic") {
     if (input$LayoutSelect == "Metrics") {
       if (input$AVE_MED2 == "Average" |
@@ -678,7 +670,7 @@ DatSubTable <- reactive({
     }
   }
   
-  
+# More data table sorry messages ####
   validate(need(dim(datSub)[1] > 0,
     if (input$Sect_sel != "FR") {
       paste(
@@ -696,6 +688,8 @@ DatSubTable <- reactive({
 
 # selecting plot variables, subsetting the data AND casting for individual level ID (fun.agg=sum)
 # build dcast formula using if controls and using the quoted method in dcast
+
+# DatSub: HUGE reactive for subsetting for plotting ####
 DatSub <- reactive({
   dat <- DatMain()
   dat$SUMSTAT <-
@@ -714,9 +708,9 @@ DatSub <- reactive({
       'Small vessel (<= 60 ft)',
       as.character(dat$VARIABLE)
     )
-  
+
   if (input$Sect_sel == "CV" | input$Sect_sel == 'FR') {
-    datSub <-
+    datSubforSector <-
       subset(
         dat,
         YEAR %in% seq(input$YearSelect[1], input$YearSelect[2], 1) &
@@ -725,13 +719,13 @@ DatSub <- reactive({
           whitingv %in% input$FishWhitingSelect
       )
   } else {
-    datSub <-
+    datSubforSector <-
       subset(dat, YEAR %in% seq(input$YearSelect[1], input$YearSelect[2], 1))
   }
   
   if (input$Ind_sel == "Economic") {
     datSub <-
-      subset(datSub,
+      subset(datSubforSector,
         SHORTDESCR %in% input$ShortdescrSelect &
           STAT == input$StatSelect)
   } else if (input$Ind_sel == "Demographic")  {
@@ -739,7 +733,7 @@ DatSub <- reactive({
       # Compare: Groups of vessels/companies
       if (input$Sect_sel == 'FR') {
         datSub <-
-          subset(datSub,
+          subset(datSubforSector,
             METRIC %in% input$demSelect & SUMSTAT == input$AVE_MED2)
       }
       else if (input$demSelect[1] == "Exponential Shannon Index" |
@@ -748,22 +742,20 @@ DatSub <- reactive({
           input$Sect_sel == "CV" &
           input$demSelect[1] == "Fishery participation") {
         datSub <-
-          subset(
-            datSub,
+          subset(datSubforSector,
             METRIC %in% input$demSelect &
               SUMSTAT == input$AVE_MED2 & FISHAK == input$FishAkSelect
           )
       } else if (input$Sect_sel == "CV" &
           input$demSelect[1] == "Days at sea") {
         datSub <-
-          subset(
-            datSub,
+          subset(datSubforSector,
             METRIC %in% input$demSelect &
               SUMSTAT == input$AVE_MED2 & FISHAK == 'FALSE'
           )
       } else {
         datSub <-
-          subset(datSub,
+          subset(datSubforSector,
             METRIC %in% input$demSelect & SUMSTAT == input$AVE_MED2)
       }
     } else {
@@ -771,15 +763,14 @@ DatSub <- reactive({
       # NEED TO ADD AN IF STATEMENT FOR DAYS AT SEA
       if (input$Sect_sel == "CV") {
         datSub <-
-          subset(datSub, METRIC %in% input$demSelect & SUMSTAT == input$AVE_MED2 & (FISHAK == 'FALSE' | is.na(FISHAK)))
+          subset(datSubforSector, METRIC %in% input$demSelect & SUMSTAT == input$AVE_MED2 & (FISHAK == 'FALSE' | is.na(FISHAK)))
       } else if (input$Sect_sel == "FR") {
         datSub <-
-          subset(datSub,
+          subset(datSubforSector,
             METRIC %in% input$demSelect & SUMSTAT == input$AVE_MED2)
       } else {
         datSub <-
-          subset(
-            datSub,
+          subset(datSubforSector,
             METRIC %in% input$demSelect &
               SUMSTAT == input$AVE_MED2 & FISHAK != 'TRUE'
           )
@@ -794,32 +785,32 @@ DatSub <- reactive({
         #           if(input$LayoutSelect!="Metrics"){}
         if (input$Sect_sel == 'FR') {
           datSub <-
-            subset(datSub,
+            subset(datSubforSector,
               METRIC %in% input$socSelect & SUMSTAT == input$AVE_MED2)
         }
         else {
           datSub <-
-            subset(datSub,
+            subset(datSubforSector,
               METRIC %in% input$socSelect & SUMSTAT == input$AVE_MED2)
         }
       }   else {
         datSub <-
-          subset(datSub,
+          subset(datSubforSector,
             METRIC %in% input$socSelect & !is.na(input$socSelect))
       }
     } else {
       # Compare: Metrics
       if (input$Sect_sel == "CV") {
         datSub <-
-          subset(datSub,
+          subset(datSubforSector,
             METRIC %in% input$socSelect & SUMSTAT == input$AVE_MED2)
       } else if (input$Sect_sel == "FR") {
         datSub <-
-          subset(datSub,
+          subset(datSubforSector,
             METRIC %in% input$socSelect & SUMSTAT == input$AVE_MED2)
       } else { # MS & CP
         datSub <-
-          subset(datSub,
+          subset(datSubforSector,
             METRIC %in% input$socSelect & SUMSTAT == input$AVE_MED2)
       }
     }
@@ -925,17 +916,17 @@ DatSub <- reactive({
   
   if (input$Sect_sel == "CV" &
       input$CategorySelect != "Fisheries") {
-    datSub <- subset(datSub, CS == input$inSelect)
+    datSub <- subset(datSubforSector, CS == input$inSelect)
   }
   if (input$Sect_sel == "FR") {
     if (input$Ind_sel != 'Demographic') {
       if (input$CategorySelect != "Fisheries") {
-        datSub <- subset(datSub, CS == input$inSelect)
+        datSub <- subset(datSubforSector, CS == input$inSelect)
       }
     } else {
       if (input$CategorySelect != "Fisheries" &&
           input$demSelect != "Proportion of revenue from catch share species") {
-        datSub <- subset(datSub, CS == input$inSelect)
+        datSub <- subset(datSubforSector, CS == input$inSelect)
       }
     }
   }
@@ -1212,13 +1203,8 @@ DatSub <- reactive({
     if (input$AVE_MED2 != "Total") {
       if (table(table(datSub$METRIC) > 1)[2] > 1) {
         datSub <-
-          subset(
-            datSub,
-            !METRIC %in% c(
-              "Number of vessels",
-              "Gini coefficient",
-              "Number of processors"
-            )
+          subset(datSubforSector, 
+            !METRIC %in% c( "Number of vessels", "Gini coefficient", "Number of processors")
           )
       }
     }
@@ -1230,20 +1216,14 @@ DatSub <- reactive({
     if (input$AVE_MED2 == "Total") {
       if (table(table(datSub$METRIC) > 1)[2] > 1) {
         datSub <-
-          subset(
-            datSub,
-            !METRIC %in% c(
-              "Vessel length",
-              "Exponential Shannon Index",
-              "Fishery participation",
-              "Hourly compensation",
-              'Crew wage per day'
-            )
+          subset(datSubforSector,
+            !METRIC %in% c("Vessel length", "Exponential Shannon Index", "Fishery participation",
+              "Hourly compensation", 'Crew wage per day')
           )
       }
     }
   } else {
-    datSub
+    datSubforSector
   }
   
   #      datSub$YEAR2 <- factor(datSub$YEAR, levels = min(DatSub$YEAR), max(datSub$YEAR))
@@ -1254,8 +1234,6 @@ DatSub <- reactive({
   #   } else return()
   #   )
     })
-
-
 
 
 PermitPlot <- reactive({
