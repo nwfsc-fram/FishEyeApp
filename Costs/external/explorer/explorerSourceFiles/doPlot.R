@@ -147,7 +147,8 @@ doPlot <- function(dat, x, y){
     
     
     if(input$PlotSelect=="Line"){
-      g <- g + geom_line(aes_string(colour = groupVar), size=1.5)
+      g <- g + geom_line(aes_string(colour = groupVar), size=1.5) +
+        geom_point(aes_string(colour = groupVar), size = 4)
     } # end if statement for line figure
     else if(input$PlotSelect == "Bar"){
       g <- g + geom_bar(aes_string(fill = groupVar, order=groupVar), stat="identity", position="dodge", width = scale_bars())
@@ -197,16 +198,58 @@ doPlot <- function(dat, x, y){
     }
     conf_mess <- function(){
       if(input$Sect_sel=="CV"){
-        "\nNOTE: Your selection would reveal confidential data for years with sufficient observations.  The results have been suppressed.
-        See the confidentiality section under the ABOUT tab for more information."
+        "\n
+               \nSee the confidentiality section under the ABOUT tab for more information."
       } else {
         ""
       }
     }
-    suff_flag <- function(){
-      paste("\n* Data has been suppressed for this selected",input$CategorySelect, "and year as there are not enough observations to protect confidentiality.")
+    supp_obs <- function() {
+      "\n
+                \nData have been suppressed for years that are not plotted as there are not enough observations to protect confidentiality."
     }
+    #suff_flag <- function(){
+      #paste("\n* Data has been suppressed for this selected",input$CategorySelect, "and year as there are not enough observations to protect confidentiality.")
+    #}
+    
+    supp_whiting <- function() {
+      if(input$Sect_sel!='FR') {
+        "\n
+              \nYour selection would reveal confidential data because the categories you selected are additive. /nIn these cases, only results for 'All vessels' have been shown."
+      } else {
+       "\n
+              \nYour selection would reveal confidential data because the categories you selected are additive. /nIn these cases, only results for 'All processors' have been shown."
+      }
+    }
+
     # define labels
+    #xlab <- function () {
+      #if(max(dat$conf_trt,na.rm=T)==0){
+       # if(max(dat$conf)==0){
+        #  if(input$PlotSelect!='Stacked bar') {
+         #   ""
+          #} else {
+           #   paste(stacked_bar_mess)
+            #}} else{
+             #     if(input$PlotSelect!='Stacked bar'){
+              #        paste(supp_whiting, conf_mess)
+               #   } else {
+                #      paste(supp_whiting, conf_mess, stacked_bar_mess)
+            #  }}} else {
+             #       if (max(dat$conf)==0) {
+              #        if(input$PlotSelect!= 'Stacked bar') {
+               #         paste(supp_obs, conf_mess)
+                #      } else {
+                    #      paste(supp_obs, conf_mess, stacked_bar_mess)
+                 # }} else {
+                  #      if (input$PlotSelect != 'Stacked bar') {
+                   #       paste(supp_obs, supp_whiting, conf_mess)
+        #          } else {
+         #             paste(supp_obs, supp_whiting, conf_mess, stacked_bar_mess)
+          #      }
+           #   }
+            #}
+      #    }
     xlab <- function(){
       if(max(dat$AK_FLAG, na.rm=T)==1){
         if(input$PlotSelect=='Stacked bar'){

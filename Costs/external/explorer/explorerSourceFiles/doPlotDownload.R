@@ -150,7 +150,8 @@ doPlotDownload <- function(dat, x, y){
     
     
     if(input$PlotSelect=="Line"){
-      g <- g + geom_line(aes_string(colour = groupVar), size=1.5)
+      g <- g + geom_line(aes_string(colour = groupVar), size=1.5) +
+        geom_point(aes_string(colour = groupVar), size = 4)
     } # end if statement for line figure
     else if(input$PlotSelect == "Bar"){
       g <- g + geom_bar(aes_string(fill = groupVar, order=groupVar), stat="identity", position="dodge", width = scale_bars())
