@@ -17,7 +17,10 @@ observeEvent(input$istat, {
 })
 observeEvent(input$ipo, {
   session$sendCustomMessage(type = 'testmessage',
-                            message = 'See the Definitions Page for a description of each metric. Not all statistics may be applicable for a given metric.'
+                            if(input$LayoutSelect=="Metrics") {
+                            message = 'See the Definitions Page for a description of each metric. Not all metrics may be applicable for a given statistic.'
+                            } else { 
+                              message = 'See the Definitions Page for a description of each metric. Not all statistics may be applicable for a given metric.'}
                        
                             #if(input$demSelect=="Number of vessels"){
                               #message = 'Number of vessels actively participating (i.e., had an active permit and non-zero revenue).'
