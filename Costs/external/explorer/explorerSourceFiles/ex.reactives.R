@@ -175,7 +175,7 @@ DatSubTable <- reactive({
   validate(
     need(dim(datSub)[1]>0, #min(datSub$N)>2,
          paste('Sorry, this plot could not be generated as no vessels matched your selections. 
-               Try clicking the box to include all vessels that fished in AK or include all vessels that fished for whiting. 
+               Try clicking the box to include all vessels that fished in AK or include all vessels that fished for whiting1. 
                ')))
   return(datSub)
   
@@ -265,7 +265,7 @@ DatSub <- reactive({
       datSub$VARIABLE <- factor(datSub$VARIABLE, levels = c("All fisheries","All catch share fisheries","All non-catch share fisheries","Pacific whiting","At-sea Pacific whiting",
                                                             "Shoreside Pacific whiting","Groundfish with trawl gear","DTS trawl with trawl endorsement",
                                                             "Non-whiting, non-DTS trawl with trawl endorsement","Non-whiting midwater trawl",
-                                                            "Groundfish fixed gear with trawl endorsement","Groundfish fixed gear with fixed gear endorsement",
+                                                            "Groundfish fixed gear with trawl endorsement","Other fisheries",
                                                             "Crab","Shrimp"))
       }else{
         datSub$VARIABLE <- factor(datSub$VARIABLE)
@@ -294,6 +294,7 @@ DatSub <- reactive({
 #      datSub$con_flag <- ifelse(datSub$con_flag==1, 0, datSub$con_flag)
       datSub$VALUE <- ifelse(datSub$N<3, NA, datSub$VALUE)
       datSub$VARIANCE <- ifelse(datSub$N<3, NA, datSub$VARIANCE)
+      datSub$conf <- max(datSub$conf, na.rm = T)
       
 
       
@@ -312,7 +313,7 @@ DatSub <- reactive({
                                                                            ifelse(datSub$VARIABLE=="Non-whiting midwater trawl", 9,  
                                                                                   ifelse(datSub$VARIABLE=="Groundfish fixed gear with trawl endorsement", 10,
                                                                                        ifelse(datSub$VARIABLE=="All non-catch share fisheries", 11, 
-                                                                                           ifelse(datSub$VARIABLE=="Groundfish fixed gear with fixed gear endorsement", 12,  
+                                                                                           ifelse(datSub$VARIABLE=="Other fisheries", 12,  
                                                                                                 ifelse(datSub$VARIABLE=="Crab", 13, 
                                                                                                   ifelse(datSub$VARIABLE=="Shrimp", 14,  15
                                                                                                   ))))))))))))))
@@ -342,12 +343,12 @@ DatSub <- reactive({
     validate(
       need(dim(datSub)[1]>0 & max(datSub$N)>2,
            'Sorry, this plot could not be generated as no vessels or processors matched your selections. 
-            If you have selected to show data summed across non-whiting vessels/processors or whiting vessels, try selecting to include all vessels/processors. 
+            If you have selected to show data summed across non-whiting vessels/processors or whiting vessels, try selecting to include all vessels/processors2. 
                  '))
     validate(
       need(max(datSub$VALUE, na.rm=T)!=-Inf,
            'Sorry, this plot could not be generated as your selection would reveal confidential data for years with sufficient observations.  The results have been suppressed. 
-            If you have selected to show data summed across non-whiting vessels/processors or whiting vessels/processors, try selecting to include all vessels/processors. 
+            If you have selected to show data summed across non-whiting vessels/processors or whiting vessels/processors, try selecting to include all vessels/processors3. 
                  '))
     
     return(datSub)
