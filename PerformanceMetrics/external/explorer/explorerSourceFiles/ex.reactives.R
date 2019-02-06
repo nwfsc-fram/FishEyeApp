@@ -915,17 +915,17 @@ DatSub <- reactive({
   
   if (input$Sect_sel == "CV" &
       input$CategorySelect != "Fisheries") {
-    datSub <- subset(datSubforSector, CS == input$inSelect)
+    datSub <- subset(datSub, CS == input$inSelect)
   }
   if (input$Sect_sel == "FR") {
     if (input$Ind_sel != 'Demographic') {
       if (input$CategorySelect != "Fisheries") {
-        datSub <- subset(datSubforSector, CS == input$inSelect)
+        datSub <- subset(datSub, CS == input$inSelect)
       }
     } else {
       if (input$CategorySelect != "Fisheries" &&
           input$demSelect != "Proportion of revenue from catch share species") {
-        datSub <- subset(datSubforSector, CS == input$inSelect)
+        datSub <- subset(datSub, CS == input$inSelect)
       }
     }
   }
@@ -1112,7 +1112,8 @@ DatSub <- reactive({
               datSub$VARIABLE == "Crescent City" ~ 8,
               datSub$VARIABLE == "Eureka" ~ 9,
               datSub$VARIABLE == "Fort Bragg" ~ 10,
-              datSub$VARIABLE == "San Francisco" ~ 11, 12)
+              datSub$VARIABLE == "San Francisco" ~ 11, 
+              T ~ 12)
         } else {
           datSub$sort <- datSub$VARIABLE
         }
