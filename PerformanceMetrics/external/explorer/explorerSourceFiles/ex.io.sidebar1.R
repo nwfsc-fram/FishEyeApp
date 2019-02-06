@@ -618,8 +618,7 @@ output$StatSelect2 <- renderUI({
             tags$div(class='StatGrey', radioButtons("AVE_MED2", HTML("<div> Statistic: <button id='istat' type='button' class='btn btn-default action-button shiny-bound-input'> <i class='fa fa-info-circle fa-fw' ></i></button> </div>"),
                          choices=c("Mean","Median",'Total'), select='Total'))
             )
-        } else if(input$demSelect=="Vessel length"|input$demSelect=="Exponential Shannon Index"|input$demSelect=="Fishery participation"|
-                  input$demSelect=="Proportion of revenue from CS fishery"|input$demSelect=="Proportion of revenue from catch share species"|input$demSelect=="Proportion of landings from CS fishery"){
+        } else if(input$demSelect %in% c("Vessel length", "Exponential Shannon Index", "Fishery participation", "Proportion of revenue from CS fishery", "Proportion of revenue from catch share species", "Proportion of landings from CS fishery")){
           tagList(
             tags$div(class='StatGrey2', radioButtons("AVE_MED2", HTML("<div> Statistic: <button id='istat' type='button' class='btn btn-default action-button shiny-bound-input'> <i class='fa fa-info-circle fa-fw' ></i></button> </div>"),
                                                     choices=c("Mean","Median",'Total'), select='Median'))
