@@ -175,7 +175,7 @@ DatSubTable <- reactive({
   validate(
     need(dim(datSub)[1]>0, #min(datSub$N)>2,
          paste('Sorry, this plot could not be generated as no vessels matched your selections. 
-               Try clicking the box to include all vessels that fished in AK or include all vessels that fished for whiting1. 
+               Try clicking the box to include all vessels that fished in AK or include all vessels that fished for whiting. 
                ')))
   return(datSub)
   
@@ -343,12 +343,12 @@ DatSub <- reactive({
     validate(
       need(dim(datSub)[1]>0 & max(datSub$N)>2,
            'Sorry, this plot could not be generated as no vessels or processors matched your selections. 
-            If you have selected to show data summed across non-whiting vessels/processors or whiting vessels, try selecting to include all vessels/processors2. 
+            If you have selected to show data summed across non-whiting vessels/processors or whiting vessels, try selecting to include all vessels/processors. 
                  '))
     validate(
       need(max(datSub$VALUE, na.rm=T)!=-Inf,
            'Sorry, this plot could not be generated as your selection would reveal confidential data for years with sufficient observations.  The results have been suppressed. 
-            If you have selected to show data summed across non-whiting vessels/processors or whiting vessels/processors, try selecting to include all vessels/processors3. 
+            If you have selected to show data summed across non-whiting vessels/processors or whiting vessels/processors, try selecting to include all vessels/processors. 
                  '))
     
     return(datSub)
