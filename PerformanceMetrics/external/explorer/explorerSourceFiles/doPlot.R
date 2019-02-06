@@ -18,7 +18,7 @@ doPlot <- function(dat, x, y){
         } else {
           reorder(dat$METRIC, dat$sort)
         }}
-    
+
     dat$thresh <-  if(input$Ind_sel=="Economic"){   
        data.frame(dat %>% group_by(SHORTDESCR) %>% mutate(threshold=length(table(YEAR[YEAR<=2010])))) %>% subset(select=c(threshold))
     }    else if(input$Ind_sel!="Economic"){ 
@@ -192,7 +192,7 @@ doPlot <- function(dat, x, y){
              } else {
                sprintf(paste("Category:",input$CategorySelect,"     Metric: ", input$demSelect, "  Statistic: Average maximum length"))   
              } 
-           }
+             }
            else {      
            if(input$Sect_sel=='CV'&input$CategorySelect!="Fisheries"|input$Sect_sel=='FR'&input$CategorySelect!="Fisheries"){
            sprintf(paste("Category:", input$CategorySelect,"     Metric: ", input$demSelect, '  Statistic: Index value',"    Summed across:", input$inSelect))

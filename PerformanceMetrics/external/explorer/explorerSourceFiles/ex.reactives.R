@@ -1055,7 +1055,6 @@ DatSub <- reactive({
     datSub$VARIABLE <- "At-sea Pacific whiting"
   }
   
-  
   if (input$Ind_sel == "Social and Regional") {
     if (input$socSelect != "Share of landings by state") {
       if (length(input$VariableSelect) > 1) {
@@ -1075,7 +1074,7 @@ DatSub <- reactive({
   if (!"Number of processors" %in% datSub$METRIC) {
     datSub$VALUE <- ifelse(datSub$N < 3, NA, datSub$VALUE)
   }
-  
+
   if (input$LayoutSelect != "Metrics") {
     if (input$Ind_sel == 'Social and Regional' &&
         input$socSelect == 'Share of landings by state') {
@@ -1201,8 +1200,8 @@ DatSub <- reactive({
   if (input$LayoutSelect == "Metrics") {
     if (input$AVE_MED2 != "Total") {
       if (table(table(datSub$METRIC) > 1)[2] > 1) {
-        datSub <-
-          subset(datSubforSector, 
+        datSub2 <-
+          subset(datSub, # redo datsub
             !METRIC %in% c( "Number of vessels", "Gini coefficient", "Number of processors")
           )
       }
@@ -1214,21 +1213,19 @@ DatSub <- reactive({
   if (input$LayoutSelect == "Metrics") {
     if (input$AVE_MED2 == "Total") {
       if (table(table(datSub$METRIC) > 1)[2] > 1) {
-        datSub <-
-          subset(datSubforSector,
+        datSub2 <-
+          subset(datSub, # redo datsub
             !METRIC %in% c("Vessel length", "Exponential Shannon Index", "Fishery participation",
               "Hourly compensation", 'Crew wage per day')
           )
       }
     }
   } else {
-    datSubforSector
+    datSub
   }
   
-  #      datSub$YEAR2 <- factor(datSub$YEAR, levels = min(DatSub$YEAR), max(datSub$YEAR))
-  
-  
-  return(datSub)
+
+if(exists("datSub2")) return(datSub) else return(datSub2)
   
   #   } else return()
   #   )
