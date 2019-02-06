@@ -824,7 +824,7 @@ DatSub <- reactive({
         'Sorry, this plot could not be generated as no processors matched your selections. Try selecting a different variable. 24'
       )
     }))
-  
+
   validate(need(
     datSub$METRIC != "Vessel length",
     need(
@@ -1200,7 +1200,7 @@ DatSub <- reactive({
   if (input$LayoutSelect == "Metrics") {
     if (input$AVE_MED2 != "Total") {
       if (table(table(datSub$METRIC) > 1)[2] > 1) {
-        datSub2 <-
+        datSub <-
           subset(datSub, # redo datsub
             !METRIC %in% c( "Number of vessels", "Gini coefficient", "Number of processors")
           )
@@ -1213,19 +1213,18 @@ DatSub <- reactive({
   if (input$LayoutSelect == "Metrics") {
     if (input$AVE_MED2 == "Total") {
       if (table(table(datSub$METRIC) > 1)[2] > 1) {
-        datSub2 <-
+        datSub <-
           subset(datSub, # redo datsub
-            !METRIC %in% c("Vessel length", "Exponential Shannon Index", "Fishery participation",
+            !METRIC %in% c("Vessel length", "Exponential Shannon Index", "Fishery participation", "Proportion of revenue from CS fishery",
               "Hourly compensation", 'Crew wage per day')
           )
       }
     }
   } else {
-    datSub
+   datSub
   }
-  
 
-if(exists("datSub2")) return(datSub) else return(datSub2)
+ return(datSub)
   
   #   } else return()
   #   )
