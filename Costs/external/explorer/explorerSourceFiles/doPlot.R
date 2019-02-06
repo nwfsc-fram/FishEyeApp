@@ -223,23 +223,23 @@ doPlot <- function(dat, x, y){
 
     # define labels
     xlab <- function () {
-      if(max(dat$conf_trt,na.rm=T)==0){
-        if(max(dat$conf)==0){
+      if(max(dat$conf, na.rm=T)==0){
+        if(max(dat$conf_trt, na.rm = T)==0){
           if(input$PlotSelect!='Stacked bar') {
             ""
           } else {
             paste(stacked_bar_mess())
           }} else{
             if(input$PlotSelect!='Stacked bar'){
-              paste(supp_whiting(), conf_mess())
+              paste(supp_obs(), conf_mess())
             } else {
-              paste(stacked_bar_mess(), supp_whiting(), conf_mess())
+              paste(stacked_bar_mess(), supp_obs(), conf_mess())
             }}} else {
-              if (max(dat$conf)==0) {
+              if (max(dat$conf_trt, na.rm = T)==0) {
                 if(input$PlotSelect!= 'Stacked bar') {
-                  paste(supp_obs(), conf_mess())
+                  paste(supp_obs(), supp_whiting(), conf_mess())
                 } else {
-                  paste(stacked_bar_mess(), supp_obs(), conf_mess())
+                  paste(stacked_bar_mess(), supp_obs(), supp_whiting(), conf_mess())
                 }} else {
                   if (input$PlotSelect != 'Stacked bar') {
                     paste(supp_obs(), supp_whiting(), conf_mess())
