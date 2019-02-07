@@ -143,7 +143,7 @@ DatVars <- reactive({
           "Number of positions (captain and crew)" =
             'Number of positions',
           "Crew wage per day",
-          "Revenue per crew-day",
+          "Revenue per position-day",
           "Seasonality"
         )
       )
