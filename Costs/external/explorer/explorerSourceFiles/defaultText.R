@@ -68,7 +68,20 @@ output$BlogUpdates <- renderUI({
 
  tags$div(style = "margin-top:0; padding-top:0;background-color:#F8F8E9;",
            tags$h3("Updates"),
- 
+   # 2017 CV + CP + MS data loaded ####
+  div( class='date', style='height:45px;width:30px; font-family:Arial; font-weight:bold;background-color:#ffffff;text-align:center; border-top:1px solid #c0c0c0;
+       border-left:1px solid #c0c0c0;border-right:1px solid #c0c0c0;position:absolute;z-index:3;line-height: 13px;',
+    # step 1: update date
+       HTML("<span class='month' style='text-transform:uppercase;font-size:11px;'>Feb</span><br />
+            <span class='day' style='font-size:16px;'>02</span><br />
+            <span class='year' style='font-size:11px;line-height: 10px;'>2019</span>")
+       ),
+    # step 2: update title
+  p(HTML("<span style='margin-left:60px;font-size:18px;font-weight:bold'>2017 data now available</span>")), 
+    # step 3: update message
+  p(br(),"2017 data are now available for Catcher Vessels, Motherships, and Catcher Processors. Data collection and quality control for First Receivers is still ongoing, data will be posted as soon as all issues are resolved."),
+  hr(),
+   # data updated on 5/14/2018 ####
           div( class='date', style='height:45px;width:30px; font-family:Arial; font-weight:bold;background-color:#ffffff;text-align:center; border-top:1px solid #c0c0c0;
           border-left:1px solid #c0c0c0;border-right:1px solid #c0c0c0;position:absolute;z-index:3;line-height: 13px;',
                HTML("<span class='month' style='text-transform:uppercase;font-size:11px;'>May</span><br />
