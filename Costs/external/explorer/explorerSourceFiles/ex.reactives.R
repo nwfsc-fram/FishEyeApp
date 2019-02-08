@@ -116,12 +116,12 @@ DatSubTable <- reactive({
                                                   }
 
   if(input$Sect_sel=="CV"){
-      datSub <- with(datSub, datSub[which(YEAR %in% input$YearSelect),])
+      datSub <- with(datSub, datSub[which(YEAR %in% seq(input$YearSelect[1], input$YearSelect[2], 1)),])
       datSub <- datSub[,-c(which(colnames(dat)=="AK_FLAG"))]
    } else if(input$Sect_sel=="FR") {
-      datSub <- subset(datSub, whitingv == input$FishWhitingSelect & YEAR %in% input$YearSelect2) 
+      datSub <- subset(datSub, whitingv == input$FishWhitingSelect & YEAR %in% seq(input$YearSelect2[1], input$YearSelect[2], 1)) 
    } else{
-      datSub <- subset(datSub, YEAR %in% input$YearSelect2 ) 
+      datSub <- subset(datSub, YEAR %in% seq(input$YearSelect2[1], input$YearSelect[2], 1)) 
    }
     
   if(input$StatSelect %in% c('Mean per vessel/dollar of revenue','Median per vessel/dollar of revenue','Fleet-wide average/dollar of revenue',
@@ -206,9 +206,10 @@ DatSub <- reactive({
                                                                             'On-board equipment','Other fixed costs','Other variable costs','Packing materials','Utilities',
                                                                             'Off-site freezing & storage',"Processing crew", "Processing equipment") 
         ){
-            datSub <- subset(datSub,  YEAR %in% input$YearSelect & !SHORTDESCR %in% c('All variable costs','All fixed costs'))                
+            datSub <- subset(datSub,  YEAR %in% seq(input$YearSelect[1], input$YearSelect[2], 1) 
+                             & !SHORTDESCR %in% c('All variable costs','All fixed costs'))                
         } else{
-            datSub <- subset(datSub,  YEAR %in% input$YearSelect)
+            datSub <- subset(datSub,  YEAR %in% seq(input$YearSelect[1], input$YearSelect[2], 1))
         }
                                   #FISHAK == input$FishAkSelect #&
                                   #whitingv == input$FishWhitingSelect
@@ -223,10 +224,11 @@ DatSub <- reactive({
                                                                             'Off-site freezing & storage',"Processing crew", "Processing equipment")
         ){
         datSub <- subset(datSub, whitingv == input$FishWhitingSelect & #ACS == input$ProductionSelect &
-                           YEAR %in% input$YearSelect2& !SHORTDESCR %in% c('All variable costs','All fixed costs'))
+                           YEAR %in% seq(input$YearSelect2[1], input$YearSelect2[2], 1)
+                         & !SHORTDESCR %in% c('All variable costs','All fixed costs'))
         } else {
           datSub <- subset(datSub, whitingv == input$FishWhitingSelect & #ACS == input$ProductionSelect &
-                             YEAR %in% input$YearSelect2)
+                             YEAR %in% seq(input$YearSelect2[1], input$YearSelect2[2], 1))
         }
       } else {
         
@@ -239,9 +241,10 @@ DatSub <- reactive({
                                                                             'On-board equipment','Other fixed costs','Other variable costs','Packing materials','Utilities',
                                                                             'Off-site freezing & storage',"Processing crew", "Processing equipment")
         ){
-        datSub <- subset(datSub, YEAR %in% input$YearSelect2 & !SHORTDESCR %in% c('All variable costs','All fixed costs'))  
+        datSub <- subset(datSub, YEAR %in% seq(input$YearSelect2[1], input$YearSelect2[2], 1) 
+                         & !SHORTDESCR %in% c('All variable costs','All fixed costs'))  
         } else {
-          datSub <- subset(datSub, YEAR %in% input$YearSelect2 )   
+          datSub <- subset(datSub, YEAR %in% seq(input$YearSelect2[1], input$YearSelect2[2], 1))   
       }
       }
       
@@ -262,7 +265,7 @@ DatSub <- reactive({
       datSub$VARIABLE <- factor(datSub$VARIABLE, levels = c("All fisheries","All catch share fisheries","All non-catch share fisheries","Pacific whiting","At-sea Pacific whiting",
                                                             "Shoreside Pacific whiting","Groundfish with trawl gear","DTS trawl with trawl endorsement",
                                                             "Non-whiting, non-DTS trawl with trawl endorsement","Non-whiting midwater trawl",
-                                                            "Groundfish fixed gear with trawl endorsement","Groundfish fixed gear with fixed gear endorsement",
+                                                            "Groundfish fixed gear with trawl endorsement","Other fisheries",
                                                             "Crab","Shrimp"))
       }else{
         datSub$VARIABLE <- factor(datSub$VARIABLE)
@@ -291,6 +294,7 @@ DatSub <- reactive({
 #      datSub$con_flag <- ifelse(datSub$con_flag==1, 0, datSub$con_flag)
       datSub$VALUE <- ifelse(datSub$N<3, NA, datSub$VALUE)
       datSub$VARIANCE <- ifelse(datSub$N<3, NA, datSub$VARIANCE)
+      datSub$conf <- max(datSub$conf, na.rm = T)
       
 
       
@@ -309,7 +313,7 @@ DatSub <- reactive({
                                                                            ifelse(datSub$VARIABLE=="Non-whiting midwater trawl", 9,  
                                                                                   ifelse(datSub$VARIABLE=="Groundfish fixed gear with trawl endorsement", 10,
                                                                                        ifelse(datSub$VARIABLE=="All non-catch share fisheries", 11, 
-                                                                                           ifelse(datSub$VARIABLE=="Groundfish fixed gear with fixed gear endorsement", 12,  
+                                                                                           ifelse(datSub$VARIABLE=="Other fisheries", 12,  
                                                                                                 ifelse(datSub$VARIABLE=="Crab", 13, 
                                                                                                   ifelse(datSub$VARIABLE=="Shrimp", 14,  15
                                                                                                   ))))))))))))))

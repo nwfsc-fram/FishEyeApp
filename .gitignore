@@ -25,3 +25,5 @@ vignettes/*.pdf
 .httr-oauth
 .Rproj.user
 
+
+PerformanceMetrics/data/Mperfmetricsbeforechange\.RData

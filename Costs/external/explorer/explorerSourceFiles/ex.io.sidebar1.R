@@ -74,10 +74,12 @@ output$Shortdescrselect <- renderUI({
 ######################################################################################
 #HTML("<div> Statistic:<i class='fa fa-info fa-fw' style='font-size:12px; color:blue'></i></div>")
 output$Yearselect <- renderUI({
-  tags$div(class="ckbox", checkboxGroupInput( "YearSelect", "Years:", choices = DatVars()$YEAR, selected = DatVars()$YEAR))
+  tags$div(class="ckbox", sliderInput("YearSelect","Years:", min = min(DatVars()$YEAR), max = max(DatVars()$YEAR), 
+                                       value = c(2009, max(DatVars()$YEAR)), step = 1, sep ='', ticks = F))
 })
 output$Yearselect2 <- renderUI({
-  tags$div(class="ckbox", checkboxGroupInput( "YearSelect2", "Years:", choices = DatVars()$YEAR, selected = DatVars()$YEAR))
+  tags$div(class="ckbox", sliderInput("YearSelect2", "Years:", min = min(DatVars()$YEAR), max = max(DatVars()$YEAR), 
+                                      value = c(2009, max(DatVars()$YEAR)), step = 1, sep ='', ticks = F))
 })
 
 ###################################################################################
@@ -107,7 +109,7 @@ fish.var <- c("All fisheries combined"="All fisheries"," All catch share fisheri
               "Pacific whiting","At-sea Pacific whiting","Shoreside Pacific whiting",
               "Groundfish with trawl gear","DTS trawl with trawl endorsement","Non-whiting, non-DTS trawl with trawl endorsement",  "Non-whiting midwater trawl",
               "Groundfish fixed gear with trawl endorsement",
-              "All non-catch share fisheries combined"="All non-catch share fisheries", "Groundfish fixed gear with fixed gear endorsement","Crab","Shrimp")
+              "All non-catch share fisheries combined"="All non-catch share fisheries", "Crab", "Shrimp", "Other fisheries")
 
 
 
@@ -144,7 +146,7 @@ output$Variableselect <- renderUI({
                 tags$div(class="select", selectInput("inSelect","",
                                                c("All fisheries","All catch share fisheries","All non-catch share fisheries")), style="margin-bottom:-10px"),
                 checkboxGroupInput("VariableSelect",  "Select one or more vessel length class:", choices=c("Large vessel (> 80 ft)","Medium vessel (> 60ft, <= 80ft)",
-                                                                                                           "Small vessel (<= 60ft)"), selected="")
+                                                                                                           "Small vessel (<= 60 ft)"), selected="")
                   )
       }else if(input$CategorySelect == "Processor size"){
             tagList(           

@@ -26,11 +26,13 @@ fluidPage(title = "FISHEyE",
           tags$style(HTML(".ckboxCV .checkbox:nth-child(2) label{color:grey;} .checkbox.input:nth-child(2),
                            .ckboxCV .checkbox:nth-child(6) label{color:grey;} .checkbox.input:nth-child(6),
                            .ckboxCV .checkbox:nth-child(3) label{color:grey;} .checkbox.input:nth-child(3),
+                           .ckboxCV .checkbox:nth-child(4) label{color:grey;} .checkbox.input:nth-child(4),
                            .ckboxCV2 .checkbox:nth-child(1) label{color:grey;} .checkbox.input:nth-child(1),
                            .ckboxCV2 .checkbox:nth-child(7) label{color:grey;} .checkbox.input:nth-child(7),
                            .ckboxCPFR .checkbox:nth-child(1) label{color:grey;} .checkbox.input:nth-child(1),
                            .ckboxCPFR .checkbox:nth-child(5) label{color:grey;} .checkbox.input:nth-child(5),
                            .ckboxCP .checkbox:nth-child(2) label{color:grey;} .checkbox.input:nth-child(2),
+                           .ckboxCP .checkbox:nth-child(3) label{color:grey;} .checkbox.input:nth-child(3),
                            .ckboxFR .checkbox:nth-child(4) label{color:grey;} .checkbox.input:nth-child(4),
                            .ckboxSOC .checkbox:nth-child(2) label{color:grey;} .checkbox.input:nth-child(2),
                            .StatGrey .radio:nth-child(-n+2) label{color:grey;} .radio.input:nth-child(-n+2) {border: 0px; width: 0%; height:0em;}#"
@@ -38,9 +40,11 @@ fluidPage(title = "FISHEyE",
        
            tags$style(HTML(".StatGrey  .radio:first-child  input[type=radio],
                                             .StatGrey  .radio:nth-child(2) input[type=radio],
+                                            .StatGrey1 .checkbox:nth-child(n+2) input[type=checkbox],
                                             .StatGrey2  .radio:nth-child(3) input[type=radio],
                                             .StatGrey3  .checkbox:nth-child(n+3) input[type=checkbox],
                                             .StatGrey4  .radio:nth-child(n+4) input[type=radio],
+                                            .ckboxCV  .checkbox:nth-child(4)  input[type=checkbox],
                                             .ckboxCV  .checkbox:nth-child(3)  input[type=checkbox],
                                             .ckboxCV  .checkbox:nth-child(2)  input[type=checkbox],
                                             .ckboxCV  .checkbox:nth-child(6)  input[type=checkbox],
@@ -49,6 +53,7 @@ fluidPage(title = "FISHEyE",
                                             .ckboxCPFR  .checkbox:nth-child(1)  input[type=checkbox],
                                             .ckboxCPFR  .checkbox:nth-child(5)  input[type=checkbox],
                                             .ckboxCP  .checkbox:nth-child(2)  input[type=checkbox],
+                                            .ckboxCP  .checkbox:nth-child(3)  input[type=checkbox],
                                             .ckboxFR  .checkbox:nth-child(4)  input[type=checkbox],
                                             .ckboxSOC  .checkbox:nth-child(2)  input[type=checkbox] {border: 0px;    width: 0%;    height:0em;}#")),
              #Make checkbox and radio buttons bold    
@@ -102,7 +107,9 @@ fluidPage(title = "FISHEyE",
             tags$style(HTML(".StatGrey4  .radio:nth-child(n+4) label{margin-left:17px;color:grey;} 
                                          .radio.input:nth-child(n+4) {border: 0px;    width: 0%;    height:0em;}")),
             tags$style(HTML(".StatGrey4  .radio:nth-child(6) label{margin-left:0px;color:grey;} .radio.input:nth-child(6) {border: 0px;    width: 0%;    height:0em;}")),
-            
+            tags$style(HTML(".StatGrey1  .checkbox:nth-child(n+2) label{margin-left:0px;color:grey;} 
+                                           .checkbox.input:nth-child(n+2) {border: 0px;    width: 0%;    height:0em;}")),
+
           
             #tags$style(HTML(".met_mod label{font-style:italic;margin-bottom:20px;margin-top:-90px;padding-top:0;}")),#{margin-top:-40px;margin-bottom:50px; height:12px;}
             tags$style(HTML(".met_mod  input[type=radio] {border: 0px;    width: 0%;    height:0em;}#")),
@@ -306,30 +313,10 @@ fluidPage(title = "FISHEyE",
                                                               input.Ind_sel=='Economic'&input.AVE_MED!='T'",
                                                    uiOutput("Plotselect")), style = "padding: 0px;margin-bottom:0px; border: 3px solid #D3D3D3;border-radius:10px;")#,
                                      ) , #end sub panel
-                              wellPanelSub(
+                              wellPanelSub( # problem panel open
                                 
-                                 uiOutput("Yearselect"),
-                                 wellPanelSub(
-                                    conditionalPanel(condition=
-                                         "input.Sect_sel=='CV'&&input.CategorySelect!='Homeport'&&
-                                                  input.CategorySelect!='State'&&
-                                          input.CategorySelect!='Vessel length class'&&input.Ind_sel=='Economic'&&
-                                                  input.ShortdescrSelect=='Revenue'||
-                                          input.Sect_sel=='CV'&&input.CategorySelect!='Homeport'&&input.CategorySelect!='State'&&
-                                          input.CategorySelect!='Vessel length class'&&input.Ind_sel=='Demographic'&&input.demSelect=='Gini coefficient'||
-                                          input.Sect_sel!='FR'&&input.CategorySelect!='Homeport'&&input.CategorySelect!='State'&&
-                                          input.CategorySelect!='Vessel length class'&&input.Ind_sel=='Demographic'&&input.demSelect=='Number of vessels'||
-                                          input.Sect_sel=='CV'&&input.CategorySelect!='Homeport'&&input.CategorySelect!='State'&&
-                                          input.CategorySelect!='Vessel length class'&&input.Ind_sel=='Demographic'&&input.demSelect=='Vessel length'||
-                                          input.Sect_sel!='FR'&&input.CategorySelect!='Homeport'&&input.CategorySelect!='State'&&
-                                          input.CategorySelect!='Vessel length class'&&input.Ind_sel=='Social and Regional'&&input.socSelect=='Seasonality'||
-                                          input.Sect_sel!='FR'&&input.CategorySelect!='Homeport'&&input.CategorySelect!='State'&&
-                                          input.CategorySelect!='Vessel length class'&&input.Ind_sel=='Social and Regional'&&input.socSelect=='Share of landings by state'",
-                                    uiOutput('moreOptions')),
-                                    style = "padding: 0px;margin-bottom:0px; border: 3px solid #D3D3D3;border-radius:10px;"#,
-                                   #conditionalPanel(condition="",uiOutput('moreOptions'))#&&input.ShortdescrSelect=='Revenue'
-                                                    )       
-                                 ),
+                                 uiOutput("Yearselect")
+                                 ), # problem panel close
                             style = "padding-right:2px;margin-right:0px; padding-left:2px;,width:100%"
                              ),#end column
                         column(4,

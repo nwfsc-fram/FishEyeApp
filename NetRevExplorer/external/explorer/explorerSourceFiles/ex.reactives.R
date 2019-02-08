@@ -92,16 +92,16 @@ DatSubTable <- reactive({
                      STAT == input$StatSelect),])
   
   if(input$Sect_sel=="CV"){
-      datSub <- with(datSub, datSub[which(YEAR %in% input$YearSelect &  
+      datSub <- with(datSub, datSub[which(YEAR %in% seq(input$YearSelect[1], input$YearSelect[2], 1) &  
                                         FISHAK == input$FishAkSelect &
                                         whitingv == input$FishWhitingSelect),])
       datSub$FISHAK <- ifelse(datSub$AK_FLAG==0, datSub$FISHAK, datSub$repFISHAK)
       datSub$whitingv <- ifelse(datSub$AK_FLAG==0, as.character(datSub$whitingv), datSub$repwhitingv)
       datSub <- datSub %>% subset(select=-c(repFISHAK,repwhitingv,AK_FLAG))
   } else if(input$Sect_sel=="FR") {
-    datSub <- subset(datSub, ACS == input$ProductionSelect & YEAR %in% input$YearSelect2) 
+    datSub <- subset(datSub, ACS == input$ProductionSelect & YEAR %in% seq(input$YearSelect2[1], input$YearSelect2[2], 1)) 
       } else{
-    datSub <- subset(datSub, YEAR %in% input$YearSelect2) 
+    datSub <- subset(datSub, YEAR %in% seq(input$YearSelect2[1], input$YearSelect2[2], 1)) 
       }
   
   datSub$VALUE <- as.numeric(datSub$VALUE)
@@ -137,7 +137,7 @@ DatSubTable <- reactive({
   
   validate(
     need(dim(datSub)[1]>0, #min(datSub$N)>2,
-         paste('Sorry, this plot could not be generated as no vessels matched your selections. 
+         paste('Sorry, this plot could not be generated as no vessels matched your selections.4 
                Try clicking the box to include all vessels that fished in AK or 
                 include all vessels that fished for whiting. 
                ')))
@@ -173,7 +173,7 @@ DatThirdsTable <- reactive({
                         STAT == input$StatSelect)
  
    if(input$Sect_sel=="CV"){
-  datSub <- with(datSub, datSub[which(YEAR %in% input$YearSelect &  
+  datSub <- with(datSub, datSub[which(YEAR %in% seq(input$YearSelect[1], input$YearSelect[2], 1) &  
                                         FISHAK == input$FishAkSelect &
                                         whitingv == input$FishWhitingSelect),])
       datSub$FISHAK <- ifelse(datSub$AK_FLAG==0, as.character(datSub$FISHAK), datSub$repFISHAK)
@@ -181,7 +181,7 @@ DatThirdsTable <- reactive({
       datSub <- datSub %>% subset(select=-c(repFISHAK,repwhitingv,AK_FLAG))
   } else if(input$Sect_sel=="FR") {
       datSub <- subset(datSub, ACS == input$ProductionSelect &
-                       YEAR %in% input$YearSelect2) 
+                       YEAR %in% seq(input$YearSelect2[1], input$YearSelect2[2], 1)) 
   }
   
   
@@ -217,15 +217,15 @@ DatThirdsTable <- reactive({
   
   validate(
     need(dim(datSub)[1]>0, #min(datSub$N)>2,
-         'Sorry, this plot could not be generated as no vessels matched your selections. 
+         'Sorry, this plot could not be generated as no vessels matched your selections.5 
           Try clicking the box to include all vessels that fished in AK or 
           include all vessels that fished for whiting.'),
     need(datSub$VARIABLE!='Large',
-         'Sorry, this plot could not be generated as an insufficient number of processors matched your selections. 
+         'Sorry, this plot could not be generated as an insufficient number of processors matched your selections.6 
           Try selecting a different processor size.'),
     need(input$VariableSelect!='Small',
          need(input$ProductionSelect!="Catch share processors",
-            "Sorry, this plot could not be generated as an insufficient number of processors matched your selections. 
+            "Sorry, this plot could not be generated as an insufficient number of processors matched your selections.7 
             Try selecting  'All processors' or selecting a different processor size. "))
     )
   
@@ -256,14 +256,14 @@ DatSub <- reactive({
                             STAT == input$StatSelect)
       
       if(input$Sect_sel=="CV"){
-        datSub <- subset(datSub,  YEAR %in% input$YearSelect & 
+        datSub <- subset(datSub,  YEAR %in% seq(input$YearSelect[1], input$YearSelect[2], 1) & 
                                   FISHAK == input$FishAkSelect &
                                   whitingv == input$FishWhitingSelect )
       } else if(input$Sect_sel=="FR") {
         datSub <- subset(datSub, ACS == input$ProductionSelect &
-                                 YEAR %in% input$YearSelect2) 
+                                 YEAR %in% seq(input$YearSelect2[1], input$YearSelect2[2], 1)) 
       } else {
-        datSub <- subset(datSub, YEAR %in% input$YearSelect2)  
+        datSub <- subset(datSub, YEAR %in% seq(input$YearSelect2[1], input$YearSelect2[2], 1))  
       }
 
 #subset the shortdescr data based on the type of plot chosen and then define the order for plotting
@@ -362,7 +362,7 @@ if(input$CategorySelect=="Fisheries"&input$Sect_sel=="CV"){
 
     validate(
       need(dim(datSub)[1]>0, #min(datSub$N)>2,
-           'Sorry, this plot could not be generated as no vessels matched your selections. 
+           'Sorry, this plot could not be generated as no vessels matched your selections.8 
                  Try clicking the box to include all vessels that fished in Alaska or 
                  include all vessels that fished for Pacific whiting. 
                  '))
@@ -395,12 +395,12 @@ DatSubThirds <- reactive({
                      STAT == input$StatSelect)
 
   if(input$Sect_sel=="CV"){
-    datSub <- subset(datSub, YEAR %in% input$YearSelect &
+    datSub <- subset(datSub, YEAR %in% seq(input$YearSelect[1], input$YearSelect[2], 1) &
                           FISHAK == input$FishAkSelect &
                           whitingv == input$FishWhitingSelect)
   } else {#if(input$Sect_sel=="FR") 
     datSub <- subset(datSub, ACS == input$ProductionSelect &
-                       YEAR %in% input$YearSelect2) 
+                       YEAR %in% seq(input$YearSelect2[1], input$YearSelect2[2], 1)) 
   }
   if(input$Sect_sel=="CV" & input$CategorySelect != "Fisheries"){
     datSub <- subset(datSub, CS == input$inSelect)
@@ -536,15 +536,15 @@ DatSubThirds <- reactive({
     
   validate(
     need(dim(datSub)[1]>0, 
-         'Sorry, this plot could not be generated as no vessels matched your selections. 
+         'Sorry, this plot could not be generated as no vessels matched your selections.9 
           Try clicking the box to include all vessels that fished in Alaska or 
          include all vessels that fished for Pacific whiting.'),
     need(datSub$VARIABLE!='Large',
-         'Sorry, this plot could not be generated as an insufficient number of processors matched your selections. 
+         'Sorry, this plot could not be generated as an insufficient number of processors matched your selections.10 
           Try selecting a different processor size.'),
     need(input$VariableSelect!='Small',
          need(input$ProductionSelect!="Catch share processors",
-          "Sorry, this plot could not be generated as an insufficient number of processors matched your selections. 
+          "Sorry, this plot could not be generated as an insufficient number of processors matched your selections.11 
           Try selecting  'All processors' or selecting a different processor size."))
   )
   

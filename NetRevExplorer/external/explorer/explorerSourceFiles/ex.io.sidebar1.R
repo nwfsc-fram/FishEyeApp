@@ -134,10 +134,12 @@ output$Shortdescrselect <- renderUI({
 ######################################################################################
 #HTML("<div> Statistic:<i class='fa fa-info fa-fw' style='font-size:12px; color:blue'></i></div>")
 output$Yearselect <- renderUI({
-  tags$div(class="ckbox", checkboxGroupInput( "YearSelect", "Years:", choices = DatVars()$YEAR, selected = DatVars()$YEAR))
+  tags$div(class="ckbox", sliderInput("YearSelect","Years:", min = min(DatVars()$YEAR), max = max(DatVars()$YEAR), 
+                                      value = c(2009, max(DatVars()$YEAR)), step = 1, sep ='', ticks = F))
 })
 output$Yearselect2 <- renderUI({
-  tags$div(class="ckbox", checkboxGroupInput( "YearSelect2", "Years:", choices = DatVars()$YEAR, selected = DatVars()$YEAR))
+  tags$div(class="ckbox", sliderInput("YearSelect2","Years:", min = min(DatVars()$YEAR), max = max(DatVars()$YEAR), 
+                                       value = c(2009, max(DatVars()$YEAR)), step = 1, sep ='', ticks = F))
 })
 
 ###################################################################################
