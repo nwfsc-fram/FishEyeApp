@@ -980,7 +980,7 @@ gv <- function() {
     
     # scaling factor for geom text size ####
     scale_geom_text <- function() {
-      if (sum(dat$VALUE, na.rm = T) != 0) {
+      if (any(dat$VALUE > 0, na.rm = T)) {
         return(max(dat$VALUE, na.rm = T))
       } else {
         return(0)
