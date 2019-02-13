@@ -1,5 +1,6 @@
 doPlot <- function(dat, x, y) {
   if (PermitPlot()) {
+    #removeNAs
     dat <- subset(dat, is.na(dat$VALUE) == FALSE)
 
 # create sort2 column ####
@@ -87,10 +88,7 @@ doPlot <- function(dat, x, y) {
           dat$q25
         }
       }
-    
-    
-    
-    
+
     upper <- function() {
       #      if(input$PlotSelectOption=="Standard deviation or Median average deviation")
       if (input$Ind_sel == "Economic") {
@@ -115,8 +113,6 @@ doPlot <- function(dat, x, y) {
       }
     }
     
-    
-    
     lower <- function() {
       #      if(input$PlotSelectOption=="Standard deviation or Median average deviation")
       if (input$Ind_sel == "Economic") {
@@ -133,15 +129,12 @@ doPlot <- function(dat, x, y) {
         }
       }
     }
-    
-    
-    
+  
     yr <- function() {
       return(unique(as.numeric(dat$YEAR)))
     }
     print(yr())
     groupVar <- "whitingv"
-    
     
 # set colors for whiting/non-whiting/all lines ####
     colourThirds <- if (input$Sect_sel != "FR") {
@@ -157,7 +150,7 @@ doPlot <- function(dat, x, y) {
         'All processors' = "#000000"
       )
     }
-   
+
    # Plot header construction ####
     # title
     plot.title <- function() {
@@ -171,9 +164,8 @@ doPlot <- function(dat, x, y) {
         return("Performance Metrics for West Coast First Receivers and Shorebased Processors")
       }
     }
-  
-    # components
-    gv <- function() {
+    
+gv <- function() {
       if (input$LayoutSelect != "Metrics") {
         if (input$Ind_sel == "Economic") {
           if (!input$Sect_sel %in% c("CV", "FR")) {
@@ -657,6 +649,7 @@ doPlot <- function(dat, x, y) {
     }
     
     # x-axis label ####
+    # xlab is actually "notes"
     xlab <- function() {
       if (input$LayoutSelect != "Metrics") {
         if (input$Ind_sel == "Economic") {
@@ -967,7 +960,7 @@ doPlot <- function(dat, x, y) {
       }
     }#end x label function
     
-    # ??? ###
+    # Scaling factor for text size ####
     scale_text <- function() {
       if (input$Ind_sel != "Economic") {
         #     if (min(dat$YEAR)<2009) {
@@ -985,7 +978,7 @@ doPlot <- function(dat, x, y) {
       }
     }
     
-    # ??? ###
+    # scaling factor for geom text size ####
     scale_geom_text <- function() {
       if (sum(dat$VALUE, na.rm = T) != 0) {
         return(max(dat$VALUE, na.rm = T))
@@ -1006,19 +999,13 @@ doPlot <- function(dat, x, y) {
             environment()) #+coord_cartesian(xlim = c(0, length(table(dat$YEAR))+1))
     }
     
-    
-    
-    
-    #if(length(yr())>1){
+    # add lines and points to the plot ####
     g <- g + geom_line(aes_string(colour = groupVar), size = 1.5) +
       geom_point(aes_string(colour = groupVar), size = 4)
+
     
-    
-    #} else {
-    #g <- g + geom_point(aes_string(colour = groupVar), size=4)
-    #}
-    
-    if (input$PlotSelect == T & is.na(max(dat$VARIANCE)) == F) {
+    # add 'data variability' band ####
+    if (input$PlotSelect == T & is.na(max(dat$VARIANCE)) == F & !exists('ssn')) {
       g <-
         g + geom_ribbon(aes(
           ymax = upper,
@@ -1028,25 +1015,21 @@ doPlot <- function(dat, x, y) {
     } else {
       g <- g
     }
-    
-    
-    #     if(input$PlotSelect==T&dat$STAT[1]!="Fleet-wide total"&is.na(max(dat$VARIANCE))==F) {
-    #     g <- g + geom_ribbon(aes(ymax=VALUE+VARIANCE, ymin=VALUE-VARIANCE, fill=whitingv), alpha=.25)#show.legend = FALSE,
-    #     } else {
-    #       g <- g
-    #     }
-    
-    
-    #----- define facet -----#
+
+   # if(length(unique(ssn$VARIABLE)) > 1 ) browser()
+    #----- define facet -----#####
     if (input$LayoutSelect != 'Metrics') {
+
       g <- g + facet_wrap( ~ sort2, ncol = 2)
+
     } else {
       g <- g + facet_wrap( ~ sort2, scales = 'free_y', ncol = 2)
     }
     
-    #----- Define rectangles and labels ------#
+    #----- Define grey shading and Non-CS/CS labels ------####
+    # choose label text size ####
     labeltext <- ifelse(input$tabs == 'Panel1', 7, 5)
- # browser()  
+
     # geom_rect  ####
     geom_rect1 <- geom_rect(
             aes(
@@ -1078,8 +1061,7 @@ doPlot <- function(dat, x, y) {
           )
       
     }
-    
-    
+
     # set rect and text for plots with both CS and non-CS years ####
     # otherwise no rect or text
     if (length(yr()) > 1 & min(yr()) < 2011 & max(yr()) > 2010) {
@@ -1153,15 +1135,15 @@ doPlot <- function(dat, x, y) {
     # end of rect/text for cs/non-cs, no CS box required for plots with only one "kind" of year
       g <- g
     }
-    #----- Define rectangles and labels ------#
-    
-    # define scale
+  
+    # set colors for the three lines (whiting vessels, non-whiting vessels, all vessels) ####
     g <-
       g + scale_fill_manual(values = colourThirds) + scale_colour_manual(values = colourThirds) #+ scale_x_discrete('YEAR2', drop=FALSE)
     
+    # add y axis line ####
     g <- g + geom_hline(yintercept = 0)
     
-    #---- define labels ------#
+    #---- define labels (not sure what this does------####
     if (input$tabs == 'Panel1') {
       g <- g + labs(y = ylab(),
         x = xlab(),
@@ -1171,8 +1153,6 @@ doPlot <- function(dat, x, y) {
         x = '',
         title = main())
     }
-    
-    
     
     if (input$tabs == 'Panel1') {
       strptextsize <- 18
@@ -1234,6 +1214,7 @@ doPlot <- function(dat, x, y) {
       legend.title = element_blank()
       #  text = element_text(family="sans", color = "red", size=rel(1.3))
     )
+
     ############################################################################################################
     
     #################################################################################################################################
