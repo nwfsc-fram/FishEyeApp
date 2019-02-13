@@ -1038,19 +1038,32 @@ gv <- function() {
     # choose label text size ####
     labeltext <- ifelse(input$tabs == 'Panel1', 7, 5)
 
-    # geom_rect  ####
-    geom_rect1 <- geom_rect(
+    # geom_rect (define the grey boxes for pre-catch shares) ####
+    geom_rect_fun <- function(ymin_val = -Inf, ymax_val = Inf) {
+      geom_rect(
             aes(
               xmin = -Inf,
               xmax = table(yr() <= 2010)[[2]] + .5,
-              ymin = -Inf,
-              ymax = Inf
+              ymin = ymin_val,
+              ymax = ymax_val
             ),
             alpha = .05,
             fill = "grey50"
           )
+    }
     
-    # geom_text ####
+    geom_rect4seasonality <- geom_rect(
+      aes(
+              xmin = -Inf,
+              xmax = table(yr() <= 2010)[[2]] + .5,
+              ymin = structure(-Inf, class = "Date"),
+              ymax = structure(Inf, class = "Date")
+            ),
+            alpha = .05,
+            fill = "grey50"
+    )
+    
+    # geom_text function ####
     
     geom_text_fun <- function(x_val, y_val, label_val, vjust_val = .5) {
       
@@ -1072,74 +1085,59 @@ gv <- function() {
 
     # set rect and text for plots with both CS and non-CS years ####
     # otherwise no rect or text
+    # the original code for the geom_text* are commented out at the bottom of the doc
+    # if there are years shown before and after implementation of catch shares
     if (length(yr()) > 1 & min(yr()) < 2011 & max(yr()) > 2010) {
+      # if the "Group by vessels" display is chosen
       if (input$LayoutSelect != 'Metrics') {
-        g <- g + geom_rect1
-        g <- g + 
+        # if seasonality is clicked
+        if(input$Ind_sel == 'Social and Regional') {
+        # and seasonality is selected
+        if(input$socSelect =="Seasonality") {
+        g <- g + geom_rect_fun(
+          ymin_val = structure(-Inf, class = "Date"),
+          ymax_val = structure(Inf, class = "Date"))
+        g <- g + geom_text_fun(
+             x_val = table(yr() <= 2010)[[2]] / 3.5,
+             y_val = min(as.Date(upper(), origin = "2014-01-01")),
+             label_val = "Pre-catch shares")
+        g <- g + geom_text_fun(
+             x_val = table(yr() <= 2010)[[2]] + table(yr() > 2010)[[2]] / 1.5,
+             y_val = min(as.Date(upper(), origin = "2014-01-01")),
+             label_val = "Catch shares")
+        # for all other variables
+      }} else {
+        g <- g + geom_rect_fun()
           # geom_text1
-          geom_text_fun(
+        g <- g + geom_text_fun(
             x_val = table(yr() <= 2010)[[2]] / 3.5,
-            y_val = max(upper()) + scale_geom_text() / 5,
+            y_val = max(upper()) + scale_geom_text()/5,
             label_val = "Pre-catch shares")
-        if (length(yr() < 2010) == 6 & length(yr() >= 2010) <= 4) {
-          g <- g + 
-            #geom_text2a 
-            geom_text_fun(
-              x_val = table(yr() <= 2010)[[2]] + table(yr() > 2010)[[2]] / 1.5,
-              y_val = max(upper()) + scale_geom_text() / 5,
-              label_val = "Catch")  + 
-            #geom_text2b
-              geom_text_fun(
-              x_val = table(yr() <= 2010)[[2]] + table(yr() > 2010)[[2]] / 1.5,
-              y_val = max(upper()) - max(upper()) / 100,
-              label_val = "shares")  
-        } else {
-          g <- g + 
+        g <- g +
             # geom_text3
             geom_text_fun(
               x_val = table(yr() <= 2010)[[2]] + table(yr() > 2010)[[2]] / 1.5,
               y_val = max(upper()) + scale_geom_text() / 5,
               label_val = "Catch shares")
-        }
-      } else {
-        g <- g + geom_rect1
-        g <- g + 
+      } 
+        } else { # Compare by metrics
+        g <- g + geom_rect_fun()
+        g <- g +
           # geom_text4
           geom_text_fun(
               x_val = table(yr() <= 2010)[[2]] / 3.5,
               y_val = Inf,
               label_val = "Pre-catch shares",
           vjust_val = 1.5)
-         
-        if (length(yr() < 2010) == 6 & length(yr() >= 2010) <= 4) {
-          g <- g + 
-            # geom_text5a
-            geom_text_fun(
-              x_val = table(yr() <= 2010)[[2]] + table(yr() > 2010)[[2]] / 1.5,
-              y_val = Inf,
-              label_val = "Catch",
-          vjust_val = 1.5) +
-            
-            # geom_text5b
-            geom_text_fun(
-              x_val = table(yr() <= 2010)[[2]] + table(yr() > 2010)[[2]] / 1.5,
-              y_val = Inf,
-              label_val = "shares",
-          vjust_val = 1.5) 
-          
-        } else {
-          g <- g +   
+          g <- g +
             # geom_text6
             geom_text_fun(
               x_val = table(yr() <= 2010)[[2]] + table(yr() > 2010)[[2]] / 1.5,
               y_val = Inf,
               label_val = "Catch shares",
           vjust_val = 1.5)
-           
-        }
-      }
-  }
-    else {
+
+        } } else {
     # end of rect/text for cs/non-cs, no CS box required for plots with only one "kind" of year
       g <- g
     }
