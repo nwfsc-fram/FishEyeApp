@@ -986,15 +986,23 @@ gv <- function() {
         return(0)
       }
     }
-    
-    # I don't think the seasonality if statement is doing anything - ERIN
-    if(input$MetricSelect=="Seasonality") {
-      g <-
-        ggplot(dat[!is.na(dat$VALUE),], aes_string(x = x, y = y , group = groupVar), environment =
-            environment())
-    } else {
+
+    # format data for graph and add to graph ####
+    # special data for seasonality plot
+  #  print(paste0(seasonality, 1))
+    if(input$Ind_sel == 'Social and Regional' & input$LayoutSelect != 'Metrics') {
+        # and seasonality is selected
+        if(input$socSelect =="Seasonality") {
+          ssn <- mutate(dat, 
+            VALUE = as.Date(VALUE, origin = "2014-01-01", format = "%Y-%m-%d"),
+            sort2 = reorder(VARIABLE, sort))
+          g <- ggplot(ssn, aes_string(x = x, y = y , group = groupVar), environment =
+              environment()) 
+          # otherwise normal plot:
+        }} else {
       dat <- dat[order(dat$sort), ]
       g <-
+      # I think this is where the NAs are getting removed which causes lines to be connected through suppressed/missing values #removeNAs
         ggplot(dat[!is.na(dat$VALUE),], aes_string(x = x, y = y , group = groupVar), environment =
             environment()) #+coord_cartesian(xlim = c(0, length(table(dat$YEAR))+1))
     }
