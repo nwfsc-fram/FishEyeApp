@@ -1,7 +1,7 @@
 doPlot <- function(dat, x, y) {
   if (PermitPlot()) {
     #removeNAs
-    dat <- subset(dat, is.na(dat$VALUE) == FALSE)
+    #dat <- subset(dat, is.na(dat$VALUE) == FALSE)
 
 # create sort2 column ####
     dat$sort2 <- if (input$LayoutSelect != "Metrics") {
@@ -242,7 +242,46 @@ gv <- function() {
                     )
                   )
                 }
-              }
+              } ##End Demographic
+            } else if (input$Ind_sel == 'Crew') {
+              if (!input$Sect_sel %in% c("CV", "FR")) {
+                sprintf(
+                  paste(
+                    "Category:",
+                    input$CategorySelect,
+                    "     Metric: ",
+                    input$demSelect,
+                    "   Statistic:",
+                    input$AVE_MED2
+                  )
+                )
+              } else{
+                if (input$CategorySelect == "Fisheries") {
+                  sprintf(
+                    paste(
+                      "Category:",
+                      input$CategorySelect,
+                      "     Metric: ",
+                      input$demSelect,
+                      "   Statistic:",
+                      input$AVE_MED2
+                    )
+                  )
+                } else {
+                  sprintf(
+                    paste(
+                      "Category:",
+                      input$CategorySelect,
+                      "     Metric: ",
+                      input$demSelect,
+                      "   Statistic:",
+                      input$AVE_MED2,
+                      "    Summed across:",
+                      input$inSelect
+                    )
+                  )
+                }
+              } ##End Crew
             } else if (input$Ind_sel == "Social and Regional") {
               if (input$socSelect == "Share of landings by state")  {
                 if (input$CategorySelect != "Fisheries") {
@@ -573,8 +612,7 @@ gv <- function() {
         }
       } else if (input$Ind_sel == "Social and Regional") {
         if (input$LayoutSelect != 'Metrics') {
-          if (input$socSelect == "Crew wage per day" |
-              input$socSelect == "Revenue per crew-day" |
+          if (input$socSelect == "Revenue per crew-day" |
               input$socSelect == "Revenue per position-day") {
             paste("Thousands of",
               currentyear,
@@ -588,7 +626,13 @@ gv <- function() {
             expression(bold("Share of landings (% of revenue)"))
           }  else if (input$socSelect == "Hourly compensation") {
             expression(bold("Hourly compensation ($)"))
-          }   else {
+          }  else if (input$socSelect == "Gini coefficient") {
+            expression(bold("Gini coefficient (0 - 1)"))
+          } else if (input$socSelect == "Fuel use per day") {
+            expression(bold("Fuel use per day (in gallons)"))
+          } else if (input$socSelect == 'Speed while fishing') {
+            expression(bold("Speed while fishing (in knots)"))
+          } else {
             input$socSelect
           }
         } else {
@@ -598,8 +642,6 @@ gv <- function() {
         if (input$LayoutSelect != 'Metrics') {
           if (input$demSelect == "Proportion of revenue from CS fishery") {
             expression(bold("Proportion of revenue from catch share fishery"))
-          }  else if (input$demSelect == "Gini coefficient") {
-            expression(bold("Gini coefficient (0 - 1)"))
           }  else if (input$demSelect == "Fishery participation") {
             expression(bold("Fishery participation (number of fisheries)"))
           }  else if (input$demSelect == "Vessel length") {
@@ -610,8 +652,24 @@ gv <- function() {
         } else {
           expression(bold('Scale and units depend upon metric'))
         }
+      } else if (input$Ind_sel == 'Crew') {
+        if (input$LayoutSelect != 'Metrics') {
+          if(input$crewSelect == "Crew wage per day") {
+            paste("Thousands of",
+                  currentyear,
+                  "$",
+                  "(",
+                  input$AVE_MED2,
+                  ")")
+          } else {
+            input$crewSelect
+          }
+      } else {
+        expression(bold('Scale and units depend upon metric'))
       }
+        }
     }
+    
     
     # confidentiality messages ####
     supp_obs <- function() {
@@ -999,11 +1057,18 @@ gv <- function() {
           g <- ggplot(ssn, aes_string(x = x, y = y , group = groupVar), environment =
               environment()) 
           # otherwise normal plot:
-        }} else {
+        } else {
+          dat <- dat[order(dat$sort), ]
+          g <-
+            # I think this is where the NAs are getting removed which causes lines to be connected through suppressed/missing values #removeNAs
+            ggplot(dat, aes_string(x = x, y = y , group = groupVar), environment =
+                     environment()) #+coord_cartesian(xlim = c(0, length(table(dat$YEAR))+1))
+        }
+      } else {
       dat <- dat[order(dat$sort), ]
       g <-
       # I think this is where the NAs are getting removed which causes lines to be connected through suppressed/missing values #removeNAs
-        ggplot(dat[!is.na(dat$VALUE),], aes_string(x = x, y = y , group = groupVar), environment =
+        ggplot(dat, aes_string(x = x, y = y , group = groupVar), environment =
             environment()) #+coord_cartesian(xlim = c(0, length(table(dat$YEAR))+1))
     }
     

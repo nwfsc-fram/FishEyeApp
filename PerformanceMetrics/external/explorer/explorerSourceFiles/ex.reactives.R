@@ -54,19 +54,41 @@ DatVars <- reactive({
           "Fleet-wide average/day",
           "Fleet-wide average/metric ton caught"
         ),
-        METRIC =  c(
-          "Number of vessels",
-          "Vessel length",
-          "Fishery participation",
-          "Proportion of revenue from catch share fishery" = "Proportion of revenue from CS fishery",
-          "Days at sea",
-          "Exponential Shannon Index",
-          "Gini coefficient",
-          "Number of positions (captain and crew)" = 'Number of positions',
-          "Crew wage per day",
+        ##Vessel characteristics metrics##
+        METRIC1 =  c(
+          "Number of vessels", 
+          "Vessel length", 
+          #"Vessel replacement value",
+          #"Vessel market value",
+          #"Vessel horsepower",
+          "Fishery participation", 
+          "Proportion of revenue from catch share fishery" = "Proportion of revenue from CS fishery", 
+          "Exponential Shannon Index"
+          ), 
+        ##Crew metrics###
+        METRIC2 = c(
+          "Number of positions (captain and crew)", 
+          "Crew wage per day"
+          ),
+        ##Other metrics###
+        METRIC3 = c(
           "Revenue per position-day",
-          "Seasonality",
+          "Seasonality", 
+          "Days at sea", 
+          "Fuel use per day", 
+          "Speed while fishing", 
+          "Gini coefficient", 
           "Share of landings by state"
+        ),
+##When grouping by Metrics, don't include 'Share of landings by state' or 'Seasonsality'
+        METRIC3a = c(
+          "Revenue per position-day",
+          "Days at sea", 
+          "Fuel use per day", 
+          "Speed while fishing", 
+          "Gini coefficient"
+        
+    
         )
       )
     )
@@ -96,11 +118,15 @@ DatVars <- reactive({
           "Industry-wide total",
           "Industry-wide average/metric ton of groundfish products produced" = "Industry-wide average/metric ton produced"
         ),
-        METRIC =  c(
+        ##Processor characteristic metrics##
+        METRIC1 =  c(
           "Number of processors",
           "Number of species processed",
           "Proportion of production value from West Coast groundfish" = "Proportion of revenue from catch share species",
-          "Exponential Shannon Index",
+          "Exponential Shannon Index"
+          ),
+        ##Other metrics##
+        METRIC2 = c(
           "Gini coefficient",
           'Number of workers',
           "Hourly compensation"
@@ -133,21 +159,33 @@ DatVars <- reactive({
           'Fleet-wide average/day',
           'Fleet-wide average/metric ton produced'
         ),
-        METRIC =  c(
+        ##Vessel characteristic metrics##
+        METRIC1 =  c(
           "Number of vessels",
           "Vessel length",
           "Proportion of landings from catch share fishery" =
-            "Proportion of landings from CS fishery",
-          "Days at sea",
-          "Gini coefficient",
-          "Number of positions (captain and crew)" =
-            'Number of positions',
-          "Crew wage per day",
+            "Proportion of landings from CS fishery"
+          ),
+        ##Crew metrics##
+        METRIC2 = c(
+          "Number of positions (captain and crew)",
+          "Crew wage per day"
+          ),
+        ##Other metrics##
+        METRIC3 = c(
           "Revenue per position-day",
-          "Seasonality"
+          "Seasonality",
+          "Days at sea",
+          "Gini coefficient"
+        ),
+        ##When grouping by Metrics, don't include 'Seasonsality'
+        METRIC3a = c(
+          "Revenue per position-day",
+          "Days at sea",
+          "Gini coefficient"
+        )
         )
       )
-    )
   }
 })
 
@@ -207,13 +245,6 @@ DatSubTable <- reactive({
             METRIC %in% input$demSelect &
               SUMSTAT == input$AVE_MED2 &  FISHAK == input$FishAkSelect
           )
-      } else if (input$Sect_sel == "CV" &
-          input$demSelect[1] == "Days at sea") {
-        datSub <-
-          subset(datSubforSector,
-            METRIC %in% input$demSelect &
-              SUMSTAT == input$AVE_MED2 & FISHAK == 'FALSE'
-          )
       }  else {
         datSub <-
           subset(datSubforSector,
@@ -243,6 +274,11 @@ DatSubTable <- reactive({
     datSub <-
       subset(datSubforSector,
         SHORTDESCR %in% input$ShortdescrSelect & STAT == input$StatSelect)
+  } else if (input$Ind_sel == 'Crew') {
+    datSub <-
+      subset(datSubforSector,
+             METRIC %in% input$crewSelect &
+               SUMSTAT == input$AVE_MED2 & !is.na(input$crewSelect))
   } else if (input$Ind_sel == "Social and Regional")  {
     if (input$LayoutSelect != "Metrics") {
       #        if(input$MetricSelect!="Number of vessels"&input$MetricSelect!="Seasonality"&input$MetricSelect!="Share of landings by state"&input$MetricSelect!="Gini coefficient"){
@@ -253,7 +289,13 @@ DatSubTable <- reactive({
             METRIC %in% input$socSelect &
               SUMSTAT == input$AVE_MED2 & !is.na(input$socSelect)
           )
-        
+      } else if (input$Sect_sel == "CV" &
+                 input$socSelect[1] == "Days at sea") {
+        datSub <-
+          subset(datSubforSector,
+                 METRIC %in% input$socSelect &
+                   SUMSTAT == input$AVE_MED2 & FISHAK == 'FALSE'
+          )
       }   else {
         datSub <-
           subset(datSubforSector,
@@ -451,6 +493,25 @@ DatSubTable <- reactive({
       )
       )
     ))
+  validate(need(
+    datSub$METRIC != 'Fuel use per day',
+    need(
+      datSub$SUMSTAT != 'Total',
+      paste(
+        'Sorry, this plot could not be generated as the fuel use per day is not calculated. Try selecting the average or median statistic. 21
+        '
+      )
+    )
+  ))
+  validate(need(
+    datSub$METRIC != 'Speed while fishing',
+    need(
+      datSub$SUMSTAT != 'Total',
+      paste('Sorry, this plot could not be generated as the speed while fishing is not calculated. Try selecting the average or median statistic. 22
+            '
+            )
+    )
+  ))
   
   if (input$Ind_sel == "Social and Regional") {
     if (input$socSelect[1] == "Share of landings by state") {
@@ -597,8 +658,21 @@ DatSubTable <- reactive({
             which(colnames(datSub) == "VALUE"),
             which(colnames(datSub) == "VARIANCE")
           )]
+      }} else if (input$Ind_sel == 'Crew') {
+        datSub <-
+          datSub[, c(
+            which(colnames(datSub) == "YEAR"),
+            which(colnames(datSub) == "VARIABLE"),
+            which(colnames(datSub) == "CATEGORY"),
+            which(colnames(datSub) == "CS"),
+            which(colnames(datSub) == "SUMSTAT"),
+            which(colnames(datSub) == "METRIC"),
+            which(colnames(datSub) == "whitingv"),
+            which(colnames(datSub) == "N"),
+            which(colnames(datSub) == "VALUE"),
+            which(colnames(datSub) == "VARIANCE")
+          )]
       }
-    }
   } # Compare: Metrics
   else if (input$LayoutSelect == "Metrics") {
     if (input$Ind_sel == "Economic") {
@@ -746,13 +820,6 @@ DatSub <- reactive({
             METRIC %in% input$demSelect &
               SUMSTAT == input$AVE_MED2 & FISHAK == input$FishAkSelect
           )
-      } else if (input$Sect_sel == "CV" &
-          input$demSelect[1] == "Days at sea") {
-        datSub <-
-          subset(datSubforSector,
-            METRIC %in% input$demSelect &
-              SUMSTAT == input$AVE_MED2 & FISHAK == 'FALSE'
-          )
       } else {
         datSub <-
           subset(datSubforSector,
@@ -786,8 +853,14 @@ DatSub <- reactive({
           datSub <-
             subset(datSubforSector,
               METRIC %in% input$socSelect & SUMSTAT == input$AVE_MED2)
-        }
-        else {
+        } else if (input$Sect_sel == "CV" &
+                   input$socSelect[1] == "Days at sea") {
+          datSub <-
+            subset(datSubforSector,
+                   METRIC %in% input$socSelect &
+                     SUMSTAT == input$AVE_MED2 & FISHAK == 'FALSE'
+            )
+       } else {
           datSub <-
             subset(datSubforSector,
               METRIC %in% input$socSelect & SUMSTAT == input$AVE_MED2)
@@ -812,8 +885,13 @@ DatSub <- reactive({
           subset(datSubforSector,
             METRIC %in% input$socSelect & SUMSTAT == input$AVE_MED2)
       }
-    }
-  } #End Social and Regional
+    }#End Social and Regional
+  } else if (input$Ind_sel == 'Crew') {
+      datSub <-
+        subset(datSubforSector,
+               METRIC %in% input$crewSelect &
+                 SUMSTAT == input$AVE_MED2 & !is.na(input$crewSelect)) 
+  }
   validate(need(dim(datSub)[1] > 0,
     if (input$Sect_sel != "FR") {
       paste(
@@ -911,6 +989,25 @@ DatSub <- reactive({
       )
       )
     ))
+  validate(need(
+    datSub$METRIC != 'Fuel use per day',
+    need(
+      datSub$SUMSTAT != 'Total',
+      paste(
+        'Sorry, this plot could not be generated as the fuel use per day is not calculated. Try selecting the average or median statistic. 21
+        '
+      )
+      )
+    ))
+  validate(need(
+    datSub$METRIC != 'Speed while fishing',
+    need(
+      datSub$SUMSTAT != 'Total',
+      paste('Sorry, this plot could not be generated as the speed while fishing is not calculated. Try selecting the average or median statistic. 22
+            '
+      )
+      )
+    ))
   
   
   if (input$Sect_sel == "CV" &
@@ -961,7 +1058,6 @@ DatSub <- reactive({
     datSub$q75 <- datSub$q75
   } else if (input$Ind_sel == "Social and Regional") {
     if (input$socSelect == "Revenue per crew-day" |
-        input$socSelect == "Crew wage per day" |
         input$socSelect == "Revenue per position-day") {
       datSub$VALUE <- datSub$VALUE / 1000
       datSub$VARIANCE <- datSub$VARIANCE / 1000
@@ -975,6 +1071,14 @@ DatSub <- reactive({
       datSub$VARIANCE <- datSub$VARIANCE
       datSub$q25 <- datSub$q25
       datSub$q75 <- datSub$q75
+    }
+  }
+  else if (input$Ind_sel == 'Crew') {
+    if(input$crewSelect == "Crew wage per day") {
+      datSub$VALUE <- datSub$VALUE / 1000
+      datSub$VARIANCE <- datSub$VARIANCE / 1000
+      datSub$q25 <- datSub$q25 / 1000
+      datSub$q75 <- datSub$q75 / 1000
     }
   }
   else if (input$Ind_sel == "Economic" &
@@ -1217,7 +1321,7 @@ DatSub <- reactive({
         datSub <-
           subset(datSub, # redo datsub
             !METRIC %in% c("Vessel length", "Exponential Shannon Index", "Fishery participation", "Proportion of revenue from CS fishery",
-              "Hourly compensation", 'Crew wage per day')
+              "Hourly compensation", 'Crew wage per day', 'Fuel use per day', 'Speed while fishing')
           )
       }
     }

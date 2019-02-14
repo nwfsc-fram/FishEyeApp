@@ -66,9 +66,13 @@ output$Yearselect <- renderUI({
     }
     else {tags$div(class="ckbox", sliderInput( "YearSelect","Years:", min = 2009, max = max(DatVars()$YEAR), 
                                                value = c(2009, max(DatVars()$YEAR)), step = 1, sep ='', ticks = F))
-      }
+    }
   }
-})
+  else if(input$Ind_sel == 'Crew') {
+    tags$div(class="ckbox", sliderInput( "YearSelect","Years:", min = 2009, max = max(DatVars()$YEAR), 
+                                               value = c(2009, max(DatVars()$YEAR)), step = 1, sep ='', ticks = F))
+      }
+  })
      
 #END YEAR
 ##############################################
@@ -93,16 +97,20 @@ output$Categoryselect <- renderUI({
 ###################################################
 
 ###################################################
-#INDICATOR SELECT - DEMOGRAPHIC, ECONOMIC, SOCIAL
+#INDICATOR SELECT - DEMOGRAPHIC, ECONOMIC, SOCIAL, and CREW (for all except FR)
 ###################################################
 output$IndicatorSelect <- renderUI({
+  if(input$Sect_sel != 'FR') {
 #    tagList(
 #  if(input$tabs=='Panel2'){
 #  selectInput("Ind_sel", HTML("<div> Select an indicator category: <button id='ipo' type='button' class='btn btn-default action-button shiny-bound-input'> 
 #                              <i class='fa fa-info-circle fa-fw' ></i></button> </div>"), c('Demographic',"Economic","Social and Regional"), selected='Economic',selectize=T)#,
 #  } else {
     selectInput("Ind_sel", HTML("<div> Select an indicator category: <button id='ipo' type='button' class='btn btn-default action-button shiny-bound-input'> 
-                              <i class='fa fa-info-circle fa-fw' ></i></button> </div>"), c('Demographic',"Economic","Social and Regional"), selected='Demographic',selectize=T)#,
+                              <i class='fa fa-info-circle fa-fw' ></i></button> </div>"), c('Demographic',"Economic","Crew", "Social and Regional"), selected='Demographic',selectize=T)
+  } else { 
+    selectInput("Ind_sel", HTML("<div> Select an indicator category: <button id='ipo' type='button' class='btn btn-default action-button shiny-bound-input'> 
+                              <i class='fa fa-info-circle fa-fw' ></i></button> </div>"), c('Demographic',"Economic","Social and Regional"), selected='Demographic',selectize=T)}
     
 #  }
     })  #END INDICATOR SELECT
@@ -185,7 +193,7 @@ output$Variableselect <- renderUI({
       if(input$CategorySelect == "State"){
         if(input$LayoutSelect!='Metrics'){
           #if(input$Ind_sel=="Social and Regional"){
-             if(input$Ind_sel=='Demographic'||input$Ind_sel=='Economic'||input$Ind_sel=='Social and Regional'&input$socSelect!="Share of landings by state"){
+             if(input$Ind_sel=='Demographic'||input$Ind_sel=='Economic'||input$Ind_sel == 'Crew' || input$Ind_sel=='Social and Regional'&input$socSelect!="Share of landings by state"){
                        tagList(           
                         tags$div(class="select", selectInput("inSelect","",c("All fisheries",  "All catch share fisheries", "All non-catch share fisheries")), style="margin-bottom:-10px"),
                         checkboxGroupInput("VariableSelect", "Select one or more state:", choices = factorOrder$state, selected=""))
@@ -203,7 +211,7 @@ output$Variableselect <- renderUI({
           }
       } else if(input$CategorySelect == "Vessel length class"){
         if(input$LayoutSelect!='Metrics'){
-          if(input$Ind_sel=="Demographic"||input$Ind_sel=="Economic"||input$Ind_sel=="Social and Regional"&input$socSelect!="Share of landings by state"){
+          if(input$Ind_sel=="Demographic"||input$Ind_sel=="Economic"||input$Ind_sel == 'Crew' || input$Ind_sel=="Social and Regional"&input$socSelect!="Share of landings by state"){
             tagList(           
             tags$div(class="select", selectInput("inSelect","",c("All fisheries", "All catch share fisheries", "All non-catch share fisheries")), style="margin-bottom:-10px"),
             checkboxGroupInput("VariableSelect",  "Select one vessel length class:", 
@@ -222,7 +230,7 @@ output$Variableselect <- renderUI({
           }
       } else if(input$CategorySelect == "Homeport"){
         if(input$LayoutSelect!="Metrics"){
-          if(input$Ind_sel=="Demographic"||input$Ind_sel=="Economic"||input$Ind_sel=="Social and Regional"&input$socSelect!="Share of landings by state"){
+          if(input$Ind_sel=="Demographic"||input$Ind_sel=="Economic"||input$Ind_sel == 'Crew' || input$Ind_sel=="Social and Regional"&input$socSelect!="Share of landings by state"){
             tagList(           
               tags$div(class="select", selectInput("inSelect","", c("All fisheries","All catch share fisheries","All non-catch share fisheries")), style="margin-bottom:-10px"),
               tags$div(checkboxGroupInput("VariableSelect", div("Select one or more homeport:", style="margin-top:0; padding:-10px"), choices=factorOrder$port, selected="")))  
@@ -241,7 +249,7 @@ output$Variableselect <- renderUI({
       } #end homeport
       else if(input$CategorySelect=="Fisheries"){
         if(input$LayoutSelect!='Metrics'){
-          if(input$Ind_sel=="Economic"||input$Ind_sel=="Demographic"||input$Ind_sel=="Social and Regional" &input$socSelect[1]!="Share of landings by state"){
+          if(input$Ind_sel=="Economic"||input$Ind_sel=="Demographic"||input$Ind_sel == 'Crew' || input$Ind_sel=="Social and Regional" &input$socSelect[1]!="Share of landings by state"){
             if(input$tabs=='Panel1'){
            tags$div(class="ckbox2", checkboxGroupInput("VariableSelect", div("Select one or more fisheries:", style="margin-top:0; padding:-10px"),#HTML("<div style='font-style:italic; font-size:10.87pt; font-weight:normal; margin-top:8.5pt'> 
                                                         choices=c("All fisheries combined"="All fisheries"," All catch share fisheries combined"="All catch share fisheries",fish.var[3:14])))
@@ -485,61 +493,101 @@ output$Shortdescrselect <- renderUI({
 ###################################################
 # Identify Individual metrics for demography
 ###################################################
+##DatVars() is defined in ex.reactives##
+##Checkbox types are defined in ui.R
+##Note: See statistic selection below for settings of 'Mean' 'Median' 'Total' when grouping by vessels##
 output$demselect <- renderUI({
+##Settings for grouping by 'Metrics'
   if(input$LayoutSelect=='Metrics'){
     if(input$Sect_sel=="CV"){
       if(input$AVE_MED2=="Total"){
-      tags$div(class="ckboxCV",checkboxGroupInput("demSelect","", choices = c(DatVars()$METRIC[1:7]), selected=DatVars()$METRIC[1]))
+      tags$div(class="ckboxCV",checkboxGroupInput("demSelect","", choices = c(DatVars()$METRIC1), selected = 'Number of vessels'))
       } else {
-        tags$div(class="ckboxCV2",checkboxGroupInput("demSelect","", choices = c(DatVars()$METRIC[1:7]), selected=DatVars()$METRIC[2]))  
+        tags$div(class="ckboxCV2",checkboxGroupInput("demSelect","", choices = c(DatVars()$METRIC1), selected = 'Vessel length')) 
       }
     } else {
-        if(input$AVE_MED2!="Total"){ 
-          tags$div(class="ckboxCPFR",checkboxGroupInput("demSelect","", choices = c(DatVars()$METRIC[1:5]), selected=DatVars()$METRIC[2]))  
-        }else {
           if(input$Sect_sel=='FR'){
-          tags$div(class="ckboxFR",checkboxGroupInput("demSelect","", choices = c(DatVars()$METRIC[1:5]), selected=DatVars()$METRIC[1]))
+            if(input$AVE_MED2=='Total'){
+          tags$div(class="ckboxFR",checkboxGroupInput("demSelect","", choices = c(DatVars()$METRIC1), selected = "Number of processors"))
         } else {
-          tags$div(class="ckboxCP",checkboxGroupInput("demSelect","", choices = c(DatVars()$METRIC[1:5]), selected=DatVars()$METRIC[1]))
-        }}}
-    }
-  else {
-    if(input$Sect_sel=="CV"){
-        tags$div(class="statbox",radioButtons("demSelect","", choices = c(DatVars()$METRIC[1:7]), selected=DatVars()$METRIC[1]))
-      }else {
-        tags$div(class="statbox",radioButtons("demSelect","", choices = c(DatVars()$METRIC[1:5]), selected=DatVars()$METRIC[1]))
-      }}
-})
+          tags$div(class="ckboxCV2",checkboxGroupInput("demSelect","", choices = c(DatVars()$METRIC1), selected = "Number of species processed"))
+        }
+    
+  } else {
+    if(input$Sect_sel == 'CP'| input$Sect_sel == 'M') {
+      if(input$AVE_MED2 == 'Total') {
+        tags$div(class="ckboxCP",checkboxGroupInput("demSelect","", choices = c(DatVars()$METRIC1), selected = 'Number of vessels'))
+      } else {
+        tags$div(class="ckboxCV2",checkboxGroupInput("demSelect","", choices = c(DatVars()$METRIC1), selected = 'Vessel length'))
+      }
+##Settings for 'Group by vessels' or 'Group by processors'
+    }}}} else {
+        if(input$Sect_sel == 'FR') {
+        tags$div(class="statbox",radioButtons("demSelect","", choices = c(DatVars()$METRIC1), selected= 'Number of processors'))
+        } else {
+          tags$div(class="statbox",radioButtons("demSelect","", choices = c(DatVars()$METRIC1), selected='Number of vessels'))
+        }
+}})
+
+
+
 ###################################################
 #end demography select
 ###################################################
 
 ###################################################
+#Identify individual metrics for crew class
+###################################################
+output$crewselect <- renderUI({
+  if(input$LayoutSelect == 'Metrics') {
+    if(input$Sect_sel != 'FR') {
+      if(input$AVE_MED2 == 'Total') {
+        tags$div(class="ckboxCV3",checkboxGroupInput("crewSelect","", choices = c(DatVars()$METRIC2), selected = "Number of positions (captain and crew)"))
+      } else {
+        tags$div(class="ckbox",checkboxGroupInput("crewSelect","", choices = c(DatVars()$METRIC2), selected = "Number of positions (captain and crew)"))
+      }
+    }}
+  else {
+      if(input$AVE_MED2 == 'Total') {
+        tags$div(class="statbox",radioButtons("crewSelect","", choices = c(DatVars()$METRIC2), selected = "Number of positions (captain and crew)"))
+      } else {
+        tags$div(class="statbox",radioButtons("crewSelect","", choices = c(DatVars()$METRIC2)))
+      }
+    }
+})
+###################################################
 #Identify individual metrics for social and regional class
 ###################################################
 output$socselect <- renderUI({
+##Setting when grouping by Metrics#####
     if(input$LayoutSelect=='Metrics'){
       if(input$Sect_sel=="CV"){
-        if(input$AVE_MED2!="Total"){
-        tags$div(class="ckbox",checkboxGroupInput("socSelect","", choices = c(DatVars()$METRIC[8:10]), selected=DatVars()$METRIC[8]))
+        if(input$AVE_MED2 =="Total"){
+        tags$div(class="ckboxSOC2",checkboxGroupInput("socSelect","", choices = c(DatVars()$METRIC3a), selected = "Revenue per position-day"))
        } else {
-        tags$div(class="ckboxSOC",checkboxGroupInput("socSelect","", choices = c(DatVars()$METRIC[8:10]), selected=DatVars()$METRIC[8])) 
+        tags$div(class="ckboxSOC",checkboxGroupInput("socSelect","", choices = c(DatVars()$METRIC3a), selected = "Revenue per position-day")) 
        }
-    }else {
-      if(input$AVE_MED2!="Total"){
-    tags$div(class="ckbox",checkboxGroupInput("socSelect","", choices = c(DatVars()$METRIC[6:7]), selected=DatVars()$METRIC[6]))
-      } else if(input$Sect_sel=="FR"){ 
-    tags$div(class="ckboxSOC",checkboxGroupInput("socSelect","", choices = c(DatVars()$METRIC[6:7]), selected=DatVars()$METRIC[6]))
       } else {
-        tags$div(class="ckboxSOC",checkboxGroupInput("socSelect","", choices = c(DatVars()$METRIC[6:9]), selected=DatVars()$METRIC[6]))
-  }
-      }}else{
-    if(input$Sect_sel=="CV"){
-      tags$div(class="statbox",radioButtons("socSelect","", choices = c(DatVars()$METRIC[8:12]), selected=DatVars()$METRIC[8]))
-    } else if(input$Sect_sel=="FR"){
-      tags$div(class="statbox",radioButtons("socSelect","", choices = c(DatVars()$METRIC[6:7]), selected=DatVars()$METRIC[6]))
-    }else {
-      tags$div(class="statbox",radioButtons("socSelect","", choices = c(DatVars()$METRIC[6:9]), selected=DatVars()$METRIC[6]))
+        if(input$Sect_sel=="FR"){
+          if(input$AVE_MED2 == 'Total') {
+          tags$div(class="ckboxSOC3",checkboxGroupInput("socSelect","", choices = c(DatVars()$METRIC2), selected = 'Gini coefficient'))
+      } else {
+        tags$div(class="ckboxCV2",checkboxGroupInput("socSelect","", choices = c(DatVars()$METRIC2), selected = "Number of workers"))
+        }} else {
+            if(input$Sect_sel == 'CP' | input$Sect_sel == 'M') {
+              if(input$AVE_MED2 == 'Total') {
+                tags$div(class="ckbox",checkboxGroupInput("socSelect","", choices = c(DatVars()$METRIC3), selected = "Revenue per position-day"))
+              } else {
+                tags$div(class="ckboxSOC3",checkboxGroupInput("socSelect","", choices = c(DatVars()$METRIC3), selected = "Revenue per position-day"))
+              }
+            }
+##Settings when 'Groups of vessels" or 'Groups of processors'#####
+      }}} else {
+        if(input$Sect_sel=="FR"){
+          tags$div(class="statbox",radioButtons("socSelect","", choices = c(DatVars()$METRIC2), selected = "Gini coefficient"))
+
+     } else {
+       tags$div(class="statbox",radioButtons("socSelect","", choices = c(DatVars()$METRIC3), selected = "Revenue per position-day"))
   }
   }
 })
@@ -610,15 +658,16 @@ output$StatSelect2 <- renderUI({
     tagList(
     radioButtons("AVE_MED2", HTML("<div> Statistic: <button id='istat' type='button' class='btn btn-default action-button shiny-bound-input'> <i class='fa fa-info-circle fa-fw' ></i></button> </div>"),
                    choices=c("Mean","Median",'Total'), select='Median'))
-  } #nd Metrics
+  } #End Metrics
     else {
       if(input$Ind_sel=="Demographic"){
-        if(input$demSelect %in% c("Number of vessels","Number of processors","Gini coefficient")){
+        if(input$demSelect %in% c("Number of vessels","Number of processors")){
           tagList(
             tags$div(class='StatGrey', radioButtons("AVE_MED2", HTML("<div> Statistic: <button id='istat' type='button' class='btn btn-default action-button shiny-bound-input'> <i class='fa fa-info-circle fa-fw' ></i></button> </div>"),
                          choices=c("Mean","Median",'Total'), select='Total'))
             )
-        } else if(input$demSelect %in% c("Vessel length", "Exponential Shannon Index", "Fishery participation", "Proportion of revenue from CS fishery", "Proportion of revenue from catch share species", "Proportion of landings from CS fishery")){
+        } else if(input$demSelect %in% c("Vessel length", "Exponential Shannon Index", "Fishery participation", "Proportion of revenue from CS fishery", 
+                                         "Proportion of revenue from catch share species", "Proportion of landings from CS fishery")){
           tagList(
             tags$div(class='StatGrey2', radioButtons("AVE_MED2", HTML("<div> Statistic: <button id='istat' type='button' class='btn btn-default action-button shiny-bound-input'> <i class='fa fa-info-circle fa-fw' ></i></button> </div>"),
                                                     choices=c("Mean","Median",'Total'), select='Median'))
@@ -630,12 +679,9 @@ output$StatSelect2 <- renderUI({
       }
         } #End demographic
       else if(input$Ind_sel=="Social and Regional"){
-        if(input$socSelect %in% c("Share of landings by state","Seasonality")) { 
+        if(input$socSelect %in% c("Share of landings by state","Seasonality", "Gini coefficient")) { 
           tags$div(class='met_mod', radioButtons("AVE_MED2","", choices =""), style="margin-bottom:20px;margin-top:-32px;margin-left:-15px;padding-top:0;")
-      } else if (input$socSelect == "Hourly compensation" | 
-                 input$socSelect == "Crew wage per day" | 
-                 input$socSelect == "Revenue per crew-day" |
-                 input$socSelect == "Revenue per position-day"){
+      } else if (input$socSelect %in% c("Fuel use per day", "Speed while fishing", "Hourly compensation")) {
           tagList(
             tags$div(class='StatGrey2', radioButtons("AVE_MED2", HTML("<div> Statistic: <button id='istat' type='button' class='btn btn-default action-button shiny-bound-input'> <i class='fa fa-info-circle fa-fw' ></i></button> </div>"),
                          choices=c("Mean","Median",'Total'), select='Median')))            
@@ -644,9 +690,22 @@ output$StatSelect2 <- renderUI({
           radioButtons("AVE_MED2", HTML("<div> Statistic: <button id='istat' type='button' class='btn btn-default action-button shiny-bound-input'> <i class='fa fa-info-circle fa-fw' ></i></button> </div>"),
                        choices=c("Mean","Median",'Total'), select='Median'))            
         }
-        } #End social and regional
+      }
+      #End social and regional
+      else if (input$Ind_sel == 'Crew') {
+        if(input$crewSelect %in% c('Crew wage per day')) {
+          tagList(
+            tags$div(class='StatGrey2', radioButtons("AVE_MED2", HTML("<div> Statistic: <button id='istat' type='button' class='btn btn-default action-button shiny-bound-input'> <i class='fa fa-info-circle fa-fw' ></i></button> </div>"),
+                                                     choices=c("Mean","Median",'Total'), select='Median'))) 
+        } else {
+          tagList(
+            radioButtons("AVE_MED2", HTML("<div> Statistic: <button id='istat' type='button' class='btn btn-default action-button shiny-bound-input'> <i class='fa fa-info-circle fa-fw' ></i></button> </div>"),
+                         choices=c("Mean","Median",'Total'), select='Median'))   
+        }
+
     } #end compare vessels
-})
+}
+  })
 ###################################################
 #End stat selection for non-economic metrics
 ###################################################
