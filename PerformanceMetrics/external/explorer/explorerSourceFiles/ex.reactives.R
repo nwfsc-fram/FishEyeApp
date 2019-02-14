@@ -1117,6 +1117,7 @@ DatSub <- reactive({
           levels = c(
             "All fisheries",
             'All catch share fisheries combined' = 'All catch share fisheries',
+            "Trawl only catch share fisheries",
             'Pacific whiting',
             "At-sea Pacific whiting",
             "Shoreside Pacific whiting",
