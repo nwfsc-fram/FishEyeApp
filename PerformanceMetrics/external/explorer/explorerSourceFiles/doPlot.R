@@ -5,7 +5,7 @@ doPlot <- function(dat, x, y) {
 
 # create sort2 column ####
     dat$sort2 <- if (input$LayoutSelect != "Metrics") {
-      if (input$Ind_sel == 'Social and Regional') {
+      if (input$Ind_sel == 'Other') {
         if (input$socSelect == 'Share of landings by state') {
           reorder(dat$AGID, dat$sort)
         } else {
@@ -204,7 +204,7 @@ gv <- function() {
         else {
           # if(input$MetricSelect[1]!='Number of vessels'&input$MetricSelect!="Share of landings by state"&input$MetricSelect!='Gini coefficient'&input$MetricSelect!='Herfindahl-Hirschman Index'&input$MetricSelect!='Seasonality'&input$MetricSelect!="Vessel length"){
           if (max(dat$metric_flag) == 0) {
-            if (input$Ind_sel == "Demographic") {
+            if (input$Ind_sel == "Vessel characteristics") {
               if (!input$Sect_sel %in% c("CV", "FR")) {
                 sprintf(
                   paste(
@@ -242,7 +242,7 @@ gv <- function() {
                     )
                   )
                 }
-              } ##End Demographic
+              } ##End Vessel characteristics
             } else if (input$Ind_sel == 'Crew') {
               if (!input$Sect_sel %in% c("CV", "FR")) {
                 sprintf(
@@ -282,7 +282,7 @@ gv <- function() {
                   )
                 }
               } ##End Crew
-            } else if (input$Ind_sel == "Social and Regional") {
+            } else if (input$Ind_sel == "Other") {
               if (input$socSelect == "Share of landings by state")  {
                 if (input$CategorySelect != "Fisheries") {
                   sprintf(
@@ -338,7 +338,7 @@ gv <- function() {
             }
           }# end normal cases
           else {
-            if (input$Ind_sel == "Demographic") {
+            if (input$Ind_sel == "Vessel characteristics") {
               if (input$demSelect %in% c("Number of vessels", "Number of processors")) {
                 if (input$Sect_sel == "CV" &
                     input$CategorySelect != "Fisheries" |
@@ -418,7 +418,7 @@ gv <- function() {
                 }
               }
             }
-            else if (input$Ind_sel == "Social and Regional") {
+            else if (input$Ind_sel == "Other") {
               if (input$socSelect == "Seasonality") {
                 if (input$Sect_sel == 'CV' &
                     input$CategorySelect != "Fisheries" |
@@ -610,7 +610,7 @@ gv <- function() {
         } else {
           paste(currentyear, "$", "(", input$StatSelect, ")")
         }
-      } else if (input$Ind_sel == "Social and Regional") {
+      } else if (input$Ind_sel == "Other") {
         if (input$LayoutSelect != 'Metrics') {
           if (input$socSelect == "Revenue per crew-day" |
               input$socSelect == "Revenue per position-day") {
@@ -638,7 +638,7 @@ gv <- function() {
         } else {
           expression(bold('Scale and units depend upon metric'))
         }
-      } else if (input$Ind_sel == "Demographic") {
+      } else if (input$Ind_sel == "Vessel characteristics") {
         if (input$LayoutSelect != 'Metrics') {
           if (input$demSelect == "Proportion of revenue from CS fishery") {
             expression(bold("Proportion of revenue from catch share fishery"))
@@ -725,7 +725,7 @@ gv <- function() {
             }
           }
         }
-        else if (input$Ind_sel == "Demographic") {
+        else if (input$Ind_sel == "Vessel characteristics") {
           if (input$demSelect == "Fishery participation" |
               input$demSelect == "Proportion of revenue from CS fishery") {
             if (max(dat$conf) == 0) {
@@ -872,7 +872,7 @@ gv <- function() {
               }
             }
           }
-        } else if (input$Ind_sel == "Social and Regional") {
+        } else if (input$Ind_sel == "Other") {
           if (input$socSelect == "Share of landings by state") {
             if (max(dat$conf) == 0) {
               if (max(dat$flag) == 0) {
@@ -1048,7 +1048,7 @@ gv <- function() {
     # format data for graph and add to graph ####
     # special data for seasonality plot
   #  print(paste0(seasonality, 1))
-    if(input$Ind_sel == 'Social and Regional' & input$LayoutSelect != 'Metrics') {
+    if(input$Ind_sel == 'Other' & input$LayoutSelect != 'Metrics') {
         # and seasonality is selected
         if(input$socSelect =="Seasonality") {
           ssn <- mutate(dat, 
@@ -1156,7 +1156,7 @@ gv <- function() {
       # if the "Group by vessels" display is chosen
       if (input$LayoutSelect != 'Metrics') {
         # if seasonality is clicked
-        if(input$Ind_sel == 'Social and Regional') {
+        if(input$Ind_sel == 'Other') {
         # and seasonality is selected
         if(input$socSelect =="Seasonality") {
         g <- g + geom_rect_fun(

@@ -56,22 +56,19 @@ tags$div(style = "margin: 15px 15px 30px; width: 60%",
                      
                     h4('Indicators'),
                     tags$ul(
-                      tags$li(strong('Demographic:'), 'Characteristics of the vessels in the fleet that may vary over time. Changes in the demographic metrics may indicate changes such as fleet consolidation, efficiency, productivity, specialization, or diversification.'),
+                      tags$li(strong('Vessel characteristics:'), 'Characteristics of the vessels in the fleet that may vary over time. Changes in vessel characteristics may indicate changes such as fleet consolidation, efficiency, productivity, specialization, or diversification.'),
                       tags$li(strong('Economic:'),'Metrics within the economic indicators section describe the potenital economic impacts of the catch share fishery on the West Coast. Changes may be indicative of changes in total allowable catch (TAC), fish or product prices, costs or cost structure, profitability, productivity, and diversification.'),
-                      tags$li(strong('Social and Regional:'),'Distribution of benefits and costs among individuals, groups, and communities. Indicators describe potential impact on individuals (i.e., wages) and communities (i.e. share of landings by state).')
+                      tags$li(strong('Crew:'),'Distribution of benefits and costs among captain and crew. Indicators describe potential impact on individuals (i.e., wages) and employment (i.e. number of positions).'),
+                      tags$li(strong('Other:'),'Broad collection of metrics that extend beyond the other types of indicators and describe effort, productivity, inequality, and the temporal and spatial distribution of landings.')
                     ),
                     h4('Metrics'),
                     p('Please note that availability of metrics will vary between sectors.'),
                     
-                    tags$ul(h4(tags$em('Demographic')),
-                            tags$li(strong('Days at sea: '),
-                                    'The number of days at sea may indicate specialization, efficiency, or consolidation.'),
+                    tags$ul(h4(tags$em('Vessel characteristics')),
                             tags$li(strong('Exponential Shannon Index: '),
                                     'Measures the income diversification of a vessel across revenue sources. A larger number corresponds to increased diversification. Changes may indicate specialization or diversification.'),
                             tags$li(strong('Fishery participation: '),
                                     'Count of fisheries (defined above) that vessels participated in. Changes may indicate specialization or diversification.'),
-                            tags$li(strong('Gini coefficient: '),
-                                    'Measures the degree of catch share revenue concentration among vessels. A value of zero would represent all vessels earning the same revenue, and a value of one would represent one vessel earning all of the revenue. The value of the Gini coefficient can be affected by fleet consolidation and specialization.'),
                             tags$li(strong('Number of species processed: '),
                                     'Count of the number of species processed. Changes may indicate specialization or diversification.'),
                             tags$li(strong('Number of vessels or processors: '),
@@ -112,14 +109,25 @@ tags$div(style = "margin: 15px 15px 30px; width: 60%",
                       ), 
                     tags$br(),
                     
-                    tags$ul(h4(tags$em('Social and Regional')),
+                    tags$ul(h4(tags$em('Crew')),
                             tags$li(strong('Crew wage per day: '),'Daily wage paid to a crewmember operating in the limited entry/catch shares fishery.'),
+                            tags$li(strong('Number of positions: '),'Number of positions (including captain and crew) is a lower bound for employment in the fishery. The metric is affected by positions per vessel and the number of vessels fishing.')
+                            ),
+                    tags$br(),
+                    
+                    tags$ul(h4(tags$em('Other')),
                             tags$li(strong('Hourly compensation:'), 'Hourly compensation paid to a processing worker in the West Coast groundfish fishery.'),
-                            tags$li(strong('Number of positions or workers: '),'Number of positions (including captain and crew or workers for the First Receivers and Shorebased Processors sector) is a lower bound for employment in the fishery. The metric is affected by positions per vessel and the number of vessels fishing.'),
+                            tags$li(strong('Number of workers: '),'Number of positions (including workers for the First Receivers and Shorebased Processors sector) is a lower bound for employment in the processing sector.'),
                             tags$li(strong('Revenue per position-day: '),'Revenue divided by position-days, where position-days are calculated as days at sea multipled by number of positions per vessel. This metric is a measure of productivity (in terms of revenue generation) of captain and crew.'),
                             tags$li(strong('Revenue per crew-day: '),'Revenue divided by crew-days, where crew-days are calculated as days at sea multipled by number of crew per vessel. This metric is a measure of productivity (in terms of revenue generation) of a crew member.'), 
                             tags$li(strong('Seasonality: '),'The date (day of year, Jan. 1 = 1) on which 50% of the total volume of catch was landed in the fishery. Metric measures broad-scale changes in the seasonality of fishing for catch shares fish. It can also indicate changes in total allowable catch (TAC); it may take the fleet longer to catch a higher TAC/ACL.'),
-                            tags$li(strong('Share of landings by state: '),'Share of landings (deliveries) by all vessels, by whiting vessels, and by non-whiting groundfish vessels in each state or at-sea. Shares are in terms of revenue. When selecting the ',tags$em('State'), 'summary variable, this metric shows the share of landings in each state for vessels that homeport in the selected state. This selection highlights that vessels may deliver fish in multiple states.')
+                            tags$li(strong('Share of landings by state: '),'Share of landings (deliveries) by all vessels, by whiting vessels, and by non-whiting groundfish vessels in each state or at-sea. Shares are in terms of revenue. When selecting the ',tags$em('State'), 'summary variable, this metric shows the share of landings in each state for vessels that homeport in the selected state. This selection highlights that vessels may deliver fish in multiple states.'),
+                            tags$li(strong('Gini coefficient: '),
+                                    'Measures the degree of catch share revenue concentration among vessels. A value of zero would represent all vessels earning the same revenue, and a value of one would represent one vessel earning all of the revenue. The value of the Gini coefficient can be affected by fleet consolidation and specialization.'),
+                            tags$li(strong('Days at sea: '),
+                                    'The number of days at sea may indicate specialization, efficiency, or consolidation.'),
+                            tags$li(strong('Fuel use per day: '), 'Fuel use per day, alongside days at sea and speed while fishing, provides information about effort per day and fishing behavior.'),
+                            tags$li(strong('Speed while fishing: '), "Speed while fishing, alongside days at sea and fuel use per day, provides information about effort per day and fishing behavior.")
                             ),
                     tags$p('Additional metrics that address economic input/output impacts are available in the Economic Performance Metrics for the West Coast Groundfish Trawl Catch Share Program report.  These indicators are the total impacts on income and employment of the West Coast Groundfish Trawl Catch Share fishery.
                            Total impacts include, direct, indirect, and induced employment effects, as measured by IO-PAC model.'),

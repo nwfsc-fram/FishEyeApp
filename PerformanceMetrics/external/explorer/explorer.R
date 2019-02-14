@@ -222,7 +222,7 @@ output$TableMain <- renderDataTable({
                     names(table) <- c("Year", "Summary Variable", "Statistic", "Economic measure","Data summed\nacross", "Number of vessels","Value",  "Variance \n\n(Quartiles or SD)")
       }
       } #end economic for non-metrics comparison
-      else if(input$Ind_sel=="Social and Regional"){
+      else if(input$Ind_sel=="Other"){
           table <- subset(DatSubTable(), select = -c(CATEGORY)) 
           if(input$CategorySelect == "Fisheries"){
            table <- subset(table, select = -CS)
@@ -274,7 +274,7 @@ output$TableMain <- renderDataTable({
                }
               }
              }
-        } #End social and regional
+        } #End Other
         else if(input$Ind_sel == 'Crew') {
           table <- subset(DatSubTable(), select =-c(CATEGORY))
           if(input$CategorySelect == 'Fisheries') {
@@ -305,7 +305,7 @@ output$TableMain <- renderDataTable({
           }
         } ## End crew
         
-        else if(input$Ind_sel=="Demographic"){
+        else if(input$Ind_sel=="Vessel characteristics"){
             table <- subset(DatSubTable(), select = -c(CATEGORY))
           if(input$CategorySelect == "Fisheries"){
             table <- subset(table, select = -c(CS))
@@ -408,7 +408,7 @@ output$dlTable <- downloadHandler(
                 else {
               temp <- data.frame("Year", "Summary Variable","Statistic", "Metric","Data summed across","Number of vessels","Value",  "Variance (Quartiles or SD)","Sector")
             }
-        } #End demographic and social and regional categories
+        } #End Vessel characteristics and Other categories
       } # End compare metrics
       #Begin Compare vessels
       else {
@@ -425,8 +425,8 @@ output$dlTable <- downloadHandler(
             temp <- data.frame("Year", "Summary Variable", "Statistic", "Economic measure","Data summed across", "Number of vessels","Value",  "Variance (Quartiles or SD)","Sector")
           }
         } #end economic for non-metrics comparison
-        #Social and Regional
-        else if(input$Ind_sel=="Social and Regional"){
+        #Other
+        else if(input$Ind_sel=="Other"){
           if(input$CategorySelect == "Fisheries"){
              if(input$socSelect=="Share of landings by state"){
               temp <- data.frame("Year", "Summary Variable", "Statistic", "Metric","Data summed across","Number of vessels; Vessels may deliver to multiple locations", "Value",
@@ -452,7 +452,7 @@ output$dlTable <- downloadHandler(
               }
             }
           }
-        } #End social and regional
+        } #End Other
         ##Crew
         else if(input$Ind_sel == 'Crew') {
           if(input$CategorySelect == 'Fisheries') {
@@ -470,8 +470,8 @@ output$dlTable <- downloadHandler(
                                "Variance (Quartiles or SD)","Sector")
           }
         }##End crew
-        #Demographic
-        else if(input$Ind_sel=="Demographic"){
+        #Vessel characteristics
+        else if(input$Ind_sel=="Vessel characteristics"){
           if(input$CategorySelect == "Fisheries"){
             if(input$demSelect=="Number of vessels"){
               temp <- data.frame("Year", "Summary Variable", "Statistic", "Metric","Data summed across","Number of vessels","Sector")

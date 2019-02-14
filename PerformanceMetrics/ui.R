@@ -275,7 +275,7 @@ fluidPage(title = "FISHEyE",
                                wellPanelSub(
                                     conditionalPanel(condition="input.Sect_sel=='CV'||
                                                      input.Sect_sel=='FR'&input.Ind_sel=='Economic'||
-                                                     input.Sect_sel=='FR'&input.Ind_sel=='Demographic'&
+                                                     input.Sect_sel=='FR'&input.Ind_sel=='Vessel characteristics'&
                                                      input.demSelect!='Proportion of revenue from catch share species'",
                                                      uiOutput("SelectText")),
                                     uiOutput("Variableselect")
@@ -291,14 +291,14 @@ fluidPage(title = "FISHEyE",
                                                uiOutput("StatSelect2")),
                                 uiOutput("IndicatorSelect"),
                                 uiOutput("Metricselect"),
-                                conditionalPanel(condition="input.Ind_sel=='Demographic'",
+                                conditionalPanel(condition="input.Ind_sel=='Vessel characteristics'",
                                     uiOutput("demselect")),
                                 conditionalPanel(condition="input.Ind_sel=='Economic'",
                                     uiOutput("Shortdescrselect"),
                                     uiOutput("Statselect")),
                                 conditionalPanel(condition="input.Ind_sel=='Crew'",
                                                  uiOutput("crewselect")),
-                                conditionalPanel(condition="input.Ind_sel=='Social and Regional'",
+                                conditionalPanel(condition="input.Ind_sel=='Other'",
                                     uiOutput("socselect"))
 
                                      ),#end sub panel
@@ -306,13 +306,13 @@ fluidPage(title = "FISHEyE",
                               wellPanelSub( 
                                   wellPanelSub(
                                   conditionalPanel(condition="input.LayoutSelect!='Metrics'&&input.Sect_sel=='CV'&&
-                                                                        input.Ind_sel=='Demographic'&&
+                                                                        input.Ind_sel=='Vessel characteristics'&&
                                                                         input.demSelect=='Exponential Shannon Index'
                                                                     ||input.LayoutSelect!='Metrics'&&input.Sect_sel=='CV'&&
-                                                                        input.Ind_sel=='Demographic'&&
+                                                                        input.Ind_sel=='Vessel characteristics'&&
                                                                         input.demSelect=='Proportion of revenue from CS fishery'
                                                                     ||input.LayoutSelect!='Metrics'&&input.Sect_sel=='CV'&&
-                                                                        input.Ind_sel=='Demographic'&&
+                                                                        input.Ind_sel=='Vessel characteristics'&&
                                                                         input.demSelect=='Fishery participation'", 
                                                  uiOutput("FishAkselect")), style = "padding: 0px;margin-bottom:0px; border: 3px solid #D3D3D3;border-radius:10px;"),
                                   wellPanelSub(

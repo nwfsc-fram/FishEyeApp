@@ -226,7 +226,7 @@ DatSubTable <- reactive({
         YEAR %in% seq(input$YearSelect[1], input$YearSelect[2], 1))
   }
 
-  if (input$Ind_sel == "Demographic") {
+  if (input$Ind_sel == "Vessel characteristics") {
     if (input$LayoutSelect != "Metrics") { # Compare: Groups of vessels/companies
       #        if(input$MetricSelect!="Number of vessels"&input$MetricSelect!="Seasonality"&input$MetricSelect!="Share of landings by state"&input$MetricSelect!="Gini coefficient"){
       #           if(input$LayoutSelect!="Metrics"){}
@@ -279,7 +279,7 @@ DatSubTable <- reactive({
       subset(datSubforSector,
              METRIC %in% input$crewSelect &
                SUMSTAT == input$AVE_MED2 & !is.na(input$crewSelect))
-  } else if (input$Ind_sel == "Social and Regional")  {
+  } else if (input$Ind_sel == "Other")  {
     if (input$LayoutSelect != "Metrics") {
       #        if(input$MetricSelect!="Number of vessels"&input$MetricSelect!="Seasonality"&input$MetricSelect!="Share of landings by state"&input$MetricSelect!="Gini coefficient"){
       if (input$socSelect != "Share of landings by state" &
@@ -355,7 +355,7 @@ DatSubTable <- reactive({
     datSub <- subset(datSub, CS == input$inSelect)
   }
   if (input$Sect_sel == "FR") {
-    if (!input$Ind_sel == 'Demographic') {
+    if (!input$Ind_sel == 'Vessel characteristics') {
       if (input$CategorySelect != "Fisheries") {
         datSub <- subset(datSub, CS == input$inSelect)
       }
@@ -513,7 +513,7 @@ DatSubTable <- reactive({
     )
   ))
   
-  if (input$Ind_sel == "Social and Regional") {
+  if (input$Ind_sel == "Other") {
     if (input$socSelect[1] == "Share of landings by state") {
       datSub$VALUE <- datSub$VALUE * 100
       datSub$VARIANCE <- datSub$VARIANCE * 100
@@ -546,7 +546,7 @@ DatSubTable <- reactive({
   
 # choosing which columns to display  
   if (input$LayoutSelect != "Metrics") { # Compare Vessels/companies
-    if (input$Ind_sel == "Demographic") {
+    if (input$Ind_sel == "Vessel characteristics") {
       if (input$demSelect[1] == "Exponential Shannon Index" |
           input$demSelect[1] == "Fishery participation" |
           input$Sect_sel == "CV" &
@@ -614,7 +614,7 @@ DatSubTable <- reactive({
             which(colnames(datSub) == "VARIANCE")
           )]
       }
-    }# End Demographic
+    }# End Vessel characteristics
     else if (input$Ind_sel == "Economic") {
       datSub <-
         datSub[, c(
@@ -629,7 +629,7 @@ DatSubTable <- reactive({
           which(colnames(datSub) == "VALUE"),
           which(colnames(datSub) == "VARIANCE")
         )]
-    } else if (input$Ind_sel == "Social and Regional") {
+    } else if (input$Ind_sel == "Other") {
       if (input$socSelect == "Share of landings by state") {
         datSub <-
           datSub[, c(
@@ -802,7 +802,7 @@ DatSub <- reactive({
       subset(datSubforSector,
         SHORTDESCR %in% input$ShortdescrSelect &
           STAT == input$StatSelect)
-  } else if (input$Ind_sel == "Demographic")  {
+  } else if (input$Ind_sel == "Vessel characteristics")  {
     if (input$LayoutSelect != "Metrics") {
       # Compare: Groups of vessels/companies
       if (input$Sect_sel == 'FR') {
@@ -842,7 +842,7 @@ DatSub <- reactive({
           )
       }
     }
-  } else if (input$Ind_sel == "Social and Regional")  {
+  } else if (input$Ind_sel == "Other")  {
     if (input$LayoutSelect != "Metrics") {
       # Compare: Groups of vessels/companies
       
@@ -885,7 +885,7 @@ DatSub <- reactive({
           subset(datSubforSector,
             METRIC %in% input$socSelect & SUMSTAT == input$AVE_MED2)
       }
-    }#End Social and Regional
+    }#End Other
   } else if (input$Ind_sel == 'Crew') {
       datSub <-
         subset(datSubforSector,
@@ -1015,7 +1015,7 @@ DatSub <- reactive({
     datSub <- subset(datSub, CS == input$inSelect)
   }
   if (input$Sect_sel == "FR") {
-    if (input$Ind_sel != 'Demographic') {
+    if (input$Ind_sel != 'Vessel characteristics') {
       if (input$CategorySelect != "Fisheries") {
         datSub <- subset(datSub, CS == input$inSelect)
       }
@@ -1051,12 +1051,12 @@ DatSub <- reactive({
     )
     ))
   
-  if (input$Ind_sel == 'Demographic') {
+  if (input$Ind_sel == 'Vessel characteristics') {
     datSub$VALUE <- datSub$VALUE
     datSub$VARIANCE <- datSub$VARIANCE
     datSub$q25 <- datSub$q25
     datSub$q75 <- datSub$q75
-  } else if (input$Ind_sel == "Social and Regional") {
+  } else if (input$Ind_sel == "Other") {
     if (input$socSelect == "Revenue per crew-day" |
         input$socSelect == "Revenue per position-day") {
       datSub$VALUE <- datSub$VALUE / 1000
@@ -1159,7 +1159,7 @@ DatSub <- reactive({
     datSub$VARIABLE <- "At-sea Pacific whiting"
   }
   
-  if (input$Ind_sel == "Social and Regional") {
+  if (input$Ind_sel == "Other") {
     if (input$socSelect != "Share of landings by state") {
       if (length(input$VariableSelect) > 1) {
         datSub$star <- ifelse(is.na(datSub$VALUE) == T, "*", "")
@@ -1180,7 +1180,7 @@ DatSub <- reactive({
   }
 
   if (input$LayoutSelect != "Metrics") {
-    if (input$Ind_sel == 'Social and Regional' &&
+    if (input$Ind_sel == 'Other' &&
         input$socSelect == 'Share of landings by state') {
       datSub$sort <- as.character(datSub$AGID)
     } else {
@@ -1243,7 +1243,7 @@ DatSub <- reactive({
       else {
         datSub$sort <- "At-sea Pacific whiting"
       } #end MS and CP
-    }#end not social and regional
+    }#end not Other
   } #end not Metrics
   else {
     if (input$Ind_sel == "Economic") {
