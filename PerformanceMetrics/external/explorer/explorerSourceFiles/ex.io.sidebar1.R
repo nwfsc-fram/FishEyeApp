@@ -548,10 +548,8 @@ output$crewselect <- renderUI({
       }
     }}
   else {
-      if(input$AVE_MED2 == 'Total') {
+    if(input$Sect_sel != 'FR') {
         tags$div(class="statbox",radioButtons("crewSelect","", choices = c(DatVars()$METRIC2), selected = "Number of positions (captain and crew)"))
-      } else {
-        tags$div(class="statbox",radioButtons("crewSelect","", choices = c(DatVars()$METRIC2)))
       }
     }
 })
@@ -693,7 +691,7 @@ output$StatSelect2 <- renderUI({
       }
       #End Other
       else if (input$Ind_sel == 'Crew') {
-        if(input$crewSelect %in% c('Crew wage per day')) {
+        if(input$crewSelect == 'Crew wage per day') {
           tagList(
             tags$div(class='StatGrey2', radioButtons("AVE_MED2", HTML("<div> Statistic: <button id='istat' type='button' class='btn btn-default action-button shiny-bound-input'> <i class='fa fa-info-circle fa-fw' ></i></button> </div>"),
                                                      choices=c("Mean","Median",'Total'), select='Median'))) 
