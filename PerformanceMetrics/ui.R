@@ -2,6 +2,8 @@
 
 library(appFrame)
 library(shinyjs)
+library(shinyWidgets)
+library(shinyBS)
 
 # custom css functions
 # calls .css selector for well-sub
@@ -177,167 +179,82 @@ function(request) {
       
       tabPanel("Explore the data", value="results",    
         sidebarLayout(
-          mainPanel(         
-            tabsetPanel(id = "tabs", selected='Panel1',
-              tabPanel(title=HTML("Summary Plots <br> and Data"), value="Panel1", padding='10px',
-                fluidRow(column(12,'',
-                  fluidRow(column(12,
-                    conditionalPanel(condition="input.VariableSelect==''",  
-                      tabsetPanel(tabPanel('Overview',
-                        fluidRow(
-                          column(12, htmlOutput("DefaultPlotText"))#,                                
-                          #  column(2, uiOutput("DataButton")),  
-                          #  column(2, uiOutput("VCNRButton")), 
-                          #   column(12, dataTableOutput("TableMain"), plotOutput("PlotMain", height="auto",width="auto"))
-                        )),
-                        tabPanel('Get started',
-                          fluidRow(column(12, htmlOutput('GetStartedText')))))))))), 
-                conditionalPanel(condition="input.VariableSelect!=''",  
-                  fluidRow(column(2, uiOutput("DataButton")),  
-                    column(12, dataTableOutput("TableMain"), 
-                      plotOutput("PlotMain", height="auto",width="auto"#, hover=hoverOpts(id='plot_hover'),click=clickOpts(id='plot_click')
-                      )
-                      # ,conditionalPanel(condition="input.Ind_sel=='Economic'",uiOutput('hover_info'),uiOutput('click_info'))
-                    ))))
-              ###--------------Case Study -------------------------------####
-              #                ,tabPanel(title='Case studies', value='Panel2', padding='10px',
-              #                         tags$h3('How does profitability compare between vessels with trawl gear and fixed gear in the catch share program?'),
-              #                         fluidRow(column(12, htmlOutput('CaseStudyp1')),
-              #                                  column(12,  actionButton("hideshow1", "Show/Hide VCNR plot", style='color:#fff; background-color:#5bc0de;border-color#:#46b8da')),
-              #                                  column(12, # conditionalPanel(condition="input.hideshow1 % 2 !=0 & values$shouldShow != TRUE", 
-              #                                         hidden(plotOutput("PlotMain2"))), 
-              #                                 
-              #                                   column(12, htmlOutput('CaseStudyp6')),
-              #                                 column(12,  actionButton("hideshow6", "Show/Hide Days at sea and VCNR/day plots", style='color:#fff; background-color:#5bc0de;border-color:#46b8da')),
-              #                                 column(12,  hidden(htmlOutput("CaseStudyFig5"))),
-              #                                 
-              #                                 column(12,  htmlOutput('CaseStudyp2')),       
-              #                                  column(12,  actionButton("hideshow2", "Show/Hide Thirds plot", style='color:#fff; background-color:#5bc0de;border-color:#46b8da')),
-              #                                  column(12,  #conditionalPanel(condition="input.hideshow2 % 2 !=0",  
-              #                                         hidden(htmlOutput('CaseStudyFig2'))),#tags$img(src="TrawlThirds.png", height=350))),
-              #                                  
-              #                                  #column(12,  actionButton("hideshow3", "Show/Hide TCNR plot for catcher vessels with trawl permit", style='color:#fff; 
-              #                                  #background-color:#5bc0de;border-color:#46b8da')),
-              #                                  #column(12,  hidden(plotOutput("PlotMain3"))),#htmlOutput('CaseStudyFig3'))),
-              #                                  column(12,  htmlOutput('CaseStudyp4')),
-              #                                  #column(12,  actionButton("hideshow4", "Show/Hide Thirds plot for Groundfish fixed gear with trawl endorsement fishery", style='color:#fff; 
-              #                                  #background-color:#5bc0de;border-color:#46b8da')),
-              #                                  column(12,  hidden(htmlOutput('CaseStudyFig3'))),
-              #                                 
-              #                                  column(12,  htmlOutput('CaseStudyp5')),
-              #                                  column(12,  actionButton("hideshow5", "Show/Hide Costs plot", style='color:#fff; background-color:#5bc0de;border-color:#46b8da')),
-              #                                 column(12,  hidden(htmlOutput("CaseStudyFig4")))
-              #                                 
-              #                                 
-              #                                  )
-              #)
-              ###-----------End case study-------------------------------######
-            )),
           
           sidebarPanel( 
             wellPanel( 
-              tags$head(
-                tags$style(type="text/css", ".well{border: 0px transparent;}"
-                )),
               fluidRow(
-                column(8, HTML("<p style = 'font-size: 160%'><strong>Control Panel </strong></p> <p style='font-size: 110%'><strong>Make selections in each of the panels below </strong></p>")),
                 column(4,
                   uiOutput("resetButton"),
-                  uiOutput('Button'),
-                  bookmarkButton())),#end fluidRow
+                  uiOutput('Button'))),#end fluidRow
               
-              fluidRow(
-                column(12,uiOutput("SectorSelect"),
-                  style = "background:white; padding:0px;margin-bottom:0px; border: 3px solid #D3D3D3;border-radius:10px;font-size:100%;")), 
-              #         uiOutput("resetButton"),
+              # Select a vessel/Processor Type
+              radioGroupButtons("Sect_sel", label = "Vessel/Processor Type :",
+                                choices = c('Catcher Vessels'="CV", 'Mothership Vessels'="M", 'Catcher-Processor Vessels'="CP", 'First Receivers and Shorebased Processors'="FR"),
+                                individual = TRUE
+              ),
               
+              # Compare By
               fluidRow(
                 column(12,
-                  uiOutput('Layoutselect'),style = "background:white; padding: 0px;margin:0px; border: 3px solid #D3D3D3;border-radius:10px;"
+                  uiOutput('Layoutselect')#,style = "background:white; padding: 10px;margin:0px; border: 3px solid #D3D3D3;border-radius:10px;"
                 )),
-              fluidRow(
-                column(6,
-                  uiOutput("Categoryselect"), style = "background:white; padding: 0px;margin:0px; border: 1px solid #D3D3D3;border-radius:1px;"
-                  
-                ),
-                column(6, 
-                  uiOutput("FishWhitingselect")), style = "background:white; padding: 0px;margin-bottom:10px; border: 3px solid #D3D3D3;border-radius:10px;"
-              ), #end fluid row
+              
+              # Metrics
               fluidRow(
                 column(12,
-                  " ")),
+                       tags$div(style = "font-weight:bold; margin-bottom: 7px", "Metric:"),
+                       uiOutput('metrics'),
+                       style = "background:white; padding: 10px;margin:0px; border: 3px solid #D3D3D3;border-radius:10px;"
+                )),
+              
+              fluidRow(style = "padding: 10px;"),
+              
+              # Filters
               fluidRow(
-                column(6,
-                  # uiOutput("resetButton"),
-                  # uiOutput('Button'),
-                  # wellPanelSub(
-                  #  wellPanelHeading(
-                  #   uiOutput("CategorySelect")
-                  #  )),
-                  wellPanelSub(
-                    conditionalPanel(condition="input.Sect_sel=='CV'||
-                                                     input.Sect_sel=='FR'&input.Ind_sel=='Economic'||
-                                                     input.Sect_sel=='FR'&input.Ind_sel=='Vessel characteristics'&
-                                                     input.demSelect!='Proportion of revenue from catch share species'",
-                      uiOutput("SelectText")),
-                    uiOutput("Variableselect")
-                    
-                  ),style = "padding-left:-15px;margin-left:-15px;margin-right:0px;padding-right:2px;"
-                ), #end column
-                
-                column(6,
-                  #  wellPanelSub(
-                  #    uiOutput("FishWhitingSelect")),
-                  wellPanelSub(
-                    conditionalPanel(condition="input.Ind_sel!='Economic'",
-                      uiOutput("StatSelect2")),
-                    uiOutput("IndicatorSelect"),
-                    uiOutput("Metricselect"),
-                    conditionalPanel(condition="input.Ind_sel=='Vessel characteristics' ||
-                                     input.Ind_sel == 'Processor characteristics'",
-                      uiOutput("demselect")),
-                    conditionalPanel(condition="input.Ind_sel=='Economic'",
-                      uiOutput("Shortdescrselect"),
-                      uiOutput("Statselect")),
-                    conditionalPanel(condition="input.Ind_sel=='Labor'",
-                      uiOutput("crewselect")),
-                    conditionalPanel(condition="input.Ind_sel=='Other'",
-                      uiOutput("socselect"))
-                    
-                  ),#end sub panel
-                  
-                  wellPanelSub( 
-                    wellPanelSub(
-                      conditionalPanel(condition="input.LayoutSelect!='Metrics'&&input.Sect_sel=='CV'&&
-                                                                        input.Ind_sel=='Vessel characteristics'&&
-                                                                        input.demSelect=='Revenue diversification'
-                                                                    ||input.LayoutSelect!='Metrics'&&input.Sect_sel=='CV'&&
-                                                                        input.Ind_sel=='Vessel characteristics'&&
-                                                                        input.demSelect=='Proportion of revenue from CS fishery'
-                                                                    ||input.LayoutSelect!='Metrics'&&input.Sect_sel=='CV'&&
-                                                                        input.Ind_sel=='Vessel characteristics'&&
-                                                                        input.demSelect=='Number of fisheries'", 
-                        uiOutput("FishAkselect")), style = "padding: 0px;margin-bottom:0px; border: 3px solid #D3D3D3;border-radius:10px;"),
-                    wellPanelSub(
-                      conditionalPanel(condition="input.Ind_sel!='Economic'&input.AVE_MED2!='Total'&
-                                                              input.socSelect!='Seasonality'&
-                                                              input.socSelect!='Share of landings by state'||
-                                                              input.Ind_sel=='Economic'&input.AVE_MED!='T'",
-                        uiOutput("Plotselect")), style = "padding: 0px;margin-bottom:0px; border: 3px solid #D3D3D3;border-radius:10px;")#,
-                  ) , #end sub panel
-                  wellPanelSub( # problem panel open
-                    
-                    uiOutput("Yearselect")
-                  ), # problem panel close
-                  style = "padding-right:2px;margin-right:0px; padding-left:2px;,width:100%"
-                ),#end column
-                column(4,
-                  wellPanel(uiOutput("download_figure"),
-                    #tags$br(),
-                    uiOutput("download_Table")#,
-                  ))
-              ) #end Fluid row
-            ),      style = "padding: 0px;border: 1px solid #000000;") # end right side column
+                column(12,
+                       tags$div(style = "font-weight:bold; margin-bottom: 7px", "Filter By:"),
+                       uiOutput('filterTabs'),
+                       uiOutput("Variableselect"),
+                       style = "background:white; padding: 10px;margin:0px; border: 3px solid #D3D3D3;border-radius:10px;"
+                )),
+              
+              
+              fluidRow(style = "padding: 10px;"),
+              
+              tags$b("Additional Filters:"),
+              fluidRow(
+                column(6, uiOutput("FishWhitingselect")),
+                column(6, uiOutput("fisheriesOptions"))
+              ), 
+              
+              fluidRow(style = "padding: 10px;"),
+             
+             fluidRow(
+               column(6, uiOutput("Yearselect")),
+               column(6, uiOutput("FishAkselect"))
+             ),
+             
+             fluidRow(style = "padding: 10px;"),
+             
+             fluidRow(
+               column(6, uiOutput("Plotselect"))
+             ),
+              
+              
+              fluidRow(
+                column(4, uiOutput("download_figure")),
+                column(4, uiOutput("download_Table")),
+                column(4, bookmarkButton())
+              )
+              
+            ),      style = "padding: 0px;border: 1px solid #000000;"), # end right side column
+          
+          
+          mainPanel(
+            tabsetPanel(id = "tabs",
+                        tabPanel("Visualize the Data", value="Panel1", plotOutput("PlotMain")),
+                        tabPanel("Dataset", value="Panel2", dataTableOutput("TableMain"))
+            ))
           
         )),
       #tabPanel(HTML('History'), htmlOutput('HistoryText')),

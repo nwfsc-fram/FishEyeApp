@@ -1492,9 +1492,7 @@ output$resetButton <- renderUI({
     tags$div(class = "actbutton",
       actionButton(
         "reset_input",
-        HTML(
-          "<strong>Clear selections & <br> Return to Instructions</strong>"
-        ),
+        "Clear",
         class = "btn btn-info"
       ))
   }
