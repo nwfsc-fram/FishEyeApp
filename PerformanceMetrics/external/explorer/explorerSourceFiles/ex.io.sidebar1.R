@@ -34,19 +34,16 @@ output$SectPrint <- renderUI({
 
 #End Sector Select
 
-#output$moreOptions <- renderUI({
-#tags$div(class="ckbox", checkboxInput("moreOptions", "I can't figure out how to drop this box - Erin", value = FALSE))
-#})
-
 #= = = = = = = = = = = = = = = = = = = = = = 
 ##YEAR ####
 #= = = = = = = = = = = = = = = = = = = = = = 
 
 output$Yearselect <- renderUI({
-  if (input$Ind_sel == "Vessel characteristics") {
+  if (input$Ind_sel == "Vessel characteristics" ||
+      input$Ind_sel == 'Processor characteristics') {
     if (input$Sect_sel == "CV" &
         input$CategorySelect == 'Fisheries' &
-        input$demSelect %in% c('Number of vessels', 'Vessel length', 'Gini coefficient')) {
+        input$demSelect %in% c('Number of vessels', 'Vessel length')) {
       tags$div(
         class = "ckbox",
         sliderInput(
@@ -79,7 +76,7 @@ output$Yearselect <- renderUI({
   else if (input$Ind_sel == 'Other') {
     if (input$Sect_sel == "CV" &
         input$CategorySelect == 'Fisheries' &
-        input$socSelect %in% c('Seasonality', 'Share of landings by state')) {
+        input$socSelect %in% c('Seasonality', 'Share of landings by state', 'Gini coefficient')) {
       tags$div(
         class = "ckbox",
         sliderInput(
@@ -144,7 +141,7 @@ output$Yearselect <- renderUI({
       )
     }
   }
-  else if (input$Ind_sel == 'Crew') {
+  else if (input$Ind_sel == 'Labor') {
     tags$div(
       class = "ckbox",
       sliderInput(
@@ -222,7 +219,7 @@ output$Categoryselect <- renderUI({
 #= = = = = = = = = = = = = = = = = = = = = = 
 
 #= = = = = = = = = = = = = = = = = = = = = = 
-#INDICATOR SELECT - Vessel characteristics, ECONOMIC, SOCIAL, and CREW (for all except FR) ####
+#INDICATOR SELECT - Vessel/processor characteristics, ECONOMIC, labor and other ####
 #= = = = = = = = = = = = = = = = = = = = = = 
 output$IndicatorSelect <- renderUI({
   if (input$Sect_sel != 'FR') {
@@ -232,7 +229,7 @@ output$IndicatorSelect <- renderUI({
         "<div> Select an indicator category: <button id='ipo' type='button' class='btn btn-default action-button shiny-bound-input'>
         <i class='fa fa-info-circle fa-fw' ></i></button> </div>"
       ),
-      c('Vessel characteristics', "Economic", "Crew", "Other"),
+      c('Vessel characteristics', "Economic", "Labor", "Other"),
       selected = 'Vessel characteristics',
       selectize = T
       )
@@ -243,8 +240,8 @@ output$IndicatorSelect <- renderUI({
         "<div> Select an indicator category: <button id='ipo' type='button' class='btn btn-default action-button shiny-bound-input'>
         <i class='fa fa-info-circle fa-fw' ></i></button> </div>"
       ),
-      c('Vessel characteristics', "Economic", "Other"),
-      selected = 'Vessel characteristics',
+      c('Processor characteristics', "Economic", "Labor", "Other"),
+      selected = 'Processor characteristics',
       selectize = T
       )
   }
@@ -310,7 +307,7 @@ output$Variableselect <- renderUI({
           #if(input$Ind_sel=="Social and Regional"){
           if (input$Ind_sel == 'Vessel characteristics' ||
               input$Ind_sel == 'Economic' ||
-              input$Ind_sel == 'Crew' ||
+              input$Ind_sel == 'Labor' ||
               input$Ind_sel == 'Other' &
               input$socSelect != "Share of landings by state") {
             tagList(
@@ -368,7 +365,7 @@ output$Variableselect <- renderUI({
         if (input$LayoutSelect != 'Metrics') {
           if (input$Ind_sel == "Vessel characteristics" ||
               input$Ind_sel == "Economic" ||
-              input$Ind_sel == 'Crew' ||
+              input$Ind_sel == 'Labor' ||
               input$Ind_sel == "Other" &
               input$socSelect != "Share of landings by state") {
             tagList(
@@ -443,7 +440,7 @@ output$Variableselect <- renderUI({
         if (input$LayoutSelect != "Metrics") {
           if (input$Ind_sel == "Vessel characteristics" ||
               input$Ind_sel == "Economic" ||
-              input$Ind_sel == 'Crew' ||
+              input$Ind_sel == 'Labor' ||
               input$Ind_sel == "Other" &
               input$socSelect != "Share of landings by state") {
             tagList(
@@ -503,7 +500,7 @@ output$Variableselect <- renderUI({
         if (input$LayoutSelect != 'Metrics') {
           if (input$Ind_sel == "Economic" ||
               input$Ind_sel == "Vessel characteristics" ||
-              input$Ind_sel == 'Crew' ||
+              input$Ind_sel == 'Labor' ||
               input$Ind_sel == "Other" &
               input$socSelect[1] != "Share of landings by state") {
             if (input$tabs == 'Panel1') {
@@ -556,7 +553,7 @@ output$Variableselect <- renderUI({
     else if (input$Sect_sel == "FR") {
       if (input$CategorySelect == "Region") {
         if (input$LayoutSelect != 'Metrics') {
-          if (input$Ind_sel == "Vessel characteristics") {
+          if (input$Ind_sel == "Processor characteristics") {
             if (input$demSelect != "Proportion of revenue from catch share species") {
               tagList(
                 tags$div(
@@ -717,7 +714,7 @@ output$Variableselect <- renderUI({
         }
         } else if (input$CategorySelect == "Processor size") {
           if (input$LayoutSelect != 'Metrics') {
-            if (input$Ind_sel == "Vessel characteristics") {
+            if (input$Ind_sel == 'Processor characteristics') {
               if (input$demSelect != "Proportion of revenue from catch share species") {
                 tagList(
                   tags$div(
@@ -876,8 +873,9 @@ output$Variableselect <- renderUI({
           } #End processor class
       else {
         if (input$LayoutSelect != 'Metrics') {
-          if (input$Ind_sel == "Vessel characteristics" |
-              input$Ind_sel == "Economic") {
+          if (input$Ind_sel == 'Processor characteristics' ||
+              input$Ind_sel == "Economic" ||
+              input$Ind_sel == 'Other') {
             tags$div(
               class = 'FRprod',
               checkboxGroupInput(
@@ -898,7 +896,7 @@ output$Variableselect <- renderUI({
                 )
             )
           }
-          else if (input$Ind_sel == "Other") {
+          else if (input$Ind_sel == "Labor") {
             tags$div(
               class = 'StatGrey3',
               checkboxGroupInput(
@@ -920,7 +918,7 @@ output$Variableselect <- renderUI({
             )
           }
         } else {
-          if (input$Ind_sel == "Other") {
+          if (input$Ind_sel == "Labor") {
             tags$div(class = 'StatGrey4',
               radioButtons(
                 "VariableSelect",
@@ -1265,6 +1263,29 @@ output$crewselect <- renderUI({
           )
         )
       }
+    } else {
+      if(input$AVE_MED2 == 'Total') {
+        tags$div(
+          class = 'ckboxCV3',
+          checkboxGroupInput(
+            "crewSelect",
+            "",
+            choices = c(DatVars()$METRIC2),
+            selected = 'Number of workers'
+          )
+        )
+      }
+    else {
+      tags$div(
+        class = "ckbox",
+        checkboxGroupInput(
+          "crewSelect",
+          "",
+          choices = c(DatVars()$METRIC2),
+          selected = "Number of workers"
+        )
+      )
+    }
     }
   }
   else {
@@ -1278,6 +1299,16 @@ output$crewselect <- renderUI({
           selected = "Number of positions (captain and crew)"
         )
       )
+    }
+    else {
+      tags$div(
+        class = "statbox",
+        radioButtons(
+          "crewSelect",
+          "",
+          choices = c(DatVars()$METRIC2),
+          selected = "Number of workers"
+        ))
     }
   }
 })
@@ -1317,7 +1348,7 @@ output$socselect <- renderUI({
             checkboxGroupInput(
               "socSelect",
               "",
-              choices = c(DatVars()$METRIC2),
+              choices = c(DatVars()$METRIC3),
               selected = 'Gini coefficient'
             )
           )
@@ -1327,8 +1358,8 @@ output$socselect <- renderUI({
             checkboxGroupInput(
               "socSelect",
               "",
-              choices = c(DatVars()$METRIC2),
-              selected = "Number of workers"
+              choices = c(DatVars()$METRIC3),
+              selected = ""
             )
           )
         }
@@ -1366,7 +1397,7 @@ output$socselect <- renderUI({
         radioButtons(
           "socSelect",
           "",
-          choices = c(DatVars()$METRIC2),
+          choices = c(DatVars()$METRIC3),
           selected = "Gini coefficient"
         )
       )
@@ -1506,7 +1537,7 @@ output$StatSelect2 <- renderUI({
     ))
   } #End Metrics
   else {
-    if (input$Ind_sel == "Vessel characteristics") {
+    if (input$Ind_sel == "Vessel characteristics" || input$Ind_sel == 'Processor characteristics') {
       if (input$demSelect %in% c("Number of vessels", "Number of processors")) {
         tagList(tags$div(
           class = 'StatGrey',
@@ -1584,8 +1615,9 @@ output$StatSelect2 <- renderUI({
       }
     }
     #End Other
-    else if (input$Ind_sel == 'Crew') {
-      if (input$crewSelect == 'Crew wage per day') {
+    else if (input$Ind_sel == 'Labor') {
+      if (input$crewSelect == 'Crew wage per day' |
+          input$crewSelect == 'Hourly compensation') {
         tagList(tags$div(
           class = 'StatGrey2',
           radioButtons(

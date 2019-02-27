@@ -204,7 +204,8 @@ gv <- function() {
         else {
           # if(input$MetricSelect[1]!='Number of vessels'&input$MetricSelect!="Share of landings by state"&input$MetricSelect!='Gini coefficient'&input$MetricSelect!='Herfindahl-Hirschman Index'&input$MetricSelect!='Seasonality'&input$MetricSelect!="Vessel length"){
           if (max(dat$metric_flag) == 0) {
-            if (input$Ind_sel == "Vessel characteristics") {
+            if (input$Ind_sel == "Vessel characteristics" ||
+                input$Ind_sel == 'Processor characteristics') {
               if (!input$Sect_sel %in% c("CV", "FR")) {
                 sprintf(
                   paste(
@@ -243,7 +244,7 @@ gv <- function() {
                   )
                 }
               } ##End Vessel characteristics
-            } else if (input$Ind_sel == 'Crew') {
+            } else if (input$Ind_sel == 'Labor') {
               if (!input$Sect_sel %in% c("CV", "FR")) {
                 sprintf(
                   paste(
@@ -338,7 +339,8 @@ gv <- function() {
             }
           }# end normal cases
           else {
-            if (input$Ind_sel == "Vessel characteristics") {
+            if (input$Ind_sel == "Vessel characteristics" ||
+                input$Ind_sel == 'Processor characteristics') {
               if (input$demSelect %in% c("Number of vessels", "Number of processors")) {
                 if (input$Sect_sel == "CV" &
                     input$CategorySelect != "Fisheries" |
@@ -638,7 +640,8 @@ gv <- function() {
         } else {
           expression(bold('Scale and units depend upon metric'))
         }
-      } else if (input$Ind_sel == "Vessel characteristics") {
+      } else if (input$Ind_sel == "Vessel characteristics" ||
+                 input$Ind_sel == 'Processor characteristics') {
         if (input$LayoutSelect != 'Metrics') {
           if (input$demSelect == "Proportion of revenue from CS fishery") {
             expression(bold("Proportion of revenue from catch share fishery"))
@@ -652,7 +655,7 @@ gv <- function() {
         } else {
           expression(bold('Scale and units depend upon metric'))
         }
-      } else if (input$Ind_sel == 'Crew') {
+      } else if (input$Ind_sel == 'Labor') {
         if (input$LayoutSelect != 'Metrics') {
           if(input$crewSelect == "Crew wage per day") {
             paste("Thousands of",
@@ -725,7 +728,8 @@ gv <- function() {
             }
           }
         }
-        else if (input$Ind_sel == "Vessel characteristics") {
+        else if (input$Ind_sel == "Vessel characteristics" ||
+                 input$Ind_sel == 'Processor characteristics') {
           if (input$demSelect == "Fishery participation" |
               input$demSelect == "Proportion of revenue from CS fishery") {
             if (max(dat$conf) == 0) {

@@ -291,12 +291,13 @@ function(request) {
                       uiOutput("StatSelect2")),
                     uiOutput("IndicatorSelect"),
                     uiOutput("Metricselect"),
-                    conditionalPanel(condition="input.Ind_sel=='Vessel characteristics'",
+                    conditionalPanel(condition="input.Ind_sel=='Vessel characteristics' ||
+                                     input.Ind_sel == 'Processor characteristics'",
                       uiOutput("demselect")),
                     conditionalPanel(condition="input.Ind_sel=='Economic'",
                       uiOutput("Shortdescrselect"),
                       uiOutput("Statselect")),
-                    conditionalPanel(condition="input.Ind_sel=='Crew'",
+                    conditionalPanel(condition="input.Ind_sel=='Labor'",
                       uiOutput("crewselect")),
                     conditionalPanel(condition="input.Ind_sel=='Other'",
                       uiOutput("socselect"))

@@ -275,7 +275,7 @@ output$TableMain <- renderDataTable({
               }
              }
         } #End Other
-        else if(input$Ind_sel == 'Crew') {
+        else if(input$Ind_sel == 'Labor') {
           table <- subset(DatSubTable(), select =-c(CATEGORY))
           if(input$CategorySelect == 'Fisheries') {
             table <- subset(table, select = -CS)
@@ -305,7 +305,8 @@ output$TableMain <- renderDataTable({
           }
         } ## End crew
         
-        else if(input$Ind_sel=="Vessel characteristics"){
+        else if(input$Ind_sel=="Vessel characteristics" ||
+                input$Ind_sel == 'Processor characteristics'){
             table <- subset(DatSubTable(), select = -c(CATEGORY))
           if(input$CategorySelect == "Fisheries"){
             table <- subset(table, select = -c(CS))
@@ -454,7 +455,7 @@ output$dlTable <- downloadHandler(
           }
         } #End Other
         ##Crew
-        else if(input$Ind_sel == 'Crew') {
+        else if(input$Ind_sel == 'Labor') {
           if(input$CategorySelect == 'Fisheries') {
             if(input$Sect_sel == 'FR') {
               temp <- data.frame("Year", "Summary Variable", "Statistic", "Metric","Data summed across", "Number of processors","Value",  "Variance (Quartiles or SD)","Sector")
@@ -471,7 +472,8 @@ output$dlTable <- downloadHandler(
           }
         }##End crew
         #Vessel characteristics
-        else if(input$Ind_sel=="Vessel characteristics"){
+        else if(input$Ind_sel=="Vessel characteristics" ||
+                input$Ind_sel == 'Processor characteristics'){
           if(input$CategorySelect == "Fisheries"){
             if(input$demSelect=="Number of vessels"){
               temp <- data.frame("Year", "Summary Variable", "Statistic", "Metric","Data summed across","Number of vessels","Sector")

@@ -65,7 +65,7 @@ DatVars <- reactive({
           "Proportion of revenue from catch share fishery" = "Proportion of revenue from CS fishery", 
           "Exponential Shannon Index"
           ), 
-        ##Crew metrics###
+        ##Labor metrics###
         METRIC2 = c(
           "Number of positions (captain and crew)", 
           "Crew wage per day"
@@ -125,12 +125,14 @@ DatVars <- reactive({
           "Proportion of production value from West Coast groundfish" = "Proportion of revenue from catch share species",
           "Exponential Shannon Index"
           ),
-        ##Other metrics##
+        ##Labor metrics##
         METRIC2 = c(
-          "Gini coefficient",
           'Number of workers',
           "Hourly compensation"
-        )#, "Share of landings by state")
+        ),
+        ##Other metrics##
+        METRIC3 = c(
+          "Gini coefficient")#, "Share of landings by state")
       )
     )
   } else if (input$Sect_sel == "M" | input$Sect_sel == "CP") {
@@ -226,7 +228,8 @@ DatSubTable <- reactive({
         YEAR %in% seq(input$YearSelect[1], input$YearSelect[2], 1))
   }
 
-  if (input$Ind_sel == "Vessel characteristics") {
+  if (input$Ind_sel == "Vessel characteristics" ||
+      input$Ind_sel == 'Processor characteristics') {
     if (input$LayoutSelect != "Metrics") { # Compare: Groups of vessels/companies
       #        if(input$MetricSelect!="Number of vessels"&input$MetricSelect!="Seasonality"&input$MetricSelect!="Share of landings by state"&input$MetricSelect!="Gini coefficient"){
       #           if(input$LayoutSelect!="Metrics"){}
@@ -274,7 +277,7 @@ DatSubTable <- reactive({
     datSub <-
       subset(datSubforSector,
         SHORTDESCR %in% input$ShortdescrSelect & STAT == input$StatSelect)
-  } else if (input$Ind_sel == 'Crew') {
+  } else if (input$Ind_sel == 'Labor') {
     datSub <-
       subset(datSubforSector,
              METRIC %in% input$crewSelect &
@@ -355,7 +358,8 @@ DatSubTable <- reactive({
     datSub <- subset(datSub, CS == input$inSelect)
   }
   if (input$Sect_sel == "FR") {
-    if (!input$Ind_sel == 'Vessel characteristics') {
+    if (!input$Ind_sel == 'Vessel characteristics' &
+        !input$Ind_sel == 'Processor characteristics') {
       if (input$CategorySelect != "Fisheries") {
         datSub <- subset(datSub, CS == input$inSelect)
       }
@@ -546,7 +550,8 @@ DatSubTable <- reactive({
   
 # choosing which columns to display  
   if (input$LayoutSelect != "Metrics") { # Compare Vessels/companies
-    if (input$Ind_sel == "Vessel characteristics") {
+    if (input$Ind_sel == "Vessel characteristics" ||
+        input$Ind_sel == 'Processor characteristics') {
       if (input$demSelect[1] == "Exponential Shannon Index" |
           input$demSelect[1] == "Fishery participation" |
           input$Sect_sel == "CV" &
@@ -658,7 +663,7 @@ DatSubTable <- reactive({
             which(colnames(datSub) == "VALUE"),
             which(colnames(datSub) == "VARIANCE")
           )]
-      }} else if (input$Ind_sel == 'Crew') {
+      }} else if (input$Ind_sel == 'Labor') {
         datSub <-
           datSub[, c(
             which(colnames(datSub) == "YEAR"),
@@ -802,7 +807,8 @@ DatSub <- reactive({
       subset(datSubforSector,
         SHORTDESCR %in% input$ShortdescrSelect &
           STAT == input$StatSelect)
-  } else if (input$Ind_sel == "Vessel characteristics")  {
+  } else if (input$Ind_sel == "Vessel characteristics" ||
+             input$Ind_sel == 'Processor characteristics')  {
     if (input$LayoutSelect != "Metrics") {
       # Compare: Groups of vessels/companies
       if (input$Sect_sel == 'FR') {
@@ -886,7 +892,7 @@ DatSub <- reactive({
             METRIC %in% input$socSelect & SUMSTAT == input$AVE_MED2)
       }
     }#End Other
-  } else if (input$Ind_sel == 'Crew') {
+  } else if (input$Ind_sel == 'Labor') {
       datSub <-
         subset(datSubforSector,
                METRIC %in% input$crewSelect &
@@ -1015,7 +1021,8 @@ DatSub <- reactive({
     datSub <- subset(datSub, CS == input$inSelect)
   }
   if (input$Sect_sel == "FR") {
-    if (input$Ind_sel != 'Vessel characteristics') {
+    if (input$Ind_sel != 'Vessel characteristics' &
+        input$Ind_sel != 'Processor characteristics') {
       if (input$CategorySelect != "Fisheries") {
         datSub <- subset(datSub, CS == input$inSelect)
       }
@@ -1051,7 +1058,8 @@ DatSub <- reactive({
     )
     ))
   
-  if (input$Ind_sel == 'Vessel characteristics') {
+  if (input$Ind_sel == 'Vessel characteristics' ||
+      input$Ind_sel == 'Processor characteristics') {
     datSub$VALUE <- datSub$VALUE
     datSub$VARIANCE <- datSub$VARIANCE
     datSub$q25 <- datSub$q25
@@ -1073,7 +1081,7 @@ DatSub <- reactive({
       datSub$q75 <- datSub$q75
     }
   }
-  else if (input$Ind_sel == 'Crew') {
+  else if (input$Ind_sel == 'Labor') {
     if(input$crewSelect == "Crew wage per day") {
       datSub$VALUE <- datSub$VALUE / 1000
       datSub$VARIANCE <- datSub$VARIANCE / 1000

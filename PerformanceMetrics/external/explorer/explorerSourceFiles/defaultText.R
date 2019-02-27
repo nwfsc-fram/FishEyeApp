@@ -244,7 +244,7 @@ output$DefaultPlotText <- renderUI({
               West Coast groundfish trawl limited entry fishery  following implementation of the',
               a(href="http://www.westcoast.fisheries.noaa.gov/fisheries/groundfish_catch_shares/index.html", 'West Coast Groundfish Trawl Catch Share Program ', target="_blank"),
               'in 2011. Select whether to view results for catcher vessels, motherships, catcher-processors, or first receivers and shorebased processors.
-              Metrics are grouped into four broad indicator categories: vessel characteristics, economic, crew, and other. Information on how metrics were chosen can be found in the',
+              Metrics are grouped into four broad indicator categories: vessel or processor characteristics, economic, labor, and other. Information on how metrics were chosen can be found in the',
               em('About'), 'tab.',
               strong('Information on the individual metrics can be found by clicking the blue information icon above the list of metrics'), 'or in the Definitions tab.' 
             ),
@@ -294,7 +294,7 @@ output$GetStartedText <- renderUI({
                   'Multiple subgroups of the selected vessel or processor grouping category (such as fishery) can be selected if, in step 1, you chose
                         to compare groups of vessels or processors. If you chose to compare metrics, only a single subgroup can be selected.'),
            tags$h4("5. Select an indicator category"),
-           tags$p("This drop down menu divides metrics into four categories:",em('Vessel characteristics,'), em("Economic,"), em("Crew,"), 'and',em('Other.'), 
+           tags$p("This drop down menu divides metrics into four categories:",em('Vessel or processor characteristics,'), em("Economic,"), em("Labor,"), 'and',em('Other.'), 
              'The choice of metrics to be displayed depends on which indicator category is selected.'),
            tags$h4("6. Select a statistic and a metric"),
            tags$p('Which statistic is calculated depends on the metric. If a selected metric is not shown, try a different statistic.'),
