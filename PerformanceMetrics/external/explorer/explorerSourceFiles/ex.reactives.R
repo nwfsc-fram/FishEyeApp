@@ -519,15 +519,16 @@ DatSubTable <- reactive({
             )
     )
   ))
-  
-  if (input$Ind_sel == "Other") {
-    if (input$socSelect[1] == "Share of landings by state") {
-      datSub$VALUE <- datSub$VALUE * 100
-      datSub$VARIANCE <- datSub$VARIANCE * 100
-      datSub$q25 <- datSub$q25 * 100
-      datSub$q75 <- datSub$q75 * 100
-    }
-  } #else if(input$Ind_sel=="Demographic"){
+
+  ##Moved this to dataprep
+  #if (input$Ind_sel == "Other") {
+    #if (input$socSelect[1] == "Share of landings by state") {
+      #datSub$VALUE <- datSub$VALUE * 100
+      #datSub$VARIANCE <- datSub$VARIANCE * 100
+      #datSub$q25 <- datSub$q25 * 100
+      #datSub$q75 <- datSub$q75 * 100
+    #}
+ # } #else if(input$Ind_sel=="Demographic"){
   #           if(input$demSelect=="Number of vessels"){
   #             datSub$VALUE <- ifelse(datSub$N<3, NA, datSub$VALUE)
   #             datSub$N <- ifelse(datSub$N<3, NA, datSub$N)
@@ -715,6 +716,7 @@ DatSubTable <- reactive({
   }
   
 # not sure what this is ####
+## I think this has something to do with metrics that don't have 'Total' or only have 'Total' but sure what it actually does ## Ashley
   if (input$Ind_sel != "Economic") {
     if (input$LayoutSelect == "Metrics") {
       if (input$AVE_MED2 == "Average" |
@@ -1061,54 +1063,50 @@ DatSub <- reactive({
     )
     ))
   
-  if (input$Ind_sel == 'Vessel characteristics' ||
-      input$Ind_sel == 'Processor characteristics') {
-    datSub$VALUE <- datSub$VALUE
-    datSub$VARIANCE <- datSub$VARIANCE
-    datSub$q25 <- datSub$q25
-    datSub$q75 <- datSub$q75
-  } else if (input$Ind_sel == "Other") {
-    if (input$socSelect == "Revenue per crew-day" |
-        input$socSelect == "Revenue per position-day") {
-      datSub$VALUE <- datSub$VALUE / 1000
-      datSub$VARIANCE <- datSub$VARIANCE / 1000
-      datSub$q25 <- datSub$q25 / 1000
-      datSub$q75 <- datSub$q75 / 1000
-    } else if (input$socSelect == "Share of landings by state") {
-      datSub$VALUE <- datSub$VALUE * 100
-      datSub$VARIANCE <- datSub$VARIANCE * 100
-    } else {
-      datSub$VALUE <- datSub$VALUE
-      datSub$VARIANCE <- datSub$VARIANCE
-      datSub$q25 <- datSub$q25
-      datSub$q75 <- datSub$q75
-    }
-  }
-  else if (input$Ind_sel == 'Labor') {
-    if(input$crewSelect == "Crew wage per day") {
-      datSub$VALUE <- datSub$VALUE / 1000
-      datSub$VARIANCE <- datSub$VARIANCE / 1000
-      datSub$q25 <- datSub$q25 / 1000
-      datSub$q75 <- datSub$q75 / 1000
-    }
-  }
-  else if (input$Ind_sel == "Economic" &
-      input$StatSelect != 'Mean per vessel/metric ton caught' &
-      input$StatSelect != 'Median per vessel/metric ton caught' &
-      input$StatSelect != 'Fleet-wide average/metric ton caught' &
-      input$StatSelect != 'Mean per processor/metric ton produced' &
-      input$StatSelect != 'Median per processor/metric ton produced' &
-      input$StatSelect != 'Industry-wide average/metric ton produced') {
-    datSub$VALUE <- datSub$VALUE / 1000
-    datSub$VARIANCE <- datSub$VARIANCE / 1000
-    datSub$q25 <- datSub$q25 / 1000
-    datSub$q75 <- datSub$q75 / 1000
-  } else {
-    datSub$VALUE <- datSub$VALUE
-    datSub$VARIANCE <- datSub$VARIANCE
-    datSub$q25 <- datSub$q25
-    datSub$q75 <- datSub$q75
-  }
+  #if (input$Ind_sel == 'Vessel characteristics' ||
+      #input$Ind_sel == 'Processor characteristics') {
+    #datSub$VALUE <- datSub$VALUE
+    #datSub$VARIANCE <- datSub$VARIANCE
+    #datSub$q25 <- datSub$q25
+    #datSub$q75 <- datSub$q75
+  #} else if (input$Ind_sel == "Other") {
+   # if (input$socSelect == "Revenue per day") {
+    #  datSub$VALUE <- datSub$VALUE / 1000
+     # datSub$VARIANCE <- datSub$VARIANCE / 1000
+      #datSub$q25 <- datSub$q25 / 1000
+      #datSub$q75 <- datSub$q75 / 1000
+#    } else {
+ #     datSub$VALUE <- datSub$VALUE
+  #    datSub$VARIANCE <- datSub$VARIANCE
+   #   datSub$q25 <- datSub$q25
+    #  datSub$q75 <- datSub$q75
+    #}
+  #}
+#  else if (input$Ind_sel == 'Labor') {
+#    if(input$crewSelect == "Crew wage per day") {
+#      datSub$VALUE <- datSub$VALUE / 1000
+#      datSub$VARIANCE <- datSub$VARIANCE / 1000
+#      datSub$q25 <- datSub$q25 / 1000
+#      datSub$q75 <- datSub$q75 / 1000
+#    }
+#  }
+#  else if (input$Ind_sel == "Economic" &
+#      input$StatSelect != 'Mean per vessel/metric ton caught' &
+#      input$StatSelect != 'Median per vessel/metric ton caught' &
+#      input$StatSelect != 'Fleet-wide average/metric ton caught' &
+#      input$StatSelect != 'Mean per processor/metric ton produced' &
+#      input$StatSelect != 'Median per processor/metric ton produced' &
+#      input$StatSelect != 'Industry-wide average/metric ton produced') {
+#    datSub$VALUE <- datSub$VALUE / 1000
+#    datSub$VARIANCE <- datSub$VARIANCE / 1000
+#    datSub$q25 <- datSub$q25 / 1000
+#    datSub$q75 <- datSub$q75 / 1000
+#  } else {
+#    datSub$VALUE <- datSub$VALUE
+#    datSub$VARIANCE <- datSub$VARIANCE
+#    datSub$q25 <- datSub$q25
+#    datSub$q75 <- datSub$q75
+#  }
   
   # order for plotting
   #      datSub$SHORTDESCR <- factor(datSub$SHORTDESCR,

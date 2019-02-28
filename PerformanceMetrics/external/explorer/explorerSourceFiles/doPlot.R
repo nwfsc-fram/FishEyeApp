@@ -41,7 +41,7 @@ doPlot <- function(dat, x, y) {
         0
       }
     }
-    
+
     rectvars <-
       dat %>% distinct(sort2, YEAR) %>% group_by(sort2) %>% mutate(
         minx = min(as.numeric(YEAR)),
@@ -597,43 +597,37 @@ gv <- function() {
     # y-axis label ####
     ylab <- function() {
       if (input$Ind_sel == "Economic") {
-        if (input$StatSelect != 'Mean per vessel/metric ton caught' &
-            input$StatSelect != 'Median per vessel/metric ton caught' &
-            input$StatSelect != 'Fleet-wide average/metric ton caught' &
-            input$StatSelect != 'Mean per processor/metric ton produced' &
-            input$StatSelect != 'Median per processor/metric ton produced' &
-            input$StatSelect != 'Industry-wide average/metric ton produced') {
-          paste("Thousands of",
+          paste(input$StatSelect,
+                "(",
+                dat$unit,
             currentyear,
             "$",
-            "(",
-            input$StatSelect,
             ")")
-        } else {
-          paste(currentyear, "$", "(", input$StatSelect, ")")
-        }
       } else if (input$Ind_sel == "Other") {
         if (input$LayoutSelect != 'Metrics') {
-          if (input$socSelect == "Revenue per crew-day" |
-              input$socSelect == "Revenue per position-day") {
-            paste("Thousands of",
-              currentyear,
-              "$",
-              "(",
-              input$AVE_MED2,
-              ")")
+          if (input$socSelect == "Revenue per day") {
+            paste(input$StatSelect,
+                  "(",
+                  dat$unit,
+                  currentyear,
+                  "$",
+                  ")")
           }  else if (input$socSelect == "Seasonality") {
             expression(bold("Day of year when 50% of catch was landed"))
           }  else if (input$socSelect == "Share of landings by state") {
             expression(bold("Share of landings (% of revenue)"))
-          }  else if (input$socSelect == "Hourly compensation") {
-            expression(bold("Hourly compensation ($)"))
           }  else if (input$socSelect == "Gini coefficient") {
             expression(bold("Gini coefficient (0 - 1)"))
           } else if (input$socSelect == "Fuel use per day") {
-            expression(bold("Fuel use per day (in gallons)"))
+            paste(input$StatSelect,
+                  "(",
+                  dat$unit,
+                  "gallons)")
           } else if (input$socSelect == 'Speed while fishing') {
-            expression(bold("Speed while fishing (in knots)"))
+            paste(input$StatSelect,
+                  "(",
+                  dat$unit,
+                  "knots)")
           } else {
             input$socSelect
           }
@@ -649,6 +643,8 @@ gv <- function() {
             expression(bold("Number of fisheries"))
           }  else if (input$demSelect == "Vessel length") {
             expression(bold("Vessel length (in feet)"))
+          } else if (input$demSelect == 'Revenue diversification') {
+            expression(bold('Revenue diversification (Exponential Shannon Index)'))
           }  else {
             input$demSelect
           }
@@ -657,15 +653,16 @@ gv <- function() {
         }
       } else if (input$Ind_sel == 'Labor') {
         if (input$LayoutSelect != 'Metrics') {
-          if(input$crewSelect == "Crew wage per day") {
-            paste("Thousands of",
+          if(input$crewSelect != "Number of positions (captain and crew)" &
+             input$crewSelect != 'Number of crew-days') {
+            paste(input$StatSelect,
+                  "(",
+                  dat$unit,
                   currentyear,
                   "$",
-                  "(",
-                  input$AVE_MED2,
                   ")")
           } else {
-            input$crewSelect
+            paste(input$crewSelect)
           }
       } else {
         expression(bold('Scale and units depend upon metric'))
@@ -1062,6 +1059,12 @@ gv <- function() {
               environment()) 
           # otherwise normal plot:
         } else {
+          dat<- mutate(dat,
+                       VALUE = case_when(
+                         max(VALUE, na.rm = T) < 1e6 ~ VALUE/1,
+                         max(VALUE, na.rm = T) < 1e9 ~ VALUE/1e3,
+                         max(VALUE, na.rm = T) < 1e12 ~ VALUE/1e6,
+                         T ~ -999))
           dat <- dat[order(dat$sort), ]
           g <-
             # I think this is where the NAs are getting removed which causes lines to be connected through suppressed/missing values #removeNAs
@@ -1069,6 +1072,12 @@ gv <- function() {
                      environment()) #+coord_cartesian(xlim = c(0, length(table(dat$YEAR))+1))
         }
       } else {
+        dat<- mutate(dat,
+                     VALUE = case_when(
+                       max(VALUE, na.rm = T) < 1e6 ~ VALUE/1,
+                       max(VALUE, na.rm = T) < 1e9 ~ VALUE/1e3,
+                       max(VALUE, na.rm = T) < 1e12 ~ VALUE/1e6,
+                       T ~ -999))
       dat <- dat[order(dat$sort), ]
       g <-
       # I think this is where the NAs are getting removed which causes lines to be connected through suppressed/missing values #removeNAs
