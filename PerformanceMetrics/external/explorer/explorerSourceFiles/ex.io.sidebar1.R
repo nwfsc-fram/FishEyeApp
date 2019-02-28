@@ -1244,7 +1244,7 @@ output$crewselect <- renderUI({
     if (input$Sect_sel != 'FR') {
       if (input$AVE_MED2 == 'Total') {
         tags$div(
-          class = "ckboxCV3",
+          class = "ckboxCV",
           checkboxGroupInput(
             "crewSelect",
             "",
@@ -1326,7 +1326,7 @@ output$socselect <- renderUI({
             "socSelect",
             "",
             choices = c(DatVars()$METRIC3a),
-            selected = "Revenue per position-day"
+            selected = "Revenue per day"
           )
         )
       } else {
@@ -1336,7 +1336,7 @@ output$socselect <- renderUI({
             "socSelect",
             "",
             choices = c(DatVars()$METRIC3a),
-            selected = "Revenue per position-day"
+            selected = "Revenue per day"
           )
         )
       }
@@ -1372,7 +1372,7 @@ output$socselect <- renderUI({
                 "socSelect",
                 "",
                 choices = c(DatVars()$METRIC3),
-                selected = "Revenue per position-day"
+                selected = "Revenue per day"
               )
             )
           } else {
@@ -1382,7 +1382,7 @@ output$socselect <- renderUI({
                 "socSelect",
                 "",
                 choices = c(DatVars()$METRIC3),
-                selected = "Revenue per position-day"
+                selected = "Revenue per day"
               )
             )
           }
@@ -1409,7 +1409,7 @@ output$socselect <- renderUI({
           "socSelect",
           "",
           choices = c(DatVars()$METRIC3),
-          selected = "Revenue per position-day"
+          selected = "Revenue per day"
         )
       )
     }
@@ -1617,7 +1617,9 @@ output$StatSelect2 <- renderUI({
     #End Other
     else if (input$Ind_sel == 'Labor') {
       if (input$crewSelect == 'Crew wage per day' |
-          input$crewSelect == 'Hourly compensation') {
+          input$crewSelect == 'Hourly compensation'|
+          input$crewSelect == 'Annual crew wage' |
+          input$crewSelect == 'Wages per dollar revenue') {
         tagList(tags$div(
           class = 'StatGrey2',
           radioButtons(

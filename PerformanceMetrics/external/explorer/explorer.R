@@ -248,8 +248,7 @@ output$TableMain <- renderDataTable({
             }
            } # end fisheries
         else {
-             if(input$socSelect=="Revenue per position-day" | 
-                input$socSelect=="Revenue per crew-day") {
+             if(input$socSelect=="Revenue per day") {
                 table$VALUE <- paste('$', prettyNum(table$VALUE, big.mark = ",", format = 'f', digits = 5, trim=T))
                 table$VARIANCE <- paste('$',prettyNum(table$VARIANCE, big.mark = ",", format = 'f', digits = 5, trim=T))
                 table$YEAR <- factor(table$YEAR, levels=c(min(table$YEAR):max(table$YEAR)))
