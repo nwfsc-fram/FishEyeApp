@@ -23,8 +23,7 @@ doPlot <- function(dat, x, y) {
     }
     
     dat$thresh <-  if (input$Ind_sel == "Economic") {
-      data.frame(dat %>% group_by(SHORTDESCR) %>% mutate(threshold = length(table(YEAR[YEAR <=
-          2010])))) %>% subset(select = c(threshold))
+    length(unique(dat$YEAR<=2010))
     }    else if (input$Ind_sel != "Economic") {
       if (input$LayoutSelect == "Metrics") {
         if (input$PlotSelect == T & !is.na(max(dat$VARIANCE))) {
