@@ -308,13 +308,13 @@ function(request) {
                     wellPanelSub(
                       conditionalPanel(condition="input.LayoutSelect!='Metrics'&&input.Sect_sel=='CV'&&
                                                                         input.Ind_sel=='Vessel characteristics'&&
-                                                                        input.demSelect=='Exponential Shannon Index'
+                                                                        input.demSelect=='Revenue diversification'
                                                                     ||input.LayoutSelect!='Metrics'&&input.Sect_sel=='CV'&&
                                                                         input.Ind_sel=='Vessel characteristics'&&
                                                                         input.demSelect=='Proportion of revenue from CS fishery'
                                                                     ||input.LayoutSelect!='Metrics'&&input.Sect_sel=='CV'&&
                                                                         input.Ind_sel=='Vessel characteristics'&&
-                                                                        input.demSelect=='Fishery participation'", 
+                                                                        input.demSelect=='Number of fisheries'", 
                         uiOutput("FishAkselect")), style = "padding: 0px;margin-bottom:0px; border: 3px solid #D3D3D3;border-radius:10px;"),
                     wellPanelSub(
                       conditionalPanel(condition="input.Ind_sel!='Economic'&input.AVE_MED2!='Total'&

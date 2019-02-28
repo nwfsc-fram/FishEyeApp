@@ -645,8 +645,8 @@ gv <- function() {
         if (input$LayoutSelect != 'Metrics') {
           if (input$demSelect == "Proportion of revenue from CS fishery") {
             expression(bold("Proportion of revenue from catch share fishery"))
-          }  else if (input$demSelect == "Fishery participation") {
-            expression(bold("Fishery participation (number of fisheries)"))
+          }  else if (input$demSelect == "Number of fisheries") {
+            expression(bold("Number of fisheries"))
           }  else if (input$demSelect == "Vessel length") {
             expression(bold("Vessel length (in feet)"))
           }  else {
@@ -730,7 +730,7 @@ gv <- function() {
         }
         else if (input$Ind_sel == "Vessel characteristics" ||
                  input$Ind_sel == 'Processor characteristics') {
-          if (input$demSelect == "Fishery participation" |
+          if (input$demSelect == "Number of fisheries" |
               input$demSelect == "Proportion of revenue from CS fishery") {
             if (max(dat$conf) == 0) {
               if (max(dat$flag) == 0) {

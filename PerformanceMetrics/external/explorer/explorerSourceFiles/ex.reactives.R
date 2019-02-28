@@ -61,9 +61,9 @@ DatVars <- reactive({
           #"Vessel replacement value",
           #"Vessel market value",
           #"Vessel horsepower",
-          "Fishery participation", 
+          "Number of fisheries", 
           "Proportion of revenue from catch share fishery" = "Proportion of revenue from CS fishery", 
-          "Exponential Shannon Index"
+          "Revenue diversification"
           ), 
         ##Labor metrics###
         METRIC2 = c(
@@ -123,7 +123,7 @@ DatVars <- reactive({
           "Number of processors",
           "Number of species processed",
           "Proportion of production value from West Coast groundfish" = "Proportion of revenue from catch share species",
-          "Exponential Shannon Index"
+          "Revenue diversification"
           ),
         ##Labor metrics##
         METRIC2 = c(
@@ -238,11 +238,11 @@ DatSubTable <- reactive({
           subset(datSubforSector,
             METRIC %in% input$demSelect & SUMSTAT == input$AVE_MED2)
       }
-      else if (input$demSelect[1] == "Exponential Shannon Index" |
+      else if (input$demSelect[1] == "Revenue diversification" |
           input$Sect_sel == "CV" &
           input$demSelect[1] == "Proportion of revenue from CS fishery" |
           input$Sect_sel == "CV" &
-          input$demSelect[1] == "Fishery participation") {
+          input$demSelect[1] == "Number of fisheries") {
         datSub <-
           subset(datSubforSector,
             METRIC %in% input$demSelect &
@@ -423,22 +423,22 @@ DatSubTable <- reactive({
     ))
   
   validate(need(
-    datSub$METRIC != "Exponential Shannon Index",
+    datSub$METRIC != "Revenue diversification",
     need(
       datSub$SUMSTAT != "Total",
       paste(
-        'Sorry, this plot could not be generated as the total exponential shannon index is not calculated. Try selecting the average or median statistic. 14
+        'Sorry, this plot could not be generated as the total revenue diversification is not calculated. Try selecting the average or median statistic. 14
         '
       )
       )
     ))
   
   validate(need(
-    datSub$METRIC != "Fishery participation",
+    datSub$METRIC != "Number of fisheries",
     need(
       datSub$SUMSTAT != "Total",
       paste(
-        'Sorry, this plot could not be generated as the total fishery participation is not calculated. Try selecting the average or median statistic. 15
+        'Sorry, this plot could not be generated as the total number of fisheries is not calculated. Try selecting the average or median statistic. 15
         '
       )
       )
@@ -552,8 +552,8 @@ DatSubTable <- reactive({
   if (input$LayoutSelect != "Metrics") { # Compare Vessels/companies
     if (input$Ind_sel == "Vessel characteristics" ||
         input$Ind_sel == 'Processor characteristics') {
-      if (input$demSelect[1] == "Exponential Shannon Index" |
-          input$demSelect[1] == "Fishery participation" |
+      if (input$demSelect[1] == "Revenue diversification" |
+          input$demSelect[1] == "Number of fisheries" |
           input$Sect_sel == "CV" &
           input$demSelect[1] == "Proportion of revenue from CS fishery") {
         if (input$Sect_sel != "FR") {
@@ -735,8 +735,8 @@ DatSubTable <- reactive({
               datSub,
               !METRIC %in% c(
                 "Vessel length",
-                "Exponential Shannon Index",
-                "Fishery participation",
+                "Revenue diversification",
+                "Number of fisheries",
                 "Hourly compensation",
                 'Crew wage per day'
               )
@@ -816,11 +816,11 @@ DatSub <- reactive({
           subset(datSubforSector,
             METRIC %in% input$demSelect & SUMSTAT == input$AVE_MED2)
       }
-      else if (input$demSelect[1] == "Exponential Shannon Index" |
+      else if (input$demSelect[1] == "Revenue diversification" |
           input$Sect_sel == "CV" &
           input$demSelect[1] == "Proportion of revenue from CS fishery" |
           input$Sect_sel == "CV" &
-          input$demSelect[1] == "Fishery participation") {
+          input$demSelect[1] == "Number of fisheries") {
         datSub <-
           subset(datSubforSector,
             METRIC %in% input$demSelect &
@@ -921,22 +921,22 @@ DatSub <- reactive({
     ))
   
   validate(need(
-    datSub$METRIC != "Exponential Shannon Index",
+    datSub$METRIC != "Revenue diversification",
     need(
       datSub$SUMSTAT != "Total",
       paste(
-        'Sorry, this plot could not be generated as the total exponential shannon index is not calculated. Try selecting the mean or median statistic. 26
+        'Sorry, this plot could not be generated as the total revenue diversification is not calculated. Try selecting the mean or median statistic. 26
         '
       )
       )
     ))
   
   validate(need(
-    datSub$METRIC != "Fishery participation",
+    datSub$METRIC != "Number of fisheries",
     need(
       datSub$SUMSTAT != "Total",
       paste(
-        'Sorry, this plot could not be generated as the total fishery participation is not calculated. Try selecting the mean or median statistic. 27
+        'Sorry, this plot could not be generated as the total number of fisheries is not calculated. Try selecting the mean or median statistic. 27
         '
       )
       )
@@ -1329,7 +1329,7 @@ DatSub <- reactive({
       if (table(table(datSub$METRIC) > 1)[2] > 1) {
         datSub <-
           subset(datSub, # redo datsub
-            !METRIC %in% c("Vessel length", "Exponential Shannon Index", "Fishery participation", "Proportion of revenue from CS fishery",
+            !METRIC %in% c("Vessel length", "Revenue diversification", "Number of fisheries", "Proportion of revenue from CS fishery",
               "Hourly compensation", 'Crew wage per day', 'Fuel use per day', 'Speed while fishing')
           )
       }

@@ -320,7 +320,7 @@ output$TableMain <- renderDataTable({
               table$VALUE <- prettyNum(table$VALUE, big.mark = ",", format = 'f', digits = 5, trim=T)
               table$VARIANCE <- prettyNum(table$VARIANCE, big.mark = ",", format = 'f', digits = 5, trim=T)
               table$YEAR <- factor(table$YEAR, levels=c(min(table$YEAR):max(table$YEAR)))
-                if(input$demSelect=="Exponential Shannon Index"|input$demSelect=="Proportion of revenue from CS fishery"|input$demSelect=="Fishery participation"){
+                if(input$demSelect=="Revenue diversification"|input$demSelect=="Proportion of revenue from CS fishery"|input$demSelect=="Number of fisheries"){
                 if(input$Sect_sel=="CV"){
                   names(table) <- c("Year", "Summary Variable", "Statistic", "Metric","Data summed\nacross", "Alaskan fisheries","Number of vessels","Value",  
                                     "Variance \n\n(Quartiles or SD)")
@@ -341,7 +341,7 @@ output$TableMain <- renderDataTable({
               } else{
               names(table) <- c("Year", "Summary Variable","Production Category", "Statistic", "Metric","Data summed across","Number of processors")
               }
-              } else if(input$demSelect=="Exponential Shannon Index"|input$demSelect=="Proportion of revenue from CS fishery"|input$demSelect=="Fishery participation"){
+              } else if(input$demSelect=="Revenue diversification"|input$demSelect=="Proportion of revenue from CS fishery"|input$demSelect=="Number of fisheries"){
               table$VALUE <- prettyNum(table$VALUE, big.mark = ",", format = 'f', digits = 5, trim=T)
               table$VARIANCE <- prettyNum(table$VARIANCE, big.mark = ",", format = 'f', digits = 5, trim=T)
               table$YEAR <- factor(table$YEAR, levels=c(min(table$YEAR):max(table$YEAR)))
@@ -480,7 +480,7 @@ output$dlTable <- downloadHandler(
             } else if(input$demSelect=="Number of processors"){
               temp <- data.frame("Year", "Summary Variable", "Statistic", "Metric","Data summed across","Number of processors","Sector")
             }  else {
-              if(input$demSelect=="Exponential Shannon Index"|input$demSelect=="Proportion of revenue from CS fishery"|input$demSelect=="Fishery participation"){
+              if(input$demSelect=="Revenue diversification"|input$demSelect=="Proportion of revenue from CS fishery"|input$demSelect=="Number of fisheries"){
                 if(input$Sect_sel=="CV"){
                   temp <- data.frame("Year", "Summary Variable", "Statistic", "Metric","Data summed across", "Alaskan fisheries","Number of vessels","Value",  
                                      "Variance (Quartiles or SD)","Sector")
@@ -503,7 +503,7 @@ output$dlTable <- downloadHandler(
                 temp <- data.frame("Year", "Summary Variable","Fisheries Category", "Statistic", "Metric","Data summed across","Number of vessels","Sector")
               } else if(input$demSelect=="Number of processors"){
                 temp <- data.frame("Year", "Summary Variable","Production Category", "Statistic", "Metric","Data summed across","Number of processors","Sector")
-            } else if(input$demSelect=="Exponential Shannon Index"|input$demSelect=="Proportion of revenue from CS fishery"|input$demSelect=="Fishery participation"){
+            } else if(input$demSelect=="Revenue diversification"|input$demSelect=="Proportion of revenue from CS fishery"|input$demSelect=="Number of fisheries"){
               if(input$Sect_sel=="FR"){
                 temp <- data.frame("Year", "Summary Variable","Production Category", "Statistic", "Metric","Data summed across", "Number of vessels","Value",  
                                    "Variance (Quartiles or SD)","Sector")

@@ -1552,8 +1552,8 @@ output$StatSelect2 <- renderUI({
         ))
       } else if (input$demSelect %in% c(
         "Vessel length",
-        "Exponential Shannon Index",
-        "Fishery participation",
+        "Revenue diversification",
+        "Number of fisheries",
         "Proportion of revenue from CS fishery",
         "Proportion of revenue from catch share species",
         "Proportion of landings from CS fishery"

@@ -291,8 +291,8 @@ doPlotDownload <- function(dat, x, y){
               expression(bold("Proportion of revenue from catch share fishery"))  
             }  else if(input$demSelect=="Gini coefficient"){
               expression(bold("Gini coefficient (0 - 1)"))
-            }  else if(input$demSelect=="Fishery participation"){
-              expression(bold("Fishery participation (number of fisheries)"))
+            }  else if(input$demSelect=="Number of fisheries"){
+              expression(bold("Number of fisheries"))
             }  else if(input$demSelect=="Vessel length"){
               expression(bold("Vessel length (in feet)"))
             }  else {
@@ -357,7 +357,7 @@ xlab <- function(){
             paste(supp_obs(), supp_obs_whiting(), conf_mess(), source_lab())
           }}}
     else if(input$Ind_sel=="Demographic"){
-      if(input$demSelect=="Fishery participation"|input$demSelect=="Proportion of revenue from CS fishery"){
+      if(input$demSelect=="Number of fisheries"|input$demSelect=="Proportion of revenue from CS fishery"){
         if(max(dat$conf)==0) {
           if(max(dat$flag)==0){
             if(input$CategorySelect=="Fisheries"&input$Sect_sel=="CV"){
