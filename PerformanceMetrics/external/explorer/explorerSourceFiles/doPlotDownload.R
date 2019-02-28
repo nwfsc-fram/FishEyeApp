@@ -4,7 +4,7 @@ doPlotDownload <- function(dat, x, y){
     
     
     dat$sort2 <- if(input$LayoutSelect!="Metrics"){
-      if(input$Ind_sel=='Social and Regional'){
+      if(input$Ind_sel=='Other'){
         if(input$socSelect=='Share of landings by state'){
           reorder(dat$AGID, dat$sort)
         } else {
@@ -167,7 +167,7 @@ doPlotDownload <- function(dat, x, y){
                 } else {
                   sprintf(paste("Category:",input$CategorySelect,"     Metric: ", input$demSelect,"   Statistic:", input$AVE_MED2,"    Summed across:", input$inSelect))   
                 }}
-            } else if (input$Ind_sel=="Social and Regional"){
+            } else if (input$Ind_sel=="Other"){
               if(input$socSelect=="Share of landings by state")  {
                 if(input$Sect_sel=='CV'&input$CategorySelect!="Fisheries"){
                   sprintf(paste("Variable:", input$VariableSelect,"     Metric: ", input$socSelect, '  Statistic: Percentage   Summed across:', input$inSelect))
@@ -204,7 +204,7 @@ doPlotDownload <- function(dat, x, y){
                   sprintf(paste("Category:",input$CategorySelect,"     Metric: ", input$demSelect, '  Statistic: Index value'))   
                 } 
               }}
-            else if(input$Ind_sel=="Social and Regional"){
+            else if(input$Ind_sel=="Other"){
               if(input$socSelect=="Seasonality"){
                 if(input$Sect_sel=='CV'&input$CategorySelect!="Fisheries"|input$Sect_sel=='FR'&input$CategorySelect!="Production activities"){
                   sprintf(paste("Category:", input$CategorySelect,"     Metric: ", input$socSelect, '  Statistic: Day of year  Summed across:', input$inSelect))
@@ -267,7 +267,7 @@ doPlotDownload <- function(dat, x, y){
             paste("Thousands of", currentyear, "$","(",input$StatSelect, ")")  
         } else {
             paste(currentyear, "$","(",input$StatSelect, ")")  
-        } }else if(input$Ind_sel=="Social and Regional") {
+        } }else if(input$Ind_sel=="Other") {
           if(input$LayoutSelect!='Metrics'){
             if(input$socSelect=="Crew wage per day" | 
                input$socSelect=="Revenue per crew-day" |
@@ -404,7 +404,7 @@ xlab <- function(){
             }  else {
               paste(supp_obs(), supp_obs_whiting(), conf_mess(), source_lab())
             }}}
-    }else if(input$Ind_sel=="Social and Regional"){
+    }else if(input$Ind_sel=="Other"){
       if(input$socSelect=="Share of landings by state"){
         if(max(dat$conf)==0) {
           if(max(dat$flag)==0){
@@ -495,14 +495,36 @@ xlab <- function(){
     }
     
 #----- Define ggplot ------#    
-   g <- ggplot(dat[!is.na(dat$VALUE),], aes_string(x = x, y = y , group = groupVar), environment=environment()) #+coord_cartesian(xlim = c(0, length(table(dat$YEAR))+1))
-
-        if(length(yr())>1){
-        g <- g + geom_line(aes_string(colour = groupVar), size=0.5) +
-          geom_point(aes_string(colour = groupVar), size=3)
+    # format data for graph and add to graph ####
+    # special data for seasonality plot
+    #  print(paste0(seasonality, 1))
+    if(input$Ind_sel == 'Other' & input$LayoutSelect != 'Metrics') {
+      # and seasonality is selected
+      if(input$socSelect =="Seasonality") {
+        ssn <- mutate(dat, 
+                      VALUE = as.Date(VALUE, origin = "2014-01-01", format = "%Y-%m-%d"),
+                      sort2 = reorder(VARIABLE, sort))
+        g <- ggplot(ssn, aes_string(x = x, y = y , group = groupVar), environment =
+                      environment()) 
+        # otherwise normal plot:
+      } else {
+        dat <- dat[order(dat$sort), ]
+        g <-
+          # I think this is where the NAs are getting removed which causes lines to be connected through suppressed/missing values #removeNAs
+          ggplot(dat, aes_string(x = x, y = y , group = groupVar), environment =
+                   environment()) #+coord_cartesian(xlim = c(0, length(table(dat$YEAR))+1))
+      }
     } else {
-      g <- g + geom_point(aes_string(colour = groupVar), size=3)
+      dat <- dat[order(dat$sort), ]
+      g <-
+        # I think this is where the NAs are getting removed which causes lines to be connected through suppressed/missing values #removeNAs
+        ggplot(dat, aes_string(x = x, y = y , group = groupVar), environment =
+                 environment()) #+coord_cartesian(xlim = c(0, length(table(dat$YEAR))+1))
     }
+    
+    #add lines and points to the plot ####
+    g <- g + geom_line(aes_string(colour = groupVar), size = 1.5) +
+      geom_point(aes_string(colour = groupVar), size = 4)
 
 #------ Add variance ------#    
     if(input$PlotSelect==T&is.na(max(dat$VARIANCE))==F) { 
@@ -532,28 +554,113 @@ xlab <- function(){
     
   
 #----- Define rectangles and labels -----#
-    if(length(yr())>1 & min(yr())<2011 & max(yr())>2010){
-      g <- g + geom_rect(aes(xmin=-Inf, xmax=table(yr()<=2010)[[2]]+.5, ymin=-Inf, ymax=Inf), alpha=.05, fill="grey50")
-        g <- g + geom_text(aes(x=table(yr()<=2010)[[2]]/3.5,y=max(upper())+scale_geom_text()/20, label="Pre-catch shares", family="serif", fontface= "italic"),hjust=0,color = "grey20", size=4/scale_text()) 
-        if(length(yr()<2010)==6&length(yr()>=2010)<=4){
-          g <- g + geom_text(aes(x=table(yr()<=2010)[[2]]+table(yr()>2010)[[2]]/1.5,y=max(upper()+scale_geom_text()/20,label="Catch"),hjust=0, family="serif", fontface= "italic"),color = "grey20", size=4/scale_text())+
-                   geom_text(aes(x=table(yr()<=2010)[[2]]+table(yr()>2010)[[2]]/1.5,y=max(upper())-max(upper())/100,label="shares"),hjust=0, family="serif",fontface= "italic", color = "grey20", size=4/scale_text())
-        } else {
-          g <- g + geom_text(aes(x=table(yr()<=2010)[[2]]+table(yr()>2010)[[2]]/1.5,y=max(upper())+scale_geom_text()/20,label="Catch shares"),hjust=0, family="serif", fontface= "italic", color = "grey20", size=4/scale_text())
-        }
-
-#        g <- g + geom_rect(data=rectvars,aes(x=NULL, y=NULL, xmin=-Inf, xmax=xmaxscale+.5, ymin=-Inf, ymax=Inf), alpha=.05, fill="grey50")
-#        g <- g + geom_text(data=rectvars,aes(x=xmaxscale/3.5,y=max(upper())+scale_geom_text()/20, label="Pre-catch shares", family="serif"),hjust=0,color = "grey20", size=4/scale_text()) 
-#        if(length(yr()<2010)==6&length(yr()>=2010)<=4){
-#          g <- g + geom_text(data=rectvars,aes(x=xmaxscale+table(yr()>2010)[[2]]/1.5,y=max(upper()+scale_geom_text()/20,label="Post-catch"),hjust=0, family="serif"),color = "grey20", size=4/scale_text())+
-#            geom_text(data=rectvars,aes(x=xmaxscale+table(yr()>2010)[[2]]/1.5,y=max(upper())-max(upper())/100,label="shares"),hjust=0, family="serif",color = "grey20", size=4/scale_text())
-#        } else {
-#          g <- g + geom_text(data=rectvars,aes(x=xmaxscale+table(yr()>2010)[[2]]/1.5,y=max(upper())+scale_geom_text()/20,label="Post-catch shares"),hjust=0, family="serif",color = "grey20", size=4/scale_text())
-#        }
-        
-            } else {
-      g <- g  
+    #----- Define grey shading and Non-CS/CS labels ------####
+    # choose label text size ####
+    labeltext <- ifelse(input$tabs == 'Panel1', 7, 5)
+    
+    # geom_rect (define the grey boxes for pre-catch shares) ####
+    geom_rect_fun <- function(ymin_val = -Inf, ymax_val = Inf) {
+      geom_rect(
+        aes(
+          xmin = -Inf,
+          xmax = table(yr() <= 2010)[[2]] + .5,
+          ymin = ymin_val,
+          ymax = ymax_val
+        ),
+        alpha = .05,
+        fill = "grey50"
+      )
     }
+    
+    geom_rect4seasonality <- geom_rect(
+      aes(
+        xmin = -Inf,
+        xmax = table(yr() <= 2010)[[2]] + .5,
+        ymin = structure(-Inf, class = "Date"),
+        ymax = structure(Inf, class = "Date")
+      ),
+      alpha = .05,
+      fill = "grey50"
+    )
+    
+    # geom_text function ####
+    
+    geom_text_fun <- function(x_val, y_val, label_val, vjust_val = .5) {
+      
+      geom_text(
+        aes(
+          x = x_val,
+          y = y_val,
+          vjust = vjust_val,
+          label = label_val,
+          family = "serif",
+          fontface = "italic"
+        ),
+        hjust = 0,
+        color = "grey20",
+        size = labeltext / scale_text()
+      )
+      
+    }
+    
+    # set rect and text for plots with both CS and non-CS years ####
+    # otherwise no rect or text
+    # the original code for the geom_text* are commented out at the bottom of the doc
+    # if there are years shown before and after implementation of catch shares
+    if (length(yr()) > 1 & min(yr()) < 2011 & max(yr()) > 2010) {
+      # if the "Group by vessels" display is chosen
+      if (input$LayoutSelect != 'Metrics') {
+        # if seasonality is clicked
+        if(input$Ind_sel == 'Other') {
+          # and seasonality is selected
+          if(input$socSelect =="Seasonality") {
+            g <- g + geom_rect_fun(
+              ymin_val = structure(-Inf, class = "Date"),
+              ymax_val = structure(Inf, class = "Date"))
+            g <- g + geom_text_fun(
+              x_val = table(yr() <= 2010)[[2]] / 3.5,
+              y_val = min(as.Date(upper(), origin = "2014-01-01")),
+              label_val = "Pre-catch shares")
+            g <- g + geom_text_fun(
+              x_val = table(yr() <= 2010)[[2]] + table(yr() > 2010)[[2]] / 1.5,
+              y_val = min(as.Date(upper(), origin = "2014-01-01")),
+              label_val = "Catch shares")
+            # for all other variables
+          }} else {
+            g <- g + geom_rect_fun()
+            # geom_text1
+            g <- g + geom_text_fun(
+              x_val = table(yr() <= 2010)[[2]] / 3.5,
+              y_val = max(upper()) + scale_geom_text()/5,
+              label_val = "Pre-catch shares")
+            g <- g +
+              # geom_text3
+              geom_text_fun(
+                x_val = table(yr() <= 2010)[[2]] + table(yr() > 2010)[[2]] / 1.5,
+                y_val = max(upper()) + scale_geom_text() / 5,
+                label_val = "Catch shares")
+          } 
+      } else { # Compare by metrics
+        g <- g + geom_rect_fun()
+        g <- g +
+          # geom_text4
+          geom_text_fun(
+            x_val = table(yr() <= 2010)[[2]] / 3.5,
+            y_val = Inf,
+            label_val = "Pre-catch shares",
+            vjust_val = 1.5)
+        g <- g +
+          # geom_text6
+          geom_text_fun(
+            x_val = table(yr() <= 2010)[[2]] + table(yr() > 2010)[[2]] / 1.5,
+            y_val = Inf,
+            label_val = "Catch shares",
+            vjust_val = 1.5)
+        
+      } } else {
+        # end of rect/text for cs/non-cs, no CS box required for plots with only one "kind" of year
+        g <- g
+      }
 
 #----- define theme ------#
     g <- g + theme(
