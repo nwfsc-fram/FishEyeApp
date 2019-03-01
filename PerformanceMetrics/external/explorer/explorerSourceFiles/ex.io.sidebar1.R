@@ -1009,7 +1009,7 @@ output$FishWhitingselect <- renderUI({
       checkboxGroupInput(
         'FishWhitingSelect',
         HTML(
-          "<div> Show data summed across:<button id='iwhiting' type='button' class='btn btn-default action-button shiny-bound-input'> <i class='fa fa-info-circle fa-fw'></i>
+          "<div> Vessel types:<button id='iwhiting' type='button' class='btn btn-default action-button shiny-bound-input'> <i class='fa fa-info-circle fa-fw'></i>
           </button></div>"
         ),
         choices = DatVars()$whitingv,
