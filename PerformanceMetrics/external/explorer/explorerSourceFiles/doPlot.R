@@ -1106,7 +1106,7 @@ gv <- function() {
                      environment()) #+coord_cartesian(xlim = c(0, length(table(dat$YEAR))+1))
         }
       } else {
-      dat <- dat[order(dat$sort), ]
+      #dat <- dat[order(dat$sort), ]
       g <-
       # I think this is where the NAs are getting removed which causes lines to be connected through suppressed/missing values #removeNAs
         ggplot(dat, aes_string(x = x, y = y , group = groupVar), environment =
