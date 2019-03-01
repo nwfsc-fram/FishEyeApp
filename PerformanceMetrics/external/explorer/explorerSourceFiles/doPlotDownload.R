@@ -1,7 +1,28 @@
 doPlotDownload <- function(dat, x, y){
   if(PermitPlot()){
     dat <- subset(dat, is.na(dat$VALUE)==FALSE)
-    
+    ##Prepping data for plotting by converting to more "plot friendly" values
+    dat<- mutate(dat,
+                 VARIANCE = case_when(
+                   max(VALUE, na.rm = T) < 1e6 ~ VARIANCE/1,
+                   max(VALUE, na.rm = T) < 1e9 ~ VARIANCE/1e3,
+                   max(VALUE, na.rm = T) < 1e12 ~ VARIANCE/1e6,
+                   T ~ -999),
+                 q25 = case_when(
+                   max(VALUE, na.rm = T) < 1e6 ~ q25/1,
+                   max(VALUE, na.rm = T) < 1e9 ~ q25/1e3,
+                   max(VALUE, na.rm = T) < 1e12 ~ q25/1e6,
+                   T ~ -999),
+                 q75 = case_when(
+                   max(VALUE, na.rm = T) < 1e6 ~ q75/1,
+                   max(VALUE, na.rm = T) < 1e9 ~ q75/1e3,
+                   max(VALUE, na.rm = T) < 1e12 ~ q75/1e6,
+                   T ~ -999),
+                 VALUE = case_when(
+                   max(VALUE, na.rm = T) < 1e6 ~ VALUE/1,
+                   max(VALUE, na.rm = T) < 1e9 ~ VALUE/1e3,
+                   max(VALUE, na.rm = T) < 1e12 ~ VALUE/1e6,
+                   T ~ -999))
     
     dat$sort2 <- if(input$LayoutSelect!="Metrics"){
       if(input$Ind_sel=='Other'){
@@ -319,8 +340,17 @@ doPlotDownload <- function(dat, x, y){
             expression(bold("Vessel length (in feet)"))
           } else if (input$demSelect == 'Revenue diversification') {
             expression(bold('Revenue diversification (Exponential Shannon Index)'))
-          }  else {
-            input$demSelect
+          } else if (input$demSelect == 'Vessel horsepower') {
+            expression(bold('Vessel horsepower'))
+          } else {
+            paste(input$demSelect,
+                  "(",
+                  input$StatSelect,
+                  "in",
+                  dat$unit,
+                  currentyear,
+                  "$",
+                  ")")
           }
         } else {
           expression(bold('Scale and units depend upon metric'))
