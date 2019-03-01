@@ -776,22 +776,6 @@ DatSubTable <- reactive({
 # DatSub: HUGE reactive for subsetting for plotting ####
 DatSub <- reactive({
   dat <- DatMain()
-  dat$SUMSTAT <-
-    ifelse(dat$SUMSTAT == 'Average', 'Mean', as.character(dat$SUMSTAT))
-  dat$STAT <- case_when(
-    dat$STAT == "Average per vessel" ~ "Mean per vessel",
-    dat$STAT == "Average per vessel/day" ~ "Mean per vessel/day",
-    dat$STAT == "Average per vessel/metric ton produced" ~ "Mean per vessel/metric ton produced",
-    dat$STAT == "Average per vessel/metric ton caught" ~ "Mean per vessel/metric ton caught",
-    dat$STAT == "Average per processor" ~ "Mean per processor",
-    dat$STAT == "Average per processor/metric ton produced" ~ "Mean per processor/metric ton produced",
-    T ~ as.character(dat$STAT))
-  dat$VARIABLE <-
-    ifelse(
-      dat$VARIABLE == 'Small vessel (< 60 ft)',
-      'Small vessel (<= 60 ft)',
-      as.character(dat$VARIABLE)
-    )
 
   if (input$Sect_sel == "CV" | input$Sect_sel == 'FR') {
     datSubforSector <-
