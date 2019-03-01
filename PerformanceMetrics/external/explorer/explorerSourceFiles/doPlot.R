@@ -596,8 +596,10 @@ gv <- function() {
     # y-axis label ####
     ylab <- function() {
       if (input$Ind_sel == "Economic") {
-          paste(input$StatSelect,
+          paste(input$ShortdescrSelect,
                 "(",
+                input$StatSelect,
+                "in",
                 dat$unit,
             currentyear,
             "$",
@@ -605,8 +607,10 @@ gv <- function() {
       } else if (input$Ind_sel == "Other") {
         if (input$LayoutSelect != 'Metrics') {
           if (input$socSelect == "Revenue per day") {
-            paste(input$StatSelect,
+            paste(input$socSelect,
                   "(",
+                  input$StatSelect,
+                  "in",
                   dat$unit,
                   currentyear,
                   "$",
@@ -618,13 +622,17 @@ gv <- function() {
           }  else if (input$socSelect == "Gini coefficient") {
             expression(bold("Gini coefficient (0 - 1)"))
           } else if (input$socSelect == "Fuel use per day") {
-            paste(input$StatSelect,
+            paste(input$socSelect,
                   "(",
+                  input$StatSelect,
+                  "in",
                   dat$unit,
                   "gallons)")
           } else if (input$socSelect == 'Speed while fishing') {
-            paste(input$StatSelect,
+            paste(input$socSelect,
                   "(",
+                  input$StatSelect,
+                  "in",
                   dat$unit,
                   "knots)")
           } else {
@@ -654,8 +662,10 @@ gv <- function() {
         if (input$LayoutSelect != 'Metrics') {
           if(input$crewSelect != "Number of positions (captain and crew)" &
              input$crewSelect != 'Number of crew-days') {
-            paste(input$StatSelect,
+            paste(input$crewSelect,
                   "(",
+                  input$StatSelect,
+                  "in",
                   dat$unit,
                   currentyear,
                   "$",

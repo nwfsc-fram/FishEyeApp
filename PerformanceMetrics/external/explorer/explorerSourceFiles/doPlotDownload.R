@@ -260,47 +260,91 @@ doPlotDownload <- function(dat, x, y){
     }
     
     
-      ylab <- function(){
-        if(input$Ind_sel=="Economic") {
-          if(input$StatSelect!='Mean per vessel/metric ton caught'&input$StatSelect!='Median per vessel/metric ton caught'&input$StatSelect!='Fleet-wide average/metric ton caught'&
-             input$StatSelect!='Mean per processor/metric ton produced'&input$StatSelect!='Median per processor/metric ton produced'&input$StatSelect!='Industry-wide average/metric ton produced') {
-            paste("Thousands of", currentyear, "$","(",input$StatSelect, ")")  
-        } else {
-            paste(currentyear, "$","(",input$StatSelect, ")")  
-        } }else if(input$Ind_sel=="Other") {
-          if(input$LayoutSelect!='Metrics'){
-            if(input$socSelect=="Crew wage per day" | 
-               input$socSelect=="Revenue per crew-day" |
-               input$socSelect=="Revenue per position-day"){
-                paste("Thousands of", currentyear, "$","(",input$AVE_MED2, ")")    
-            }  else if(input$socSelect=="Seasonality"){
-              expression(bold("Day of year when 50% of catch was landed"))
-            }  else if(input$socSelect=="Share of landings by state"){
-              expression(bold("Share of landings (% of revenue)"))
-            }  else if(input$socSelect=="Hourly compensation"){
-              expression(bold("Hourly compensation ($)"))
-            }   else {
-              input$socSelect         
-            }
+    # y-axis label ####
+    ylab <- function() {
+      if (input$Ind_sel == "Economic") {
+        paste(input$ShortdescrSelect,
+              "(",
+              input$StatSelect,
+              "in",
+              dat$unit,
+              currentyear,
+              "$",
+              ")")
+      } else if (input$Ind_sel == "Other") {
+        if (input$LayoutSelect != 'Metrics') {
+          if (input$socSelect == "Revenue per day") {
+            paste(input$socSelect,
+                  "(",
+                  input$StatSelect,
+                  "in",
+                  dat$unit,
+                  currentyear,
+                  "$",
+                  ")")
+          }  else if (input$socSelect == "Seasonality") {
+            expression(bold("Day of year when 50% of catch was landed"))
+          }  else if (input$socSelect == "Share of landings by state") {
+            expression(bold("Share of landings (% of revenue)"))
+          }  else if (input$socSelect == "Gini coefficient") {
+            expression(bold("Gini coefficient (0 - 1)"))
+          } else if (input$socSelect == "Fuel use per day") {
+            paste(input$socSelect,
+                  "(",
+                  input$StatSelect,
+                  "in",
+                  dat$unit,
+                  "gallons)")
+          } else if (input$socSelect == 'Speed while fishing') {
+            paste(input$socSelect,
+                  "(",
+                  input$StatSelect,
+                  "in",
+                  dat$unit,
+                  "knots)")
           } else {
-            expression(bold('Scale and units depend upon metric'))
-          } 
-        }else if(input$Ind_sel=="Demographic"){
-          if(input$LayoutSelect!='Metrics'){
-            if(input$demSelect=="Proportion of revenue from CS fishery"){
-              expression(bold("Proportion of revenue from catch share fishery"))  
-            }  else if(input$demSelect=="Gini coefficient"){
-              expression(bold("Gini coefficient (0 - 1)"))
-            }  else if(input$demSelect=="Number of fisheries"){
-              expression(bold("Number of fisheries"))
-            }  else if(input$demSelect=="Vessel length"){
-              expression(bold("Vessel length (in feet)"))
-            }  else {
-              input$demSelect     
-            }
-          }else {expression(bold('Scale and units depend upon metric'))}
+            input$socSelect
+          }
+        } else {
+          expression(bold('Scale and units depend upon metric'))
+        }
+      } else if (input$Ind_sel == "Vessel characteristics" ||
+                 input$Ind_sel == 'Processor characteristics') {
+        if (input$LayoutSelect != 'Metrics') {
+          if (input$demSelect == "Proportion of revenue from CS fishery") {
+            expression(bold("Proportion of revenue from catch share fishery"))
+          }  else if (input$demSelect == "Number of fisheries") {
+            expression(bold("Number of fisheries"))
+          }  else if (input$demSelect == "Vessel length") {
+            expression(bold("Vessel length (in feet)"))
+          } else if (input$demSelect == 'Revenue diversification') {
+            expression(bold('Revenue diversification (Exponential Shannon Index)'))
+          }  else {
+            input$demSelect
+          }
+        } else {
+          expression(bold('Scale and units depend upon metric'))
+        }
+      } else if (input$Ind_sel == 'Labor') {
+        if (input$LayoutSelect != 'Metrics') {
+          if(input$crewSelect != "Number of positions (captain and crew)" &
+             input$crewSelect != 'Number of crew-days') {
+            paste(input$crewSelect,
+                  "(",
+                  input$StatSelect,
+                  "in",
+                  dat$unit,
+                  currentyear,
+                  "$",
+                  ")")
+          } else {
+            paste(input$crewSelect)
+          }
+        } else {
+          expression(bold('Scale and units depend upon metric'))
         }
       }
+    }
       
     
 source_lab <- function(){
