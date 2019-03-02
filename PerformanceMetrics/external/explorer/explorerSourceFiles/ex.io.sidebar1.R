@@ -1326,7 +1326,7 @@ output$socselect <- renderUI({
             "socSelect",
             "",
             choices = c(DatVars()$METRIC3a),
-            selected = "Revenue per day"
+            selected = "Days at sea"
           )
         )
       } else {
@@ -1336,7 +1336,7 @@ output$socselect <- renderUI({
             "socSelect",
             "",
             choices = c(DatVars()$METRIC3a),
-            selected = "Revenue per day"
+            selected = "Days at sea"
           )
         )
       }
@@ -1372,7 +1372,7 @@ output$socselect <- renderUI({
                 "socSelect",
                 "",
                 choices = c(DatVars()$METRIC3),
-                selected = "Revenue per day"
+                selected = "Days at sea"
               )
             )
           } else {
@@ -1382,7 +1382,7 @@ output$socselect <- renderUI({
                 "socSelect",
                 "",
                 choices = c(DatVars()$METRIC3),
-                selected = "Revenue per day"
+                selected = "Days at sea"
               )
             )
           }
@@ -1409,7 +1409,7 @@ output$socselect <- renderUI({
           "socSelect",
           "",
           choices = c(DatVars()$METRIC3),
-          selected = "Revenue per day"
+          selected = ""
         )
       )
     }

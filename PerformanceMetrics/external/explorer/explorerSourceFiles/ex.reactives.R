@@ -71,21 +71,20 @@ DatVars <- reactive({
           "Number of crew-days",
           "Annual crew wage",
           "Crew wage per day",
-          "Wages per dollar revenue"
+          "Wages per dollar revenue",
+          "Revenue per position-day"
           ),
         ##Other metrics###
         METRIC3 = c(
-          "Revenue per day",
-          "Seasonality", 
           "Days at sea", 
           "Fuel use per day", 
           "Speed while fishing", 
           "Gini coefficient", 
-          "Share of landings by state"
+          "Share of landings by state",
+          "Seasonality"
         ),
 ##When grouping by Metrics, don't include 'Share of landings by state' or 'Seasonsality'
         METRIC3a = c(
-          "Revenue per position-day",
           "Days at sea", 
           "Fuel use per day", 
           "Speed while fishing", 
@@ -174,18 +173,17 @@ DatVars <- reactive({
         ##Crew metrics##
         METRIC2 = c(
           "Number of positions (captain and crew)",
-          "Crew wage per day"
+          "Crew wage per day",
+          "Revenue per position-day"
           ),
         ##Other metrics##
         METRIC3 = c(
-          "Revenue per position-day",
-          "Seasonality",
           "Days at sea",
-          "Gini coefficient"
+          "Gini coefficient",
+          "Seasonality"
         ),
         ##When grouping by Metrics, don't include 'Seasonsality'
         METRIC3a = c(
-          "Revenue per position-day",
           "Days at sea",
           "Gini coefficient"
         )

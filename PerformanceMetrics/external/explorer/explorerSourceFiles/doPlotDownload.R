@@ -294,16 +294,7 @@ doPlotDownload <- function(dat, x, y){
               ")")
       } else if (input$Ind_sel == "Other") {
         if (input$LayoutSelect != 'Metrics') {
-          if (input$socSelect == "Revenue per day") {
-            paste(input$socSelect,
-                  "(",
-                  input$StatSelect,
-                  "in",
-                  dat$unit,
-                  currentyear,
-                  "$",
-                  ")")
-          }  else if (input$socSelect == "Seasonality") {
+          if (input$socSelect == "Seasonality") {
             expression(bold("Day of year when 50% of catch was landed"))
           }  else if (input$socSelect == "Share of landings by state") {
             expression(bold("Share of landings (% of revenue)"))
