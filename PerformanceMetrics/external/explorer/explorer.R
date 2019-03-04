@@ -228,7 +228,7 @@ output$TableMain <- renderDataTable({
            table <- subset(table, select = -CS)
           table$YEAR <- factor(table$YEAR, levels=c(min(table$YEAR):max(table$YEAR)))
             
-            }else if(input$socSelect=="Share of landings by state"){
+            if(input$socSelect=="Share of landings by state"){
             table$VALUE <- paste(prettyNum((table$VALUE), big.mark = ",", format = 'f', digits = 5, trim=T), '%')
             names(table) <- c("Year", "Summary Variable", "Statistic", "Metric","Data summed\nacross",("Number of vessels;\nVessels may deliver\nto multiple locations"), "Value", "Delivery \nlocation")
           } else {
@@ -241,7 +241,7 @@ output$TableMain <- renderDataTable({
             }
            } # end fisheries
        
-                } else if(input$socSelect=="Share of landings by state"){
+                 else if(input$socSelect=="Share of landings by state"){
             table$VALUE <- paste('%', prettyNum((table$VALUE), big.mark = ",", format = 'f', digits = 5, trim=T))
             table$YEAR <- factor(table$YEAR, levels=c(min(table$YEAR):max(table$YEAR)))
             names(table) <- c("Year", "Summary Variable","Fisheries Category", "Statistic", "Metric","Data summed\nacross","Number of vessels \nVessels may deliver \nto multiple locations", "Value", "Delivery \nlocation")
@@ -257,7 +257,7 @@ output$TableMain <- renderDataTable({
                }
               }
              }
-        } #End Other
+        #End Other
         else if(input$Ind_sel == 'Labor') {
           table <- subset(DatSubTable(), select =-c(CATEGORY))
           if(input$CategorySelect == 'Fisheries') {

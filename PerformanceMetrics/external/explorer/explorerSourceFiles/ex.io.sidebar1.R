@@ -1135,7 +1135,7 @@ output$demselect <- renderUI({
     if (input$Sect_sel == "CV") {
       if (input$AVE_MED2 == "Total") {
         tags$div(
-          class = "ckboxCV",
+          class = "ckbox2345",
           checkboxGroupInput(
             "demSelect",
             "",
@@ -1145,7 +1145,7 @@ output$demselect <- renderUI({
         )
       } else {
         tags$div(
-          class = "ckboxCV2",
+          class = "ckbox_1",
           checkboxGroupInput(
             "demSelect",
             "",
@@ -1158,7 +1158,7 @@ output$demselect <- renderUI({
       if (input$Sect_sel == 'FR') {
         if (input$AVE_MED2 == 'Total') {
           tags$div(
-            class = "ckboxFR",
+            class = "ckbox_4",
             checkboxGroupInput(
               "demSelect",
               "",
@@ -1168,7 +1168,7 @@ output$demselect <- renderUI({
           )
         } else {
           tags$div(
-            class = "ckboxCV2",
+            class = "ckbox_1",
             checkboxGroupInput(
               "demSelect",
               "",
@@ -1182,7 +1182,7 @@ output$demselect <- renderUI({
         if (input$Sect_sel == 'CP' | input$Sect_sel == 'M') {
           if (input$AVE_MED2 == 'Total') {
             tags$div(
-              class = "ckboxCP",
+              class = "ckbox23",
               checkboxGroupInput(
                 "demSelect",
                 "",
@@ -1192,7 +1192,7 @@ output$demselect <- renderUI({
             )
           } else {
             tags$div(
-              class = "ckboxCV2",
+              class = "ckbox_1",
               checkboxGroupInput(
                 "demSelect",
                 "",
@@ -1244,7 +1244,7 @@ output$crewselect <- renderUI({
     if (input$Sect_sel != 'FR') {
       if (input$AVE_MED2 == 'Total') {
         tags$div(
-          class = "ckboxCV",
+          class = "ckbox23456",
           checkboxGroupInput(
             "crewSelect",
             "",
@@ -1266,7 +1266,7 @@ output$crewselect <- renderUI({
     } else {
       if(input$AVE_MED2 == 'Total') {
         tags$div(
-          class = 'ckboxCV3',
+          class = 'ckbox_2',
           checkboxGroupInput(
             "crewSelect",
             "",
@@ -1321,7 +1321,7 @@ output$socselect <- renderUI({
     if (input$Sect_sel == "CV") {
       if (input$AVE_MED2 == "Total") {
         tags$div(
-          class = "ckboxSOC2",
+          class = "ckbox34",
           checkboxGroupInput(
             "socSelect",
             "",
@@ -1331,7 +1331,7 @@ output$socselect <- renderUI({
         )
       } else {
         tags$div(
-          class = "ckboxSOC",
+          class = "ckbox_4",
           checkboxGroupInput(
             "socSelect",
             "",
@@ -1344,7 +1344,7 @@ output$socselect <- renderUI({
       if (input$Sect_sel == "FR") {
         if (input$AVE_MED2 == 'Total') {
           tags$div(
-            class = "ckboxSOC3",
+            class = "ckbox",
             checkboxGroupInput(
               "socSelect",
               "",
@@ -1354,7 +1354,7 @@ output$socselect <- renderUI({
           )
         } else {
           tags$div(
-            class = "ckboxCV2",
+            class = "ckbox_1",
             checkboxGroupInput(
               "socSelect",
               "",
@@ -1377,7 +1377,7 @@ output$socselect <- renderUI({
             )
           } else {
             tags$div(
-              class = "ckboxSOC3",
+              class = "ckbox_2",
               checkboxGroupInput(
                 "socSelect",
                 "",
@@ -1409,7 +1409,7 @@ output$socselect <- renderUI({
           "socSelect",
           "",
           choices = c(DatVars()$METRIC3),
-          selected = ""
+          selected = "Days at sea"
         )
       )
     }
@@ -1582,8 +1582,7 @@ output$StatSelect2 <- renderUI({
     } #End Vessel characteristics
     else if (input$Ind_sel == "Other") {
       if (input$socSelect %in% c("Share of landings by state",
-        "Seasonality",
-        "Gini coefficient")) {
+        "Seasonality")) {
         tags$div(
           class = 'met_mod',
           radioButtons("AVE_MED2", "", choices = ""),
@@ -1603,6 +1602,18 @@ output$StatSelect2 <- renderUI({
             select = 'Median'
           )
         ))
+      } else if (input$socSelect %in% c('Gini coefficient')) {
+        tagList(tags$div(
+          class = 'StatGrey',
+          radioButtons(
+            "AVE_MED2",
+            HTML(
+              "<div> Statistic: <button id='istat' type='button' class='btn btn-default action-button shiny-bound-input'> <i class='fa fa-info-circle fa-fw' ></i></button> </div>"
+            ),
+            choices = c("Mean", "Median", 'Total'),
+            select = 'Total'
+          )
+        ))
       } else {
         tagList(radioButtons(
           "AVE_MED2",
@@ -1619,7 +1630,8 @@ output$StatSelect2 <- renderUI({
       if (input$crewSelect == 'Crew wage per day' |
           input$crewSelect == 'Hourly compensation'|
           input$crewSelect == 'Annual crew wage' |
-          input$crewSelect == 'Wages per dollar revenue') {
+          input$crewSelect == 'Wages per dollar revenue' |
+          input$crewSelect == 'Revenue per position-day') {
         tagList(tags$div(
           class = 'StatGrey2',
           radioButtons(

@@ -87,7 +87,7 @@ DatVars <- reactive({
         METRIC3a = c(
           "Days at sea", 
           "Fuel use per day", 
-          "Speed while fishing", 
+          "Speed while fishing",
           "Gini coefficient"
         
     
