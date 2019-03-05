@@ -124,32 +124,33 @@ doPlot <- function(dat, x, y) {
         }
       } else if (input$Ind_sel != "Economic") {
         if (input$AVE_MED2 == 'Mean' & input$PlotSelect == T) {
-          max(dat$VALUE + dat$VARIANCE)
+          max(dat$VALUE + dat$VARIANCE, na.rm = T)
         } else if (input$AVE_MED2 == 'Median' &
             input$PlotSelect == T) {
-          max(dat$q75)
+          max(dat$q75, na.rm = T)
         } else {
-          max(dat$VALUE)
+          max(dat$VALUE, na.rm = T)
         }
       }
     }
     
-    lower <- function() {
-      #      if(input$PlotSelectOption=="Standard deviation or Median average deviation")
-      if (input$Ind_sel == "Economic") {
-        if (input$AVE_MED == 'A') {
-          dat$VALUE - dat$VARIANCE
-        } else  {
-          dat$q25
-        }
-      } else if (input$Ind_sel != "Economic") {
-        if (input$AVE_MED2 == 'Mean') {
-          dat$VALUE - dat$VARIANCE
-        } else  {
-          dat$q25
-        }
-      }
-    }
+    # I commented this out because it's not being used - ERIN
+    # lower <- function() {
+    #   #      if(input$PlotSelectOption=="Standard deviation or Median average deviation")
+    #   if (input$Ind_sel == "Economic") {
+    #     if (input$AVE_MED == 'A') {
+    #       dat$VALUE - dat$VARIANCE
+    #     } else  {
+    #       dat$q25
+    #     }
+    #   } else if (input$Ind_sel != "Economic") {
+    #     if (input$AVE_MED2 == 'Mean') {
+    #       dat$VALUE - dat$VARIANCE
+    #     } else  {
+    #       dat$q25
+    #     }
+    #   }
+    # }
   
     yr <- function() {
       return(unique(as.numeric(dat$YEAR)))
