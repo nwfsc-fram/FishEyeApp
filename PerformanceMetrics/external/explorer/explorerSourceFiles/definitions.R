@@ -56,8 +56,8 @@ tags$div(style = "margin: 15px 15px 30px; width: 60%",
                      
                     h4('Indicators'),
                     tags$ul(
-                      tags$li(strong('Vessel or processor characteristics:'), 'Characteristics of the vessels in the fleet or the processors that process groundfish. The summary statistic may change as a result of either a change made to the vessels or processors and/or by changes in the vessels/processors participating. Metrics in the vessel or processor characteristics category provide information about fleet consolidation, efficiency, productivity, specialization, or diversification.'),
-                      tags$li(strong('Economic:'),'Metrics within the economic indicators section describe the potenital economic impacts of the catch share fishery on the West Coast. Changes may be indicative of changes in total allowable catch (TAC), fish or product prices, costs or cost structure, profitability, productivity, and diversification.'),
+                      tags$li(strong('Vessel or processor characteristics:'), 'Characteristics of the vessels in the fleet or the processors that process groundfish. The statistic may change as a result of either a change made to the vessels or processors and/or by changes in which vessels/processors participate. Metrics in this category provide information about fleet consolidation, efficiency, productivity, specialization, or diversification.'),
+                      tags$li(strong('Economic:'),'Metrics within the economic indicators section describe the potential economic impacts of the catch share fishery on the West Coast. Changes may be indicative of changes in total allowable catch (TAC), fish or product prices, costs or cost structure, profitability, productivity, and diversification.'),
                       tags$li(strong('Labor:'),'Distribution of benefits and costs among captain and crew. Indicators describe potential impact on individuals (i.e., wages) and employment (i.e. number of positions).'),
                       tags$li(strong('Other:'),'Broad collection of metrics that extend beyond the other types of indicators and describe effort, productivity, inequality, and the temporal and spatial distribution of landings.')
                     ),
@@ -66,9 +66,9 @@ tags$div(style = "margin: 15px 15px 30px; width: 60%",
                     #Erin- Review definitions for vessel replacement value, vessel market value and vessel horsepower.
                     tags$ul(h4(tags$em('Vessel or processor characteristics')),
                             tags$li(strong('Number of vessels or processors: '),
-                                    'Number of vessels actively participating (i.e., had an active permit and non-zero revenue).'),
+                                    'Number of vessels fishing or number of processing companies processing.'),
                             tags$li(strong('Vessel length: '),
-                                    'The length of vessels in feet.'),
+                                    'Length of vessels in feet.'),
                             tags$li(strong('Vessel replacement value: '),
                                     'Estimate of what it would cost to replace the current vessel with a new vessel based on the most recent marine survey for the vessel.'),
                             tags$li(strong('Vessel market value: '),
@@ -147,12 +147,9 @@ tags$div(style = "margin: 15px 15px 30px; width: 60%",
                             tags$li(strong('Share of landings by state: '),
                                     'Share of landings (deliveries) by all vessels, by whiting vessels, and by non-whiting groundfish vessels in each state or at-sea. Shares are in terms of revenue. When selecting the ',tags$em('State'), 'summary variable, this metric shows the share of landings in each state for vessels that homeport in the selected state. This selection highlights that vessels may deliver fish in multiple states.'),
                             tags$li(strong('Seasonality: '),
-                                    'The date (day of year, Jan. 1 = 1) on which 50% of the total volume of catch was landed in the fishery. Metric measures broad-scale changes in the seasonality of fishing for catch shares fish. It can also indicate changes in total allowable catch (TAC); it may take the fleet longer to catch a higher TAC/ACL.')
+                                    'The date on which 50% of the total volume of catch was landed in the fishery. Metric measures broad-scale changes in the seasonality of fishing for catch shares fish. There are many potential drivers, including changes in total allowable catch (TAC), where take the fleet longer to catch a higher TAC/ACL.')
                             ),
-                            
-                            
-                    tags$p('Additional metrics that address economic input/output impacts are available in the Economic Performance Metrics for the West Coast Groundfish Trawl Catch Share Program report.  These indicators are the total impacts on income and employment of the West Coast Groundfish Trawl Catch Share fishery.
-                           Total impacts include, direct, indirect, and induced employment effects, as measured by IO-PAC model.'),
+                          
                     tags$br(),
                     h4("Statistics"),
                     tags$p(strong('The statistic provided depends upon the metric selected. '),'For instance, the mean or median per day or per metric ton is only available for economic metrics.'),
@@ -224,3 +221,10 @@ tags$div(style = "margin: 15px 15px 30px; width: 60%",
                     )
                     ))
                     )
+
+# code for list of species/species groups
+# mutate(dbGetQuery(framdw, "select * from EDC_FR_REVENUE where fullcode not like 'RVOTHR%'"), Grouping = factor(FISHERY_GROUP, levels = c('Pacific whiting', 'Non-whiting groundfish', 'Other'))) %>%
+#     rename(`Species group` = EDCSPID) %>%
+#     select(-FISHERY_GROUP) %>% 
+#     subset(!is.na(`Species group`) & !grepl('Bycatch', `Species group`)) %>%
+# distinct(Grouping, `Species group`) %>% arrange(Grouping) %>% kable(row.names = F)
