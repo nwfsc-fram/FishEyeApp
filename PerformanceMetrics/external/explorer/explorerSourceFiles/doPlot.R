@@ -1110,7 +1110,7 @@ gv <- function() {
 
     
     # add 'data variability' band ####
-    if (input$PlotSelect == T & is.na(max(dat$VARIANCE)) == F & !exists('ssn')) {
+    if (input$PlotSelect == T & !exists('ssn')) {
       g <-
         g + geom_ribbon(aes(
           ymax = upper,
