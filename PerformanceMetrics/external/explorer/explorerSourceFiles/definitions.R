@@ -79,6 +79,27 @@ tags$div(style = "margin: 15px 15px 30px; width: 60%",
                                     'Count of fisheries (defined above) that vessels participated in. Changes may indicate specialization or diversification.'),
                             tags$li(strong('Number of species processed: '),
                                     'Count of the number of species processed. Changes may indicate specialization or diversification.'),
+  HTML('<table class="table table-striped" style="width: auto !important; margin-left: auto; margin-right: auto;">
+ <thead>
+  <tr>
+   <th style="text-align:left;"> Species </th>
+  </tr>
+ </thead>
+<tbody>
+  <tr grouplength="1"><td colspan="1" style="border-bottom: 1px solid;"><strong>Pacific whiting</strong></td></tr>
+<tr>
+   <td style="text-align:left; padding-left: 2em;" indentlevel="1"> Pacific whiting </td>
+  </tr>
+  <tr grouplength="1"><td colspan="1" style="border-bottom: 1px solid;"><strong>Non-whiting groundfish</strong></td></tr>
+<tr>
+   <td style="text-align:left; padding-left: 2em;" indentlevel="1"> Arrowtooth flounder, Dover sole, Lingcod, English sole, Petrale sole, Rockfish, Sablefish, Rex sole, Sharks, skates and rays, Sanddab, Thornyheads </td>
+  </tr>
+  <tr grouplength="1"><td colspan="1" style="border-bottom: 1px solid;"><strong>Other</strong></td></tr>
+<tr>
+   <td style="text-align:left; padding-left: 2em;" indentlevel="1"> California halibut, Coastal pelagics, Crab, Echinoderms, Nonspecies specific product, Other species, Pacific halibut, Pacific herring, Squid, Salmon, Other shellfish, Tuna, Shrimp, Sturgeon </td>
+  </tr>
+</tbody>
+</table>'),
                             tags$li(strong('Proportion of revenue from catch share fishery: '),
                                     "The proportion of a vessels total revenue that comes from fish caught in the limited entry/catch share fishery. Metric measures how reliant vessels 
                                     are on revenue from the limited entry/catch shares fishery."),
@@ -227,4 +248,13 @@ tags$div(style = "margin: 15px 15px 30px; width: 60%",
 #     rename(`Species group` = EDCSPID) %>%
 #     select(-FISHERY_GROUP) %>% 
 #     subset(!is.na(`Species group`) & !grepl('Bycatch', `Species group`)) %>%
-# distinct(Grouping, `Species group`) %>% arrange(Grouping) %>% kable(row.names = F)
+# distinct(Grouping, `Species group`) %>% arrange(Grouping) %>% 
+#   group_by(Grouping) %>%
+#   summarise(Species = toString(`Species group`)) %>%
+#   select(Species) %>%
+#   kable(row.names = F) %>%
+#   kable_styling("striped", full_width = F) %>%
+#   group_rows("Pacific whiting", 1, 1) %>%
+#   group_rows("Non-whiting groundfish", 2, 2) %>%
+#   group_rows("Other", 3, 3)
+
