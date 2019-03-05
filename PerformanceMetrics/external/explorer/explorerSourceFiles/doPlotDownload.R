@@ -4,24 +4,28 @@ doPlotDownload <- function(dat, x, y){
     ##Prepping data for plotting by converting to more "plot friendly" values
     dat<- mutate(dat,
                  VARIANCE = case_when(
-                   max(VALUE, na.rm = T) < 1e6 ~ VARIANCE/1,
-                   max(VALUE, na.rm = T) < 1e9 ~ VARIANCE/1e3,
-                   max(VALUE, na.rm = T) < 1e12 ~ VARIANCE/1e6,
+                   unit == '' ~ VARIANCE,
+                   unit == 'thousands' ~ VARIANCE/1e3,
+                   unit == 'millions' ~ VARIANCE/1e6,
+                   unit == 'billions' ~ VARIANCE/1e9,
                    T ~ -999),
                  q25 = case_when(
-                   max(VALUE, na.rm = T) < 1e6 ~ q25/1,
-                   max(VALUE, na.rm = T) < 1e9 ~ q25/1e3,
-                   max(VALUE, na.rm = T) < 1e12 ~ q25/1e6,
+                   unit == '' ~ q25,
+                   unit == 'thousands' ~ q25/1e3,
+                   unit == 'millions' ~ q25/1e6,
+                   unit == 'billions' ~ q25/1e9,
                    T ~ -999),
                  q75 = case_when(
-                   max(VALUE, na.rm = T) < 1e6 ~ q75/1,
-                   max(VALUE, na.rm = T) < 1e9 ~ q75/1e3,
-                   max(VALUE, na.rm = T) < 1e12 ~ q75/1e6,
+                   unit == '' ~ q75,
+                   unit == 'thousands' ~ q75/1e3,
+                   unit == 'millions' ~ q75/1e6,
+                   unit == 'billions' ~ q75/1e9,
                    T ~ -999),
                  VALUE = case_when(
-                   max(VALUE, na.rm = T) < 1e6 ~ VALUE/1,
-                   max(VALUE, na.rm = T) < 1e9 ~ VALUE/1e3,
-                   max(VALUE, na.rm = T) < 1e12 ~ VALUE/1e6,
+                   unit == '' ~ VALUE,
+                   unit == 'thousands' ~ VALUE/1e3,
+                   unit == 'millions' ~ VALUE/1e6,
+                   unit == 'billions' ~ VALUE/1e9,
                    T ~ -999))
     
     dat$sort2 <- if(input$LayoutSelect!="Metrics"){
@@ -57,74 +61,84 @@ doPlotDownload <- function(dat, x, y){
       subset(select=c(sort2, minx,xmaxscale, maxx)) %>%data.frame()%>% distinct %>% 
       merge(dat %>% distinct(sort2,whitingv))
     
-    dat$upper <- 
-      if(input$Ind_sel=="Economic"){
-        if(input$AVE_MED=='A'){
-          dat$VALUE+dat$VARIANCE
-        } else if(input$AVE_MED=='T'){ 
+    #      if(input$PlotSelectOption=="Standard deviation or Median average deviation")
+    dat$upper <-
+      if (input$Ind_sel == "Economic") {
+        if (input$AVE_MED == 'A') {
+          dat$VALUE + dat$VARIANCE
+        } else if (input$AVE_MED == 'T') {
           dat$VALUE
-        } else { 
-          dat$q75
-        }} else if(input$Ind_sel!="Economic"){
-          if(input$AVE_MED2=='Mean'){
-            dat$VALUE+dat$VARIANCE
-          } else if (input$AVE_MED2=='Total') {
-            dat$VALUE
-          } else {
-            dat$q75
-          }}
-    
-    
-    dat$lower <- 
-      #      if(input$PlotSelectOption=="Standard deviation or Median average deviation") 
-      if(input$Ind_sel=="Economic"){
-        if(input$AVE_MED=='A'){
-          dat$VALUE-dat$VARIANCE
-        } else  { 
-          dat$q25
-        }} else if(input$Ind_sel!="Economic"){
-          if(input$AVE_MED2=='Mean'){
-            dat$VALUE-dat$VARIANCE
-          } else  { 
-            dat$q25
-          }}
-    
-    
-    
-    upper <- function(){
-      #      if(input$PlotSelectOption=="Standard deviation or Median average deviation") 
-      if(input$Ind_sel=="Economic"){
-        if(input$AVE_MED=='A'){
-          max(dat$VALUE+dat$VARIANCE)
-        } else if(input$AVE_MED=='T'){ 
-          max(dat$VALUE)
         } else {
-          max(dat$q75)
+          dat$q75
         }
-      } else if(input$Ind_sel!="Economic"){
-        if(input$AVE_MED2=='Mean'){
-          max(dat$VALUE+dat$VARIANCE)
-        } else if(input$AVE_MED2=='Total') { 
-          max(dat$VALUE)
-        } else {max(dat$q75)}}
-    }
+      } else if (input$Ind_sel != "Economic") {
+        if (input$AVE_MED2 == 'Mean') {
+          dat$VALUE + dat$VARIANCE
+        } else if (input$AVE_MED2 == 'Total') {
+          dat$VALUE
+        } else {
+          dat$q75
+        }
+      }
     
     
-    lower <- function(){
-      #      if(input$PlotSelectOption=="Standard deviation or Median average deviation") 
-      if(input$Ind_sel=="Economic"){
-        if(input$AVE_MED=='A'){
-          dat$VALUE-dat$VARIANCE
-        } else  { 
+    dat$lower <-
+      #      if(input$PlotSelectOption=="Standard deviation or Median average deviation")
+      if (input$Ind_sel == "Economic") {
+        if (input$AVE_MED == 'A') {
+          dat$VALUE - dat$VARIANCE
+        } else  {
           dat$q25
-        }} else if(input$Ind_sel!="Economic"){
-          if(input$AVE_MED2=='Mean'){
-            dat$VALUE-dat$VARIANCE
-          } else  { 
-            dat$q25
-          }}
+        }
+      } else if (input$Ind_sel != "Economic") {
+        if (input$AVE_MED2 == 'Mean') {
+          dat$VALUE - dat$VARIANCE
+        } else  {
+          dat$q25
+        }
+      }
+    
+    upper <- function() {
+      #      if(input$PlotSelectOption=="Standard deviation or Median average deviation")
+      if (input$Ind_sel == "Economic") {
+        if (input$PlotSelect == T) {
+          if (input$AVE_MED == 'A') {
+            max(dat$VALUE + dat$VARIANCE, na.rm = T)
+          } else {
+            max(dat$q75, na.rm = T)
+          }
+        } else {
+          max(dat$VALUE, na.rm = T)
+        }
+      } else if (input$Ind_sel != "Economic") {
+        if (input$AVE_MED2 == 'Mean' & input$PlotSelect == T) {
+          max(dat$VALUE + dat$VARIANCE, na.rm = T)
+        } else if (input$AVE_MED2 == 'Median' &
+                   input$PlotSelect == T) {
+          max(dat$q75, na.rm = T)
+        } else {
+          max(dat$VALUE, na.rm = T)
+        }
+      }
     }
     
+    # I commented this out because it's not being used - ERIN
+    # lower <- function() {
+    #   #      if(input$PlotSelectOption=="Standard deviation or Median average deviation")
+    #   if (input$Ind_sel == "Economic") {
+    #     if (input$AVE_MED == 'A') {
+    #       dat$VALUE - dat$VARIANCE
+    #     } else  {
+    #       dat$q25
+    #     }
+    #   } else if (input$Ind_sel != "Economic") {
+    #     if (input$AVE_MED2 == 'Mean') {
+    #       dat$VALUE - dat$VARIANCE
+    #     } else  {
+    #       dat$q25
+    #     }
+    #   }
+    # }
     
     
     
@@ -580,7 +594,7 @@ xlab <- function(){
                    environment()) #+coord_cartesian(xlim = c(0, length(table(dat$YEAR))+1))
       }
     } else {
-      dat <- dat[order(dat$sort), ]
+      #dat <- dat[order(dat$sort), ]
       g <-
         # I think this is where the NAs are getting removed which causes lines to be connected through suppressed/missing values #removeNAs
         ggplot(dat, aes_string(x = x, y = y , group = groupVar), environment =
@@ -592,7 +606,7 @@ xlab <- function(){
       geom_point(aes_string(colour = groupVar), size = 4)
 
 #------ Add variance ------#    
-    if(input$PlotSelect==T&is.na(max(dat$VARIANCE))==F) { 
+    if(input$PlotSelect==T& !exists('ssn')) { 
       g <- g + geom_ribbon(aes(ymax=upper, ymin=lower, fill=whitingv), alpha=.25)#show.legend = FALSE, 
     } else {
       g <- g

@@ -6,26 +6,31 @@ doPlot <- function(dat, x, y) {
     ##Prepping data for plotting by converting to more "plot friendly" values
     dat<- mutate(dat,
                  VARIANCE = case_when(
-                   max(VALUE, na.rm = T) < 1e6 ~ VARIANCE/1,
-                   max(VALUE, na.rm = T) < 1e9 ~ VARIANCE/1e3,
-                   max(VALUE, na.rm = T) < 1e12 ~ VARIANCE/1e6,
+                   unit == '' ~ VARIANCE,
+                   unit == 'thousands' ~ VARIANCE/1e3,
+                   unit == 'millions' ~ VARIANCE/1e6,
+                   unit == 'billions' ~ VARIANCE/1e9,
                    T ~ -999),
                  q25 = case_when(
-                   max(VALUE, na.rm = T) < 1e6 ~ q25/1,
-                   max(VALUE, na.rm = T) < 1e9 ~ q25/1e3,
-                   max(VALUE, na.rm = T) < 1e12 ~ q25/1e6,
+                   unit == '' ~ q25,
+                   unit == 'thousands' ~ q25/1e3,
+                   unit == 'millions' ~ q25/1e6,
+                   unit == 'billions' ~ q25/1e9,
                    T ~ -999),
                  q75 = case_when(
-                   max(VALUE, na.rm = T) < 1e6 ~ q75/1,
-                   max(VALUE, na.rm = T) < 1e9 ~ q75/1e3,
-                   max(VALUE, na.rm = T) < 1e12 ~ q75/1e6,
+                   unit == '' ~ q75,
+                   unit == 'thousands' ~ q75/1e3,
+                   unit == 'millions' ~ q75/1e6,
+                   unit == 'billions' ~ q75/1e9,
                    T ~ -999),
                 VALUE = case_when(
-                  max(VALUE, na.rm = T) < 1e6 ~ VALUE/1,
-                  max(VALUE, na.rm = T) < 1e9 ~ VALUE/1e3,
-                  max(VALUE, na.rm = T) < 1e12 ~ VALUE/1e6,
+                  unit == '' ~ VALUE,
+                  unit == 'thousands' ~ VALUE/1e3,
+                  unit == 'millions' ~ VALUE/1e6,
+                  unit == 'billions' ~ VALUE/1e9,
                   T ~ -999))
-# create sort2 column ####
+
+    # create sort2 column ####
     dat$sort2 <- if (input$LayoutSelect != "Metrics") {
       if (input$Ind_sel == 'Other') {
         if (input$socSelect == 'Share of landings by state') {
@@ -115,12 +120,12 @@ doPlot <- function(dat, x, y) {
       if (input$Ind_sel == "Economic") {
         if (input$PlotSelect == T) {
           if (input$AVE_MED == 'A') {
-            max(dat$VALUE + dat$VARIANCE)
+            max(dat$VALUE + dat$VARIANCE, na.rm = T)
           } else {
-            max(dat$q75)
+            max(dat$q75, na.rm = T)
           }
         } else {
-          max(dat$VALUE)
+          max(dat$VALUE, na.rm = T)
         }
       } else if (input$Ind_sel != "Economic") {
         if (input$AVE_MED2 == 'Mean' & input$PlotSelect == T) {
