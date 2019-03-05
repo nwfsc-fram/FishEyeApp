@@ -413,6 +413,7 @@ output$Variableselect <- renderUI({
               )
             )
           }
+          #end does not equal metrics
         } else {
           tagList(
             tags$div(
@@ -476,6 +477,7 @@ output$Variableselect <- renderUI({
               )
             )
           }
+          #end does not equal metrics
         } else {
           tagList(
             tags$div(
@@ -539,12 +541,13 @@ output$Variableselect <- renderUI({
               )
             ))
           }
+          #end does not equal metrics
         } else {
           tags$div(class = "ckbox3",
             radioButtons(
               "VariableSelect",
               div("Select one fisheries:", style = "margin-top:0; padding:-10px"),
-              choices = fish.var,
+              choices = c('No fishery selected' = '', fish.var),
               selected = ""
             ))
         }
