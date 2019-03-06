@@ -1244,7 +1244,7 @@ output$demselect <- renderUI({
 #= = = = = = = = = = = = = = = = = = = = = = 
 output$crewselect <- renderUI({
   if (input$LayoutSelect == 'Metrics') {
-    if (input$Sect_sel != 'FR') {
+    if (input$Sect_sel == 'CV') {
       if (input$AVE_MED2 == 'Total') {
         tags$div(
           class = "ckbox23456",
@@ -1252,7 +1252,7 @@ output$crewselect <- renderUI({
             "crewSelect",
             "",
             choices = c(DatVars()$METRIC2),
-            selected = "Number of positions (captain and crew)"
+            selected = "Number of crew"
           )
         )
       } else {
@@ -1262,11 +1262,33 @@ output$crewselect <- renderUI({
             "crewSelect",
             "",
             choices = c(DatVars()$METRIC2),
-            selected = "Number of positions (captain and crew)"
+            selected = "Number of crew"
           )
         )
       }
+    } else if (input$Sect_sel == 'M' | input$Sect_sel == 'CP') {
+        if (input$AVE_MED2 == 'Total') {
+          tags$div(
+            class = "ckbox23456",
+            checkboxGroupInput(
+              "crewSelect",
+              "",
+              choices = c(DatVars()$METRIC2),
+              selected = "Number of processing and non-processing crew"
+            )
+          )
     } else {
+      tags$div(
+        class = "ckbox",
+        checkboxGroupInput(
+          "crewSelect",
+          "",
+          choices = c(DatVars()$METRIC2),
+          selected = "Number of processing and non-processing crew"
+        )
+      )
+    }
+  } else {
       if(input$AVE_MED2 == 'Total') {
         tags$div(
           class = 'ckbox_2',
@@ -1292,18 +1314,28 @@ output$crewselect <- renderUI({
     }
   }
   else {
-    if (input$Sect_sel != 'FR') {
+    if (input$Sect_sel == 'CV') {
       tags$div(
         class = "statbox",
         radioButtons(
           "crewSelect",
           "",
           choices = c(DatVars()$METRIC2),
-          selected = "Number of positions (captain and crew)"
+          selected = "Number of crew"
         )
       )
     }
-    else {
+    else if (input$Sect_sel == 'M' | input$Sect_sel == 'CP') {
+      tags$div(
+        class = "statbox",
+        radioButtons(
+          "crewSelect",
+          "",
+          choices = c(DatVars()$METRIC2),
+          selected = "Number of processing and non-processing crew"
+        )
+      )
+    } else {
       tags$div(
         class = "statbox",
         radioButtons(
@@ -1635,9 +1667,10 @@ output$StatSelect2 <- renderUI({
     else if (input$Ind_sel == 'Labor') {
       if (input$crewSelect == 'Crew wage per day' |
           input$crewSelect == 'Hourly compensation'|
-          input$crewSelect == 'Annual crew wage' |
-          input$crewSelect == 'Wages per dollar revenue' |
-          input$crewSelect == 'Revenue per position-day') {
+          input$crewSelect == 'Crew wage per year' |
+          input$crewSelect == 'Crew wage per dollar revenue' |
+          input$crewSelect == 'Revenue per position-day' |
+          input$crewSelect == 'Revenue per crew-day') {
         tagList(tags$div(
           class = 'StatGrey2',
           radioButtons(

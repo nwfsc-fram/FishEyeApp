@@ -688,8 +688,10 @@ gv <- function() {
         }
       } else if (input$Ind_sel == 'Labor') {
         if (input$LayoutSelect != 'Metrics') {
-          if(input$crewSelect != "Number of positions (captain and crew)" &
-             input$crewSelect != 'Number of crew-days') {
+          if(input$crewSelect != "Number of crew" &
+             input$crewSelect != 'Number of crew-days' & 
+             input$crewSelect != 'Number of processing and non-processing crew' &
+             input$crewSelect != 'Number of workers') {
             paste(input$crewSelect,
                   "(",
                   input$StatSelect,

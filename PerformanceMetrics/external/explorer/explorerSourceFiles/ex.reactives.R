@@ -67,12 +67,12 @@ DatVars <- reactive({
           ), 
         ##Labor metrics###
         METRIC2 = c(
-          "Number of positions (captain and crew)", 
+          "Number of crew", 
           "Number of crew-days",
-          "Annual crew wage",
+          "Crew wage per year",
           "Crew wage per day",
-          "Wages per dollar revenue",
-          "Revenue per position-day"
+          "Crew wage per dollar revenue",
+          "Revenue per crew-day"
           ),
         ##Other metrics###
         METRIC3 = c(
@@ -168,13 +168,13 @@ DatVars <- reactive({
           "Number of vessels",
           "Vessel length",
           "Proportion of landings from catch share fishery" =
-            "Proportion of landings from CS fishery"
+          "Proportion of landings from CS fishery"
           ),
         ##Crew metrics##
         METRIC2 = c(
-          "Number of positions (captain and crew)",
+          "Number of processing and non-processing crew",
           "Crew wage per day",
-          "Revenue per position-day"
+          "Revenue per crew-day"
           ),
         ##Other metrics##
         METRIC3 = c(

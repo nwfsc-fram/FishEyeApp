@@ -263,7 +263,7 @@ output$TableMain <- renderDataTable({
           if(input$CategorySelect == 'Fisheries') {
             table <- subset(table, select = -CS)
             table$YEAR <- factor(table$YEAR, levels = c(min(table$YEAR):max(table$YEAR)))
-            if(input$crewSelect=="Revenue per position-day"){
+            if(input$crewSelect=="Revenue per position-day" | input$crewSelect == 'Revenue per crew-day'){
               table$VALUE <- paste('$', prettyNum(table$VALUE, big.mark = ",", format = 'f', digits = 5, trim=T))
               table$VARIANCE <- paste('$', prettyNum(table$VARIANCE, big.mark = ",", format = 'f', digits = 5, trim=T))
               if(input$Sect_sel=="FR"){
@@ -282,7 +282,7 @@ output$TableMain <- renderDataTable({
             } 
           }
           else {
-            if(input$crewSelect=="Revenue per position-day") {
+            if(input$crewSelect=="Revenue per position-day" | input$crewSelect == 'Revenue per crew-day') {
               table$VALUE <- paste('$', prettyNum(table$VALUE, big.mark = ",", format = 'f', digits = 5, trim=T))
               table$VARIANCE <- paste('$',prettyNum(table$VARIANCE, big.mark = ",", format = 'f', digits = 5, trim=T))
               table$YEAR <- factor(table$YEAR, levels=c(min(table$YEAR):max(table$YEAR)))
