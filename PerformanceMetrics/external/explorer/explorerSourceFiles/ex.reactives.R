@@ -89,11 +89,24 @@ DatVars <- reactive({
           "Fuel use per day", 
           "Speed while fishing",
           "Gini coefficient"
-        
-    
+        ),
+##Cost metrics###
+        METRIC4 = c(
+          "All variable costs",
+          "Buyback fees",
+          "Captain",
+          "Cost recovery fees",
+          "Crew",
+          "Fuel",
+          "Observers",
+          "Other variable costs",
+          "All fixed costs",
+          "Fishing gear",
+          "On-board equipment",
+          "Other fixed costs"
+        )
         )
       )
-    )
   } else if (input$Sect_sel == "FR") {
     datVars <- with(
       dat,
@@ -134,10 +147,26 @@ DatVars <- reactive({
         ),
         ##Other metrics##
         METRIC3 = c(
-          "Gini coefficient")#, "Share of landings by state")
+          "Gini coefficient"),
+        ##Costs metrics
+        METRIC4 = c(
+          'All variable costs',
+          'Fish purchases',
+          'Freight',
+          'Labor',
+          'Monitoring',
+          'Off-site freezing and storage',
+          'Packing materials',
+          'Utilities',
+          'Other variable costs',
+          'All fixed costs',
+          'Buildings',
+          'Equipment',
+          'Other fixed costs'
+        )
       )
     )
-  } else if (input$Sect_sel == "M" | input$Sect_sel == "CP") {
+  } else if (input$Sect_sel == "M") {
     datVars <- with(
       dat,
       list(
@@ -186,10 +215,90 @@ DatVars <- reactive({
         METRIC3a = c(
           "Days at sea",
           "Gini coefficient"
+        ),
+        METRIC4 = c(
+          'All variable costs',
+          'Fish purchases',
+          'Fuel',
+          'Non-processing crew',
+          'Observers',
+          'Processing crew',
+          'Other variable costs',
+          'All fixed costs',
+          'Fishing gear',
+          'On-board equipment',
+          'Processing equipment',
+          'Other fixed costs'
         )
         )
       )
-  }
+} else if (input$Sect_sel == "CP") {
+  datVars <- with(
+    dat,
+    list(
+      YEAR = 2004:currentyear,
+      SHORTDESCR = c(
+        "Revenue",
+        "Variable costs",
+        "Fixed costs",
+        "Variable Cost Net Revenue",
+        "Total Cost Net Revenue"
+      ),
+      CATEGORY = "Fisheries",
+      FISHAK = unique(FISHAK),
+      whitingv = "Whiting vessels",
+      STAT =  c(
+        "Mean per vessel",
+        "Mean per vessel/day",
+        "Mean per vessel/metric ton produced",
+        "Median per vessel",
+        "Median per vessel/day",
+        "Median per vessel/metric ton produced",
+        "Fleet-wide total",
+        'Fleet-wide average/day',
+        'Fleet-wide average/metric ton produced'
+      ),
+      ##Vessel characteristic metrics##
+      METRIC1 =  c(
+        "Number of vessels",
+        "Vessel length",
+        "Proportion of landings from catch share fishery" =
+          "Proportion of landings from CS fishery"
+      ),
+      ##Crew metrics##
+      METRIC2 = c(
+        "Number of processing and non-processing crew",
+        "Crew wage per day",
+        "Revenue per crew-day"
+      ),
+      ##Other metrics##
+      METRIC3 = c(
+        "Days at sea",
+        "Gini coefficient",
+        "Seasonality"
+      ),
+      ##When grouping by Metrics, don't include 'Seasonsality'
+      METRIC3a = c(
+        "Days at sea",
+        "Gini coefficient"
+      ),
+      METRIC4 = c(
+        'All variable costs',
+        'Cost recovery fees',
+        'Fuel',
+        'Non-processing crew',
+        'Observers',
+        'Processing crew',
+        'Other variable costs',
+        'All fixed costs',
+        'Fishing gear',
+        'On-board equipment',
+        'Processing equipment',
+        'Other fixed costs'
+      )
+    )
+  )
+}
 })
 
 
@@ -665,7 +774,7 @@ DatSubTable <- reactive({
             which(colnames(datSub) == "VALUE"),
             which(colnames(datSub) == "VARIANCE")
           )]
-      }} else if (input$Ind_sel == 'Labor') {
+      }} else {
         datSub <-
           datSub[, c(
             which(colnames(datSub) == "YEAR"),
@@ -679,9 +788,8 @@ DatSubTable <- reactive({
             which(colnames(datSub) == "VALUE"),
             which(colnames(datSub) == "VARIANCE")
           )]
-      }
   } # Compare: Metrics
-  else if (input$LayoutSelect == "Metrics") {
+ } else if (input$LayoutSelect == "Metrics") {
     if (input$Ind_sel == "Economic") {
       datSub <-
         datSub[, c(
