@@ -182,444 +182,62 @@ doPlot <- function(dat, x, y) {
     # title
     plot.title <- function() {
       if (input$Sect_sel == "CV") {
-        return("Performance Metrics for West Coast Catcher Vessels")
+        return("West Coast Catcher Vessels")
       } else if (input$Sect_sel == "M") {
-        return("Performance Metrics for West Coast Mothership Vessels")
+        return("West Coast Mothership Vessels")
       } else if (input$Sect_sel == "CP") {
-        return("Performance Metrics for West Coast Catcher-Processor Vessels")
+        return("West Coast Catcher-Processor Vessels")
       } else if (input$Sect_sel == "FR") {
-        return("Performance Metrics for West Coast First Receivers and Shorebased Processors")
+        return("West Coast First Receivers and Shorebased Processors")
       }
     }
+ 
     
-gv <- function() {
-      if (input$LayoutSelect != "Metrics") {
-        if (input$Ind_sel == "Economic") {
-          if (!input$Sect_sel %in% c("CV", "FR")) {
-            sprintf(
-              paste(
-                "Economic measure:",
-                dat$SHORTDESCR[1],
-                "     Statistic: ",
-                input$StatSelect
-              )
-            )
-          } else{
-            if (input$CategorySelect == "Fisheries") {
-              sprintf(
-                paste(
-                  "Economic measure:",
-                  dat$SHORTDESCR[1],
-                  "     Statistic: ",
-                  input$StatSelect
-                )
-              )
-            } else {
-              sprintf(
-                paste(
-                  "Economic measure:",
-                  dat$SHORTDESCR[1],
-                  "     Statistic: ",
-                  input$StatSelect,
-                  "    Summed across:",
-                  input$inSelect
-                )
-              )
-            }
-          }
-        }#end economic
-        else {
-          # if(input$MetricSelect[1]!='Number of vessels'&input$MetricSelect!="Share of landings by state"&input$MetricSelect!='Gini coefficient'&input$MetricSelect!='Herfindahl-Hirschman Index'&input$MetricSelect!='Seasonality'&input$MetricSelect!="Vessel length"){
-          if (max(dat$metric_flag) == 0) {
-            if (input$Ind_sel == "Vessel characteristics" ||
-                input$Ind_sel == 'Processor characteristics') {
-              if (!input$Sect_sel %in% c("CV", "FR")) {
-                sprintf(
-                  paste(
-                    "Category:",
-                    input$CategorySelect,
-                    "     Metric: ",
-                    input$demSelect,
-                    "   Statistic:",
-                    input$AVE_MED2
-                  )
-                )
-              } else{
-                if (input$CategorySelect == "Fisheries") {
-                  sprintf(
-                    paste(
-                      "Category:",
-                      input$CategorySelect,
-                      "     Metric: ",
-                      input$demSelect,
-                      "   Statistic:",
-                      input$AVE_MED2
-                    )
-                  )
-                } else {
-                  sprintf(
-                    paste(
-                      "Category:",
-                      input$CategorySelect,
-                      "     Metric: ",
-                      input$demSelect,
-                      "   Statistic:",
-                      input$AVE_MED2,
-                      "    Summed across:",
-                      input$inSelect
-                    )
-                  )
-                }
-              } ##End Vessel characteristics
-            } else if (input$Ind_sel == 'Labor') {
-              if (!input$Sect_sel %in% c("CV", "FR")) {
-                sprintf(
-                  paste(
-                    "Category:",
-                    input$CategorySelect,
-                    "     Metric: ",
-                    input$demSelect,
-                    "   Statistic:",
-                    input$AVE_MED2
-                  )
-                )
-              } else{
-                if (input$CategorySelect == "Fisheries") {
-                  sprintf(
-                    paste(
-                      "Category:",
-                      input$CategorySelect,
-                      "     Metric: ",
-                      input$demSelect,
-                      "   Statistic:",
-                      input$AVE_MED2
-                    )
-                  )
-                } else {
-                  sprintf(
-                    paste(
-                      "Category:",
-                      input$CategorySelect,
-                      "     Metric: ",
-                      input$demSelect,
-                      "   Statistic:",
-                      input$AVE_MED2,
-                      "    Summed across:",
-                      input$inSelect
-                    )
-                  )
-                }
-              } ##End Crew
-            } else if (input$Ind_sel == "Other") {
-              if (input$socSelect == "Share of landings by state")  {
-                if (input$CategorySelect != "Fisheries") {
-                  sprintf(
-                    paste(
-                      "Variable:",
-                      input$VariableSelect,
-                      "     Metric: ",
-                      input$socSelect,
-                      '  Statistic: Percentage   Summed across:',
-                      input$inSelect
-                    )
-                  )
-                } else {
-                  sprintf(
-                    paste(
-                      "Variable:",
-                      input$VariableSelect,
-                      "     Metric: ",
-                      input$socSelect,
-                      "  Statistic: Percentage"
-                    )
-                  )
-                }
-              } else {
-                if (input$Sect_sel == "CV" &
-                    input$CategorySelect != "Fisheries" |
-                    input$Sect_sel == 'FR' & input$CategorySelect != "Fisheries") {
-                  sprintf(
-                    paste(
-                      "Category:",
-                      input$CategorySelect,
-                      "     Metric: ",
-                      input$socSelect,
-                      "   Statistic:",
-                      input$AVE_MED2,
-                      "    Summed across:",
-                      input$inSelect
-                    )
-                  )
-                } else {
-                  sprintf(
-                    paste(
-                      "Category:",
-                      input$CategorySelect,
-                      "     Metric: ",
-                      input$socSelect,
-                      "   Statistic:",
-                      input$AVE_MED2
-                    )
-                  )
-                }
-              }
-            }
-          }# end normal cases
-          else {
-            if (input$Ind_sel == "Vessel characteristics" ||
-                input$Ind_sel == 'Processor characteristics') {
-              if (input$demSelect %in% c("Number of vessels", "Number of processors")) {
-                if (input$Sect_sel == "CV" &
-                    input$CategorySelect != "Fisheries" |
-                    input$Sect_sel == 'FR' & input$CategorySelect != "Fisheries") {
-                  sprintf(
-                    paste(
-                      "Category:",
-                      input$CategorySelect,
-                      "     Metric: ",
-                      input$demSelect,
-                      '  Statistic: Total     Summed across:',
-                      input$inSelect
-                    )
-                  )
-                } else {
-                  sprintf(
-                    paste(
-                      "Category:",
-                      input$CategorySelect,
-                      "     Metric: ",
-                      input$demSelect,
-                      "  Statistic: Total"
-                    )
-                  )
-                }
-              } else if (input$demSelect == "Vessel length")  {
-                if (input$Sect_sel == "CV" &
-                    input$CategorySelect != "Fisheries" |
-                    input$Sect_sel == 'FR' & input$CategorySelect != "Fisheries") {
-                  sprintf(
-                    paste(
-                      "Category:",
-                      input$CategorySelect,
-                      "     Metric: ",
-                      input$demSelect,
-                      '  Statistic: Average maximum length      Summed across:',
-                      input$inSelect
-                    )
-                  )
-                } else {
-                  sprintf(
-                    paste(
-                      "Category:",
-                      input$CategorySelect,
-                      "     Metric: ",
-                      input$demSelect,
-                      "  Statistic: Average maximum length"
-                    )
-                  )
-                }
-              }
-              else {
-                if (input$Sect_sel == 'CV' &
-                    input$CategorySelect != "Fisheries" |
-                    input$Sect_sel == 'FR' & input$CategorySelect != "Fisheries") {
-                  sprintf(
-                    paste(
-                      "Category:",
-                      input$CategorySelect,
-                      "     Metric: ",
-                      input$demSelect,
-                      '  Statistic: Index value',
-                      "    Summed across:",
-                      input$inSelect
-                    )
-                  )
-                } else {
-                  sprintf(
-                    paste(
-                      "Category:",
-                      input$CategorySelect,
-                      "     Metric: ",
-                      input$demSelect,
-                      '  Statistic: Index value'
-                    )
-                  )
-                }
-              }
-            }
-            else if (input$Ind_sel == "Other") {
-              if (input$socSelect == "Seasonality") {
-                if (input$Sect_sel == 'CV' &
-                    input$CategorySelect != "Fisheries" |
-                    input$Sect_sel == 'FR' & input$CategorySelect != "Fisheries") {
-                  sprintf(
-                    paste(
-                      "Category:",
-                      input$CategorySelect,
-                      "     Metric: ",
-                      input$socSelect,
-                      '  Statistic: Day of year  Summed across:',
-                      input$inSelect
-                    )
-                  )
-                } else {
-                  sprintf(
-                    paste(
-                      "Category:",
-                      input$CategorySelect,
-                      "     Metric: ",
-                      input$socSelect,
-                      "  Statistic: Day of year"
-                    )
-                  )
-                }
-              } else if (input$socSelect == "Share of landings by state")  {
-                if (input$CategorySelect != "Fisheries") {
-                  sprintf(
-                    paste(
-                      "Variable:",
-                      input$VariableSelect,
-                      "     Metric: ",
-                      input$socSelect,
-                      '  Statistic: Percentage   Summed across:',
-                      input$inSelect
-                    )
-                  )
-                } else {
-                  sprintf(
-                    paste(
-                      "Variable:",
-                      input$VariableSelect,
-                      "     Metric: ",
-                      input$socSelect,
-                      "  Statistic: Percentage"
-                    )
-                  )
-                }
-              }
-              else {
-                if (input$Sect_sel == 'CV' &
-                    input$CategorySelect != "Fisheries" |
-                    input$Sect_sel == 'FR' & input$CategorySelect != "Fisheries") {
-                  sprintf(
-                    paste(
-                      "Category:",
-                      input$CategorySelect,
-                      "     Metric: ",
-                      input$socSelect,
-                      '  Statistic: Index value',
-                      "    Summed across:",
-                      input$inSelect
-                    )
-                  )
-                } else {
-                  sprintf(
-                    paste(
-                      "Category:",
-                      input$CategorySelect,
-                      "     Metric: ",
-                      input$socSelect,
-                      '  Statistic: Index value'
-                    )
-                  )
-                }
-              }
-            }
-            
-          } #END HERE
-        } #END NOT ECONOMIC
-      } #end compare vessel groupings
-      else {
-        if (input$Ind_sel == "Economic") {
-          if (input$Sect_sel == 'CV' &
-              input$CategorySelect != "Fisheries" |
-              input$Sect_sel == 'FR' & input$CategorySelect != "Fisheries") {
-            sprintf(
-              paste(
-                input$CategorySelect,
-                ":",
-                input$VariableSelect,
-                "     Statistic: ",
-                input$StatSelect,
-                "    Summed across:",
-                input$inSelect
-              )
-            )
-          } else {
-            sprintf(
-              paste(
-                input$CategorySelect,
-                ":",
-                input$VariableSelect,
-                "     Statistic: ",
-                input$StatSelect
-              )
-            )
-          }
-        } else {
-          if (max(dat$metric_flag == 0)) {
-            if (input$Sect_sel == 'CV' &
-                input$CategorySelect != "Fisheries" |
-                input$Sect_sel == 'FR' & input$CategorySelect != "Fisheries") {
-              sprintf(
-                paste(
-                  input$CategorySelect,
-                  ":",
-                  input$VariableSelect,
-                  " Statistic:",
-                  input$AVE_MED2,
-                  "  Summed across:",
-                  input$inSelect
-                )
-              )
-            } else {
-              sprintf(
-                paste(
-                  input$CategorySelect,
-                  ":",
-                  input$VariableSelect,
-                  " Statistic:",
-                  input$AVE_MED2
-                )
-              )
-            }
-          }
-          else {
-            if (input$Sect_sel == 'CV' &
-                input$CategorySelect != "Fisheries" |
-                input$Sect_sel == 'FR' & input$CategorySelect != "Fisheries") {
-              sprintf(
-                paste(
-                  input$CategorySelect,
-                  ":",
-                  input$VariableSelect,
-                  "  Summed across:",
-                  input$inSelect,
-                  "  Statistic:",
-                  input$AVE_MED2
-                )
-              )
-            } else {
-              sprintf(
-                paste(
-                  input$CategorySelect,
-                  ":",
-                  input$VariableSelect,
-                  '  Statistic:',
-                  input$AVE_MED2
-                )
-              )
-            }
-            
-          }
-        }
-      }
+gv <- function () {
+  if (input$Sect_sel == 'CV') {
+    if (input$LayoutSelect != 'Metrics') {
+      if (input$CategorySelect != 'Fisheries') {
+      sprintf(paste(
+        "Vessels in",
+        input$inSelect))
+    } else {
+      sprintf(paste(
+        ""
+      ))
+    }} else if (input$CategorySelect == 'Homeport' | input$CategorySelect == 'State') {
+      sprintf(paste(
+        input$VariableSelect, 
+        "vessels in",
+        input$inSelect
+      ))
     }
-    
-    # combine title and gv for printing
-    main <- function() {
-      bquote(atop(.(plot.title()), .(gv())))
+    else if (input$CategorySelect == 'Vessel length class') {
+      sprintf(paste(
+        "Vessels in",
+        input$inSelect,
+        "for",
+        input$VariableSelect
+      ))
     }
+    else {
+      sprintf(paste(
+        "Vessels in",
+        input$VariableSelect
+      ))
+    }
+  }
+  else {
+    sprintf(paste(
+      ""
+    ))
+  }
+}
+  
+
+main <- function() {
+  bquote(atop(.(plot.title()), .(gv())))
+}       
+##gv <- function() {
 
     # y-axis label ####
     ylab <- function() {
@@ -654,37 +272,51 @@ gv <- function() {
                   "in",
                   dat$unit,
                   "knots)")
+          } else if (input$socSelect == 'Days at sea') {
+            paste(input$socSelect,
+                  "(",
+                  input$StatSelect,
+                  ")")
           } else {
-            input$socSelect
+            paste(input$socSelect,
+                  "(",
+                  input$StatSelect,
+                  "in",
+                  dat$unit,
+                  ")")
           }
         } else {
-          expression(bold('Scale and units depend upon metric'))
+          paste(input$StatSelect,
+                '(Scale and units depend upon metric)')
         }
       } else if (input$Ind_sel == "Vessel characteristics" ||
                  input$Ind_sel == 'Processor characteristics') {
         if (input$LayoutSelect != 'Metrics') {
-          if (input$demSelect == "Proportion of revenue from CS fishery") {
-            expression(bold("Proportion of revenue from catch share fishery"))
-          }  else if (input$demSelect == "Number of fisheries") {
-            expression(bold("Number of fisheries"))
-          }  else if (input$demSelect == "Vessel length") {
-            expression(bold("Vessel length (in feet)"))
-          } else if (input$demSelect == 'Revenue diversification') {
-            expression(bold('Revenue diversification (Exponential Shannon Index)'))
-          } else if (input$demSelect == 'Vessel horsepower') {
-            expression(bold('Vessel horsepower'))
-          } else {
+          if (!input$demSelect %in% c('Vessel length', 'Revenue diversification', 'Number of vessels')) {
             paste(input$demSelect,
-            "(",
-            input$StatSelect,
-            "in",
-            dat$unit,
-            currentyear,
-            "$",
-            ")")
+                  "(",
+                  input$AVE_MED2,
+                  "in",
+                  dat$unit,
+                  currentyear,
+                  "$",
+                  ")")
+          } else if (input$demSelect == 'Number of vessels') {
+            paste(input$demSelect)
+          } else if (input$demSelect == 'Vessel length') {
+            paste(input$demSelect,
+                  "(",
+                  input$AVE_MED2,
+                  "in feet)")
+          } else if (input$demSelect == 'Revenue diversification') {
+            paste(input$demSelect,
+                  "(",
+                  input$AVE_MED2,
+                  "Exponential Shannon Index)")
           }
         } else {
-          expression(bold('Scale and units depend upon metric'))
+          paste(input$AVE_MED2,
+                '(Scale and units depend upon metric)')
         }
       } else if (input$Ind_sel == 'Labor') {
         if (input$LayoutSelect != 'Metrics') {
@@ -701,10 +333,14 @@ gv <- function() {
                   "$",
                   ")")
           } else {
-            paste(input$crewSelect)
+            paste(input$crewSelect,
+                  "(",
+                  input$StatSelect,
+                  ")")
           }
       } else {
-        expression(bold('Scale and units depend upon metric'))
+        paste(input$StatSelect,
+              '(Scale and units depend upon metric)')
       }
         }
     }
