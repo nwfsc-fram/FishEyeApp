@@ -261,32 +261,32 @@ main <- function() {
           } else if (input$socSelect == "Fuel use per day") {
             paste(input$socSelect,
                   "(",
-                  input$StatSelect,
+                  input$AVE_MED2,
                   "in",
                   dat$unit,
                   "gallons)")
           } else if (input$socSelect == 'Speed while fishing') {
             paste(input$socSelect,
                   "(",
-                  input$StatSelect,
+                  input$AVE_MED2,
                   "in",
                   dat$unit,
                   "knots)")
           } else if (input$socSelect == 'Days at sea') {
             paste(input$socSelect,
                   "(",
-                  input$StatSelect,
+                  input$AVE_MED2,
                   ")")
           } else {
             paste(input$socSelect,
                   "(",
-                  input$StatSelect,
+                  input$AVE_MED2,
                   "in",
                   dat$unit,
                   ")")
           }
         } else {
-          paste(input$StatSelect,
+          paste(input$AVE_MED2,
                 '(Scale and units depend upon metric)')
         }
       } else if (input$Ind_sel == "Vessel characteristics" ||
@@ -326,7 +326,7 @@ main <- function() {
              input$crewSelect != 'Number of workers') {
             paste(input$crewSelect,
                   "(",
-                  input$StatSelect,
+                  input$AVE_MED2,
                   "in",
                   dat$unit,
                   currentyear,
@@ -335,11 +335,11 @@ main <- function() {
           } else {
             paste(input$crewSelect,
                   "(",
-                  input$StatSelect,
+                  input$AVE_MED2,
                   ")")
           }
       } else {
-        paste(input$StatSelect,
+        paste(input$AVE_MED2,
               '(Scale and units depend upon metric)')
       }
         }
