@@ -127,22 +127,8 @@ scale_height <- function(){
 }
 
 output$PlotMain <- renderPlot({
-  input$data
-  if(vars$counter%%2 == 0) return()
-   else if(!PermitPlot()) return()
-      if(PermitPlot()) #& input$Ind_sel!="Economic")
-    {
-#   if(input$MetricSelect=="revpcrewday"|input$MetricSelect=="wage"){
-#      doPlot(dat = DatSub(), x = "YEAR", y = "VALUE/1000")}  
-#   else if(input$MetricSelect=="Share of landings by state"){
-#     doPlot(dat = DatSub(), x = "YEAR", y = "VALUE*100")
-# }  else { 
-        doPlot(dat = DatSub(), x = "YEAR", y = "VALUE")
-               
-      }
-#else if(PermitPlot() & input$Ind_sel=="Economic"){
-#   doPlot(dat = DatSub(), x = "YEAR", y = "VALUE/1000")}
- },  height=scale_height, width = "auto")
+  doPlot(dat = DatSub(), x = "YEAR", y = "VALUE")
+},  height=scale_height, width = "auto")
 
 output$PlotMain2 <- renderPlot({
   input$data
@@ -156,9 +142,6 @@ output$PlotMain3 <- renderPlot({
 },  height=400, width = 700)
 
 output$TableMain <- renderDataTable({  
-  input$data
-  if(vars$counter%%2 != 0) return()
-  else if(!PermitPlot()) return()
     if(!is.null(DatSubTable())) {
       if(input$LayoutSelect=="Metrics"){
         if(input$Ind_sel=="Economic"){
