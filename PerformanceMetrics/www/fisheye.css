@@ -4,6 +4,36 @@
 
 /*==================================================================================*/
 
+.panel-heading {
+  cursor: pointer;
+}
+
+.header {
+  cursor: pointer;
+  border: 1px solid transparent;
+  box-shadow: 0 1px 1px rgba(0,0,0,.05);
+  color: #31708f;
+  background-color: #d9edf7;
+  border-color: #bce8f1;
+  padding: 10px 15px;
+  font-size: 15px;
+  line-height: 1.42857143;
+  margin: 4px;
+}
+
+.header.collapsed:after {
+    font-family: 'FontAwesome';
+    content: "\f078";
+    float: right;
+    color: inherit;
+}
+
+.header:after {
+    font-family: 'FontAwesome';
+    content: "\f077";
+    float: right;
+    color: inherit;
+}
 
 .footer-links-left {
   margin-top:5px;
