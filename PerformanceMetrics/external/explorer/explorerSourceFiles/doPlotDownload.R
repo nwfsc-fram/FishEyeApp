@@ -553,8 +553,17 @@ xlab <- function(){
     }
     
     #add lines and points to the plot ####
-    g <- g + geom_line(aes_string(colour = groupVar), size = 1.5) +
-      geom_point(aes_string(colour = groupVar), size = 4)
+if (input$socSelect == 'Share of landings by state') {
+
+  g <-
+    g + geom_line(aes_string(colour = groupVar, group = "bystategrp"), size = 1.5) +
+    geom_point(aes_string(colour = groupVar, shape = "AGID", group = "bystategrp"),
+      size = 4)
+  
+} else {
+  g <- g + geom_line(aes_string(colour = groupVar), size = 1.5) +
+    geom_point(aes_string(colour = groupVar), size = 4)
+}
 
 #------ Add variance ------#    
     if(input$PlotSelect==T& !exists('ssn')) { 
