@@ -4,6 +4,7 @@ library(appFrame)
 library(shinyjs)
 library(shinyWidgets)
 library(shinyBS)
+library(bsplus)
 
 # custom css functions
 # calls .css selector for well-sub
@@ -23,7 +24,7 @@ function(request) {
       #  tags$style(HTML(".navbar .nav > li { position:relative; z-index: 10000;}")),
       tags$style(HTML(".navbar {position:static}")),
       tags$style(HTML(".ckbox {margin-top: 0px; margin-bottom: -15px}")),
-      tags$style(HTML(".statbox {margin-top: -30px; margin-bottom: -15px}")),
+      tags$style(HTML(".statbox {margin-bottom: -15px}")),
       ##These are used to gray out different metrics when grouping by 'Metrics' 
       #and are labeled based on the # in seq that should be greyed out. i.e., items 2-5 are grayed out in ckbox2345
       tags$style(HTML(".ckbox2345 .checkbox:nth-child(2) label{color:grey;} .checkbox.input:nth-child(2),
@@ -77,7 +78,39 @@ function(request) {
                                       .rbutton .radio:nth-child(3) label, 
                                       .rbutton .radio:nth-child(10) label{font-weight:bold;}")),
       
-            tags$style(HTML(".ckbox2 .checkbox:nth-child(-n+15) label,
+      #Style appears of Cost category check boxes - indents, bolding, spacing
+      tags$style(HTML(".statbox {margin-top: -30px; margin-bottom: 0px}
+                                     .statboxC  .checkbox:first-child label, 
+                                     .statboxM  .checkbox:first-child label,
+                                     .statboxF  .checkbox:first-child label,
+                                     .statboxF  .checkbox:nth-child(10) label,
+                                     .statboxC  .checkbox:nth-child(9) label,
+                                     .statboxM  .checkbox:nth-child(8) label,
+                                     .ckbox2 .checkbox:first-child label,
+                                     .ckbox2 .checkbox:nth-child(2) label,
+                                     .ckbox2 .checkbox:nth-child(11) label{font-weight:bold;}
+                              .statboxC .checkbox:nth-child(-n+14) label,
+                                    .statboxF .checkbox:nth-child(-n+14) label,
+                                    .statboxM .checkbox:nth-child(-n+12) label,
+                                    .ckbox2 .checkbox:nth-child(-n+14) label,
+                                   .frckbox .checkbox:nth-child(3) label,
+                                   .frckbox .checkbox:nth-child(4) label{margin-left:17px;}
+                              .ckbox2 .checkbox:nth-child(4) label,
+                                    .ckbox2 .checkbox:nth-child(5) label,
+                                    .ckbox2 .checkbox:nth-child(7) label,
+                                    .ckbox2 .checkbox:nth-child(8) label,
+                                    .ckbox2 .checkbox:nth-child(9) label{margin-left:34px;}
+                              .statboxM .checkbox:nth-child(1) label,
+                                    .statboxC .checkbox:nth-child(1) label,
+                                    .statboxF .checkbox:nth-child(1) label,
+                                    .statboxC .checkbox:nth-child(9) label,
+                                    .statboxF .checkbox:nth-child(10) label,
+                                    .statboxM .checkbox:nth-child(8) label,
+                                    .ckbox2 .checkbox:nth-child(-n+2) label,
+                                    .ckbox2 .checkbox:nth-child(11) label{margin-left:0px;}"
+      )),
+      
+      tags$style(HTML(".ckbox2 .checkbox:nth-child(-n+15) label,
                                       .ckbox3 .radio:nth-child(-n+16) label,
                                       .FRprod .checkbox:nth-child(4) label,
                                       .FRprod .checkbox:nth-child(3) label,
@@ -184,7 +217,7 @@ function(request) {
             wellPanel( 
               fluidRow(
                 column(4,
-                  uiOutput("resetButton"),
+                       uiOutput("resetButton"),
                   uiOutput('Button'))),#end fluidRow
               
               # Select a vessel/Processor Type
@@ -192,53 +225,48 @@ function(request) {
                                 choices = c('Catcher Vessels'="CV", 'Mothership Vessels'="M", 'Catcher-Processor Vessels'="CP", 'First Receivers and Shorebased Processors'="FR"),
                                 individual = TRUE
               ),
-              
+
               # Compare By
               fluidRow(
                 column(12,
-                  uiOutput('Layoutselect')#,style = "background:white; padding: 10px;margin:0px; border: 3px solid #D3D3D3;border-radius:10px;"
+                  uiOutput('Layoutselect')
                 )),
               
               # Metrics
-              fluidRow(
-                column(12,
-                       tags$div(style = "font-weight:bold; margin-bottom: 7px", "Metric:"),
-                       uiOutput('metrics'),
-                       style = "background:white; padding: 10px;margin:0px; border: 3px solid #D3D3D3;border-radius:10px;"
-                )),
-              
-              fluidRow(style = "padding: 10px;"),
+              tags$div(class="header collapsed", "Metric")%>% bs_attach_collapse("collapse1"),
+              bs_collapse(id = "collapse1",
+                          content = tags$div(column(12, uiOutput('metrics'),
+                                                    style = "background:white; padding: 10px;margin-below:4px;border-color: #bce8f1;"))
+              ),
               
               # Filters
-              fluidRow(
-                column(12,
-                       tags$div(style = "font-weight:bold; margin-bottom: 7px", "Filter By:"),
-                       uiOutput('filterTabs'),
-                       uiOutput("Variableselect"),
-                       style = "background:white; padding: 10px;margin:0px; border: 3px solid #D3D3D3;border-radius:10px;"
-                )),
+              tags$div(class="header collapsed", "Filters")%>% bs_attach_collapse("collapse2"),
+              bs_collapse(id = "collapse2",
+                          content = tags$div(column(12, uiOutput('filterTabs'),
+                                                    uiOutput("Variableselect"),
+                                                    style = "background:white; padding: 10px;margin-below:4px;border-color: #bce8f1;"))
+              ) ,
               
+              # Additional Filters
+              tags$div(class="header collapsed", "Additional Filters")%>% bs_attach_collapse("collapse3"),
+              bs_collapse(id = "collapse3",
+                          content = tags$div(column(12,
+                                                    fluidRow(
+                                                      column(6, uiOutput("FishWhitingselect")),
+                                                      column(6, uiOutput("fisheriesOptions"))
+                                                    ),
+                                                    fluidRow(
+                                                      column(6, uiOutput("Yearselect")),
+                                                      column(6, uiOutput("FishAkselect"))
+                                                    ),
+                                                    style = "background:white; padding: 10px;margin-below:4px;border-color: #bce8f1;"))
+              ) ,
               
-              fluidRow(style = "padding: 10px;"),
-              
-              tags$b("Additional Filters:"),
-              fluidRow(
-                column(6, uiOutput("FishWhitingselect")),
-                column(6, uiOutput("fisheriesOptions"))
-              ), 
-              
-              fluidRow(style = "padding: 10px;"),
-             
-             fluidRow(
-               column(6, uiOutput("Yearselect")),
-               column(6, uiOutput("FishAkselect"))
-             ),
-             
-             fluidRow(style = "padding: 10px;"),
-             
-             fluidRow(
-               column(6, uiOutput("Plotselect"))
-             ),
+              conditionalPanel(condition="input.Ind_sel!='Economic'&input.AVE_MED2!='Total'&
+                                                              input.socSelect!='Seasonality'&
+                                                              input.socSelect!='Share of landings by state'||
+                                                              input.Ind_sel=='Economic'&input.AVE_MED!='T'",
+                               uiOutput("Plotselect")),
               
               
               fluidRow(

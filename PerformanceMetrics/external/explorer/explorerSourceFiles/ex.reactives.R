@@ -47,12 +47,15 @@ DatVars <- reactive({
           "Mean per vessel",
           "Mean per vessel/day",
           "Mean per vessel/metric ton caught",
+          "Mean per vessel/dollar of revenue",
           "Median per vessel",
           "Median per vessel/day",
           "Median per vessel/metric ton caught",
+          "Median per vessel/dollar of revenue",
           "Fleet-wide total",
           "Fleet-wide average/day",
-          "Fleet-wide average/metric ton caught"
+          "Fleet-wide average/metric ton caught",
+          "Fleet-wide average/dollar of revenue"
         ),
         ##Vessel characteristics metrics##
         METRIC1 =  c(
@@ -104,7 +107,9 @@ DatVars <- reactive({
           "Fishing gear",
           "On-board equipment",
           "Other fixed costs"
-        )
+        ),
+        COSTS = c('All variable costs','Buyback fees','Captain','Cost recovery fees','Crew','Fuel','Observers', 'Other variable costs',
+               'All fixed costs','Fishing gear','On-board equipment','Other fixed costs')
         )
       )
   } else if (input$Sect_sel == "FR") {
@@ -128,10 +133,13 @@ DatVars <- reactive({
         STAT =  c(
           "Mean per processor",
           "Mean per processor/metric ton of groundfish products produced" = "Mean per processor/metric ton produced",
+          "Mean per processor/dollar of revenue",
           "Median per processor",
           "Median per processor/metric ton of groundfish products produced" = "Median per processor/metric ton produced",
+          "Median per processor/dollar of revenue",
           "Industry-wide total",
-          "Industry-wide average/metric ton of groundfish products produced" = "Industry-wide average/metric ton produced"
+          "Industry-wide average/metric ton of groundfish products produced" = "Industry-wide average/metric ton produced",
+          "Industry-wide average/dollar of revenue"
         ),
         ##Processor characteristic metrics##
         METRIC1 =  c(
@@ -163,7 +171,9 @@ DatVars <- reactive({
           'Buildings',
           'Equipment',
           'Other fixed costs'
-        )
+        ),
+        COSTS = c("All variable costs",'Fish purchases','Freight','Labor','Monitoring','Off-site freezing & storage','Packing materials',
+                       'Utilities','Other variable costs',"All fixed costs",'Buildings','Equipment','Other fixed costs')
       )
     )
   } else if (input$Sect_sel == "M") {
@@ -185,12 +195,15 @@ DatVars <- reactive({
           "Mean per vessel",
           "Mean per vessel/day",
           "Mean per vessel/metric ton produced",
+          "Mean per vessel/dollar of revenue",
           "Median per vessel",
           "Median per vessel/day",
           "Median per vessel/metric ton produced",
+          "Median per vessel/dollar of revenue",
           "Fleet-wide total",
           'Fleet-wide average/day',
-          'Fleet-wide average/metric ton produced'
+          'Fleet-wide average/metric ton produced',
+          'Fleet-wide average/dollar of revenue'
         ),
         ##Vessel characteristic metrics##
         METRIC1 =  c(
@@ -229,7 +242,9 @@ DatVars <- reactive({
           'On-board equipment',
           'Processing equipment',
           'Other fixed costs'
-        )
+        ),
+        COSTS = c("All variable costs","Fish purchases","Fuel","Non-processing crew","Observers","Processing crew","Other variable costs",
+                       "All fixed costs","Fishing gear","On-board equipment","Processing equipment",'Other fixed costs')
         )
       )
 } else if (input$Sect_sel == "CP") {
@@ -251,12 +266,15 @@ DatVars <- reactive({
         "Mean per vessel",
         "Mean per vessel/day",
         "Mean per vessel/metric ton produced",
+        "Mean per vessel/dollar of revenue",
         "Median per vessel",
         "Median per vessel/day",
         "Median per vessel/metric ton produced",
+        "Median per vessel/dollar of revenue",
         "Fleet-wide total",
         'Fleet-wide average/day',
-        'Fleet-wide average/metric ton produced'
+        'Fleet-wide average/metric ton produced',
+        'Fleet-wide average/dollar of revenue'
       ),
       ##Vessel characteristic metrics##
       METRIC1 =  c(
@@ -295,7 +313,9 @@ DatVars <- reactive({
         'On-board equipment',
         'Processing equipment',
         'Other fixed costs'
-      )
+      ),
+      COSTS = c("All variable costs",'Cost recovery fees', "Fuel","Non-processing crew","Observers","Processing crew","Other variable costs",
+                     "All fixed costs","Fishing gear","On-board equipment","Processing equipment",'Other fixed costs')
     )
   )
 }
@@ -437,6 +457,10 @@ DatSubTable <- reactive({
           )
       }
     }
+  } else if (input$Ind_sel == 'Cost') {
+    datSub <-
+      subset(datSubforSector,
+             METRIC %in% input$costSelect & STAT == input$costStatSelect)
   }
   #    if(input$Ind_sel!="Economic")  {
   #      if(input$MetricSelect!="Number of vessels"&input$MetricSelect!="date"&input$MetricSelect!="landings"&input$MetricSelect!="GINI"){
@@ -774,7 +798,35 @@ DatSubTable <- reactive({
             which(colnames(datSub) == "VALUE"),
             which(colnames(datSub) == "VARIANCE")
           )]
-      }} else {
+      }} else if (input$Ind_sel == "Cost") {
+        if(input$Sect_sel=="CV"){
+          if (input$CategorySelect == "Fisheries") {
+            datSub <- datSub[,c(which(colnames(datSub)=="YEAR"),which(colnames(datSub)=="VARIABLE"),which(colnames(datSub)=="CATEGORY"),
+                                which(colnames(datSub)=="STAT"), which(colnames(datSub)=="METRIC"),
+                                which(colnames(datSub)=="whitingv"),which(colnames(datSub)=="N"))]
+          } else {
+            datSub <- datSub[,c(which(colnames(datSub)=="YEAR"),which(colnames(datSub)=="VARIABLE"),which(colnames(datSub)=="CATEGORY"),which(colnames(datSub)=="CS"),
+                                which(colnames(datSub)=="STAT"), which(colnames(datSub)=="METRIC"),
+                                which(colnames(datSub)=="whitingv"),which(colnames(datSub)=="N"))]
+          }
+        } else if(input$Sect_sel=='FR'){
+          if (input$CategorySelect == "Fisheries") {
+            datSub <- datSub[,c(which(colnames(datSub)=="YEAR"),which(colnames(datSub)=="VARIABLE"),which(colnames(datSub)=="CATEGORY"),
+                                which(colnames(datSub)=="STAT"), which(colnames(datSub)=="METRIC"),
+                                which(colnames(datSub)=="whitingv"),which(colnames(datSub)=="N"))]
+          } else {
+            datSub <- datSub[,c(which(colnames(datSub)=="YEAR"),
+                                which(colnames(datSub)=="VARIABLE"),which(colnames(datSub)=="CATEGORY"),which(colnames(datSub)=="CS"),which(colnames(datSub)=="STAT"),
+                                which(colnames(datSub)=="METRIC"),which(colnames(datSub)=="whitingv"),which(colnames(datSub)=="N"))]
+          }
+        } 
+        else {
+          datSub <- datSub[,c(which(colnames(datSub)=="YEAR"),which(colnames(datSub)=="VARIABLE"),which(colnames(datSub)=="CATEGORY"),
+                              which(colnames(datSub)=="STAT"),which(colnames(datSub)=="METRIC"),which(colnames(datSub)=="whitingv"),
+                              which(colnames(datSub)=="N"))]
+        }
+        
+      } else {
         datSub <-
           datSub[, c(
             which(colnames(datSub) == "YEAR"),
@@ -804,6 +856,35 @@ DatSubTable <- reactive({
           which(colnames(datSub) == "VALUE"),
           which(colnames(datSub) == "VARIANCE")
         )]
+    } else if (input$Ind_sel == "Cost") {
+      if(input$Sect_sel=="CV"){
+        if (input$CategorySelect == "Fisheries") {
+          datSub <- datSub[,c(which(colnames(datSub)=="YEAR"),which(colnames(datSub)=="VARIABLE"),which(colnames(datSub)=="CATEGORY"),
+                              which(colnames(datSub)=="STAT"), which(colnames(datSub)=="METRIC"),
+                              which(colnames(datSub)=="whitingv"),which(colnames(datSub)=="N"),which(colnames(datSub)=="VALUE"),which(colnames(datSub)=="VARIANCE"))]
+        } else {
+          datSub <- datSub[,c(which(colnames(datSub)=="YEAR"),which(colnames(datSub)=="VARIABLE"),which(colnames(datSub)=="CATEGORY"),which(colnames(datSub)=="CS"),
+                              which(colnames(datSub)=="STAT"), which(colnames(datSub)=="METRIC"),
+                              which(colnames(datSub)=="whitingv"),which(colnames(datSub)=="N"),which(colnames(datSub)=="VALUE"),which(colnames(datSub)=="VARIANCE"))]
+        }
+      } else if(input$Sect_sel=='FR'){
+        if (input$CategorySelect == "Fisheries") {
+          datSub <- datSub[,c(which(colnames(datSub)=="YEAR"),which(colnames(datSub)=="VARIABLE"),which(colnames(datSub)=="CATEGORY"),
+                              which(colnames(datSub)=="STAT"), which(colnames(datSub)=="METRIC"),
+                              which(colnames(datSub)=="whitingv"),which(colnames(datSub)=="N"),which(colnames(datSub)=="VALUE"),which(colnames(datSub)=="VARIANCE"))]
+        } else {
+          datSub <- datSub[,c(which(colnames(datSub)=="YEAR"),
+                              which(colnames(datSub)=="VARIABLE"),which(colnames(datSub)=="CATEGORY"),which(colnames(datSub)=="CS"),which(colnames(datSub)=="STAT"),
+                              which(colnames(datSub)=="METRIC"),which(colnames(datSub)=="whitingv"),which(colnames(datSub)=="N"),which(colnames(datSub)=="VALUE"),
+                              which(colnames(datSub)=="VARIANCE"))]
+        }
+      } 
+      else {
+        datSub <- datSub[,c(which(colnames(datSub)=="YEAR"),which(colnames(datSub)=="VARIABLE"),which(colnames(datSub)=="CATEGORY"),
+                            which(colnames(datSub)=="STAT"),which(colnames(datSub)=="METRIC"),which(colnames(datSub)=="whitingv"),
+                            which(colnames(datSub)=="N"),which(colnames(datSub)=="VALUE"),which(colnames(datSub)=="VARIANCE"))]
+      }
+      
     } else {
       datSub <-
         datSub[, c(
@@ -823,42 +904,42 @@ DatSubTable <- reactive({
   
 # not sure what this is ####
 ## I think this has something to do with metrics that don't have 'Total' or only have 'Total' but sure what it actually does ## Ashley
-  if (input$Ind_sel != "Economic") {
-    if (input$LayoutSelect == "Metrics") {
-      if (input$AVE_MED2 == "Average" |
-          input$AVE_MED2 == 'Mean' | input$AVE_MED2 == "Median") {
-        if (table(table(datSub$METRIC) > 1)[2] > 1) {
-          datSub <-
-            subset(
-              datSub,
-              !METRIC %in% c(
-                "Number of vessels",
-                "Gini coefficient",
-                "Number of processors"
-              )
-            )
-        }
-      }
-      else if (input$AVE_MED2 == "Total") {
-        if (table(table(datSub$METRIC) > 1)[2] > 1) {
-          datSub <-
-            subset(
-              datSub,
-              !METRIC %in% c(
-                "Vessel length",
-                "Revenue diversification",
-                "Number of fisheries",
-                "Hourly compensation",
-                'Crew wage per day'
-              )
-            )
-        }
-      }
-      else {
-        datSub
-      }
-    }
-  }
+  # if (input$Ind_sel != "Economic" && input$Ind_sel != "Cost") {
+  #   if (input$LayoutSelect == "Metrics") {
+  #     if (input$AVE_MED2 == "Average" |
+  #         input$AVE_MED2 == 'Mean' | input$AVE_MED2 == "Median") {
+  #       if (table(table(datSub$METRIC) > 1)[2] > 1) {
+  #         datSub <-
+  #           subset(
+  #             datSub,
+  #             !METRIC %in% c(
+  #               "Number of vessels",
+  #               "Gini coefficient",
+  #               "Number of processors"
+  #             )
+  #           )
+  #       }
+  #     }
+  #     else if (input$AVE_MED2 == "Total") {
+  #       if (table(table(datSub$METRIC) > 1)[2] > 1) {
+  #         datSub <-
+  #           subset(
+  #             datSub,
+  #             !METRIC %in% c(
+  #               "Vessel length",
+  #               "Revenue diversification",
+  #               "Number of fisheries",
+  #               "Hourly compensation",
+  #               'Crew wage per day'
+  #             )
+  #           )
+  #       }
+  #     }
+  #     else {
+  #       datSub
+  #     }
+  #   }
+  # }
   
 # More data table sorry messages ####
   validate(need(dim(datSub)[1] > 0,
@@ -973,25 +1054,18 @@ DatSub <- reactive({
       }
     } else {
       # Compare: Metrics
-      if (input$Sect_sel == "CV") {
-        datSub <-
-          subset(datSubforSector,
-            METRIC %in% input$socSelect & SUMSTAT == input$AVE_MED2)
-      } else if (input$Sect_sel == "FR") {
-        datSub <-
-          subset(datSubforSector,
-            METRIC %in% input$socSelect & SUMSTAT == input$AVE_MED2)
-      } else { # MS & CP
-        datSub <-
-          subset(datSubforSector,
-            METRIC %in% input$socSelect & SUMSTAT == input$AVE_MED2)
-      }
+      datSub <- subset(datSubforSector, METRIC %in% input$socSelect & SUMSTAT == input$AVE_MED2)
     }#End Other
   } else if (input$Ind_sel == 'Labor') {
       datSub <-
         subset(datSubforSector,
                METRIC %in% input$crewSelect &
                  SUMSTAT == input$AVE_MED2 & !is.na(input$crewSelect)) 
+  } else if (input$Ind_sel == 'Cost') {
+      datSub <-
+        subset(datSubforSector,
+               METRIC %in% input$costSelect &
+                 STAT == input$costStatSelect)
   }
   validate(need(dim(datSub)[1] > 0,
     if (input$Sect_sel != "FR") {
@@ -1498,22 +1572,7 @@ output$resetButton <- renderUI({
   }
 })
 
-#Show Plot/Show data buttons
-vars = reactiveValues(counter = 0.5)
-output$DataButton <- renderUI({
-  if (PermitPlot()) {
-    actionButton("data", label = label())
-  }
-})
 
-observe({
-  if (!is.null(input$data)) {
-    input$data
-    isolate({
-      vars$counter <- vars$counter + .5
-    })
-  }
-})
 
 label <- reactive({
   if (!is.null(input$data)) {
@@ -1533,14 +1592,7 @@ output$DataButton2 <- renderUI({
   }
 })
 
-observe({
-  if (!is.null(input$data2)) {
-    input$data2
-    isolate({
-      vars2$counter <- vars2$counter + .5
-    })
-  }
-})
+
 
 label2 <- reactive({
   if (!is.null(input$data2)) {
