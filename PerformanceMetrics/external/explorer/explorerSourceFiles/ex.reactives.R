@@ -803,27 +803,27 @@ DatSubTable <- reactive({
           if (input$CategorySelect == "Fisheries") {
             datSub <- datSub[,c(which(colnames(datSub)=="YEAR"),which(colnames(datSub)=="VARIABLE"),which(colnames(datSub)=="CATEGORY"),
                                 which(colnames(datSub)=="STAT"), which(colnames(datSub)=="METRIC"),
-                                which(colnames(datSub)=="whitingv"),which(colnames(datSub)=="N"))]
+                                which(colnames(datSub)=="whitingv"),which(colnames(datSub)=="N"),which(colnames(datSub)=="VALUE"),which(colnames(datSub)=="VARIANCE"))]
           } else {
             datSub <- datSub[,c(which(colnames(datSub)=="YEAR"),which(colnames(datSub)=="VARIABLE"),which(colnames(datSub)=="CATEGORY"),which(colnames(datSub)=="CS"),
                                 which(colnames(datSub)=="STAT"), which(colnames(datSub)=="METRIC"),
-                                which(colnames(datSub)=="whitingv"),which(colnames(datSub)=="N"))]
+                                which(colnames(datSub)=="whitingv"),which(colnames(datSub)=="N"),which(colnames(datSub)=="VALUE"),which(colnames(datSub)=="VARIANCE"))]
           }
         } else if(input$Sect_sel=='FR'){
           if (input$CategorySelect == "Fisheries") {
             datSub <- datSub[,c(which(colnames(datSub)=="YEAR"),which(colnames(datSub)=="VARIABLE"),which(colnames(datSub)=="CATEGORY"),
                                 which(colnames(datSub)=="STAT"), which(colnames(datSub)=="METRIC"),
-                                which(colnames(datSub)=="whitingv"),which(colnames(datSub)=="N"))]
+                                which(colnames(datSub)=="whitingv"),which(colnames(datSub)=="N"),which(colnames(datSub)=="VALUE"),which(colnames(datSub)=="VARIANCE"))]
           } else {
             datSub <- datSub[,c(which(colnames(datSub)=="YEAR"),
                                 which(colnames(datSub)=="VARIABLE"),which(colnames(datSub)=="CATEGORY"),which(colnames(datSub)=="CS"),which(colnames(datSub)=="STAT"),
-                                which(colnames(datSub)=="METRIC"),which(colnames(datSub)=="whitingv"),which(colnames(datSub)=="N"))]
+                                which(colnames(datSub)=="METRIC"),which(colnames(datSub)=="whitingv"),which(colnames(datSub)=="N"),which(colnames(datSub)=="VALUE"),which(colnames(datSub)=="VARIANCE"))]
           }
         } 
         else {
           datSub <- datSub[,c(which(colnames(datSub)=="YEAR"),which(colnames(datSub)=="VARIABLE"),which(colnames(datSub)=="CATEGORY"),
                               which(colnames(datSub)=="STAT"),which(colnames(datSub)=="METRIC"),which(colnames(datSub)=="whitingv"),
-                              which(colnames(datSub)=="N"))]
+                              which(colnames(datSub)=="N"),which(colnames(datSub)=="VALUE"),which(colnames(datSub)=="VARIANCE"))]
         }
         
       } else {
@@ -976,8 +976,8 @@ DatSub <- reactive({
   } else {
     datSubforSector <-
       subset(dat, YEAR %in% seq(input$YearSelect[1], input$YearSelect[2], 1))
+   # browser()
   }
-  
   if (input$Ind_sel == "Economic") {
     datSub <-
       subset(datSubforSector,
@@ -1475,7 +1475,6 @@ DatSub <- reactive({
   #        datSub$VALUE <- ifelse(datSub$N<3, NA, datSub$VALUE)
   #        datSub$N <- ifelse(datSub$N<3, NA, datSub$N)
   #      }
-  
   if (input$LayoutSelect == "Metrics") {
     if (input$AVE_MED2 != "Total") {
       if (table(table(datSub$METRIC) > 1)[2] > 1) {

@@ -230,28 +230,29 @@ output$TableMain <- renderDataTable({
             names(table) <- c("Year", "Summary Variable", "Statistic", "Economic measure","Data summed\nacross", "Number of vessels","Value",  "Variance \n\n(Quartiles or SD)")
           }
         } else if (input$Ind_sel=="Cost") {
-          #not metric
           table <- subset(DatSubTable(), select = -c(CATEGORY))
+          table$VALUE <- paste('$', prettyNum(table$VALUE, big.mark = ",", format = 'f', digits = 5, trim=T))
+          table$VARIANCE <- paste('$', prettyNum(table$VARIANCE, big.mark = ",", format = 'f', digits = 5, trim=T))
           if(input$CategorySelect == "Fisheries"){
             if(input$Sect_sel=="CV"){
               names(table) <- c("Year", "Summary Variable", "Statistic", "Costs measure",
-                                "Data summed across", "Number of vessels")
+                                "Data summed across", "Number of vessels", "Value", "Variance \n\n(Quartiles or SD)")
             } else if (input$Sect_sel=="FR") {
               names(table) <- c("Year", "Summary Variable","Statistic", "Costs measure","Data summed across",
-                                "Number of processors")
+                                "Number of processors", "Value", "Variance \n\n(Quartiles or SD)")
             } else {
               names(table) <- c("Year", "Summary Variable", "Statistic", "Costs measure","Data summed across",
-                                "Number of vessels")
+                                "Number of vessels", "Value", "Variance \n\n(Quartiles or SD)")
             }
           } else {
             if(input$Sect_sel=="CV"){
               names(table) <- c("Year", "Summary Variable","Fisheries Category", "Statistic", "Costs measure",
-                                "Data summed across", "Number of vessels")
+                                "Data summed across", "Number of vessels", "Value", "Variance \n\n(Quartiles or SD)")
             } else if(input$Sect_sel=="M"|input$Sect_sel=="CP"){
-              names(table) <- c("Year","Summary Variable","Statistic", "Costs measure","Data summed across","Number of vessels")
+              names(table) <- c("Year","Summary Variable","Statistic", "Costs measure","Data summed across","Number of vessels", "Value", "Variance \n\n(Quartiles or SD)")
             } else {
               names(table) <- c("Year","Summary Variable","Production Category", "Statistic", "Costs measure",
-                                "Data summed across","Number of processors")
+                                "Data summed across","Number of processors", "Value", "Variance \n\n(Quartiles or SD)")
             }}
         } else if(input$Ind_sel=="Other"){
           table <- subset(DatSubTable(), select = -c(CATEGORY)) 

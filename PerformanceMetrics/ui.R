@@ -4,7 +4,6 @@ library(appFrame)
 library(shinyjs)
 library(shinyWidgets)
 library(shinyBS)
-library(bsplus)
 
 # custom css functions
 # calls .css selector for well-sub
@@ -14,6 +13,7 @@ wellPanelHeading <- function(...){div(class = "well-radioHeading", ...)}
 
 
 function(request) {
+  use_bs_tooltip()
   fluidPage(title = "FISHEyE",
     useShinyjs(),
     # create a CSS to modify style of validation test error (for Variability analysis)
@@ -25,6 +25,7 @@ function(request) {
       tags$style(HTML(".navbar {position:static}")),
       tags$style(HTML(".ckbox {margin-top: 0px; margin-bottom: -15px}")),
       tags$style(HTML(".statbox {margin-bottom: -15px}")),
+      tags$style(HTML(".radio:first-child {margin-top: 10px;}")),
       ##These are used to gray out different metrics when grouping by 'Metrics' 
       #and are labeled based on the # in seq that should be greyed out. i.e., items 2-5 are grayed out in ckbox2345
       tags$style(HTML(".ckbox2345 .checkbox:nth-child(2) label{color:grey;} .checkbox.input:nth-child(2),
@@ -74,6 +75,7 @@ function(request) {
                                       .ckbox3 .radio:nth-child(2) label,
                                       .ckbox3 .radio:nth-child(3) label,
                                       .ckbox3 .radio:nth-child(13) label,
+                                      .ckbox3 .radio:first-child label,
                                       .rbutton .radio:nth-child(2) label,
                                       .rbutton .radio:nth-child(3) label, 
                                       .rbutton .radio:nth-child(10) label{font-weight:bold;}")),
@@ -81,6 +83,7 @@ function(request) {
       #Style appears of Cost category check boxes - indents, bolding, spacing
       tags$style(HTML(".statbox {margin-top: -30px; margin-bottom: 0px}
                                      .statboxC  .checkbox:first-child label, 
+                                     .statboxC  .checkbox:first-child label,
                                      .statboxM  .checkbox:first-child label,
                                      .statboxF  .checkbox:first-child label,
                                      .statboxF  .checkbox:nth-child(10) label,
@@ -88,18 +91,42 @@ function(request) {
                                      .statboxM  .checkbox:nth-child(8) label,
                                      .ckbox2 .checkbox:first-child label,
                                      .ckbox2 .checkbox:nth-child(2) label,
-                                     .ckbox2 .checkbox:nth-child(11) label{font-weight:bold;}
+                                     .ckbox2 .checkbox:nth-child(11) label,
+
+                                     .statboxC  .radio:first-child label, 
+                                     .statboxC  .radio:first-child label,
+                                     .statboxM  .radio:first-child label,
+                                     .statboxF  .radio:first-child label,
+                                     .statboxF  .radio:nth-child(10) label,
+                                     .statboxC  .radio:nth-child(9) label,
+                                     .statboxM  .radio:nth-child(8) label,
+                                     .ckbox2 .radio:first-child label,
+                                     .ckbox2 .radio:nth-child(2) label,
+                                     .ckbox2 .radio:nth-child(11) label{font-weight:bold;}
                               .statboxC .checkbox:nth-child(-n+14) label,
                                     .statboxF .checkbox:nth-child(-n+14) label,
                                     .statboxM .checkbox:nth-child(-n+12) label,
                                     .ckbox2 .checkbox:nth-child(-n+14) label,
                                    .frckbox .checkbox:nth-child(3) label,
-                                   .frckbox .checkbox:nth-child(4) label{margin-left:17px;}
+                                   .frckbox .checkbox:nth-child(4) label,
+
+                                    .statboxC .radio:nth-child(-n+14) label,
+                                    .statboxF .radio:nth-child(-n+14) label,
+                                    .statboxM .radio:nth-child(-n+12) label,
+                                    .ckbox2 .radio:nth-child(-n+14) label,
+                                    .frckbox .radio:nth-child(3) label,
+                                    .frckbox .radio:nth-child(4) label{margin-left:17px;}
                               .ckbox2 .checkbox:nth-child(4) label,
                                     .ckbox2 .checkbox:nth-child(5) label,
                                     .ckbox2 .checkbox:nth-child(7) label,
                                     .ckbox2 .checkbox:nth-child(8) label,
-                                    .ckbox2 .checkbox:nth-child(9) label{margin-left:34px;}
+                                    .ckbox2 .checkbox:nth-child(9) label,
+
+                                    .ckbox2 .radio:nth-child(4) label,
+                                    .ckbox2 .radio:nth-child(5) label,
+                                    .ckbox2 .radio:nth-child(7) label,
+                                    .ckbox2 .radio:nth-child(8) label,
+                                    .ckbox2 .radio:nth-child(9) label{margin-left:34px;}
                               .statboxM .checkbox:nth-child(1) label,
                                     .statboxC .checkbox:nth-child(1) label,
                                     .statboxF .checkbox:nth-child(1) label,
@@ -107,7 +134,16 @@ function(request) {
                                     .statboxF .checkbox:nth-child(10) label,
                                     .statboxM .checkbox:nth-child(8) label,
                                     .ckbox2 .checkbox:nth-child(-n+2) label,
-                                    .ckbox2 .checkbox:nth-child(11) label{margin-left:0px;}"
+                                    .ckbox2 .checkbox:nth-child(11) label,
+
+                                    .statboxM .radio:nth-child(1) label,
+                                    .statboxC .radio:nth-child(1) label,
+                                    .statboxF .radio:nth-child(1) label,
+                                    .statboxC .radio:nth-child(9) label,
+                                    .statboxF .radio:nth-child(10) label,
+                                    .statboxM .radio:nth-child(8) label,
+                                    .ckbox2 .radio:nth-child(-n+2) label,
+                                    .ckbox2 .radio:nth-child(11) label{margin-left:0px;}"
       )),
       
       tags$style(HTML(".ckbox2 .checkbox:nth-child(-n+15) label,
@@ -133,13 +169,7 @@ function(request) {
                                      .ckbox3 .radio:nth-child(13) label,
                                      .rbutton .radio:nth-child(-n+3) label,
                                      .rbutton .radio:nth-child(10) label{margin-left:0px;}")),
-      
-      tags$style(HTML(".ckbox3 .radio:first-child label,
-                                   .StatGrey4  .radio:first-child label,       
-                                   .rbutton2 .radio:nth-child(1) label,
-                                   .rbutton3 .radio:nth-child(1) label,
-                                   .rbutton  .radio:nth-child(1) label{font-style:italic")), 
-      
+
       tags$style(HTML(".StatGrey2 .radio:nth-child(3) label{color:grey;}")),
       tags$style(HTML(".StatGrey .radio:nth-child(-n+2) label{color:grey;}")),
       
@@ -231,22 +261,23 @@ function(request) {
                 column(12,
                   uiOutput('Layoutselect')
                 )),
-              
+
               # Metrics
               tags$div(class="header collapsed", "Metric")%>% bs_attach_collapse("collapse1"),
               bs_collapse(id = "collapse1",
                           content = tags$div(column(12, uiOutput('metrics'),
                                                     style = "background:white; padding: 10px;margin-below:4px;border-color: #bce8f1;"))
               ),
-              
+
               # Filters
-              tags$div(class="header collapsed", "Filters")%>% bs_attach_collapse("collapse2"),
-              bs_collapse(id = "collapse2",
-                          content = tags$div(column(12, uiOutput('filterTabs'),
-                                                    uiOutput("Variableselect"),
-                                                    style = "background:white; padding: 10px;margin-below:4px;border-color: #bce8f1;"))
-              ) ,
-              
+              conditionalPanel(condition="input.Sect_sel=='CV' || input.Sect_sel=='FR'", 
+                               tags$div(class="header collapsed", "Filters")%>% bs_attach_collapse("collapse2"),
+                               bs_collapse(id = "collapse2",
+                                           content = tags$div(column(12, uiOutput('filters'),
+                                                                     uiOutput("Variableselect"),
+                                                                     style = "background:white; padding: 10px;margin-below:4px;border-color: #bce8f1;"))
+                               )),
+
               # Additional Filters
               tags$div(class="header collapsed", "Additional Filters")%>% bs_attach_collapse("collapse3"),
               bs_collapse(id = "collapse3",
@@ -275,7 +306,7 @@ function(request) {
                 column(4, bookmarkButton())
               )
               
-            ),      style = "padding: 0px;border: 1px solid #000000;"), # end right side column
+            ),      style = "padding: 0px;border: 1px solid #000000;overflow-y:scroll; max-height: 900px "), # end right side column
           
           
           mainPanel(
