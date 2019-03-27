@@ -24,55 +24,6 @@ output$metrics <- renderUI({
   }
 })
 
-output$costStats <- renderUI({
-  if(input$Sect_sel=="FR")  { 
-    tagList(
-      selectInput("AVE_MED_COSTS", HTML("<div> Statistic: <button id='istat' type='button' class='btn btn-default action-button shiny-bound-input'> 
-                                  <i class='fa fa-info-circle fa-fw' ></i></button> </div>"),
-                  c(Mean="A", Median="M", Total="T"), selectize=F),
-      tags$div(class="statbox", radioButtons("costStatSelect","",  choices = c(DatVars()$STAT[4:6]))))
-  } else if (input$Sect_sel=='CP'|input$Sect_sel=='M') {
-    tagList(
-      selectInput("AVE_MED_COSTS", HTML("<div> Statistic: <button id='istat' type='button' class='btn btn-default action-button shiny-bound-input'> 
-                                  <i class='fa fa-info-circle fa-fw' ></i></button> </div>"),
-                  c(Mean="A", Median="M", Total="T"), selectize=F),
-      tags$div(class="statbox", radioButtons("costStatSelect","",  choices = c(DatVars()$STAT[5:8]), selected=DatVars()$STAT[5])))
-  }else {
-    tagList(
-      selectInput("AVE_MED_COSTS", HTML("<div> Statistic: <button id='istat' type='button' class='btn btn-default action-button shiny-bound-input'> 
-                                  <i class='fa fa-info-circle fa-fw' ></i></button> </div>"),
-                  c(Mean="A", Median="M", Total="T"), selectize=F),
-      tags$div(class="statbox", radioButtons("costStatSelect","",  choices = c(DatVars()$STAT[5:8]), selected=DatVars()$STAT[5])))
-  }
-})
-
-output$costSelect <- renderUI({
-  if(input$Sect_sel=='CV'){
-    if (!input$LayoutSelect) {
-      tags$div(class="statboxC", radioButtons("costSelect",'Cost categories:',
-                                                    choices = DatVars()$COSTS,selected = c('All variable costs')))
-    } else {
-      tags$div(class="statboxC", checkboxGroupInput("costSelect",'Cost categories:',
-                                                    choices = DatVars()$COSTS,selected = c('All fixed costs','All variable costs')))
-    }
-  } else if(input$Sect_sel=='FR'){
-    if (input$LayoutSelect) {
-      tags$div(class="statboxF", radioButtons("costSelect",'Cost categories:',
-                                                    choices = DatVars()$COSTS,selected = c('All variable costs')))
-    } else {
-      tags$div(class="statboxF", checkboxGroupInput("costSelect",'Cost categories:',
-                                                    choices = DatVars()$COSTS,selected = c('All fixed costs','All variable costs')))
-    }
-  } else if(input$Sect_sel=='M'){
-    tags$div(class="statboxM", checkboxGroupInput("costSelect",'Cost categories:',
-                                                  choices = DatVars()$COSTS,selected = c('All fixed costs', 'All variable costs')))
-  } else {
-    tags$div(class="statboxM", checkboxGroupInput("costSelect",'Cost categories:',
-                                                  choices = DatVars()$COSTS,selected =  c('All fixed costs', 'All variable costs')))
-  }
-})
-
-
 output$SectPrint <- renderUI({
   tags$div(style = "font-size:210%;font-style:italic; padding:10px; padding-left:15px;display:inline-block;vertical-align:middle",
     if (input$Sect_sel == "CV") {
@@ -1191,6 +1142,32 @@ output$socSelect <- renderUI({
   }
 })
 
+##Identify individual metrics for the cost category####
+output$costSelect <- renderUI({
+  if(input$Sect_sel=='CV'){
+    if (!input$LayoutSelect) {
+      tags$div(class="statboxC", radioButtons("costSelect",'Cost categories:',
+                                              choices = DatVars()$COSTS,selected = c('All variable costs')))
+    } else {
+      tags$div(class="statboxC", checkboxGroupInput("costSelect",'Cost categories:',
+                                                    choices = DatVars()$COSTS,selected = c('All fixed costs','All variable costs')))
+    }
+  } else if(input$Sect_sel=='FR'){
+    if (input$LayoutSelect) {
+      tags$div(class="statboxF", radioButtons("costSelect",'Cost categories:',
+                                              choices = DatVars()$COSTS,selected = c('All variable costs')))
+    } else {
+      tags$div(class="statboxF", checkboxGroupInput("costSelect",'Cost categories:',
+                                                    choices = DatVars()$COSTS,selected = c('All fixed costs','All variable costs')))
+    }
+  } else if(input$Sect_sel=='M'){
+    tags$div(class="statboxM", checkboxGroupInput("costSelect",'Cost categories:',
+                                                  choices = DatVars()$COSTS,selected = c('All fixed costs', 'All variable costs')))
+  } else {
+    tags$div(class="statboxM", checkboxGroupInput("costSelect",'Cost categories:',
+                                                  choices = DatVars()$COSTS,selected =  c('All fixed costs', 'All variable costs')))
+  }
+})
 #= = = = = = = = = = = = = = = = = = = = = = 
 #Show data summed across button ####
 #= = = = = = = = = = = = = = = = = = = = = = 
@@ -1296,6 +1273,27 @@ observe({
 #= = = = = = = = = = = = = = = = = = = = = = 
 #End stat select  for economic measures
 #= = = = = = = = = = = = = = = = = = = = = = 
+output$costStats <- renderUI({
+  if(input$Sect_sel=="FR")  { 
+    tagList(
+      selectInput("AVE_MED_COSTS", HTML("<div> Statistic: <button id='istat' type='button' class='btn btn-default action-button shiny-bound-input'> 
+                                        <i class='fa fa-info-circle fa-fw' ></i></button> </div>"),
+                  c(Mean="A", Median="M", Total="T"), selectize=F),
+      tags$div(class="statbox", radioButtons("costStatSelect","",  choices = c(DatVars()$STAT[4:6]))))
+  } else if (input$Sect_sel=='CP'|input$Sect_sel=='M') {
+    tagList(
+      selectInput("AVE_MED_COSTS", HTML("<div> Statistic: <button id='istat' type='button' class='btn btn-default action-button shiny-bound-input'> 
+                                        <i class='fa fa-info-circle fa-fw' ></i></button> </div>"),
+                  c(Mean="A", Median="M", Total="T"), selectize=F),
+      tags$div(class="statbox", radioButtons("costStatSelect","",  choices = c(DatVars()$STAT[5:8]), selected=DatVars()$STAT[5])))
+  }else {
+    tagList(
+      selectInput("AVE_MED_COSTS", HTML("<div> Statistic: <button id='istat' type='button' class='btn btn-default action-button shiny-bound-input'> 
+                                        <i class='fa fa-info-circle fa-fw' ></i></button> </div>"),
+                  c(Mean="A", Median="M", Total="T"), selectize=F),
+      tags$div(class="statbox", radioButtons("costStatSelect","",  choices = c(DatVars()$STAT[5:8]), selected=DatVars()$STAT[5])))
+  }
+})
 
 #select whether to show values per vessel, /vessel/day, or /vessel/metric-ton
 observe({
@@ -1446,18 +1444,6 @@ output$otherStats <- renderUI({
             ),
             choices = c("Mean", "Median", 'Total'),
             select = 'Median'
-          )
-        ))
-      } else if (input$socSelect %in% c('Gini coefficient')) {
-        tagList(tags$div(
-          class = 'StatGrey',
-          radioButtons(
-            "AVE_MED2",
-            HTML(
-              "<div> Statistic: <button id='istat' type='button' class='btn btn-default action-button shiny-bound-input'> <i class='fa fa-info-circle fa-fw' ></i></button> </div>"
-            ),
-            choices = c("Mean", "Median", 'Total'),
-            select = 'Total'
           )
         ))
       } else {
