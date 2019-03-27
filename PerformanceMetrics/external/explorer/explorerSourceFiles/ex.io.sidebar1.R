@@ -951,7 +951,7 @@ output$demselect <- renderUI({
   } else {
     if (input$Sect_sel == 'FR') {
       tags$div(
-        class = "statbox",
+        class = "ckbox",
         radioButtons(
           "demSelect",
           NULL,
@@ -961,7 +961,7 @@ output$demselect <- renderUI({
       )
     } else {
       tags$div(
-        class = "statbox",
+        class = "ckbox",
         radioButtons(
           "demSelect",
           NULL,
@@ -1056,7 +1056,7 @@ output$crewSelect <- renderUI({
   else {
     if (input$Sect_sel == 'CV') {
       tags$div(
-        class = "statbox",
+        class = "ckbox",
         radioButtons(
           "crewSelect",
           NULL,
@@ -1067,7 +1067,7 @@ output$crewSelect <- renderUI({
     }
     else if (input$Sect_sel == 'M' | input$Sect_sel == 'CP') {
       tags$div(
-        class = "statbox",
+        class = "ckbox",
         radioButtons(
           "crewSelect",
           NULL,
@@ -1168,7 +1168,7 @@ output$socSelect <- renderUI({
   } else {
     if (input$Sect_sel == "FR") {
       tags$div(
-        class = "statbox",
+        class = "ckbox",
         radioButtons(
           "socSelect",
           NULL,
@@ -1179,7 +1179,7 @@ output$socSelect <- renderUI({
       
     } else {
       tags$div(
-        class = "statbox",
+        class = "ckbox",
         radioButtons(
           "socSelect",
           NULL,
@@ -1341,48 +1341,41 @@ output$vesselCharacteristicStats <- renderUI({
     ))
   } #End Metrics
   else {
-    if (input$Ind_sel == "Vessel characteristics" || input$Ind_sel == 'Processor characteristics') {
-      if (input$demSelect %in% c("Number of vessels", "Number of processors")) {
-        tagList(radioButtons(
-            "AVE_MED2",
-            HTML(
-              "<div> Statistic: <button id='istat' type='button' class='btn btn-default action-button shiny-bound-input'> <i class='fa fa-info-circle fa-fw' ></i></button> </div>"
-            ),
-            choices = c("Mean", "Median", 'Total'),
-            select = 'Total'
-        ))
-      } else if (input$demSelect %in% c(
-        "Vessel length",
-        "Revenue diversification",
-        "Number of fisheries",
-        "Proportion of revenue from CS fishery",
-        "Proportion of revenue from catch share species",
-        "Proportion of landings from CS fishery",
-        "Vessel market value",
-        "Vessel replacement value",
-        "Vessel horsepower"
-      )) {
-        tagList(radioButtons(
-            "AVE_MED2",
-            HTML(
-              "<div> Statistic: <button id='istat' type='button' class='btn btn-default action-button shiny-bound-input'> <i class='fa fa-info-circle fa-fw' ></i></button> </div>"
-            ),
-            choices = c("Mean", "Median", 'Total'),
-            select = 'Median'
-        ))
-      } else{
-        tagList(radioButtons(
+    if (input$demSelect %in% c("Number of vessels", "Number of processors")) {
+      tagList(tags$div(
+        class = 'StatGrey',
+        radioButtons(
+          "AVE_MED2",
+          HTML(
+            "<div> Statistic: <button id='istat' type='button' class='btn btn-default action-button shiny-bound-input'> <i class='fa fa-info-circle fa-fw' ></i></button> </div>"
+          ),
+          choices = c("Mean", "Median", 'Total'),
+          select = 'Total'
+        )
+      ))
+    } else if (input$demSelect %in% c(
+      "Vessel length",
+      "Revenue diversification",
+      "Number of fisheries",
+      "Proportion of revenue from CS fishery",
+      "Proportion of revenue from catch share species",
+      "Proportion of landings from CS fishery",
+      "Vessel market value",
+      "Vessel replacement value",
+      "Vessel horsepower"
+    )) {
+      tagList(tags$div(
+        class = 'StatGrey2',
+        radioButtons(
           "AVE_MED2",
           HTML(
             "<div> Statistic: <button id='istat' type='button' class='btn btn-default action-button shiny-bound-input'> <i class='fa fa-info-circle fa-fw' ></i></button> </div>"
           ),
           choices = c("Mean", "Median", 'Total'),
           select = 'Median'
-        ))
-      }
-    }
-  }
-}
+        )
+      ))
+    }}}
 )
 
 output$crewStats <- renderUI({
