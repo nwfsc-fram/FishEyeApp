@@ -21,6 +21,11 @@ DatMain <- reactive({
 
 # DatVars: sidebar inputs ####
 DatVars <- reactive({
+  outputOptions(output, "filters", suspendWhenHidden = FALSE)
+  outputOptions(output, "Variableselect", suspendWhenHidden = FALSE)
+  outputOptions(output, "FishWhitingselect", suspendWhenHidden = FALSE)
+  outputOptions(output, "FishWhitingselectBox", suspendWhenHidden = FALSE)
+  outputOptions(output, "Yearselect", suspendWhenHidden = FALSE)
   # create a list of variable names used in the sidebar inputs
   dat <- DatMain()
   if (input$Sect_sel == "CV") {
@@ -976,7 +981,6 @@ DatSub <- reactive({
   } else {
     datSubforSector <-
       subset(dat, YEAR %in% seq(input$YearSelect[1], input$YearSelect[2], 1))
-   # browser()
   }
   if (input$Ind_sel == "Economic") {
     datSub <-
@@ -1476,7 +1480,8 @@ DatSub <- reactive({
   #        datSub$N <- ifelse(datSub$N<3, NA, datSub$N)
   #      }
   
-  # just commented this out, not sure what it does
+  # Commented this out because it was causing this issue https://github.com/nwfsc-fram/FishEyeApp/issues/18
+  # don't see any problems after I commented this out - Melina
   # if (input$LayoutSelect) {
   #   if (input$AVE_MED2 != "Total") {
   #     if (table(table(datSub$METRIC) > 1)[2] > 1) {
@@ -1573,34 +1578,10 @@ output$resetButton <- renderUI({
   }
 })
 
-
-
-label <- reactive({
-  if (!is.null(input$data)) {
-    if (vars$counter %% 2 != 0)
-      label <- "Show Data"
-    else
-      label <- "Show Plot(s)"
-  }
-})
-
-
-
 vars2 = reactiveValues(counter = 0.5)
 output$DataButton2 <- renderUI({
   if (PermitPlot()) {
     actionButton("data2", label = label2())
-  }
-})
-
-
-
-label2 <- reactive({
-  if (!is.null(input$data2)) {
-    if (vars2$counter %% 2 != 0)
-      label2 <- "Show Data"
-    else
-      label2 <- "Show Plot(s)"
   }
 })
 
