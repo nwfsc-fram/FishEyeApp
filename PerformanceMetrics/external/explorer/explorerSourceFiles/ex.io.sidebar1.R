@@ -665,7 +665,7 @@ output$FishAkselect <- renderUI({
   if (!is.null(input$LayoutSelect) && !input$LayoutSelect &&
       !is.null(input$Sect_sel) && input$Sect_sel == 'CV' &&
       !is.null(input$Ind_sel) && input$Ind_sel == "Vessel characteristics") {
-    if (input$demSelect == 'Exponential Shannon Index' || input$demSelect == 'Proportion of revenue from CS fishery' || input$demSelect == 'Fishery participation') {
+    if (input$demSelect == 'Revenue diversification' || input$demSelect == 'Proportion of revenue from catch share fishery' || input$demSelect == 'Number of fisheries') {
       tagList(
         tags$div(style = "font-weight:bold; margin-bottom: 7px", "Alaskan Fisheries:"),
         tags$div(materialSwitch(
