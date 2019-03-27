@@ -17,7 +17,7 @@ observeEvent(input$istat, {
 })
 observeEvent(input$ipo, {
   session$sendCustomMessage(type = 'testmessage',
-                            if(input$LayoutSelect=="Metrics") {
+                            if(input$LayoutSelect) {
                             message = 'See the Definitions Page for a description of each metric. Not all metrics may be applicable for a given statistic.'
                             } else { 
                               message = 'See the Definitions Page for a description of each metric. Not all statistics may be applicable for a given metric.'}
@@ -143,7 +143,7 @@ output$PlotMain3 <- renderPlot({
 
 output$TableMain <- renderDataTable({  
     if(!is.null(DatSubTable())) {
-      if(input$LayoutSelect=="Metrics"){
+      if(input$LayoutSelect){
         if(input$Ind_sel=="Economic"){
           table <- subset(DatSubTable(), select = -c(CATEGORY))
           table$VALUE <- paste('$', prettyNum(table$VALUE, big.mark = ",", format = 'f', digits = 5, trim=T))
@@ -409,7 +409,7 @@ output$dlTable <- downloadHandler(
           }
       table$Sector <-c('Catcher Vessels','First Receivers and Shorebased Processors','Mothership vessels','Catcher-Processor vessels')[match(table$Sector, c('CV','FR','M','CP'))]
 #Rename the columns      
-      if(input$LayoutSelect=="Metrics"){
+      if(input$LayoutSelect){
         if(input$Ind_sel=="Economic"){
           if(input$Sect_sel=='CV'&input$CategorySelect!='Fisheries'){
             temp <- data.frame("Year", "Summary Variable","Fisheries Category", "Statistic", "Economic measure", "Data summed across","Number of vessels", "Value", "Variance (Quartiles or SD)","Sector")
@@ -583,8 +583,8 @@ output$dlFigure <- downloadHandler(
 output$hover_info <- renderUI({
   if(!is.null(input$plot_hover)){
     dat <- DatSub()
-    if(input$LayoutSelect!='Metrics'&length(input$VariableSelect)==1||
-       input$LayoutSelect=='Metrics'&length(input$ShortdescrSelect)==1){
+    if(!input$LayoutSelect & length(input$VariableSelect)==1||
+       input$LayoutSelect & length(input$ShortdescrSelect)==1){
       lvls <- levels(as.factor(dat$YEAR))
     } else {
       lvls <- rep(levels(as.factor(dat$YEAR)),2) 
@@ -654,8 +654,8 @@ output$hover_info <- renderUI({
     output$click_info <- renderUI({
       if(!is.null(input$plot_click)){
         dat <- DatSub()
-        if(input$LayoutSelect!='Metrics'&length(input$VariableSelect)==1||
-           input$LayoutSelect=='Metrics'&length(input$ShortdescrSelect)==1){
+        if(!input$LayoutSelect & length(input$VariableSelect)==1||
+           input$LayoutSelect & length(input$ShortdescrSelect)==1){
           lvls <- levels(as.factor(dat$YEAR))
         } else {
           lvls <- rep(levels(as.factor(dat$YEAR)),2) 

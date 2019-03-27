@@ -48,7 +48,7 @@ output$costStats <- renderUI({
 
 output$costSelect <- renderUI({
   if(input$Sect_sel=='CV'){
-    if (input$LayoutSelect != 'Metrics') {
+    if (!input$LayoutSelect) {
       tags$div(class="statboxC", radioButtons("costSelect",'Cost categories:',
                                                     choices = DatVars()$COSTS,selected = c('All variable costs')))
     } else {
@@ -56,7 +56,7 @@ output$costSelect <- renderUI({
                                                     choices = DatVars()$COSTS,selected = c('All fixed costs','All variable costs')))
     }
   } else if(input$Sect_sel=='FR'){
-    if (input$LayoutSelect != 'Metrics') {
+    if (input$LayoutSelect) {
       tags$div(class="statboxF", radioButtons("costSelect",'Cost categories:',
                                                     choices = DatVars()$COSTS,selected = c('All variable costs')))
     } else {
@@ -93,7 +93,22 @@ output$SectPrint <- renderUI({
 #= = = = = = = = = = = = = = = = = = = = = = 
 
 output$Yearselect <- renderUI({
-  if (input$Ind_sel == "Vessel characteristics" ||
+  if (is.null(input$Ind_sel) || is.null(input$CategorySelect)) {
+    tags$div(
+      class = "ckbox",
+      sliderInput(
+        "YearSelect",
+        "Years:",
+        min = 2009,
+        max = max(DatVars()$YEAR),
+        value = c(2009, max(DatVars()$YEAR)),
+        step = 1,
+        sep = '',
+        ticks = F
+      )
+    )
+  }
+  else if (input$Ind_sel == "Vessel characteristics" ||
       input$Ind_sel == 'Processor characteristics') {
     if (input$Sect_sel == "CV" &
         input$CategorySelect == 'Fisheries' &
@@ -313,7 +328,7 @@ output$IndicatorSelect <- renderUI({
 #= = = = = = = = = = = = = = = = = = = = = = 
 ##################################################
 output$Metricselect <- renderUI({ 
-  if(input$LayoutSelect!="Metrics"){
+  if(!input$LayoutSelect){
     if(input$Ind_sel=="Economic") {
       tags$div(class='met_mod', radioButtons("MetricSelect","", choices ="Select an economic measure and statistic below"), style="font-style:italic;margin-bottom:20px;margin-top:-32px;margin-left:-15px;padding-top:0;")
     } #end economic
@@ -376,7 +391,7 @@ output$Variableselect <- renderUI({
   if (!is.null(input$CategorySelect)) {
     if (input$Sect_sel == "CV") {
       if (input$CategorySelect == "State") {
-        if (input$LayoutSelect != 'Metrics') {
+        if (!input$LayoutSelect) {
           tagList(
             checkboxGroupInput(
               "VariableSelect",
@@ -400,7 +415,7 @@ output$Variableselect <- renderUI({
         }
       } #state
       else if (input$CategorySelect == "Vessel length class") {
-        if (input$LayoutSelect != 'Metrics') {
+        if (!input$LayoutSelect) {
           tagList(
             checkboxGroupInput(
               "VariableSelect",
@@ -431,7 +446,7 @@ output$Variableselect <- renderUI({
           )
         }
       } else if (input$CategorySelect == "Homeport") {
-        if (input$LayoutSelect != "Metrics") {
+        if (!input$LayoutSelect) {
           tagList(
             tags$div(
               checkboxGroupInput(
@@ -457,7 +472,7 @@ output$Variableselect <- renderUI({
         }
       } #end homeport
       else if (input$CategorySelect == "Fisheries") {
-        if (input$LayoutSelect != 'Metrics') {
+        if (!input$LayoutSelect) {
           tags$div(class = "ckbox2",
                    checkboxGroupInput(
                      "VariableSelect",
@@ -481,7 +496,7 @@ output$Variableselect <- renderUI({
     
     else if (input$Sect_sel == "FR") {
       if (input$CategorySelect == "Region") {
-        if (input$LayoutSelect != 'Metrics') {
+        if (!input$LayoutSelect) {
           if (input$Ind_sel == "Processor characteristics") {
             if (input$demSelect != "Proportion of revenue from catch share species") {
               tagList(
@@ -568,7 +583,7 @@ output$Variableselect <- renderUI({
           }
         }
         } else if (input$CategorySelect == "Processor size") {
-          if (input$LayoutSelect != 'Metrics') {
+          if (!input$LayoutSelect) {
             if (input$Ind_sel == 'Processor characteristics') {
               if (input$demSelect != "Proportion of revenue from catch share species") {
                 tagList(
@@ -653,7 +668,7 @@ output$Variableselect <- renderUI({
           }
           } #End processor class
       else {
-        if (input$LayoutSelect != 'Metrics') {
+        if (!input$LayoutSelect) {
           tags$div(
             class = 'FRprod',
             checkboxGroupInput(
@@ -696,7 +711,7 @@ output$Variableselect <- renderUI({
 
 # Select FISHAK ####
 output$FishAkselect <- renderUI({
-  if (!is.null(input$LayoutSelect) && input$LayoutSelect != 'Metrics' &&
+  if (!is.null(input$LayoutSelect) && !input$LayoutSelect &&
       !is.null(input$Sect_sel) && input$Sect_sel == 'CV' &&
       !is.null(input$Ind_sel) && input$Ind_sel == "Vessel characteristics") {
     if (input$demSelect == 'Exponential Shannon Index' || input$demSelect == 'Proportion of revenue from CS fishery' || input$demSelect == 'Fishery participation') {
@@ -824,7 +839,7 @@ output$FishWhitingselectBox <- renderUI({
 #Economic measure select ####
 
 output$Shortdescrselect <- renderUI({
-  if (input$LayoutSelect == 'Metrics') {
+  if (input$LayoutSelect) {
     tags$div(
       class = "ckbox",
       checkboxGroupInput(
@@ -859,7 +874,7 @@ output$Shortdescrselect <- renderUI({
 ##Note: See statistic selection below for settings of 'Mean' 'Median' 'Total' when grouping by vessels##
 output$demselect <- renderUI({
   ##Settings for grouping by 'Metrics'
-  if (input$LayoutSelect == 'Metrics') {
+  if (input$LayoutSelect) {
     if (input$Sect_sel == "CV") {
       if (input$AVE_MED2 == "Total") {
         tags$div(
@@ -968,7 +983,7 @@ output$demselect <- renderUI({
 #Identify individual metrics for crew class ####
 #= = = = = = = = = = = = = = = = = = = = = = 
 output$crewSelect <- renderUI({
-  if (input$LayoutSelect == 'Metrics') {
+  if (input$LayoutSelect) {
     if (input$Sect_sel == 'CV') {
       if (input$AVE_MED2 == 'Total') {
         tags$div(
@@ -1077,7 +1092,7 @@ output$crewSelect <- renderUI({
 #= = = = = = = = = = = = = = = = = = = = = = 
 output$socSelect <- renderUI({
   ##Setting when grouping by Metrics#####
-  if (input$LayoutSelect == 'Metrics') {
+  if (input$LayoutSelect) {
     if (input$Sect_sel == "CV") {
       if (input$AVE_MED2 == "Total") {
         tags$div(
@@ -1315,7 +1330,7 @@ observe({
 ## Stat selection for non-economic metrics ####
 #= = = = = = = = = = = = = = = = = = = = = = 
 output$vesselCharacteristicStats <- renderUI({
-  if (input$LayoutSelect == 'Metrics') {
+  if (input$LayoutSelect) {
     tagList(radioButtons(
       "AVE_MED2",
       HTML(
@@ -1401,7 +1416,7 @@ output$crewStats <- renderUI({
 })
 
 output$otherStats <- renderUI({
-  if (input$LayoutSelect == 'Metrics') {
+  if (input$LayoutSelect) {
     tagList(radioButtons(
       "AVE_MED2",
       HTML(
@@ -1466,15 +1481,12 @@ output$otherStats <- renderUI({
 #Layout select (Compare vessels or compare metrics) ####
 #= = = = = = = = = = = = = = = = = = = = = = 
 output$Layoutselect <- renderUI({
-  if (input$Sect_sel == 'CV') {
-    radioButtons("LayoutSelect", "Compare By: ", choices = c('Groups of Catcher Vessels', 'Metrics'),  inline = T)
-  } else if (input$Sect_sel == 'FR') {
-    radioButtons("LayoutSelect", "Compare By: ", choices = c('Groups of processors', 'Metrics'),  inline = T)
-  } else {
-    hidden(
-      checkboxGroupInput("LayoutSelect", "", choices = c('Groups of Vessels', 'Metrics'), selected = 'Metrics', inline = T)
-    )
-  }
+  materialSwitch(
+    inputId = "LayoutSelect",
+    label = "Select Multiple Metrics",
+    right = TRUE,
+    value = FALSE
+  )
 })
 
 #= = = = = = = = = = = = = = = = = = = = = = 
@@ -1485,17 +1497,12 @@ output$Layoutselect <- renderUI({
 
 #======================================
 output$Plotselect <- renderUI({
-  #if ((input$Ind_sel != 'Economic' && input$AVE_MED2!='Total' && input$socSelect!='Seasonality'&& input$socSelect!='Share of landings by state')||
-    #  (input$Ind_sel=='Economic' && input$AVE_MED!='T')) {
-      tagList(
-        tags$div(style = "font-weight:bold; margin-bottom: 7px", "Display Options:"),
-        materialSwitch(
-          inputId = "PlotSelect",
-          label = "Show variance",
-          right = TRUE,
-          value = TRUE
-        )
-      )
+  materialSwitch(
+    inputId = "PlotSelect",
+    label = "Show variance",
+    right = TRUE,
+    value = TRUE
+  )
   # } else {
   #   hidden(
   #     tagList(
@@ -1553,7 +1560,7 @@ output$SelectText <- renderText ({
   })
 
 observeEvent(input$reset_input, {
-  if (input$LayoutSelect == "Metrics") {
+  if (input$LayoutSelect) {
     updateRadioButtons(session, "VariableSelect", selected = "")
   } else{
     updateCheckboxGroupInput(session, "VariableSelect", selected = as.character(0))

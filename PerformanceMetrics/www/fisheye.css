@@ -1,7 +1,6 @@
 /*==================================================================================*/
 
 /* custom css classes for the nwfsc shiny server /*
-
 /*==================================================================================*/
 
 .panel-heading {
@@ -178,8 +177,9 @@ height:50px;
   outline:none;
 }
 .navbar {
-   height: 50px;
+  /* height: 50px;*/
    min-height: 50px;
+   margin-bottom: 20px;
 }
 @media (min-width: 768px) {
   .container > .navbar-header,
@@ -213,4 +213,3 @@ height:50px;
 .day {
     font-size: 16px;
 }
-

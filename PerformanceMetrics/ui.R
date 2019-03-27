@@ -4,6 +4,7 @@ library(appFrame)
 library(shinyjs)
 library(shinyWidgets)
 library(shinyBS)
+library(bsplus)
 
 # custom css functions
 # calls .css selector for well-sub
@@ -13,7 +14,6 @@ wellPanelHeading <- function(...){div(class = "well-radioHeading", ...)}
 
 
 function(request) {
-  use_bs_tooltip()
   fluidPage(title = "FISHEyE",
     useShinyjs(),
     # create a CSS to modify style of validation test error (for Variability analysis)
@@ -251,22 +251,17 @@ function(request) {
                   uiOutput('Button'))),#end fluidRow
               
               # Select a vessel/Processor Type
-              radioGroupButtons("Sect_sel", label = "Vessel/Processor Type :",
+              radioGroupButtons("Sect_sel", label = NULL,
                                 choices = c('Catcher Vessels'="CV", 'Mothership Vessels'="M", 'Catcher-Processor Vessels'="CP", 'First Receivers and Shorebased Processors'="FR"),
                                 individual = TRUE
               ),
-
-              # Compare By
-              fluidRow(
-                column(12,
-                  uiOutput('Layoutselect')
-                )),
 
               # Metrics
               tags$div(class="header collapsed", "Metric")%>% bs_attach_collapse("collapse1"),
               bs_collapse(id = "collapse1",
                           content = tags$div(column(12, uiOutput('metrics'),
-                                                    style = "background:white; padding: 10px;margin-below:4px;border-color: #bce8f1;"))
+                                                    style = "background:white; padding: 10px;margin-below:4px;border-color: #bce8f1;")),
+                          show = TRUE
               ),
 
               # Filters
@@ -292,23 +287,29 @@ function(request) {
                                                     ),
                                                     style = "background:white; padding: 10px;margin-below:4px;border-color: #bce8f1;"))
               ) ,
+
+              tags$div(style = "font-weight:bold; margin-bottom: 7px", "Display Options:"),
               
+              # Multiple metrics
+              fluidRow(
+                column(12,
+                       uiOutput('Layoutselect')
+                )),
+
               conditionalPanel(condition="input.Ind_sel!='Economic'&input.AVE_MED2!='Total'&
                                                               input.socSelect!='Seasonality'&
                                                               input.socSelect!='Share of landings by state'||
                                                               input.Ind_sel=='Economic'&input.AVE_MED!='T'",
                                uiOutput("Plotselect")),
-              
-              
+
               fluidRow(
                 column(4, uiOutput("download_figure")),
                 column(4, uiOutput("download_Table")),
                 column(4, bookmarkButton())
               )
               
-            ),      style = "padding: 0px;border: 1px solid #000000;overflow-y:scroll; max-height: 900px "), # end right side column
-          
-          
+            ),      style = "padding: 0px;overflow-y:scroll; max-height: 900px "), # end right side column
+
           mainPanel(
             tabsetPanel(id = "tabs",
                         tabPanel("Visualize the Data", value="Panel1", plotOutput("PlotMain")),

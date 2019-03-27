@@ -360,9 +360,9 @@ DatSubTable <- reactive({
 
   if (input$Ind_sel == "Vessel characteristics" ||
       input$Ind_sel == 'Processor characteristics') {
-    if (input$LayoutSelect != "Metrics") { # Compare: Groups of vessels/companies
+    if (!input$LayoutSelect) { # Compare: Groups of vessels/companies
       #        if(input$MetricSelect!="Number of vessels"&input$MetricSelect!="Seasonality"&input$MetricSelect!="Share of landings by state"&input$MetricSelect!="Gini coefficient"){
-      #           if(input$LayoutSelect!="Metrics"){}
+      #           if(!input$LayoutSelect){}
       if (input$Sect_sel == "FR") {
         datSub <-
           subset(datSubforSector,
@@ -413,7 +413,7 @@ DatSubTable <- reactive({
              METRIC %in% input$crewSelect &
                SUMSTAT == input$AVE_MED2 & !is.na(input$crewSelect))
   } else if (input$Ind_sel == "Other")  {
-    if (input$LayoutSelect != "Metrics") {
+    if (!input$LayoutSelect) {
       #        if(input$MetricSelect!="Number of vessels"&input$MetricSelect!="Seasonality"&input$MetricSelect!="Share of landings by state"&input$MetricSelect!="Gini coefficient"){
       if (input$socSelect != "Share of landings by state" &
           input$socSelect != "Seasonality") {
@@ -684,7 +684,7 @@ DatSubTable <- reactive({
   }
   
 # choosing which columns to display  
-  if (input$LayoutSelect != "Metrics") { # Compare Vessels/companies
+  if (!input$LayoutSelect) { # Compare Vessels/companies
     if (input$Ind_sel == "Vessel characteristics" ||
         input$Ind_sel == 'Processor characteristics') {
       if (input$demSelect[1] == "Revenue diversification" |
@@ -841,7 +841,7 @@ DatSubTable <- reactive({
             which(colnames(datSub) == "VARIANCE")
           )]
   } # Compare: Metrics
- } else if (input$LayoutSelect == "Metrics") {
+ } else if (input$LayoutSelect) {
     if (input$Ind_sel == "Economic") {
       datSub <-
         datSub[, c(
@@ -905,7 +905,7 @@ DatSubTable <- reactive({
 # not sure what this is ####
 ## I think this has something to do with metrics that don't have 'Total' or only have 'Total' but sure what it actually does ## Ashley
   # if (input$Ind_sel != "Economic" && input$Ind_sel != "Cost") {
-  #   if (input$LayoutSelect == "Metrics") {
+  #   if (input$LayoutSelect) {
   #     if (input$AVE_MED2 == "Average" |
   #         input$AVE_MED2 == 'Mean' | input$AVE_MED2 == "Median") {
   #       if (table(table(datSub$METRIC) > 1)[2] > 1) {
@@ -985,7 +985,7 @@ DatSub <- reactive({
           STAT == input$StatSelect)
   } else if (input$Ind_sel == "Vessel characteristics" ||
              input$Ind_sel == 'Processor characteristics')  {
-    if (input$LayoutSelect != "Metrics") {
+    if (!input$LayoutSelect) {
       # Compare: Groups of vessels/companies
       if (input$Sect_sel == 'FR') {
         datSub <-
@@ -1025,12 +1025,12 @@ DatSub <- reactive({
       }
     }
   } else if (input$Ind_sel == "Other")  {
-    if (input$LayoutSelect != "Metrics") {
+    if (!input$LayoutSelect) {
       # Compare: Groups of vessels/companies
       
       #        if(input$MetricSelect!="Number of vessels"&input$MetricSelect!="Seasonality"&input$MetricSelect!="Share of landings by state"&input$MetricSelect!="Gini coefficient"){
       if (input$socSelect != "Share of landings by state") {
-        #           if(input$LayoutSelect!="Metrics"){}
+        #           if(!input$LayoutSelect){}
         if (input$Sect_sel == 'FR') {
           datSub <-
             subset(datSubforSector,
@@ -1353,7 +1353,7 @@ DatSub <- reactive({
     datSub$VALUE <- ifelse(datSub$N < 3, NA, datSub$VALUE)
   }
 
-  if (input$LayoutSelect != "Metrics") {
+  if (!input$LayoutSelect) {
     if (input$Ind_sel == 'Other' &&
         input$socSelect == 'Share of landings by state') {
       datSub$sort <- as.character(datSub$AGID)
@@ -1475,32 +1475,34 @@ DatSub <- reactive({
   #        datSub$VALUE <- ifelse(datSub$N<3, NA, datSub$VALUE)
   #        datSub$N <- ifelse(datSub$N<3, NA, datSub$N)
   #      }
-  if (input$LayoutSelect == "Metrics") {
-    if (input$AVE_MED2 != "Total") {
-      if (table(table(datSub$METRIC) > 1)[2] > 1) {
-        datSub <-
-          subset(datSub, # redo datsub
-            !METRIC %in% c( "Number of vessels", "Gini coefficient", "Number of processors")
-          )
-      }
-    }
-  } else {
-    datSub
-  }
   
-  if (input$LayoutSelect == "Metrics") {
-    if (input$AVE_MED2 == "Total") {
-      if (table(table(datSub$METRIC) > 1)[2] > 1) {
-        datSub <-
-          subset(datSub, # redo datsub
-            !METRIC %in% c("Vessel length", "Revenue diversification", "Number of fisheries", "Proportion of revenue from CS fishery",
-              "Hourly compensation", 'Crew wage per day', 'Fuel use per day', 'Speed while fishing')
-          )
-      }
-    }
-  } else {
-   datSub
-  }
+  # just commented this out, not sure what it does
+  # if (input$LayoutSelect) {
+  #   if (input$AVE_MED2 != "Total") {
+  #     if (table(table(datSub$METRIC) > 1)[2] > 1) {
+  #       datSub <-
+  #         subset(datSub, # redo datsub
+  #           !METRIC %in% c( "Number of vessels", "Gini coefficient", "Number of processors")
+  #         )
+  #     }
+  #   }
+  # } else {
+  #   datSub
+  # }
+  # 
+  # if (input$LayoutSelect) {
+  #   if (input$AVE_MED2 == "Total") {
+  #     if (table(table(datSub$METRIC) > 1)[2] > 1) {
+  #       datSub <-
+  #         subset(datSub, # redo datsub
+  #           !METRIC %in% c("Vessel length", "Revenue diversification", "Number of fisheries", "Proportion of revenue from CS fishery",
+  #             "Hourly compensation", 'Crew wage per day', 'Fuel use per day', 'Speed while fishing')
+  #         )
+  #     }
+  #   }
+  # } else {
+  #  datSub
+  # }
 
  return(datSub)
   

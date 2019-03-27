@@ -28,7 +28,7 @@ doPlotDownload <- function(dat, x, y){
                    unit == 'billions' ~ VALUE/1e9,
                    T ~ -999))
     
-    dat$sort2 <- if(input$LayoutSelect!="Metrics"){
+    dat$sort2 <- if(!input$LayoutSelect){
       if(input$Ind_sel=='Other'){
         if(input$socSelect=='Share of landings by state'){
           reorder(dat$AGID, dat$sort)
@@ -47,7 +47,7 @@ doPlotDownload <- function(dat, x, y){
     dat$thresh <-  if(input$Ind_sel=="Economic"){   
       data.frame(dat %>% group_by(SHORTDESCR) %>% mutate(threshold=length(table(YEAR[YEAR<=2010]))))%>% subset(select=c(threshold))
     } else if(input$Ind_sel!="Economic"){ 
-      if(input$LayoutSelect=="Metrics"){   
+      if(input$LayoutSelect){   
         if(input$PlotSelect==T&!is.na(max(dat$VARIANCE))) { 
           data.frame(dat %>% group_by(METRIC) %>% mutate(threshold=max(VALUE, na.rm=T)+max(VARIANCE, na.rm=T)+max(VALUE, na.rm=T)/10))%>% subset(select=c(threshold))
         } else {
@@ -183,7 +183,7 @@ doPlotDownload <- function(dat, x, y){
       
       gv <- function () {
         if (input$Sect_sel == 'CV') {
-          if (input$LayoutSelect != 'Metrics') {
+          if (!input$LayoutSelect) {
             if (input$CategorySelect != 'Fisheries') {
               sprintf(paste(
                 "Vessels in",
@@ -239,7 +239,7 @@ doPlotDownload <- function(dat, x, y){
                 "$",
                 ")")
         } else if (input$Ind_sel == "Other") {
-          if (input$LayoutSelect != 'Metrics') {
+          if (!input$LayoutSelect) {
             if (input$socSelect == "Seasonality") {
               expression(bold("Day of year when 50% of catch was landed"))
             }  else if (input$socSelect == "Share of landings by state") {
@@ -279,7 +279,7 @@ doPlotDownload <- function(dat, x, y){
           }
         } else if (input$Ind_sel == "Vessel characteristics" ||
                    input$Ind_sel == 'Processor characteristics') {
-          if (input$LayoutSelect != 'Metrics') {
+          if (!input$LayoutSelect) {
             if (!input$demSelect %in% c('Vessel length', 'Revenue diversification', 'Number of vessels')) {
               paste(input$demSelect,
                     "(",
@@ -307,7 +307,7 @@ doPlotDownload <- function(dat, x, y){
                   '(Scale and units depend upon metric)')
           }
         } else if (input$Ind_sel == 'Labor') {
-          if (input$LayoutSelect != 'Metrics') {
+          if (!input$LayoutSelect) {
             if(input$crewSelect != "Number of crew" &
                input$crewSelect != 'Number of crew-days' & 
                input$crewSelect != 'Number of processing and non-processing crew' &
@@ -373,7 +373,7 @@ supp_metric <- function(){
 }
 
 xlab <- function(){
-  if(input$LayoutSelect!="Metrics"){
+  if(!input$LayoutSelect){
     if(input$Ind_sel=="Economic"){
       if(max(dat$conf)==0) {
         if(max(dat$flag)==0){
@@ -528,7 +528,7 @@ xlab <- function(){
     # format data for graph and add to graph ####
     # special data for seasonality plot
     #  print(paste0(seasonality, 1))
-    if(input$Ind_sel == 'Other' & input$LayoutSelect != 'Metrics') {
+    if(input$Ind_sel == 'Other' & !input$LayoutSelect) {
       # and seasonality is selected
       if(input$socSelect =="Seasonality") {
         ssn <- mutate(dat, 
@@ -575,7 +575,7 @@ if (input$socSelect == 'Share of landings by state') {
     
       
 #----- define facet -----#
-      if (input$LayoutSelect!='Metrics') {
+      if (!input$LayoutSelect) {
         g <- g + facet_wrap(~ sort2, ncol=2)
       } 
     else {
@@ -648,7 +648,7 @@ if (input$socSelect == 'Share of landings by state') {
     # if there are years shown before and after implementation of catch shares
     if (length(yr()) > 1 & min(yr()) < 2011 & max(yr()) > 2010) {
       # if the "Group by vessels" display is chosen
-      if (input$LayoutSelect != 'Metrics') {
+      if (!input$LayoutSelect) {
         # if seasonality is clicked
         if(input$Ind_sel == 'Other') {
           # and seasonality is selected
