@@ -161,7 +161,7 @@ output$Yearselect <- renderUI({
       )
     }
   }
-  else if (input$Ind_sel == 'Labor') {
+  else if (input$Ind_sel == 'Labor' || input$Ind_sel == 'Cost') {
     tags$div(
       class = "ckbox",
       sliderInput(
