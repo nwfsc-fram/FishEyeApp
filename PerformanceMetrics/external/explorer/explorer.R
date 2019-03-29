@@ -402,7 +402,9 @@ output$dlTable <- downloadHandler(
     content = function(file) {
  #Remove columns that do not need to be displayed     
 #      if(input$Ind_sel=="Economic"){
-          if(input$CategorySelect == "Fisheries"){
+          if(input$Ind_sel=="Cost") {
+            table <- DatSubTable() %>% mutate(Sector =input$Sect_sel)
+          } else if(input$CategorySelect == "Fisheries"){
               table <- subset(DatSubTable(), select = -c(CATEGORY, CS)) %>% mutate(Sector =input$Sect_sel)
           } else {
               table <- subset(DatSubTable(), select = -CATEGORY)  %>% mutate(Sector =input$Sect_sel) 
@@ -410,7 +412,26 @@ output$dlTable <- downloadHandler(
       table$Sector <-c('Catcher Vessels','First Receivers and Shorebased Processors','Mothership vessels','Catcher-Processor vessels')[match(table$Sector, c('CV','FR','M','CP'))]
 #Rename the columns      
       if(input$LayoutSelect){
-        if(input$Ind_sel=="Economic"){
+        if(input$Ind_sel=="Cost") {
+          if(input$CategorySelect == 'Fisheries') {
+            if(input$Sect_sel=="FR") {
+              temp <- data.frame("Year", "Summary variable","Summary Variable category", "Statistic", "Costs measure", "Data summed across",
+                                 "Number of processors","Value", "Variance (Quartiles or SD)","Sector")
+            } else {
+              temp <- data.frame("Year", "Summary variable","Summary Variable category", "Statistic", "Costs measure", "Data summed across",
+                                 "Number of vessels","Value", "Variance (Quartiles or SD)","Sector")
+            }
+          } else if(input$Sect_sel=="CV"){
+            temp <- data.frame("Year", "Summary variable","Summary Variable category", "Fisheries Category","Statistic", "Costs measure", "Data summed across",
+                                  "Number of vessels","Value", "Variance (Quartiles or SD)","Sector")
+          } else if(input$Sect_sel=="FR"){
+            temp <- data.frame("Year", "Data summed across",'Summary variable',"Summary Variable category", "Production Category","Statistic", "Costs measure",
+                                  "Number of processors","Value", "Variance (Quartiles or SD)","Sector")
+          } else {
+            temp <- data.frame("Year", "Summary variable","Summary Variable category", "Fisheries Category","Statistic", "Costs measure","Number of vessels","Value",
+                                  "Variance (Quartiles or SD)","Sector")
+          }  
+        } else if(input$Ind_sel=="Economic"){
           if(input$Sect_sel=='CV'&input$CategorySelect!='Fisheries'){
             temp <- data.frame("Year", "Summary Variable","Fisheries Category", "Statistic", "Economic measure", "Data summed across","Number of vessels", "Value", "Variance (Quartiles or SD)","Sector")
           } else if(input$Sect_sel=='FR'&input$CategorySelect!='Fisheries'){
@@ -428,8 +449,7 @@ output$dlTable <- downloadHandler(
                 temp <- data.frame("Year", "Summary Variable","Production Category", "Statistic", "Metric","Data summed across","Number of Processors","Value",  "Variance (Quartiles or SD)","Sector")
               }else if(input$Sect_sel=="FR"&input$CategorySelect=='Fisheries') {
                 temp <- data.frame("Year", "Summary Variable", "Statistic", "Metric","Data summed across","Number of Processors","Value",  "Variance (Quartiles or SD)","Sector")
-              }
-                else {
+              } else {
               temp <- data.frame("Year", "Summary Variable","Statistic", "Metric","Data summed across","Number of vessels","Value",  "Variance (Quartiles or SD)","Sector")
             }
         } #End Vessel characteristics and Other categories
@@ -544,16 +564,42 @@ output$dlTable <- downloadHandler(
               }}
           } 
         }#End Dempgraphic
+        else if(input$Ind_sel=="Cost") {
+          if(input$CategorySelect == 'Fisheries') {
+            if(input$Sect_sel=="FR") {
+              temp <- data.frame("Year", "Summary variable","Summary Variable category", "Statistic", "Costs measure", "Data summed across",
+                                 "Number of processors","Value", "Variance (Quartiles or SD)","Sector")
+            } else {
+              temp <- data.frame("Year", "Summary variable","Summary Variable category", "Statistic", "Costs measure", "Data summed across",
+                                 "Number of vessels","Value", "Variance (Quartiles or SD)","Sector")
+            }
+          } else if(input$Sect_sel=="CV"){
+            temp <- data.frame("Year", "Summary variable","Summary Variable category", "Fisheries Category","Statistic", "Costs measure", "Data summed across",
+                               "Number of vessels","Value", "Variance (Quartiles or SD)","Sector")
+          } else if(input$Sect_sel=="FR"){
+            temp <- data.frame("Year", "Data summed across",'Summary variable',"Summary Variable category", "Production Category","Statistic", "Costs measure",
+                               "Number of processors","Value", "Variance (Quartiles or SD)","Sector")
+          } else {
+            temp <- data.frame("Year", "Summary variable","Summary Variable category", "Fisheries Category","Statistic", "Costs measure","Number of vessels","Value",
+                               "Variance (Quartiles or SD)","Sector")
+          }  
+        } 
       }#end compare vessels 
- #Final Formatting code chunk     
+      #Final Formatting code chunk
+
       colnames(temp)=colnames(table)
       # some wonky code to insert a timestamp. xtable has a more straightfoward approach but not supported with current RStudio version on the server
 
-table <- rbindCommonCols(temp, table) 
-                names(table) <- c(paste("Sourced from the FISHEyE application (http://dataexplorer.northwestscience.fisheries.noaa.gov/fisheye/PerformanceMetrics/) maintained by NOAA Fisheriess NWFSC on ",
-                                        format(Sys.Date(), format="%B %d %Y")), rep("", dim(temp)[2]-1))
-           write.csv(table, file)
-   })
+      # there's a data issue here where sometimes the data is converted into a tibble which causes issues in the rbindCommonCol function so converting
+      # back to a datatable. This issues started after this commit, https://github.com/nwfsc-fram/FishEyeApp/commit/1177b957f1e833340c12336f258d60bb26d78b6e
+      # but for now will just convert back to dataframe to resolve the issue. We may need to look at the data later. 
+      table = as.data.frame(table)
+      table <- rbindCommonCols(temp, table)
+      names(table) <- c(paste("Sourced from the FISHEyE application (http://dataexplorer.northwestscience.fisheries.noaa.gov/fisheye/PerformanceMetrics/) maintained by NOAA Fisheriess NWFSC on ",
+                              format(Sys.Date(), format="%B %d %Y")), rep("", dim(temp)[2]-1))
+      write.csv(table, file)
+    })
+
 #####
 
 # render plot from  to pdf for download
