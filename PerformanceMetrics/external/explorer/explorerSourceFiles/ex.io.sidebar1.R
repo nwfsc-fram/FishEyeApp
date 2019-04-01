@@ -7,7 +7,7 @@ output$metrics <- renderUI({
   if (input$Sect_sel != "FR") {
     tabsetPanel(
       tabPanel("Vessel characteristics", uiOutput("demselect"), uiOutput("vesselCharacteristicStats")),
-      tabPanel("Economic", uiOutput("Shortdescrselect"), uiOutput("Statselect")),
+      tabPanel("Economic", uiOutput("ShortdescrSelect"), uiOutput("Statselect")),
       tabPanel("Labor", uiOutput("crewSelect"), uiOutput("crewStats")),
       tabPanel("Cost", uiOutput("costSelect"), uiOutput("costStats")),
       tabPanel("Other", uiOutput("socSelect"), uiOutput("otherStats")),
@@ -16,7 +16,7 @@ output$metrics <- renderUI({
   } else {
     tabsetPanel(
       tabPanel("Processor characteristics", uiOutput("demselect"), uiOutput("vesselCharacteristicStats")),
-      tabPanel("Economic", uiOutput("Shortdescrselect"), uiOutput("Statselect")),
+      tabPanel("Economic", uiOutput("ShortdescrSelect"), uiOutput("Statselect")),
       tabPanel("Cost", uiOutput("costSelect"), uiOutput("costStats")),
       tabPanel("Other", uiOutput("socSelect"), uiOutput("otherStats")),
       id = "Ind_sel", type = c("tabs")
@@ -685,7 +685,7 @@ output$fisheriesOptions <- renderUI({
   if (input$Sect_sel == "CV") {
     if (!is.null(input$CategorySelect) && input$CategorySelect != "Fisheries") {
       radioButtons(
-        'inSelect',
+        "inSelect",
         "Fisheries",
         fishgrps4cats
       )
@@ -789,7 +789,7 @@ output$FishWhitingselectBox <- renderUI({
 
 #Economic measure select ####
 
-output$Shortdescrselect <- renderUI({
+output$ShortdescrSelect <- renderUI({
   if (input$LayoutSelect) {
     tags$div(
       class = "ckbox",
