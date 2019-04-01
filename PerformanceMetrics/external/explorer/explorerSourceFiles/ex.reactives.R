@@ -25,6 +25,7 @@ DatVars <- reactive({
   outputOptions(output, "Variableselect", suspendWhenHidden = FALSE)
   outputOptions(output, "FishWhitingselect", suspendWhenHidden = FALSE)
   outputOptions(output, "FishWhitingselectBox", suspendWhenHidden = FALSE)
+  outputOptions(output, "fisheriesOptions", suspendWhenHidden = FALSE)
   outputOptions(output, "Yearselect", suspendWhenHidden = FALSE)
   # create a list of variable names used in the sidebar inputs
   dat <- DatMain()
