@@ -426,7 +426,7 @@ xlab <- function() {
     }
     
     # add lines and points to the plot ####
-    g <- g + geom_line(aes_string(colour = groupVar), size = 1.5) +
+    g <- g + geom_line(aes_string(colour = groupVar), size = 1) +
       geom_point(aes_string(colour = groupVar), size = 4)
 
     
