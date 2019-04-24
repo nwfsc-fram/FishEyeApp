@@ -294,6 +294,7 @@ function(request) {
                        uiOutput('Layoutselect')
                 )),
 
+              # show variance
               conditionalPanel(condition="input.Ind_sel!='Economic'&input.AVE_MED2!='Total'&
                                                               input.socSelect!='Seasonality'&
                                                               input.socSelect!='Share of landings by state'||
@@ -306,11 +307,11 @@ function(request) {
                 column(4, bookmarkButton())
               )
               
-            ),      style = "padding: 0px;overflow-y:scroll; max-height: 700px "), # end right side column
+            ),      style = "padding: 0px;overflow-y:scroll; max-height: 800px;"), # end right side column
 
           mainPanel(
             tabsetPanel(id = "tabs",
-                        tabPanel("Visualize the Data", value="Panel1", plotOutput("PlotMain")),
+                        tabPanel("Visualize the Data", value="Panel1", plotOutput("PlotMain"), style ="min-height: 800px;"),
                         tabPanel("Dataset", value="Panel2", dataTableOutput("TableMain"))
             ))
           

@@ -27,6 +27,7 @@ DatVars <- reactive({
   outputOptions(output, "FishWhitingselectBox", suspendWhenHidden = FALSE)
   outputOptions(output, "fisheriesOptions", suspendWhenHidden = FALSE)
   outputOptions(output, "Yearselect", suspendWhenHidden = FALSE)
+  outputOptions(output, "FishAkselect", suspendWhenHidden = FALSE)
   # create a list of variable names used in the sidebar inputs
   dat <- DatMain()
   if (input$Sect_sel == "CV") {
@@ -53,15 +54,15 @@ DatVars <- reactive({
           "Mean per vessel",
           "Mean per vessel/day",
           "Mean per vessel/metric ton caught",
-          "Mean per vessel/dollar of revenue",
+          "Mean per vessel/dollar revenue",
           "Median per vessel",
           "Median per vessel/day",
           "Median per vessel/metric ton caught",
-          "Median per vessel/dollar of revenue",
+          "Median per vessel/dollar revenue",
           "Fleet-wide total",
           "Fleet-wide average/day",
           "Fleet-wide average/metric ton caught",
-          "Fleet-wide average/dollar of revenue"
+          "Fleet-wide average/dollar revenue"
         ),
         ##Vessel characteristics metrics##
         METRIC1 =  c(
@@ -417,7 +418,7 @@ DatSubTable <- reactive({
     datSub <-
       subset(datSubforSector,
              METRIC %in% input$crewSelect &
-               SUMSTAT == input$AVE_MED2 & !is.na(input$crewSelect))
+               SUMSTAT == input$crewStat & !is.na(input$crewSelect))
   } else if (input$Ind_sel == "Other")  {
     if (!input$LayoutSelect) {
       #        if(input$MetricSelect!="Number of vessels"&input$MetricSelect!="Seasonality"&input$MetricSelect!="Share of landings by state"&input$MetricSelect!="Gini coefficient"){
@@ -426,16 +427,16 @@ DatSubTable <- reactive({
         datSub <-
           subset(datSubforSector,
             METRIC %in% input$socSelect &
-              SUMSTAT == input$AVE_MED2 & !is.na(input$socSelect)
+              SUMSTAT == input$otherStat & !is.na(input$socSelect)
           )
       } else if (input$Sect_sel == "CV" &
                  input$socSelect[1] == "Days at sea") {
         datSub <-
           subset(datSubforSector,
                  METRIC %in% input$socSelect &
-                   SUMSTAT == input$AVE_MED2 & FISHAK == 'FALSE'
+                   SUMSTAT == input$otherStat & FISHAK == 'FALSE'
           )
-      }   else {
+      } else {
         datSub <-
           subset(datSubforSector,
             METRIC %in% input$socSelect & !is.na(input$socSelect))
@@ -445,20 +446,20 @@ DatSubTable <- reactive({
         datSub <-
           subset(datSubforSector,
             METRIC %in% input$socSelect &
-              SUMSTAT == input$AVE_MED2 &
-              !is.na(input$socSelect) & FISHAK != 'FALSE'
+            SUMSTAT == input$otherStat &
+            !is.na(input$socSelect)
           )
       } else if (input$Sect_sel == "FR") {
         datSub <-
           subset(datSubforSector,
             METRIC %in% input$socSelect &
-              SUMSTAT == input$AVE_MED2 & !is.na(input$socSelect)
+              SUMSTAT == input$otherStat & !is.na(input$socSelect)
           )
       } else {
         datSub <-
           subset(datSubforSector,
             METRIC %in% input$socSelect &
-              SUMSTAT == input$AVE_MED2 &
+              SUMSTAT == input$otherStat &
               !is.na(input$socSelect) & FISHAK != 'TRUE'
           )
       }
@@ -1039,33 +1040,37 @@ DatSub <- reactive({
         if (input$Sect_sel == 'FR') {
           datSub <-
             subset(datSubforSector,
-              METRIC %in% input$socSelect & SUMSTAT == input$AVE_MED2)
+              METRIC %in% input$socSelect)
         } else if (input$Sect_sel == "CV" &
                    input$socSelect[1] == "Days at sea") {
           datSub <-
             subset(datSubforSector,
                    METRIC %in% input$socSelect &
-                     SUMSTAT == input$AVE_MED2 & FISHAK == 'FALSE'
+                     SUMSTAT == input$otherStat & FISHAK == 'FALSE'
             )
-       } else {
+       } else if (input$socSelect == 'Seasonality' || input$socSelect == 'Gini coefficient') {
           datSub <-
             subset(datSubforSector,
-              METRIC %in% input$socSelect & SUMSTAT == input$AVE_MED2)
+              METRIC %in% input$socSelect)
+       } else {
+         datSub <-
+           subset(datSubforSector,
+                  METRIC %in% input$socSelect & SUMSTAT == input$otherStat)
         }
-      }   else {
+      } else {
         datSub <-
           subset(datSubforSector,
             METRIC %in% input$socSelect & !is.na(input$socSelect))
       }
     } else {
       # Compare: Metrics
-      datSub <- subset(datSubforSector, METRIC %in% input$socSelect & SUMSTAT == input$AVE_MED2)
+      datSub <- subset(datSubforSector, METRIC %in% input$socSelect & SUMSTAT == input$otherStat)
     }#End Other
   } else if (input$Ind_sel == 'Labor') {
       datSub <-
         subset(datSubforSector,
                METRIC %in% input$crewSelect &
-                 SUMSTAT == input$AVE_MED2 & !is.na(input$crewSelect)) 
+                 SUMSTAT == input$crewStat & !is.na(input$crewSelect)) 
   } else if (input$Ind_sel == 'Cost') {
       datSub <-
         subset(datSubforSector,

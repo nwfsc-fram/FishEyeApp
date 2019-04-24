@@ -261,32 +261,32 @@ main <- function() {
           } else if (input$socSelect == "Fuel use per day") {
             paste(input$socSelect,
                   "(",
-                  input$AVE_MED2,
+                  input$otherStat,
                   "in",
                   dat$unit,
                   "gallons)")
           } else if (input$socSelect == 'Speed while fishing') {
             paste(input$socSelect,
                   "(",
-                  input$AVE_MED2,
+                  input$otherStat,
                   "in",
                   dat$unit,
                   "knots)")
           } else if (input$socSelect == 'Days at sea') {
             paste(input$socSelect,
                   "(",
-                  input$AVE_MED2,
+                  input$otherStat,
                   ")")
           } else {
             paste(input$socSelect,
                   "(",
-                  input$AVE_MED2,
+                  input$otherStat,
                   "in",
                   dat$unit,
                   ")")
           }
         } else {
-          paste(input$AVE_MED2,
+          paste(input$otherStat,
                 '(Scale and units depend upon metric)')
         }
       } else if (input$Ind_sel == "Vessel characteristics" ||
@@ -326,7 +326,7 @@ main <- function() {
              input$crewSelect != 'Number of workers') {
             paste(input$crewSelect,
                   "(",
-                  input$AVE_MED2,
+                  input$crewStat,
                   "in",
                   dat$unit,
                   currentyear,
@@ -335,13 +335,43 @@ main <- function() {
           } else {
             paste(input$crewSelect,
                   "(",
-                  input$AVE_MED2,
+                  input$crewStat,
                   ")")
           }
       } else {
-        paste(input$AVE_MED2,
+        paste(input$crewStat,
               '(Scale and units depend upon metric)')
       }
+      } else if (input$Ind_sel == 'Cost') {
+        if (!input$LayoutSelect) {
+          paste(input$costSelect,
+                "(",
+                input$costStatSelect,
+                "in",
+                dat$unit,
+                currentyear,
+                "$",
+                ")")
+        } else {
+          if(input$costStatSelect=='Mean per vessel'|input$costStatSelect=='Median per vessel'|
+             input$costStatSelect=='Fleet-wide total'|
+             input$costStatSelect=="Mean per processor"|input$costStatSelect=='Median per processor'|
+             input$costStatSelect=='Industry-wide total'|
+             input$costStatSelect=='Mean per vessel/day'|input$costStatSelect=='Median per vessel/day'|
+             input$costStatSelect=='Fleet-wide average/day'){
+            paste("Thousands of", currentyear, " $ (",input$costStatSelect, ")")
+          } else if(input$costStatSelect=='Mean per vessel/dollar of revenue'|
+                    input$costStatSelect=='Median per vessel/dollar of revenue'|
+                    input$costStatSelect=='Fleet-wide average/dollar of revenue'|
+                    input$costStatSelect=="Mean per processor/dollar of revenue"|
+                    input$costStatSelect=='Median per processor/dollar of revenue'|
+                    input$costStatSelect=='Industry-wide average/dollar of revenue'){
+            input$costStatSelect
+          } else {
+            paste(currentyear, " $ (",input$costStatSelect, ")")
+          }
+        }
+          
         }
     }
     
