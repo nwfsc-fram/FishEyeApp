@@ -295,7 +295,8 @@ function(request) {
                 )),
 
               # show variance
-              conditionalPanel(condition="input.Ind_sel!='Economic'&input.AVE_MED2!='Total'&
+              conditionalPanel(condition="input.Ind_sel!='Economic'&
+                                                              (input.AVE_MED2!='Total' || crewStat!='Total') &
                                                               input.socSelect!='Seasonality'&
                                                               input.socSelect!='Share of landings by state'||
                                                               input.Ind_sel=='Economic'&input.AVE_MED!='T'",

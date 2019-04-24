@@ -5,23 +5,18 @@
 
 output$metrics <- renderUI({
   if (input$Sect_sel != "FR") {
-    tabsetPanel(
-      tabPanel("Vessel characteristics", uiOutput("demselect"), uiOutput("vesselCharacteristicStats")),
-      tabPanel("Economic", uiOutput("ShortdescrSelect"), uiOutput("Statselect")),
-      tabPanel("Labor", uiOutput("crewSelect"), uiOutput("crewStats")),
-      tabPanel("Cost", uiOutput("costSelect"), uiOutput("costStats")),
-      tabPanel("Other", uiOutput("socSelect"), uiOutput("otherStats")),
-      id = "Ind_sel", type = c("tabs")
-    )
+    name = "Vessel characteristics"
   } else {
-    tabsetPanel(
-      tabPanel("Processor characteristics", uiOutput("demselect"), uiOutput("vesselCharacteristicStats")),
-      tabPanel("Economic", uiOutput("ShortdescrSelect"), uiOutput("Statselect")),
-      tabPanel("Cost", uiOutput("costSelect"), uiOutput("costStats")),
-      tabPanel("Other", uiOutput("socSelect"), uiOutput("otherStats")),
-      id = "Ind_sel", type = c("tabs")
-    )
+    name = "Processor characteristics"
   }
+  tabsetPanel(
+    tabPanel(name, uiOutput("demselect"), uiOutput("vesselCharacteristicStats")),
+    tabPanel("Economic", uiOutput("ShortdescrSelect"), uiOutput("Statselect")),
+    tabPanel("Labor", uiOutput("crewSelect"), uiOutput("crewStats")),
+    tabPanel("Cost", uiOutput("costSelect"), uiOutput("costStats")),
+    tabPanel("Other", uiOutput("socSelect"), uiOutput("otherStats")),
+    id = "Ind_sel", type = c("tabs")
+  )
 })
 
 output$SectPrint <- renderUI({
@@ -970,7 +965,7 @@ output$crewSelect <- renderUI({
           )
     } else {
       tags$div(
-        class = "ckbox",
+        class = "ckbox23456",
         checkboxGroupInput(
           "crewSelect",
           NULL,
