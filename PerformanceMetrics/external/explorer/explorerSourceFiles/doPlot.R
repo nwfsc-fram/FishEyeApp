@@ -353,20 +353,8 @@ main <- function() {
                 "$",
                 ")")
         } else {
-          if(input$costStatSelect=='Mean per vessel'|input$costStatSelect=='Median per vessel'|
-             input$costStatSelect=='Fleet-wide total'|
-             input$costStatSelect=="Mean per processor"|input$costStatSelect=='Median per processor'|
-             input$costStatSelect=='Industry-wide total'|
-             input$costStatSelect=='Mean per vessel/day'|input$costStatSelect=='Median per vessel/day'|
-             input$costStatSelect=='Fleet-wide average/day'){
+          if("thousands" %in% dat$unit){
             paste("Thousands of", currentyear, " $ (",input$costStatSelect, ")")
-          } else if(input$costStatSelect=='Mean per vessel/dollar of revenue'|
-                    input$costStatSelect=='Median per vessel/dollar of revenue'|
-                    input$costStatSelect=='Fleet-wide average/dollar of revenue'|
-                    input$costStatSelect=="Mean per processor/dollar of revenue"|
-                    input$costStatSelect=='Median per processor/dollar of revenue'|
-                    input$costStatSelect=='Industry-wide average/dollar of revenue'){
-            input$costStatSelect
           } else {
             paste(currentyear, " $ (",input$costStatSelect, ")")
           }

@@ -936,7 +936,7 @@ output$demselect <- renderUI({
 output$crewSelect <- renderUI({
   if (input$LayoutSelect) {
     if (input$Sect_sel == 'CV') {
-      if (input$AVE_MED2 == 'Total') {
+      if (input$crewStat == 'Total') {
         tags$div(
           class = "ckbox23456",
           checkboxGroupInput(
@@ -958,7 +958,7 @@ output$crewSelect <- renderUI({
         )
       }
     } else if (input$Sect_sel == 'M' | input$Sect_sel == 'CP') {
-        if (input$AVE_MED2 == 'Total') {
+        if (input$crewStat == 'Total') {
           tags$div(
             class = "ckbox23456",
             checkboxGroupInput(
@@ -980,7 +980,7 @@ output$crewSelect <- renderUI({
       )
     }
   } else {
-      if(input$AVE_MED2 == 'Total') {
+      if(input$crewStat == 'Total') {
         tags$div(
           class = 'ckbox_2',
           checkboxGroupInput(
@@ -1045,7 +1045,7 @@ output$socSelect <- renderUI({
   ##Setting when grouping by Metrics#####
   if (input$LayoutSelect) {
     if (input$Sect_sel == "CV") {
-      if (input$AVE_MED2 == "Total") {
+      if (input$otherStat == "Total") {
         tags$div(
           class = "ckbox34",
           checkboxGroupInput(
@@ -1068,7 +1068,7 @@ output$socSelect <- renderUI({
       }
     } else {
       if (input$Sect_sel == "FR") {
-        if (input$AVE_MED2 == 'Total') {
+        if (input$otherStat == 'Total') {
           tags$div(
             class = "ckbox",
             checkboxGroupInput(
@@ -1091,7 +1091,7 @@ output$socSelect <- renderUI({
         }
       } else {
         if (input$Sect_sel == 'CP' | input$Sect_sel == 'M') {
-          if (input$AVE_MED2 == 'Total') {
+          if (input$otherStat == 'Total') {
             tags$div(
               class = "ckbox",
               checkboxGroupInput(

@@ -456,12 +456,17 @@ DatSubTable <- reactive({
               SUMSTAT == input$otherStat & !is.na(input$socSelect)
           )
       } else {
-        datSub <-
-          subset(datSubforSector,
-            METRIC %in% input$socSelect &
-              SUMSTAT == input$otherStat &
-              !is.na(input$socSelect) & FISHAK != 'TRUE'
-          )
+        if ('Seasonality' %in% input$socSelect) {
+          if (length(input$socSelect) > 1) {
+            datSub1 <- subset(datSubforSector, METRIC %in% 'Seasonality')
+            datSub2 <- subset(datSubforSector, METRIC %in% 'Days at sea' & SUMSTAT == input$otherStat)
+            datSub <- rbind(datSub1, datSub2)
+          } else {
+            datSub <- subset(datSubforSector, METRIC %in% 'Seasonality')
+          }
+        } else {
+          datSub <- subset(datSubforSector, METRIC %in% input$socSelect & SUMSTAT == input$otherStat)
+        }
       }
     }
   } else if (input$Ind_sel == 'Cost') {
@@ -1064,7 +1069,17 @@ DatSub <- reactive({
       }
     } else {
       # Compare: Metrics
-      datSub <- subset(datSubforSector, METRIC %in% input$socSelect & SUMSTAT == input$otherStat)
+      if ('Seasonality' %in% input$socSelect) {
+        if (length(input$socSelect) > 1) {
+          datSub1 <- subset(datSubforSector, METRIC %in% 'Seasonality')
+          datSub2 <- subset(datSubforSector, METRIC %in% 'Days at sea' & SUMSTAT == input$otherStat)
+          datSub <- rbind(datSub1, datSub2)
+        } else {
+          datSub <- subset(datSubforSector, METRIC %in% 'Seasonality')
+        }
+      } else {
+        datSub <- subset(datSubforSector, METRIC %in% input$socSelect & SUMSTAT == input$otherStat)
+      }
     }#End Other
   } else if (input$Ind_sel == 'Labor') {
       datSub <-
