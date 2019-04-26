@@ -32,15 +32,7 @@ doPlot <- function(dat, x, y) {
 
     # create sort2 column ####
     dat$sort2 <- if (!input$LayoutSelect) {
-      if (input$Ind_sel == 'Other') {
-        if (input$socSelect == 'Share of landings by state') {
-          reorder(dat$AGID, dat$sort)
-        } else {
-          reorder(dat$VARIABLE, dat$sort)
-        }
-      } else {
         reorder(dat$VARIABLE, dat$sort)
-      }
     } else {
       if (input$Ind_sel == "Economic") {
         reorder(dat$SHORTDESCR, dat$sort)
@@ -430,6 +422,7 @@ xlab <- function() {
           # otherwise normal plot:
         } else {
           dat <- dat[order(dat$sort), ]
+          dat$bystategrp <- paste0(dat$AGID, dat$whitingv)
           g <-
             # I think this is where the NAs are getting removed which causes lines to be connected through suppressed/missing values #removeNAs
             ggplot(dat, aes_string(x = x, y = y , group = groupVar), environment =
@@ -444,8 +437,19 @@ xlab <- function() {
     }
     
     # add lines and points to the plot ####
-    g <- g + geom_line(aes_string(colour = groupVar), size = 1.5) +
-      geom_point(aes_string(colour = groupVar), size = 4)
+    if (input$Ind_sel == 'Other') {
+       if (input$socSelect == 'Share of landings by state') {
+      g <-
+        g + geom_line(aes_string(colour = groupVar, group = 'bystategrp'), size = 1.5) +
+        geom_point(aes_string(colour = groupVar, shape = 'AGID', group = 'bystategrp'),
+                   size = 4)
+    } else {
+      g <- g + geom_line(aes_string(colour = groupVar), size = 1.5) +
+        geom_point(aes_string(colour = groupVar), size = 4)
+    }} else {
+      g <- g + geom_line(aes_string(colour = groupVar), size = 1.5) +
+        geom_point(aes_string(colour = groupVar), size = 4)
+    }
 
     
     # add 'data variability' band ####
@@ -462,13 +466,12 @@ xlab <- function() {
 
    # if(length(unique(ssn$VARIABLE)) > 1 ) browser()
     #----- define facet -----#####
-    if (!input$LayoutSelect) {
-
-      g <- g + facet_wrap( ~ sort2, ncol = 2)
-
-    } else {
-      g <- g + facet_wrap( ~ sort2, scales = 'free_y', ncol = 2)
+    if (input$LayoutSelect != 'Metrics') {
+      g <- g + facet_wrap(~ sort2, ncol = 2)
+    }else {
+      g <- g + facet_wrap(~ sort2, scales = 'free_y', ncol = 2)
     }
+    
     
     #----- Define grey shading and Non-CS/CS labels ------####
     # choose label text size ####

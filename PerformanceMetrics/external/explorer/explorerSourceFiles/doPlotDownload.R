@@ -28,21 +28,15 @@ doPlotDownload <- function(dat, x, y){
                    unit == 'billions' ~ VALUE/1e9,
                    T ~ -999))
     
-    dat$sort2 <- if(!input$LayoutSelect){
-      if(input$Ind_sel=='Other'){
-        if(input$socSelect=='Share of landings by state'){
-          reorder(dat$AGID, dat$sort)
-        } else {
-          reorder(dat$VARIABLE, dat$sort)
-        }
-      }else {
-        reorder(dat$VARIABLE, dat$sort)
-      }} else {
-        if(input$Ind_sel=="Economic"){ 
-          reorder(dat$SHORTDESCR, dat$sort)
-        } else {
-          reorder(dat$METRIC, dat$sort)
-        }}
+    dat$sort2 <- if (!input$LayoutSelect) {
+      reorder(dat$VARIABLE, dat$sort)
+    } else {
+      if (input$Ind_sel == "Economic") {
+        reorder(dat$SHORTDESCR, dat$sort)
+      } else {
+        reorder(dat$METRIC, dat$sort)
+      }
+    }
     
     dat$thresh <-  if(input$Ind_sel=="Economic"){   
       data.frame(dat %>% group_by(SHORTDESCR) %>% mutate(threshold=length(table(YEAR[YEAR<=2010]))))%>% subset(select=c(threshold))
@@ -539,6 +533,7 @@ xlab <- function(){
         # otherwise normal plot:
       } else {
         dat <- dat[order(dat$sort), ]
+        dat$bystategrp <- paste0(dat$AGID, dat$whitingv)
         g <-
           # I think this is where the NAs are getting removed which causes lines to be connected through suppressed/missing values #removeNAs
           ggplot(dat, aes_string(x = x, y = y , group = groupVar), environment =
@@ -552,18 +547,20 @@ xlab <- function(){
                  environment()) #+coord_cartesian(xlim = c(0, length(table(dat$YEAR))+1))
     }
     
-    #add lines and points to the plot ####
-    if (!is.null(input$socSelect) && input$socSelect == 'Share of landings by state') {
-      
-      g <-
-        g + geom_line(aes_string(colour = groupVar, group = "bystategrp"), size = 1.5) +
-        geom_point(aes_string(colour = groupVar, shape = "AGID", group = "bystategrp"),
-                   size = 4)
-      
-    } else {
-      g <- g + geom_line(aes_string(colour = groupVar), size = 1.5) +
-        geom_point(aes_string(colour = groupVar), size = 4)
-    }
+    # add lines and points to the plot ####
+    if (input$Ind_sel == 'Other') {
+      if (input$socSelect == 'Share of landings by state') {
+        g <-
+          g + geom_line(aes_string(colour = groupVar, group = 'bystategrp'), size = 1.5) +
+          geom_point(aes_string(colour = groupVar, shape = 'AGID', group = 'bystategrp'),
+                     size = 4)
+      } else {
+        g <- g + geom_line(aes_string(colour = groupVar), size = 1.5) +
+          geom_point(aes_string(colour = groupVar), size = 4)
+      }} else {
+        g <- g + geom_line(aes_string(colour = groupVar), size = 1.5) +
+          geom_point(aes_string(colour = groupVar), size = 4)
+      }
 
 #------ Add variance ------#    
     if(input$PlotSelect==T& !exists('ssn')) { 
@@ -575,12 +572,11 @@ xlab <- function(){
     
       
 #----- define facet -----#
-      if (!input$LayoutSelect) {
-        g <- g + facet_wrap(~ sort2, ncol=2)
-      } 
-    else {
-        g <- g + facet_wrap(~ sort2, ncol=2)
-      }
+    if (input$LayoutSelect != 'Metrics') {
+      g <- g + facet_wrap(~ sort2, ncol = 2)
+    }else {
+      g <- g + facet_wrap(~ sort2, scales = 'free_y', ncol = 2)
+    }
     
 #----- define scale -----#
     g <- g + scale_fill_manual(values = colourThirds) + scale_colour_manual(values = colourThirds)
