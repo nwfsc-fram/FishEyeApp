@@ -64,8 +64,23 @@ doPlotDownload <- function(dat, x, y){
           dat$VALUE
         } else {
           dat$q75
-        }
-      } else if (input$Ind_sel != "Economic") {
+        }} else if (input$Ind_sel == 'Cost') {
+          if (input$AVE_MED_COSTS == 'A') {
+            dat$VALUE + dat$VARIANCE
+          } else if (input$AVE_MED_COSTS == 'T') {
+            dat$VALUE
+          } else {
+            dat$q75
+          }
+        } else if (input$Ind_sel == 'Other') {
+          if (input$otherStat == 'Mean') {
+            dat$VALUE + dat$VARIANCE
+          } else if (input$otherStat == 'Total') {
+            dat$VALUE
+          } else {
+            dat$q75
+          }
+        } else if (input$Ind_sel == 'Vessel characteristics' || input$Ind_sel == 'Processor characteristics' || input$Ind_sel == 'Labor') {
         if (input$AVE_MED2 == 'Mean') {
           dat$VALUE + dat$VARIANCE
         } else if (input$AVE_MED2 == 'Total') {
@@ -81,13 +96,33 @@ doPlotDownload <- function(dat, x, y){
       if (input$Ind_sel == "Economic") {
         if (input$AVE_MED == 'A') {
           dat$VALUE - dat$VARIANCE
-        } else  {
+        } else if (input$AVE_MED == 'T') {
+          dat$VALUE
+          } else  {
           dat$q25
         }
-      } else if (input$Ind_sel != "Economic") {
+      } else if (input$Ind_sel == 'Cost') {
+        if (input$AVE_MED_COSTS == 'A') {
+          dat$VALUE - dat$VARIANCE
+        } else if (input$AVE_MED_COSTS == 'T') {
+          dat$VALUE
+        } else {
+          dat$q25
+        }
+      } else if (input$Ind_sel == 'Other') {
+        if (input$otherStat == 'Mean') {
+          dat$VALUE - dat$VARIANCE
+        } else if (input$otherStat == 'Total') {
+          dat$VALUE
+        } else {
+          dat$q25
+        }
+      } else if (input$Ind_sel == 'Vessel characteristics' || input$Ind_sel == 'Processor characteristics' || input$Ind_sel == 'Labor') {
         if (input$AVE_MED2 == 'Mean') {
           dat$VALUE - dat$VARIANCE
-        } else  {
+        } else if (input$AVE_MED2 == 'Total') {
+          dat$VALUE
+          } else  {
           dat$q25
         }
       }
@@ -98,23 +133,49 @@ doPlotDownload <- function(dat, x, y){
         if (input$PlotSelect == T) {
           if (input$AVE_MED == 'A') {
             max(dat$VALUE + dat$VARIANCE, na.rm = T)
-          } else {
+          } else if (input$AVE_MED == 'M') {
             max(dat$q75, na.rm = T)
+          }
+          else {
+            max(dat$VALUE, na.rm = T)
           }
         } else {
           max(dat$VALUE, na.rm = T)
         }
-      } else if (input$Ind_sel != "Economic") {
-        if (input$AVE_MED2 == 'Mean' & input$PlotSelect == T) {
-          max(dat$VALUE + dat$VARIANCE, na.rm = T)
-        } else if (input$AVE_MED2 == 'Median' &
-                   input$PlotSelect == T) {
-          max(dat$q75, na.rm = T)
-        } else {
-          max(dat$VALUE, na.rm = T)
-        }
-      }
-    }
+      } else if (input$Ind_sel == 'Cost') {
+        if (input$PlotSelect == T) {
+          if (input$AVE_MED_COSTS == 'A') {
+            max(dat$VALUE + dat$VARIANCE, na.rm = T)
+          } else if (input$AVE_MED_COSTS == 'M') {
+            max(dat$q75, na.rm = T)
+          } else  {
+            max(dat$VALUE, na.rm = T)
+          } } else {
+            max(dat$VALUE, na.rm = T)
+          }
+      } else if (input$Ind_sel == 'Other') {
+        if (input$PlotSelect == T) {
+          if (input$otherStat == 'Mean') {
+            max(dat$VALUE + dat$VARIANCE, na.rm = T)
+          } else if (input$otherStat == 'Median') {
+            max(dat$q75, na.rm = T)
+          } else {
+            max(dat$VALUE, na.rm = T)
+          } } else {
+            max(dat$VALUE, na.rm = T)
+          }
+      } else if (input$Ind_sel == 'Vessel characteristics' || input$Ind_sel == 'Processor characteristics' || input$Ind_sel == 'Labor') {
+        if (input$PlotSelect == T) {
+          if (input$AVE_MED2 == 'Mean') {
+            max(dat$VALUE + dat$VARIANCE, na.rm = T)
+          } else if (input$AVE_MED2 == 'Median') {
+            max(dat$q75, na.rm = T)
+          } else {
+            max(dat$VALUE, na.rm = T) 
+          } } else {
+            max(dat$VALUE, na.rm = T)
+          }
+      } }
     
     # I commented this out because it's not being used - ERIN
     # lower <- function() {
