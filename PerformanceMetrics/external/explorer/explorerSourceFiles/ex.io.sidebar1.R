@@ -1386,7 +1386,17 @@ output$vesselCharacteristicStats <- renderUI({
 )
 
 output$crewStats <- renderUI({
-  if (input$crewSelect == 'Crew wage per day' |
+  if (input$LayoutSelect) {
+    tagList(radioButtons(
+      "crewStat",
+      HTML(
+        "<div> Statistic: <button id='istat' type='button' class='btn btn-default action-button shiny-bound-input'> <i class='fa fa-info-circle fa-fw' ></i></button> </div>"
+      ),
+      choices = c("Mean", "Median", 'Total'),
+      select = 'Median'
+    ))
+  }
+  else if (input$crewSelect == 'Crew wage per day' |
       input$crewSelect == 'Hourly compensation'|
       input$crewSelect == 'Crew wage per year' |
       input$crewSelect == 'Crew wage per dollar revenue' |
