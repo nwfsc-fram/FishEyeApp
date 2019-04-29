@@ -28,21 +28,15 @@ doPlotDownload <- function(dat, x, y){
                    unit == 'billions' ~ VALUE/1e9,
                    T ~ -999))
     
-    dat$sort2 <- if(!input$LayoutSelect){
-      if(input$Ind_sel=='Other'){
-        if(input$socSelect=='Share of landings by state'){
-          reorder(dat$AGID, dat$sort)
-        } else {
-          reorder(dat$VARIABLE, dat$sort)
-        }
-      }else {
-        reorder(dat$VARIABLE, dat$sort)
-      }} else {
-        if(input$Ind_sel=="Economic"){ 
-          reorder(dat$SHORTDESCR, dat$sort)
-        } else {
-          reorder(dat$METRIC, dat$sort)
-        }}
+    dat$sort2 <- if (!input$LayoutSelect) {
+      reorder(dat$VARIABLE, dat$sort)
+    } else {
+      if (input$Ind_sel == "Economic") {
+        reorder(dat$SHORTDESCR, dat$sort)
+      } else {
+        reorder(dat$METRIC, dat$sort)
+      }
+    }
     
     dat$thresh <-  if(input$Ind_sel=="Economic"){   
       data.frame(dat %>% group_by(SHORTDESCR) %>% mutate(threshold=length(table(YEAR[YEAR<=2010]))))%>% subset(select=c(threshold))
@@ -70,8 +64,23 @@ doPlotDownload <- function(dat, x, y){
           dat$VALUE
         } else {
           dat$q75
-        }
-      } else if (input$Ind_sel != "Economic") {
+        }} else if (input$Ind_sel == 'Cost') {
+          if (input$AVE_MED_COSTS == 'A') {
+            dat$VALUE + dat$VARIANCE
+          } else if (input$AVE_MED_COSTS == 'T') {
+            dat$VALUE
+          } else {
+            dat$q75
+          }
+        } else if (input$Ind_sel == 'Other') {
+          if (input$otherStat == 'Mean') {
+            dat$VALUE + dat$VARIANCE
+          } else if (input$otherStat == 'Total') {
+            dat$VALUE
+          } else {
+            dat$q75
+          }
+        } else if (input$Ind_sel == 'Vessel characteristics' || input$Ind_sel == 'Processor characteristics' || input$Ind_sel == 'Labor') {
         if (input$AVE_MED2 == 'Mean') {
           dat$VALUE + dat$VARIANCE
         } else if (input$AVE_MED2 == 'Total') {
@@ -87,13 +96,33 @@ doPlotDownload <- function(dat, x, y){
       if (input$Ind_sel == "Economic") {
         if (input$AVE_MED == 'A') {
           dat$VALUE - dat$VARIANCE
-        } else  {
+        } else if (input$AVE_MED == 'T') {
+          dat$VALUE
+          } else  {
           dat$q25
         }
-      } else if (input$Ind_sel != "Economic") {
+      } else if (input$Ind_sel == 'Cost') {
+        if (input$AVE_MED_COSTS == 'A') {
+          dat$VALUE - dat$VARIANCE
+        } else if (input$AVE_MED_COSTS == 'T') {
+          dat$VALUE
+        } else {
+          dat$q25
+        }
+      } else if (input$Ind_sel == 'Other') {
+        if (input$otherStat == 'Mean') {
+          dat$VALUE - dat$VARIANCE
+        } else if (input$otherStat == 'Total') {
+          dat$VALUE
+        } else {
+          dat$q25
+        }
+      } else if (input$Ind_sel == 'Vessel characteristics' || input$Ind_sel == 'Processor characteristics' || input$Ind_sel == 'Labor') {
         if (input$AVE_MED2 == 'Mean') {
           dat$VALUE - dat$VARIANCE
-        } else  {
+        } else if (input$AVE_MED2 == 'Total') {
+          dat$VALUE
+          } else  {
           dat$q25
         }
       }
@@ -104,23 +133,49 @@ doPlotDownload <- function(dat, x, y){
         if (input$PlotSelect == T) {
           if (input$AVE_MED == 'A') {
             max(dat$VALUE + dat$VARIANCE, na.rm = T)
-          } else {
+          } else if (input$AVE_MED == 'M') {
             max(dat$q75, na.rm = T)
+          }
+          else {
+            max(dat$VALUE, na.rm = T)
           }
         } else {
           max(dat$VALUE, na.rm = T)
         }
-      } else if (input$Ind_sel != "Economic") {
-        if (input$AVE_MED2 == 'Mean' & input$PlotSelect == T) {
-          max(dat$VALUE + dat$VARIANCE, na.rm = T)
-        } else if (input$AVE_MED2 == 'Median' &
-                   input$PlotSelect == T) {
-          max(dat$q75, na.rm = T)
-        } else {
-          max(dat$VALUE, na.rm = T)
-        }
-      }
-    }
+      } else if (input$Ind_sel == 'Cost') {
+        if (input$PlotSelect == T) {
+          if (input$AVE_MED_COSTS == 'A') {
+            max(dat$VALUE + dat$VARIANCE, na.rm = T)
+          } else if (input$AVE_MED_COSTS == 'M') {
+            max(dat$q75, na.rm = T)
+          } else  {
+            max(dat$VALUE, na.rm = T)
+          } } else {
+            max(dat$VALUE, na.rm = T)
+          }
+      } else if (input$Ind_sel == 'Other') {
+        if (input$PlotSelect == T) {
+          if (input$otherStat == 'Mean') {
+            max(dat$VALUE + dat$VARIANCE, na.rm = T)
+          } else if (input$otherStat == 'Median') {
+            max(dat$q75, na.rm = T)
+          } else {
+            max(dat$VALUE, na.rm = T)
+          } } else {
+            max(dat$VALUE, na.rm = T)
+          }
+      } else if (input$Ind_sel == 'Vessel characteristics' || input$Ind_sel == 'Processor characteristics' || input$Ind_sel == 'Labor') {
+        if (input$PlotSelect == T) {
+          if (input$AVE_MED2 == 'Mean') {
+            max(dat$VALUE + dat$VARIANCE, na.rm = T)
+          } else if (input$AVE_MED2 == 'Median') {
+            max(dat$q75, na.rm = T)
+          } else {
+            max(dat$VALUE, na.rm = T) 
+          } } else {
+            max(dat$VALUE, na.rm = T)
+          }
+      } }
     
     # I commented this out because it's not being used - ERIN
     # lower <- function() {
@@ -539,6 +594,7 @@ xlab <- function(){
         # otherwise normal plot:
       } else {
         dat <- dat[order(dat$sort), ]
+        dat$bystategrp <- paste0(dat$AGID, dat$whitingv)
         g <-
           # I think this is where the NAs are getting removed which causes lines to be connected through suppressed/missing values #removeNAs
           ggplot(dat, aes_string(x = x, y = y , group = groupVar), environment =
@@ -552,18 +608,20 @@ xlab <- function(){
                  environment()) #+coord_cartesian(xlim = c(0, length(table(dat$YEAR))+1))
     }
     
-    #add lines and points to the plot ####
-    if (!is.null(input$socSelect) && input$socSelect == 'Share of landings by state') {
-      
-      g <-
-        g + geom_line(aes_string(colour = groupVar, group = "bystategrp"), size = 1.5) +
-        geom_point(aes_string(colour = groupVar, shape = "AGID", group = "bystategrp"),
-                   size = 4)
-      
-    } else {
-      g <- g + geom_line(aes_string(colour = groupVar), size = 1.5) +
-        geom_point(aes_string(colour = groupVar), size = 4)
-    }
+    # add lines and points to the plot ####
+    if (input$Ind_sel == 'Other') {
+      if (input$socSelect == 'Share of landings by state') {
+        g <-
+          g + geom_line(aes_string(colour = groupVar, group = 'bystategrp'), size = 1.5) +
+          geom_point(aes_string(colour = groupVar, shape = 'AGID', group = 'bystategrp'),
+                     size = 4)
+      } else {
+        g <- g + geom_line(aes_string(colour = groupVar), size = 1.5) +
+          geom_point(aes_string(colour = groupVar), size = 4)
+      }} else {
+        g <- g + geom_line(aes_string(colour = groupVar), size = 1.5) +
+          geom_point(aes_string(colour = groupVar), size = 4)
+      }
 
 #------ Add variance ------#    
     if(input$PlotSelect==T& !exists('ssn')) { 
@@ -575,12 +633,11 @@ xlab <- function(){
     
       
 #----- define facet -----#
-      if (!input$LayoutSelect) {
-        g <- g + facet_wrap(~ sort2, ncol=2)
-      } 
-    else {
-        g <- g + facet_wrap(~ sort2, ncol=2)
-      }
+    if (input$LayoutSelect != 'Metrics') {
+      g <- g + facet_wrap(~ sort2, ncol = 2)
+    }else {
+      g <- g + facet_wrap(~ sort2, scales = 'free_y', ncol = 2)
+    }
     
 #----- define scale -----#
     g <- g + scale_fill_manual(values = colourThirds) + scale_colour_manual(values = colourThirds)

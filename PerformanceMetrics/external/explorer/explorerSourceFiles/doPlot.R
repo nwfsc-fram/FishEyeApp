@@ -32,15 +32,7 @@ doPlot <- function(dat, x, y) {
 
     # create sort2 column ####
     dat$sort2 <- if (!input$LayoutSelect) {
-      if (input$Ind_sel == 'Other') {
-        if (input$socSelect == 'Share of landings by state') {
-          reorder(dat$AGID, dat$sort)
-        } else {
-          reorder(dat$VARIABLE, dat$sort)
-        }
-      } else {
         reorder(dat$VARIABLE, dat$sort)
-      }
     } else {
       if (input$Ind_sel == "Economic") {
         reorder(dat$SHORTDESCR, dat$sort)
@@ -87,8 +79,23 @@ doPlot <- function(dat, x, y) {
           dat$VALUE
         } else {
           dat$q75
-        }
-      } else if (input$Ind_sel != "Economic") {
+        }} else if (input$Ind_sel == 'Cost') {
+          if (input$AVE_MED_COSTS == 'A') {
+            dat$VALUE + dat$VARIANCE
+          } else if (input$AVE_MED_COSTS == 'T') {
+            dat$VALUE
+          } else {
+            dat$q75
+          }
+        } else if (input$Ind_sel == 'Other') {
+            if (input$otherStat == 'Mean') {
+              dat$VALUE + dat$VARIANCE
+            } else if (input$otherStat == 'Total') {
+              dat$VALUE
+            } else {
+              dat$q75
+            }
+          } else if (input$Ind_sel == 'Vessel characteristics' || input$Ind_sel == 'Processor characteristics' || input$Ind_sel == 'Labor') {
         if (input$AVE_MED2 == 'Mean') {
           dat$VALUE + dat$VARIANCE
         } else if (input$AVE_MED2 == 'Total') {
@@ -104,12 +111,32 @@ doPlot <- function(dat, x, y) {
       if (input$Ind_sel == "Economic") {
         if (input$AVE_MED == 'A') {
           dat$VALUE - dat$VARIANCE
+        } else if (input$AVE_MED == 'T') {
+          dat$VALUE
         } else  {
           dat$q25
         }
-      } else if (input$Ind_sel != "Economic") {
+      } else if (input$Ind_sel == 'Cost') {
+        if (input$AVE_MED_COSTS == 'A') {
+          dat$VALUE - dat$VARIANCE
+      } else if (input$AVE_MED_COSTS == 'T') {
+        dat$VALUE
+      } else {
+        dat$q25
+      }
+      } else if (input$Ind_sel == 'Other') {
+        if (input$otherStat == 'Mean') {
+          dat$VALUE - dat$VARIANCE
+        } else if (input$otherStat == 'Total') {
+          dat$VALUE
+        } else {
+          dat$q25
+        }
+      } else if (input$Ind_sel == 'Vessel characteristics' || input$Ind_sel == 'Processor characteristics' || input$Ind_sel == 'Labor') {
         if (input$AVE_MED2 == 'Mean') {
           dat$VALUE - dat$VARIANCE
+        } else if (input$AVE_MED2 == 'Total') {
+          dat$VALUE
         } else  {
           dat$q25
         }
@@ -121,23 +148,47 @@ doPlot <- function(dat, x, y) {
         if (input$PlotSelect == T) {
           if (input$AVE_MED == 'A') {
             max(dat$VALUE + dat$VARIANCE, na.rm = T)
-          } else {
+          } else if (input$AVE_MED == 'M') {
             max(dat$q75, na.rm = T)
-          }
-        } else {
+          } else  {
+            max(dat$VALUE, na.rm = T)
+        } } else {
           max(dat$VALUE, na.rm = T)
         }
-      } else if (input$Ind_sel != "Economic") {
-        if (input$AVE_MED2 == 'Mean' & input$PlotSelect == T) {
+      } else if (input$Ind_sel == 'Cost') {
+        if (input$PlotSelect == T) {
+          if (input$AVE_MED_COSTS == 'A') {
+            max(dat$VALUE + dat$VARIANCE, na.rm = T)
+          } else if (input$AVE_MED_COSTS == 'M') {
+            max(dat$q75, na.rm = T)
+          } else  {
+            max(dat$VALUE, na.rm = T)
+        } } else {
+          max(dat$VALUE, na.rm = T)
+        }
+      } else if (input$Ind_sel == 'Other') {
+        if (input$PlotSelect == T) {
+          if (input$otherStat == 'Mean') {
+            max(dat$VALUE + dat$VARIANCE, na.rm = T)
+          } else if (input$otherStat == 'Median') {
+            max(dat$q75, na.rm = T)
+          } else {
+            max(dat$VALUE, na.rm = T)
+        } } else {
+          max(dat$VALUE, na.rm = T)
+        }
+      } else if (input$Ind_sel == 'Vessel characteristics' || input$Ind_sel == 'Processor characteristics' || input$Ind_sel == 'Labor') {
+        if (input$PlotSelect == T) {
+          if (input$AVE_MED2 == 'Mean') {
           max(dat$VALUE + dat$VARIANCE, na.rm = T)
-        } else if (input$AVE_MED2 == 'Median' &
-            input$PlotSelect == T) {
+        } else if (input$AVE_MED2 == 'Median') {
           max(dat$q75, na.rm = T)
         } else {
+          max(dat$VALUE, na.rm = T) 
+          } } else {
           max(dat$VALUE, na.rm = T)
-        }
       }
-    }
+    } }
     
     # I commented this out because it's not being used - ERIN
     # lower <- function() {
@@ -261,32 +312,32 @@ main <- function() {
           } else if (input$socSelect == "Fuel use per day") {
             paste(input$socSelect,
                   "(",
-                  input$AVE_MED2,
+                  input$otherStat,
                   "in",
                   dat$unit,
                   "gallons)")
           } else if (input$socSelect == 'Speed while fishing') {
             paste(input$socSelect,
                   "(",
-                  input$AVE_MED2,
+                  input$otherStat,
                   "in",
                   dat$unit,
                   "knots)")
           } else if (input$socSelect == 'Days at sea') {
             paste(input$socSelect,
                   "(",
-                  input$AVE_MED2,
+                  input$otherStat,
                   ")")
           } else {
             paste(input$socSelect,
                   "(",
-                  input$AVE_MED2,
+                  input$otherStat,
                   "in",
                   dat$unit,
                   ")")
           }
         } else {
-          paste(input$AVE_MED2,
+          paste(input$otherStat,
                 '(Scale and units depend upon metric)')
         }
       } else if (input$Ind_sel == "Vessel characteristics" ||
@@ -326,7 +377,7 @@ main <- function() {
              input$crewSelect != 'Number of workers') {
             paste(input$crewSelect,
                   "(",
-                  input$AVE_MED2,
+                  input$crewStat,
                   "in",
                   dat$unit,
                   currentyear,
@@ -335,13 +386,31 @@ main <- function() {
           } else {
             paste(input$crewSelect,
                   "(",
-                  input$AVE_MED2,
+                  input$crewStat,
                   ")")
           }
       } else {
-        paste(input$AVE_MED2,
+        paste(input$crewStat,
               '(Scale and units depend upon metric)')
       }
+      } else if (input$Ind_sel == 'Cost') {
+        if (!input$LayoutSelect) {
+          paste(input$costSelect,
+                "(",
+                input$costStatSelect,
+                "in",
+                dat$unit,
+                currentyear,
+                "$",
+                ")")
+        } else {
+          if("thousands" %in% dat$unit){
+            paste("Thousands of", currentyear, " $ (",input$costStatSelect, ")")
+          } else {
+            paste(currentyear, " $ (",input$costStatSelect, ")")
+          }
+        }
+          
         }
     }
     
@@ -412,6 +481,7 @@ xlab <- function() {
           # otherwise normal plot:
         } else {
           dat <- dat[order(dat$sort), ]
+          dat$bystategrp <- paste0(dat$AGID, dat$whitingv)
           g <-
             # I think this is where the NAs are getting removed which causes lines to be connected through suppressed/missing values #removeNAs
             ggplot(dat, aes_string(x = x, y = y , group = groupVar), environment =
@@ -426,8 +496,19 @@ xlab <- function() {
     }
     
     # add lines and points to the plot ####
-    g <- g + geom_line(aes_string(colour = groupVar), size = 1) +
-      geom_point(aes_string(colour = groupVar), size = 4)
+    if (input$Ind_sel == 'Other') {
+       if (input$socSelect == 'Share of landings by state') {
+      g <-
+        g + geom_line(aes_string(colour = groupVar, group = 'bystategrp'), size = 1.5) +
+        geom_point(aes_string(colour = groupVar, shape = 'AGID', group = 'bystategrp'),
+                   size = 4)
+    } else {
+      g <- g + geom_line(aes_string(colour = groupVar), size = 1.5) +
+        geom_point(aes_string(colour = groupVar), size = 4)
+    }} else {
+      g <- g + geom_line(aes_string(colour = groupVar), size = 1.5) +
+        geom_point(aes_string(colour = groupVar), size = 4)
+    }
 
     
     # add 'data variability' band ####
@@ -444,13 +525,12 @@ xlab <- function() {
 
    # if(length(unique(ssn$VARIABLE)) > 1 ) browser()
     #----- define facet -----#####
-    if (!input$LayoutSelect) {
-
-      g <- g + facet_wrap( ~ sort2, ncol = 2)
-
-    } else {
-      g <- g + facet_wrap( ~ sort2, scales = 'free_y', ncol = 2)
+    if (input$LayoutSelect != 'Metrics') {
+      g <- g + facet_wrap(~ sort2, ncol = 2)
+    }else {
+      g <- g + facet_wrap(~ sort2, scales = 'free_y', ncol = 2)
     }
+    
     
     #----- Define grey shading and Non-CS/CS labels ------####
     # choose label text size ####
@@ -524,7 +604,21 @@ xlab <- function() {
              y_val = min(as.Date(upper(), origin = "2014-01-01")),
              label_val = "Catch shares")
         # for all other variables
-      }} else {
+        } else {
+          g <- g + geom_rect_fun()
+          # geom_text1
+          g <- g + geom_text_fun(
+            x_val = table(yr() <= 2010)[[2]] / 3.5,
+            y_val = max(upper()) + scale_geom_text()/5,
+            label_val = "Pre-catch shares")
+          g <- g +
+            # geom_text3
+            geom_text_fun(
+              x_val = table(yr() <= 2010)[[2]] + table(yr() > 2010)[[2]] / 1.5,
+              y_val = max(upper()) + scale_geom_text() / 5,
+              label_val = "Catch shares")
+        } 
+          } else {
         g <- g + geom_rect_fun()
           # geom_text1
         g <- g + geom_text_fun(
