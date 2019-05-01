@@ -110,8 +110,8 @@ function(request) {
                                    .frckbox .checkbox:nth-child(3) label,
                                    .frckbox .checkbox:nth-child(4) label,
 
-                                    .statboxC .radio:nth-child(-n+14) label,
-                                    .statboxF .radio:nth-child(-n+14) label,
+                                    .statboxC .radio:nth-child(-n+15) label,
+                                    .statboxF .radio:nth-child(-n+15) label,
                                     .statboxM .radio:nth-child(-n+12) label,
                                     .ckbox2 .radio:nth-child(-n+14) label,
                                     .frckbox .radio:nth-child(3) label,
