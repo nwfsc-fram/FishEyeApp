@@ -4,8 +4,8 @@ doPlot <- function(dat, x, y) {
     #dat <- subset(dat, is.na(dat$VALUE) == FALSE)
     
     ##Prepping data for plotting by converting to more "plot friendly" values
-    dat<- mutate(dat,
-                 VARIANCE = case_when(
+    dat<- dat %>%
+      mutate(VARIANCE = case_when(
                    unit == '' ~ VARIANCE,
                    unit == 'thousands' ~ VARIANCE/1e3,
                    unit == 'millions' ~ VARIANCE/1e6,
@@ -30,17 +30,138 @@ doPlot <- function(dat, x, y) {
                   unit == 'billions' ~ VALUE/1e9,
                   T ~ -999))
 
-    # create sort2 column ####
-    dat$sort2 <- if (!input$LayoutSelect) {
-        reorder(dat$VARIABLE, dat$sort)
-    } else {
-      if (input$Ind_sel == "Economic") {
-        reorder(dat$SHORTDESCR, dat$sort)
-      } else {
-        reorder(dat$METRIC, dat$sort)
-      }
-    }
+      # y-axis label ####
     
+    # ylab <- function() {
+    #   if (input$Ind_sel == "Economic") {
+    #     paste(input$ShortdescrSelect,
+    #           "(",
+    #           input$StatSelect,
+    #           "in",
+    #           dat$unit,
+    #           currentyear,
+    #           "$",
+    #           ")")
+    #   } else if (input$Ind_sel == "Other") {
+    #     if (!input$LayoutSelect) {
+    #       if (input$socSelect == "Seasonality") {
+    #         expression(bold("Day of year when 50% of catch was landed"))
+    #       }  else if (input$socSelect == "Share of landings by state") {
+    #         expression(bold("Share of landings (% of revenue)"))
+    #       }  else if (input$socSelect == "Gini coefficient") {
+    #         expression(bold("Gini coefficient (0 - 1)"))
+    #       } else if (input$socSelect == "Fuel use per day") {
+    #         paste(input$socSelect,
+    #               "(",
+    #               input$otherStat,
+    #               "in",
+    #               dat$unit,
+    #               "gallons)")
+    #       } else if (input$socSelect == 'Speed while fishing') {
+    #         paste(input$socSelect,
+    #               "(",
+    #               input$otherStat,
+    #               "in",
+    #               dat$unit,
+    #               "knots)")
+    #       } else if (input$socSelect == 'Days at sea') {
+    #         paste(input$socSelect,
+    #               "(",
+    #               input$otherStat,
+    #               ")")
+    #       } else {
+    #         paste(input$socSelect,
+    #               "(",
+    #               input$otherStat,
+    #               "in",
+    #               dat$unit,
+    #               ")")
+    #       }
+    #     } else {
+    #       paste(input$otherStat,
+    #             '(Scale and units depend upon metric)')
+    #     }
+    #   } else if (input$Ind_sel == "Vessel characteristics" ||
+    #              input$Ind_sel == 'Processor characteristics') {
+    #     if (!input$LayoutSelect) {
+    #       if (!input$demSelect %in% c('Vessel length', 'Revenue diversification', 'Number of vessels')) {
+    #         paste(input$demSelect,
+    #               "(",
+    #               input$AVE_MED2,
+    #               "in",
+    #               dat$unit,
+    #               currentyear,
+    #               "$",
+    #               ")")
+    #       } else if (input$demSelect == 'Number of vessels') {
+    #         paste(input$demSelect)
+    #       } else if (input$demSelect == 'Vessel length') {
+    #         paste(input$demSelect,
+    #               "(",
+    #               input$AVE_MED2,
+    #               "in feet)")
+    #       } else if (input$demSelect == 'Revenue diversification') {
+    #         paste(input$demSelect,
+    #               "(",
+    #               input$AVE_MED2,
+    #               "Exponential Shannon Index)")
+    #       }
+    #     } else {
+    #       paste(input$AVE_MED2,
+    #             '(Scale and units depend upon metric)')
+    #     }
+    #   } else if (input$Ind_sel == 'Labor') {
+    #     if (!input$LayoutSelect) {
+    #       if(input$crewSelect != "Number of crew" &
+    #          input$crewSelect != 'Number of crew-days' & 
+    #          input$crewSelect != 'Number of processing and non-processing crew' &
+    #          input$crewSelect != 'Number of workers') {
+    #         paste(input$crewSelect,
+    #               "(",
+    #               input$crewStat,
+    #               "in",
+    #               dat$unit,
+    #               currentyear,
+    #               "$",
+    #               ")")
+    #       } else {
+    #         paste(input$crewSelect,
+    #               "(",
+    #               input$crewStat,
+    #               ")")
+    #       }
+    #     } else {
+    #       paste(input$crewStat,
+    #             '(Scale and units depend upon metric)')
+    #     }
+    #   } else if (input$Ind_sel == 'Cost') {
+    #     if (!input$LayoutSelect) {
+    #       paste(input$costSelect,
+    #             "(",
+    #             input$costStatSelect,
+    #             "in",
+    #             dat$unit,
+    #             currentyear,
+    #             "$",
+    #             ")")
+    #     } else {
+    #       if("thousands" %in% dat$unit){
+    #         paste("Thousands of", currentyear, " $ (",input$costStatSelect, ")")
+    #       } else {
+    #         paste(currentyear, " $ (",input$costStatSelect, ")")
+    #       }
+    #     }
+    #     
+    #   }
+    # }
+    
+    dat$sort2 <- if (!input$LayoutSelect) {
+      reorder(dat$VARIABLE, dat$sort)
+    } else {
+        reorder(dat$ylab, dat$sort)
+      }
+  
+    ##Not sure if we use this###
     dat$thresh <-  if (input$Ind_sel == "Economic") {
     length(unique(dat$YEAR<=2010))
     }    else if (input$Ind_sel != "Economic") {
@@ -218,6 +339,7 @@ doPlot <- function(dat, x, y) {
       }
     } }
     
+    
     # I commented this out because it's not being used - ERIN
     # lower <- function() {
     #   #      if(input$PlotSelectOption=="Standard deviation or Median average deviation")
@@ -235,13 +357,27 @@ doPlot <- function(dat, x, y) {
     #     }
     #   }
     # }
-  
+    yaxislabel <- function () {
+      if(input$LayoutSelect) {
+      if(input$Ind_sel %in% c('Economic', 'Cost')) {
+        paste(dat$STAT,
+              "(Scale and units depend upon metric)")
+      } else {
+        paste(dat$SUMSTAT,
+              "(Scale and units depend upon metric)")
+      }
+    } else {
+      dat$ylab
+    }
+    }
+    
     yr <- function() {
       return(unique(as.numeric(dat$YEAR)))
     }
     print(yr())
     groupVar <- "whitingv"
     
+  
 # set colors for whiting/non-whiting/all lines ####
     colourThirds <- if (input$Sect_sel != "FR") {
       c(
@@ -318,129 +454,7 @@ main <- function() {
 }       
 ##gv <- function() {
 
-    # y-axis label ####
-    ylab <- function() {
-      if (input$Ind_sel == "Economic") {
-          paste(input$ShortdescrSelect,
-                "(",
-                input$StatSelect,
-                "in",
-                dat$unit,
-            currentyear,
-            "$",
-            ")")
-      } else if (input$Ind_sel == "Other") {
-        if (!input$LayoutSelect) {
-          if (input$socSelect == "Seasonality") {
-            expression(bold("Day of year when 50% of catch was landed"))
-          }  else if (input$socSelect == "Share of landings by state") {
-            expression(bold("Share of landings (% of revenue)"))
-          }  else if (input$socSelect == "Gini coefficient") {
-            expression(bold("Gini coefficient (0 - 1)"))
-          } else if (input$socSelect == "Fuel use per day") {
-            paste(input$socSelect,
-                  "(",
-                  input$otherStat,
-                  "in",
-                  dat$unit,
-                  "gallons)")
-          } else if (input$socSelect == 'Speed while fishing') {
-            paste(input$socSelect,
-                  "(",
-                  input$otherStat,
-                  "in",
-                  dat$unit,
-                  "knots)")
-          } else if (input$socSelect == 'Days at sea') {
-            paste(input$socSelect,
-                  "(",
-                  input$otherStat,
-                  ")")
-          } else {
-            paste(input$socSelect,
-                  "(",
-                  input$otherStat,
-                  "in",
-                  dat$unit,
-                  ")")
-          }
-        } else {
-          paste(input$otherStat,
-                '(Scale and units depend upon metric)')
-        }
-      } else if (input$Ind_sel == "Vessel characteristics" ||
-                 input$Ind_sel == 'Processor characteristics') {
-        if (!input$LayoutSelect) {
-          if (!input$demSelect %in% c('Vessel length', 'Revenue diversification', 'Number of vessels')) {
-            paste(input$demSelect,
-                  "(",
-                  input$AVE_MED2,
-                  "in",
-                  dat$unit,
-                  currentyear,
-                  "$",
-                  ")")
-          } else if (input$demSelect == 'Number of vessels') {
-            paste(input$demSelect)
-          } else if (input$demSelect == 'Vessel length') {
-            paste(input$demSelect,
-                  "(",
-                  input$AVE_MED2,
-                  "in feet)")
-          } else if (input$demSelect == 'Revenue diversification') {
-            paste(input$demSelect,
-                  "(",
-                  input$AVE_MED2,
-                  "Exponential Shannon Index)")
-          }
-        } else {
-          paste(input$AVE_MED2,
-                '(Scale and units depend upon metric)')
-        }
-      } else if (input$Ind_sel == 'Labor') {
-        if (!input$LayoutSelect) {
-          if(input$crewSelect != "Number of crew" &
-             input$crewSelect != 'Number of crew-days' & 
-             input$crewSelect != 'Number of processing and non-processing crew' &
-             input$crewSelect != 'Number of workers') {
-            paste(input$crewSelect,
-                  "(",
-                  input$crewStat,
-                  "in",
-                  dat$unit,
-                  currentyear,
-                  "$",
-                  ")")
-          } else {
-            paste(input$crewSelect,
-                  "(",
-                  input$crewStat,
-                  ")")
-          }
-      } else {
-        paste(input$crewStat,
-              '(Scale and units depend upon metric)')
-      }
-      } else if (input$Ind_sel == 'Cost') {
-        if (!input$LayoutSelect) {
-          paste(input$costSelect,
-                "(",
-                input$costStatSelect,
-                "in",
-                dat$unit,
-                currentyear,
-                "$",
-                ")")
-        } else {
-          if("thousands" %in% dat$unit){
-            paste("Thousands of", currentyear, " $ (",input$costStatSelect, ")")
-          } else {
-            paste(currentyear, " $ (",input$costStatSelect, ")")
-          }
-        }
-          
-        }
-    }
+   
     
     
 # confidentiality messages ####
@@ -553,9 +567,9 @@ xlab <- function() {
 
    # if(length(unique(ssn$VARIABLE)) > 1 ) browser()
     #----- define facet -----#####
-    if (input$LayoutSelect != 'Metrics') {
+    if (!input$LayoutSelect) {
       g <- g + facet_wrap(~ sort2, ncol = 2)
-    }else {
+    } else {
       g <- g + facet_wrap(~ sort2, scales = 'free_y', ncol = 2)
     }
     
@@ -691,11 +705,11 @@ xlab <- function() {
     
     #---- define labels (not sure what this does------####
     if (input$tabs == 'Panel1') {
-      g <- g + labs(y = ylab(),
+      g <- g + labs(y = yaxislabel(),
         x = xlab(),
         title = main())
     } else {
-      g <- g + labs(y = ylab(),
+      g <- g + labs(y = yaxislabel(),
         x = '',
         title = main())
     }

@@ -97,8 +97,7 @@ DatVars <- reactive({
         METRIC3a = c(
           "Days at sea", 
           "Fuel use per day", 
-          "Speed while fishing",
-          "Gini coefficient"
+          "Speed while fishing"
         ),
 ##Cost metrics###
         METRIC4 = c(
@@ -233,8 +232,7 @@ DatVars <- reactive({
         ),
         ##When grouping by Metrics, don't include 'Seasonsality'
         METRIC3a = c(
-          "Days at sea",
-          "Gini coefficient"
+          "Days at sea"
         ),
         METRIC4 = c(
           'All variable costs',
@@ -304,8 +302,7 @@ DatVars <- reactive({
       ),
       ##When grouping by Metrics, don't include 'Seasonsality'
       METRIC3a = c(
-        "Days at sea",
-        "Gini coefficient"
+        "Days at sea"
       ),
       METRIC4 = c(
         'All variable costs',

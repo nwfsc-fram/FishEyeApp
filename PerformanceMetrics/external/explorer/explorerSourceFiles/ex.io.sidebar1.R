@@ -8,7 +8,7 @@ output$metrics <- renderUI({
     name = "Vessel characteristics"
   } else {
     name = "Processor characteristics"
-  }
+  }   
   tabsetPanel(
     tabPanel(name, uiOutput("demselect"), uiOutput("vesselCharacteristicStats")),
     tabPanel("Economic", uiOutput("ShortdescrSelect"), uiOutput("Statselect")),
@@ -1042,7 +1042,7 @@ output$socSelect <- renderUI({
     if (input$Sect_sel == "CV") {
       if (input$otherStat == "Total") {
         tags$div(
-          class = "ckbox34",
+          class = "ckbox_3",
           checkboxGroupInput(
             "socSelect",
             NULL,
@@ -1052,7 +1052,7 @@ output$socSelect <- renderUI({
         )
       } else {
         tags$div(
-          class = "ckbox_4",
+          class = "ckbox",
           checkboxGroupInput(
             "socSelect",
             NULL,
@@ -1069,8 +1069,8 @@ output$socSelect <- renderUI({
             checkboxGroupInput(
               "socSelect",
               NULL,
-              choices = c(DatVars()$METRIC3),
-              selected = 'Gini coefficient'
+              choices = "",
+              selected = ""
             )
           )
         } else {
@@ -1079,7 +1079,7 @@ output$socSelect <- renderUI({
             checkboxGroupInput(
               "socSelect",
               NULL,
-              choices = c(DatVars()$METRIC3),
+              choices = "",
               selected = ""
             )
           )
@@ -1092,13 +1092,13 @@ output$socSelect <- renderUI({
               checkboxGroupInput(
                 "socSelect",
                 NULL,
-                choices = c(DatVars()$METRIC3),
+                choices = c(DatVars()$METRIC3a),
                 selected = "Days at sea"
               )
             )
           } else {
             tags$div(
-              class = "ckbox_2",
+              class = "ckbox",
               checkboxGroupInput(
                 "socSelect",
                 NULL,
