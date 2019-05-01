@@ -714,10 +714,13 @@ xlab <- function() {
         title = main())
     }
     
-    if (input$tabs == 'Panel1') {
-      strptextsize <- 18
+    if (input$LayoutSelect) {
+      if (input$tabs == 'Panel1') {
+      strptextsize <- 12
     } else {
-      strptextsize <- 14
+      strptextsize <- 12
+    } } else {
+      strptextsize <- 18
     }
 
     # Define and add THEME to g####

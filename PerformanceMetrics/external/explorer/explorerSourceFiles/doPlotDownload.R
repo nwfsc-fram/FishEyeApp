@@ -629,6 +629,16 @@ xlab <- function(){
       
     }
     
+    if (input$LayoutSelect) {
+      if (input$tabs == 'Panel1') {
+        strptextsize <- 8
+      } else {
+        strptextsize <- 12
+      } } else {
+        strptextsize <- 12
+      }
+    
+    
     # set rect and text for plots with both CS and non-CS years ####
     # otherwise no rect or text
     # the original code for the geom_text* are commented out at the bottom of the doc
@@ -697,7 +707,12 @@ xlab <- function(){
       panel.grid.minor = element_line(linetype = "blank"),
       panel.grid.major.x = element_line(linetype = "blank"),
       panel.grid.major.y = element_line(color = "#656C70", linetype = "dotted"),
-      strip.text = element_text(family = "sans", size = 13, color = "grey25", vjust=1),
+      strip.text = element_text(
+        family = "sans",
+        size = strptextsize,
+        color = "grey25",
+        vjust = 1
+      ),
       strip.background = element_rect(fill = "lightgrey"),
       axis.ticks = element_blank(),
       axis.title.x = element_text(size=rel(.7), face="italic", hjust= 0, vjust=0, colour="grey25"),
