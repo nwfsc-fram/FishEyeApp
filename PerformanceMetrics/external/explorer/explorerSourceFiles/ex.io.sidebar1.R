@@ -965,7 +965,7 @@ output$crewSelect <- renderUI({
           )
     } else {
       tags$div(
-        class = "ckbox23456",
+        class = "ckbox",
         checkboxGroupInput(
           "crewSelect",
           NULL,
@@ -1102,7 +1102,7 @@ output$socSelect <- renderUI({
               checkboxGroupInput(
                 "socSelect",
                 NULL,
-                choices = c(DatVars()$METRIC3),
+                choices = c(DatVars()$METRIC3a),
                 selected = "Days at sea"
               )
             )
