@@ -359,10 +359,10 @@ function(request) {
         fluidRow(
           column(12, htmlOutput("Email")))
       ),
-      tabPanel(HTML('<i class="fa fa-folder-open-o fa-fw" style="margin-right:18ex;display:inline-block;vertical-align:bottom;float:left;white-space:nowrap"> FISHEyE Applications</i>'),
-        fluidRow(
-          column(12, htmlOutput("ApplicationsText"))
-        )),
+      # tabPanel(HTML('<i class="fa fa-folder-open-o fa-fw" style="margin-right:18ex;display:inline-block;vertical-align:bottom;float:left;white-space:nowrap"> FISHEyE Applications</i>'),
+      #   fluidRow(
+      #     column(12, htmlOutput("ApplicationsText"))
+      #   )),
       tabPanel(HTML('<a class="btn btn-warning", href="http://dataexplorer.northwestscience.fisheries.noaa.gov/fisheye/"
                         style="height:37px;border-radius:25px;margin: -24px -50px; float:top;position:absolute;right:-100px;
                               font-familiy: Arial, Helvetica, sans-serif;font-size: 12pt; padding-top:7px;
