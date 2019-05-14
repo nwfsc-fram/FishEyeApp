@@ -714,6 +714,20 @@ output$FishWhitingselect <- renderUI({
 
 
 output$FishWhitingselectBox <- renderUI({
+  if (input$Sect_sel == 'FR') {
+    tags$div(
+      class = 'ckbox',
+      checkboxGroupInput(
+        'FishWhitingSelect',
+        HTML(
+          "<div> Processor type:<button id='iwhiting' type='button' class='btn btn-default action-button shiny-bound-input'> <i class='fa fa-info-circle fa-fw'></i>
+          </button></div>"
+        ),
+        choices = DatVars()$whitingv,
+        selected = DatVars()$whitingv[1]
+        )
+    )
+  } else {
     tags$div(
       class = 'ckbox',
       checkboxGroupInput(
@@ -726,6 +740,7 @@ output$FishWhitingselectBox <- renderUI({
         selected = DatVars()$whitingv[1]
         )
     )
+  }
   })
 ##grey out the Non-whiting and Whiting vessel type selections for the Days at Sea metric for Level A CS fisheries and Level B non-CS fisheries due to confidentiality
 ##All economic metrics
