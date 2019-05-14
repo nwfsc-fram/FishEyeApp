@@ -570,6 +570,16 @@ xlab <- function() {
         strptextsize <- 12
       }
     
+    if(input$LayoutSelect) {
+      if (length(unique(dat$YEAR)) > 9) {
+      xaxissize <- 6
+    } else {
+      xaxissize <- 11
+    } }
+    else {
+      xaxissize <- 11
+    }
+    
 #----- define theme ------#
     g <- g + theme(
       plot.title = element_text(
@@ -608,6 +618,7 @@ xlab <- function() {
         colour = "black", 
         linetype = "solid"),
       axis.text = element_text(size = 11),
+      axis.text.x = element_text(size = xaxissize),
       legend.position = "top",
       legend.key = element_rect(fill = "white"),
       legend.text = element_text(family = "sans", 
