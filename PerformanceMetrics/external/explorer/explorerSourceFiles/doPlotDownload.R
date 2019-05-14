@@ -35,21 +35,35 @@ doPlotDownload <- function(dat, x, y){
       }
     
     dat$thresh <-  if(input$Ind_sel=="Economic"){   
-      data.frame(dat %>% group_by(SHORTDESCR) %>% mutate(threshold=length(table(YEAR[YEAR<=2010]))))%>% subset(select=c(threshold))
+      length(unique(dat$YEAR<=2010))
     } else if(input$Ind_sel!="Economic"){ 
       if(input$LayoutSelect){   
         if(input$PlotSelect==T&!is.na(max(dat$VARIANCE))) { 
-          data.frame(dat %>% group_by(METRIC) %>% mutate(threshold=max(VALUE, na.rm=T)+max(VARIANCE, na.rm=T)+max(VALUE, na.rm=T)/10))%>% subset(select=c(threshold))
+          data.frame(dat %>% 
+                       group_by(METRIC) %>% 
+                       mutate(threshold=max(VALUE, na.rm=T)+max(VARIANCE, na.rm=T)+max(VALUE, na.rm=T)/10))%>% 
+            subset(select=c(threshold))
         } else {
-          data.frame(dat %>% group_by(METRIC) %>% mutate(threshold=max(VALUE, na.rm=T)+max(VALUE, na.rm=T)/10))%>% subset(select=c(threshold))
+          data.frame(dat %>% 
+                       group_by(METRIC) %>% 
+                       mutate(threshold=max(VALUE, na.rm=T)+max(VALUE, na.rm=T)/10))%>% 
+            subset(select=c(threshold))
         }
       } else {
         0
       }}
 
-    rectvars <- dat %>% distinct(sort2,YEAR) %>% group_by(sort2) %>% mutate(minx=min(as.numeric(YEAR)), xmaxscale=length(YEAR[YEAR<2011]), maxx=max(YEAR))  %>% 
-      subset(select=c(sort2, minx,xmaxscale, maxx)) %>%data.frame()%>% distinct %>% 
-      merge(dat %>% distinct(sort2,whitingv))
+    rectvars <- dat %>% 
+      distinct(sort2,YEAR) %>% 
+      group_by(sort2) %>% 
+      mutate(minx=min(as.numeric(YEAR)), 
+             xmaxscale=length(YEAR[YEAR<2011]), 
+             maxx=max(YEAR))  %>% 
+      subset(select=c(sort2, minx,xmaxscale, maxx)) %>%
+      data.frame()%>% 
+      distinct %>% 
+      merge(dat %>% 
+              distinct(sort2,whitingv))
     
     #      if(input$PlotSelectOption=="Standard deviation or Median average deviation")
     dat$upper <-
@@ -322,176 +336,30 @@ source_lab <- function(){
   paste("\n
         \nSourced from the FISHEyE application (https://dataexplorer.northwestscience.fisheries.noaa.gov/fisheye/PerformanceMetrics/) maintained by NOAA Fisheriess NWFSC on ",format(Sys.Date(), format="%B %d %Y"))
 }
-supp_obs <- function(){
+# confidentiality messages ####
+supp_obs <- function() {
   "\n
-  \nData have been suppressed for years that are not plotted as there are not enough observations to protect confidentiality."
-}
-conf_mess <- function(){
-  "\n
-  \nSee the confidentiality section under the ABOUT tab for more information."
+  \nData have been suppressed for years that are not plotted as there are not enough observations to protect confidentiality. \nPlease see the About tab for more information."
 }
 
-supp_whiting <- function(){
-  if(input$Sect_sel!="FR"){
-    "\n
-    \nYour selection would reveal confidential data because the categories selected are additive. \nIn these cases, only results for 'All vessels' have been shown."
-  } else {
-    "\n
-    \nYour selection would reveal confidential data because the categories selected are additive. \nIn these cases, only results for 'All processors' have been shown."}
-  } 
-supp_obs_whiting <- function() {
-  if(input$Sect_sel!='FR') {
-    "\n
-    \nAdditionally, your selection would reveal confidential data because the categories selected are additive. \nIn these cases, only results for 'All vessels' have been shown."
-  } else {
-    "\n
-    \nAdditionally, your selection would reveal confidential data because the categories selected are additive. \nIn these cases, only results for 'All processors' have been shown."}        
-  }
 
-
-supp_metric <- function(){
-  "\n
-  \nSome metrics may not be shown because the selected statistic is not calculated for that metric." 
-  #For the Gini Coefficient, the index value is shown, regardless of the statistic selectd.
- #  \nFor number of vessels, only the total number of vessels is shown. For seasonality, the day when 50% of catch was landded is always shown.
-#  \nFor Total Vessel length, we show maximum length. To protect confidentiality this value is the average of the longest three vessels."
-}
-
-xlab <- function(){
-  if(!input$LayoutSelect){
-    if(input$Ind_sel=="Economic"){
-      if(max(dat$conf)==0) {
-        if(max(dat$flag)==0){
-          source_lab()
-        } else {
-          paste(supp_obs(), source_lab())
-        }} else {
-          if(max(dat$flag)==0){
-            paste(supp_whiting(), conf_mess(), source_lab())
-          }  else {
-            paste(supp_obs(), supp_obs_whiting(), conf_mess(), source_lab())
-          }}}
-    else if(input$Ind_sel=="Demographic"){
-      if(input$demSelect=="Number of fisheries"|input$demSelect=="Proportion of revenue from CS fishery"){
-        if(max(dat$conf)==0) {
-          if(max(dat$flag)==0){
-            if(input$CategorySelect=="Fisheries"&input$Sect_sel=="CV"){
-              paste("For individual fisheries and the", input$demSelect, "metric, we show all activities for vessels that fished in the selected fisheries, 
-                    \nnot just their activity in the selected fishery. 
-                    \nFor example, the", if(length(input$VariableSelect)>2){input$VariableSelect[3]} else if(length(input$VariableSelect)==2) {input$VariableSelect[2]} else {""},"plot above shows the", input$AVE_MED2, input$demSelect,"for all vessels that fished for", if(length(input$VariableSelect)>2){input$VariableSelect[3]} else if(length(input$VariableSelect)==2) {input$VariableSelect[2]} else {input$VariableSelect[1]},".",
-                    source_lab())
-            } else {
-              source_lab()
-            }}else {
-              if(input$CategorySelect=="Fisheries"&input$Sect_sel=="CV"){
-                paste("For individual fisheries and the", input$demSelect, "metric, we show all activities for vessels that fished in the selected fisheries, 
-                      \nnot just their activity in the selected fishery. \nFor example, the", if(length(input$VariableSelect)>2){input$VariableSelect[3]} else if(length(input$VariableSelect)==2) {input$VariableSelect[2]} else {""},"plot above shows the", input$AVE_MED2, input$demSelect,"for all vessels that fished for", if(length(input$VariableSelect)>2){input$VariableSelect[3]} else if(length(input$VariableSelect)==2) {input$VariableSelect[2]} else {input$VariableSelect[1]},".",
-                      supp_obs(), source_lab()) 
-              } else {
-                paste(supp_obs(), source_lab())
-              }}} else {
-                if(max(dat$flag)==0){
-                  if(input$CategorySelect=="Fisheries"&input$Sect_sel=="CV"){
-                    paste("For individual fisheries and the", input$demSelect, "metric, we show all activities for vessels that fished in the selected fisheries, 
-                          \nnot just their activity in the selected fishery. 
-                          \nFor example, the", if(length(input$VariableSelect)>2){input$VariableSelect[3]} else if(length(input$VariableSelect)==2) {input$VariableSelect[2]} else {""},"plot above shows the", input$AVE_MED2, input$demSelect,"for all vessels that fished for", if(length(input$VariableSelect)>2){input$VariableSelect[3]} else if(length(input$VariableSelect)==2) {input$VariableSelect[2]} else {input$VariableSelect[1]},".",
-                          supp_whiting(), conf_mess(), source_lab())
-                  } else{
-                    paste(supp_whiting(), conf_mess(), source_lab())
-                  }} else {
-                    if(input$CategorySelect=="Fisheries"&input$Sect_sel=="CV"){
-                      paste("For individual fisheries and the", input$demSelect, "metric, we show all activities for vessels that fished in the selected fisheries, 
-                            \nnot just their activity in the selected fishery. 
-                            \nFor example, the", if(length(input$VariableSelect)>2){input$VariableSelect[3]} else if(length(input$VariableSelect)==2) {input$VariableSelect[2]} else {""},"plot above shows the", input$AVE_MED2, input$demSelect,"for all vessels that fished for", if(length(input$VariableSelect)>2){input$VariableSelect[3]} else if(length(input$VariableSelect)==2) {input$VariableSelect[2]} else {input$VariableSelect[1]},".",
-                             supp_obs(), supp_obs_whiting(), conf_mess(), source_lab())
-                    } else {
-                      paste(supp_obs(), supp_whiting(), conf_mess(), source_lab())
-                    } }}
-      } else  {
-        if(max(dat$conf)==0) {
-          if(max(dat$flag)==0){
-            source_lab()
-          } else {
-            paste(supp_obs(), source_lab())
-          }} else {
-            if(max(dat$flag)==0){
-              paste(supp_whiting(), conf_mess(), source_lab())
-            }  else {
-              paste(supp_obs(), supp_obs_whiting(), conf_mess(), source_lab())
-            }}}
-    }else if(input$Ind_sel=="Other"){
-      if(input$socSelect=="Share of landings by state"){
-        if(max(dat$conf)==0) {
-          if(max(dat$flag)==0){
-            if(input$CategorySelect=="State"|input$CategorySelect=="Homeport"){
-              paste("For the", input$socSelect, "metric, we show all activities for vessels that homeported in the selected",input$CategorySelect,", \nnot just their activity in the selected",input$CategorySelect,".\nFor example, the plots above show the", input$socSelect,"for vessels that homeported in", input$VariableSelect,".",
-                    source_lab())
-            } else {
-              source_lab()
-            }} else {
-              if(input$CategorySelect=="State"|input$CategorySelect=="Homeport"){
-                paste("For the", input$socSelect, "metric, we show all activities for vessels that homeported in the selected",input$CategorySelect,", \nnot just their activity in the selected",input$CategorySelect,".\nFor example, the plots above show the", input$socSelect,"for vessels that homeported in", input$VariableSelect,".",
-                      supp_obs(), source_lab())
-              } else {
-                paste(supp_obs(), source_lab())
-              }}
-        } else {
-          if(max(dat$flag)==0){
-            if(input$CategorySelect=="State"|input$CategorySelect=="Homeport"){
-              paste("For the", input$socSelect, "metric, we show all activities for vessels that homeported in the selected",input$CategorySelect,", \nnot just their activity in the selected",input$CategorySelect,".\nFor example, the plots above show the", input$socSelect,"for vessels that homeported in", input$VariableSelect,".",
-                    supp_whiting(), conf_mess(), source_lab())
-            } else {
-              paste(supp_whiting(), conf_mess(), source_lab())
-            }}  else {
-              if(input$CategorySelect=="State"|input$CategorySelect=="Homeport"){
-                paste("For the", input$socSelect, "metric, we show all activities for vessels that homeported in the selected",input$CategorySelect,", \nnot just their activity in the selected",input$CategorySelect,".\nFor example, the plots above show the", input$socSelect,"for vessels that homeported in", input$VariableSelect,".",
-                      supp_obs(), supp_obs_whiting(), conf_mess(), source_lab())
-              } else {
-                paste(supp_obs(), supp_obs_whiting(), conf_mess(), source_lab())
-              }} }
-      } else {
-        if(max(dat$conf)==0) {
-          if(max(dat$flag)==0){
-            source_lab()
-          } else {
-            paste(supp_obs(), source_lab())
-          }} else {
-            if(max(dat$flag)==0){
-              paste(supp_whiting(), conf_mess(), source_lab())
-            }  else {
-              paste(supp_obs(), supp_obs_whiting(), conf_mess(), source_lab())
-            }}}
-    }} else {
-      if(max(dat$conf)==0) {
-        if(max(dat$flag)==0){
-          if(max(dat$metric_flag)==1){
-            paste(supp_metric())
-          } else {
-            source_lab()
-          }
-        } else if(max(dat$flag)==1){
-          if(max(dat$metric_flag)==1){
-            paste(supp_metric(), supp_obs())
-          } else {
-            paste(supp_obs(), source_lab())
-          } 
-        }
-      } else if(max(dat$conf)==1){
-        if(max(dat$flag==0)){
-          if(max(dat$metric_flag)==1){
-            paste(supp_metric(), supp_obs(), supp_obs_whiting(), conf_mess())
-          } else {
-            paste(supp_whiting(), conf_mess(), source_lab())
-          } 
-        } else if(max(dat$flag)==1){
-          if(max(dat$metric_flag)==1){
-            paste(supp_metric(), supp_obs(), supp_obs_whiting(), conf_mess(), source_lab())
-          } else {
-            paste(supp_obs(), supp_obs_whiting(), conf_mess(), source_lab())
-          } 
-        }}
+# x-axis label ####
+# xlab is actually "notes"
+xlab <- function() {
+  if (max(dat$conf) == 0) {
+    if(max(dat$flag) == 0) {
+      paste(source_lab())
     }
-}#end x label function 
+    else {
+      paste(supp_obs(), source_lab())
+    }
+  } else {
+    if (max(dat$flag) == 0) {
+      paste(supp_obs(), source_lab())
+    } else {
+      paste(supp_obs(), source_lab())
+    }
+  }}
 
     
    scale_text <- function() {
@@ -501,13 +369,14 @@ xlab <- function(){
         return(1.2)
       }}   
     
-    scale_geom_text <- function() {
-      if(sum(dat$VALUE, na.rm=T)!=0) {
-        return(max(dat$VALUE, na.rm=T))
-      } else {
-        return(0)
-      }
-    }
+   # scaling factor for geom text size ####
+   scale_geom_text <- function() {
+     if (any(dat$VALUE > 0, na.rm = T)) {
+       return(max(dat$VALUE, na.rm = T))
+     } else {
+       return(0)
+     }
+   }
     
 #----- Define ggplot ------#    
     # format data for graph and add to graph ####
@@ -539,6 +408,7 @@ xlab <- function(){
     }
     
     # add lines and points to the plot ####
+   if (!input$LayoutSelect) {
     if (input$Ind_sel == 'Other') {
       if (input$socSelect == 'Share of landings by state') {
         g <-
@@ -552,6 +422,9 @@ xlab <- function(){
         g <- g + geom_line(aes_string(colour = groupVar), size = 1.5) +
           geom_point(aes_string(colour = groupVar), size = 4)
       }
+   }
+   g <- g + geom_line(aes_string(colour = groupVar), size = 0.75) +
+     geom_point(aes_string(colour = groupVar), size = 2)
 
 #------ Add variance ------#    
     if(input$PlotSelect==T& !exists('ssn')) { 
@@ -569,20 +442,11 @@ xlab <- function(){
       g <- g + facet_wrap(~ sort2, scales = 'free_y', ncol = 2)
     }
     
-#----- define scale -----#
-    g <- g + scale_fill_manual(values = colourThirds) + scale_colour_manual(values = colourThirds)
-
-#----- define solid line y=0 ------#
-    g <- g + geom_hline(yintercept = 0)
     
-#----- define labels ------#
-    g <- g + labs(y = yaxislabel(), x=xlab(), title = main())   
-    
-  
 #----- Define rectangles and labels -----#
     #----- Define grey shading and Non-CS/CS labels ------####
     # choose label text size ####
-    labeltext <- ifelse(input$tabs == 'Panel1', 7, 5)
+    labeltext <- ifelse(input$LayoutSelect & input$tabs == 'Panel1', 5, 7)
     
     # geom_rect (define the grey boxes for pre-catch shares) ####
     geom_rect_fun <- function(ymin_val = -Inf, ymax_val = Inf) {
@@ -628,16 +492,6 @@ xlab <- function(){
       )
       
     }
-    
-    if (input$LayoutSelect) {
-      if (input$tabs == 'Panel1') {
-        strptextsize <- 8
-      } else {
-        strptextsize <- 12
-      } } else {
-        strptextsize <- 12
-      }
-    
     
     # set rect and text for plots with both CS and non-CS years ####
     # otherwise no rect or text
@@ -698,9 +552,33 @@ xlab <- function(){
         g <- g
       }
 
+    #----- define scale -----#
+    g <- g + scale_fill_manual(values = colourThirds) + scale_colour_manual(values = colourThirds)
+    
+    #----- define solid line y=0 ------#
+    g <- g + geom_hline(yintercept = 0)
+    
+    #----- define labels ------#
+    g <- g + labs(y = yaxislabel(), x=xlab(), title = main())   
+    
+    if (input$LayoutSelect) {
+      if (input$tabs == 'Panel1') {
+        strptextsize <- 8
+      } else {
+        strptextsize <- 12
+      } } else {
+        strptextsize <- 12
+      }
+    
 #----- define theme ------#
     g <- g + theme(
-      plot.title = element_text(size=rel(1.2), colour="grey25",family = "sans", face = "bold", vjust = 1, hjust=.5),
+      plot.title = element_text(
+        size=rel(1.2), 
+        colour="grey25",
+        family = "sans", 
+        face = "bold", 
+        vjust = 1, 
+        hjust=.5),
       plot.margin = unit(c(0.25, 0.25, 1, 0.25), "cm"),
       panel.background = element_rect(fill = "white"),
       #panel.spacing = unit(1, "lines"),
@@ -715,14 +593,27 @@ xlab <- function(){
       ),
       strip.background = element_rect(fill = "lightgrey"),
       axis.ticks = element_blank(),
-      axis.title.x = element_text(size=rel(.7), face="italic", hjust= 0, vjust=0, colour="grey25"),
-      axis.title.y = element_text(size=rel(1.2), vjust=2, colour="grey25"),
-      axis.line.x = element_line(size = 2, colour = "black", linetype = "solid"),
+      axis.title.x = element_text(
+        size=rel(.7), 
+        face="italic", 
+        hjust= 0, 
+        vjust=0, 
+        colour="grey25"),
+      axis.title.y = element_text(
+        size=rel(1.2), 
+        vjust=2, 
+        colour="grey25"),
+      axis.line.x = element_line(
+        size = 2, 
+        colour = "black", 
+        linetype = "solid"),
       axis.text = element_text(size = 11),
       legend.position = "top",
       legend.key = element_rect(fill = "white"),
       legend.text = element_text(family = "sans", 
-                                 color = "grey25", face = "bold", size = 10),
+                                 color = "grey25", 
+                                 face = "bold",
+                                 size = 10),
       legend.title = element_blank())
     
 
