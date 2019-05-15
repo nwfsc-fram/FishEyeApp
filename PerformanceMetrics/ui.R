@@ -283,13 +283,13 @@ function(request) {
 
               # Filters
               conditionalPanel(condition="input.Sect_sel=='CV' || input.Sect_sel=='FR'", 
-                               tags$div(class="header collapsed", "Filters")%>% bs_attach_collapse("collapse2"),
+                               tags$div(class="header collapsed", "Filter by: fisheries, location, size")%>% bs_attach_collapse("collapse2"),
                                bs_collapse(id = "collapse2",
                                            content = tags$div(column(12, uiOutput('filters'),
                                                                      uiOutput("Variableselect"),
                                                                      style = "background:white; padding: 10px;margin-below:4px;border-color: #bce8f1;"))
                                )),
-
+              
               # Additional Filters
               tags$div(class="header collapsed", "Additional Filters")%>% bs_attach_collapse("collapse3"),
               bs_collapse(id = "collapse3",

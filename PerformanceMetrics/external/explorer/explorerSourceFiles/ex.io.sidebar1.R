@@ -877,7 +877,7 @@ output$demselect <- renderUI({
               "demSelect",
               NULL,
               choices = c(DatVars()$METRIC1),
-              selected = "Number of species processed"
+              selected = "Number of species purchased"
             )
           )
         }
@@ -1354,7 +1354,7 @@ output$vesselCharacteristicStats <- renderUI({
     ))
   } #End Metrics
   else {
-    if (input$demSelect %in% c("Number of species processed")) {
+    if (input$demSelect %in% c("Number of species purchased")) {
       tagList(radioButtons(
         "AVE_MED2",
         HTML(

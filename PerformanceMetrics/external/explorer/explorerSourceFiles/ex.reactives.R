@@ -150,7 +150,7 @@ DatVars <- reactive({
         ##Processor characteristic metrics##
         METRIC1 =  c(
           "Number of processors",
-          "Number of species processed",
+          "Number of species purchased",
           "Proportion of production value from West Coast groundfish" = "Proportion of revenue from catch share species",
           "Revenue diversification"
           ),

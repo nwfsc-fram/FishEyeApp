@@ -77,8 +77,8 @@ tags$div(style = "margin: 15px 15px 30px; width: 60%",
                                     'Horsepower of main engines.'),
                             tags$li(strong('Number of fisheries: '),
                                     'Count of fisheries (defined above) that vessels participated in. Changes may indicate specialization or diversification.'),
-                            tags$li(strong('Number of species processed: '),
-                                    'Count of the number of species processed. Changes may indicate specialization or diversification.'),
+                            tags$li(strong('Number of species purchased: '),
+                                    'Count of the number of species purchased. Changes may indicate specialization or diversification.'),
   HTML('<table class="table table-striped" style="width: auto !important; margin-left: auto; margin-right: auto;">
  <thead>
   <tr>
