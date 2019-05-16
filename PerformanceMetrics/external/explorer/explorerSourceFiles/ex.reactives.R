@@ -325,27 +325,50 @@ DatVars <- reactive({
 }
 })
 
+metricselections <- reactive({
+  if(grepl('characteristics', input$Ind_sel)) {
+    return(input$demSelect)
+  } else if(input$Ind_sel == 'Labor') {
+    return(input$crewSelect)
+  } else if(input$Ind_sel == 'Cost') {
+    return(input$costSelect)
+  } else if(input$Ind_sel == 'Other') {
+    return(input$socSelect)
+  } else return('')
+})
 
+shortdescrselections <- reactive({ 
+  if(input$Ind_sel == 'Economic') {
+    return(input$ShortdescrSelect)
+  } else return('')
+})
+
+sumstatselections <- reactive({
+  if(grepl('characteristics', input$Ind_sel) | 
+      input$Ind_sel %in% c('Labor', 'Other')) {
+    return(input$AVE_MED2) 
+  } else return('')
+})
+
+statselections <- reactive({
+  if(input$Ind_sel == 'Economic') {
+    return(input$StatSelect) 
+  } else if(input$Ind_sel == 'Cost') {
+    return(input$StatSelect)
+  } else return('')
+})
+
+csselections <- reactive({ 
+  if(input$CategorySelect != "Fisheries") {
+    return(input$inSelect)
+  } else return('')
+})
 # DatSubTable: HUGE reactive for subsetting for data table####
 # Subset data for table
 # selecting plot variables, subsetting the data AND casting for individual level ID (fun.agg=sum)
 # build dcast formula using if controls and using the quoted method in dcast
 DatSubTable <- reactive({
   dat <- DatMain()
-  dat$SUMSTAT <- case_when(
-    dat$SUMSTAT == 'Average' ~ 'Mean', 
-    T ~ as.character(dat$SUMSTAT))
-  dat$STAT <- case_when(
-      dat$STAT == "Average per vessel" ~ "Mean per vessel",
-      dat$STAT == "Average per vessel/day" ~ "Mean per vessel/day",
-      dat$STAT == "Average per vessel/metric ton produced" ~ "Mean per vessel/metric ton produced",
-      dat$STAT == "Average per vessel/metric ton caught" ~ "Mean per vessel/metric ton caught",
-      dat$STAT == "Average per processor" ~ "Mean per processor",
-      dat$STAT == "Average per processor/metric ton produced" ~ "Mean per processor/metric ton produced",
-      T ~ as.character(dat$STAT))
-  dat$VARIABLE <- case_when(
-    dat$VARIABLE == 'Small vessel (< 60 ft)' ~  'Small vessel (<= 60 ft)',
-    T ~ as.character(dat$VARIABLE))
 
   # data filter differs whether it is CV/FR module or CP/MS module
   if (input$Sect_sel == "CV" | input$Sect_sel == "FR") {
