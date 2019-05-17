@@ -2,9 +2,9 @@ doPlot <- function(dat, x, y) {
   if (PermitPlot()) {
     #removeNAs
     #dat <- subset(dat, is.na(dat$VALUE) == FALSE)
-    
+
     ##Prepping data for plotting by converting to more "plot friendly" values
-    dat<- dat %>%
+    dat <- dat %>%
       mutate(VARIANCE = case_when(
                    unit == '' ~ VARIANCE,
                    unit == 'thousands' ~ VARIANCE/1e3,
