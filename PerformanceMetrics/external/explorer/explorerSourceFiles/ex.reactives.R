@@ -19,6 +19,14 @@ DatMain <- reactive({
   }
 })
 
+nrcomponents <- c(
+          "Revenue",
+          "Variable costs",
+          "Fixed costs",
+          "Variable Cost Net Revenue",
+          "Total Cost Net Revenue"
+        )
+
 # DatVars: sidebar inputs ####
 DatVars <- reactive({
   outputOptions(output, "filters", suspendWhenHidden = FALSE)
@@ -28,6 +36,7 @@ DatVars <- reactive({
   outputOptions(output, "fisheriesOptions", suspendWhenHidden = FALSE)
   outputOptions(output, "Yearselect", suspendWhenHidden = FALSE)
   outputOptions(output, "FishAkselect", suspendWhenHidden = FALSE)
+  
   # create a list of variable names used in the sidebar inputs
   dat <- DatMain()
   if (input$Sect_sel == "CV") {
@@ -35,13 +44,7 @@ DatVars <- reactive({
       dat,
       list(
         YEAR = 2004:currentyear,
-        SHORTDESCR = c(
-          "Revenue",
-          "Variable costs",
-          "Fixed costs",
-          "Variable Cost Net Revenue",
-          "Total Cost Net Revenue"
-        ),
+        SHORTDESCR = nrcomponents,
         CATEGORY = c(
           "Fisheries",
           "Homeport",
@@ -123,13 +126,7 @@ DatVars <- reactive({
       dat,
       list(
         YEAR = 2004:currentyear,
-        SHORTDESCR = c(
-          "Revenue",
-          "Variable costs",
-          "Fixed costs",
-          "Variable Cost Net Revenue",
-          "Total Cost Net Revenue"
-        ),
+        SHORTDESCR = nrcomponents,
         CATEGORY = c("Production activities" = "Fisheries", "Region", "Processor size"),
         whitingv = c(
           "All processors",
@@ -187,13 +184,7 @@ DatVars <- reactive({
       dat,
       list(
         YEAR = 2004:currentyear,
-        SHORTDESCR = c(
-          "Revenue",
-          "Variable costs",
-          "Fixed costs",
-          "Variable Cost Net Revenue",
-          "Total Cost Net Revenue"
-        ),
+        SHORTDESCR = nrcomponents,
         CATEGORY = "Fisheries",
         FISHAK = unique(FISHAK),
         whitingv = "Whiting vessels",
@@ -257,13 +248,7 @@ DatVars <- reactive({
     dat,
     list(
       YEAR = 2004:currentyear,
-      SHORTDESCR = c(
-        "Revenue",
-        "Variable costs",
-        "Fixed costs",
-        "Variable Cost Net Revenue",
-        "Total Cost Net Revenue"
-      ),
+      SHORTDESCR = nrcomponents,
       CATEGORY = "Fisheries",
       FISHAK = unique(FISHAK),
       whitingv = "Whiting vessels",
