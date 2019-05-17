@@ -143,7 +143,7 @@ output$PlotMain3 <- renderPlot({
 
 output$TableMain <- renderDataTable({ 
   
-  table <- subset(DatSubTable(), select = -c(CATEGORY))
+  table <- subset(DatSubTable(), select = -c(CATEGORY, -sort))
   
   table
 
