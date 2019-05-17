@@ -102,23 +102,19 @@ DatVars <- reactive({
           "Fuel use per day", 
           "Speed while fishing"
         ),
-##Cost metrics###
-        METRIC4 = c(
-          "All variable costs",
-          "Buyback fees",
-          "Captain",
-          "Cost recovery fees",
-          "Crew",
-          "Fuel",
-          "Observers",
-          "Other variable costs",
-          "All fixed costs",
-          "Fishing gear",
-          "On-board equipment",
-          "Other fixed costs"
-        ),
-        COSTS = c('All variable costs','Buyback fees','Captain','Cost recovery fees','Crew','Fuel','Observers', 'Other variable costs',
-               'All fixed costs','Fishing gear','On-board equipment','Other fixed costs')
+        COSTS = c(
+          'All variable costs',
+            'Buyback fees',
+            'Captain',
+            'Cost recovery fees',
+            'Crew',
+            'Fuel',
+            'Observers', 
+            'Other variable costs', 
+          'All fixed costs',
+            'Fishing gear',
+            'On-board equipment',
+            'Other fixed costs')
         )
       )
   } else if (input$Sect_sel == "FR") {
@@ -159,24 +155,20 @@ DatVars <- reactive({
         ##Other metrics##
         METRIC3 = c(
           "Gini coefficient"),
-        ##Costs metrics
-        METRIC4 = c(
-          'All variable costs',
+        COSTS = c(
+      "All variable costs",
           'Fish purchases',
           'Freight',
           'Labor',
           'Monitoring',
-          'Off-site freezing and storage',
-          'Packing materials',
+          'Off-site freezing & storage',
+          'Packing materials', 
           'Utilities',
           'Other variable costs',
-          'All fixed costs',
+      "All fixed costs",
           'Buildings',
           'Equipment',
-          'Other fixed costs'
-        ),
-        COSTS = c("All variable costs",'Fish purchases','Freight','Labor','Monitoring','Off-site freezing & storage','Packing materials',
-                       'Utilities','Other variable costs',"All fixed costs",'Buildings','Equipment','Other fixed costs')
+          'Other fixed costs')
       )
     )
   } else if (input$Sect_sel == "M") {
@@ -225,22 +217,19 @@ DatVars <- reactive({
         METRIC3a = c(
           "Days at sea"
         ),
-        METRIC4 = c(
-          'All variable costs',
-          'Fish purchases',
-          'Fuel',
-          'Non-processing crew',
-          'Observers',
-          'Processing crew',
-          'Other variable costs',
-          'All fixed costs',
-          'Fishing gear',
-          'On-board equipment',
-          'Processing equipment',
-          'Other fixed costs'
-        ),
-        COSTS = c("All variable costs","Fish purchases","Fuel","Non-processing crew","Observers","Processing crew","Other variable costs",
-                       "All fixed costs","Fishing gear","On-board equipment","Processing equipment",'Other fixed costs')
+        COSTS = c(
+        "All variable costs",
+          "Fish purchases",
+          "Fuel",
+          "Non-processing crew",
+          "Observers",
+          "Processing crew",
+          "Other variable costs",
+        "All fixed costs",
+          "Fishing gear",
+          "On-board equipment",
+          "Processing equipment",
+          'Other fixed costs')
         )
       )
 } else if (input$Sect_sel == "CP") {
@@ -289,22 +278,19 @@ DatVars <- reactive({
       METRIC3a = c(
         "Days at sea"
       ),
-      METRIC4 = c(
-        'All variable costs',
-        'Cost recovery fees',
-        'Fuel',
-        'Non-processing crew',
-        'Observers',
-        'Processing crew',
-        'Other variable costs',
-        'All fixed costs',
-        'Fishing gear',
-        'On-board equipment',
-        'Processing equipment',
-        'Other fixed costs'
-      ),
-      COSTS = c("All variable costs",'Cost recovery fees', "Fuel","Non-processing crew","Observers","Processing crew","Other variable costs",
-                     "All fixed costs","Fishing gear","On-board equipment","Processing equipment",'Other fixed costs')
+      COSTS = c(
+      "All variable costs",
+        'Cost recovery fees', 
+        "Fuel",
+        "Non-processing crew",
+        "Observers",
+        "Processing crew",
+        "Other variable costs",
+      "All fixed costs",
+        "Fishing gear",
+        "On-board equipment",
+        "Processing equipment",
+        'Other fixed costs')
     )
   )
 }
