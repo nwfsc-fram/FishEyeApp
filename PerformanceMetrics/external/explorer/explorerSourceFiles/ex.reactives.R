@@ -11,7 +11,7 @@ DatMain <- reactive({
     dat <- CVperfmetrics
   } else if (input$Sect_sel == "M") {
     dat <-
-      Mperfmetrics#[-which(Mperfmetrics$METRIC=='Days at sea'&Mperfmetrics$FISHAK=='TRUE'),]
+      Mperfmetrics
   } else if (input$Sect_sel == "CP") {
     dat <- CPperfmetrics
   } else if (input$Sect_sel == "FR") {
@@ -51,7 +51,7 @@ DatVars <- reactive({
           "State of homeport" = "State",
           "Vessel length class"
         ),
-        FISHAK = unique(FISHAK),
+        inclAK = unique(inclAK),
         whitingv = c("All vessels", "Non-whiting vessels", "Whiting vessels"),
         STAT =  c(
           "Mean per vessel",
@@ -178,7 +178,7 @@ DatVars <- reactive({
         YEAR = 2004:currentyear,
         SHORTDESCR = nrcomponents,
         CATEGORY = "Fisheries",
-        FISHAK = unique(FISHAK),
+        inclAK = unique(inclAK),
         whitingv = "Whiting vessels",
         STAT =  c(
           "Mean per vessel",
@@ -239,7 +239,7 @@ DatVars <- reactive({
       YEAR = 2004:currentyear,
       SHORTDESCR = nrcomponents,
       CATEGORY = "Fisheries",
-      FISHAK = unique(FISHAK),
+      inclAK = unique(inclAK),
       whitingv = "Whiting vessels",
       STAT =  c(
         "Mean per vessel",
@@ -301,7 +301,7 @@ metricselections <- reactive({
     return(input$demSelect)
   } else if(input$Ind_sel == 'Labor') {
     return(input$crewSelect)
-  } else if(input$Ind_sel == 'Cost') {
+  } else if(input$Ind_sel == 'Cost')  {
     return(input$costSelect)
   } else if(input$Ind_sel == 'Other') {
     return(input$socSelect)
@@ -379,9 +379,9 @@ DatSubTable <- reactive({
    datSub$SHORTDESCR %in% nrcomponents),
    'Economic measure',
    'Cost category')
- 
+
  Ntitle <- ifelse(input$Sect_sel == "FR", 'Number of processors', 'Number of vessels')
-   
+
  # rename the columns 
  datSub <-
    rename(datSub,
@@ -396,48 +396,25 @@ DatSubTable <- reactive({
      `Quartile: 75th` = q75,
      `Summary variable` = VARIABLE,  
      `Data summed across` = whitingv,  
-     `Alaskan fisheries` = FISHAK, 
+     `Alaskan activities included` = inclAK, 
      `Delivery location` = AGID,
      !!quo_name(shortdescropts) := SHORTDESCR,
      !!quo_name(Ntitle) := N)
+  
 
 # need to redesign the fishak column and then this will work
-  alwaysexclude <- c('metric_flag', 'conf', 'flag', 'unit', 'tab', 'ylab')
+  alwaysexclude <- c('metric_flag', 'conf', 'flag', 'unit', 'tab', 'ylab', 'sort', 'CATEGORY')
 datSub <- select(datSub, colnames(datSub)[apply(datSub, 2, function(x) sum(x != '' & !is.na(x)) > 0)], 
   -alwaysexclude) 
 
   return(datSub)
-  
+
 })
 
-
-# DatSub: HUGE reactive for subsetting for plotting ####
+# DatSub: subsets the data ####
 DatSub <- reactive({
-    dat <- DatMain()
-
-  # data filter differs whether it is CV/FR module or CP/MS module
-  if (input$Sect_sel == "CV" | input$Sect_sel == "FR") {
-    datSubforSector <-
-      subset(dat,
-        YEAR %in% seq(input$YearSelect[1], input$YearSelect[2], 1) &
-          CATEGORY == input$CategorySelect &
-          VARIABLE %in% input$VariableSelect &
-          whitingv %in% input$FishWhitingSelect
-      )
-  } else {
-    datSubforSector <-
-      subset(dat, 
-        YEAR %in% seq(input$YearSelect[1], input$YearSelect[2], 1))
-  }
-
-  # subset the sector specific data according to all of the fisheye toggles
- datSub <- subset(datSubforSector,
-    METRIC %in% metricselections() &
-    SUMSTAT %in% sumstatselections() &
-    # FISHAK %in% c('TRUE', 'FALSE' &
-    SHORTDESCR %in% shortdescrselections() &
-    STAT %in% statselections() &
-    CS %in% csselections())
+  
+datSub <- DatSubRaw()
  
  # SORT ####
 
@@ -486,12 +463,8 @@ if (!input$LayoutSelect) {
       }# End CV
       else if (input$Sect_sel == 'FR') {
         if (input$CategorySelect == "Fisheries") {
-          datSub$sort <- ifelse(
-            datSub$VARIABLE == "All production",
-            1,
-            ifelse(
-              datSub$VARIABLE == "Non-whiting groundfish production",
-              2,
+          datSub$sort <- ifelse(datSub$VARIABLE == "All production", 1,
+            ifelse(datSub$VARIABLE == "Non-whiting groundfish production", 2,
               ifelse(datSub$VARIABLE == "Pacific whiting production", 3, 4)
             )
           )
@@ -510,14 +483,9 @@ if (!input$LayoutSelect) {
   else {
     if (input$Ind_sel == "Economic") {
       datSub$sort <- ifelse(
-        datSub$SHORTDESCR == "Revenue",
-        1,
-        ifelse(
-          datSub$SHORTDESCR == "Variable costs",
-          2,
-          ifelse(
-            datSub$SHORTDESCR == "Fixed costs",
-            3,
+        datSub$SHORTDESCR == "Revenue", 1,
+        ifelse(datSub$SHORTDESCR == "Variable costs", 2,
+          ifelse(datSub$SHORTDESCR == "Fixed costs", 3,
             ifelse(datSub$SHORTDESCR == "Variable Cost Net Revenue", 4,  5)
           )
         )
