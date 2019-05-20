@@ -655,12 +655,12 @@ output$Variableselect <- renderUI({
 #End Variable select
 #= = = = = = = = = = = = = = = = = = = = = = 
 
-# Select FISHAK ####
+# Select inclAK ####
 output$FishAkselect <- renderUI({
   if (!is.null(input$LayoutSelect) && !input$LayoutSelect &&
       !is.null(input$Sect_sel) && input$Sect_sel == 'CV' &&
       !is.null(input$Ind_sel) && input$Ind_sel == "Vessel characteristics") {
-    if (input$demSelect == 'Revenue diversification' || input$demSelect == 'Proportion of revenue from catch share fishery' || input$demSelect == 'Number of fisheries') {
+    if (input$demSelect %in% c('Revenue diversification', 'Proportion of revenue from CS fishery', 'Number of fisheries')) {
       tagList(
         tags$div(style = "font-weight:bold; margin-bottom: 7px", "Alaskan Fisheries:"),
         tags$div(materialSwitch(
