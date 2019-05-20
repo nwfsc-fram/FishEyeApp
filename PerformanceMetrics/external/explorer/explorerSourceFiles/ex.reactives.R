@@ -360,15 +360,22 @@ DatSubTable <- reactive({
  datSub <- subset(datSubforSector,
     METRIC %in% metricselections() &
     SUMSTAT %in% sumstatselections() &
-    # FISHAK %in% c('TRUE', 'FALSE' &
+    inclAK %in% akselections() &
     SHORTDESCR %in% shortdescrselections() &
     STAT %in% statselections() &
     CS %in% csselections())
- 
- datSub$sort <- 1:nrow(datSub)
-   
+
+})
+  
+# Format the data for the view data tab
+DatSubTable <- reactive({
+
+ datSub <- DatSubRaw()
+
  # table formatting for the data view tab
 
+  datSub$sort <- 1:nrow(datSub)
+   
  datSub$VALUE <- round(datSub$VALUE, 2)
  datSub$VARIANCE <- round(datSub$VARIANCE, 2)
  datSub$q25 <- round(datSub$q25, 2)
