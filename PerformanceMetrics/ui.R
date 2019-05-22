@@ -5,7 +5,8 @@ library(shinyjs)
 library(shinyWidgets)
 library(shinyBS)
 library(bsplus)
-
+options(shiny.server = NULL)
+#options(shiny.error = browser)
 # custom css functions
 # calls .css selector for well-sub
 wellPanelSub <- function(...){div(class = "well-sub", ...)}
