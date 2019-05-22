@@ -16,6 +16,8 @@ DatMain <- reactive({
   } else if (input$Sect_sel == "FR") {
     dat <- FRperfmetrics
   }
+  
+  browser()
 })
 
 nrcomponents <- c('Revenue', 'Variable costs', 'Fixed costs', 'Variable cost net revenue', 'Total cost net revenue')
@@ -307,7 +309,7 @@ metricselections <- reactive({
 
 # choose the list of statistics
 statselections <- reactive({
-if(grepl('characteristics', input$Ind_sel)) {
+  if(grepl('characteristics', input$Ind_sel)) {
     return(input$demStats)
   } else if(input$Ind_sel == 'Labor') {
     return(input$crewStats)
@@ -320,12 +322,20 @@ if(grepl('characteristics', input$Ind_sel)) {
   } else return('')
 })
 
+akselections <- reactive({
+  if(exists("input$FishAkSelect")) {
+    return(ifelse(input$FishAkSelect == TRUE, 'YES', 'NO'))
+  } else return('')
+})
+
 # choose the list of categories
-catselections <- reactive({ 
+csselections <- reactive({ 
   if(input$CategorySelect != "Fisheries") {
     return(input$inSelect)
   } else return('')
 })
+
+
 # DatSubTable: HUGE reactive for subsetting for data table####
 # Subset data for table
 # selecting plot variables, subsetting the data AND casting for individual level ID (fun.agg=sum)
@@ -347,13 +357,13 @@ DatSubRaw <- reactive({
       subset(dat, 
         YEAR %in% seq(input$YearSelect[1], input$YearSelect[2], 1))
   }
-
+if(exists("input$FishAkSelect")) browser()
   # subset the sector specific data according to all of the fisheye toggles
  datSub <- subset(datSubforSector,
-    METRIC %in% metricselections() &
-    inclAK %in% akselections() &
-    STAT %in% statselections() &
-    CS %in% csselections())
+   METRIC %in% metricselections() &
+   STAT   %in% statselections() &
+   inclAK %in% akselections() &
+   CS     %in% csselections())
 
 })
   
