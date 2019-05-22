@@ -225,9 +225,10 @@ output$socSelect <- renderUI({
 # Characteristics tab: statistic ratiobuttons ####
 # (this is a little messy because mean/median/total aren't available for all metrics)
 output$demStats <- renderUI({
+  if(exists("input$demSelect")) {
   if (input$LayoutSelect) {
     tagList(
-      radioButtons("demStats",
+      radioButtons("AVE_MED2",
       HTML(
         "<div> Statistic: <button id='istat' type='button' class='btn btn-default action-button shiny-bound-input'> <i class='fa fa-info-circle fa-fw' ></i></button> </div>"
       ),
@@ -237,7 +238,7 @@ output$demStats <- renderUI({
   } #End Metrics
   else {
     if (input$demSelect %in% c("Number of species purchased")) {
-      tagList(radioButtons("demStats",
+      tagList(radioButtons("AVE_MED2",
         HTML(
           "<div> Statistic: <button id='istat' type='button' class='btn btn-default action-button shiny-bound-input'> <i class='fa fa-info-circle fa-fw' ></i></button> </div>"
         ),
@@ -248,7 +249,7 @@ output$demStats <- renderUI({
     } else if (input$demSelect %in% c("Number of vessels", "Number of processors")) {
       tagList(tags$div(
         class = 'StatGrey',
-        radioButtons("demStats",
+        radioButtons("AVE_MED2",
           HTML(
             "<div> Statistic: <button id='istat' type='button' class='btn btn-default action-button shiny-bound-input'> <i class='fa fa-info-circle fa-fw' ></i></button> </div>"
           ),
@@ -269,7 +270,7 @@ output$demStats <- renderUI({
     )) {
       tagList(tags$div(
         class = 'StatGrey2',
-        radioButtons("demStats",
+        radioButtons("AVE_MED2",
           HTML(
             "<div> Statistic: <button id='istat' type='button' class='btn btn-default action-button shiny-bound-input'> <i class='fa fa-info-circle fa-fw' ></i></button> </div>"
           ),
@@ -278,8 +279,9 @@ output$demStats <- renderUI({
         )
       ))
     }}
+  }
 })
-# Economics tab: statistic ratiobuttons ####
+# Economics tab: statistic radiobuttons ####
 output$econStats <- renderUI({
   if (input$Sect_sel == "FR")  {
     tagList(
@@ -291,7 +293,7 @@ output$econStats <- renderUI({
         selectize = F
       ),
       tags$div(class = "statbox", 
-        radioButtons("StatSelect", "",  choices = c(DatVars()$STAT[5:6])))
+        radioButtons("econStats", "",  choices = c(DatVars()$STAT[5:6])))
     )
   } else {
     tagList(
@@ -304,7 +306,7 @@ output$econStats <- renderUI({
       ),
       tags$div(
         class = "statbox",
-        radioButtons("StatSelect", "", choices = c(DatVars()$STAT[5:7]), selected = DatVars()$STAT[7])))
+        radioButtons("econStats", "", choices = c(DatVars()$STAT[5:7]), selected = DatVars()$STAT[7])))
   }
 })
 # Labor tab: statistic radiobuttons ####
@@ -757,6 +759,7 @@ output$Variableselect <- renderUI({
 
 # Select inclAK ####
 output$FishAkselect <- renderUI({
+  if(exists("input$demSelect")) {
   if (!is.null(input$LayoutSelect) && !input$LayoutSelect &&
       !is.null(input$Sect_sel) && input$Sect_sel == 'CV' &&
       !is.null(input$Ind_sel) && input$Ind_sel == "Vessel characteristics") {
@@ -769,6 +772,7 @@ output$FishAkselect <- renderUI({
           right = TRUE
         )))
     }
+  }
   }
 })
 
