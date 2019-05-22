@@ -364,7 +364,7 @@ DatSubTable <- reactive({
 
  # table formatting for the data view tab
 
-  datSub$sort <- 1:nrow(datSub)
+ datSub$sort <- 1:nrow(datSub)
    
  datSub$VALUE <- round(datSub$VALUE, 2)
  datSub$VARIANCE <- round(datSub$VARIANCE, 2)
@@ -379,9 +379,7 @@ DatSubTable <- reactive({
      Year = YEAR,
      Metric = METRIC,
      Value = VALUE,
-     # Both sumstat and stat get labelled "Statistic" so I added a space to avoid duplicate column names
-     Statistic = SUMSTAT,
-     `Statistic ` = STAT,
+     Statistic = STAT,
      `Standard deviation` = VARIANCE,
      `Quartile: 25th` = q25,
      `Quartile: 75th` = q75,
@@ -389,7 +387,6 @@ DatSubTable <- reactive({
      `Data summed across` = whitingv,  
      `Alaskan activities included` = inclAK, 
      `Delivery location` = AGID,
-     !!quo_name(shortdescropts) := SHORTDESCR,
      !!quo_name(Ntitle) := N)
   
 
