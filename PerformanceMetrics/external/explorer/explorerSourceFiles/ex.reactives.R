@@ -10,8 +10,7 @@ DatMain <- reactive({
   if (input$Sect_sel == "CV") {
     dat <- CVperfmetrics
   } else if (input$Sect_sel == "M") {
-    dat <-
-      Mperfmetrics
+    dat <- Mperfmetrics
   } else if (input$Sect_sel == "CP") {
     dat <- CPperfmetrics
   } else if (input$Sect_sel == "FR") {
@@ -19,13 +18,7 @@ DatMain <- reactive({
   }
 })
 
-nrcomponents <- c(
-          "Revenue",
-          "Variable costs",
-          "Fixed costs",
-          "Variable Cost Net Revenue",
-          "Total Cost Net Revenue"
-        )
+nrcomponents <- c('Revenue', 'Variable costs', 'Fixed costs', 'Variable cost net revenue', 'Total cost net revenue')
 
 # DatVars: sidebar inputs ####
 DatVars <- reactive({
@@ -44,7 +37,7 @@ DatVars <- reactive({
       dat,
       list(
         YEAR = 2004:currentyear,
-        SHORTDESCR = nrcomponents,
+        NRlist = nrcomponents,
         CATEGORY = c(
           "Fisheries",
           "Homeport",
@@ -122,7 +115,7 @@ DatVars <- reactive({
       dat,
       list(
         YEAR = 2004:currentyear,
-        SHORTDESCR = nrcomponents,
+        NRlist = nrcomponents,
         CATEGORY = c("Production activities" = "Fisheries", "Region", "Processor size"),
         whitingv = c(
           "All processors",
@@ -176,7 +169,7 @@ DatVars <- reactive({
       dat,
       list(
         YEAR = 2004:currentyear,
-        SHORTDESCR = nrcomponents,
+        NRlist = nrcomponents,
         CATEGORY = "Fisheries",
         inclAK = unique(inclAK),
         whitingv = "Whiting vessels",
@@ -237,7 +230,7 @@ DatVars <- reactive({
     dat,
     list(
       YEAR = 2004:currentyear,
-      SHORTDESCR = nrcomponents,
+      NRlist = nrcomponents,
       CATEGORY = "Fisheries",
       inclAK = unique(inclAK),
       whitingv = "Whiting vessels",
@@ -296,6 +289,8 @@ DatVars <- reactive({
 }
 })
 
+# Mini filtering functions to use in DatSub({}) ####
+# choose the list of metrics
 metricselections <- reactive({
   if(grepl('characteristics', input$Ind_sel)) {
     return(input$demSelect)
@@ -305,31 +300,28 @@ metricselections <- reactive({
     return(input$costSelect)
   } else if(input$Ind_sel == 'Other') {
     return(input$socSelect)
+  } else if(input$Ind_sel == 'Economic') {
+    return(input$econSelect)
   } else return('')
 })
 
-shortdescrselections <- reactive({ 
-  if(input$Ind_sel == 'Economic') {
-    return(input$ShortdescrSelect)
-  } else return('')
-})
-
-sumstatselections <- reactive({
-  if(grepl('characteristics', input$Ind_sel) | 
-      input$Ind_sel %in% c('Labor', 'Other')) {
-    return(input$AVE_MED2) 
-  } else return('')
-})
-
+# choose the list of statistics
 statselections <- reactive({
-  if(input$Ind_sel == 'Economic') {
-    return(input$StatSelect) 
-  } else if(input$Ind_sel == 'Cost') {
-    return(input$StatSelect)
+if(grepl('characteristics', input$Ind_sel)) {
+    return(input$demStats)
+  } else if(input$Ind_sel == 'Labor') {
+    return(input$crewStats)
+  } else if(input$Ind_sel == 'Cost')  {
+    return(input$costStats)
+  } else if(input$Ind_sel == 'Other') {
+    return(input$socStats)
+  } else if(input$Ind_sel == 'Economic') {
+    return(input$econStats)
   } else return('')
 })
 
-csselections <- reactive({ 
+# choose the list of categories
+catselections <- reactive({ 
   if(input$CategorySelect != "Fisheries") {
     return(input$inSelect)
   } else return('')
@@ -338,7 +330,7 @@ csselections <- reactive({
 # Subset data for table
 # selecting plot variables, subsetting the data AND casting for individual level ID (fun.agg=sum)
 # build dcast formula using if controls and using the quoted method in dcast
-DatSubTable <- reactive({
+DatSubRaw <- reactive({
   dat <- DatMain()
 
   # data filter differs whether it is CV/FR module or CP/MS module
@@ -359,9 +351,7 @@ DatSubTable <- reactive({
   # subset the sector specific data according to all of the fisheye toggles
  datSub <- subset(datSubforSector,
     METRIC %in% metricselections() &
-    SUMSTAT %in% sumstatselections() &
     inclAK %in% akselections() &
-    SHORTDESCR %in% shortdescrselections() &
     STAT %in% statselections() &
     CS %in% csselections())
 
@@ -380,12 +370,6 @@ DatSubTable <- reactive({
  datSub$VARIANCE <- round(datSub$VARIANCE, 2)
  datSub$q25 <- round(datSub$q25, 2)
  datSub$q75 <- round(datSub$q75, 2)
- 
- # there are two column names that vary by what is selected (SHORTDESCR + N)
- shortdescropts <- ifelse(any(
-   datSub$SHORTDESCR %in% nrcomponents),
-   'Economic measure',
-   'Cost category')
 
  Ntitle <- ifelse(input$Sect_sel == "FR", 'Number of processors', 'Number of vessels')
 
@@ -497,11 +481,6 @@ if (!input$LayoutSelect) {
           )
         )
       )
-      # }  else if(input$MetricSelect=="Share of landings by state"){
-      #  datSub$sort <- ifelse(datSub$agid=="In Washington", "...In Washington", as.character(datSub$agid))
-      #  datSub$sort <- ifelse(datSub$agid=="In Oregon", "..In Oregon", as.character(datSub$sort))
-      #  datSub$sort <- ifelse(datSub$agid=="In California", ".In California", as.character(datSub$sort))
-      #  datSub$sort <- ifelse(datSub$agid=="At sea", ".At sea",  as.character(datSub$sort))
     } else {
       datSub$sort <- as.character(datSub$METRIC)
     }

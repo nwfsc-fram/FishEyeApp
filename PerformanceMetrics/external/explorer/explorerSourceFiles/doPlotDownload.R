@@ -65,7 +65,6 @@ doPlotDownload <- function(dat, x, y){
       merge(dat %>% 
               distinct(sort2,whitingv))
     
-    #      if(input$PlotSelectOption=="Standard deviation or Median average deviation")
     dat$upper <-
       if (input$Ind_sel == "Economic") {
         if (input$AVE_MED == 'A') {
@@ -91,9 +90,9 @@ doPlotDownload <- function(dat, x, y){
             dat$q75
           }
         } else if (input$Ind_sel == 'Labor') {
-          if(input$crewStat == 'Mean') {
+          if(input$crewStats == 'Mean') {
             dat$VALUE + dat$VARIANCE
-          } else if (input$crewStat == 'Total') {
+          } else if (input$crewStats == 'Total') {
             dat$VALUE
           } else {
             dat$q75
@@ -110,7 +109,6 @@ doPlotDownload <- function(dat, x, y){
     
     
     dat$lower <-
-      #      if(input$PlotSelectOption=="Standard deviation or Median average deviation")
       if (input$Ind_sel == "Economic") {
         if (input$AVE_MED == 'A') {
           dat$VALUE - dat$VARIANCE
@@ -136,9 +134,9 @@ doPlotDownload <- function(dat, x, y){
           dat$q25
         }
       } else if (input$Ind_sel == 'Labor') {
-        if (input$crewStat == 'Mean') {
+        if (input$crewStats == 'Mean') {
           dat$VALUE - dat$VARIANCE
-        } else if (input$crewStat == 'Total') {
+        } else if (input$crewStats == 'Total') {
           dat$VALUE
         } else {
           dat$q25
@@ -154,7 +152,6 @@ doPlotDownload <- function(dat, x, y){
       }
     
     upper <- function() {
-      #      if(input$PlotSelectOption=="Standard deviation or Median average deviation")
       if (input$Ind_sel == "Economic") {
         if (input$PlotSelect == T) {
           if (input$AVE_MED == 'A') {
@@ -190,9 +187,9 @@ doPlotDownload <- function(dat, x, y){
           }
       } else if (input$Ind_sel == 'Labor') {
         if (input$PlotSelect == T) {
-          if (input$crewStat == 'Mean') {
+          if (input$crewStats == 'Mean') {
             max(dat$VALUE + dat$VARIANCE, na.rm = T)
-          } else if (input$crewStat == 'Median') {
+          } else if (input$crewStats == 'Median') {
             max(dat$q75, na.rm = T)
           } else {
             max(dat$VALUE, na.rm = T)
@@ -212,25 +209,6 @@ doPlotDownload <- function(dat, x, y){
             max(dat$VALUE, na.rm = T)
           }
       } }
-    
-    # I commented this out because it's not being used - ERIN
-    # lower <- function() {
-    #   #      if(input$PlotSelectOption=="Standard deviation or Median average deviation")
-    #   if (input$Ind_sel == "Economic") {
-    #     if (input$AVE_MED == 'A') {
-    #       dat$VALUE - dat$VARIANCE
-    #     } else  {
-    #       dat$q25
-    #     }
-    #   } else if (input$Ind_sel != "Economic") {
-    #     if (input$AVE_MED2 == 'Mean') {
-    #       dat$VALUE - dat$VARIANCE
-    #     } else  {
-    #       dat$q25
-    #     }
-    #   }
-    # }
-    
     
     yaxislabel <- function () {
       if(input$LayoutSelect) {

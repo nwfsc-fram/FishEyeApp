@@ -8,6 +8,7 @@ source("external/explorer/explorerSourceFiles/doPlot.R", local = TRUE)
 source("external/explorer/explorerSourceFiles/doPlotDownload.R", local = TRUE)
 source("external/explorer/explorerSourceFiles/defaultText.R", local = TRUE)
 
+
 enableBookmarking("url")
 
 
@@ -135,7 +136,6 @@ output$PlotMain2 <- renderPlot({
   doPlot(dat = DatSub(), x = "YEAR", y = "VALUE")
 },  height=400, width = 700)
 
-
 output$PlotMain3 <- renderPlot({
   input$data
   doPlot(dat = DatSub(), x = "YEAR", y = "VALUE")
@@ -151,7 +151,7 @@ output$TableMain <- renderDataTable({
 
 # download buttons ------------------------------------------------------------
 ##---Table-----#
-#####
+##### output$dlTable
 output$dlTable <- downloadHandler(
     filename = function() { 'perfmetricsTable.csv' },
     content = function(file) {
@@ -357,8 +357,7 @@ output$dlTable <- downloadHandler(
 
 #####
 
-# render plot from  to pdf for download
-#######
+# render plot from  to pdf for download ####
 output$dlFigure <- downloadHandler(
   filename = function() {'perfmetricsPlot.pdf'},
   content = function(file){
@@ -379,13 +378,12 @@ output$dlFigure <- downloadHandler(
  })
 #######
 
-#Interactives plots trial
-#######
+#Interactives plots trial #######
 output$hover_info <- renderUI({
   if(!is.null(input$plot_hover)){
     dat <- DatSub()
     if(!input$LayoutSelect & length(input$VariableSelect)==1||
-       input$LayoutSelect & length(input$ShortdescrSelect)==1){
+       input$LayoutSelect & length(input$econSelect)==1){
       lvls <- levels(as.factor(dat$YEAR))
     } else {
       lvls <- rep(levels(as.factor(dat$YEAR)),2) 
@@ -456,7 +454,7 @@ output$hover_info <- renderUI({
       if(!is.null(input$plot_click)){
         dat <- DatSub()
         if(!input$LayoutSelect & length(input$VariableSelect)==1||
-           input$LayoutSelect & length(input$ShortdescrSelect)==1){
+           input$LayoutSelect & length(input$econSelect)==1){
           lvls <- levels(as.factor(dat$YEAR))
         } else {
           lvls <- rep(levels(as.factor(dat$YEAR)),2) 
