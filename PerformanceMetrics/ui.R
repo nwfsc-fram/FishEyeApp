@@ -5,7 +5,7 @@ library(shinyjs)
 library(shinyWidgets)
 library(shinyBS)
 library(bsplus)
-options(shiny.server = NULL)
+#options(shiny.server = NULL)
 #options(shiny.error = browser)
 # custom css functions
 # calls .css selector for well-sub
@@ -316,10 +316,10 @@ function(request) {
 
               # show variance
               conditionalPanel(condition="input.Ind_sel!='Economic'&
-                                                              (input.AVE_MED2!='Total' || crewStat!='Total') &
-                                                              input.socSelect!='Seasonality'&
-                                                              input.socSelect!='Share of landings by state'||
-                                                              input.Ind_sel=='Economic'&input.AVE_MED!='T'",
+                                                              (input.demStats!='Total' || crewStats!='Total') &
+                                                              input.otherSelect!='Seasonality'&
+                                                              input.otherSelect!='Share of landings by state'||
+                                                              input.Ind_sel=='Economic'&input.econStats!='T'",
                                uiOutput("Plotselect")),
 
               fluidRow(

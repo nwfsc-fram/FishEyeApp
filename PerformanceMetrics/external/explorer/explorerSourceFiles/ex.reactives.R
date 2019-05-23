@@ -300,7 +300,7 @@ metricselections <- reactive({
   } else if(input$Ind_sel == 'Cost')  {
     return(input$costSelect)
   } else if(input$Ind_sel == 'Other') {
-    return(input$socSelect)
+    return(input$otherSelect)
   } else if(input$Ind_sel == 'Economic') {
     return(input$econSelect)
   } else return('')
