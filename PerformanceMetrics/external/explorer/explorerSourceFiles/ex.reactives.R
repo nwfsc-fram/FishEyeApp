@@ -375,11 +375,16 @@ DatSubTable <- reactive({
  # table formatting for the data view tab
 
  datSub$sort <- 1:nrow(datSub)
-   
- datSub$VALUE <- round(datSub$VALUE, 2)
- datSub$VARIANCE <- round(datSub$VARIANCE, 2)
- datSub$q25 <- round(datSub$q25, 2)
- datSub$q75 <- round(datSub$q75, 2)
+
+ tabformatfun <- function(x) {
+   rounding <- ifelse(all(datSub$unit == ''), 1, 0)
+   dollar   <- ifelse(grepl('$', datSub$ylab, fixed = T), '$', '')
+   paste0(dollar, prettyNum(round(x), big.mark = ','))
+ }
+ datSub$VALUE <-    tabformatfun(datSub$VALUE)
+ datSub$VARIANCE <- tabformatfun(datSub$VARIANCE)
+ datSub$q25 <-      tabformatfun(datSub$q25)
+ datSub$q75 <-      tabformatfun(datSub$q75)
 
  Ntitle <- ifelse(input$Sect_sel == "FR", 'Number of processors', 'Number of vessels')
  valuetitle <- statselections()
@@ -403,10 +408,9 @@ DatSubTable <- reactive({
      `Delivery location` = AGID,
      !!quo_name(Ntitle) := N)
   
-
 # need to redesign the fishak column and then this will work
   alwaysexclude <- c('metric_flag', 'conf', 'flag', 'unit', 'tab', 'ylab', 'sort', 'CATEGORY', 'STAT')
-datSub <- select(datSub, colnames(datSub)[apply(datSub, 2, function(x) sum(x != '' & !is.na(x)) > 0)], 
+datSub <- select(datSub, colnames(datSub)[apply(datSub, 2, function(x) sum(x != '' & !is.na(x) & x != 'NA') > 0 )], 
   -alwaysexclude) 
 
   return(datSub)
