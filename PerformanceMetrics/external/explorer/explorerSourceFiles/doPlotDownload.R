@@ -52,18 +52,6 @@ doPlotDownload <- function(dat, x, y){
       } else {
         0
       }}
-
-    rectvars <- dat %>% 
-      distinct(sort2,YEAR) %>% 
-      group_by(sort2) %>% 
-      mutate(minx=min(as.numeric(YEAR)), 
-             xmaxscale=length(YEAR[YEAR<2011]), 
-             maxx=max(YEAR))  %>% 
-      subset(select=c(sort2, minx,xmaxscale, maxx)) %>%
-      data.frame()%>% 
-      distinct %>% 
-      merge(dat %>% 
-              distinct(sort2,whitingv))
     
     dat$upper <-
       if (input$Ind_sel == "Economic") {
@@ -604,53 +592,8 @@ xlab <- function() {
                                  face = "bold",
                                  size = 10),
       legend.title = element_blank())
-    
 
-    
-    ##function to wrapping facet labels
- #   strwrap_strip_text = function(p, pad=0) { 
- #     # get facet font attributes
-#      th = theme_get()
-#      if (length(g$theme) > 0L)
-#        th = th + g$theme
-      
-#      require("grid")
-#      grobs <- ggplotGrob(g)
-      
-      # wrap strip x text
-#      ps = calc_element("strip.text.x", th)[["size"]]
-#      family = calc_element("strip.text.x", th)[["family"]]
-#      face = calc_element("strip.text.x", th)[["face"]]
-      
-#      nm = names(g$facet$facets)
-      
-      # get number of facet columns
-#      levs = levels(factor(g$data[[nm]]))
-#      npanels = length(levs)
-#      cols = n2mfrow(npanels)[1]
-      
-      # get plot width
- #     sum = .4#sum(sapply(grobs$width, function(x) convertWidth(x, "in")))
- #     panels_width = par("din")[1] - sum  # inches
-      # determine strwrap width
- #     panel_width = panels_width / cols
- #     mx_ind = which.max(nchar(levs))
- #     char_width = strwidth(levs[mx_ind], units="inches", cex=ps / par("ps"), 
- #                           family=family, font=gpar(fontface=face)$font) / 
- #       nchar(levs[mx_ind])
- #     width = floor((panel_width - pad)/ char_width)  # characters (pad=0)
-      
-      # wrap facet text
- #     g$data[[nm]] = unlist(lapply(strwrap(g$data[[nm]], width=width, 
- #                                          simplify=FALSE), paste, collapse="\n"))
- #     g$data[[nm]] = gsub("([.])", "\\ ", g$data[[nm]]) 
-      
- #     invisible(g)
-#    }   
-    
-    #    print(g)
-#    g <- invisible(strwrap_strip_text(g)) #use instead of print(g)
     print(g)
     
-  } #else plot(0,0,type="n", axes=F, xlab="", ylab="")
+  } 
 }
