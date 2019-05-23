@@ -16,8 +16,7 @@ DatMain <- reactive({
   } else if (input$Sect_sel == "FR") {
     dat <- FRperfmetrics
   }
-  
-  browser()
+
 })
 
 nrcomponents <- c('Revenue', 'Variable costs', 'Fixed costs', 'Variable cost net revenue', 'Total cost net revenue')
@@ -323,7 +322,7 @@ statselections <- reactive({
 })
 
 akselections <- reactive({
-  if(exists("input$FishAkSelect")) {
+  if(input$demSelect %in% c('Revenue diversification', 'Proportion of revenue from CS fishery', 'Number of fisheries')) {
     return(ifelse(input$FishAkSelect == TRUE, 'YES', 'NO'))
   } else return('')
 })
@@ -357,7 +356,8 @@ DatSubRaw <- reactive({
       subset(dat, 
         YEAR %in% seq(input$YearSelect[1], input$YearSelect[2], 1))
   }
-if(exists("input$FishAkSelect")) browser()
+
+#if(input$demSelect == 'Number of fisheries') browser()
   # subset the sector specific data according to all of the fisheye toggles
  datSub <- subset(datSubforSector,
    METRIC %in% metricselections() &
@@ -382,15 +382,19 @@ DatSubTable <- reactive({
  datSub$q75 <- round(datSub$q75, 2)
 
  Ntitle <- ifelse(input$Sect_sel == "FR", 'Number of processors', 'Number of vessels')
+ valuetitle <- statselections()
+ vartitle <- ifelse(statselections() %in% c('Total', ''), 'VARIANCE',
+   ifelse(statselections() == 'Median', 'Mean average deviation',
+     'Standard deviation'))
 
  # rename the columns 
  datSub <-
    rename(datSub,
      Year = YEAR,
      Metric = METRIC,
-     Value = VALUE,
-     Statistic = STAT,
-     `Standard deviation` = VARIANCE,
+     !!quo_name(valuetitle) := VALUE,
+     #Statistic = STAT,
+     !!quo_name(vartitle) := VARIANCE,
      `Quartile: 25th` = q25,
      `Quartile: 75th` = q75,
      `Summary variable` = VARIABLE,  
@@ -401,7 +405,7 @@ DatSubTable <- reactive({
   
 
 # need to redesign the fishak column and then this will work
-  alwaysexclude <- c('metric_flag', 'conf', 'flag', 'unit', 'tab', 'ylab', 'sort', 'CATEGORY')
+  alwaysexclude <- c('metric_flag', 'conf', 'flag', 'unit', 'tab', 'ylab', 'sort', 'CATEGORY', 'STAT')
 datSub <- select(datSub, colnames(datSub)[apply(datSub, 2, function(x) sum(x != '' & !is.na(x)) > 0)], 
   -alwaysexclude) 
 
@@ -415,7 +419,6 @@ DatSub <- reactive({
 datSub <- DatSubRaw()
  
  # SORT ####
-
 if (!input$LayoutSelect) {
     if (input$Ind_sel == 'Other' &&
         input$socSelect == 'Share of landings by state') {

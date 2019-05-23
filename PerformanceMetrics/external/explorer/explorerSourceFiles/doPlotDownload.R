@@ -98,9 +98,9 @@ doPlotDownload <- function(dat, x, y){
             dat$q75
           }
         } else if (input$Ind_sel == 'Vessel characteristics' || input$Ind_sel == 'Processor characteristics') {
-          if (input$AVE_MED2 == 'Mean') {
+          if (input$demStats == 'Mean') {
             dat$VALUE + dat$VARIANCE
-          } else if (input$AVE_MED2 == 'Total') {
+          } else if (input$demStats == 'Total') {
             dat$VALUE
           } else {
             dat$q75
@@ -142,9 +142,9 @@ doPlotDownload <- function(dat, x, y){
           dat$q25
         }
       } else if (input$Ind_sel == 'Vessel characteristics' || input$Ind_sel == 'Processor characteristics') {
-        if (input$AVE_MED2 == 'Mean') {
+        if (input$demStats == 'Mean') {
           dat$VALUE - dat$VARIANCE
-        } else if (input$AVE_MED2 == 'Total') {
+        } else if (input$demStats == 'Total') {
           dat$VALUE
         } else  {
           dat$q25
@@ -199,9 +199,9 @@ doPlotDownload <- function(dat, x, y){
         }
       } else if (input$Ind_sel == 'Vessel characteristics' || input$Ind_sel == 'Processor characteristics') {
         if (input$PlotSelect == T) {
-          if (input$AVE_MED2 == 'Mean') {
+          if (input$demStats == 'Mean') {
             max(dat$VALUE + dat$VARIANCE, na.rm = T)
-          } else if (input$AVE_MED2 == 'Median') {
+          } else if (input$demStats == 'Median') {
             max(dat$q75, na.rm = T)
           } else {
             max(dat$VALUE, na.rm = T) 

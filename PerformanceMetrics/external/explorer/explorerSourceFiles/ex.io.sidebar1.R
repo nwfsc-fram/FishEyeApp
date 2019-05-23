@@ -222,41 +222,26 @@ output$socSelect <- renderUI({
 })
 
 # SET UP THE STATISTIC RADIOBUTTONS FOR EACH TAB ####
+radiobuttonstatistic <- function(inputID, selection = 'Median') {
+    radioButtons(inputID,
+        HTML("<div> Statistic: <button id='istat' type='button' class='btn btn-default action-button shiny-bound-input'> <i class='fa fa-info-circle fa-fw' ></i></button> </div>"),
+        choices = c('Mean', 'Median', 'Total'),
+        select = selection)
+  }
 # Characteristics tab: statistic ratiobuttons ####
 # (this is a little messy because mean/median/total aren't available for all metrics)
 output$demStats <- renderUI({
-  if(exists("input$demSelect")) {
-  if (input$LayoutSelect) {
-    tagList(
-      radioButtons("AVE_MED2",
-      HTML(
-        "<div> Statistic: <button id='istat' type='button' class='btn btn-default action-button shiny-bound-input'> <i class='fa fa-info-circle fa-fw' ></i></button> </div>"
-      ),
-      choices = c('Mean', 'Median', 'Total'),
-      select = 'Median'
-    ))
-  } #End Metrics
-  else {
-    if (input$demSelect %in% c("Number of species purchased")) {
-      tagList(radioButtons("AVE_MED2",
-        HTML(
-          "<div> Statistic: <button id='istat' type='button' class='btn btn-default action-button shiny-bound-input'> <i class='fa fa-info-circle fa-fw' ></i></button> </div>"
-        ),
-        choices = c('Mean', 'Median', 'Total'),
-        select = 'Median'
-      ))
-      #  options(shiny.error = browser) takes me to this line:
+#  if(input$demSelect == 'Number of fisheries') {browser()}
+  if (is.null(input$demSelect)) {
+    tagList()
+  } else if (input$LayoutSelect) {
+    tagList(radiobuttonstatistic(inputID = "demStats"))
+  } else if (input$demSelect %in% c("Number of species purchased")) {
+      tagList(radiobuttonstatistic(inputID = "demStats"))
     } else if (input$demSelect %in% c("Number of vessels", "Number of processors")) {
       tagList(tags$div(
-        class = 'StatGrey',
-        radioButtons("AVE_MED2",
-          HTML(
-            "<div> Statistic: <button id='istat' type='button' class='btn btn-default action-button shiny-bound-input'> <i class='fa fa-info-circle fa-fw' ></i></button> </div>"
-          ),
-          choices = c('Mean', 'Median', 'Total'),
-          select = 'Total'
-        )
-      ))
+        class = 'StatGrey', # grey out everything but total
+        radiobuttonstatistic(inputID = "demStats", selection = 'Total')))
     } else if (input$demSelect %in% c(
       "Vessel length",
       "Revenue diversification",
@@ -269,17 +254,9 @@ output$demStats <- renderUI({
       "Vessel horsepower"
     )) {
       tagList(tags$div(
-        class = 'StatGrey2',
-        radioButtons("AVE_MED2",
-          HTML(
-            "<div> Statistic: <button id='istat' type='button' class='btn btn-default action-button shiny-bound-input'> <i class='fa fa-info-circle fa-fw' ></i></button> </div>"
-          ),
-          choices = c('Mean', 'Median', 'Total'),
-          select = 'Median'
-        )
-      ))
-    }}
-  }
+        class = 'StatGrey2', # grey out the third option (total)
+        radiobuttonstatistic(inputID = "demStats")))
+    }
 })
 # Economics tab: statistic radiobuttons ####
 output$econStats <- renderUI({
@@ -312,13 +289,7 @@ output$econStats <- renderUI({
 # Labor tab: statistic radiobuttons ####
 output$crewStats <- renderUI({
   if (input$LayoutSelect) {
-    tagList(radioButtons("crewStats",
-      HTML(
-        "<div> Statistic: <button id='istat' type='button' class='btn btn-default action-button shiny-bound-input'> <i class='fa fa-info-circle fa-fw' ></i></button> </div>"
-      ),
-      choices = c('Mean', 'Median', 'Total'),
-      select = 'Median'
-    ))
+    tagList(radiobuttonstatistic(inputID = 'crewStats'))
   }
   else if (input$crewSelect %in% c(
     'Crew wage per day'
@@ -329,59 +300,44 @@ output$crewStats <- renderUI({
       , 'Revenue per crew-day')) {
     tagList(tags$div(
       class = 'StatGrey2',
-      radioButtons("crewStats",
-        HTML(
-          "<div> Statistic: <button id='istat' type='button' class='btn btn-default action-button shiny-bound-input'> <i class='fa fa-info-circle fa-fw' ></i></button> </div>"
-        ),
-        choices = c('Mean', 'Median', 'Total'),
-        select = 'Median'
-      )
-    ))
+      radiobuttonstatistic(inputID = 'crewStats')))
   } else {
-    tagList(radioButtons("crewStats",
-      HTML(
-        "<div> Statistic: <button id='istat' type='button' class='btn btn-default action-button shiny-bound-input'> <i class='fa fa-info-circle fa-fw' ></i></button> </div>"
-      ),
-      choices = c('Mean', 'Median', 'Total'),
-      select = 'Median'
-    ))
+    tagList(radiobuttonstatistic(inputID = 'crewStats'))
   }
 })
+
+selectinputavemedcosts <- selectInput(
+  inputId = "AVE_MED_COSTS", 
+  HTML("<div> Statistic: <button id='istat' type='button' class='btn btn-default action-button shiny-bound-input'> 
+                                        <i class='fa fa-info-circle fa-fw' ></i></button> </div>"), 
+  c(Mean="A", Median="M", Total="T"), 
+  selectize = F)
 # Cost tab: statistic radiobuttons ####
 output$costStats <- renderUI({
   if(input$Sect_sel=="FR")  { 
     tagList(
-      selectInput("AVE_MED_COSTS", HTML("<div> Statistic: <button id='istat' type='button' class='btn btn-default action-button shiny-bound-input'> 
-                                        <i class='fa fa-info-circle fa-fw' ></i></button> </div>"),
-                  c(Mean="A", Median="M", Total="T"), selectize=F),
-      tags$div(class="statbox", 
-        radioButtons("costStats","",  choices = c(DatVars()$STAT[4:6]))))
+      selectinputavemedcosts,
+      tags$div(class="statbox", radioButtons("costStats","", choices = DatVars()$STAT[4:6])))
   } else if (input$Sect_sel=='CP'|input$Sect_sel=='M') {
     tagList(
-      selectInput("AVE_MED_COSTS", HTML("<div> Statistic: <button id='istat' type='button' class='btn btn-default action-button shiny-bound-input'> 
-                                        <i class='fa fa-info-circle fa-fw' ></i></button> </div>"),
-                  c(Mean="A", Median="M", Total="T"), selectize=F),
+      selectinputavemedcosts,
       tags$div(class="statbox", 
         radioButtons("costStats","",  choices = c(DatVars()$STAT[5:8]), selected=DatVars()$STAT[5])))
   }else {
     tagList(
-      selectInput("AVE_MED_COSTS", HTML("<div> Statistic: <button id='istat' type='button' class='btn btn-default action-button shiny-bound-input'> 
-                                        <i class='fa fa-info-circle fa-fw' ></i></button> </div>"),
-                  c(Mean="A", Median="M", Total="T"), selectize=F),
+      selectinputavemedcosts,
       tags$div(class="statbox", 
         radioButtons("costStats","",  choices = c(DatVars()$STAT[5:8]), selected=DatVars()$STAT[5])))
   }
 }) 
 # Other tab: statistic radiobuttons ####
 output$otherStats <- renderUI({
+  if (is.null(input$socSelect)) return()
   if (input$LayoutSelect) {
-    tagList(radioButtons("otherStats",
-      HTML("<div> Statistic: <button id='istat' type='button' class='btn btn-default action-button shiny-bound-input'> <i class='fa fa-info-circle fa-fw' ></i></button> </div>"),
-      choices = c('Mean', 'Median', 'Total'),
-      select = 'Median'
-    ))
+    tagList(radiobuttonstatistic(inputID = 'otherStats'))
   } else {
-    if (input$socSelect %in% c("Share of landings by state",
+    if (input$socSelect %in% c(
+      "Share of landings by state",
       "Seasonality",
       "Gini coefficient")) {
       tags$div(
@@ -393,39 +349,30 @@ output$otherStats <- renderUI({
       "Speed while fishing",
       "Hourly compensation")) {
       tags$div(class = 'StatGrey2',
-        radioButtons("otherStats",
-          HTML("<div> Statistic: <button id='istat' type='button' class='btn btn-default action-button shiny-bound-input'> <i class='fa fa-info-circle fa-fw' ></i></button> </div>"),
-          choices = c('Mean', 'Median', 'Total'),
-          select = 'Median'
-        ))
+        radiobuttonstatistic(inputID = 'otherStats'))
     } else {
       tagList(
-        radioButtons("otherStats",
-        HTML("<div> Statistic: <button id='istat' type='button' class='btn btn-default action-button shiny-bound-input'> <i class='fa fa-info-circle fa-fw' ></i></button> </div>"),
-        choices = c('Mean', 'Median', 'Total'),
-        select = 'Median'))
+        radiobuttonstatistic(inputID = 'otherStats'))
     }
   }
 })
 
 # TAB SELECTIION - sets Ind_sel for Vessel/processor characteristics, ECONOMIC, labor, cost, and other ####
+htmlindicatorselect <- HTML(
+        "<div> Select an indicator category: <button id='ipo' type='button' class='btn btn-default action-button shiny-bound-input'>
+        <i class='fa fa-info-circle fa-fw' ></i></button> </div>"
+      )
 output$IndicatorSelect <- renderUI({
   if (input$Sect_sel != 'FR') {
     selectInput("Ind_sel",
-      HTML(
-        "<div> Select an indicator category: <button id='ipo' type='button' class='btn btn-default action-button shiny-bound-input'>
-        <i class='fa fa-info-circle fa-fw' ></i></button> </div>"
-      ),
+      htmlindicatorselect,
       c('Vessel characteristics', "Economic", "Labor", "Other"),
       selected = 'Vessel characteristics',
       selectize = T
       )
   } else {
     selectInput("Ind_sel",
-      HTML(
-        "<div> Select an indicator category: <button id='ipo' type='button' class='btn btn-default action-button shiny-bound-input'>
-        <i class='fa fa-info-circle fa-fw' ></i></button> </div>"
-      ),
+      htmlindicatorselect,
       c('Processor characteristics', "Economic", "Labor", "Other"),
       selected = 'Processor characteristics',
       selectize = T
@@ -436,10 +383,11 @@ output$IndicatorSelect <- renderUI({
 })  
 
 # YEAR slider bar ####
-# I'd love to simply this someday 05/22/2019 - Erin
+
+
 output$Yearselect <- renderUI({
-  if (is.null(input$Ind_sel) || is.null(input$CategorySelect)) {
-    tags$div(
+  # create 2 slider bars, one with 2004-current and the other 2009-current
+  tagsdiv2009 <- tags$div(
       class = "ckbox",
       sliderInput(
         "YearSelect",
@@ -452,123 +400,56 @@ output$Yearselect <- renderUI({
         ticks = F
       )
     )
+
+tagsdiv2004 <- tags$div(
+        class = "ckbox",
+        sliderInput(
+          "YearSelect",
+          "Years:",
+          min = 2004,
+          max = max(DatVars()$YEAR),
+          value = c(2009, max(DatVars()$YEAR)),
+          step = 1,
+          sep = '',
+          ticks = F
+        )
+      )
+# choose which slider bar to display
+  if (is.null(input$Ind_sel) || is.null(input$CategorySelect)) {
+    tagsdiv2009
   }
   else if (input$Ind_sel == "Vessel characteristics" ||
       input$Ind_sel == 'Processor characteristics') {
     if (input$Sect_sel == "CV" &
         input$CategorySelect == 'Fisheries' &
         input$demSelect %in% c('Number of vessels', 'Vessel length')) {
-      tags$div(
-        class = "ckbox",
-        sliderInput(
-          "YearSelect",
-          "Years:",
-          min = 2004,
-          max = max(DatVars()$YEAR),
-          value = c(2009, max(DatVars()$YEAR)),
-          step = 1,
-          sep = '',
-          ticks = F
-        )
-      )
+      tagsdiv2004
     } else {
-      tags$div(
-        class = "ckbox",
-        sliderInput(
-          "YearSelect",
-          "Years:",
-          min = 2009,
-          max = max(DatVars()$YEAR),
-          value = c(2009, max(DatVars()$YEAR)),
-          step = 1,
-          sep = '',
-          ticks = F
-        )
-      )
+      tagsdiv2009
     }
   }
   else if (input$Ind_sel == 'Other') {
     if (input$Sect_sel == "CV" &
         input$CategorySelect == 'Fisheries' &
         input$socSelect %in% c('Seasonality', 'Share of landings by state', 'Gini coefficient')) {
-      tags$div(
-        class = "ckbox",
-        sliderInput(
-          "YearSelect",
-          "Years:",
-          min = 2004,
-          max = max(DatVars()$YEAR),
-          value = c(2009, max(DatVars()$YEAR)),
-          step = 1,
-          sep = '',
-          ticks = F
-        )
-      )
+      tagsdiv2004
     }
     else {
-      tags$div(
-        class = "ckbox",
-        sliderInput(
-          "YearSelect",
-          "Years:",
-          min = 2009,
-          max = max(DatVars()$YEAR),
-          value = c(2009, max(DatVars()$YEAR)),
-          step = 1,
-          sep = '',
-          ticks = F
-        )
-      )
+      tagsdiv2009
     }
   }
   else if (input$Ind_sel == 'Economic') {
     if (input$Sect_sel == 'CV' &
         input$CategorySelect == 'Fisheries' &
         input$econSelect[1] %in% 'Revenue') {
-      tags$div(
-        class = "ckbox",
-        sliderInput(
-          "YearSelect",
-          "Years:",
-          min = 2004,
-          max = max(DatVars()$YEAR),
-          value = c(2009, max(DatVars()$YEAR)),
-          step = 1,
-          sep = '',
-          ticks = F
-        )
-      )
+      tagsdiv2004
     }
     else {
-      tags$div(
-        class = "ckbox",
-        sliderInput(
-          "YearSelect",
-          "Years:",
-          min = 2009,
-          max = max(DatVars()$YEAR),
-          value = c(2009, max(DatVars()$YEAR)),
-          step = 1,
-          sep = '',
-          ticks = F
-        )
-      )
+      tagsdiv2009
     }
   }
   else if (input$Ind_sel == 'Labor' || input$Ind_sel == 'Cost') {
-    tags$div(
-      class = "ckbox",
-      sliderInput(
-        "YearSelect",
-        "Years:",
-        min = 2009,
-        max = max(DatVars()$YEAR),
-        value = c(2009, max(DatVars()$YEAR)),
-        step = 1,
-        sep = '',
-        ticks = F
-      )
-    )
+    tagsdiv2009
   }
 })
 
@@ -759,20 +640,22 @@ output$Variableselect <- renderUI({
 
 # Select inclAK ####
 output$FishAkselect <- renderUI({
-  if(exists("input$demSelect")) {
-  if (!is.null(input$LayoutSelect) && !input$LayoutSelect &&
-      !is.null(input$Sect_sel) && input$Sect_sel == 'CV' &&
-      !is.null(input$Ind_sel) && input$Ind_sel == "Vessel characteristics") {
-    if (input$demSelect %in% c('Revenue diversification', 'Proportion of revenue from CS fishery', 'Number of fisheries')) {
-      tagList(
-        tags$div(style = "font-weight:bold; margin-bottom: 7px", "Alaskan Fisheries:"),
-        tags$div(materialSwitch(
-          inputId = "FishAkSelect",
-          label = "Alaskan fisheries",
-          right = TRUE
-        )))
-    }
-  }
+  if(input$Sect_sel == 'CV') {
+      if(!is.null(input[["demSelect"]])) {
+        if (input$demSelect %in% c(
+          'Revenue diversification',
+          'Proportion of revenue from CS fishery',
+          'Number of fisheries'
+        )) {
+          tagList(
+            tags$div(style = "font-weight:bold; margin-bottom: 7px", "Alaskan Fisheries:"),
+            tags$div(
+              materialSwitch(
+                inputId = "FishAkSelect",
+                label   = "Alaskan fisheries",
+                right   = TRUE)))
+        }
+      }
   }
 })
 
@@ -869,7 +752,7 @@ observe({
 
 #select whether to show values per vessel, /vessel/day, or /vessel/metric-ton # COSTS
 observe({
-  if (is.null(input$AVE_MED)) {return()}
+  if (is.null(input$AVE_MED_COSTS)) return()
   else 
     if(input$Sect_sel=='CP'|input$Sect_sel=='M'){
       if(input$AVE_MED_COSTS=="M"){
