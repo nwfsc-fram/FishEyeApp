@@ -322,7 +322,8 @@ statselections <- reactive({
 })
 
 akselections <- reactive({
-  if(input$demSelect %in% c('Revenue diversification', 'Proportion of revenue from CS fishery', 'Number of fisheries')) {
+  if(any(input$demSelect %in% c('Revenue diversification', 'Proportion of revenue from CS fishery', 'Number of fisheries')) &
+      !input$LayoutSelect) {
     return(ifelse(input$FishAkSelect == TRUE, 'YES', 'NO'))
   } else return('')
 })
@@ -357,7 +358,6 @@ DatSubRaw <- reactive({
         YEAR %in% seq(input$YearSelect[1], input$YearSelect[2], 1))
   }
 
-#if(input$demSelect == 'Number of fisheries') browser()
   # subset the sector specific data according to all of the fisheye toggles
  datSub <- subset(datSubforSector,
    METRIC %in% metricselections() &
@@ -488,10 +488,10 @@ if (!input$LayoutSelect) {
   else {
     if (input$Ind_sel == "Economic") {
       datSub$sort <- ifelse(
-        datSub$SHORTDESCR == "Revenue", 1,
-        ifelse(datSub$SHORTDESCR == "Variable costs", 2,
-          ifelse(datSub$SHORTDESCR == "Fixed costs", 3,
-            ifelse(datSub$SHORTDESCR == "Variable Cost Net Revenue", 4,  5)
+        datSub$METRIC == "Revenue", 1,
+        ifelse(datSub$METRIC == "Variable costs", 2,
+          ifelse(datSub$METRIC == "Fixed costs", 3,
+            ifelse(datSub$METRIC == "Variable Cost Net Revenue", 4,  5)
           )
         )
       )

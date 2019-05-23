@@ -238,11 +238,11 @@ output$demStats <- renderUI({
     tagList(radiobuttonstatistic(inputID = "demStats"))
   } else if (input$demSelect %in% c("Number of species purchased")) {
       tagList(radiobuttonstatistic(inputID = "demStats"))
-    } else if (input$demSelect %in% c("Number of vessels", "Number of processors")) {
+    } else if (any(input$demSelect %in% c("Number of vessels", "Number of processors"))) {
       tagList(tags$div(
         class = 'StatGrey', # grey out everything but total
         radiobuttonstatistic(inputID = "demStats", selection = 'Total')))
-    } else if (input$demSelect %in% c(
+    } else if (any(input$demSelect %in% c(
       "Vessel length",
       "Revenue diversification",
       "Number of fisheries",
@@ -252,7 +252,7 @@ output$demStats <- renderUI({
       "Vessel market value",
       "Vessel replacement value",
       "Vessel horsepower"
-    )) {
+    ))) {
       tagList(tags$div(
         class = 'StatGrey2', # grey out the third option (total)
         radiobuttonstatistic(inputID = "demStats")))
@@ -422,7 +422,7 @@ tagsdiv2004 <- tags$div(
       input$Ind_sel == 'Processor characteristics') {
     if (input$Sect_sel == "CV" &
         input$CategorySelect == 'Fisheries' &
-        input$demSelect %in% c('Number of vessels', 'Vessel length')) {
+        any(input$demSelect %in% c('Number of vessels', 'Vessel length'))) {
       tagsdiv2004
     } else {
       tagsdiv2009
