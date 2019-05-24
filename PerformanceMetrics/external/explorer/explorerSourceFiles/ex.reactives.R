@@ -390,11 +390,8 @@ DatSubTable <- reactive({
      all(datSub$unit == '') ~ 1, T ~ 0)
    dollar   <- ifelse(grepl('$', datSub$ylab, fixed = T), '$', '')
   
-   if(all(datSub$unit == '')) {
-     val = paste0(dollar, sprintf(paste0("%.", rounding, "f"), x))
-   } else {
-     val = paste0(dollar, prettyNum(round(x, rounding), big.mark = ','))
-   }
+   val = formatC(x, format = 'f', dig = rounding, big.mark = ',')
+
 return(val)
  }
 
