@@ -3,7 +3,8 @@
 
 #source reactive expressions and other code
 source("external/explorer/explorerSourceFiles/ex.reactives.R", local = TRUE)
-source("external/explorer/explorerSourceFiles/ex.io.sidebar1.R", local = TRUE) 
+source("external/explorer/explorerSourceFiles/ex.io.sidebar1.R", local = TRUE)
+#source("external/explorer/explorerSourceFiles/doPlotPrep.R", local = TRUE)
 source("external/explorer/explorerSourceFiles/doPlot.R", local = TRUE)
 source("external/explorer/explorerSourceFiles/doPlotDownload.R", local = TRUE)
 source("external/explorer/explorerSourceFiles/defaultText.R", local = TRUE)
