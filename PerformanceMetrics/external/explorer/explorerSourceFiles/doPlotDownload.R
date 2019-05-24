@@ -70,9 +70,9 @@ doPlotDownload <- function(dat, x, y){
             dat$q75
           }
         } else if (input$Ind_sel == 'Other') {
-          if (input$otherStat == 'Mean') {
+          if (input$otherStats == 'Mean') {
             dat$VALUE + dat$VARIANCE
-          } else if (input$otherStat == 'Total') {
+          } else if (input$otherStats == 'Total') {
             dat$VALUE
           } else {
             dat$q75
@@ -114,9 +114,9 @@ doPlotDownload <- function(dat, x, y){
           dat$q25
         }
       } else if (input$Ind_sel == 'Other') {
-        if (input$otherStat == 'Mean') {
+        if (input$otherStats == 'Mean') {
           dat$VALUE - dat$VARIANCE
-        } else if (input$otherStat == 'Total') {
+        } else if (input$otherStats == 'Total') {
           dat$VALUE
         } else {
           dat$q25
@@ -164,9 +164,9 @@ doPlotDownload <- function(dat, x, y){
           }
       } else if (input$Ind_sel == 'Other') {
         if (input$PlotSelect == T) {
-          if (input$otherStat == 'Mean') {
+          if (input$otherStats == 'Mean') {
             max(dat$VALUE + dat$VARIANCE, na.rm = T)
-          } else if (input$otherStat == 'Median') {
+          } else if (input$otherStats == 'Median') {
             max(dat$q75, na.rm = T)
           } else {
             max(dat$VALUE, na.rm = T)
@@ -350,7 +350,7 @@ xlab <- function() {
     #  print(paste0(seasonality, 1))
     if(input$Ind_sel == 'Other' & !input$LayoutSelect) {
       # and seasonality is selected
-      if(input$socSelect =="Seasonality") {
+      if(input$otherSelect =="Seasonality") {
         ssn <- mutate(dat, 
                       VALUE = as.Date(VALUE, origin = "2014-01-01", format = "%Y-%m-%d"),
                       sort2 = reorder(VARIABLE, sort))
@@ -376,7 +376,7 @@ xlab <- function() {
     # add lines and points to the plot ####
    if (!input$LayoutSelect) {
     if (input$Ind_sel == 'Other') {
-      if (input$socSelect == 'Share of landings by state') {
+      if (input$otherSelect == 'Share of landings by state') {
         g <-
           g + geom_line(aes_string(colour = groupVar, group = 'bystategrp'), size = 1.5) +
           geom_point(aes_string(colour = groupVar, shape = 'AGID', group = 'bystategrp'),
@@ -469,7 +469,7 @@ xlab <- function() {
         # if seasonality is clicked
         if(input$Ind_sel == 'Other') {
           # and seasonality is selected
-          if(input$socSelect =="Seasonality") {
+          if(input$otherSelect =="Seasonality") {
             g <- g + geom_rect_fun(
               ymin_val = structure(-Inf, class = "Date"),
               ymax_val = structure(Inf, class = "Date"))

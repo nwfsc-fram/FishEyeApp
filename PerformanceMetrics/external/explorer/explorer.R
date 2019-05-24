@@ -23,35 +23,6 @@ observeEvent(input$ipo, {
                             } else { 
                               message = 'See the Definitions Page for a description of each metric. Not all statistics may be applicable for a given metric.'}
                        
-                            #if(input$demSelect=="Number of vessels"){
-                              #message = 'Number of vessels actively participating (i.e., had an active permit and non-zero revenue).'
-                            #} else if(input$demSelect=="Vessel length"){
-                             # message = 'The length of vessels in feet.'
-                            #}else if(input$demSelect=="Fishery participation"){
-                              #message = 'Count of fisheries that vessels participated in. Changes may indicate specialization or diversification.'
-                            #}else if(input$demSelect=="Exponential Shannon Index"){
-                             # message = 'Measures the income diversification of a vessel across revenue sources. A larger number corresponds to increased diversification. Changes may indicate specialization or diversification.'
-                            #}else if(input$demSelect=="Proportion of revenue from CS fishery"){
-                             # message = "The average proportion of a vessel's total revenue that comes from fish caught in the limited entry trawl or catch share fishery measures how reliant vessels are on revenue from the limited entry/catch shares fishery."
-                            #}else if(input$demSelect=="Days at sea"){
-                            #  message = 'The number of days at sea may indicate specialization, efficiency, or consolidation.'
-                            #}else if(input$demSelect=="Gini coefficient"){
-                            #  message = 'Measures the degree of catch share revenue concentration among vessels. A value of zero would represent all vessels earning the same revenue, and a value of one would represent one vessel earning all of the revenue. The value of the Gini coefficient can be affected by fleet consolidation and specialization.'
-                            #}else if(input$socSelect=="Number of positions"){
-                             # message = 'Number of positions (including captain and crew) is a lower bound for employment in the fishery, and is affected by positions per vessel and the number of vessels fishing.'
-                            #}else if(input$SocSelect=="Crew wage per day"){
-                            #  message = 'Daily wage paid to a crewmember operating in the limited entry/catch shares fishery.'
-                            #}else if(input$SocSelect=="Revenue per position-day"){
-                            #  message = 'Revenue divided by position-days, where position-days are calculated as days at sea multipled by number of positions per vessel. This metric is a measure of productivity (in terms of revenue generation) of captain and crew.'
-                           # }else if(input$SocSelect=="Revenue per crew-day"){
-                            #  message = 'Revenue divided by crew-days, where position days are calculated as days at sea multipled by number of positions per vessel. This metric is a measure of productivity (in terms of revenue generation) of crew members.'
-                            #}else if(input$SocSelect=="Seasonality"){
-                            #  message = 'The date (day of year, Jan. 1 = 1) on which 50% of the total volume of catch was landed in the fishery. Metric measures broad-scale changes in the seasonality of fishing for catch shares fish. It can also indicate changes in total allowable catch (TAC); it may take the fleet longer to catch a higher TAC/ACL.'
-                            #}else if(input$SocSelect=="Share of landings by state"){
-                             # message = 'Share of total landings, share of landings by whiting vessels, and share of landings by non-whiting groundfish vessels in each state or at sea. Shares are in terms of revenue. Vessels may deliver to more than one location.'
-                            #}#else if(input$demSelect=="Herfindahl-Hirschman Index"){
-                            #  message = 'The Herfindahl-Hirschman Index is a measure of market concentration. It is calculated as the sum of the squares of the market shares, defined here by the share of the catch share revenues earned by each vessel. Values range from 0 to 10,000. Lower values indicate low market concentration (and higher competition).'
-                            #}
                               )
 })
 observeEvent(input$FRr, {

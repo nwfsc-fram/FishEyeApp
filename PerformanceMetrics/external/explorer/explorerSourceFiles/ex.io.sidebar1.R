@@ -11,11 +11,11 @@ output$metrics <- renderUI({
     name = "Processor characteristics"
   }   
   tabsetPanel(
-    tabPanel(name,       uiOutput("demSelect"),  uiOutput("demStats")),
-    tabPanel("Economic", uiOutput("econSelect"), uiOutput("econStats")),
-    tabPanel("Labor",    uiOutput("crewSelect"), uiOutput("crewStats")),
-    tabPanel("Cost",     uiOutput("costSelect"), uiOutput("costStats")),
-    tabPanel("Other",    uiOutput("socSelect"),  uiOutput("otherStats")),
+    tabPanel(name,       uiOutput("demSelect"),   uiOutput("demStats")),
+    tabPanel("Economic", uiOutput("econSelect"),  uiOutput("econStats")),
+    tabPanel("Labor",    uiOutput("crewSelect"),  uiOutput("crewStats")),
+    tabPanel("Cost",     uiOutput("costSelect"),  uiOutput("costStats")),
+    tabPanel("Other",    uiOutput("otherSelect"), uiOutput("otherStats")),
     id = "Ind_sel", type = c("tabs")
   )
 })
@@ -171,37 +171,37 @@ output$costSelect <- renderUI({
   }
 })
 # Other tab: metric checkbox/radiobutton set up ####
-output$socSelect <- renderUI({
+output$otherSelect <- renderUI({
   # Setting when grouping by Metrics
   if (input$LayoutSelect) {
     if (input$Sect_sel == "CV") {
-      if (input$otherStat == "Total") {
+      if (input$otherStats == "Total") {
         tags$div(class = "ckbox_3", 
-          checkboxGroupInput("socSelect", NULL, choices = c(DatVars()$METRIC3a), selected = "Days at sea"))
+          checkboxGroupInput("otherSelect", NULL, choices = c(DatVars()$METRIC3a), selected = "Days at sea"))
       } else {
         tags$div(class = "ckbox", 
-          checkboxGroupInput("socSelect", NULL, choices = c(DatVars()$METRIC3a), selected = "Days at sea"))
+          checkboxGroupInput("otherSelect", NULL, choices = c(DatVars()$METRIC3a), selected = "Days at sea"))
       }
     } else {
       if (input$Sect_sel == "FR") {
-        if (input$otherStat == 'Total') {
+        if (input$otherStats == 'Total') {
           tags$div(class = "ckbox", 
-            checkboxGroupInput("socSelect", NULL, choices = "", selected = ""))
+            checkboxGroupInput("otherSelect", NULL, choices = "", selected = ""))
         } else {
           tags$div(
             class = "ckbox_1",
-            checkboxGroupInput("socSelect", NULL, choices = "", selected = ""))
+            checkboxGroupInput("otherSelect", NULL, choices = "", selected = ""))
         }
       } else {
         if (input$Sect_sel == 'CP' | input$Sect_sel == 'M') {
-          if (input$otherStat == 'Total') {
+          if (input$otherStats == 'Total') {
             tags$div(
               class = "ckbox",
-              checkboxGroupInput("socSelect", NULL, choices = c(DatVars()$METRIC3a), selected = "Days at sea"))
+              checkboxGroupInput("otherSelect", NULL, choices = c(DatVars()$METRIC3a), selected = "Days at sea"))
           } else {
             tags$div(
               class = "ckbox",
-              checkboxGroupInput("socSelect", NULL, choices = c(DatVars()$METRIC3a), selected = "Days at sea"))
+              checkboxGroupInput("otherSelect", NULL, choices = c(DatVars()$METRIC3a), selected = "Days at sea"))
           }
         }
       }
@@ -211,12 +211,12 @@ output$socSelect <- renderUI({
     if (input$Sect_sel == "FR") {
       tags$div(
         class = "ckbox",
-        radioButtons("socSelect", NULL, choices = c(DatVars()$METRIC3), selected = "Gini coefficient"))
+        radioButtons("otherSelect", NULL, choices = c(DatVars()$METRIC3), selected = "Gini coefficient"))
       
     } else {
       tags$div(
         class = "ckbox",
-        radioButtons("socSelect", NULL, choices = c(DatVars()$METRIC3), selected = "Days at sea"))
+        radioButtons("otherSelect", NULL, choices = c(DatVars()$METRIC3), selected = "Days at sea"))
     }
   }
 })
@@ -332,11 +332,11 @@ output$costStats <- renderUI({
 }) 
 # Other tab: statistic radiobuttons ####
 output$otherStats <- renderUI({
-  if (is.null(input$socSelect)) return()
+  #if (!is.null(input[['otherSelect']])) return()
   if (input$LayoutSelect) {
     tagList(radiobuttonstatistic(inputID = 'otherStats'))
   } else {
-    if (input$socSelect %in% c(
+    if (input$otherSelect %in% c(
       "Share of landings by state",
       "Seasonality",
       "Gini coefficient")) {
@@ -345,7 +345,8 @@ output$otherStats <- renderUI({
         radioButtons("otherStats", "", choices = ""),
         style = "margin-bottom:20px;margin-top:-32px;margin-left:-15px;padding-top:0;"
       )
-    } else if (input$socSelect %in% c("Fuel use per day",
+    } else if (input$otherSelect %in% c(
+      "Fuel use per day",
       "Speed while fishing",
       "Hourly compensation")) {
       tags$div(class = 'StatGrey2',
@@ -431,7 +432,7 @@ tagsdiv2004 <- tags$div(
   else if (input$Ind_sel == 'Other') {
     if (input$Sect_sel == "CV" &
         input$CategorySelect == 'Fisheries' &
-        input$socSelect %in% c('Seasonality', 'Share of landings by state', 'Gini coefficient')) {
+        input$otherSelect %in% c('Seasonality', 'Share of landings by state', 'Gini coefficient')) {
       tagsdiv2004
     }
     else {

@@ -75,9 +75,9 @@ doPlot <- function(dat, x, y) {
             dat4plot$q75
           }
         } else if (input$Ind_sel == 'Other') {
-          if (input$otherStat == 'Mean') {
+          if (input$otherStats == 'Mean') {
             dat4plot$VALUE + dat4plot$VARIANCE
-          } else if (input$otherStat == 'Total') {
+          } else if (input$otherStats == 'Total') {
             dat4plot$VALUE
           } else {
             dat4plot$q75
@@ -119,9 +119,9 @@ doPlot <- function(dat, x, y) {
           dat4plot$q25
         }
       } else if (input$Ind_sel == 'Other') {
-        if (input$otherStat == 'Mean') {
+        if (input$otherStats == 'Mean') {
           dat4plot$VALUE - dat4plot$VARIANCE
-        } else if (input$otherStat == 'Total') {
+        } else if (input$otherStats == 'Total') {
           dat4plot$VALUE
         } else {
           dat4plot$q25
@@ -169,9 +169,9 @@ doPlot <- function(dat, x, y) {
           }
       } else if (input$Ind_sel == 'Other') {
         if (input$PlotSelect == T) {
-          if (input$otherStat == 'Mean') {
+          if (input$otherStats == 'Mean') {
             max(dat4plot$VALUE + dat4plot$VARIANCE, na.rm = T)
-          } else if (input$otherStat == 'Median') {
+          } else if (input$otherStats == 'Median') {
             max(dat4plot$q75, na.rm = T)
           } else {
             max(dat4plot$VALUE, na.rm = T)
@@ -346,7 +346,7 @@ doPlot <- function(dat, x, y) {
     #  print(paste0(seasonality, 1))
     if(input$Ind_sel == 'Other' & !input$LayoutSelect) {
       # and seasonality is selected
-      if(input$socSelect =="Seasonality") {
+      if(input$otherSelect =="Seasonality") {
         ssn <- mutate(dat4plot, 
           VALUE = as.Date(VALUE, origin = "2014-01-01", format = "%Y-%m-%d"),
           sort2 = reorder(VARIABLE, sort))
@@ -371,7 +371,7 @@ doPlot <- function(dat, x, y) {
     
     # add lines and points to the plot ####
     if (input$Ind_sel == 'Other') {
-      if (input$socSelect == 'Share of landings by state') {
+      if (input$otherSelect == 'Share of landings by state') {
         g <-
           g + geom_line(aes_string(colour = groupVar, group = 'bystategrp'), size = 1.5) +
           geom_point(aes_string(colour = groupVar, shape = 'AGID', group = 'bystategrp'),
@@ -465,7 +465,7 @@ doPlot <- function(dat, x, y) {
         # if seasonality is clicked
         if(input$Ind_sel == 'Other') {
           # and seasonality is selected
-          if(input$socSelect =="Seasonality") {
+          if(input$otherSelect =="Seasonality") {
             g <- g + geom_rect_fun(
               ymin_val = structure(-Inf, class = "Date"),
               ymax_val = structure(Inf, class = "Date"))
