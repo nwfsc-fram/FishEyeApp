@@ -423,7 +423,7 @@ return(val)
      !!quo_name(Ntitle) := N)
   
 # need to redesign the fishak column and then this will work
-  alwaysexclude <- c('metric_flag', 'conf', 'flag', 'unit', 'tab', 'ylab', 'sort', 'CATEGORY', 'STAT')
+  alwaysexclude <- c('metric_flag', 'conf', 'flag', 'unit', 'tab', 'ylab', 'sort', 'CATEGORY', 'STAT', 'upper', 'lower')
 datSub <- select(datSub, colnames(datSub)[apply(datSub, 2, function(x) sum(x != '' & !is.na(x) & x != 'NA') > 0 )], 
   -alwaysexclude) 
 
@@ -435,7 +435,7 @@ datSub <- select(datSub, colnames(datSub)[apply(datSub, 2, function(x) sum(x != 
 DatSub <- reactive({
   
 datSub <- DatSubRaw()
- 
+  if(!is.null(input[['demSelect']])) if(input$demSelect == 'Vessel length') browser()
  # SORT ####
 if (!input$LayoutSelect) {
     if (input$Ind_sel == 'Other' &&
