@@ -310,14 +310,21 @@ metricselections <- reactive({
 statselections <- reactive({
   if(grepl('characteristics', input$Ind_sel)) {
     return(input$demStats)
+  } else if(input$Ind_sel == 'Economic') {
+    return(input$econStats)
   } else if(input$Ind_sel == 'Labor') {
     return(input$crewStats)
   } else if(input$Ind_sel == 'Cost')  {
     return(input$costStats)
   } else if(input$Ind_sel == 'Other') {
-    return(input$socStats)
-  } else if(input$Ind_sel == 'Economic') {
-    return(input$econStats)
+    if(any(input$otherSelect %in% c(
+      'Gini coefficient', 
+      'Share of landings by state', 
+      'Seasonality'))) {
+      return('') 
+    } else {
+      return(input$otherStats)
+    }
   } else return('')
 })
 
@@ -375,19 +382,29 @@ DatSubTable <- reactive({
  # table formatting for the data view tab
 
  datSub$sort <- 1:nrow(datSub)
-
+#if(!is.null(input[['demSelect']])) if(input$demSelect == 'Number of vessels') browser()
  tabformatfun <- function(x) {
-   rounding <- ifelse(all(datSub$unit == ''), 1, 0)
+   rounding <- case_when(
+     any(datSub$METRIC %in% c('Number of vessels', 'Number of processors')) ~ 0,
+     any(datSub$VALUE < 1) ~ 2, 
+     all(datSub$unit == '') ~ 1, T ~ 0)
    dollar   <- ifelse(grepl('$', datSub$ylab, fixed = T), '$', '')
-   paste0(dollar, prettyNum(round(x), big.mark = ','))
+  
+   if(all(datSub$unit == '')) {
+     val = paste0(dollar, sprintf(paste0("%.", rounding, "f"), x))
+   } else {
+     val = paste0(dollar, prettyNum(round(x, rounding), big.mark = ','))
+   }
+return(val)
  }
+
  datSub$VALUE <-    tabformatfun(datSub$VALUE)
  datSub$VARIANCE <- tabformatfun(datSub$VARIANCE)
  datSub$q25 <-      tabformatfun(datSub$q25)
  datSub$q75 <-      tabformatfun(datSub$q75)
 
  Ntitle <- ifelse(input$Sect_sel == "FR", 'Number of processors', 'Number of vessels')
- valuetitle <- statselections()
+ valuetitle <- ifelse(statselections() == '', 'Value', statselections())
  vartitle <- ifelse(statselections() %in% c('Total', ''), 'VARIANCE',
    ifelse(statselections() == 'Median', 'Mean average deviation',
      'Standard deviation'))
@@ -425,7 +442,7 @@ datSub <- DatSubRaw()
  # SORT ####
 if (!input$LayoutSelect) {
     if (input$Ind_sel == 'Other' &&
-        input$socSelect == 'Share of landings by state') {
+        input$otherSelect == 'Share of landings by state') {
       datSub$sort <- as.character(datSub$AGID)
     } else {
       if (input$Sect_sel == "CV") {
