@@ -361,11 +361,18 @@ DatSubRaw <- reactive({
       subset(dat, 
         YEAR %in% seq(input$YearSelect[1], input$YearSelect[2], 1))
   }
-
+#if(input$demSelect == 'Vessel length') browser()
+  
+ datSubMetric <- subset(datSubforSector,
+   METRIC %in% metricstatselections()$metric)
+ 
+ stat <- ifelse(any(datSubMetric$STAT %in% metricstatselections()$stat), 
+     metricstatselections()$stat,
+     as.character(subset(datSubMetric, METRIC %in% metricstatselections()$metric, STAT)[2,1]))
+ 
   # subset the sector specific data according to all of the fisheye toggles
- datSub <- subset(datSubforSector,
-   METRIC %in% metricselections() &
-   STAT   %in% statselections() &
+ datSub <- subset(datSubMetric,
+   STAT   %in% stat &
    inclAK %in% akselections() &
    CS     %in% csselections())
 
@@ -379,7 +386,7 @@ DatSubTable <- reactive({
  # table formatting for the data view tab
 
  datSub$sort <- 1:nrow(datSub)
-#if(!is.null(input[['demSelect']])) if(input$demSelect == 'Number of vessels') browser()
+
  tabformatfun <- function(x) {
    rounding <- case_when(
      any(datSub$METRIC %in% c('Number of vessels', 'Number of processors')) ~ 0,
@@ -430,9 +437,9 @@ datSub <- select(datSub, colnames(datSub)[apply(datSub, 2, function(x) sum(x != 
 
 # DatSub: subsets the data ####
 DatSub <- reactive({
-  
+
 datSub <- DatSubRaw()
-  if(!is.null(input[['demSelect']])) if(input$demSelect == 'Vessel length') browser()
+  #if(!is.null(input[['demSelect']])) if(input$demSelect == 'Vessel length') browser()
  # SORT ####
 if (!input$LayoutSelect) {
     if (input$Ind_sel == 'Other' &&
