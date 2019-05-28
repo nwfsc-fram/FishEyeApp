@@ -291,42 +291,39 @@ DatVars <- reactive({
 })
 
 # Mini filtering functions to use in DatSub({}) ####
-# choose the list of metrics
-metricselections <- reactive({
-  if(grepl('characteristics', input$Ind_sel)) {
-    return(input$demSelect)
-  } else if(input$Ind_sel == 'Labor') {
-    return(input$crewSelect)
-  } else if(input$Ind_sel == 'Cost')  {
-    return(input$costSelect)
-  } else if(input$Ind_sel == 'Other') {
-    return(input$otherSelect)
-  } else if(input$Ind_sel == 'Economic') {
-    return(input$econSelect)
-  } else return('')
-})
-
 # choose the list of statistics
-statselections <- reactive({
+metricstatselections <- reactive({
   if(grepl('characteristics', input$Ind_sel)) {
-    return(input$demStats)
+    stat   = input$demStats
+    metric = input$demSelect
   } else if(input$Ind_sel == 'Economic') {
-    return(input$econStats)
+    stat   = input$econStats
+    metric = input$econSelect
   } else if(input$Ind_sel == 'Labor') {
-    return(input$crewStats)
+    stat   = input$crewStats
+    metric = input$crewSelect
   } else if(input$Ind_sel == 'Cost')  {
-    return(input$costStats)
+    stat   = input$costStats
+    metric = input$costSelect
   } else if(input$Ind_sel == 'Other') {
     if(any(input$otherSelect %in% c(
       'Gini coefficient', 
       'Share of landings by state', 
       'Seasonality'))) {
-      return('') 
+    stat   = ''
+    metric = input$otherSelect
     } else {
-      return(input$otherStats)
+    stat   = input$otherStats
+    metric = input$otherSelect
     }
-  } else return('')
+  } else {
+    stat   = ''
+    metric = ''
+  }
+    
+    return(list(stat = stat, metric = metric))
 })
+
 
 akselections <- reactive({
   if(any(input$demSelect %in% c('Revenue diversification', 'Proportion of revenue from CS fishery', 'Number of fisheries')) &
