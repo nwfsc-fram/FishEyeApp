@@ -405,9 +405,9 @@ return(val)
  datSub$q75 <-      tabformatfun(datSub$q75)
 
  Ntitle <- ifelse(input$Sect_sel == "FR", 'Number of processors', 'Number of vessels')
- valuetitle <- ifelse(statselections() == '', 'Value', statselections())
- vartitle <- ifelse(statselections() %in% c('Total', ''), 'VARIANCE',
-   ifelse(statselections() == 'Median', 'Mean average deviation',
+ valuetitle <- ifelse(any(datSub$STAT == ''), 'Value', as.character(unique(datSub$STAT)))
+ vartitle <- ifelse(metricstatselections()$stat %in% c('Total', ''), 'VARIANCE',
+   ifelse(metricstatselections()$stat == 'Median', 'Mean average deviation',
      'Standard deviation'))
 
  # rename the columns 
@@ -439,8 +439,9 @@ datSub <- select(datSub, colnames(datSub)[apply(datSub, 2, function(x) sum(x != 
 DatSub <- reactive({
 
 datSub <- DatSubRaw()
-  #if(!is.null(input[['demSelect']])) if(input$demSelect == 'Vessel length') browser()
+
  # SORT ####
+# we need this because "sort" is used for facetting and the facetting depends on what has been selected in sidebar
 if (!input$LayoutSelect) {
     if (input$Ind_sel == 'Other' &&
         input$otherSelect == 'Share of landings by state') {

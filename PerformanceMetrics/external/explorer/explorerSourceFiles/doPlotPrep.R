@@ -16,12 +16,14 @@ doPlotPrep <- reactive({
         unit == 'billions' ~ x / 1e9, 
         T ~ -999)
     }
-    
+    #browser()
     dat4plot <- mutate(dat,
       VARIANCE = convertfunction(VARIANCE),
-      q25 = convertfunction(q25),
-      q75 = convertfunction(q75),
-      VALUE = convertfunction(VALUE))
+      q25      = convertfunction(q25),
+      q75      = convertfunction(q75),
+      VALUE    = convertfunction(VALUE),
+      lower    = convertfunction(lower),
+      upper    = convertfunction(upper))
     
     dat4plot$sort2 <- if (!input$LayoutSelect) {
       reorder(dat4plot$VARIABLE, dat4plot$sort)
