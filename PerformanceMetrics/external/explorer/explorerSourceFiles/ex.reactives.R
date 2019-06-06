@@ -343,10 +343,13 @@ metricstatselections <- reactive({
 
 
 akselections <- reactive({
-  if(any(metricstatselections()$metric %in% c('Revenue diversification', 'Proportion of revenue from CS fishery', 'Number of fisheries')) &
-      !input$LayoutSelect) {
+  if(input$Sect_sel == 'CV') {
+    if(any(metricstatselections()$metric %in% c('Revenue diversification', 'Proportion of revenue from CS fishery', 'Number of fisheries'))) {
+      if(!input$LayoutSelect) {
     return(ifelse(input$FishAkSelect == TRUE, 'YES', 'NO'))
   } else return('')
+    } else return("")
+  } else return("")
 })
 
 # choose the list of categories

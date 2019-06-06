@@ -84,7 +84,8 @@ function(request) {
                                             .ckbox23  .checkbox:nth-child(2)  input[type=checkbox],
                                             .ckbox23  .checkbox:nth-child(3)  input[type=checkbox],
                                             .ckbox_4  .checkbox:nth-child(4)  input[type=checkbox],
-                                            .ckbox34  .checkbox:nth-child(3)  input[type=checkbox] {border: 0px;    width: 0%;    height:0em;}#")),
+                                            .ckbox34  .checkbox:nth-child(3)  input[type=checkbox],
+                                            .ckbox34  .checkbox:nth-child(4)  input[type=checkbox] {border: 0px;    width: 0%;    height:0em;}#")),
       #Make checkbox and radio buttons bold    
       tags$style(HTML(".ckbox2 .checkbox:first-child label,
                                       .ckbox2 .checkbox:nth-child(2) label, 

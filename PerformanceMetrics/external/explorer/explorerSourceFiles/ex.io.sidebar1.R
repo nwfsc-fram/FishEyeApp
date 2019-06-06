@@ -43,7 +43,7 @@ output$demSelect <- renderUI({
       if (input$Sect_sel == 'FR') {
         if (input$demStats == 'Total') {
           tags$div(
-            class = "ckbox_4",
+            class = "ckbox34",
             checkboxGroupInput("demSelect", NULL, choices = c(DatVars()$METRIC1), selected = "Number of processors"))
         } else {
           tags$div(
@@ -195,7 +195,7 @@ output$otherSelect <- renderUI({
         if (input$Sect_sel == 'CP' | input$Sect_sel == 'M') {
           if (input$otherStats == 'Total') {
             tags$div(
-              class = "ckbox",
+              class = "ckbox_3",
               checkboxGroupInput("otherSelect", NULL, choices = c(DatVars()$METRIC3a), selected = "Alaska days at sea"))
           } else {
             tags$div(
@@ -646,6 +646,7 @@ output$Variableselect <- renderUI({
 
 # Select inclAK ####
 output$FishAkselect <- renderUI({
+  if(!input$LayoutSelect) {
   if(input$Sect_sel == 'CV') {
       if(!is.null(input[["demSelect"]])) {
         if (input$demSelect %in% c(
@@ -662,6 +663,7 @@ output$FishAkselect <- renderUI({
                 right   = TRUE)))
         }
       }
+  }
   }
 })
 
