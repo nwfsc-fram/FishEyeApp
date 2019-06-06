@@ -343,7 +343,7 @@ metricstatselections <- reactive({
 
 
 akselections <- reactive({
-  if(any(input$demSelect %in% c('Revenue diversification', 'Proportion of revenue from CS fishery', 'Number of fisheries')) &
+  if(any(metricstatselections()$metric %in% c('Revenue diversification', 'Proportion of revenue from CS fishery', 'Number of fisheries')) &
       !input$LayoutSelect) {
     return(ifelse(input$FishAkSelect == TRUE, 'YES', 'NO'))
   } else return('')
