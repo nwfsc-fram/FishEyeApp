@@ -68,6 +68,7 @@ DatVars <- reactive({
           "Vessel replacement value",
           "Vessel market value",
           "Vessel horsepower",
+          "Vessel fuel capacity",
           "Number of fisheries", 
           "Proportion of revenue from catch share fishery" = "Proportion of revenue from CS fishery", 
           "Revenue diversification"
@@ -192,6 +193,10 @@ DatVars <- reactive({
         METRIC1 =  c(
           "Number of vessels",
           "Vessel length",
+          'Vessel replacement value',
+          'Vessel market value',
+          'Vessel horsepower',
+          'Vessel fuel capacity',
           "Proportion of landings from catch share fishery" =
           "Proportion of landings from CS fishery"
           ),
@@ -203,13 +208,17 @@ DatVars <- reactive({
           ),
         ##Other metrics##
         METRIC3 = c(
-          "Days at sea",
+          "Alaska days at sea",
+          'West Coast days at sea',
+          'Fuel use per day',
           "Gini coefficient",
           "Seasonality"
         ),
         ##When grouping by Metrics, don't include 'Seasonsality'
         METRIC3a = c(
-          "Days at sea"
+          "Alaska days at sea",
+          'West Coast days at sea',
+          'Fuel use per day'
         ),
         COSTS = c(
         "All variable costs",
@@ -253,6 +262,10 @@ DatVars <- reactive({
       METRIC1 =  c(
         "Number of vessels",
         "Vessel length",
+        'Vessel replacement value',
+        'Vessel market value',
+        'Vessel horsepower',
+        'Vessel fuel capacity',
         "Proportion of landings from catch share fishery" =
           "Proportion of landings from CS fishery"
       ),
@@ -264,13 +277,17 @@ DatVars <- reactive({
       ),
       ##Other metrics##
       METRIC3 = c(
-        "Days at sea",
+        "Alaska days at sea",
+        'West Coast days at sea',
+        'Fuel use per day',
         "Gini coefficient",
         "Seasonality"
       ),
       ##When grouping by Metrics, don't include 'Seasonsality'
       METRIC3a = c(
-        "Days at sea"
+        "Alaska days at sea",
+        'West Coast days at sea',
+        'Fuel use per day'
       ),
       COSTS = c(
       "All variable costs",
@@ -377,7 +394,7 @@ DatSubRaw <- reactive({
    CS     %in% csselections())
 
 })
-  
+
 # Format the data for the view data tab
 DatSubTable <- reactive({
 
@@ -500,7 +517,7 @@ if (!input$LayoutSelect) {
         }
       } #end FR
       else {
-        datSub$sort <- "At-sea Pacific whiting"
+        datSub$sort <- datSub$VARIABLE
       } #end MS and CP
     }#end not Other
   } #end not Metrics
@@ -510,7 +527,7 @@ if (!input$LayoutSelect) {
         datSub$METRIC == "Revenue", 1,
         ifelse(datSub$METRIC == "Variable costs", 2,
           ifelse(datSub$METRIC == "Fixed costs", 3,
-            ifelse(datSub$METRIC == "Variable Cost Net Revenue", 4,  5)
+            ifelse(datSub$METRIC == "Variable cost net revenue", 4,  5)
           )
         )
       )
@@ -518,13 +535,11 @@ if (!input$LayoutSelect) {
       datSub$sort <- as.character(datSub$METRIC)
     }
   }
- 
  # end SORT ####
 
  return(datSub)
 
     })
-
 
 PermitPlot <- reactive({
   if (!(

@@ -32,7 +32,7 @@ output$demSelect <- renderUI({
     if (input$Sect_sel == "CV") {
       if (input$demStats == "Total") {
         tags$div(
-          class = "ckbox2345",
+          class = "ckbox2345789",
           checkboxGroupInput("demSelect", NULL, choices = c(DatVars()$METRIC1), selected = 'Number of vessels'))
       } else {
         tags$div(
@@ -50,23 +50,22 @@ output$demSelect <- renderUI({
             class = "ckbox_1",
             checkboxGroupInput("demSelect", NULL, choices = c(DatVars()$METRIC1), selected = "Number of species purchased"))
         }
-        
       } else {
         if (input$Sect_sel == 'CP' | input$Sect_sel == 'M') {
           if (input$demStats == 'Total') {
             tags$div(
-              class = "ckbox23",
+              class = "ckbox2345",
               checkboxGroupInput("demSelect", NULL, choices = c(DatVars()$METRIC1), selected = 'Number of vessels'))
           } else {
             tags$div(
               class = "ckbox_1",
               checkboxGroupInput("demSelect", NULL, choices = c(DatVars()$METRIC1), selected = 'Vessel length'))
           }
-          ##Settings for 'Group by vessels' or 'Group by processors'
+      #Settings for 'Group by vessels' or 'Group by processors'
         }
       }
     }
-  } else {
+    } else {
     if (input$Sect_sel == 'FR') {
       tags$div(
         class = "ckbox",
@@ -197,29 +196,33 @@ output$otherSelect <- renderUI({
           if (input$otherStats == 'Total') {
             tags$div(
               class = "ckbox",
-              checkboxGroupInput("otherSelect", NULL, choices = c(DatVars()$METRIC3a), selected = "Days at sea"))
+              checkboxGroupInput("otherSelect", NULL, choices = c(DatVars()$METRIC3a), selected = "Alaska days at sea"))
           } else {
             tags$div(
               class = "ckbox",
-              checkboxGroupInput("otherSelect", NULL, choices = c(DatVars()$METRIC3a), selected = "Days at sea"))
+              checkboxGroupInput("otherSelect", NULL, choices = c(DatVars()$METRIC3a), selected = "Alaska days at sea"))
           }
         }
       }
     }
  #Settings when 'Groups of vessels" or 'Groups of processors'
-  } else {
+   } else {
     if (input$Sect_sel == "FR") {
       tags$div(
         class = "ckbox",
         radioButtons("otherSelect", NULL, choices = c(DatVars()$METRIC3), selected = "Gini coefficient"))
-      
     } else {
+      if (input$Sect_sel == 'CP' | input$Sect_sel == 'M') {
+      tags$div(
+        class = "ckbox",
+        radioButtons("otherSelect", NULL, choices = c(DatVars()$METRIC3), selected = "Alaska days at sea"))
+      } else {
       tags$div(
         class = "ckbox",
         radioButtons("otherSelect", NULL, choices = c(DatVars()$METRIC3), selected = "Days at sea"))
     }
   }
-})
+}})
 
 # SET UP THE STATISTIC RADIOBUTTONS FOR EACH TAB ####
 radiobuttonstatistic <- function(inputID, selection = 'Median') {
@@ -232,10 +235,10 @@ radiobuttonstatistic <- function(inputID, selection = 'Median') {
 # (this is a little messy because mean/median/total aren't available for all metrics)
 output$demStats <- renderUI({
 #  if(input$demSelect == 'Number of fisheries') {browser()}
-  if (is.null(input$demSelect)) {
-    tagList()
-  } else if (input$LayoutSelect) {
-    tagList(radiobuttonstatistic(inputID = "demStats"))
+  # if (is.null(input$demSelect)) {
+  #   tagList()
+  if (input$LayoutSelect) {
+    tagList(radiobuttonstatistic(inputID = "demStats", selection = 'Total'))
   } else if (input$demSelect %in% c("Number of species purchased")) {
       tagList(radiobuttonstatistic(inputID = "demStats"))
     } else if (any(input$demSelect %in% c("Number of vessels", "Number of processors"))) {
@@ -256,6 +259,8 @@ output$demStats <- renderUI({
       tagList(tags$div(
         class = 'StatGrey2', # grey out the third option (total)
         radiobuttonstatistic(inputID = "demStats")))
+    } else {
+      tagList(radiobuttonstatistic(inputID = 'demStats'))
     }
 })
 # Economics tab: statistic radiobuttons ####
