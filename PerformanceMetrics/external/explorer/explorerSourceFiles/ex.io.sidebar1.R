@@ -54,7 +54,7 @@ output$demSelect <- renderUI({
         if (input$Sect_sel == 'CP' | input$Sect_sel == 'M') {
           if (input$demStats == 'Total') {
             tags$div(
-              class = "ckbox2345",
+              class = "ckbox23457",
               checkboxGroupInput("demSelect", NULL, choices = c(DatVars()$METRIC1), selected = 'Number of vessels'))
           } else {
             tags$div(
