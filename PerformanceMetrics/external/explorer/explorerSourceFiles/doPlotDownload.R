@@ -52,20 +52,7 @@ doPlotDownload <- function(dat, x, y){
       } else {
         0
       }}
-
-    rectvars <- dat %>% 
-      distinct(sort2,YEAR) %>% 
-      group_by(sort2) %>% 
-      mutate(minx=min(as.numeric(YEAR)), 
-             xmaxscale=length(YEAR[YEAR<2011]), 
-             maxx=max(YEAR))  %>% 
-      subset(select=c(sort2, minx,xmaxscale, maxx)) %>%
-      data.frame()%>% 
-      distinct %>% 
-      merge(dat %>% 
-              distinct(sort2,whitingv))
     
-    #      if(input$PlotSelectOption=="Standard deviation or Median average deviation")
     dat$upper <-
       if (input$Ind_sel == "Economic") {
         if (input$AVE_MED == 'A') {
@@ -83,25 +70,25 @@ doPlotDownload <- function(dat, x, y){
             dat$q75
           }
         } else if (input$Ind_sel == 'Other') {
-          if (input$otherStat == 'Mean') {
+          if (input$otherStats == 'Mean') {
             dat$VALUE + dat$VARIANCE
-          } else if (input$otherStat == 'Total') {
+          } else if (input$otherStats == 'Total') {
             dat$VALUE
           } else {
             dat$q75
           }
         } else if (input$Ind_sel == 'Labor') {
-          if(input$crewStat == 'Mean') {
+          if(input$crewStats == 'Mean') {
             dat$VALUE + dat$VARIANCE
-          } else if (input$crewStat == 'Total') {
+          } else if (input$crewStats == 'Total') {
             dat$VALUE
           } else {
             dat$q75
           }
         } else if (input$Ind_sel == 'Vessel characteristics' || input$Ind_sel == 'Processor characteristics') {
-          if (input$AVE_MED2 == 'Mean') {
+          if (input$demStats == 'Mean') {
             dat$VALUE + dat$VARIANCE
-          } else if (input$AVE_MED2 == 'Total') {
+          } else if (input$demStats == 'Total') {
             dat$VALUE
           } else {
             dat$q75
@@ -110,7 +97,6 @@ doPlotDownload <- function(dat, x, y){
     
     
     dat$lower <-
-      #      if(input$PlotSelectOption=="Standard deviation or Median average deviation")
       if (input$Ind_sel == "Economic") {
         if (input$AVE_MED == 'A') {
           dat$VALUE - dat$VARIANCE
@@ -128,25 +114,25 @@ doPlotDownload <- function(dat, x, y){
           dat$q25
         }
       } else if (input$Ind_sel == 'Other') {
-        if (input$otherStat == 'Mean') {
+        if (input$otherStats == 'Mean') {
           dat$VALUE - dat$VARIANCE
-        } else if (input$otherStat == 'Total') {
+        } else if (input$otherStats == 'Total') {
           dat$VALUE
         } else {
           dat$q25
         }
       } else if (input$Ind_sel == 'Labor') {
-        if (input$crewStat == 'Mean') {
+        if (input$crewStats == 'Mean') {
           dat$VALUE - dat$VARIANCE
-        } else if (input$crewStat == 'Total') {
+        } else if (input$crewStats == 'Total') {
           dat$VALUE
         } else {
           dat$q25
         }
       } else if (input$Ind_sel == 'Vessel characteristics' || input$Ind_sel == 'Processor characteristics') {
-        if (input$AVE_MED2 == 'Mean') {
+        if (input$demStats == 'Mean') {
           dat$VALUE - dat$VARIANCE
-        } else if (input$AVE_MED2 == 'Total') {
+        } else if (input$demStats == 'Total') {
           dat$VALUE
         } else  {
           dat$q25
@@ -154,7 +140,6 @@ doPlotDownload <- function(dat, x, y){
       }
     
     upper <- function() {
-      #      if(input$PlotSelectOption=="Standard deviation or Median average deviation")
       if (input$Ind_sel == "Economic") {
         if (input$PlotSelect == T) {
           if (input$AVE_MED == 'A') {
@@ -179,9 +164,9 @@ doPlotDownload <- function(dat, x, y){
           }
       } else if (input$Ind_sel == 'Other') {
         if (input$PlotSelect == T) {
-          if (input$otherStat == 'Mean') {
+          if (input$otherStats == 'Mean') {
             max(dat$VALUE + dat$VARIANCE, na.rm = T)
-          } else if (input$otherStat == 'Median') {
+          } else if (input$otherStats == 'Median') {
             max(dat$q75, na.rm = T)
           } else {
             max(dat$VALUE, na.rm = T)
@@ -190,9 +175,9 @@ doPlotDownload <- function(dat, x, y){
           }
       } else if (input$Ind_sel == 'Labor') {
         if (input$PlotSelect == T) {
-          if (input$crewStat == 'Mean') {
+          if (input$crewStats == 'Mean') {
             max(dat$VALUE + dat$VARIANCE, na.rm = T)
-          } else if (input$crewStat == 'Median') {
+          } else if (input$crewStats == 'Median') {
             max(dat$q75, na.rm = T)
           } else {
             max(dat$VALUE, na.rm = T)
@@ -202,9 +187,9 @@ doPlotDownload <- function(dat, x, y){
         }
       } else if (input$Ind_sel == 'Vessel characteristics' || input$Ind_sel == 'Processor characteristics') {
         if (input$PlotSelect == T) {
-          if (input$AVE_MED2 == 'Mean') {
+          if (input$demStats == 'Mean') {
             max(dat$VALUE + dat$VARIANCE, na.rm = T)
-          } else if (input$AVE_MED2 == 'Median') {
+          } else if (input$demStats == 'Median') {
             max(dat$q75, na.rm = T)
           } else {
             max(dat$VALUE, na.rm = T) 
@@ -212,25 +197,6 @@ doPlotDownload <- function(dat, x, y){
             max(dat$VALUE, na.rm = T)
           }
       } }
-    
-    # I commented this out because it's not being used - ERIN
-    # lower <- function() {
-    #   #      if(input$PlotSelectOption=="Standard deviation or Median average deviation")
-    #   if (input$Ind_sel == "Economic") {
-    #     if (input$AVE_MED == 'A') {
-    #       dat$VALUE - dat$VARIANCE
-    #     } else  {
-    #       dat$q25
-    #     }
-    #   } else if (input$Ind_sel != "Economic") {
-    #     if (input$AVE_MED2 == 'Mean') {
-    #       dat$VALUE - dat$VARIANCE
-    #     } else  {
-    #       dat$q25
-    #     }
-    #   }
-    # }
-    
     
     yaxislabel <- function () {
       if(input$LayoutSelect) {
@@ -384,7 +350,7 @@ xlab <- function() {
     #  print(paste0(seasonality, 1))
     if(input$Ind_sel == 'Other' & !input$LayoutSelect) {
       # and seasonality is selected
-      if(input$socSelect =="Seasonality") {
+      if(input$otherSelect =="Seasonality") {
         ssn <- mutate(dat, 
                       VALUE = as.Date(VALUE, origin = "2014-01-01", format = "%Y-%m-%d"),
                       sort2 = reorder(VARIABLE, sort))
@@ -410,7 +376,7 @@ xlab <- function() {
     # add lines and points to the plot ####
    if (!input$LayoutSelect) {
     if (input$Ind_sel == 'Other') {
-      if (input$socSelect == 'Share of landings by state') {
+      if (input$otherSelect == 'Share of landings by state') {
         g <-
           g + geom_line(aes_string(colour = groupVar, group = 'bystategrp'), size = 1.5) +
           geom_point(aes_string(colour = groupVar, shape = 'AGID', group = 'bystategrp'),
@@ -503,7 +469,7 @@ xlab <- function() {
         # if seasonality is clicked
         if(input$Ind_sel == 'Other') {
           # and seasonality is selected
-          if(input$socSelect =="Seasonality") {
+          if(input$otherSelect =="Seasonality") {
             g <- g + geom_rect_fun(
               ymin_val = structure(-Inf, class = "Date"),
               ymax_val = structure(Inf, class = "Date"))
@@ -626,53 +592,8 @@ xlab <- function() {
                                  face = "bold",
                                  size = 10),
       legend.title = element_blank())
-    
 
-    
-    ##function to wrapping facet labels
- #   strwrap_strip_text = function(p, pad=0) { 
- #     # get facet font attributes
-#      th = theme_get()
-#      if (length(g$theme) > 0L)
-#        th = th + g$theme
-      
-#      require("grid")
-#      grobs <- ggplotGrob(g)
-      
-      # wrap strip x text
-#      ps = calc_element("strip.text.x", th)[["size"]]
-#      family = calc_element("strip.text.x", th)[["family"]]
-#      face = calc_element("strip.text.x", th)[["face"]]
-      
-#      nm = names(g$facet$facets)
-      
-      # get number of facet columns
-#      levs = levels(factor(g$data[[nm]]))
-#      npanels = length(levs)
-#      cols = n2mfrow(npanels)[1]
-      
-      # get plot width
- #     sum = .4#sum(sapply(grobs$width, function(x) convertWidth(x, "in")))
- #     panels_width = par("din")[1] - sum  # inches
-      # determine strwrap width
- #     panel_width = panels_width / cols
- #     mx_ind = which.max(nchar(levs))
- #     char_width = strwidth(levs[mx_ind], units="inches", cex=ps / par("ps"), 
- #                           family=family, font=gpar(fontface=face)$font) / 
- #       nchar(levs[mx_ind])
- #     width = floor((panel_width - pad)/ char_width)  # characters (pad=0)
-      
-      # wrap facet text
- #     g$data[[nm]] = unlist(lapply(strwrap(g$data[[nm]], width=width, 
- #                                          simplify=FALSE), paste, collapse="\n"))
- #     g$data[[nm]] = gsub("([.])", "\\ ", g$data[[nm]]) 
-      
- #     invisible(g)
-#    }   
-    
-    #    print(g)
-#    g <- invisible(strwrap_strip_text(g)) #use instead of print(g)
     print(g)
     
-  } #else plot(0,0,type="n", axes=F, xlab="", ylab="")
+  } 
 }

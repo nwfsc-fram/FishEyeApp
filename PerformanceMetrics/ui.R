@@ -5,7 +5,8 @@ library(shinyjs)
 library(shinyWidgets)
 library(shinyBS)
 library(bsplus)
-
+#options(shiny.server = NULL)
+#options(shiny.error = browser)
 # custom css functions
 # calls .css selector for well-sub
 wellPanelSub <- function(...){div(class = "well-sub", ...)}
@@ -29,9 +30,17 @@ function(request) {
       ##These are used to gray out different metrics when grouping by 'Metrics' 
       #and are labeled based on the # in seq that should be greyed out. i.e., items 2-5 are grayed out in ckbox2345
       tags$style(HTML(".ckbox2345 .checkbox:nth-child(2) label{color:grey;} .checkbox.input:nth-child(2),
-                           .ckbox2345 .checkbox:nth-child(3) label{color:grey;} .checkbox.input:nth-child(3),
-                           .ckbox2345 .checkbox:nth-child(4) label{color:grey;} .checkbox.input:nth-child(4),
-                           .ckbox2345 .checkbox:nth-child(5) label{color:grey;} .checkbox.input:nth-child(5),
+                           .ckbox23457 .checkbox:nth-child(3) label{color:grey;} .checkbox.input:nth-child(3),
+                           .ckbox23457 .checkbox:nth-child(4) label{color:grey;} .checkbox.input:nth-child(4),
+                           .ckbox23457 .checkbox:nth-child(5) label{color:grey;} .checkbox.input:nth-child(5),
+                           .ckbox23457 .checkbox:nth-child(7) label{color:grey;} .checkbox.input:nth-child(7),
+                           .ckbox2345789  .checkbox:nth-child(2) label{color:grey;} .checkbox.input:nth-child(2),
+                           .ckbox2345789  .checkbox:nth-child(3) label{color:grey;} .checkbox.input:nth-child(3),
+                           .ckbox2345789  .checkbox:nth-child(4) label{color:grey;} .checkbox.input:nth-child(4),
+                           .ckbox2345789  .checkbox:nth-child(5) label{color:grey;} .checkbox.input:nth-child(5),
+                           .ckbox2345789  .checkbox:nth-child(7) label{color:grey;} .checkbox.input:nth-child(7),
+                           .ckbox2345789  .checkbox:nth-child(8) label{color:grey;} .checkbox.input:nth-child(8),
+                           .ckbox2345789  .checkbox:nth-child(9) label{color:grey;} .checkbox.input:nth-child(9),
                            .ckbox23456 .checkbox:nth-child(2) label{color:grey;} .checkbox.input:nth-child(2),
                            .ckbox23456 .checkbox:nth-child(3) label{color:grey;} .checkbox.input:nth-child(3),
                            .ckbox23456 .checkbox:nth-child(4) label{color:grey;} .checkbox.input:nth-child(4),
@@ -54,22 +63,31 @@ function(request) {
                                             .StatGrey2  .radio:nth-child(3) input[type=radio],
                                             .StatGrey3  .checkbox:nth-child(n+3) input[type=checkbox],
                                             .StatGrey4  .radio:nth-child(n+4) input[type=radio],
-                                            .ckbox2345  .checkbox:nth-child(5)  input[type=checkbox],
-                                            .ckbox2345  .checkbox:nth-child(4)  input[type=checkbox],
-                                            .ckbox2345  .checkbox:nth-child(3)  input[type=checkbox],
-                                            .ckbox2345  .checkbox:nth-child(2)  input[type=checkbox],
+                                            .ckbox23457  .checkbox:nth-child(7)  input[type=checkbox],
+                                            .ckbox23457  .checkbox:nth-child(5)  input[type=checkbox],
+                                            .ckbox23457  .checkbox:nth-child(4)  input[type=checkbox],
+                                            .ckbox23457  .checkbox:nth-child(3)  input[type=checkbox],
+                                            .ckbox23457  .checkbox:nth-child(2)  input[type=checkbox],
                                             .ckbox23456  .checkbox:nth-child(2)  input[type=checkbox],
                                             .ckbox23456  .checkbox:nth-child(3)  input[type=checkbox],
                                             .ckbox23456  .checkbox:nth-child(4)  input[type=checkbox],
                                             .ckbox23456  .checkbox:nth-child(5)  input[type=checkbox],
                                             .ckbox23456  .checkbox:nth-child(6)  input[type=checkbox],
+                                            .ckbox2345789  .checkbox:nth-child(9)  input[type=checkbox],
+                                            .ckbox2345789  .checkbox:nth-child(8)  input[type=checkbox],
+                                            .ckbox2345789  .checkbox:nth-child(7)  input[type=checkbox],
+                                            .ckbox2345789  .checkbox:nth-child(5)  input[type=checkbox],
+                                            .ckbox2345789  .checkbox:nth-child(4)  input[type=checkbox],
+                                            .ckbox2345789  .checkbox:nth-child(3)  input[type=checkbox],
+                                            .ckbox2345789  .checkbox:nth-child(2)  input[type=checkbox],
                                             .ckbox_1  .checkbox:nth-child(1)  input[type=checkbox],
                                             .ckbox_2  .checkbox:nth-child(2)  input[type=checkbox],
                                             .ckbox_3  .checkbox:nth-child(3)  input[type=checkbox],
                                             .ckbox23  .checkbox:nth-child(2)  input[type=checkbox],
                                             .ckbox23  .checkbox:nth-child(3)  input[type=checkbox],
                                             .ckbox_4  .checkbox:nth-child(4)  input[type=checkbox],
-                                            .ckbox34  .checkbox:nth-child(3)  input[type=checkbox] {border: 0px;    width: 0%;    height:0em;}#")),
+                                            .ckbox34  .checkbox:nth-child(3)  input[type=checkbox],
+                                            .ckbox34  .checkbox:nth-child(4)  input[type=checkbox] {border: 0px;    width: 0%;    height:0em;}#")),
       #Make checkbox and radio buttons bold    
       tags$style(HTML(".ckbox2 .checkbox:first-child label,
                                       .ckbox2 .checkbox:nth-child(2) label, 
@@ -315,10 +333,10 @@ function(request) {
 
               # show variance
               conditionalPanel(condition="input.Ind_sel!='Economic'&
-                                                              (input.AVE_MED2!='Total' || crewStat!='Total') &
-                                                              input.socSelect!='Seasonality'&
-                                                              input.socSelect!='Share of landings by state'||
-                                                              input.Ind_sel=='Economic'&input.AVE_MED!='T'",
+                                                              (input.demStats!='Total' || crewStats!='Total') &
+                                                              input.otherSelect!='Seasonality'&
+                                                              input.otherSelect!='Share of landings by state'||
+                                                              input.Ind_sel=='Economic'&input.econStats!='T'",
                                uiOutput("Plotselect")),
 
               fluidRow(
