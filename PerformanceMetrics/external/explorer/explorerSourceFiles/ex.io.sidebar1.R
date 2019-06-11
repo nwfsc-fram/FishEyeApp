@@ -692,28 +692,30 @@ output$FishWhitingselectBox <- renderUI({
 
 # DISPLAY output$s ####
 #Show data summed across button ####
-output$VesSumSelect <- renderUI({
-  if (PermitPlot()) {
-    if (input$VariableSelect != "All Fisheries" &
-        input$VariableSelect != "All catch share fisheries" &
-        input$VariableSelect != "All non-catch share fisheries") {
-      tagList(tags$div(class = "ckbox", 
-        radioButtons("VesSum",
-        HTML("<div> Show data summed: <button id='iVesSum' type='button' class='btn btn-default action-button shiny-bound-input'> <i class='fa fa-info-circle fa-fw' ></i></button> </div>"
-        ),
-        choices = c(
-          "within selected fisheries" = "within",
-          "across all catch share fisheries" = "acrossCS",
-          "across all West Coast fisheries" = "acrossWC"
-        )
-      )))
-    } else {
-      return()
-    }
-  } else {
-    return()
-  }
-})
+# I don't think we need this since we switched to the slider bar
+# output$VesSumSelect <- renderUI({
+#   if (PermitPlot()) {
+#     if (input$VariableSelect != "All Fisheries" &
+#         input$VariableSelect != "All catch share fisheries" &
+#         input$VariableSelect != "All non-catch share fisheries") {
+#       tagList(tags$div(class = "ckbox",
+#         radioButtons("VesSum",
+#         HTML("<div> Show data summed: <button id='iVesSum' type='button' class='btn btn-default action-button shiny-bound-input'> <i class='fa fa-info-circle fa-fw' ></i></button> </div>"
+#         ),
+#         choices = c(
+#           "within selected fisheries" = "within",
+#           "across all catch share fisheries" = "acrossCS",
+#           "across all West 
+# Coast fisheries" = "acrossWC"
+#         )
+#       )))
+#     } else {
+#       return()
+#     }
+#   } else {
+#     return()
+#   }
+# })
 # slider bar for layout ####
 output$Layoutselect <- renderUI({
   materialSwitch(
