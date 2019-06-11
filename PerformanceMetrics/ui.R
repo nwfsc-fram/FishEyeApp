@@ -29,7 +29,7 @@ function(request) {
       tags$style(HTML(".radio:first-child {margin-top: 10px;}")),
       ##These are used to gray out different metrics when grouping by 'Metrics' 
       #and are labeled based on the # in seq that should be greyed out. i.e., items 2-5 are grayed out in ckbox2345
-      tags$style(HTML(".ckbox2345 .checkbox:nth-child(2) label{color:grey;} .checkbox.input:nth-child(2),
+      tags$style(HTML(".ckbox23457 .checkbox:nth-child(2) label{color:grey;} .checkbox.input:nth-child(2),
                            .ckbox23457 .checkbox:nth-child(3) label{color:grey;} .checkbox.input:nth-child(3),
                            .ckbox23457 .checkbox:nth-child(4) label{color:grey;} .checkbox.input:nth-child(4),
                            .ckbox23457 .checkbox:nth-child(5) label{color:grey;} .checkbox.input:nth-child(5),
@@ -349,7 +349,7 @@ function(request) {
 
           mainPanel(
             tabsetPanel(id = "tabs",
-                        tabPanel("Visualize the Data", value="Panel1", plotOutput("PlotMain"), style ="min-height: 800px;"),
+                        tabPanel("Visualize the Data", value="Panel1", plotOutput("PlotMain"), style ="min-height: 1600px;"),
                         tabPanel("Dataset", value="Panel2", dataTableOutput("TableMain"))
             ))
           
