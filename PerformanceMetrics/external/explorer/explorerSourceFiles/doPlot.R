@@ -309,7 +309,7 @@ doPlot <- function(dat, x, y) {
     # xlab is actually "notes"
     xlab <- function() {
       
-      if(sum(dat4plot$conf) == 0 & sum(dat4plot$flag) == 0) {
+      if(sum(dat4plot$conf, na.rm = T) == 0 & sum(dat4plot$flag, na.rm = T) == 0) {
         ""
       } else {
         paste(supp_obs())
