@@ -220,19 +220,28 @@ doPlot <- function(dat, x, y) {
     
     
     # set colors for whiting/non-whiting/all lines ####
-    colourThirds <- if (input$Sect_sel != "FR") {
+    colourThirds <- if (input$Sect_sel == "CV") {
       c(
         'Non-whiting vessels' = "#d7191c",
         'Whiting vessels' = "#2b83ba",
         'All vessels' = "#000000"
       )
-    } else {
+    } else if (input$Sect_sel == 'FR') {
       c(
         'Non-whiting processors' = "#d7191c",
         'Whiting processors' = "#2b83ba",
         'All processors' = "#000000"
       )
+    } else if(input$Sect_sel == 'M') {
+      
+      c('Mothership vessels' = "#000000")
+      
+    } else { # catcher processor vessels
+      
+      c('Catcher-processor vessels' = "#000000")
+      
     }
+    
     
     # Plot header construction ####
     # title
@@ -532,7 +541,7 @@ doPlot <- function(dat, x, y) {
     g <-
       g + scale_fill_manual(values = colourThirds) + scale_colour_manual(values = colourThirds) #+ scale_x_discrete('YEAR2', drop=FALSE)
     
-    # add y axis line ####
+    # add x axis line ####
     g <- g + geom_hline(yintercept = 0)
     
     #---- define labels (not sure what this does------####
@@ -609,7 +618,7 @@ doPlot <- function(dat, x, y) {
       legend.title = element_blank()
       #  text = element_text(family="sans", color = "red", size=rel(1.3))
     )
-
+#if(input$Sect_sel == "CV") browser()
     print(g)
     
   } else
