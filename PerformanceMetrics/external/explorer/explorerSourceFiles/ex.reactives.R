@@ -445,12 +445,12 @@ return(val)
      `Alaskan activities included` = inclAK, 
      `Delivery location`           = AGID,
      !!quo_name(Ntitle)           := N)
-  
+
 # need to redesign the fishak column and then this will work
  if(all(metricstatselections()$metric %in% c('Number of vessels', 'Number of processors'))) sometimesexclude = 'Total' else sometimesexclude = NULL
    
   alwaysexclude <- c('metric_flag', 'conf', 'flag', 'unit', 'tab', 'ylab', 'sort', 'CATEGORY', 'STAT', 'upper', 'lower', sometimesexclude)
-datSub <- select(datSub, colnames(datSub)[apply(datSub, 2, function(x) sum(x != '' & !is.na(x) & x != 'NA') > 0 )], 
+datSub <- select(datSub, colnames(datSub)[apply(datSub, 2, function(x) sum(x != '' & x != ' NA' & !is.na(x) & x != 'NA') > 0 )], 
   -alwaysexclude) 
 
   return(datSub)
