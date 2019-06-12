@@ -11,6 +11,7 @@ output$metrics <- renderUI({
     name = "Processor characteristics"
   }   
   tabsetPanel(
+    tabPanel("At a glance", uiOutput("impactSelect"), uiOutput("impactStats")),
     tabPanel(name,       uiOutput("demSelect"),   uiOutput("demStats")),
     tabPanel("Economic", uiOutput("econSelect"),  uiOutput("econStats")),
     tabPanel("Labor",    uiOutput("crewSelect"),  uiOutput("crewStats")),
@@ -26,6 +27,33 @@ output$metrics <- renderUI({
 ##Note: See statistic selection below for settings of 'Mean' 'Median' 'Total' when grouping by vessels##
 # Based on the layout, the sector, and whether demStats is total, determine the checkbox type and which value is selected
 # Characteristics tab: checkbox/radiobutton set up ####
+
+output$impactSelect <- renderUI({
+  ##settings for grouping by 'Metrics'
+  if(input$LayoutSelect) {
+    if(input$Sect_sel != 'FR') {
+      tags$div(
+        class = 'ckbox_1',
+        checkboxGroupInput("impactSelect", NULL, choices = c(DatVars()$IMPACT), selected = 'Number of vessels'))
+    } else {
+      tags$div(
+        class = 'ckbox_1',
+        checkboxGroupInput("impactSelect", NULL, choices = c(DatVars()$IMPACT), selected = 'Number of processors'))
+    }
+    ##Settings for grouping by vessels/processors
+  } else {
+    if(input$Sect_sel != 'FR') {
+    tags$div(
+      class = "ckbox",
+      radioButtons("impactSelect", NULL, choices = c(DatVars()$IMPACT), selected = 'Number of vessels'))
+  } else {
+    tags$div(
+      class = "ckbox",
+      radioButtons("impactSelect", NULL, choices = c(DatVars()$IMPACT), selected = 'Number of processors'))
+  }
+  }
+})
+
 output$demSelect <- renderUI({
   ##Settings for grouping by 'Metrics'
   if (input$LayoutSelect) {
@@ -230,7 +258,19 @@ radiobuttonstatistic <- function(inputID, selection = 'Median') {
         HTML("<div> Statistic: <button id='istat' type='button' class='btn btn-default action-button shiny-bound-input'> <i class='fa fa-info-circle fa-fw' ></i></button> </div>"),
         choices = c('Mean', 'Median', 'Total'),
         select = selection)
-  }
+}
+
+
+#Impacts tab: statistic radiobuttons#####
+#STATISTIC BUTTON FOR IMPACTS, only show total
+output$impactStats <- renderUI({
+    tagList(
+      radioButtons("impactStats",
+                   HTML("<div> Statistic: <button id='istat' type='button' class='btn btn-default action-button shiny-bound-input'> <i class='fa fa-info-circle fa-fw' ></i></button> </div>"),
+                   choices = 'Total',
+                   select = 'Total'))
+})
+
 # Characteristics tab: statistic ratiobuttons ####
 # (this is a little messy because mean/median/total aren't available for all metrics)
 output$demStats <- renderUI({
@@ -372,15 +412,15 @@ output$IndicatorSelect <- renderUI({
   if (input$Sect_sel != 'FR') {
     selectInput("Ind_sel",
       htmlindicatorselect,
-      c('Vessel characteristics', "Economic", "Labor", "Other"),
-      selected = 'Vessel characteristics',
+      c('At a glance','Vessel characteristics', "Economic", "Labor", "Other"),
+      selected = 'At a glance',
       selectize = T
       )
   } else {
     selectInput("Ind_sel",
       htmlindicatorselect,
-      c('Processor characteristics', "Economic", "Labor", "Other"),
-      selected = 'Processor characteristics',
+      c('At a glance', 'Processor characteristics', "Economic", "Labor", "Other"),
+      selected = 'At a glance',
       selectize = T
       )
   }
@@ -454,7 +494,7 @@ tagsdiv2004 <- tags$div(
       tagsdiv2009
     }
   }
-  else if (input$Ind_sel == 'Labor' || input$Ind_sel == 'Cost') {
+  else if (input$Ind_sel == 'Labor' || input$Ind_sel == 'Cost' || input$Ind_sel == 'At a glance') {
     tagsdiv2009
   }
 })
@@ -718,20 +758,38 @@ output$VesSumSelect <- renderUI({
 output$Layoutselect <- renderUI({
   materialSwitch(
     inputId = "LayoutSelect",
-    label = "Select Multiple Metrics",
+    label = "Select multiple metrics",
     right = TRUE,
     value = FALSE
   )
 })
+
+#
 # slider bar for variance ####
 output$Plotselect <- renderUI({
-  materialSwitch(
-    inputId = "PlotSelect",
-    label = "Show variance",
-    right = TRUE,
-    value = TRUE
-  )
-})
+  # if(input$AVE_MED == 'T') {
+  #   if(input$AVE_MED_COSTS == 'T') {
+  #     if(input$demStats == 'Total') {
+  #       if(input$impactStats == 'Total') {
+  #         if(input$crewStats == 'Total') {
+  #           if(input$otherStats == 'Total') {
+  # hidden(materialSwitch(
+  #   inputId = "PlotSelect",
+  #   label = "Show variance",
+  #   right = TRUE,
+  #   value = TRUE
+  # ))
+   # }}}}}} else{
+     materialSwitch(
+      inputId = "PlotSelect",
+      label = "Show variance",
+      right = TRUE,
+      value = TRUE
+    )
+#}
+  })
+  
+
 
 # OBSERVER ####
 

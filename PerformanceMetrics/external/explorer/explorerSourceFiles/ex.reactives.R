@@ -109,7 +109,12 @@ DatVars <- reactive({
           'All fixed costs',
             'Fishing gear',
             'On-board equipment',
-            'Other fixed costs')
+            'Other fixed costs'),
+        IMPACT = c(
+          'Number of vessels',
+          'Income',
+          'Employment'
+        )
         )
       )
   } else if (input$Sect_sel == "FR") {
@@ -163,7 +168,8 @@ DatVars <- reactive({
       "All fixed costs",
           'Buildings',
           'Equipment',
-          'Other fixed costs')
+          'Other fixed costs'),
+      IMPACT = c("Number of processors")
       )
     )
   } else if (input$Sect_sel == "M") {
@@ -232,7 +238,8 @@ DatVars <- reactive({
           "Fishing gear",
           "On-board equipment",
           "Processing equipment",
-          'Other fixed costs')
+          'Other fixed costs'),
+        IMPACT = c("Number of vessels")
         )
       )
 } else if (input$Sect_sel == "CP") {
@@ -301,7 +308,8 @@ DatVars <- reactive({
         "Fishing gear",
         "On-board equipment",
         "Processing equipment",
-        'Other fixed costs')
+        'Other fixed costs'),
+      IMPACT = c("Number of vessels")
     )
   )
 }
@@ -313,6 +321,9 @@ metricstatselections <- reactive({
   if(grepl('characteristics', input$Ind_sel)) {
     stat   = input$demStats
     metric = input$demSelect
+  } else if(input$Ind_sel == 'At a glance') {
+    stat = input$impactStats
+    metric = input$impactSelect
   } else if(input$Ind_sel == 'Economic') {
     stat   = input$econStats
     metric = input$econSelect
