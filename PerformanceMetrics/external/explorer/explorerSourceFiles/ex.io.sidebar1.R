@@ -97,7 +97,7 @@ output$crewSelect <- renderUI({
     if (input$Sect_sel == 'CV') {
       if (input$crewStats == 'Total') {
         tags$div(
-          class = "ckbox23456",
+          class = "ckbox3456",
           checkboxGroupInput("crewSelect", NULL, choices = c(DatVars()$METRIC2), 
             selected = "Number of crew"))
       } else {
@@ -109,7 +109,7 @@ output$crewSelect <- renderUI({
     } else if (input$Sect_sel == 'M' | input$Sect_sel == 'CP') {
         if (input$crewStats == 'Total') {
           tags$div(
-            class = "ckbox23456",
+            class = "ckbox23",
             checkboxGroupInput("crewSelect", NULL, choices = c(DatVars()$METRIC2), 
               selected = "Number of processing and non-processing crew"))
     } else {
