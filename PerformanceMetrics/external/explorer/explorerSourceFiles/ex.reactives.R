@@ -63,12 +63,14 @@ DatVars <- reactive({
         ),
         ##Vessel characteristics metrics##
         METRIC1 =  c(
-          "Number of vessels", 
           "Vessel length", 
           "Vessel replacement value",
           "Vessel market value",
           "Vessel horsepower",
           "Vessel fuel capacity",
+          "Days at sea", 
+          "Fuel use per day", 
+          "Speed while fishing",
           "Number of fisheries", 
           "Proportion of revenue from catch share fishery" = "Proportion of revenue from CS fishery", 
           "Revenue diversification"
@@ -84,18 +86,14 @@ DatVars <- reactive({
           ),
         ##Other metrics###
         METRIC3 = c(
-          "Days at sea", 
-          "Fuel use per day", 
-          "Speed while fishing", 
           "Gini coefficient", 
           "Share of landings by state",
           "Seasonality"
         ),
-##When grouping by Metrics, don't include 'Share of landings by state' or 'Seasonsality'
+##When grouping by Metrics, don't include 'Share of landings by state'
         METRIC3a = c(
-          "Days at sea", 
-          "Fuel use per day", 
-          "Speed while fishing"
+          'Gini coefficient',
+          'Seasonality'
         ),
         COSTS = c(
           'All variable costs',
@@ -112,8 +110,9 @@ DatVars <- reactive({
             'Other fixed costs'),
         IMPACT = c(
           'Number of vessels',
-          'Income',
-          'Employment'
+          'Days at sea',
+          'Income impacts',
+          'Employment impacts'
         )
         )
       )
@@ -142,7 +141,6 @@ DatVars <- reactive({
         ),
         ##Processor characteristic metrics##
         METRIC1 =  c(
-          "Number of processors",
           "Number of species purchased",
           "Proportion of production value from West Coast groundfish" = "Proportion of revenue from catch share species",
           "Revenue diversification"
@@ -197,12 +195,14 @@ DatVars <- reactive({
         ),
         ##Vessel characteristic metrics##
         METRIC1 =  c(
-          "Number of vessels",
           "Vessel length",
           'Vessel replacement value',
           'Vessel market value',
           'Vessel horsepower',
           'Vessel fuel capacity',
+          "Alaska days at sea",
+          'West Coast days at sea',
+          'Fuel use per day',
           "Proportion of landings from catch share fishery" =
           "Proportion of landings from CS fishery"
           ),
@@ -214,17 +214,13 @@ DatVars <- reactive({
           ),
         ##Other metrics##
         METRIC3 = c(
-          "Alaska days at sea",
-          'West Coast days at sea',
-          'Fuel use per day',
           "Gini coefficient",
           "Seasonality"
         ),
         ##When grouping by Metrics, don't include 'Seasonsality'
         METRIC3a = c(
-          "Alaska days at sea",
-          'West Coast days at sea',
-          'Fuel use per day'
+          'Gini coefficient',
+          'Seasonality'
         ),
         COSTS = c(
         "All variable costs",
@@ -239,7 +235,9 @@ DatVars <- reactive({
           "On-board equipment",
           "Processing equipment",
           'Other fixed costs'),
-        IMPACT = c("Number of vessels")
+        IMPACT = c("Number of vessels",
+                   'Alaska days at sea',
+                   'West Coast days at sea')
         )
       )
 } else if (input$Sect_sel == "CP") {
@@ -267,12 +265,14 @@ DatVars <- reactive({
       ),
       ##Vessel characteristic metrics##
       METRIC1 =  c(
-        "Number of vessels",
         "Vessel length",
         'Vessel replacement value',
         'Vessel market value',
         'Vessel horsepower',
         'Vessel fuel capacity',
+        "Alaska days at sea",
+        'West Coast days at sea',
+        'Fuel use per day',
         "Proportion of landings from catch share fishery" =
           "Proportion of landings from CS fishery"
       ),
@@ -284,17 +284,13 @@ DatVars <- reactive({
       ),
       ##Other metrics##
       METRIC3 = c(
-        "Alaska days at sea",
-        'West Coast days at sea',
-        'Fuel use per day',
         "Gini coefficient",
         "Seasonality"
       ),
       ##When grouping by Metrics, don't include 'Seasonsality'
       METRIC3a = c(
-        "Alaska days at sea",
-        'West Coast days at sea',
-        'Fuel use per day'
+        'Gini coefficient',
+        'Seasonality'
       ),
       COSTS = c(
       "All variable costs",
@@ -309,7 +305,9 @@ DatVars <- reactive({
         "On-board equipment",
         "Processing equipment",
         'Other fixed costs'),
-      IMPACT = c("Number of vessels")
+      IMPACT = c("Number of vessels",
+                 'Alaska days at sea',
+                 'West Coast days at sea')
     )
   )
 }
