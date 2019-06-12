@@ -218,27 +218,20 @@ doPlotDownload <- function(dat, x, y){
     
     groupVar <- "whitingv"
     
-    colourThirds <- if (input$Sect_sel == "CV") {
+    colourThirds <- 
       c(
+        # set colors for whiting/non-whiting/all vessels
         'Non-whiting vessels' = "#d7191c",
         'Whiting vessels' = "#2b83ba",
-        'All vessels' = "#000000"
-      )
-    } else if (input$Sect_sel == 'FR') {
-      c(
+        'All vessels' = "#000000",
+        # set colors for whiting/non-whiting/all processors
         'Non-whiting processors' = "#d7191c",
         'Whiting processors' = "#2b83ba",
-        'All processors' = "#000000"
-      )
-    } else if(input$Sect_sel == 'M') {
-      
-      c('Mothership vessels' = "#000000")
-      
-    } else { # catcher processor vessels
-      
-      c('Catcher-processor vessels' = "#000000")
-      
-    }
+        'All processors' = "#000000",
+        # set black for mothership vessels
+        'Mothership vessels' = "#000000",
+        # set black for catcher-procesor vessels
+        'Catcher-processor vessels' = "#000000")
     
       sect <- function(){
       if(input$Sect_sel == "CV"){
