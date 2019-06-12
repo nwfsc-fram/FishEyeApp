@@ -74,6 +74,22 @@ output$BlogUpdates <- renderUI({
   withTags(
   div(style = "margin-top:0; padding-top:0;background-color:#F8F8E9;",
            h3("Updates"),
+      #Fresh new look
+      div( class='date', style='height:45px;width:30px; font-family:Arial; font-weight:bold;background-color:#ffffff;text-align:center; border-top:1px solid #c0c0c0;
+       border-left:1px solid #c0c0c0;border-right:1px solid #c0c0c0;position:absolute;z-index:3;line-height: 13px;',
+           # step 1: update date
+           HTML("<span class='month' style='text-transform:uppercase;font-size:11px;'>Jun</span><br />
+            <span class='day' style='font-size:16px;'>12</span><br />
+            <span class='year' style='font-size:11px;line-height: 10px;'>2019</span>")
+      ),
+      # step 2: update title
+      p(HTML("<span style='margin-left:60px;font-size:18px;font-weight:bold'>Fresh new look</span>")), 
+      # step 3: update message
+      p(br(),"We gave FISHEyE a fresh new look! We phased out the Net Revenue and Costs applications and integrated the data into the Performance Metrics app.
+        We also added a few new metrics. In the 'Vessel characteristics' tab (previously, 'Demographics') we added: (1) vessel replacement value, (2) vessel market value, 
+        (3) vessel horsepower, and (4) vessel fuel capacity. The 'Other' tab includes the following new metrics: (1) fuel use per day, and (2) speed while fishing. 
+        The 'Labor' tab includes the following new metrics: (1) number of crew-days, (2) crew wage per year, and (3) crew wager per dollar revenue."),
+      hr(),
   # 2017 CV + CP + MS data loaded ####
   div( class='date', style='height:45px;width:30px; font-family:Arial; font-weight:bold;background-color:#ffffff;text-align:center; border-top:1px solid #c0c0c0;
        border-left:1px solid #c0c0c0;border-right:1px solid #c0c0c0;position:absolute;z-index:3;line-height: 13px;',
