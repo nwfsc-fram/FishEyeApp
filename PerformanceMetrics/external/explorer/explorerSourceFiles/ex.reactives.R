@@ -429,25 +429,27 @@ return(val)
  vartitle <- ifelse(metricstatselections()$stat %in% c('Total', ''), 'VARIANCE',
    ifelse(metricstatselections()$stat == 'Median', 'Mean average deviation',
      'Standard deviation'))
+ typetitle <- ifelse(input$Sect_sel == "FR", 'Processor type', 'Vessel type')
 
  # rename the columns 
  datSub <-
    rename(datSub,
-     Year = YEAR,
-     Metric = METRIC,
-     !!quo_name(valuetitle) := VALUE,
-     #Statistic = STAT,
-     !!quo_name(vartitle) := VARIANCE,
-     `Quartile: 25th` = q25,
-     `Quartile: 75th` = q75,
-     `Summary variable` = VARIABLE,  
-     `Data summed across` = whitingv,  
+     Year                          = YEAR,
+     Metric                        = METRIC,
+     !!quo_name(valuetitle)       := VALUE,
+     !!quo_name(vartitle)         := VARIANCE,
+     `Quartile: 25th`              = q25,
+     `Quartile: 75th`              = q75,
+     `Summary variable`            = VARIABLE,  
+     !!quo_name(typetitle)        := whitingv,  
      `Alaskan activities included` = inclAK, 
-     `Delivery location` = AGID,
-     !!quo_name(Ntitle) := N)
+     `Delivery location`           = AGID,
+     !!quo_name(Ntitle)           := N)
   
 # need to redesign the fishak column and then this will work
-  alwaysexclude <- c('metric_flag', 'conf', 'flag', 'unit', 'tab', 'ylab', 'sort', 'CATEGORY', 'STAT', 'upper', 'lower')
+ if(all(metricstatselections()$metric %in% c('Number of vessels', 'Number of processors'))) sometimesexclude = 'Total' else sometimesexclude = NULL
+   
+  alwaysexclude <- c('metric_flag', 'conf', 'flag', 'unit', 'tab', 'ylab', 'sort', 'CATEGORY', 'STAT', 'upper', 'lower', sometimesexclude)
 datSub <- select(datSub, colnames(datSub)[apply(datSub, 2, function(x) sum(x != '' & !is.na(x) & x != 'NA') > 0 )], 
   -alwaysexclude) 
 
