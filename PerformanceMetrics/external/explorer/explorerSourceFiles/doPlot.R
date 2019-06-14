@@ -98,7 +98,9 @@ doPlot <- function(dat, x, y) {
           } else {
             dat4plot$q75
           }
-        }
+        } else if (input$Ind_sel == 'Impacts') {
+    dat4plot$VALUE
+  }
     
     
     dat4plot$lower <-
@@ -142,7 +144,9 @@ doPlot <- function(dat, x, y) {
         } else  {
           dat4plot$q25
         }
-      }
+      } else if (input$Ind_sel == 'Impacts') {
+    dat4plot$VALUE
+  }
     
     upper <- function() {
       if (input$Ind_sel == "Economic") {
@@ -201,7 +205,12 @@ doPlot <- function(dat, x, y) {
           } } else {
             max(dat4plot$VALUE, na.rm = T)
           }
-      } }
+      }
+      ##All options are total onnly##
+      else if (input$Ind_sel == 'Impacts') {
+        max(dat4plot$VALUE, na.rm = T)
+      }
+      }
     
     yaxislabel <- function () {
       if (input$LayoutSelect) {

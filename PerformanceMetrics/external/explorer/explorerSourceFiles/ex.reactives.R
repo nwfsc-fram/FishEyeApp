@@ -63,7 +63,7 @@ DatVars <- reactive({
         ),
         ##Vessel characteristics metrics##
         METRIC1 =  c(
-          "Number of vessels", 
+          'Number of vessels',
           "Vessel length", 
           "Vessel replacement value",
           "Vessel market value",
@@ -86,12 +86,12 @@ DatVars <- reactive({
         METRIC3 = c(
           "Days at sea", 
           "Fuel use per day", 
-          "Speed while fishing", 
+          "Speed while fishing",
           "Gini coefficient", 
           "Share of landings by state",
           "Seasonality"
         ),
-##When grouping by Metrics, don't include 'Share of landings by state' or 'Seasonsality'
+##When grouping by Metrics, don't include 'Share of landings by state'
         METRIC3a = c(
           "Days at sea", 
           "Fuel use per day", 
@@ -109,7 +109,11 @@ DatVars <- reactive({
           'All fixed costs',
             'Fishing gear',
             'On-board equipment',
-            'Other fixed costs')
+            'Other fixed costs'),
+        IMPACT = c(
+          'Income impacts',
+          'Employment impacts'
+        )
         )
       )
   } else if (input$Sect_sel == "FR") {
@@ -137,7 +141,7 @@ DatVars <- reactive({
         ),
         ##Processor characteristic metrics##
         METRIC1 =  c(
-          "Number of processors",
+          'Number of processors',
           "Number of species purchased",
           "Proportion of production value from West Coast groundfish" = "Proportion of revenue from catch share species",
           "Revenue diversification"
@@ -149,6 +153,8 @@ DatVars <- reactive({
         ),
         ##Other metrics##
         METRIC3 = c(
+          "Gini coefficient"),
+        METRIC3a = c(
           "Gini coefficient"),
         COSTS = c(
       "All variable costs",
@@ -163,7 +169,8 @@ DatVars <- reactive({
       "All fixed costs",
           'Buildings',
           'Equipment',
-          'Other fixed costs')
+          'Other fixed costs'),
+      IMPACT = c("")
       )
     )
   } else if (input$Sect_sel == "M") {
@@ -191,12 +198,15 @@ DatVars <- reactive({
         ),
         ##Vessel characteristic metrics##
         METRIC1 =  c(
-          "Number of vessels",
+          'Number of vessels',
           "Vessel length",
           'Vessel replacement value',
           'Vessel market value',
           'Vessel horsepower',
           'Vessel fuel capacity',
+          "Alaska days at sea",
+          'West Coast days at sea',
+          'Fuel use per day',
           "Proportion of landings from catch share fishery" =
           "Proportion of landings from CS fishery"
           ),
@@ -208,17 +218,13 @@ DatVars <- reactive({
           ),
         ##Other metrics##
         METRIC3 = c(
-          "Alaska days at sea",
-          'West Coast days at sea',
-          'Fuel use per day',
           "Gini coefficient",
           "Seasonality"
         ),
         ##When grouping by Metrics, don't include 'Seasonsality'
         METRIC3a = c(
-          "Alaska days at sea",
-          'West Coast days at sea',
-          'Fuel use per day'
+          'Gini coefficient',
+          'Seasonality'
         ),
         COSTS = c(
         "All variable costs",
@@ -232,7 +238,8 @@ DatVars <- reactive({
           "Fishing gear",
           "On-board equipment",
           "Processing equipment",
-          'Other fixed costs')
+          'Other fixed costs'),
+        IMPACT = c("")
         )
       )
 } else if (input$Sect_sel == "CP") {
@@ -260,12 +267,15 @@ DatVars <- reactive({
       ),
       ##Vessel characteristic metrics##
       METRIC1 =  c(
-        "Number of vessels",
+        'Number of vessels',
         "Vessel length",
         'Vessel replacement value',
         'Vessel market value',
         'Vessel horsepower',
         'Vessel fuel capacity',
+        "Alaska days at sea",
+        'West Coast days at sea',
+        'Fuel use per day',
         "Proportion of landings from catch share fishery" =
           "Proportion of landings from CS fishery"
       ),
@@ -277,17 +287,13 @@ DatVars <- reactive({
       ),
       ##Other metrics##
       METRIC3 = c(
-        "Alaska days at sea",
-        'West Coast days at sea',
-        'Fuel use per day',
         "Gini coefficient",
         "Seasonality"
       ),
       ##When grouping by Metrics, don't include 'Seasonsality'
       METRIC3a = c(
-        "Alaska days at sea",
-        'West Coast days at sea',
-        'Fuel use per day'
+        'Gini coefficient',
+        'Seasonality'
       ),
       COSTS = c(
       "All variable costs",
@@ -301,7 +307,8 @@ DatVars <- reactive({
         "Fishing gear",
         "On-board equipment",
         "Processing equipment",
-        'Other fixed costs')
+        'Other fixed costs'),
+      IMPACT = c("")
     )
   )
 }
@@ -313,6 +320,9 @@ metricstatselections <- reactive({
   if(grepl('characteristics', input$Ind_sel)) {
     stat   = input$demStats
     metric = input$demSelect
+  } else if(input$Ind_sel == 'Impacts') {
+    stat = input$impactStats
+    metric = input$impactSelect
   } else if(input$Ind_sel == 'Economic') {
     stat   = input$econStats
     metric = input$econSelect
@@ -386,13 +396,13 @@ DatSubRaw <- reactive({
  datSubMetric <- subset(datSubforSector,
    METRIC %in% metricstatselections()$metric)
  
- stat <- ifelse(any(datSubMetric$STAT %in% metricstatselections()$stat), 
-     metricstatselections()$stat,
-     as.character(subset(datSubMetric, METRIC %in% metricstatselections()$metric, STAT)[2,1]))
+ # stat <- ifelse(any(datSubMetric$STAT %in% metricstatselections()$stat), 
+ #     metricstatselections()$stat,
+ #     as.character(subset(datSubMetric, METRIC %in% metricstatselections()$metric, STAT)[2,1]))
  
   # subset the sector specific data according to all of the fisheye toggles
  datSub <- subset(datSubMetric,
-   STAT   %in% stat &
+   STAT   %in% metricstatselections()$stat &
    inclAK %in% akselections() &
    CS     %in% csselections())
 
@@ -424,6 +434,8 @@ return(val)
  datSub$q25 <-      tabformatfun(datSub$q25)
  datSub$q75 <-      tabformatfun(datSub$q75)
 
+
+ 
  Ntitle <- ifelse(input$Sect_sel == "FR", 'Number of processors', 'Number of vessels')
  valuetitle <- ifelse(any(datSub$STAT == ''), 'Value', as.character(unique(datSub$STAT)))
  vartitle <- ifelse(metricstatselections()$stat %in% c('Total', ''), 'VARIANCE',
@@ -443,8 +455,9 @@ return(val)
      `Summary variable`            = VARIABLE,  
      !!quo_name(typetitle)        := whitingv,  
      `Alaskan activities included` = inclAK, 
-     `Delivery location`           = AGID,
-     !!quo_name(Ntitle)           := N)
+     `Delivery location` = AGID,
+     !!quo_name(Ntitle) := N)
+  
 
 # need to redesign the fishak column and then this will work
  if(all(metricstatselections()$metric %in% c('Number of vessels', 'Number of processors'))) sometimesexclude = 'Total' else sometimesexclude = NULL

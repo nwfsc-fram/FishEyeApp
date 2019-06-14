@@ -17,6 +17,10 @@ observeEvent(input$istat, {
   session$sendCustomMessage(type = 'testmessage',
                             message = 'Statistics may not be appliable for all metrics. The median and mean both attempt to provide information about the results for a representative vessel, however they do it in different ways. The median means that half of the vessels have a larger result than the median, and half are smaller. The mean, is the sum of the values divided by the number of responses. If the data do not have many extreme responses in a particular direction, the median and mean will be very similar. However, if the data are skewed by extreme responses, then the median is a better measure of the result for a typical vessel. The total provides a measure of the fleet as a whole. The fleet-wide total is used to measure how the entire fleet is doing, rather than a representative vessel.')
 })
+observeEvent(input$istatimpacts, {
+  session$sendCustomMessage(type = 'testmessage',
+                            message = 'Income and employment impacts are estimated for the West Coast overall. Impacts by homeport or state are impacts for the West Coast overall based on the vessels with a homeport in the selected port or state.')
+})
 observeEvent(input$ipo, {
   session$sendCustomMessage(type = 'testmessage',
                             if(input$LayoutSelect) {
@@ -100,20 +104,44 @@ scale_height <- function(){
 }
 
 output$PlotMain <- renderPlot({
+  validate(need(
+    sum(!is.na(as.numeric(DatSub()$VALUE))) !=0,
+    paste(
+      'Your selection is invalid. The selected statistic is not calculated for this metric. Please try selecting a different statistic.'
+    )
+  ))
   doPlot(dat = DatSub(), x = "YEAR", y = "VALUE")
 },  height=scale_height, width = "auto")
 
 output$PlotMain2 <- renderPlot({
+  validate(need(
+    sum(!is.na(as.numeric(DatSub()$VALUE))) !=0,
+    paste(
+      'Your selection is invalid. The selected statistic may not be calculated for this metric. Please try selecting a different statistic.'
+    )
+  ))
   input$data
   doPlot(dat = DatSub(), x = "YEAR", y = "VALUE")
 },  height=400, width = 700)
 
 output$PlotMain3 <- renderPlot({
+  validate(need(
+    sum(!is.na(as.numeric(DatSub()$VALUE))) !=0,
+    paste(
+      'Your selection is invalid. The selected statistic may not be calculated for this metric. Please try selecting a different statistic.'
+    )
+  ))
   input$data
   doPlot(dat = DatSub(), x = "YEAR", y = "VALUE")
 },  height=400, width = 700)
 
 output$TableMain <- renderDataTable({ 
+  validate(need(
+    sum(!is.na(as.numeric(DatSub()$VALUE))) !=0,
+    paste(
+      'Your selection is invalid. The selected statistic may not be calculated for this metric. Please try selecting a different statistic.'
+    )
+  ))
 
   table <- DatSubTable()
   table
