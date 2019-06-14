@@ -98,7 +98,7 @@ doPlot <- function(dat, x, y) {
           } else {
             dat4plot$q75
           }
-        } else if (input$Ind_sel == 'At a glance') {
+        } else if (input$Ind_sel == 'Impacts') {
     dat4plot$VALUE
   }
     
@@ -144,7 +144,7 @@ doPlot <- function(dat, x, y) {
         } else  {
           dat4plot$q25
         }
-      } else if (input$Ind_sel == 'At a glance') {
+      } else if (input$Ind_sel == 'Impacts') {
     dat4plot$VALUE
   }
     
@@ -207,7 +207,7 @@ doPlot <- function(dat, x, y) {
           }
       }
       ##All options are total onnly##
-      else if (input$Ind_sel == 'At a glance') {
+      else if (input$Ind_sel == 'Impacts') {
         max(dat4plot$VALUE, na.rm = T)
       }
       }
