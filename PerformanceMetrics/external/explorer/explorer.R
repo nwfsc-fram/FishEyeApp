@@ -105,9 +105,15 @@ scale_height <- function(){
 
 output$PlotMain <- renderPlot({
   validate(need(
-    sum(!is.na(as.numeric(DatSub()$VALUE))) !=0,
+    !(sum(!is.na(as.numeric(DatSub()$VALUE))) ==0 & metricstatselections()$stat == 'Total'),
     paste(
-      'Your selection is invalid. The selected statistic is not calculated for this metric. Please try selecting a different statistic.'
+      'Switch to median'
+    )
+  ))
+  validate(need(
+    !(sum(!is.na(as.numeric(DatSub()$VALUE))) ==0 & metricstatselections()$stat != 'Total'),
+    paste(
+      'Switch to Total'
     )
   ))
   doPlot(dat = DatSub(), x = "YEAR", y = "VALUE")
