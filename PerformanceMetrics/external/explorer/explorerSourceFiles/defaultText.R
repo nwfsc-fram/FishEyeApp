@@ -85,7 +85,7 @@ output$BlogUpdates <- renderUI({
       # step 2: update title
       p(HTML("<span style='margin-left:60px;font-size:18px;font-weight:bold'>West Coast Impacts added</span>")), 
       # step 3: update message
-      p(br(),"We added West Coast employment and income impacts to FISHEyE. 
+      p(br(),"We added West Coast employment and income impacts for catcher vessels. 
         All impacts are for the West Coast overall. More information can be found here: https://www.nwfsc.noaa.gov/assets/25/1620_08012011_142237_InputOutputModelTM111WebFinal.pdf"),
       hr(),
       #Fresh new look
