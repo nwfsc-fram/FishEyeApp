@@ -202,10 +202,10 @@ doPlotDownload <- function(dat, x, y){
       if(input$LayoutSelect) {
         if(input$Ind_sel %in% c('Economic', 'Cost')) {
           paste(dat$STAT,
-                "(Scale and units depend upon metric)")
+                "(see plot title for units)")
         } else {
           paste(dat$SUMSTAT,
-                "(Scale and units depend upon metric)")
+                "(see plot title for units)")
         }
       } else {
         dat$ylab
@@ -422,30 +422,14 @@ xlab <- function() {
     # choose label text size ####
     labeltext <- ifelse(input$LayoutSelect & input$tabs == 'Panel1', 5, 7)
     
-    # geom_rect (define the grey boxes for pre-catch shares) ####
-    geom_rect_fun <- function(ymin_val = -Inf, ymax_val = Inf) {
-      geom_rect(
-        aes(
-          xmin = -Inf,
-          xmax = table(yr() <= 2010)[[2]] + .5,
-          ymin = ymin_val,
-          ymax = ymax_val
-        ),
-        alpha = .05,
-        fill = "grey50"
-      )
-    }
-    
-    geom_rect4seasonality <- geom_rect(
-      aes(
-        xmin = -Inf,
-        xmax = table(yr() <= 2010)[[2]] + .5,
-        ymin = structure(-Inf, class = "Date"),
-        ymax = structure(Inf, class = "Date")
-      ),
-      alpha = .05,
-      fill = "grey50"
-    )
+   # geom_rect (define the grey boxes for pre-catch shares) ####
+   geom_rect_fun <- function(ymin_val = -Inf, ymax_val = Inf) {
+     geom_vline(
+       xintercept = table(yr() <= 2010)[[2]] + .5,
+       size = 1.5,
+       color = "darkgray"
+     )
+   }
     
     # geom_text function ####
     

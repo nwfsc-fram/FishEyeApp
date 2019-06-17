@@ -103,7 +103,7 @@ doPlotPrep <- reactive({
     yaxislabel <- function () {
       if (input$LayoutSelect) {
         paste(dat4plot$STAT,
-          "(Scale and units depend upon metric)")
+          "(see plot title for units)")
       } else {
         dat4plot$ylab
       }
