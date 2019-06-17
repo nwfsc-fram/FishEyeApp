@@ -380,21 +380,7 @@ doPlot <- function(dat, x, y) {
             environment()) #+coord_cartesian(xlim = c(0, length(table(dat4plot$YEAR))+1))
     }
     
-    # add lines and points to the plot ####
-    if (input$Ind_sel == 'Other') {
-      if (input$otherSelect == 'Share of landings by state') {
-        g <-
-          g + geom_line(aes_string(colour = groupVar, group = 'bystategrp'), size = 1.5) +
-          geom_point(aes_string(colour = groupVar, shape = 'AGID', group = 'bystategrp'),
-            size = 4)
-      } else {
-        g <- g + geom_line(aes_string(colour = groupVar), size = 1.5) +
-          geom_point(aes_string(colour = groupVar), size = 4)
-      }} else {
-        g <- g + geom_line(aes_string(colour = groupVar), size = 1.5) +
-          geom_point(aes_string(colour = groupVar), size = 4)
-      }
-    
+
     
     # add 'data variability' band ####
     if (input$PlotSelect == T & !exists('ssn')) {
@@ -425,7 +411,7 @@ doPlot <- function(dat, x, y) {
     geom_rect_fun <- function(ymin_val = -Inf, ymax_val = Inf) {
       geom_vline(
           xintercept = table(yr() <= 2010)[[2]] + .5,
-          size = 1.5,
+          size = 1.1,
           color = "darkgray"
         )
     }
@@ -540,6 +526,21 @@ doPlot <- function(dat, x, y) {
         x = '',
         title = main())
     }
+    
+        # add lines and points to the plot ####
+    if (input$Ind_sel == 'Other') {
+      if (input$otherSelect == 'Share of landings by state') {
+        g <-
+          g + geom_line(aes_string(colour = groupVar, group = 'bystategrp'), size = 1.5) +
+          geom_point(aes_string(colour = groupVar, shape = 'AGID', group = 'bystategrp'),
+            size = 4)
+      } else {
+        g <- g + geom_line(aes_string(colour = groupVar), size = 1.5) +
+          geom_point(aes_string(colour = groupVar), size = 4)
+      }} else {
+        g <- g + geom_line(aes_string(colour = groupVar), size = 1.5) +
+          geom_point(aes_string(colour = groupVar), size = 4)
+      }
     
     if (input$LayoutSelect) {
       if (input$tabs == 'Panel1') {
