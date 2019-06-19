@@ -159,7 +159,7 @@ output$TableMain <- renderDataTable({
   validate(need(
     !(sum(!is.na(as.numeric(DatSub()$VALUE))) ==0 & metricstatselections()$stat == 'Total'),
     paste(
-      'The selected statistic is not calculated for this metric. Please try switching toMean or Median.'
+      'The selected statistic is not calculated for this metric. Please try switching to Mean or Median.'
     )
   ))
   validate(need(
@@ -168,8 +168,6 @@ output$TableMain <- renderDataTable({
       'The selected statistic is not calculated for this metric. Please try switching to Total.'
     )
   ))
-  doPlot(dat = DatSub(), x = "YEAR", y = "VALUE")
-
   table <- DatSubTable()
   table
   
