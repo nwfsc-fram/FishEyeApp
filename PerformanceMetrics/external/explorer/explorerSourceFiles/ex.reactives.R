@@ -104,7 +104,7 @@ DatVars <- reactive({
             'Cost recovery fees',
             'Crew',
             'Fuel',
-            'Observers', 
+            'Observers/EM', 
             'Other variable costs', 
           'All fixed costs',
             'Fishing gear',
