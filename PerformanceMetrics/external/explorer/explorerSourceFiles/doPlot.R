@@ -363,6 +363,8 @@ doPlot <- function(dat, x, y) {
           sort2 = reorder(VARIABLE, sort))
         g <- ggplot(ssn, aes_string(x = x, y = y , group = groupVar), environment =
             environment()) 
+        g <- g + geom_line(aes_string(colour = groupVar), size = 1.5) +
+          geom_point(aes_string(colour = groupVar), size = 4)
         # otherwise normal plot:
       } else {
         dat4plot <- dat4plot[order(dat4plot$sort), ]
