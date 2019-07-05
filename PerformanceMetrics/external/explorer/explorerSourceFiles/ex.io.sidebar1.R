@@ -373,7 +373,15 @@ fish.var <- c(
     "Crab",
     "Shrimp",
     "Other fisheries")
-
+fish.var.grps <- c(
+  "All fisheries combined" = "All fisheries",
+  " All catch share fisheries combined" = "All catch share fisheries",
+  "Trawl only catch share fisheries",
+  "Pacific whiting",
+  "Groundfish with trawl gear",
+  "Groundfish fixed gear with trawl endorsement",
+  "All non-catch share fisheries combined" = "All non-catch share fisheries"
+)
 # list of fisheries to filter by when using other categories (homeport, state, size)
 fishgrps4cats <- c(
     "All fisheries",
@@ -492,11 +500,54 @@ output$Variableselect <- renderUI({
       } #end homeport
       else if (input$CategorySelect == "Fisheries") {
         if (!input$LayoutSelect) {
+         if (input$FishWhitingSelect != 'All vessels') {
+          if(input$Ind_sel %in% c('Economic','Cost','Labor')) {
+            tags$div(class = "ckbox4",
+                     checkboxGroupInput("VariableSelect", NULL, choices = fish.var.grps, selected = fish.var[1]))
+          } else if(input$Ind_sel == 'Vessel characteristics') {
+            if (input$demSelect %in% c('Vessel replacement value','Vessel market value')) {
+              tags$div(class = "ckbox4",
+                       checkboxGroupInput("VariableSelect", NULL, choices = fish.var.grps, selected = fish.var[1]))
+            } else {
+              tags$div(class = "ckbox2",
+                       checkboxGroupInput("VariableSelect", NULL, choices = fish.var, selected = fish.var[1]))
+            }} else if(input$Ind_sel == 'Other') {
+              if(input$otherSelect == 'Days at sea') {
+                tags$div(class = "ckbox4",
+                         checkboxGroupInput("VariableSelect", NULL, choices = fish.var.grps, selected = fish.var[1]))
+            } else {
           tags$div(class = "ckbox2",
             checkboxGroupInput("VariableSelect", NULL, choices = fish.var, selected = fish.var[1]))
-        } else {
+            }} else {
+              tags$div(class = "ckbox2",
+                       checkboxGroupInput("VariableSelect", NULL, choices = fish.var, selected = fish.var[1]))
+            }} else {
+              tags$div(class = "ckbox2",
+                       checkboxGroupInput("VariableSelect", NULL, choices = fish.var, selected = fish.var[1]))
+            }} else if(input$FishWhitingSelect != 'All vessels'){
+          if(input$Ind_sel %in% c('Economic','Cost','Labor')) {
+            tags$div(class = "ckbox5",
+                     radioButtons("VariableSelect", NULL, choices = fish.var.grps, selected = fish.var[1]))
+          } else if (input$Ind_sel == 'Vessel characteristics') {
+            if (input$demSelect %in% c('Vessel replacement value','Vessel market value')) {
+              tags$div(class = "ckbox5",
+                       radioButtons("VariableSelect", NULL, choices = fish.var.grps, selected = fish.var[1]))
+            } else {
+              tags$div(class = "ckbox3",
+                       radioButtons("VariableSelect", NULL, choices = fish.var, selected = fish.var[1]))
+            }} else if (input$Ind_sel == 'Other') {
+              if(input$otherSelect == 'Days at sea') {
+                tags$div(class = "ckbox5",
+                         radioButtons("VariableSelect", NULL, choices = fish.var.grps, selected = fish.var[1]))
+            } else {
           tags$div(class = "ckbox3",
-            radioButtons("VariableSelect", NULL, choices = c(fish.var), selected = fish.var[1]))
+            radioButtons("VariableSelect", NULL, choices = fish.var, selected = fish.var[1]))
+            }} else {
+              tags$div(class = "ckbox3",
+                       radioButtons("VariableSelect", NULL, choices = fish.var, selected = fish.var[1]))
+            }} else {
+              tags$div(class = "ckbox3",
+                       radioButtons("VariableSelect", NULL, choices = fish.var, selected = fish.var[1]))
         }
       }#end fisheries
     } else if (input$Sect_sel == "FR") {
