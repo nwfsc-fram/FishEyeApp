@@ -80,6 +80,14 @@ output$econSelect <- renderUI({
       radioButtons("econSelect", NULL, choices = DatVars()$NRlist, selected = DatVars()$NRlist[1]))
   }
 })
+
+##select input box for processing and non-processing crew for CP/MS
+selectinputprnprcrew <- selectInput(
+  inputId = "PR_NPR_CREW",
+  HTML(""),
+  c(`Processing crew` = "PR", `Non-processing crew` = 'NPR'),
+  selectize = F)
+
 # Labor tab: metric checkbox/radiobutton set up ####
 output$crewSelect <- renderUI({
   if (input$LayoutSelect) {
@@ -89,10 +97,12 @@ output$crewSelect <- renderUI({
           checkboxGroupInput("crewSelect", NULL, choices = c(DatVars()$METRIC2), 
             selected = "Number of crew"))
     } else if (input$Sect_sel == 'M' | input$Sect_sel == 'CP') {
+        tagList(
+          selectinputprnprcrew,
           tags$div(
             class = "ckbox",
             checkboxGroupInput("crewSelect", NULL, choices = c(DatVars()$METRIC2), 
-              selected = "Number of processing and non-processing crew"))
+              selected = "Number of processing crew")))
   } else {
         tags$div(
           class = 'ckbox',
@@ -106,10 +116,12 @@ output$crewSelect <- renderUI({
         radioButtons("crewSelect", NULL, choices = c(DatVars()$METRIC2), selected = "Number of crew"))
     }
     else if (input$Sect_sel == 'M' | input$Sect_sel == 'CP') {
+        tagList(
+          selectinputprnprcrew,
       tags$div(
         class = "ckbox",
         radioButtons("crewSelect", NULL, choices = c(DatVars()$METRIC2), 
-          selected = "Number of processing and non-processing crew"))
+          selected = "Number of processing crew")))
     } else {
       tags$div(
         class = "statbox",
@@ -144,6 +156,9 @@ output$otherSelect <- renderUI({
         tags$div(class = "ckbox", 
           checkboxGroupInput("otherSelect", NULL, choices = c(DatVars()$METRIC3a), selected = "Days at sea"))
 
+    } else if(input$Sect_sel %in% c('CP', 'M')) {
+      tags$div(class = "ckbox", 
+               checkboxGroupInput("otherSelect", NULL, choices = c(DatVars()$METRIC3a), selected = "Alaska days at sea"))
     } else {
       tags$div(class = "ckbox", 
                checkboxGroupInput("otherSelect", NULL, choices = c(DatVars()$METRIC3a), selected = "Gini coefficient"))
@@ -153,6 +168,10 @@ output$otherSelect <- renderUI({
       tags$div(
         class = "ckbox",
         radioButtons("otherSelect", NULL, choices = c(DatVars()$METRIC3), selected = "Days at sea"))
+     } else if(input$Sect_sel %in% c('CP','M')) {
+       tags$div(
+         class = "ckbox", 
+         radioButtons("otherSelect", NULL, choices = c(DatVars()$METRIC3), selected = "Alaska days at sea"))
      } else {
        tags$div(
          class = "ckbox", 
@@ -212,9 +231,12 @@ output$econStats <- renderUI({
         radioButtons("econStats", "", choices = c(DatVars()$STAT[5:7]), selected = DatVars()$STAT[7])))
   }
 })
+
+
+
 # Labor tab: statistic radiobuttons ####
 output$crewStats <- renderUI({
-    tagList(radiobuttonstatistic(inputID = 'crewStats', selection = 'Median'))
+      tagList(radiobuttonstatistic(inputID = 'crewStats', selection = 'Median'))
   })
 
 selectinputavemedcosts <- selectInput(
@@ -775,6 +797,17 @@ if(input$Ind_sel == 'Impacts') {
 
 
 # OBSERVER ####
+observe({
+  if(is.null(input$PR_NPR_CREW)) {
+    return()
+  }
+  else if(input$PR_NPR_CREW == 'PR') {
+    updateRadioButtons(session, "crewSelect", choices = c(DatVars()$METRIC2))
+  }
+  else {
+    updateRadioButtons(session, "crewSelect", choices = c(DatVars()$METRIC2a))
+  }
+})
 
 #select whether to show values per vessel, /vessel/day, or /vessel/metric-ton ECON
 observe({

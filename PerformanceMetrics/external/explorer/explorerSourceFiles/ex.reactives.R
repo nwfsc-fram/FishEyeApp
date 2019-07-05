@@ -204,25 +204,38 @@ DatVars <- reactive({
           'Vessel market value',
           'Vessel horsepower',
           'Vessel fuel capacity',
-          "Alaska days at sea",
-          'West Coast days at sea',
           'Fuel use per day',
           "Proportion of landings from catch share fishery" =
           "Proportion of landings from CS fishery"
           ),
-        ##Crew metrics##
+        ##processing crew metrics##
         METRIC2 = c(
-          "Number of processing and non-processing crew",
-          "Crew wage per day",
-          "Revenue per crew-day"
-          ),
+          'Number of processing crew',
+          'Number of processing crew-days',
+          'Processing crew wage per year',
+          'Processing crew wage per day',
+          'Processing crew wage per dollar revenue'),
+        ##non-processing crew metrics
+        METRIC2a = c(
+          'Number of non-processing crew',
+          'Number of non-processing crew-days',
+          'Non-processing crew wage per year',
+          'Non-processing crew wage per day',
+          'Non-processing crew wage per dollar revenue'
+        ),
         ##Other metrics##
         METRIC3 = c(
+          "Alaska days at sea",
+          'West Coast days at sea',
+          'Fuel use per day',
           "Gini coefficient",
           "Seasonality"
         ),
         ##When grouping by Metrics, don't include 'Seasonsality'
         METRIC3a = c(
+          "Alaska days at sea",
+          'West Coast days at sea',
+          'Fuel use per day',
           'Gini coefficient',
           'Seasonality'
         ),
@@ -273,25 +286,38 @@ DatVars <- reactive({
         'Vessel market value',
         'Vessel horsepower',
         'Vessel fuel capacity',
-        "Alaska days at sea",
-        'West Coast days at sea',
         'Fuel use per day',
         "Proportion of landings from catch share fishery" =
           "Proportion of landings from CS fishery"
       ),
-      ##Crew metrics##
+      ##processing crew metrics##
       METRIC2 = c(
-        "Number of processing and non-processing crew",
-        "Crew wage per day",
-        "Revenue per crew-day"
+        'Number of processing crew',
+        'Number of processing crew-days',
+        'Processing crew wage per year',
+        'Processing crew wage per day',
+        'Processing crew wage per dollar revenue'),
+      ##non-processing crew metrics
+      METRIC2a = c(
+        'Number of non-processing crew',
+        'Number of non-processing crew-days',
+        'Non-processing crew wage per year',
+        'Non-processing crew wage per day',
+        'Non-processing crew wage per dollar revenue'
       ),
       ##Other metrics##
       METRIC3 = c(
+        "Alaska days at sea",
+        'West Coast days at sea',
+        'Fuel use per day',
         "Gini coefficient",
         "Seasonality"
       ),
       ##When grouping by Metrics, don't include 'Seasonsality'
       METRIC3a = c(
+        "Alaska days at sea",
+        'West Coast days at sea',
+        'Fuel use per day',
         'Gini coefficient',
         'Seasonality'
       ),
