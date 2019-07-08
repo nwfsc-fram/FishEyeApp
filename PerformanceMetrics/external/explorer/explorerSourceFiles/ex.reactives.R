@@ -204,7 +204,6 @@ DatVars <- reactive({
           'Vessel market value',
           'Vessel horsepower',
           'Vessel fuel capacity',
-          'Fuel use per day',
           "Proportion of landings from catch share fishery" =
           "Proportion of landings from CS fishery"
           ),
@@ -286,7 +285,6 @@ DatVars <- reactive({
         'Vessel market value',
         'Vessel horsepower',
         'Vessel fuel capacity',
-        'Fuel use per day',
         "Proportion of landings from catch share fishery" =
           "Proportion of landings from CS fishery"
       ),

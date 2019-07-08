@@ -802,10 +802,16 @@ observe({
     return()
   }
   else if(input$PR_NPR_CREW == 'PR') {
-    updateRadioButtons(session, "crewSelect", choices = c(DatVars()$METRIC2))
+    if(input$LayoutSelect) {
+      updateCheckboxGroupInput(session, 'crewSelect', choices = c(DatVars()$METRIC2))
   }
   else {
-    updateRadioButtons(session, "crewSelect", choices = c(DatVars()$METRIC2a))
+    updateRadioButtons(session, "crewSelect", choices = c(DatVars()$METRIC2))
+  }
+  } else if(input$LayoutSelect) {
+    updateCheckboxGroupInput(session, 'crewSelect', choices = c(DatVars()$METRIC2a))
+  } else {
+    updateRadioButtons(session, 'crewSelect', choices = c(DatVars()$METRIC2a))
   }
 })
 
