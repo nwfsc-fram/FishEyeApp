@@ -317,9 +317,9 @@ output$Yearselect <- renderUI({
       sliderInput(
         "YearSelect",
         "Years:",
-        min = 2009,
+        min = 2003,
         max = max(DatVars()$YEAR),
-        value = c(2009, max(DatVars()$YEAR)),
+        value = c(2003, max(DatVars()$YEAR)),
         step = 1,
         sep = '',
         ticks = F
@@ -331,9 +331,9 @@ tagsdiv2004 <- tags$div(
         sliderInput(
           "YearSelect",
           "Years:",
-          min = 2004,
+          min = 2003,
           max = max(DatVars()$YEAR),
-          value = c(2009, max(DatVars()$YEAR)),
+          value = c(2003, max(DatVars()$YEAR)),
           step = 1,
           sep = '',
           ticks = F
