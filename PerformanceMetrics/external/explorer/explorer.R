@@ -182,10 +182,9 @@ output$dlTable <- downloadHandler(
     content = function(file) {
       table = as.data.frame(table)
       table <- DatSubTable()
-      names(table) <- c(paste(
-        "Sourced from the FISHEyE application (http://dataexplorer.northwestscience.fisheries.noaa.gov/fisheye/PerformanceMetrics/) maintained by NOAA Fisheriess NWFSC on ",
-        format(Sys.Date(), format="%B %d %Y")), 
-        rep("", dim(temp)[2]-1))
+      row.names(table) <- NULL
+      table$source <- ""
+      names(table)[names(table) == 'source'] <- "Sourced from the FISHEyE application (http://dataexplorer.northwestscience.fisheries.noaa.gov/fisheye/PerformanceMetrics/) maintained by NOAA Fisheriess NWFSC"
       write.csv(table, file)
     })
 
