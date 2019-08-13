@@ -1,0 +1,9 @@
+
+/* Green Seperator, without search and a bit thinner */
+/* .green_seperator { background-color: #00968A; clear: both; height: 32px; position: relative; width: 978px;} */
+
+.green_seperator {
+    background-color: #a7daf5;
+    clear: both;
+    height: 10px;
+}

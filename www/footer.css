@@ -1,0 +1,66 @@
+.framefooter {
+    border: 0 solid #CCCCCC; 
+    color: #FFFFFF;
+    font-family: Arial,Helvetica,sans-serif; 
+    font-size: 11px; 
+    font-weight: normal; 
+    background-color: #092866;    
+    height: 2em;
+    margin: 0;  
+    padding: 0;  
+    position: absolute;
+    left:0;
+    width: 100%;
+}
+
+.framefooter_fixed {
+    border: 0 solid #CCCCCC; 
+    color: #FFFFFF;
+    font-family: Arial,Helvetica,sans-serif; 
+    font-size: 11px; 
+    font-weight: normal; 
+    background-color: #092866;    
+    height: 2em;
+    margin: 0;  
+    padding: 0;  
+    position: fixed;
+    bottom:0;
+    left: 0;
+    width: 100%;
+}
+
+.framefooter a, .framefooter_fixed a {
+    color: #ffffff;
+    font-size: 11px;
+    text-decoration: none;
+    padding-right: 3px;
+}
+
+.framefooter a:hover, .framefooter_fixed a:hover {
+    color: #ffe090;
+}
+
+.framefooterleftitem {
+    float : left;
+    padding : 0px 3px 0px 3px;
+}
+
+.framefooterrightitem {
+    float : right;
+    padding : 0px 3px 0px 3px;
+}
+
+.frameheader_scrolling {
+  background-color: white;
+  position: absolute;
+  left: 0;
+  width: 100%;
+}
+
+.frameheader_fixed {
+  background-color: white;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+}
