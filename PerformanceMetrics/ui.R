@@ -287,18 +287,17 @@ function(request) {
           
         )),
       #tabPanel(HTML('History'), htmlOutput('HistoryText')),
-      navbarMenu("Instructions",
-        tabPanel("About", 
-          source("external/explorer/explorerSourceFiles/about.R")$value
-        ),
-        
-        tabPanel("Instructions", 
-          source("external/explorer/explorerSourceFiles/instructions.R")$value
-        ),
-        tabPanel("Definitions", 
-          source("external/explorer/explorerSourceFiles/definitions.R")$value
-        )
-      ), # end right side column     
+      tabPanel("Instructions",
+               source("external/explorer/explorerSourceFiles/instructions.R")$value),
+      navbarMenu("Definitions",
+                 tabPanel("Metrics",
+                          source("external/explorer/explorerSourceFiles/definitions_metrics.R")$value),
+                 tabPanel("Statistics",
+                          source("external/explorer/explorerSourceFiles/definitions_statistics.R")$value),
+                 tabPanel("Filters",
+                          source("external/explorer/explorerSourceFiles/definitions_filters.R")$value),
+                 tabPanel("Display",
+                          source("external/explorer/explorerSourceFiles/definitions_display.R")$value)), # end right side column     
       tabPanel(HTML('<i class="fa fa-thumb-tack" style="margin-right:2ex;display:inline-block;vertical-align:bottom;float:left;white-space:nowrap"> Bulletin Board</i>'),
         fluidRow(
           column(12, htmlOutput("BlogText")),

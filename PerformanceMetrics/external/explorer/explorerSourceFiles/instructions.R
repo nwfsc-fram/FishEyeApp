@@ -1,31 +1,50 @@
-#Code in this file is for instructions page.
+# Text for definitions page
 
-tags$div(style = "margin: 15px; 15px; 30px; width: 60%",
-         HTML("<div style='display:inline-block;width:100%;padding:0;line-height: 0.72em; margin-top:5px; margin-bottom:5px;'>
-              <h3>Instructions</h3></div>",
-              '<a class="btn btn-primary", href="Definitions.htm" target="_blank"  style="height:47px;margin: -54px 0px 0px 930px"> Open Instructions <br> in new browser tab</a>'
-         ),
-         #tags$h3('Instructions'), 
-         tags$p('To use the Performance Metrics application, make data selections in each of the fields in the Control Panel (this panel will only appear when you are on the',tags$em('Explore the data'), 'page).
-                Output will be automatically generated when each of the fields in the Control Panel has at least one selection.', tags$br(), tags$br(),
-                'A button to download the plot(s) and data table can be found at the bottom of the Control Panel.',
-                tags$br(),tags$br(),'To switch between viewing plots and data table, use the button above the plot or data output.'),
-         tags$ul(style="margin-top:15px;" ,
-                 
-                 tags$li(tags$h4("Summary Plots and Data")),
-                 tags$p('Visualize performance metrics for vessels that participate in the',tags$a(href="http://www.nwfsc.noaa.gov/research/divisions/fram/catch_shares.cfm", 'catch share program. ', target="_blank")),
-                 
-                 tags$strong('Plots'),tags$p('To aid visualizing changes over time, we show line plots for all selected metrics. You can select whether or not to show the variance around the mean or median values. 
-                                             A figure demonstrating how to interpret the plot output is located on the', tags$em('Explore the Data'), 'page. 
-                                             The catch share program began in 2011.'),
-                 tags$strong("Data Table"),
-                 tags$p('View data used to generate the plots.', tags$br(), 'After a table has been displayed, the data can be filtered using the', tags$em('Search'), 'box, or filtered within a column using the boxes at the bottom of the table.'),
-                 tags$br()
-              
-          ),
-    tags$p(strong('A note about net revenue:'),  'The', tags$a(href="http://www.nwfsc.noaa.gov/research/divisions/fram/economic/economic_data_forms.cfm", 'EDC survey forms', target="_blank"), 
-   'capture costs that are directly related to vessel fishing operations. Other expenses such as vehicles or office costs that may be related to the fishing business are not included. 
-   Therefore, the net revenue reported here is an overestimate of the true net revenue.'),
-  tags$br()
+tags$div(style = "margin: 15px 15px 30px; width: 60%",    
+         # HTML("<div style='display:inline-block;width:100%;padding:0;line-height: 0.72em; margin-top:5px; margin-bottom:5px;'>
+         #      <h3>Definitions</h3></div>",
+         #      '<a class="btn btn-primary", href="Definitions.htm" target="_blank"  style="height:47px;margin: -54px 0px 0px 930px"> Open Definitions <br> in new browser tab</a>'
+         # ),
+                 tags$div(
+                   h3("Instructions"),
+                   p('FISHEyE is a data exploration tool that allows you to customize data visualization output. There are four major customization features: 
+                     (1) metric, (2) statistic, (3) filters, and (4) display.'),
+                    tags$ul(
+                      tags$li(strong("Metric:"),'Choose the data that you would like to explore by choosing a metric category (vessel/processor characteristics, 
+                              economic, labor, cost, impacts, other) and metric from the list.'),
+                      tags$li(strong("Statistic:"),': Change how the data are summarized by selecting a statistic (mean, median, total). The Economic and Cost 
+                              metrics also include the option to summarize as a rate (per day, per metric ton).'),
+                      tags$li(strong("Filters:"), "Customize the type of participants to include in the data summary (vessel/processor type, fisheries, location, size)."),
+                      tags$li(strong("Display:"), "Customize how information is displayed by selecting the option to graph multiple metrics together and/or show variance bands in the plot.")
+                       ), tags$br(),
+                   p('FISHEyE is pre-set to plot the total number of catcher-vessels for all fisheries and all types of vessels.'),
+                   tags$br(),
+                   tags$img(src='Instructions_image.jpg', height=900),
+                    h4('How to use FISHEyE'),
+                   p("For a quick-how-to we describe how to plot median total cost net revenue per vessel from all catch share fisheries for non-whiting vessels in Newport and Astoria. 
+                     In order to use the data exploration tool make sure you are on the", tags$em("Explore the data"), "page."),
+                    tags$ul(
+                      tags$li("Select the Catcher-Vessel button on the top of control panel (the control panel is on the left-side of the screen)."),
+                      tags$li("Select the Economic tab under the Metric dropdown."),
+                      tags$li("Select the Total cost net revenue button."),
+                      tags$li("Select Median from the dropdown under Statistic."),
+                      tags$li("Select the Median per vessel button under the dropdown."),
+                      tags$li("Continue to the Filter by: fisheries, location, size dropdown."),
+                      tags$li("Select the Homeport tab."),
+                      tags$li("Check the Newport and Astoria checkbox."),
+                      tags$li("Continue to the Additional Filters dropdown."),
+                      tags$li("Select the Non-whiting vessels checkbox under Vessel type."),
+                      tags$li("Select All catch share fisheries under Fisheries.")
+                    ),
+                   tags$br(),
+                   h4("Other options"),
+                   p("If you want to compare, for instance, Total cost net revenue and Variable cost net revenue for Newport you could choose Select multiple 
+                     metrics under the Display options. You can then return to the Metrics dropdown and check as many checkboxes as you would like to compare 
+                     side-by-side. When you use the Select multiple metrics option, however, you will not be able to choose multiple groups of participants. 
+                     A button to download the plot(s) and data table can be found at the bottom of the control panel. To switch between viewing plots and data table, 
+                     use the button above the plot or data output.")
+                 )
 )
-
+                      
+                      
+                   
