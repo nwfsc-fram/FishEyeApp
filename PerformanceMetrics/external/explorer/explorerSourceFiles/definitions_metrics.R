@@ -10,11 +10,11 @@ tags$div(style = "margin: 15px 15px 30px; width: 60%",
                    p('Please note that availability of metrics will vary between sectors.'),
                    tags$br(),
                    h4("Vessel or processor characteristics"),
-                    p('Characteristics of the vessels in the fleet or the processors that process groundfish. Metrics in this category describe vessels or 
-                      processors based on demographic information as well as the number and diversity of fisheries they participate in.'),
+                    p('Metrics in this category describe vessels or processors based on demographic information as well as the number and diversity of 
+                      fisheries they participate in.'),
                     tags$ul(
                       tags$li(strong("Number of vessels or processors:"),'Number of vessels fishing or number of companies processing.'),
-                      tags$li(strong("Vessel length:"),'Length of vessels (feet)'),
+                      tags$li(strong("Vessel length:"),'Length of vessels (feet).'),
                       tags$li(strong("Vessel replacement value:"), "Estimate of what it would cost to replace the current vessel with a 
                               new vessel based on the most recent marine survey for the vessel."),
                       tags$li(strong("Vessel market value:"), "Estimate of what the vessel could be sold for in its current condition based 
@@ -23,11 +23,11 @@ tags$div(style = "margin: 15px 15px 30px; width: 60%",
                       tags$li(strong("Number of fisheries:"),"Count of fisheries (see Filters for more information about fisheries) that vessels 
                               participated in. "),
                       tags$li(strong("Number of species purchased:"),"Count of the number of species purchased."),
-                      tags$li(strong("Proportion of revenue from catch share fishery:"), "The proportion of a vessel’s total revenue that comes from 
+                      tags$li(strong("Proportion of revenue from catch share fishery:"), "The proportion of a vessels total revenue that comes from 
                               fish caught in the West Coast Groundfish Trawl Catch Share Program (and pre-catch shares, the Limited Entry Trawl Fishery) 
                               compared to all West Coast fishing activities. User can select “Alaskan Fisheries” to calculate the proportion of limited 
                               entry/catch share fishery revenue compared to all fishing activities."),
-                      tags$li(strong("Proportion of production value from West Coast groundfish:"), 'The proportion of a processor’s revenue from production 
+                      tags$li(strong("Proportion of production value from West Coast groundfish:"), 'The proportion of a processors revenue from production 
                               that comes from fish in the catch share fishery.'),
                       tags$li(strong("Revenue diversification:"), "The Exponential Shannon Index measures income diversification of a vessel (or processor) across 
                               fisheries. A larger number corresponds to increased diversification.")

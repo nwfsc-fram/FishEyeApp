@@ -7,8 +7,8 @@ tags$div(style = "margin: 15px 15px 30px; width: 60%",
          # ),
                  tags$div(
                    h3("Instructions"),
-                   p('FISHEyE is a data exploration tool that allows you to customize data visualization output. There are four major customization features: 
-                     (1) metric, (2) statistic, (3) filters, and (4) display.'),
+                   p('FISHEyE is a data exploration tool that allows you to customize data visualization output.'),
+                   p('There are four major customization features: (1) metric, (2) statistic, (3) filters, and (4) display.'),
                     tags$ul(
                       tags$li(strong("Metric:"),'Choose the data that you would like to explore by choosing a metric category (vessel/processor characteristics, 
                               economic, labor, cost, impacts, other) and metric from the list.'),
@@ -17,12 +17,12 @@ tags$div(style = "margin: 15px 15px 30px; width: 60%",
                       tags$li(strong("Filters:"), "Customize the type of participants to include in the data summary (vessel/processor type, fisheries, location, size)."),
                       tags$li(strong("Display:"), "Customize how information is displayed by selecting the option to graph multiple metrics together and/or show variance bands in the plot.")
                        ), tags$br(),
-                   p('FISHEyE is pre-set to plot the total number of catcher-vessels for all fisheries and all types of vessels.'),
+                   p(tags$em('FISHEyE is pre-set to plot the total number of catcher-vessels for all fisheries and all types of vessels.')),
                    tags$br(),
                    tags$img(src='Instructions_image.jpg', height=900),
                     h4('How to use FISHEyE'),
-                   p("For a quick-how-to we describe how to plot median total cost net revenue per vessel from all catch share fisheries for non-whiting vessels in Newport and Astoria. 
-                     In order to use the data exploration tool make sure you are on the", tags$em("Explore the data"), "page."),
+                   p("For a quick how-to we describe how to plot median total cost net revenue per vessel from all catch share fisheries for non-whiting vessels in Newport and Astoria."),
+                   p("In order to use the data exploration tool make sure you are on the", tags$em("Explore the data"), "page."),
                     tags$ul(
                       tags$li("Select the Catcher-Vessel button on the top of control panel (the control panel is on the left-side of the screen)."),
                       tags$li("Select the Economic tab under the Metric dropdown."),
@@ -37,7 +37,7 @@ tags$div(style = "margin: 15px 15px 30px; width: 60%",
                       tags$li("Select All catch share fisheries under Fisheries.")
                     ),
                    tags$br(),
-                   h4("Other options"),
+                   p("Other options"),
                    p("If you want to compare, for instance, Total cost net revenue and Variable cost net revenue for Newport you could choose Select multiple 
                      metrics under the Display options. You can then return to the Metrics dropdown and check as many checkboxes as you would like to compare 
                      side-by-side. When you use the Select multiple metrics option, however, you will not be able to choose multiple groups of participants. 

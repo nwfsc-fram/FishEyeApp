@@ -13,6 +13,7 @@ tags$div(style = "margin: 15px 15px 30px; width: 60%",
                       metrics for one category, you can turn this option on with the Select multiple metrics slider:'),
                    tags$img(src='Display option.jpg', height=50),
                    tags$br(),
+                   tags$br(),
                    h4("Show variance"),
                    p("This functionality allows user to include a variance band on the plots. When plotting mean the variance band represents the mean plus or minus 
                      the variance. When plotting median the variance band represents the 25th and 75th quartiles.")

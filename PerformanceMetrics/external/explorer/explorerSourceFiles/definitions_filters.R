@@ -12,11 +12,12 @@ tags$div(style = "margin: 15px 15px 30px; width: 60%",
                    h4("Fisheries"),
                     p('FISHEyE uses the same fisheries definitions as those used by the',
                       tags$a(href="http://www.nwfsc.noaa.gov/research/divisions/fram/economic/overview.cfm", 'EDC Program', target="_blank"), 
-                      'EDC program to characterize the',
+                      'to characterize the',
                       tags$a(href="http://www.westcoast.fisheries.noaa.gov/fisheries/groundfish/", 'US West Coast Groundfish fishery.', target="_blank"),
                       'Many vessels that participate in the catch share program also participate in other fisheries such as Dungeness crab and pink shrimp or Alaskan fisheries. 
                       The fisheries are defined as follows:'),
                    tags$img(src='Fisheries_table.jpg', height=400),
+                   tags$br(),
                    tags$br(),
                    p('Complete information is unavailable for the Alaskan portion of vessels fishing operations, but information about the role of 
                      Alaskan fisheries can be explored using the following Vessel characteristics metrics:'),
