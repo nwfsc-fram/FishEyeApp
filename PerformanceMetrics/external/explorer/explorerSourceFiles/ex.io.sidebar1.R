@@ -16,6 +16,7 @@ output$metrics <- renderUI({
     tabPanel("Labor",    uiOutput("crewSelect"),  uiOutput("crewStats")),
     tabPanel("Cost",     uiOutput("costSelect"),  uiOutput("costStats")),
     tabPanel("Impacts", uiOutput("impactSelect"), uiOutput("impactStats")),
+    tabPanel("Purchase/Production", uiOutput("prodSelect"), uiOutput("prodStats")),
     tabPanel("Other",    uiOutput("otherSelect"), uiOutput("otherStats")),
     id = "Ind_sel", type = c("tabs")
   )
@@ -38,6 +39,20 @@ output$impactSelect <- renderUI({
     tags$div(
       class = "ckbox",
       radioButtons("impactSelect", NULL, choices = c(DatVars()$IMPACT), selected = 'Income impacts'))
+  }
+})
+
+output$prodSelect <- renderUI({
+  if(input$LayoutSelect) {
+    tags$div(
+      class = 'ckbox',
+      checkboxGroupInput("prodSelect", NULL, choices = c(DatVars()$PRODUCTION), selected = 'Purchase cost')
+    )
+  } else {
+    tags$div(
+      class = 'ckbox',
+      radioButtons('prodSelect', NULL, choices = c(DatVars()$PRODUCTION), selected = 'Purchase cost')
+    )
   }
 })
 
@@ -198,8 +213,12 @@ output$impactStats <- renderUI({
                    select = 'Total'))
 })
 
+#Purchase/production tab: Statistic radionbuttons ####
+output$prodStats <- renderUI({
+  tagList(radiobuttonstatistic(inputID = "prodStats", selection = 'Median'))
+})
+
 ##Characteristics tab: statistic ratiobuttons ####
-##(this is a little messy because mean/median/total aren't available for all metrics)
 output$demStats <- renderUI({
     tagList(radiobuttonstatistic(inputID = "demStats", selection = 'Total'))
 })
@@ -232,8 +251,6 @@ output$econStats <- renderUI({
   }
 })
 
-
-
 # Labor tab: statistic radiobuttons ####
 output$crewStats <- renderUI({
       tagList(radiobuttonstatistic(inputID = 'crewStats', selection = 'Median'))
@@ -245,6 +262,7 @@ selectinputavemedcosts <- selectInput(
                                         <i class='fa fa-info-circle fa-fw' ></i></button> </div>"), 
   c(Mean="A", Median="M", Total="T"), 
   selectize = F)
+
 # Cost tab: statistic radiobuttons ####
 output$costStats <- renderUI({
   if(input$Sect_sel=="FR")  { 
@@ -263,6 +281,7 @@ output$costStats <- renderUI({
         radioButtons("costStats","",  choices = c(DatVars()$STAT[5:8]), selected=DatVars()$STAT[5])))
   }
 }) 
+
 # Other tab: statistic radiobuttons ####
 output$otherStats <- renderUI({
 if(input$LayoutSelect) {
@@ -291,14 +310,14 @@ output$IndicatorSelect <- renderUI({
   if (input$Sect_sel != 'FR') {
     selectInput("Ind_sel",
       htmlindicatorselect,
-      c('Vessel characteristics', "Economic", "Labor", 'Impacts',"Other"),
+      c('Vessel characteristics', "Economic", "Labor", 'Impacts', "Other"),
       selected = 'Vessel characteristics',
       selectize = T
       )
   } else {
     selectInput("Ind_sel",
       htmlindicatorselect,
-      c( 'Processor characteristics', "Economic", "Labor",'Impacts', "Other"),
+      c( 'Processor characteristics', "Economic", "Labor",'Purchase/Production', "Other"),
       selected = 'Vessel characteristics',
       selectize = T
       )
@@ -419,6 +438,38 @@ prod.var <- c(
     'Non-whiting groundfish production',
     'Other species production')
 
+prod.var.species <- c( 
+  'All production',
+  'Groundfish production',
+  'Pacific whiting production',
+  'Non-whiting groundfish production',
+  "Sablefish",
+  "Rockfish",
+  "Dover sole",
+  "English sole",
+  "Petrale sole",
+  "Rex sole",
+  "Thornyheads",
+  "Lingcod",
+  "Arrowtooth flounder",
+  "Sharks, skates and rays",
+  'Other species production',
+  "Shrimp",
+  "Squid",                  
+  "Sturgeon",
+  "Tuna",
+  "Sanddab",
+  "California halibut",
+  "Coastal pelagics",
+  "Crab",
+  "Echinoderms",
+  "Other shellfish",
+  "Other species",
+  "Pacific halibut",
+  "Pacific herring",
+  "Salmon")
+                       
+
 # list of production types to filter by when using other categories (region, size)
 prod4cats <- c(
     "All production",
@@ -432,6 +483,7 @@ vsssize <- c(
   "Small vessel (<= 60 ft)")
 
 # CATEGORY SELECTION - chooses the grouping filter (fishery, port, size) ####
+# I don't think we use this anymore av 08/20/19
 output$Categoryselect <- renderUI({
   if (input$Sect_sel != "FR") {
     tags$div(
@@ -602,12 +654,25 @@ output$Variableselect <- renderUI({
         }
       } else  {
         if (!input$LayoutSelect) {
+          # Full list of species when in the Purchase/Production tab
+          if (input$Ind_sel != 'Purchase/Production') {
           tags$div(
             class = 'FRprod',
             checkboxGroupInput("VariableSelect", NULL, choices = prod.var, selected = "All production"))
-        } else {
+          } else {
+            tags$div(
+              class = 'FRprod',
+              checkboxGroupInput("VariableSelect",NULL, choicdes = prod.var.species, selected = 'All production')
+            )
+          }
+        } else  if (input$Ind_sel != 'Purchase/Production') {
           tags$div(class = 'rbutton2',
             radioButtons("VariableSelect", NULL, choices = prod.var, selected = "All production"))
+        } else {
+          tags$div(
+            class = 'rbutton2',
+            radioButtons("VariableSelect", NULL, choices = prod.var.species, selected = 'All production')
+          )
         }
       }
     }
@@ -640,6 +705,8 @@ output$FishAkselect <- renderUI({
 # whitingv: choose all vessels, whiting vessels or non-whiting vessels ####
 output$FishWhitingselectBox <- renderUI({
   if (input$Sect_sel == 'FR') {
+    # Do not include whiting selection for Purchase/production tab
+    if(input$Ind_sel != 'Purchase/Production') {
     tags$div(
       class = 'ckbox',
       checkboxGroupInput('FishWhitingSelect',
@@ -649,6 +716,9 @@ output$FishWhitingselectBox <- renderUI({
         ),
         choices = DatVars()$whitingv, selected = DatVars()$whitingv[1]))
   } else {
+    ""
+    }
+    } else {
     tags$div(
       class = 'ckbox',
       checkboxGroupInput('FishWhitingSelect',
