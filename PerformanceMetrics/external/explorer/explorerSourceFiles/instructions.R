@@ -8,12 +8,14 @@ tags$div(style = "margin: 15px 15px 30px; width: 60%",
                  tags$div(
                    h3("Instructions"),
                    p('FISHEyE is a data exploration tool that allows you to customize data visualization output.'),
-                   p('There are four major customization features: (1) metric, (2) statistic, (3) filters, and (4) display.'),
+                   p('There are six major customization features: (1) sector (2) metric, (3) statistic, (4) participant category, (5) filters, and (6) display.'),
                     tags$ul(
+                      tags$li(strong("Sector:"),'Choose a type of operation: catcher vessel, mothership vessel, catcher-processor vessel, or shorebased processor.'),
                       tags$li(strong("Metric:"),'Choose the data that you would like to explore by choosing a metric category (vessel/processor characteristics, 
                               economic, labor, cost, impacts, other) and metric from the list.'),
-                      tags$li(strong("Statistic:"),': Change how the data are summarized by selecting a statistic (mean, median, total). The Economic and Cost 
+                      tags$li(strong("Statistic:"),'Change how the data are summarized by selecting a statistic (mean, median, total). The Economic and Cost 
                               metrics also include the option to summarize as a rate (per day, per metric ton).'),
+                      tags$li(strong("Participant category:"),'Choose the groupings of individuals to display, depending on the sector, options include: fishery participation, homeport, size.'),
                       tags$li(strong("Filters:"), "Customize the type of participants to include in the data summary (vessel/processor type, fisheries, location, size)."),
                       tags$li(strong("Display:"), "Customize how information is displayed by selecting the option to graph multiple metrics together and/or show variance bands in the plot.")
                        ), tags$br(),
