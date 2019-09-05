@@ -11,7 +11,7 @@ tags$div(style = "margin: 15px 15px 30px; width: 60%",
                     p('FISHEyE lets you choose whether you would like to create multiple figures, one for each selected vessel/processor category or one for 
                       each selected metric. The default is to allow the user to choose multiple categories and one metric, if you would like to look at multiple 
                       metrics for one category, you can turn this option on with the Select multiple metrics slider:'),
-                   tags$img(src='Display option.jpg', height=50),
+                   tags$img(src='Display_option.jpg', height=50),
                    tags$br(),
                    tags$br(),
                    h4("Show variance"),
