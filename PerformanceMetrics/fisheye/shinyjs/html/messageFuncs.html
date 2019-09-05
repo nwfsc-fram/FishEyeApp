@@ -1,0 +1,87 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Show a message</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for messageFuncs {shinyjs}"><tr><td>messageFuncs {shinyjs}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Show a message</h2>
+
+<h3>Description</h3>
+
+<p><code>alert</code> (and its alias <code>info</code>) shows a message to the user as a
+simple popup.<br /><br />
+<code>logjs</code> writes a message to the JavaScript console. <code>logjs</code> is
+mainly used for debugging purposes as a way to non-intrusively print
+messages, but it is also visible to the user if they choose to inspect the
+console. You can also use the <code><a href="showLog.html">showLog</a></code> function to
+print the JavaScript message directly to the R console.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+alert(text)
+
+info(text)
+
+logjs(text)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>text</code></td>
+<td>
+<p>The message to show.  Can be either simple text or an R object.</p>
+</td></tr>
+</table>
+
+
+<h3>Note</h3>
+
+<p><code>shinyjs</code> must be initialized with a call to <code>useShinyjs()</code>
+in the app's ui.
+</p>
+
+
+<h3>See Also</h3>
+
+<p><code><a href="useShinyjs.html">useShinyjs</a></code>,
+<code><a href="runExample.html">runExample</a></code>,
+<code><a href="showLog.html">showLog</a></code>
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+if (interactive()) {
+  library(shiny)
+  shinyApp(
+    ui = fluidPage(
+      useShinyjs(),  # Set up shinyjs
+      actionButton("btn", "Click me")
+    ),
+    server = function(input, output) {
+      observeEvent(input$btn, {
+        # Change the following line for more examples
+        alert(paste0("The date is ", date()))
+      })
+    }
+  )
+}
+## Not run: 
+  # The shinyjs function call in the above app can be replaced by
+  # any of the following examples to produce similar Shiny apps
+  alert("Hello!")
+  alert(text = R.Version())
+  logjs(R.Version())
+
+## End(Not run)
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>shinyjs</em> version 1.0 <a href="00Index.html">Index</a>]</div>
+</body></html>

@@ -1,0 +1,128 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Vertical tab panel</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for vertical-tab {shinyWidgets}"><tr><td>vertical-tab {shinyWidgets}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Vertical tab panel</h2>
+
+<h3>Description</h3>
+
+<p>Vertical tab panel
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+verticalTabsetPanel(..., selected = NULL, id = NULL,
+  color = "#112446", contentWidth = 9, menuSide = "left")
+
+verticalTabPanel(title, ..., value = title, icon = NULL,
+  box_height = "160px")
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>...</code></td>
+<td>
+<p>For <code>verticalTabsetPanel</code>, <code>verticalTabPanel</code>
+to include, and for the later, UI elements.</p>
+</td></tr>
+<tr valign="top"><td><code>selected</code></td>
+<td>
+<p>The <code>value</code> (or, if none was supplied, the <code>title</code>)
+of the tab that should be selected by default. If <code>NULL</code>, the first tab will be selected.</p>
+</td></tr>
+<tr valign="top"><td><code>id</code></td>
+<td>
+<p>If provided, you can use <code>input$id</code> in your server logic to determine which of
+the current tabs is active. The value will correspond to the <code>value</code> argument that is passed to <code>verticalTabPanel</code>.</p>
+</td></tr>
+<tr valign="top"><td><code>color</code></td>
+<td>
+<p>Color for the tab panels.</p>
+</td></tr>
+<tr valign="top"><td><code>contentWidth</code></td>
+<td>
+<p>Width of the content panel (must be between 1 and 12), menu width will be <code>12 - contentWidth</code>.</p>
+</td></tr>
+<tr valign="top"><td><code>menuSide</code></td>
+<td>
+<p>Side for the menu: right or left.</p>
+</td></tr>
+<tr valign="top"><td><code>title</code></td>
+<td>
+<p>Display title for tab.</p>
+</td></tr>
+<tr valign="top"><td><code>value</code></td>
+<td>
+<p>Not used yet.</p>
+</td></tr>
+<tr valign="top"><td><code>icon</code></td>
+<td>
+<p>Optional icon to appear on the tab.</p>
+</td></tr>
+<tr valign="top"><td><code>box_height</code></td>
+<td>
+<p>Height for the title box.</p>
+</td></tr>
+</table>
+
+
+<h3>See Also</h3>
+
+<p><code><a href="updateVerticalTabsetPanel.html">updateVerticalTabsetPanel</a></code> for updating selected tabs.
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+## Not run: 
+
+if (interactive()) {
+
+library(shiny)
+library(shinyWidgets)
+
+ui &lt;- fluidPage(
+  fluidRow(
+    column(
+      width = 10, offset = 1,
+      tags$h2("Vertical tab panel example"),
+      verticalTabsetPanel(
+        verticalTabPanel(
+          title = "Title 1", icon = icon("home", "fa-2x"),
+          "Content panel 1"
+        ),
+        verticalTabPanel(
+          title = "Title 2", icon = icon("map", "fa-2x"),
+          "Content panel 2"
+        ),
+        verticalTabPanel(
+          title = "Title 3", icon = icon("rocket", "fa-2x"),
+          "Content panel 3"
+        )
+      )
+    )
+  )
+)
+
+server &lt;- function(input, output, session) {
+
+}
+
+shinyApp(ui, server)
+
+}
+
+
+## End(Not run)
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>shinyWidgets</em> version 0.4.8 <a href="00Index.html">Index</a>]</div>
+</body></html>

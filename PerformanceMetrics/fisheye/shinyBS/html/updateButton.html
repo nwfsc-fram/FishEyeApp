@@ -1,0 +1,96 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: updateButton</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for updateButton {shinyBS}"><tr><td>updateButton {shinyBS}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>updateButton</h2>
+
+<h3>Description</h3>
+
+<p><code>updateButton</code> is used in your Server logic to update the style or state
+of a button.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+updateButton(session, inputId, label = NULL, icon = NULL, value = NULL,
+  style = NULL, size = NULL, block = NULL, disabled = NULL)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>session</code></td>
+<td>
+<p>The session object passed to function given to shinyServer.</p>
+</td></tr>
+<tr valign="top"><td><code>inputId</code></td>
+<td>
+<p>Specifies the input slot that will be used to access the
+value.</p>
+</td></tr>
+<tr valign="top"><td><code>label</code></td>
+<td>
+<p>The contents of the button or link&ndash;usually a text label, but
+you could also use any other HTML, like an image.</p>
+</td></tr>
+<tr valign="top"><td><code>icon</code></td>
+<td>
+<p>An optional <code><a href="../../shiny/html/icon.html">icon</a></code> to appear on the button.</p>
+</td></tr>
+<tr valign="top"><td><code>value</code></td>
+<td>
+<p><b>logical</b> If <code>type = "toggle"</code>, the initial value of the button.</p>
+</td></tr>
+<tr valign="top"><td><code>style</code></td>
+<td>
+<p>A Bootstrap style to apply to the button. (<code>default</code>, <code>primary</code>,
+<code>success</code>, <code>info</code>, <code>warning</code>, or <code>danger</code>)</p>
+</td></tr>
+<tr valign="top"><td><code>size</code></td>
+<td>
+<p>The size of the button (<code>extra-small</code>, <code>small</code>,
+<code>default</code>, or <code>large</code>)</p>
+</td></tr>
+<tr valign="top"><td><code>block</code></td>
+<td>
+<p><b>logical</b> Should the button take the full width of the parent element?</p>
+</td></tr>
+<tr valign="top"><td><code>disabled</code></td>
+<td>
+<p><b>logical</b> Should the button be disabled (un-clickable)?</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>Because of the way it is coded, <code>updateButton</code> may work on buttons not
+created by <code><a href="bsButton.html">bsButton</a></code> such as <code><a href="../../shiny/html/submitButton.html">submitButton</a></code>.
+</p>
+<p>See <code><a href="Buttons.html">Buttons</a></code> for more information about how to use <code>updateButton</code> with the rest of the Buttons family.
+</p>
+
+
+<h3>Note</h3>
+
+<p>Run <code>bsExample("Buttons")</code> for an example
+of <code>updateButton</code> functionality.
+</p>
+
+
+<h3>See Also</h3>
+
+<p><a href="http://getbootstrap.com">Twitter Bootstrap 3</a>
+</p>
+<p>Other Buttons: <code><a href="Buttons.html">Buttons</a></code>;
+<code><a href="bsButton.html">bsButton</a></code>
+</p>
+
+<hr /><div style="text-align: center;">[Package <em>shinyBS</em> version 0.61 <a href="00Index.html">Index</a>]</div>
+</body></html>

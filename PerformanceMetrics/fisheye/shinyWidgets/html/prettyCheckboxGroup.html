@@ -1,0 +1,195 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Pretty Checkbox Group Input Control</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for prettyCheckboxGroup {shinyWidgets}"><tr><td>prettyCheckboxGroup {shinyWidgets}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Pretty Checkbox Group Input Control</h2>
+
+<h3>Description</h3>
+
+<p>Create a group of pretty checkboxes that can be
+used to toggle multiple choices independently. The
+server will receive the input as a character vector
+of the selected values.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+prettyCheckboxGroup(inputId, label, choices = NULL, selected = NULL,
+  status = "default", shape = c("square", "curve", "round"),
+  outline = FALSE, fill = FALSE, thick = FALSE, animation = NULL,
+  icon = NULL, plain = FALSE, bigger = FALSE, inline = FALSE,
+  width = NULL, choiceNames = NULL, choiceValues = NULL)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>inputId</code></td>
+<td>
+<p>The <code>input</code> slot that will be used to access the value.</p>
+</td></tr>
+<tr valign="top"><td><code>label</code></td>
+<td>
+<p>Display label for the control.</p>
+</td></tr>
+<tr valign="top"><td><code>choices</code></td>
+<td>
+<p>List of values to show checkboxes for. If elements of the list
+are named then that name rather than the value is displayed to the user. If
+this argument is provided, then <code>choiceNames</code> and <code>choiceValues</code> must not be provided,
+and vice-versa. The values should be strings; other types (such as logicals and
+numbers) will be coerced to strings.</p>
+</td></tr>
+<tr valign="top"><td><code>selected</code></td>
+<td>
+<p>The values that should be initially selected, if any.</p>
+</td></tr>
+<tr valign="top"><td><code>status</code></td>
+<td>
+<p>Add a class to the checkbox,
+you can use Bootstrap status like 'info', 'primary', 'danger', 'warning' or 'success'.</p>
+</td></tr>
+<tr valign="top"><td><code>shape</code></td>
+<td>
+<p>Shape of the checkbox between <code>square</code>, <code>curve</code> and <code>round</code>.</p>
+</td></tr>
+<tr valign="top"><td><code>outline</code></td>
+<td>
+<p>Color also the border of the checkbox (<code>TRUE</code> or <code>FALSE</code>).</p>
+</td></tr>
+<tr valign="top"><td><code>fill</code></td>
+<td>
+<p>Fill the checkbox with color (<code>TRUE</code> or <code>FALSE</code>).</p>
+</td></tr>
+<tr valign="top"><td><code>thick</code></td>
+<td>
+<p>Make the content inside checkbox smaller (<code>TRUE</code> or <code>FALSE</code>).</p>
+</td></tr>
+<tr valign="top"><td><code>animation</code></td>
+<td>
+<p>Add an animation when checkbox is checked, a value between
+<code>smooth</code>, <code>jelly</code>, <code>tada</code>, <code>rotate</code>, <code>pulse</code>.</p>
+</td></tr>
+<tr valign="top"><td><code>icon</code></td>
+<td>
+<p>Optional, display an icon on the checkbox, must be an icon created with <code>icon</code>.</p>
+</td></tr>
+<tr valign="top"><td><code>plain</code></td>
+<td>
+<p>Remove the border when checkbox is checked (<code>TRUE</code> or <code>FALSE</code>).</p>
+</td></tr>
+<tr valign="top"><td><code>bigger</code></td>
+<td>
+<p>Scale the checkboxes a bit bigger (<code>TRUE</code> or <code>FALSE</code>).</p>
+</td></tr>
+<tr valign="top"><td><code>inline</code></td>
+<td>
+<p>If <code>TRUE</code>, render the choices inline (i.e. horizontally).</p>
+</td></tr>
+<tr valign="top"><td><code>width</code></td>
+<td>
+<p>The width of the input, e.g. <code>400px</code>, or <code>100%</code>.</p>
+</td></tr>
+<tr valign="top"><td><code>choiceNames</code></td>
+<td>
+<p>List of names to display to the user.</p>
+</td></tr>
+<tr valign="top"><td><code>choiceValues</code></td>
+<td>
+<p>List of values corresponding to <code>choiceNames</code></p>
+</td></tr>
+</table>
+
+
+<h3>Value</h3>
+
+<p>A character vector or <code>NULL</code> server-side.
+</p>
+
+
+<h3>See Also</h3>
+
+<p><code><a href="updatePrettyCheckboxGroup.html">updatePrettyCheckboxGroup</a></code> for updating values server-side.
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+## Not run: 
+
+if (interactive()) {
+
+library(shiny)
+library(shinyWidgets)
+
+ui &lt;- fluidPage(
+  tags$h1("Pretty checkbox group"),
+  br(),
+
+  fluidRow(
+    column(
+      width = 4,
+      prettyCheckboxGroup(inputId = "checkgroup1",
+                          label = "Click me!",
+                          choices = c("Click me !", "Me !", "Or me !")),
+      verbatimTextOutput(outputId = "res1"),
+      br(),
+      prettyCheckboxGroup(inputId = "checkgroup4",  label = "Click me!",
+                          choices = c("Click me !", "Me !", "Or me !"),
+                          outline = TRUE,
+                          plain = TRUE, icon = icon("thumbs-up")),
+      verbatimTextOutput(outputId = "res4")
+    ),
+    column(
+      width = 4,
+      prettyCheckboxGroup(inputId = "checkgroup2",
+                          label = "Click me!", thick = TRUE,
+                          choices = c("Click me !", "Me !", "Or me !"),
+                          animation = "pulse", status = "info"),
+      verbatimTextOutput(outputId = "res2"),
+      br(),
+      prettyCheckboxGroup(inputId = "checkgroup5",
+                          label = "Click me!", icon = icon("check"),
+                          choices = c("Click me !", "Me !", "Or me !"),
+                          animation = "tada", status = "default"),
+      verbatimTextOutput(outputId = "res5")
+    ),
+    column(
+      width = 4,
+      prettyCheckboxGroup(inputId = "checkgroup3",  label = "Click me!",
+                          choices = c("Click me !", "Me !", "Or me !"),
+                          shape = "round", status = "danger",
+                          fill = TRUE, inline = TRUE),
+      verbatimTextOutput(outputId = "res3")
+    )
+  )
+
+)
+
+server &lt;- function(input, output, session) {
+
+  output$res1 &lt;- renderPrint(input$checkgroup1)
+  output$res2 &lt;- renderPrint(input$checkgroup2)
+  output$res3 &lt;- renderPrint(input$checkgroup3)
+  output$res4 &lt;- renderPrint(input$checkgroup4)
+  output$res5 &lt;- renderPrint(input$checkgroup5)
+
+}
+
+shinyApp(ui, server)
+
+}
+
+
+## End(Not run)
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>shinyWidgets</em> version 0.4.8 <a href="00Index.html">Index</a>]</div>
+</body></html>

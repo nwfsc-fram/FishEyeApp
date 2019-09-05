@@ -1,0 +1,125 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Color Selector Input</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for colorSelectorInput {shinyWidgets}"><tr><td>colorSelectorInput {shinyWidgets}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Color Selector Input</h2>
+
+<h3>Description</h3>
+
+<p>Choose between a restrictive set of colors.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+colorSelectorInput(inputId, label, choices, selected = NULL,
+  mode = c("radio", "checkbox"), display_label = FALSE, ncol = 10)
+
+colorSelectorExample()
+
+colorSelectorDrop(inputId, label, choices, selected = NULL,
+  display_label = FALSE, ncol = 10, circle = TRUE, size = "sm",
+  up = FALSE, width = NULL)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>inputId</code></td>
+<td>
+<p>The <code>input</code> slot that will be used to access the value.</p>
+</td></tr>
+<tr valign="top"><td><code>label</code></td>
+<td>
+<p>Display label for the control, or <code>NULL</code> for no label.</p>
+</td></tr>
+<tr valign="top"><td><code>choices</code></td>
+<td>
+<p>A list of colors, can be a list of named list, see example.</p>
+</td></tr>
+<tr valign="top"><td><code>selected</code></td>
+<td>
+<p>Default selected color, if <code>NULL</code> the first color for <code>mode = 'radio'</code>
+and none for <code>mode = 'checkbox'</code></p>
+</td></tr>
+<tr valign="top"><td><code>mode</code></td>
+<td>
+<p><code>'radio'</code> for only one choice, <code>'checkbox'</code> for
+selecting multiple values.</p>
+</td></tr>
+<tr valign="top"><td><code>display_label</code></td>
+<td>
+<p>Display list's names after palette of color.</p>
+</td></tr>
+<tr valign="top"><td><code>ncol</code></td>
+<td>
+<p>If choices is not a list but a vector, go to line after n elements.</p>
+</td></tr>
+<tr valign="top"><td><code>circle</code></td>
+<td>
+<p>Logical, use a circle or a square button</p>
+</td></tr>
+<tr valign="top"><td><code>size</code></td>
+<td>
+<p>Size of the button : default, lg, sm, xs.</p>
+</td></tr>
+<tr valign="top"><td><code>up</code></td>
+<td>
+<p>Logical. Display the dropdown menu above.</p>
+</td></tr>
+<tr valign="top"><td><code>width</code></td>
+<td>
+<p>Width of the dropdown menu content.</p>
+</td></tr>
+</table>
+
+
+<h3>Functions</h3>
+
+
+<ul>
+<li> <p><code>colorSelectorExample</code>: Examples of use for colorSelectorInput
+</p>
+</li>
+<li> <p><code>colorSelectorDrop</code>: Display a colorSelector in a dropdown button
+</p>
+</li></ul>
+
+
+<h3>Examples</h3>
+
+<pre>
+if (interactive()) {
+
+# Full example
+colorSelectorExample()
+
+# Simple example
+ui &lt;- fluidPage(
+  colorSelectorInput(
+    inputId = "mycolor1", label = "Pick a color :",
+    choices = c("steelblue", "cornflowerblue",
+                "firebrick", "palegoldenrod",
+                "forestgreen")
+  ),
+  verbatimTextOutput("result1")
+)
+
+server &lt;- function(input, output, session) {
+  output$result1 &lt;- renderPrint({
+    input$mycolor1
+  })
+}
+
+shinyApp(ui = ui, server = server)
+
+}
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>shinyWidgets</em> version 0.4.8 <a href="00Index.html">Index</a>]</div>
+</body></html>

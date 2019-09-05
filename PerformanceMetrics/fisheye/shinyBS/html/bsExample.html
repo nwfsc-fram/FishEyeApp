@@ -1,0 +1,62 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: bsExample</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for bsExample {shinyBS}"><tr><td>bsExample {shinyBS}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>bsExample</h2>
+
+<h3>Description</h3>
+
+<p>A function to view examples of shinyBS functionality. Will run the examples
+found in the examples sections of shinyBS documentation. Use this instead of
+<code>example</code>.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+bsExample(family, display.mode = "showcase", ...)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>family</code></td>
+<td>
+<p>A shinyBS family name</p>
+</td></tr>
+<tr valign="top"><td><code>display.mode</code></td>
+<td>
+<p>The display mode to use when running the example. See
+<code><a href="../../shiny/html/runApp.html">runApp</a></code>.</p>
+</td></tr>
+<tr valign="top"><td><code>...</code></td>
+<td>
+<p>Other parameters to pass to <code><a href="../../shiny/html/runApp.html">runApp</a></code>.</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>This function is just a wrapper for <code><a href="../../shiny/html/runApp.html">runApp</a></code> that runs copies of the
+examples found in the family documention pages of <code>shinyBS</code>. By default,
+<code>display.mode</code> is set to <code>showcase</code> so you can see the code while
+the app is running.
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+## Not run: 
+   bsExample("Alerts")
+## End(Not run)
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>shinyBS</em> version 0.61 <a href="00Index.html">Index</a>]</div>
+</body></html>

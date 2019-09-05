@@ -1,0 +1,60 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Data frame class</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for new_data_frame {vctrs}"><tr><td>new_data_frame {vctrs}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Data frame class</h2>
+
+<h3>Description</h3>
+
+<p>A <code>data.frame</code> <code><a href="../../base/html/data.frame.html">data.frame()</a></code> is a list with &quot;row.names&quot; attribute. Each
+element of the list must be named, and of the same length. These functions
+help the base data.frame classes fit in to the vctrs type system by
+providing constructors, coercion functions, and casting functions.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+new_data_frame(x = list(), n = NULL, ..., class = character())
+
+## S3 method for class 'data.frame'
+vec_ptype2(x, y, ...)
+
+## S3 method for class 'data.frame'
+vec_cast(x, to, ...)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>x</code></td>
+<td>
+<p>A named list of equal-length vectors. The lengths are not
+checked; it is responsibility of the caller to make sure they are
+equal.</p>
+</td></tr>
+<tr valign="top"><td><code>n</code></td>
+<td>
+<p>Number of rows. If <code>NULL</code>, will be computed from the length of
+the first element of <code>x</code>.</p>
+</td></tr>
+<tr valign="top"><td><code>..., class</code></td>
+<td>
+<p>Additional arguments for creating subclasses.</p>
+</td></tr>
+</table>
+
+
+<h3>Examples</h3>
+
+<pre>
+new_data_frame(list(x = 1:10, y = 10:1))
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>vctrs</em> version 0.2.0 <a href="00Index.html">Index</a>]</div>
+</body></html>

@@ -1,0 +1,132 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Selectize Group</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for selectizeGroup-module {shinyWidgets}"><tr><td>selectizeGroup-module {shinyWidgets}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Selectize Group</h2>
+
+<h3>Description</h3>
+
+<p>Group of mutually dependent &lsquo;selectizeInput' for filtering data.frame&rsquo;s columns (like in Excel).
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+selectizeGroupUI(id, params, label = NULL, btn_label = "Reset filters",
+  inline = TRUE)
+
+selectizeGroupServer(input, output, session, data, vars)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>id</code></td>
+<td>
+<p>Module's id.</p>
+</td></tr>
+<tr valign="top"><td><code>params</code></td>
+<td>
+<p>A named list of parameters passed to each 'selectizeInput', you can use :
+'inputId' (obligatory, must be variable name), 'label', 'placeholder'.</p>
+</td></tr>
+<tr valign="top"><td><code>label</code></td>
+<td>
+<p>Character, global label on top of all labels.</p>
+</td></tr>
+<tr valign="top"><td><code>btn_label</code></td>
+<td>
+<p>Character, reset button label.</p>
+</td></tr>
+<tr valign="top"><td><code>inline</code></td>
+<td>
+<p>If <code>TRUE</code> (the default), 'selectizeInput's are horizontally positioned, otherwise vertically.</p>
+</td></tr>
+<tr valign="top"><td><code>input</code></td>
+<td>
+<p>standard <code>shiny</code> input.</p>
+</td></tr>
+<tr valign="top"><td><code>output</code></td>
+<td>
+<p>standard <code>shiny</code> output.</p>
+</td></tr>
+<tr valign="top"><td><code>session</code></td>
+<td>
+<p>standard <code>shiny</code> session.</p>
+</td></tr>
+<tr valign="top"><td><code>data</code></td>
+<td>
+<p>a <code>data.frame</code>, or an object that can be coerced to <code>data.frame</code>.</p>
+</td></tr>
+<tr valign="top"><td><code>vars</code></td>
+<td>
+<p>character, columns to use to create filters,
+must correspond to variables listed in <code>params</code>.</p>
+</td></tr>
+</table>
+
+
+<h3>Value</h3>
+
+<p>a <code>reactive</code> function containing data filtered.
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+## Not run: 
+
+if (interactive()) {
+
+library(shiny)
+library(shinyWidgets)
+
+data("mpg", package = "ggplot2")
+
+ui &lt;- fluidPage(
+  fluidRow(
+    column(
+      width = 10, offset = 1,
+      tags$h3("Filter data with selectize group"),
+      panel(
+        selectizeGroupUI(
+          id = "my-filters",
+          params = list(
+            manufacturer = list(inputId = "manufacturer", title = "Manufacturer:"),
+            model = list(inputId = "model", title = "Model:"),
+            trans = list(inputId = "trans", title = "Trans:"),
+            class = list(inputId = "class", title = "Class:")
+          )
+        ), status = "primary"
+      ),
+      dataTableOutput(outputId = "table")
+    )
+  )
+)
+
+server &lt;- function(input, output, session) {
+  res_mod &lt;- callModule(
+    module = selectizeGroupServer,
+    id = "my-filters",
+    data = mpg,
+    vars = c("manufacturer", "model", "trans", "class")
+  )
+  output$table &lt;- renderDataTable(res_mod())
+}
+
+shinyApp(ui, server)
+
+}
+
+
+## End(Not run)
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>shinyWidgets</em> version 0.4.8 <a href="00Index.html">Index</a>]</div>
+</body></html>

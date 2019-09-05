@@ -1,0 +1,114 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Change the value of a slider text input on the client</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for updateSliderTextInput {shinyWidgets}"><tr><td>updateSliderTextInput {shinyWidgets}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Change the value of a slider text input on the client</h2>
+
+<h3>Description</h3>
+
+<p>Change the value of a slider text input on the client
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+updateSliderTextInput(session, inputId, label = NULL, selected = NULL,
+  choices = NULL, from_fixed = NULL, to_fixed = NULL)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>session</code></td>
+<td>
+<p>The session object passed to function given to shinyServer.</p>
+</td></tr>
+<tr valign="top"><td><code>inputId</code></td>
+<td>
+<p>The id of the input object.</p>
+</td></tr>
+<tr valign="top"><td><code>label</code></td>
+<td>
+<p>The label to set.</p>
+</td></tr>
+<tr valign="top"><td><code>selected</code></td>
+<td>
+<p>The values selected.</p>
+</td></tr>
+<tr valign="top"><td><code>choices</code></td>
+<td>
+<p>The new choices for the input.</p>
+</td></tr>
+<tr valign="top"><td><code>from_fixed</code></td>
+<td>
+<p>Fix the left handle (or single handle).</p>
+</td></tr>
+<tr valign="top"><td><code>to_fixed</code></td>
+<td>
+<p>Fix the right handle.</p>
+</td></tr>
+</table>
+
+
+<h3>See Also</h3>
+
+<p><code><a href="sliderTextInput.html">sliderTextInput</a></code>
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+## Not run: 
+
+if (interactive()) {
+library("shiny")
+library("shinyWidgets")
+
+ui &lt;- fluidPage(
+  br(),
+  sliderTextInput(
+    inputId = "mySlider",
+    label = "Pick a month :",
+    choices = month.abb,
+    selected = "Jan"
+  ),
+  verbatimTextOutput(outputId = "res"),
+  radioButtons(
+    inputId = "up",
+    label = "Update choices:",
+    choices = c("Abbreviations", "Full names")
+  )
+)
+
+server &lt;- function(input, output, session) {
+  output$res &lt;- renderPrint(str(input$mySlider))
+
+  observeEvent(input$up, {
+    choices &lt;- switch(
+      input$up,
+      "Abbreviations" = month.abb,
+      "Full names" = month.name
+    )
+    updateSliderTextInput(
+      session = session,
+      inputId = "mySlider",
+      choices = choices
+    )
+  }, ignoreInit = TRUE)
+}
+
+shinyApp(ui = ui, server = server)
+}
+
+
+## End(Not run)
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>shinyWidgets</em> version 0.4.8 <a href="00Index.html">Index</a>]</div>
+</body></html>

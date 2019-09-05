@@ -1,0 +1,158 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Printing tibbles</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for formatting {tibble}"><tr><td>formatting {tibble}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Printing tibbles</h2>
+
+<h3>Description</h3>
+
+<a href='https://www.tidyverse.org/lifecycle/#maturing'><img src='figures/lifecycle-maturing.svg' alt='Maturing lifecycle'></a>
+<p>One of the main features of the <code>tbl_df</code> class is the printing:
+</p>
+
+<ul>
+<li><p> Tibbles only print as many rows and columns as fit on one screen,
+supplemented by a summary of the remaining rows and columns.
+</p>
+</li>
+<li><p> Tibble reveals the type of each column, which keeps the user informed about
+whether a variable is, e.g., <code>&lt;chr&gt;</code> or <code>&lt;fct&gt;</code> (character versus factor).
+</p>
+</li></ul>
+
+<p>Printing can be tweaked for a one-off call by calling <code>print()</code> explicitly
+and setting arguments like <code>n</code> and <code>width</code>. More persistent control is
+available by setting the options described below.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+## S3 method for class 'tbl'
+print(x, ..., n = NULL, width = NULL, n_extra = NULL)
+
+## S3 method for class 'tbl'
+format(x, ..., n = NULL, width = NULL, n_extra = NULL)
+
+trunc_mat(x, n = NULL, width = NULL, n_extra = NULL)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>x</code></td>
+<td>
+<p>Object to format or print.</p>
+</td></tr>
+<tr valign="top"><td><code>...</code></td>
+<td>
+<p>Other arguments passed on to individual methods.</p>
+</td></tr>
+<tr valign="top"><td><code>n</code></td>
+<td>
+<p>Number of rows to show. If <code>NULL</code>, the default, will print all rows
+if less than option <code>tibble.print_max</code>. Otherwise, will print
+<code>tibble.print_min</code> rows.</p>
+</td></tr>
+<tr valign="top"><td><code>width</code></td>
+<td>
+<p>Width of text output to generate. This defaults to <code>NULL</code>, which
+means use <code>getOption("tibble.width")</code> or (if also <code>NULL</code>)
+<code>getOption("width")</code>; the latter displays only the columns that fit on one
+screen. You can also set <code>options(tibble.width = Inf)</code> to override this
+default and always print all columns.</p>
+</td></tr>
+<tr valign="top"><td><code>n_extra</code></td>
+<td>
+<p>Number of extra columns to print abbreviated information for,
+if the width is too small for the entire tibble. If <code>NULL</code>, the default,
+will print information about at most <code>tibble.max_extra_cols</code> extra columns.</p>
+</td></tr>
+</table>
+
+
+<h3>Package options</h3>
+
+<p>Options used by the tibble and pillar packages to format and print <code>tbl_df</code>
+objects. Used by the formatting workhorse <code>trunc_mat()</code> and, therefore,
+indirectly, by <code>print.tbl()</code>.
+</p>
+
+<ul>
+<li> <p><code>tibble.print_max</code>: Row number threshold: Maximum number of rows printed.
+Set to <code>Inf</code> to always print all rows.  Default: 20.
+</p>
+</li>
+<li> <p><code>tibble.print_min</code>: Number of rows printed if row number threshold is
+exceeded. Default: 10.
+</p>
+</li>
+<li> <p><code>tibble.width</code>: Output width. Default: <code>NULL</code> (use <code>width</code> option).
+</p>
+</li>
+<li> <p><code>tibble.max_extra_cols</code>: Number of extra columns printed in reduced form.
+Default: 100.
+</p>
+</li></ul>
+
+
+<ul>
+<li> <p><code>pillar.bold</code>: Use bold font, e.g. for column headers? This currently
+defaults to <code>FALSE</code>, because many terminal fonts have poor support for
+bold fonts.
+</p>
+</li>
+<li> <p><code>pillar.subtle</code>: Use subtle style, e.g. for row numbers and data types?
+Default: <code>TRUE</code>.
+</p>
+</li>
+<li> <p><code>pillar.subtle_num</code>: Use subtle style for insignificant digits? Default:
+<code>FALSE</code>, is also affected by the <code>pillar.subtle</code> option.
+</p>
+</li>
+<li> <p><code>pillar.neg</code>: Highlight negative numbers? Default: <code>TRUE</code>.
+</p>
+</li>
+<li> <p><code>pillar.sigfig</code>: The number of significant digits that will be printed and
+highlighted, default: <code>3</code>. Set the <code>pillar.subtle</code> option to <code>FALSE</code> to
+turn off highlighting of significant digits.
+</p>
+</li>
+<li> <p><code>pillar.min_title_chars</code>: The minimum number of characters for the column
+title, default: <code>15</code>.  Column titles may be truncated up to that width to
+save horizontal space. Set to <code>Inf</code> to turn off truncation of column
+titles.
+</p>
+</li></ul>
+
+
+
+<h3>Examples</h3>
+
+<pre>
+print(as_tibble(mtcars))
+print(as_tibble(mtcars), n = 1)
+print(as_tibble(mtcars), n = 3)
+
+print(as_tibble(iris), n = 100)
+
+print(mtcars, width = 10)
+
+mtcars2 &lt;- as_tibble(cbind(mtcars, mtcars), .name_repair = "unique")
+print(mtcars2, n = 25, n_extra = 3)
+
+trunc_mat(mtcars)
+
+if (requireNamespace("nycflights13", quietly = TRUE)) {
+  print(nycflights13::flights, n_extra = 2)
+  print(nycflights13::flights, width = Inf)
+}
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>tibble</em> version 2.1.3 <a href="00Index.html">Index</a>]</div>
+</body></html>

@@ -1,0 +1,240 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Pretty Toggle Input</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for prettyToggle {shinyWidgets}"><tr><td>prettyToggle {shinyWidgets}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Pretty Toggle Input</h2>
+
+<h3>Description</h3>
+
+<p>A single checkbox that changes appearance if checked or not.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+prettyToggle(inputId, label_on, label_off, icon_on = NULL,
+  icon_off = NULL, value = FALSE, status_on = "success",
+  status_off = "danger", shape = c("square", "curve", "round"),
+  outline = FALSE, fill = FALSE, thick = FALSE, plain = FALSE,
+  bigger = FALSE, animation = NULL, inline = FALSE, width = NULL)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>inputId</code></td>
+<td>
+<p>The <code>input</code> slot that will be used to access the value.</p>
+</td></tr>
+<tr valign="top"><td><code>label_on</code></td>
+<td>
+<p>Display label for the control when value is <code>TRUE</code>.</p>
+</td></tr>
+<tr valign="top"><td><code>label_off</code></td>
+<td>
+<p>Display label for the control when value is <code>FALSE</code></p>
+</td></tr>
+<tr valign="top"><td><code>icon_on</code></td>
+<td>
+<p>Optional, display an icon on the checkbox when value is <code>TRUE</code>, must be an icon created with <code>icon</code>.</p>
+</td></tr>
+<tr valign="top"><td><code>icon_off</code></td>
+<td>
+<p>Optional, display an icon on the checkbox when value is <code>FALSE</code>, must be an icon created with <code>icon</code>.</p>
+</td></tr>
+<tr valign="top"><td><code>value</code></td>
+<td>
+<p>Initial value (<code>TRUE</code> or <code>FALSE</code>).</p>
+</td></tr>
+<tr valign="top"><td><code>status_on</code></td>
+<td>
+<p>Add a class to the checkbox when value is <code>TRUE</code>,
+you can use Bootstrap status like 'info', 'primary', 'danger', 'warning' or 'success'.</p>
+</td></tr>
+<tr valign="top"><td><code>status_off</code></td>
+<td>
+<p>Add a class to the checkbox when value is <code>FALSE</code>,
+you can use Bootstrap status like 'info', 'primary', 'danger', 'warning' or 'success'.</p>
+</td></tr>
+<tr valign="top"><td><code>shape</code></td>
+<td>
+<p>Shape of the checkbox between <code>square</code>, <code>curve</code> and <code>round</code>.</p>
+</td></tr>
+<tr valign="top"><td><code>outline</code></td>
+<td>
+<p>Color also the border of the checkbox (<code>TRUE</code> or <code>FALSE</code>).</p>
+</td></tr>
+<tr valign="top"><td><code>fill</code></td>
+<td>
+<p>Fill the checkbox with color (<code>TRUE</code> or <code>FALSE</code>).</p>
+</td></tr>
+<tr valign="top"><td><code>thick</code></td>
+<td>
+<p>Make the content inside checkbox smaller (<code>TRUE</code> or <code>FALSE</code>).</p>
+</td></tr>
+<tr valign="top"><td><code>plain</code></td>
+<td>
+<p>Remove the border when checkbox is checked (<code>TRUE</code> or <code>FALSE</code>).</p>
+</td></tr>
+<tr valign="top"><td><code>bigger</code></td>
+<td>
+<p>Scale the checkboxes a bit bigger (<code>TRUE</code> or <code>FALSE</code>).</p>
+</td></tr>
+<tr valign="top"><td><code>animation</code></td>
+<td>
+<p>Add an animation when checkbox is checked, a value between
+<code>smooth</code>, <code>jelly</code>, <code>tada</code>, <code>rotate</code>, <code>pulse</code>.</p>
+</td></tr>
+<tr valign="top"><td><code>inline</code></td>
+<td>
+<p>Display the input inline, if you want to place checkboxes next to each other.</p>
+</td></tr>
+<tr valign="top"><td><code>width</code></td>
+<td>
+<p>The width of the input, e.g. <code>400px</code>, or <code>100%</code>.</p>
+</td></tr>
+</table>
+
+
+<h3>Value</h3>
+
+<p><code>TRUE</code> or <code>FALSE</code> server-side.
+</p>
+
+
+<h3>See Also</h3>
+
+<p>See <code><a href="updatePrettyToggle.html">updatePrettyToggle</a></code> to update the value server-side.
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+## Not run: 
+
+if (interactive()) {
+library(shiny)
+library(shinyWidgets)
+
+ui &lt;- fluidPage(
+  tags$h1("Pretty toggles"),
+  br(),
+
+  fluidRow(
+    column(
+      width = 4,
+      prettyToggle(inputId = "toggle1",
+                   label_on = "Checked!",
+                   label_off = "Unchecked..."),
+      verbatimTextOutput(outputId = "res1"),
+      br(),
+      prettyToggle(inputId = "toggle4",  label_on = "Yes!",
+                   label_off = "No..", outline = TRUE,
+                   plain = TRUE,
+                   icon_on = icon("thumbs-up"),
+                   icon_off = icon("thumbs-down")),
+      verbatimTextOutput(outputId = "res4")
+    ),
+    column(
+      width = 4,
+      prettyToggle(inputId = "toggle2",
+                   label_on = "Yes!", icon_on = icon("check"),
+                   status_on = "info", status_off = "warning",
+                   label_off = "No..", icon_off = icon("remove")),
+      verbatimTextOutput(outputId = "res2")
+    ),
+    column(
+      width = 4,
+      prettyToggle(inputId = "toggle3",  label_on = "Yes!",
+                   label_off = "No..", shape = "round",
+                   fill = TRUE, value = TRUE),
+      verbatimTextOutput(outputId = "res3")
+    )
+  )
+
+)
+
+server &lt;- function(input, output, session) {
+
+  output$res1 &lt;- renderPrint(input$toggle1)
+  output$res2 &lt;- renderPrint(input$toggle2)
+  output$res3 &lt;- renderPrint(input$toggle3)
+  output$res4 &lt;- renderPrint(input$toggle4)
+
+}
+
+shinyApp(ui, server)
+
+
+
+# Inline example ----
+
+
+ui &lt;- fluidPage(
+  tags$h1("Pretty toggles: inline example"),
+  br(),
+
+  prettyToggle(inputId = "toggle1",
+               label_on = "Checked!",
+               label_off = "Unchecked...",
+               inline = TRUE),
+  prettyToggle(inputId = "toggle2",
+               label_on = "Yep",
+               status_on = "default",
+               icon_on = icon("ok-circle", lib = "glyphicon"),
+               label_off = "Nope",
+               status_off = "default",
+               icon_off = icon("remove-circle", lib = "glyphicon"),
+               plain = TRUE,
+               inline = TRUE),
+  prettyToggle(inputId = "toggle3",
+               label_on = "",
+               label_off = "",
+               icon_on = icon("volume-up", lib = "glyphicon"),
+               icon_off = icon("volume-off", lib = "glyphicon"),
+               status_on = "primary",
+               status_off = "default",
+               plain = TRUE,
+               outline = TRUE,
+               bigger = TRUE,
+               inline = TRUE),
+  prettyToggle(inputId = "toggle4",
+               label_on = "Yes!",
+               label_off = "No..",
+               outline = TRUE,
+               plain = TRUE,
+               icon_on = icon("thumbs-up"),
+               icon_off = icon("thumbs-down"),
+               inline = TRUE),
+
+  verbatimTextOutput(outputId = "res")
+
+)
+
+server &lt;- function(input, output, session) {
+
+  output$res &lt;- renderPrint(c(input$toggle1,
+                              input$toggle2,
+                              input$toggle3,
+                              input$toggle4))
+
+}
+
+shinyApp(ui, server)
+
+
+
+}
+
+
+## End(Not run)
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>shinyWidgets</em> version 0.4.8 <a href="00Index.html">Index</a>]</div>
+</body></html>

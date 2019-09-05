@@ -1,0 +1,100 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Actions Buttons Group Inputs</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for actionGroupButtons {shinyWidgets}"><tr><td>actionGroupButtons {shinyWidgets}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Actions Buttons Group Inputs</h2>
+
+<h3>Description</h3>
+
+<p>Create a group of actions buttons.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+actionGroupButtons(inputIds, labels, status = "default",
+  size = "normal", direction = "horizontal", fullwidth = FALSE)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>inputIds</code></td>
+<td>
+<p>The <code>input</code>s slot that will be used to access the value, one for each button.</p>
+</td></tr>
+<tr valign="top"><td><code>labels</code></td>
+<td>
+<p>Labels for each buttons, must have same length as <code>inputIds</code>.</p>
+</td></tr>
+<tr valign="top"><td><code>status</code></td>
+<td>
+<p>Add a class to the buttons, you can use Bootstrap status like 'info', 'primary', 'danger', 'warning' or 'success'.
+Or use an arbitrary strings to add a custom class, e.g. : with <code>status = 'myClass'</code>, buttons will have class <code>btn-myClass</code>.</p>
+</td></tr>
+<tr valign="top"><td><code>size</code></td>
+<td>
+<p>Size of the buttons ('xs', 'sm', 'normal', 'lg').</p>
+</td></tr>
+<tr valign="top"><td><code>direction</code></td>
+<td>
+<p>Horizontal or vertical.</p>
+</td></tr>
+<tr valign="top"><td><code>fullwidth</code></td>
+<td>
+<p>If TRUE, fill the width of the parent div.</p>
+</td></tr>
+</table>
+
+
+<h3>Value</h3>
+
+<p>An actions buttons group control that can be added to a UI definition.
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+
+## Not run: 
+if (interactive()) {
+  library("shiny")
+  library("shinyWidgets")
+
+  ui &lt;- fluidPage(
+    br(),
+    actionGroupButtons(
+      inputIds = c("btn1", "btn2", "btn3"),
+      labels = list("Action 1", "Action 2", tags$span(icon("gear"), "Action 3")),
+      status = "primary"
+    ),
+    verbatimTextOutput(outputId = "res1"),
+    verbatimTextOutput(outputId = "res2"),
+    verbatimTextOutput(outputId = "res3")
+  )
+
+  server &lt;- function(input, output, session) {
+
+    output$res1 &lt;- renderPrint(input$btn1)
+
+    output$res2 &lt;- renderPrint(input$btn2)
+
+    output$res3 &lt;- renderPrint(input$btn3)
+
+  }
+
+  shinyApp(ui = ui, server = server)
+}
+
+## End(Not run)
+
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>shinyWidgets</em> version 0.4.8 <a href="00Index.html">Index</a>]</div>
+</body></html>

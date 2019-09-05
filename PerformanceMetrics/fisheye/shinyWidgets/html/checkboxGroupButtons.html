@@ -1,0 +1,122 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Buttons Group checkbox Input Control</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for checkboxGroupButtons {shinyWidgets}"><tr><td>checkboxGroupButtons {shinyWidgets}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Buttons Group checkbox Input Control</h2>
+
+<h3>Description</h3>
+
+<p>Create buttons grouped that act like checkboxes.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+checkboxGroupButtons(inputId, label = NULL, choices = NULL,
+  selected = NULL, status = "default", size = "normal",
+  direction = "horizontal", justified = FALSE, individual = FALSE,
+  checkIcon = list(), width = NULL, choiceNames = NULL,
+  choiceValues = NULL)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>inputId</code></td>
+<td>
+<p>The <code>input</code> slot that will be used to access the value.</p>
+</td></tr>
+<tr valign="top"><td><code>label</code></td>
+<td>
+<p>Input label.</p>
+</td></tr>
+<tr valign="top"><td><code>choices</code></td>
+<td>
+<p>List of values to select from (if elements of the list are named
+then that name rather than the value is displayed to the user)</p>
+</td></tr>
+<tr valign="top"><td><code>selected</code></td>
+<td>
+<p>The initially selected value.</p>
+</td></tr>
+<tr valign="top"><td><code>status</code></td>
+<td>
+<p>Add a class to the buttons, you can use Bootstrap status like 'info', 'primary', 'danger', 'warning' or 'success'.
+Or use an arbitrary strings to add a custom class, e.g. : with <code>status = 'myClass'</code>, buttons will have class <code>btn-myClass</code>.</p>
+</td></tr>
+<tr valign="top"><td><code>size</code></td>
+<td>
+<p>Size of the buttons ('xs', 'sm', 'normal', 'lg')</p>
+</td></tr>
+<tr valign="top"><td><code>direction</code></td>
+<td>
+<p>Horizontal or vertical.</p>
+</td></tr>
+<tr valign="top"><td><code>justified</code></td>
+<td>
+<p>If TRUE, fill the width of the parent div.</p>
+</td></tr>
+<tr valign="top"><td><code>individual</code></td>
+<td>
+<p>If TRUE, buttons are separated.</p>
+</td></tr>
+<tr valign="top"><td><code>checkIcon</code></td>
+<td>
+<p>A list, if no empty must contain at least one element named 'yes'
+corresponding to an icon to display if the button is checked.</p>
+</td></tr>
+<tr valign="top"><td><code>width</code></td>
+<td>
+<p>The width of the input, e.g. '400px', or '100%'.</p>
+</td></tr>
+<tr valign="top"><td><code>choiceNames, choiceValues</code></td>
+<td>
+<p>Same as in <code><a href="../../shiny/html/checkboxGroupInput.html">checkboxGroupInput</a></code>. List of names and values, respectively, that are displayed to
+the user in the app and correspond to the each choice (for this reason,
+<code>choiceNames</code> and <code>choiceValues</code> must have the same length).</p>
+</td></tr>
+</table>
+
+
+<h3>Value</h3>
+
+<p>A buttons group control that can be added to a UI definition.
+</p>
+
+
+<h3>See Also</h3>
+
+<p><code><a href="updateCheckboxGroupButtons.html">updateCheckboxGroupButtons</a></code>
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+## Not run: 
+## Only run examples in interactive R sessions
+if (interactive()) {
+
+ui &lt;- fluidPage(
+  checkboxGroupButtons(inputId = "somevalue",
+                       label = "Make a choice: ",
+                       choices = c("A", "B", "C")),
+  verbatimTextOutput("value")
+)
+server &lt;- function(input, output) {
+  output$value &lt;- renderText({ input$somevalue })
+}
+shinyApp(ui, server)
+}
+
+## End(Not run)
+
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>shinyWidgets</em> version 0.4.8 <a href="00Index.html">Index</a>]</div>
+</body></html>

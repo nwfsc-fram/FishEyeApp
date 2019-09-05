@@ -1,0 +1,160 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Accordion-sidebar panel-group</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for bs_accordion_sidebar {bsplus}"><tr><td>bs_accordion_sidebar {bsplus}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Accordion-sidebar panel-group</h2>
+
+<h3>Description</h3>
+
+<p>Combines Bootstrap accordion with
+the functionality of <code>shiny::<a href="../../shiny/html/sidebarLayout.html">sidebarLayout</a></code>,
+allowing you to add another dimension to your <strong>shiny</strong> apps.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+bs_accordion_sidebar(id, spec_side = c(width = 4, offset = 0),
+  spec_main = c(width = 8, offset = 0), position = c("left", "right"))
+
+use_bs_accordion_sidebar()
+
+## S3 method for class 'bsplus_accordion_sidebar'
+bs_append(tag, title_side, content_side,
+  content_main, ...)
+
+## S3 method for class 'bsplus_accordion_sidebar'
+bs_set_opts(tag,
+  panel_type_active = "success", panel_type_inactive = "primary",
+  use_main_enclosure = TRUE, ...)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>id</code></td>
+<td>
+<p>character, unique id for accordion-sidebar <code>&lt;div/&gt;</code>,
+also serves as root id for panels appended using <code>bs_append()</code></p>
+</td></tr>
+<tr valign="top"><td><code>spec_side</code></td>
+<td>
+<p>numeric, column specification for sidebar panels</p>
+</td></tr>
+<tr valign="top"><td><code>spec_main</code></td>
+<td>
+<p>numeric, column specification for main panels</p>
+</td></tr>
+<tr valign="top"><td><code>position</code></td>
+<td>
+<p>character, indicates where to put the sidebar panels with
+respect to the main panels</p>
+</td></tr>
+<tr valign="top"><td><code>tag</code></td>
+<td>
+<p><code>htmltools::<a href="../../htmltools/html/tag.html">tag</a></code>,
+accordion-sidebar <code>&lt;div/&gt;</code> to which to append a panel</p>
+</td></tr>
+<tr valign="top"><td><code>title_side</code></td>
+<td>
+<p>character (HTML) or <code>htmltools::<a href="../../htmltools/html/tagList.html">tagList</a></code>,
+title for the sidebar panel</p>
+</td></tr>
+<tr valign="top"><td><code>content_side</code></td>
+<td>
+<p>character (HTML) or <code>htmltools::<a href="../../htmltools/html/tagList.html">tagList</a></code>,
+content for the sidebar panel</p>
+</td></tr>
+<tr valign="top"><td><code>content_main</code></td>
+<td>
+<p>character (HTML) or <code>htmltools::<a href="../../htmltools/html/tagList.html">tagList</a></code>,
+content for the main panel</p>
+</td></tr>
+<tr valign="top"><td><code>...</code></td>
+<td>
+<p>other arguments (not used)</p>
+</td></tr>
+<tr valign="top"><td><code>panel_type_active</code></td>
+<td>
+<p>character, indicated bootstrap type for active-panel header,
+one of <code>c("default", "primary", "success", "info", "warning", "danger")</code></p>
+</td></tr>
+<tr valign="top"><td><code>panel_type_inactive</code></td>
+<td>
+<p>character, indicated bootstrap type for inactive-panel header,
+one of <code>c("default", "primary", "success", "info", "warning", "danger")</code></p>
+</td></tr>
+<tr valign="top"><td><code>use_main_enclosure</code></td>
+<td>
+<p>logical, indicates if main content is to be wrapped in a
+Bootstrap panel</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>If you use a <code>bs_accordion_sidebar()</code>, you will have to call the function
+<code>use_bs_accordion_sidebar()</code> somewhere in your UI. This attaches some
+JavaScript needed for your accordion sidebar to work properly.
+</p>
+<p>All of these functions return a <code>bsplus_accsidebar</code> object,
+(which is also an <code>htmltools::<a href="../../htmltools/html/tag.html">tag</a></code>, <code>&lt;div/&gt;</code>), so you can
+compose an accordion sidebar by piping. There are three parts to this system:
+</p>
+
+<ol>
+<li><p>A constructor function for the accordion-sidebar, <code>bs_accordion_sidebar()</code>
+</p>
+</li>
+<li><p>A function to set options for subsequent panels, <code>bs_set_opts()</code>
+</p>
+</li>
+<li><p>A function to append a panel-set to an accordion-sidebar, <code>bs_append()</code>
+</p>
+</li></ol>
+
+<p>The verb <em>append</em> is used to signify that you can append an arbitrary
+number of panels-sets to an accordion-sidebar.
+</p>
+<p>For the constructor, <code>bs_accordion_sidebar()</code>,
+it is your responsibility to ensure that <code>id</code> is unique
+among HTML elements in your page. If you have non-unique <code>id</code>'s, strange things may
+happen to your page.
+</p>
+
+
+<h3>Value</h3>
+
+<p><code>bsplus_accsidebar</code> object (<code>htmltools::<a href="../../htmltools/html/tag.html">tag</a></code>,
+<code>&lt;div/&gt;</code>)
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+bs_accordion_sidebar(id = "meet_the_beatles") %&gt;%
+  bs_append(
+    title_side = "John Lennon",
+    content_side = "Rhythm guitar, vocals",
+    content_main = "Dear Prudence"
+  ) %&gt;%
+  bs_append(
+    title_side = "Paul McCartney",
+    content_side = "Bass guitar, vocals",
+    content_main = "Blackbird"
+  )
+## Not run: 
+use_bs_accordion_sidebar()
+
+## End(Not run)
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>bsplus</em> version 0.1.1 <a href="00Index.html">Index</a>]</div>
+</body></html>

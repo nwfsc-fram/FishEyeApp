@@ -1,0 +1,103 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Launch an input text dialog</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for inputSweetAlert {shinyWidgets}"><tr><td>inputSweetAlert {shinyWidgets}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Launch an input text dialog</h2>
+
+<h3>Description</h3>
+
+<p>Launch a popup with a text input
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+inputSweetAlert(session, inputId, title = NULL, text = NULL,
+  type = NULL, btn_labels = "Ok", placeholder = NULL)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>session</code></td>
+<td>
+<p>The <code>session</code> object passed to function given to shinyServer.</p>
+</td></tr>
+<tr valign="top"><td><code>inputId</code></td>
+<td>
+<p>The <code>input</code> slot that will be used to access the value.</p>
+</td></tr>
+<tr valign="top"><td><code>title</code></td>
+<td>
+<p>Title of the alert.</p>
+</td></tr>
+<tr valign="top"><td><code>text</code></td>
+<td>
+<p>Text of the alert.</p>
+</td></tr>
+<tr valign="top"><td><code>type</code></td>
+<td>
+<p>Type of the alert : info, success, warning or error.</p>
+</td></tr>
+<tr valign="top"><td><code>btn_labels</code></td>
+<td>
+<p>Labels for button(s).</p>
+</td></tr>
+<tr valign="top"><td><code>placeholder</code></td>
+<td>
+<p>A character string giving the user a hint as to
+what can be entered into the control.</p>
+</td></tr>
+</table>
+
+
+<h3>See Also</h3>
+
+<p><code><a href="sendSweetAlert.html">sendSweetAlert</a></code>, <code><a href="confirmSweetAlert.html">confirmSweetAlert</a></code>
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+## Not run: 
+
+if (interactive()) {
+
+library("shiny")
+library("shinyWidgets")
+
+
+ui &lt;- fluidPage(
+  tags$h1("Confirm sweet alert"),
+  actionButton(inputId = "go", label = "Launch input text dialog"),
+  verbatimTextOutput(outputId = "res")
+)
+server &lt;- function(input, output, session) {
+
+  observeEvent(input$go, {
+    inputSweetAlert(
+      session = session, inputId = "mytext",
+      title = "What's your name ?"
+    )
+  })
+
+  output$res &lt;- renderPrint(input$mytext)
+
+}
+
+shinyApp(ui = ui, server = server)
+
+}
+
+
+## End(Not run)
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>shinyWidgets</em> version 0.4.8 <a href="00Index.html">Index</a>]</div>
+</body></html>

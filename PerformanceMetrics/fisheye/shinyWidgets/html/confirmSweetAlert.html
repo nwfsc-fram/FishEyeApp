@@ -1,0 +1,212 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Launch a confirmation dialog</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for confirmSweetAlert {shinyWidgets}"><tr><td>confirmSweetAlert {shinyWidgets}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Launch a confirmation dialog</h2>
+
+<h3>Description</h3>
+
+<p>Launch a popup to ask confirmation to the user
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+confirmSweetAlert(session, inputId, title = NULL, text = NULL,
+  type = NULL, danger_mode = FALSE, btn_labels = c("Cancel",
+  "Confirm"), closeOnClickOutside = FALSE, html = FALSE)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>session</code></td>
+<td>
+<p>The <code>session</code> object passed to function given to shinyServer.</p>
+</td></tr>
+<tr valign="top"><td><code>inputId</code></td>
+<td>
+<p>The <code>input</code> slot that will be used to access the value.</p>
+</td></tr>
+<tr valign="top"><td><code>title</code></td>
+<td>
+<p>Title of the alert.</p>
+</td></tr>
+<tr valign="top"><td><code>text</code></td>
+<td>
+<p>Text of the alert, can contains HTML tags.</p>
+</td></tr>
+<tr valign="top"><td><code>type</code></td>
+<td>
+<p>Type of the alert : info, success, warning or error.</p>
+</td></tr>
+<tr valign="top"><td><code>danger_mode</code></td>
+<td>
+<p>Logical, activate danger mode (focus on cancel button).</p>
+</td></tr>
+<tr valign="top"><td><code>btn_labels</code></td>
+<td>
+<p>Labels for buttons.</p>
+</td></tr>
+<tr valign="top"><td><code>closeOnClickOutside</code></td>
+<td>
+<p>Decide whether the user should be able to dismiss
+the modal by clicking outside of it, or not.</p>
+</td></tr>
+<tr valign="top"><td><code>html</code></td>
+<td>
+<p>Does <code>text</code> contains HTML tags ?</p>
+</td></tr>
+</table>
+
+
+<h3>See Also</h3>
+
+<p><code><a href="sendSweetAlert.html">sendSweetAlert</a></code>, <code><a href="inputSweetAlert.html">inputSweetAlert</a></code>
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+
+## Not run: 
+
+if (interactive()) {
+
+library("shiny")
+library("shinyWidgets")
+
+
+ui &lt;- fluidPage(
+  tags$h1("Confirm sweet alert"),
+  actionButton(
+    inputId = "launch",
+    label = "Launch confirmation dialog"
+  ),
+  verbatimTextOutput(outputId = "res"),
+  uiOutput(outputId = "count")
+)
+
+server &lt;- function(input, output, session) {
+  # Launch sweet alert confirmation
+  observeEvent(input$launch, {
+    confirmSweetAlert(
+      session = session,
+      inputId = "myconfirmation",
+      type = "warning",
+      title = "Want to confirm ?",
+      danger_mode = TRUE
+    )
+  })
+
+  # raw output
+  output$res &lt;- renderPrint(input$myconfirmation)
+
+  # count click
+  true &lt;- reactiveVal(0)
+  false &lt;- reactiveVal(0)
+  observeEvent(input$myconfirmation, {
+    if (isTRUE(input$myconfirmation)) {
+      x &lt;- true() + 1
+      true(x)
+    } else {
+      x &lt;- false() + 1
+      false(x)
+    }
+  }, ignoreNULL = TRUE)
+  output$count &lt;- renderUI({
+    tags$span(
+      "Confirm:", tags$b(true()),
+      tags$br(),
+      "Cancel:", tags$b(false())
+    )
+  })
+}
+
+shinyApp(ui, server)
+
+
+
+
+# other options :
+
+ui &lt;- fluidPage(
+  tags$h1("Confirm sweet alert"),
+  actionButton(
+    inputId = "launch1",
+    label = "Launch confirmation dialog (with danger mode)"
+  ),
+  verbatimTextOutput(outputId = "res1"),
+  tags$br(),
+  actionButton(
+    inputId = "launch2",
+    label = "Launch confirmation dialog (with normal mode)"
+  ),
+  verbatimTextOutput(outputId = "res2"),
+  tags$br(),
+  actionButton(
+    inputId = "launch3",
+    label = "Launch confirmation dialog (with HTML)"
+  ),
+  verbatimTextOutput(outputId = "res3")
+)
+
+server &lt;- function(input, output, session) {
+
+  observeEvent(input$launch1, {
+    confirmSweetAlert(
+      session = session,
+      inputId = "myconfirmation1",
+      type = "warning",
+      title = "Want to confirm ?",
+      danger_mode = TRUE
+    )
+  })
+  output$res1 &lt;- renderPrint(input$myconfirmation1)
+
+  observeEvent(input$launch2, {
+    confirmSweetAlert(
+      session = session,
+      inputId = "myconfirmation2",
+      type = "warning",
+      title = "Are you sure ??",
+      btn_labels = c("Nope", "Yep"),
+      danger_mode = FALSE
+    )
+  })
+  output$res2 &lt;- renderPrint(input$myconfirmation2)
+
+  observeEvent(input$launch3, {
+    confirmSweetAlert(
+      session = session,
+      inputId = "myconfirmation3",
+      title = NULL,
+      text = tags$b(
+        icon("file"),
+        "Do you really want to delete this file ?",
+        style = "color: #FA5858;"
+      ),
+      btn_labels = c("Cancel", "Delete file"),
+      danger_mode = TRUE, html = TRUE
+    )
+  })
+  output$res3 &lt;- renderPrint(input$myconfirmation3)
+
+}
+
+shinyApp(ui = ui, server = server)
+
+}
+
+
+## End(Not run)
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>shinyWidgets</em> version 0.4.8 <a href="00Index.html">Index</a>]</div>
+</body></html>

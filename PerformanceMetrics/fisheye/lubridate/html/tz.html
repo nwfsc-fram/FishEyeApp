@@ -1,0 +1,104 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Get/set time zone component of a date-time.</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for tz {lubridate}"><tr><td>tz {lubridate}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Get/set time zone component of a date-time.</h2>
+
+<h3>Description</h3>
+
+<p>Time zones are stored as character strings in an
+attribute of date-time objects. tz returns a date's time zone attribute.
+When used as a settor, it changes the time zone attribute. R does not come with
+a predefined list zone names, but relies on the user's OS to interpret time zone
+names. As a result, some names will be recognized on some computers but not others.
+Most computers, however, will recognize names in the timezone data base originally
+compiled by Arthur Olson. These names normally take the form &quot;Country/City.&quot; A
+convenient listing of these timezones can be found at
+<a href="http://en.wikipedia.org/wiki/List_of_tz_database_time_zones">http://en.wikipedia.org/wiki/List_of_tz_database_time_zones</a>.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+tz(x)
+
+tz(x) &lt;- value
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>x</code></td>
+<td>
+<p>a date-time object of class a POSIXct, POSIXlt, Date, chron, yearmon,
+yearqtr, zoo, zooreg, timeDate, xts, its, ti, jul, timeSeries, fts or anything else that can
+be coerced to POSIXlt with as.POSIXlt</p>
+</td></tr>
+<tr valign="top"><td><code>value</code></td>
+<td>
+<p>timezone value to be assigned to <code>x</code>'s <code>tzone</code> attribute</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>Setting tz does not update a date-time to display the same moment as measured
+at a different time zone. See <code><a href="with_tz.html">with_tz</a></code>. Setting a new time zone
+creates a new date-time. The numerical value of the hours element stays the
+same, only the time zone attribute is replaced.  This creates a new date-time
+that occurs an integer value of hours before or after the original date-time.
+</p>
+<p>If x is of a class that displays all date-times in the GMT timezone, such as
+chron, then R will update the number in the hours element to display the new
+date-time in the GMT timezone.
+</p>
+<p>For a description of the time zone attribute, see <code><a href="../../base/html/timezones.html">timezones</a></code>
+or <code><a href="../../base/html/DateTimeClasses.html">DateTimeClasses</a></code>.
+</p>
+
+
+<h3>Value</h3>
+
+<p>the first element of x's tzone attribute vector as a character string. If no tzone
+attribute exists, tz returns &quot;GMT&quot;.
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+x &lt;- ymd("2012-03-26")
+tz(x)
+tz(x) &lt;- "GMT"
+x
+## Not run: 
+tz(x) &lt;- "America/New_York"
+x
+tz(x) &lt;- "America/Chicago"
+x
+tz(x) &lt;- "America/Los_Angeles"
+x
+tz(x) &lt;- "Pacific/Honolulu"
+x
+tz(x) &lt;- "Pacific/Auckland"
+x
+tz(x) &lt;- "Europe/London"
+x
+tz(x) &lt;- "Europe/Berlin"
+x
+
+## End(Not run)
+Sys.setenv(TZ = "GMT")
+now()
+tz(now())
+Sys.unsetenv("TZ")
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>lubridate</em> version 1.6.0 <a href="00Index.html">Index</a>]</div>
+</body></html>

@@ -1,0 +1,124 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Change the value of a radio input on the client</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for updateAwesomeRadio {shinyWidgets}"><tr><td>updateAwesomeRadio {shinyWidgets}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Change the value of a radio input on the client</h2>
+
+<h3>Description</h3>
+
+<p>Change the value of a radio input on the client
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+updateAwesomeRadio(session, inputId, label = NULL, choices = NULL,
+  selected = NULL, inline = FALSE, status = "primary",
+  checkbox = FALSE)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>session</code></td>
+<td>
+<p>The session object passed to function given to shinyServer.</p>
+</td></tr>
+<tr valign="top"><td><code>inputId</code></td>
+<td>
+<p>The id of the input object.</p>
+</td></tr>
+<tr valign="top"><td><code>label</code></td>
+<td>
+<p>Input label.</p>
+</td></tr>
+<tr valign="top"><td><code>choices</code></td>
+<td>
+<p>List of values to select from (if elements of the list are named then that name rather than the value is displayed to the user)</p>
+</td></tr>
+<tr valign="top"><td><code>selected</code></td>
+<td>
+<p>The initially selected value</p>
+</td></tr>
+<tr valign="top"><td><code>inline</code></td>
+<td>
+<p>If TRUE, render the choices inline (i.e. horizontally)</p>
+</td></tr>
+<tr valign="top"><td><code>status</code></td>
+<td>
+<p>Color of the buttons</p>
+</td></tr>
+<tr valign="top"><td><code>checkbox</code></td>
+<td>
+<p>Checkbox style</p>
+</td></tr>
+</table>
+
+
+<h3>See Also</h3>
+
+<p><code><a href="awesomeRadio.html">awesomeRadio</a></code>
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+## Not run: 
+
+if (interactive()) {
+
+library("shiny")
+library("shinyWidgets")
+
+
+ui &lt;- fluidPage(
+  awesomeRadio(
+    inputId = "somevalue",
+    choices = c("A", "B", "C"),
+    label = "My label"
+  ),
+
+  verbatimTextOutput(outputId = "res"),
+
+  actionButton(inputId = "updatechoices", label = "Random choices"),
+  textInput(inputId = "updatelabel", label = "Update label")
+)
+
+server &lt;- function(input, output, session) {
+
+  output$res &lt;- renderPrint({
+    input$somevalue
+  })
+
+  observeEvent(input$updatechoices, {
+    updateAwesomeRadio(
+      session = session, inputId = "somevalue",
+      choices = sample(letters, sample(2:6))
+    )
+  })
+
+  observeEvent(input$updatelabel, {
+    updateAwesomeRadio(
+      session = session, inputId = "somevalue",
+      label = input$updatelabel
+    )
+  }, ignoreInit = TRUE)
+
+}
+
+shinyApp(ui = ui, server = server)
+
+}
+
+
+## End(Not run)
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>shinyWidgets</em> version 0.4.8 <a href="00Index.html">Index</a>]</div>
+</body></html>

@@ -1,0 +1,154 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Dropdown Button</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for dropdownButton {shinyWidgets}"><tr><td>dropdownButton {shinyWidgets}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Dropdown Button</h2>
+
+<h3>Description</h3>
+
+<p>Create a dropdown menu with Bootstrap where you can put input elements.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+dropdownButton(..., circle = TRUE, status = "default",
+  size = "default", icon = NULL, label = NULL, tooltip = FALSE,
+  right = FALSE, up = FALSE, width = NULL, margin = "10px",
+  inputId = NULL)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>...</code></td>
+<td>
+<p>List of tag to be displayed into the dropdown menu.</p>
+</td></tr>
+<tr valign="top"><td><code>circle</code></td>
+<td>
+<p>Logical. Use a circle button</p>
+</td></tr>
+<tr valign="top"><td><code>status</code></td>
+<td>
+<p>Add a class to the buttons, you can use Bootstrap status like 'info', 'primary', 'danger', 'warning' or 'success'.
+Or use an arbitrary strings to add a custom class, e.g. : with <code>status = 'myClass'</code>, buttons will have class <code>btn-myClass</code>.</p>
+</td></tr>
+<tr valign="top"><td><code>size</code></td>
+<td>
+<p>Size of the button : default, lg, sm, xs.</p>
+</td></tr>
+<tr valign="top"><td><code>icon</code></td>
+<td>
+<p>An icon to appear on the button.</p>
+</td></tr>
+<tr valign="top"><td><code>label</code></td>
+<td>
+<p>Label to appear on the button. If circle = TRUE and tooltip = TRUE, label is used in tooltip.</p>
+</td></tr>
+<tr valign="top"><td><code>tooltip</code></td>
+<td>
+<p>Put a tooltip on the button, you can customize tooltip with <code>tooltipOptions</code>.</p>
+</td></tr>
+<tr valign="top"><td><code>right</code></td>
+<td>
+<p>Logical. The dropdown menu starts on the right.</p>
+</td></tr>
+<tr valign="top"><td><code>up</code></td>
+<td>
+<p>Logical. Display the dropdown menu above.</p>
+</td></tr>
+<tr valign="top"><td><code>width</code></td>
+<td>
+<p>Width of the dropdown menu content.</p>
+</td></tr>
+<tr valign="top"><td><code>margin</code></td>
+<td>
+<p>Value of the dropdown margin-right and margin-left menu content.</p>
+</td></tr>
+<tr valign="top"><td><code>inputId</code></td>
+<td>
+<p>Optional, id for the button, the button act like an <code>actionButton</code>,
+and you can use the id to toggle the dropdown menu server-side with <code><a href="toggleDropdownButton.html">toggleDropdownButton</a></code>.</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>It is possible to know if a dropdown is open or closed server-side with <code>input$&lt;inputId&gt;_state</code>.
+</p>
+
+
+<h3>Note</h3>
+
+<p><code>pickerInput</code> doesn't work inside <code>dropdownButton</code> because that's also a
+dropdown and you can't nest them. Instead use <code><a href="dropdown.html">dropdown</a></code>,
+it has similar features but is built differently so it works.
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+## Not run: 
+## Only run examples in interactive R sessions
+if (interactive()) {
+
+library(shiny)
+library(shinyWidgets)
+
+ui &lt;- fluidPage(
+  dropdownButton(
+    inputId = "mydropdown",
+    label = "Controls",
+    icon = icon("sliders"),
+    status = "primary",
+    circle = FALSE,
+    sliderInput(
+      inputId = "n",
+      label = "Number of observations",
+      min = 10, max = 100, value = 30
+    ),
+    prettyToggle(
+      inputId = "na",
+      label_on = "NAs keeped",
+      label_off = "NAs removed",
+      icon_on = icon("check"),
+      icon_off = icon("remove")
+    )
+  ),
+  tags$div(style = "height: 140px;"), # spacing
+  verbatimTextOutput(outputId = "out"),
+  verbatimTextOutput(outputId = "state")
+)
+
+server &lt;- function(input, output, session) {
+
+  output$out &lt;- renderPrint({
+    cat(
+      " # n\n", input$n, "\n",
+      "# na\n", input$na
+    )
+  })
+
+  output$state &lt;- renderPrint({
+    cat("Open:", input$mydropdown_state)
+  })
+
+}
+
+shinyApp(ui, server)
+
+}
+
+## End(Not run)
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>shinyWidgets</em> version 0.4.8 <a href="00Index.html">Index</a>]</div>
+</body></html>

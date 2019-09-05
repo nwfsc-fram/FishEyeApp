@@ -1,0 +1,35 @@
+
+/* Green Seperator, without search and a bit thinner */
+/* .green_seperator { background-color: #00968A; clear: both; height: 32px; position: relative; width: 978px;} */
+
+.green_seperator {
+    background-color: #a7daf5;
+    clear: both;
+    height: 10px;
+}
+
+
+
+.frameheader_scrolling {
+  background-color: white;
+  position: absolute;
+  left: 0;
+  width: 100%;
+}
+
+.frameheader_fixed {
+  background-color: white;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 1000;
+}
+
+.encbanner {
+    display:none;
+    font-style: italic;
+    margin: 1px 10px 0 10px;
+    max-height: 40px;
+    overflow: hidden;
+}

@@ -1,0 +1,102 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Numeric Range Input</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for numericRangeInput {shinyWidgets}"><tr><td>numericRangeInput {shinyWidgets}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Numeric Range Input</h2>
+
+<h3>Description</h3>
+
+<p>Create an input group of numeric inputs that function as a range
+input.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+numericRangeInput(inputId, label, value, width = NULL,
+  separator = " to ")
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>inputId</code></td>
+<td>
+<p>The <code>input</code> slot that will be used to access the value.</p>
+</td></tr>
+<tr valign="top"><td><code>label</code></td>
+<td>
+<p>Display label for the control, or <code>NULL</code> for no label.</p>
+</td></tr>
+<tr valign="top"><td><code>value</code></td>
+<td>
+<p>The initial value(s) for the range. A
+numeric vector of length one will be duplicated to represent the minimum and
+maximum of the range; a numeric vector of two or more will have its minimum
+and maximum set the minimum and maximum of the range.</p>
+</td></tr>
+<tr valign="top"><td><code>width</code></td>
+<td>
+<p>The width of the input, e.g. <code>'400px'</code>, or <code>'100%'</code>;
+see <code><a href="../../htmltools/html/validateCssUnit.html">validateCssUnit</a></code>.</p>
+</td></tr>
+<tr valign="top"><td><code>separator</code></td>
+<td>
+<p>String to display between the start and end input boxes.</p>
+</td></tr>
+</table>
+
+
+<h3>Examples</h3>
+
+<pre>
+## Not run: 
+
+if (interactive()) {
+
+### examples ----
+
+# see ?demoNumericRange
+demoNumericRange()
+
+
+###  basic usage ----
+
+library( shiny )
+library( shinyWidgets )
+
+
+ui &lt;- fluidPage(
+
+  tags$br(),
+
+  numericRangeInput(
+    inputId = "noui1", label = "Numeric Range Input:",
+    value = c(100, 400)
+  ),
+  verbatimTextOutput(outputId = "res1")
+
+)
+
+server &lt;- function(input, output, session) {
+
+  output$res1 &lt;- renderPrint(input$noui1)
+
+}
+
+shinyApp(ui, server)
+
+
+}
+
+
+## End(Not run)
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>shinyWidgets</em> version 0.4.8 <a href="00Index.html">Index</a>]</div>
+</body></html>

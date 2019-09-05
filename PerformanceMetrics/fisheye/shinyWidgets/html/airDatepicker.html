@@ -1,0 +1,260 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Air Date Picker Input</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for airDatepicker {shinyWidgets}"><tr><td>airDatepicker {shinyWidgets}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Air Date Picker Input</h2>
+
+<h3>Description</h3>
+
+<p>An alternative to <code>dateInput</code> to select single, multiple or date range.
+And two alias to select months or years.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+airDatepickerInput(inputId, label = NULL, value = NULL,
+  multiple = FALSE, range = FALSE, timepicker = FALSE,
+  separator = " - ", placeholder = NULL, dateFormat = "yyyy-mm-dd",
+  minDate = NULL, maxDate = NULL, disabledDates = NULL,
+  view = c("days", "months", "years"), minView = c("days", "months",
+  "years"), monthsField = c("monthsShort", "months"),
+  clearButton = FALSE, todayButton = FALSE, autoClose = FALSE,
+  timepickerOpts = timepickerOptions(), position = NULL,
+  update_on = c("change", "close"), addon = c("right", "left", "none"),
+  language = "en", inline = FALSE, width = NULL)
+
+timepickerOptions(dateTimeSeparator = NULL, timeFormat = NULL,
+  minHours = NULL, maxHours = NULL, minMinutes = NULL,
+  maxMinutes = NULL, hoursStep = NULL, minutesStep = NULL)
+
+airMonthpickerInput(inputId, label = NULL, value = NULL, ...)
+
+airYearpickerInput(inputId, label = NULL, value = NULL, ...)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>inputId</code></td>
+<td>
+<p>The <code>input</code> slot that will be used to access the value.</p>
+</td></tr>
+<tr valign="top"><td><code>label</code></td>
+<td>
+<p>Display label for the control, or <code>NULL</code> for no label.</p>
+</td></tr>
+<tr valign="top"><td><code>value</code></td>
+<td>
+<p>Initial value(s), dates as character string are accepted in <code>yyyy-mm-dd</code> format,
+or Date/POSIXct object. Can be a single value or several values.</p>
+</td></tr>
+<tr valign="top"><td><code>multiple</code></td>
+<td>
+<p>Select multiple dates.</p>
+</td></tr>
+<tr valign="top"><td><code>range</code></td>
+<td>
+<p>Select a date range.</p>
+</td></tr>
+<tr valign="top"><td><code>timepicker</code></td>
+<td>
+<p>Add a timepicker below calendar to select time.</p>
+</td></tr>
+<tr valign="top"><td><code>separator</code></td>
+<td>
+<p>Separator between dates when several are selected, default to <code>" - "</code>.</p>
+</td></tr>
+<tr valign="top"><td><code>placeholder</code></td>
+<td>
+<p>A character string giving the user a hint as to what can be entered into the control.</p>
+</td></tr>
+<tr valign="top"><td><code>dateFormat</code></td>
+<td>
+<p>Format to use to display date(s), default to <code>"yyyy-mm-dd"</code></p>
+</td></tr>
+<tr valign="top"><td><code>minDate</code></td>
+<td>
+<p>The minimum allowed date. Either a Date object, or a string in <code>yyyy-mm-dd</code> format.</p>
+</td></tr>
+<tr valign="top"><td><code>maxDate</code></td>
+<td>
+<p>The maximum allowed date. Either a Date object, or a string in <code>yyyy-mm-dd</code> format.</p>
+</td></tr>
+<tr valign="top"><td><code>disabledDates</code></td>
+<td>
+<p>A vector of dates to disable, e.g. won't be able to select one of dates passed.</p>
+</td></tr>
+<tr valign="top"><td><code>view</code></td>
+<td>
+<p>Starting view, one of <code>'days'</code> (default), <code>'months'</code> or <code>'years'</code>.</p>
+</td></tr>
+<tr valign="top"><td><code>minView</code></td>
+<td>
+<p>Minimal view, one of <code>'days'</code> (default), <code>'months'</code> or <code>'years'</code>.</p>
+</td></tr>
+<tr valign="top"><td><code>monthsField</code></td>
+<td>
+<p>Names for the months when view is 'months',
+use <code>'monthsShort'</code> for abbreviations or <code>'months'</code> for full names.</p>
+</td></tr>
+<tr valign="top"><td><code>clearButton</code></td>
+<td>
+<p>If <code>TRUE</code>, then button &quot;Clear&quot; will be visible.</p>
+</td></tr>
+<tr valign="top"><td><code>todayButton</code></td>
+<td>
+<p>If <code>TRUE</code>, then button &quot;Today&quot; will be visible.</p>
+</td></tr>
+<tr valign="top"><td><code>autoClose</code></td>
+<td>
+<p>If <code>TRUE</code>, then after date selection, datepicker will be closed.</p>
+</td></tr>
+<tr valign="top"><td><code>timepickerOpts</code></td>
+<td>
+<p>Options for timepicker, see <a href="airDatepicker.html">timepickerOptions</a>.</p>
+</td></tr>
+<tr valign="top"><td><code>position</code></td>
+<td>
+<p>Where calendar should appear, a two word string like
+<code>'bottom left'</code> (default), or <code>'top right'</code>, <code>'left top'</code>.</p>
+</td></tr>
+<tr valign="top"><td><code>update_on</code></td>
+<td>
+<p>When to send selected value to server: on <code>'change'</code>
+or when calendar is <code>'close'</code>d.</p>
+</td></tr>
+<tr valign="top"><td><code>addon</code></td>
+<td>
+<p>Display a calendar icon to <code>'right'</code> or the <code>'left'</code>
+of the widget, or <code>'none'</code>. This icon act likes an <code>actionButton</code>,
+you can retrieve value server-side with <code>input$&lt;inputId&gt;_button</code>.</p>
+</td></tr>
+<tr valign="top"><td><code>language</code></td>
+<td>
+<p>Language to use, can be one of <code>'cs'</code>, <code>'da'</code>,
+<code>'de'</code>, <code>'en'</code>, <code>'es'</code>, <code>'fi'</code>, <code>'fr'</code>,
+<code>'hu'</code>, <code>'nl'</code>, <code>'pl'</code>, <code>'pt-BR'</code>, \code'pt',
+<code>'ro'</code>, <code>'ru'</code>, <code>'sk'</code>, <code>'zh'</code>.</p>
+</td></tr>
+<tr valign="top"><td><code>inline</code></td>
+<td>
+<p>If <code>TRUE</code>, datepicker will always be visible.</p>
+</td></tr>
+<tr valign="top"><td><code>width</code></td>
+<td>
+<p>The width of the input, e.g. <code>'400px'</code>, or <code>'100%'</code>.</p>
+</td></tr>
+<tr valign="top"><td><code>dateTimeSeparator</code></td>
+<td>
+<p>Separator between date and time, default to <code>" "</code>.</p>
+</td></tr>
+<tr valign="top"><td><code>timeFormat</code></td>
+<td>
+<p>Desirable time format. You can use <code>h</code> (hours), <code>hh</code>
+(hours with leading zero), <code>i</code> (minutes), <code>ii</code> (minutes with leading zero),
+<code>aa</code> (day period - 'am' or 'pm'), <code>AA</code> (day period capitalized)</p>
+</td></tr>
+<tr valign="top"><td><code>minHours</code></td>
+<td>
+<p>Minimal hours value, must be between 0 and 23. You will not be able to choose value lower than this.</p>
+</td></tr>
+<tr valign="top"><td><code>maxHours</code></td>
+<td>
+<p>Maximum hours value, must be between 0 and 23. You will not be able to choose value higher than this.</p>
+</td></tr>
+<tr valign="top"><td><code>minMinutes</code></td>
+<td>
+<p>Minimal minutes value, must be between 0 and 59. You will not be able to choose value lower than this.</p>
+</td></tr>
+<tr valign="top"><td><code>maxMinutes</code></td>
+<td>
+<p>Maximum minutes value, must be between 0 and 59. You will not be able to choose value higher than this.</p>
+</td></tr>
+<tr valign="top"><td><code>hoursStep</code></td>
+<td>
+<p>Hours step in slider.</p>
+</td></tr>
+<tr valign="top"><td><code>minutesStep</code></td>
+<td>
+<p>Minutes step in slider.</p>
+</td></tr>
+<tr valign="top"><td><code>...</code></td>
+<td>
+<p>Arguments passed to <code>airDatepickerInput</code>.</p>
+</td></tr>
+</table>
+
+
+<h3>Value</h3>
+
+<p>a <code>Date</code> object or a <code>POSIXct</code> in UTC timezone.
+</p>
+
+
+<h3>Note</h3>
+
+<p>This widget prevents <code>dateInput</code> from working, don't use both !
+</p>
+
+
+<h3>See Also</h3>
+
+<p>See <code><a href="updateAirDateInput.html">updateAirDateInput</a></code> for updating slider value server-side.
+And <code><a href="demoAirDatepicker.html">demoAirDatepicker</a></code> for examples.
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+## Not run: 
+
+if (interactive()) {
+
+# examples of different options to select dates:
+demoAirDatepicker("datepicker")
+
+# select month(s)
+demoAirDatepicker("months")
+
+# select year(s)
+demoAirDatepicker("years")
+
+# select date and time
+demoAirDatepicker("timepicker")
+
+# You can select multiple dates :
+library(shiny)
+library(shinyWidgets)
+
+ui &lt;- fluidPage(
+  airDatepickerInput(
+    inputId = "multiple",
+    label = "Select multiple dates:",
+    placeholder = "You can pick 5 dates",
+    multiple = 5, clearButton = TRUE
+  ),
+  verbatimTextOutput("res")
+)
+
+server &lt;- function(input, output, session) {
+  output$res &lt;- renderPrint(input$multiple)
+}
+
+shinyApp(ui, server)
+
+}
+
+
+## End(Not run)
+
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>shinyWidgets</em> version 0.4.8 <a href="00Index.html">Index</a>]</div>
+</body></html>

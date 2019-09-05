@@ -1,0 +1,63 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Button</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for bs_button {bsplus}"><tr><td>bs_button {bsplus}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Button</h2>
+
+<h3>Description</h3>
+
+<p>This function makes it a little easier to make Bootstrap-friendly buttons;
+it wraps the [htmltools::tags()] function for buttons.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+bs_button(label, button_type = c("default", "primary", "success", "info",
+  "warning", "danger"), ...)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>label</code></td>
+<td>
+<p>character (HTML), button label</p>
+</td></tr>
+<tr valign="top"><td><code>button_type</code></td>
+<td>
+<p>character, one of the standard Bootstrap types</p>
+</td></tr>
+<tr valign="top"><td><code>...</code></td>
+<td>
+<p>attributes (named arguments) and children (unnamed arguments)
+of the button, passed to <code>htmltools::<a href="../../htmltools/html/tag.html">tag</a></code></p>
+</td></tr>
+</table>
+
+
+<h3>Value</h3>
+
+<p><code>htmltools::<a href="../../htmltools/html/tag.html">tag</a></code>, <code>&lt;button/&gt;</code>
+</p>
+
+
+<h3>See Also</h3>
+
+<p><a href="http://getbootstrap.com/css/#buttons">http://getbootstrap.com/css/#buttons</a>
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+bs_button("Click me", button_type = "primary")
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>bsplus</em> version 0.1.1 <a href="00Index.html">Index</a>]</div>
+</body></html>

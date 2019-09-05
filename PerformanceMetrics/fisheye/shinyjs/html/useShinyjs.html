@@ -1,0 +1,93 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Set up a Shiny app to use shinyjs</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for useShinyjs {shinyjs}"><tr><td>useShinyjs {shinyjs}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Set up a Shiny app to use shinyjs</h2>
+
+<h3>Description</h3>
+
+<p>This function must be called from a Shiny app's UI in order for all other
+<code>shinyjs</code> functions to work.<br /><br />
+You can call <code>useShinyjs()</code> from anywhere inside the UI.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+useShinyjs(rmd = FALSE, debug = FALSE, html = FALSE, showLog = NULL)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>rmd</code></td>
+<td>
+<p>Set this to <code>TRUE</code> only if you are using <code>shinyjs</code>
+inside an interactive R markdown document. If using this option, view the
+<a href="https://github.com/daattali/shinyjs">README</a> online to learn how to
+use shinyjs in R markdown documents.</p>
+</td></tr>
+<tr valign="top"><td><code>debug</code></td>
+<td>
+<p>Set this to <code>TRUE</code> if you want to see detailed debugging
+statements in the JavaScript console. Can be useful when filing bug reports
+to get more information about what is going on.</p>
+</td></tr>
+<tr valign="top"><td><code>html</code></td>
+<td>
+<p>Set this to <code>TRUE</code> only if you are using <code>shinyjs</code> in
+a Shiny app that builds the entire user interface with a custom HTML file. If
+using this option, view the
+<a href="https://github.com/daattali/shinyjs">README</a> online to learn
+how to use shinyjs in these apps.</p>
+</td></tr>
+<tr valign="top"><td><code>showLog</code></td>
+<td>
+<p>Deprecated.</p>
+</td></tr>
+</table>
+
+
+<h3>Value</h3>
+
+<p>Scripts that <code>shinyjs</code> requires that are automatically inserted
+to the app's <code>&lt;head&gt;</code> tag.
+</p>
+
+
+<h3>See Also</h3>
+
+<p><code><a href="runExample.html">runExample</a></code>
+<code><a href="extendShinyjs.html">extendShinyjs</a></code>
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+if (interactive()) {
+  library(shiny)
+
+  shinyApp(
+    ui = fluidPage(
+      useShinyjs(),  # Set up shinyjs
+      actionButton("btn", "Click me"),
+      textInput("element", "Watch what happens to me")
+    ),
+    server = function(input, output) {
+      observeEvent(input$btn, {
+        # Run a simply shinyjs function
+        toggle("element")
+      })
+    }
+  )
+}
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>shinyjs</em> version 1.0 <a href="00Index.html">Index</a>]</div>
+</body></html>

@@ -1,0 +1,65 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Create link containing Shiny icon</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for shiny_iconlink {bsplus}"><tr><td>shiny_iconlink {bsplus}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Create link containing Shiny icon</h2>
+
+<h3>Description</h3>
+
+<p>You can use this helper function to wrap link element
+around a <code>shiny::<a href="../../shiny/html/icon.html">icon</a></code>.
+It may be useful to attach a modal window to
+(or embed a popover into) into such a link.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+shiny_iconlink(name = "info-circle", ...)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>name</code></td>
+<td>
+<p>character, name of the icon, passed to <code>shiny::<a href="../../shiny/html/icon.html">icon</a></code></p>
+</td></tr>
+<tr valign="top"><td><code>...</code></td>
+<td>
+<p>other arguments passed to <code>shiny::<a href="../../shiny/html/icon.html">icon</a></code></p>
+</td></tr>
+</table>
+
+
+<h3>Value</h3>
+
+<p><code>htmltools::<a href="../../htmltools/html/tag.html">tag</a></code>, <code>&lt;a/&gt;</code>
+</p>
+
+
+<h3>See Also</h3>
+
+<p><code><a href="shinyInput_label_embed.html">shinyInput_label_embed</a></code>,
+<code>shiny::<a href="../../shiny/html/icon.html">icon</a></code>, <code><a href="bs_modal.html">bs_attach_modal</a></code>,
+<code><a href="bs_embed_popover.html">bs_embed_popover</a></code>, <code><a href="bs_embed_tooltip.html">bs_embed_tooltip</a></code>
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+shiny_iconlink()
+
+shiny_iconlink() %&gt;%
+  bs_embed_popover(title = "Help!", content = "I need somebody")
+
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>bsplus</em> version 0.1.1 <a href="00Index.html">Index</a>]</div>
+</body></html>

@@ -1,0 +1,115 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Awesome Checkbox Group Input Control</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for awesomeCheckboxGroup {shinyWidgets}"><tr><td>awesomeCheckboxGroup {shinyWidgets}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Awesome Checkbox Group Input Control</h2>
+
+<h3>Description</h3>
+
+<p>Create a Font Awesome Bootstrap checkbox that can be used to specify logical values.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+awesomeCheckboxGroup(inputId, label, choices, selected = NULL,
+  inline = FALSE, status = "primary", width = NULL)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>inputId</code></td>
+<td>
+<p>The <code>input</code> slot that will be used to access the value.</p>
+</td></tr>
+<tr valign="top"><td><code>label</code></td>
+<td>
+<p>Input label.</p>
+</td></tr>
+<tr valign="top"><td><code>choices</code></td>
+<td>
+<p>List of values to show checkboxes for.</p>
+</td></tr>
+<tr valign="top"><td><code>selected</code></td>
+<td>
+<p>The values that should be initially selected, if any.</p>
+</td></tr>
+<tr valign="top"><td><code>inline</code></td>
+<td>
+<p>If TRUE, render the choices inline (i.e. horizontally)</p>
+</td></tr>
+<tr valign="top"><td><code>status</code></td>
+<td>
+<p>Color of the buttons</p>
+</td></tr>
+<tr valign="top"><td><code>width</code></td>
+<td>
+<p>The width of the input</p>
+</td></tr>
+</table>
+
+
+<h3>Value</h3>
+
+<p>A checkbox control that can be added to a UI definition.
+</p>
+
+
+<h3>See Also</h3>
+
+<p><code><a href="updateAwesomeCheckboxGroup.html">updateAwesomeCheckboxGroup</a></code>
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+
+## Not run: 
+if (interactive()) {
+
+
+ui &lt;- fluidPage(
+  br(),
+  awesomeCheckboxGroup(
+    inputId = "id1", label = "Make a choice:",
+    choices = c("graphics", "ggplot2")
+  ),
+  verbatimTextOutput(outputId = "res1"),
+  br(),
+  awesomeCheckboxGroup(
+    inputId = "id2", label = "Make a choice:",
+    choices = c("base", "dplyr", "data.table"),
+    inline = TRUE, status = "danger"
+  ),
+  verbatimTextOutput(outputId = "res2")
+)
+
+server &lt;- function(input, output, session) {
+
+  output$res1 &lt;- renderPrint({
+    input$id1
+  })
+
+  output$res2 &lt;- renderPrint({
+    input$id2
+  })
+
+}
+
+shinyApp(ui = ui, server = server)
+
+
+}
+
+## End(Not run)
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>shinyWidgets</em> version 0.4.8 <a href="00Index.html">Index</a>]</div>
+</body></html>

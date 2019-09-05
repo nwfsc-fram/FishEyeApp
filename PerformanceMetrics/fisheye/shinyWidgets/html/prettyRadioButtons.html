@@ -1,0 +1,187 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Pretty radio Buttons Input Control</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for prettyRadioButtons {shinyWidgets}"><tr><td>prettyRadioButtons {shinyWidgets}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Pretty radio Buttons Input Control</h2>
+
+<h3>Description</h3>
+
+<p>Create a set of radio buttons used to select an item from a list.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+prettyRadioButtons(inputId, label, choices = NULL, selected = NULL,
+  status = "primary", shape = c("round", "square", "curve"),
+  outline = FALSE, fill = FALSE, thick = FALSE, animation = NULL,
+  icon = NULL, plain = FALSE, bigger = FALSE, inline = FALSE,
+  width = NULL, choiceNames = NULL, choiceValues = NULL)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>inputId</code></td>
+<td>
+<p>The <code>input</code> slot that will be used to access the value.</p>
+</td></tr>
+<tr valign="top"><td><code>label</code></td>
+<td>
+<p>Display label for the control.</p>
+</td></tr>
+<tr valign="top"><td><code>choices</code></td>
+<td>
+<p>List of values to show radio buttons for. If elements of the list
+are named then that name rather than the value is displayed to the user. If
+this argument is provided, then <code>choiceNames</code> and <code>choiceValues</code> must not be provided,
+and vice-versa. The values should be strings; other types (such as logicals and
+numbers) will be coerced to strings.</p>
+</td></tr>
+<tr valign="top"><td><code>selected</code></td>
+<td>
+<p>The values that should be initially selected,
+(if not specified then defaults to the first value).</p>
+</td></tr>
+<tr valign="top"><td><code>status</code></td>
+<td>
+<p>Add a class to the radio,
+you can use Bootstrap status like 'info', 'primary', 'danger', 'warning' or 'success'.</p>
+</td></tr>
+<tr valign="top"><td><code>shape</code></td>
+<td>
+<p>Shape of the radio between <code>square</code>, <code>curve</code> and <code>round</code>.</p>
+</td></tr>
+<tr valign="top"><td><code>outline</code></td>
+<td>
+<p>Color also the border of the radio (<code>TRUE</code> or <code>FALSE</code>).</p>
+</td></tr>
+<tr valign="top"><td><code>fill</code></td>
+<td>
+<p>Fill the radio with color (<code>TRUE</code> or <code>FALSE</code>).</p>
+</td></tr>
+<tr valign="top"><td><code>thick</code></td>
+<td>
+<p>Make the content inside radio smaller (<code>TRUE</code> or <code>FALSE</code>).</p>
+</td></tr>
+<tr valign="top"><td><code>animation</code></td>
+<td>
+<p>Add an animation when radio is checked, a value between
+<code>smooth</code>, <code>jelly</code>, <code>tada</code>, <code>rotate</code>, <code>pulse</code>.</p>
+</td></tr>
+<tr valign="top"><td><code>icon</code></td>
+<td>
+<p>Optional, display an icon on the radio, must be an icon created with <code>icon</code>.</p>
+</td></tr>
+<tr valign="top"><td><code>plain</code></td>
+<td>
+<p>Remove the border when radio is checked (<code>TRUE</code> or <code>FALSE</code>).</p>
+</td></tr>
+<tr valign="top"><td><code>bigger</code></td>
+<td>
+<p>Scale the radio a bit bigger (<code>TRUE</code> or <code>FALSE</code>).</p>
+</td></tr>
+<tr valign="top"><td><code>inline</code></td>
+<td>
+<p>If <code>TRUE</code>, render the choices inline (i.e. horizontally).</p>
+</td></tr>
+<tr valign="top"><td><code>width</code></td>
+<td>
+<p>The width of the input, e.g. <code>400px</code>, or <code>100%</code>.</p>
+</td></tr>
+<tr valign="top"><td><code>choiceNames</code></td>
+<td>
+<p>List of names to display to the user.</p>
+</td></tr>
+<tr valign="top"><td><code>choiceValues</code></td>
+<td>
+<p>List of values corresponding to <code>choiceNames</code></p>
+</td></tr>
+</table>
+
+
+<h3>Value</h3>
+
+<p>A character vector or <code>NULL</code> server-side.
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+## Not run: 
+
+if (interactive()) {
+
+library(shiny)
+library(shinyWidgets)
+
+ui &lt;- fluidPage(
+  tags$h1("Pretty radio buttons"),
+  br(),
+
+  fluidRow(
+    column(
+      width = 4,
+      prettyRadioButtons(inputId = "radio1",
+                          label = "Click me!",
+                          choices = c("Click me !", "Me !", "Or me !")),
+      verbatimTextOutput(outputId = "res1"),
+      br(),
+      prettyRadioButtons(inputId = "radio4",  label = "Click me!",
+                          choices = c("Click me !", "Me !", "Or me !"),
+                          outline = TRUE,
+                          plain = TRUE, icon = icon("thumbs-up")),
+      verbatimTextOutput(outputId = "res4")
+    ),
+    column(
+      width = 4,
+      prettyRadioButtons(inputId = "radio2",
+                          label = "Click me!", thick = TRUE,
+                          choices = c("Click me !", "Me !", "Or me !"),
+                          animation = "pulse", status = "info"),
+      verbatimTextOutput(outputId = "res2"),
+      br(),
+      prettyRadioButtons(inputId = "radio5",
+                          label = "Click me!", icon = icon("check"),
+                          choices = c("Click me !", "Me !", "Or me !"),
+                          animation = "tada", status = "default"),
+      verbatimTextOutput(outputId = "res5")
+    ),
+    column(
+      width = 4,
+      prettyRadioButtons(inputId = "radio3",  label = "Click me!",
+                          choices = c("Click me !", "Me !", "Or me !"),
+                          shape = "round", status = "danger",
+                          fill = TRUE, inline = TRUE),
+      verbatimTextOutput(outputId = "res3")
+    )
+  )
+
+)
+
+server &lt;- function(input, output, session) {
+
+  output$res1 &lt;- renderPrint(input$radio1)
+  output$res2 &lt;- renderPrint(input$radio2)
+  output$res3 &lt;- renderPrint(input$radio3)
+  output$res4 &lt;- renderPrint(input$radio4)
+  output$res5 &lt;- renderPrint(input$radio5)
+
+}
+
+shinyApp(ui, server)
+
+}
+
+
+## End(Not run)
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>shinyWidgets</em> version 0.4.8 <a href="00Index.html">Index</a>]</div>
+</body></html>

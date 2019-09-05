@@ -1,0 +1,116 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Carousel</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for bs_append.bsplus_carousel {bsplus}"><tr><td>bs_append.bsplus_carousel {bsplus}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Carousel</h2>
+
+<h3>Description</h3>
+
+<p>A carousel is used to enclose a set of (typically) images,
+providing controls to move slides back-and-forth.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+## S3 method for class 'bsplus_carousel'
+bs_append(tag, content, caption = NULL, ...)
+
+bs_carousel(id, use_indicators = FALSE, use_controls = TRUE)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>tag</code></td>
+<td>
+<p><code>htmltools::<a href="../../htmltools/html/tag.html">tag</a></code>,
+carousel <code>&lt;div/&gt;</code> to which to append a panel</p>
+</td></tr>
+<tr valign="top"><td><code>content</code></td>
+<td>
+<p>character (HTML) or <code>htmltools::<a href="../../htmltools/html/tagList.html">tagList</a></code>,
+content for the slide</p>
+</td></tr>
+<tr valign="top"><td><code>caption</code></td>
+<td>
+<p>character (HTML) or <code>htmltools::<a href="../../htmltools/html/tagList.html">tagList</a></code>,
+caption for the slide</p>
+</td></tr>
+<tr valign="top"><td><code>...</code></td>
+<td>
+<p>other args (not used)</p>
+</td></tr>
+<tr valign="top"><td><code>id</code></td>
+<td>
+<p>character, unique id for accordion <code>&lt;div/&gt;</code>,
+also serves as root id for slides appended using <code>bs_append()</code></p>
+</td></tr>
+<tr valign="top"><td><code>use_indicators</code></td>
+<td>
+<p>logical, denotes use of slide-position indicators (dots)</p>
+</td></tr>
+<tr valign="top"><td><code>use_controls</code></td>
+<td>
+<p>logical, denotes use of controls (chevrons at sides)</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>All of these functions return a <code>bsplus_carousel</code> object
+(which is also an <code>htmltools::<a href="../../htmltools/html/tag.html">tag</a></code>, <code>&lt;div/&gt;</code>), so you can
+compose a carousel by piping. There are two parts to this system:
+</p>
+
+<ol>
+<li><p>A constructor function for the carousel, <code>bs_carousel()</code>
+</p>
+</li>
+<li><p>A function to append a slide to the carousel, <code>bs_append()</code>
+</p>
+</li></ol>
+
+<p>The verb <em>append</em> is used to signify that you can append an arbitrary
+number of slides to a carousel.
+</p>
+<p>For the constructor, <code>bs_carousel()</code>,
+it is your responsibility to ensure that <code>id</code> is unique
+among HTML elements in your page. If you have non-unique <code>id</code>'s, strange things may
+happen to your page.
+</p>
+
+
+<h3>Value</h3>
+
+<p><code>bsplus_carousel</code> object (<code>htmltools::<a href="../../htmltools/html/tag.html">tag</a></code>,
+<code>&lt;div/&gt;</code>)
+</p>
+
+
+<h3>See Also</h3>
+
+<p><a href="http://getbootstrap.com/javascript/#carousel">http://getbootstrap.com/javascript/#carousel</a>,
+<code><a href="bs_carousel_image.html">bs_carousel_image</a></code>, <code><a href="bs_carousel_caption.html">bs_carousel_caption</a></code>
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+bs_carousel(id = "with_the_beatles") %&gt;%
+  bs_append(content = bs_carousel_image(src = "img/john.jpg")) %&gt;%
+  bs_append(content = bs_carousel_image(src = "img/paul.jpg")) %&gt;%
+  bs_append(content = bs_carousel_image(src = "img/george.jpg")) %&gt;%
+  bs_append(content = bs_carousel_image(src = "img/ringo.jpg"))
+
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>bsplus</em> version 0.1.1 <a href="00Index.html">Index</a>]</div>
+</body></html>

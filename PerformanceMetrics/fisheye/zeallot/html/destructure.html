@@ -1,0 +1,102 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Destructure an object</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for destructure {zeallot}"><tr><td>destructure {zeallot}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Destructure an object</h2>
+
+<h3>Description</h3>
+
+<p><code>destructure</code> is used during unpacking assignment to coerce an object
+into a list. Individual elements of the list are assigned to names on the
+left-hand side of the unpacking assignment expression.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+destructure(x)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>x</code></td>
+<td>
+<p>An <span style="font-family: Courier New, Courier; color: #666666;"><b>R</b></span> object.</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>If <code>x</code> is atomic <code>destructure</code> expects <code>length(x)</code> to be 1. If a vector with
+length greater than 1 is passed to <code>destructure</code> an error is raised.
+</p>
+<p>New implementations of <code>destructure</code> can be very simple. A new
+<code>destructure</code> implementation might only strip away the class of a custom
+object and return the underlying list structure. Alternatively, an object
+might destructure into a nested set of values and may require a more
+complicated implementation. In either case, new implementations must return a
+list object so <code>%&lt;-%</code> can handle the returned value(s).
+</p>
+
+
+<h3>See Also</h3>
+
+<p><code><a href="operator.html">%&lt;-%</a></code>
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+# data frames become a list of columns
+destructure(
+  data.frame(x = 0:4, y = 5:9)
+)
+
+# strings are split into list of characters
+destructure("abcdef")
+
+# dates become list of year, month, and day
+destructure(Sys.Date())
+
+# create a new destructure implementation
+shape &lt;- function(sides = 4, color = "red") {
+  structure(
+    list(sides = sides, color = color),
+    class = "shape"
+  )
+}
+
+## Not run: 
+# cannot destructure the shape object yet
+c(sides, color) %&lt;-% shape()
+
+## End(Not run)
+
+# implement `destructure` for shapes
+destructure.shape &lt;- function(x) {
+  list(x$sides, x$color)
+}
+
+# now we can destructure shape objects
+c(sides, color) %&lt;-% destructure(shape())
+
+sides  # 4
+color  # "red"
+
+c(sides, color) %&lt;-% destructure(shape(3, "green"))
+
+sides  # 3
+color  # 'green'
+
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>zeallot</em> version 0.1.0 <a href="00Index.html">Index</a>]</div>
+</body></html>

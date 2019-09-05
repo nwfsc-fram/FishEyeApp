@@ -1,0 +1,142 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Create a multiselect input control</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for multiInput {shinyWidgets}"><tr><td>multiInput {shinyWidgets}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Create a multiselect input control</h2>
+
+<h3>Description</h3>
+
+<p>A user-friendly replacement for select boxes with the multiple attribute
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+multiInput(inputId, label, choices = NULL, selected = NULL,
+  options = NULL, width = NULL, choiceNames = NULL,
+  choiceValues = NULL)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>inputId</code></td>
+<td>
+<p>The <code>input</code> slot that will be used to access the value.</p>
+</td></tr>
+<tr valign="top"><td><code>label</code></td>
+<td>
+<p>Display label for the control, or <code>NULL</code> for no label.</p>
+</td></tr>
+<tr valign="top"><td><code>choices</code></td>
+<td>
+<p>List of values to select from.</p>
+</td></tr>
+<tr valign="top"><td><code>selected</code></td>
+<td>
+<p>The initially selected value.</p>
+</td></tr>
+<tr valign="top"><td><code>options</code></td>
+<td>
+<p>List of options passed to multi (<code>enable_search = FALSE</code> for disabling the search bar for example).</p>
+</td></tr>
+<tr valign="top"><td><code>width</code></td>
+<td>
+<p>The width of the input, e.g. <code>400px</code>, or <code>100%</code>.</p>
+</td></tr>
+<tr valign="top"><td><code>choiceNames</code></td>
+<td>
+<p>List of names to display to the user.</p>
+</td></tr>
+<tr valign="top"><td><code>choiceValues</code></td>
+<td>
+<p>List of values corresponding to <code>choiceNames</code>.</p>
+</td></tr>
+</table>
+
+
+<h3>Value</h3>
+
+<p>A multiselect control
+</p>
+
+
+<h3>See Also</h3>
+
+<p><a href="updateMultiInput.html">updateMultiInput</a> to update value server-side.
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+## Not run: 
+## Only run examples in interactive R sessions
+if (interactive()) {
+
+library("shiny")
+library("shinyWidgets")
+
+
+# simple use
+
+ui &lt;- fluidPage(
+  multiInput(
+    inputId = "id", label = "Fruits :",
+    choices = c("Banana", "Blueberry", "Cherry",
+                "Coconut", "Grapefruit", "Kiwi",
+                "Lemon", "Lime", "Mango", "Orange",
+                "Papaya"),
+    selected = "Banana", width = "350px"
+  ),
+  verbatimTextOutput(outputId = "res")
+)
+
+server &lt;- function(input, output, session) {
+  output$res &lt;- renderPrint({
+    input$id
+  })
+}
+
+shinyApp(ui = ui, server = server)
+
+
+# with options
+
+ui &lt;- fluidPage(
+  multiInput(
+    inputId = "id", label = "Fruits :",
+    choices = c("Banana", "Blueberry", "Cherry",
+                "Coconut", "Grapefruit", "Kiwi",
+                "Lemon", "Lime", "Mango", "Orange",
+                "Papaya"),
+    selected = "Banana", width = "400px",
+    options = list(
+      enable_search = FALSE,
+      non_selected_header = "Choose between:",
+      selected_header = "You have selected:"
+    )
+  ),
+  verbatimTextOutput(outputId = "res")
+)
+
+server &lt;- function(input, output, session) {
+  output$res &lt;- renderPrint({
+    input$id
+  })
+}
+
+shinyApp(ui = ui, server = server)
+
+}
+
+## End(Not run)
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>shinyWidgets</em> version 0.4.8 <a href="00Index.html">Index</a>]</div>
+</body></html>

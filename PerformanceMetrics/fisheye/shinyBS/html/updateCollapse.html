@@ -1,0 +1,78 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: updateCollapse</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for updateCollapse {shinyBS}"><tr><td>updateCollapse {shinyBS}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>updateCollapse</h2>
+
+<h3>Description</h3>
+
+<p><code>updateCollapse</code> is used within the Server logic of your Shiny app to
+modify a Collapse after load.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+updateCollapse(session, id, open = NULL, close = NULL, style = NULL)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>session</code></td>
+<td>
+<p>The session object passed to function given to shinyServer.</p>
+</td></tr>
+<tr valign="top"><td><code>id</code></td>
+<td>
+<p>The id of the Collapse object you want to change.</p>
+</td></tr>
+<tr valign="top"><td><code>open</code></td>
+<td>
+<p>A vector of <code>value</code> (or <code>title</code> if no <code>value</code> was
+provided) values identifying the panels you want to open.</p>
+</td></tr>
+<tr valign="top"><td><code>close</code></td>
+<td>
+<p>A vector of <code>value</code> (or <code>title</code> if no <code>value</code> was
+provided) values identifying the panels you want to close.</p>
+</td></tr>
+<tr valign="top"><td><code>style</code></td>
+<td>
+<p>A named list of Bootstrap styles (<code>primary</code>, <code>danger</code>, <code>info</code>,
+<code>warning</code>, <code>success</code>, or <code>default</code>). The names should correspond
+to the <code>value</code> (or <code>title</code> if no <code>value</code> was provided) of the
+<code><a href="bsCollapsePanel.html">bsCollapsePanel</a></code> you want to change.</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>See <a href="Collapses.html">Collapses</a> for more information about how to use <code>updateCollapse</code> with the
+rest of the Collapses family.
+</p>
+
+
+<h3>Note</h3>
+
+<p>Run <code>bsExample("Collapses")</code> for an example
+of <code>updateCollapse</code> functionality.
+</p>
+
+
+<h3>See Also</h3>
+
+<p><a href="http://getbootstrap.com">Twitter Bootstrap 3</a>
+</p>
+<p>Other Collapses: <code><a href="Collapses.html">Collapses</a></code>;
+<code><a href="bsCollapsePanel.html">bsCollapsePanel</a></code>; <code><a href="bsCollapse.html">bsCollapse</a></code>
+</p>
+
+<hr /><div style="text-align: center;">[Package <em>shinyBS</em> version 0.61 <a href="00Index.html">Index</a>]</div>
+</body></html>

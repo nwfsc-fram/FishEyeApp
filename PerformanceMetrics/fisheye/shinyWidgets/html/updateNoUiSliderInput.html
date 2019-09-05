@@ -1,0 +1,67 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Change the value of a no ui slider input on the client</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for updateNoUiSliderInput {shinyWidgets}"><tr><td>updateNoUiSliderInput {shinyWidgets}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Change the value of a no ui slider input on the client</h2>
+
+<h3>Description</h3>
+
+<p>Change the value of a no ui slider input on the client
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+updateNoUiSliderInput(session, inputId, value = NULL, range = NULL,
+  disable = FALSE)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>session</code></td>
+<td>
+<p>The <code>session</code> object passed to function given to <code>shinyServer</code>.</p>
+</td></tr>
+<tr valign="top"><td><code>inputId</code></td>
+<td>
+<p>The id of the input object.</p>
+</td></tr>
+<tr valign="top"><td><code>value</code></td>
+<td>
+<p>The new value.</p>
+</td></tr>
+<tr valign="top"><td><code>range</code></td>
+<td>
+<p>The new range, must be of length 2 with <code>c(min, max)</code>.</p>
+</td></tr>
+<tr valign="top"><td><code>disable</code></td>
+<td>
+<p>logical, disable or not the slider,
+if disabled the user can no longer modify the slider value</p>
+</td></tr>
+</table>
+
+
+<h3>Examples</h3>
+
+<pre>
+## Not run: 
+
+if (interactive()) {
+
+ demoNoUiSlider("update")
+
+}
+
+
+## End(Not run)
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>shinyWidgets</em> version 0.4.8 <a href="00Index.html">Index</a>]</div>
+</body></html>

@@ -1,0 +1,75 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Click on a Shiny button</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for click {shinyjs}"><tr><td>click {shinyjs}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Click on a Shiny button</h2>
+
+<h3>Description</h3>
+
+<p>The <code>click()</code> function can be used to programatically simulate a click
+on a Shiny <code>actionButton()</code>.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+click(id)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>id</code></td>
+<td>
+<p>The id of the button</p>
+</td></tr>
+</table>
+
+
+<h3>Note</h3>
+
+<p><code>shinyjs</code> must be initialized with a call to <code>useShinyjs()</code>
+in the app's ui.
+</p>
+
+
+<h3>See Also</h3>
+
+<p><code><a href="useShinyjs.html">useShinyjs</a></code>,
+<code><a href="runExample.html">runExample</a></code>
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+if (interactive()) {
+  library(shiny)
+
+  shinyApp(
+    ui = fluidPage(
+      useShinyjs(),  # Set up shinyjs
+      "Count:", textOutput("number", inline = TRUE), br(),
+      actionButton("btn", "Click me"), br(),
+      "The button will be pressed automatically every 3 seconds"
+    ),
+    server = function(input, output) {
+      output$number &lt;- renderText({
+        input$btn
+      })
+      observe({
+        click("btn")
+        invalidateLater(3000)
+      })
+    }
+  )
+}
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>shinyjs</em> version 1.0 <a href="00Index.html">Index</a>]</div>
+</body></html>

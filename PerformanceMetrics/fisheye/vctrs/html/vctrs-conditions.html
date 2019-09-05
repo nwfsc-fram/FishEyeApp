@@ -1,0 +1,138 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Custom conditions for vctrs package</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for vctrs-conditions {vctrs}"><tr><td>vctrs-conditions {vctrs}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Custom conditions for vctrs package</h2>
+
+<h3>Description</h3>
+
+<p>These functions are called for their side effect of raising
+errors and warnings.
+These conditions have custom classes and structures to make
+testing easier.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+stop_incompatible_type(x, y, x_arg = "", y_arg = "", details = NULL,
+  ..., message = NULL, .subclass = NULL)
+
+stop_incompatible_cast(x, y, details = NULL, ..., x_arg = "",
+  to_arg = "", message = NULL, .subclass = NULL)
+
+stop_incompatible_op(op, x, y, details = NULL, ..., message = NULL,
+  .subclass = NULL)
+
+stop_incompatible_size(x, y, x_size, y_size, x_arg = "", y_arg = "",
+  details = NULL, ..., message = NULL, .subclass = NULL)
+
+maybe_lossy_cast(result, x, to, lossy = NULL, locations = NULL,
+  details = NULL, ..., x_arg = "", to_arg = "", message = NULL,
+  .subclass = NULL, .deprecation = FALSE)
+
+allow_lossy_cast(expr, x_ptype = NULL, to_ptype = NULL)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>x, y</code></td>
+<td>
+<p>Vectors</p>
+</td></tr>
+<tr valign="top"><td><code>details</code></td>
+<td>
+<p>Any additional human readable details</p>
+</td></tr>
+<tr valign="top"><td><code>..., message, .subclass</code></td>
+<td>
+<p>Only use these fields when creating a subclass.</p>
+</td></tr>
+<tr valign="top"><td><code>result</code></td>
+<td>
+<p>The result of a potentially lossy cast.</p>
+</td></tr>
+<tr valign="top"><td><code>to</code></td>
+<td>
+<p>Type to cast to.</p>
+</td></tr>
+<tr valign="top"><td><code>lossy</code></td>
+<td>
+<p>A logical vector indicating which elements of <code>result</code>
+were lossy.
+</p>
+<p>Can also be a single <code>TRUE</code>, but note that <code>locations</code> picks up
+locations from this vector by default. In this case, supply your
+own location vector, possibly empty.</p>
+</td></tr>
+<tr valign="top"><td><code>locations</code></td>
+<td>
+<p>An optional integer vector giving the
+locations where <code>x</code> lost information.</p>
+</td></tr>
+<tr valign="top"><td><code>.deprecation</code></td>
+<td>
+<p>If <code>TRUE</code>, the error is downgraded to a
+deprecation warning. This is useful for transitioning your class
+to a stricter conversion scheme. The warning advises your users
+to wrap their code with <code>allow_lossy_cast()</code>.</p>
+</td></tr>
+<tr valign="top"><td><code>x_ptype, to_ptype</code></td>
+<td>
+<p>Suppress only the casting errors where <code>x</code>
+or <code>to</code> match these <a href="vec_ptype.html">prototypes</a>.</p>
+</td></tr>
+<tr valign="top"><td><code>subclass</code></td>
+<td>
+<p>Use if you want to further customise the class</p>
+</td></tr>
+</table>
+
+
+<h3>Value</h3>
+
+<p><code>stop_incompatible_*()</code> unconditionally raise an error of class
+<code>"vctrs_error_incompatible_*"</code> and <code>"vctrs_error_incompatible"</code>.
+</p>
+
+
+<h3>Lossy cast errors</h3>
+
+<p>By default, lossy casts are an error. Use <code>allow_lossy_cast()</code> to
+silence these errors and continue with the partial results. In this
+case the lost values are typically set to <code>NA</code> or to a lower value
+resolution, depending on the type of cast.
+</p>
+<p>Lossy cast errors are thrown by <code>maybe_lossy_cast()</code>. Unlike
+functions prefixed with <code>stop_</code>, <code>maybe_lossy_cast()</code> usually
+returns a result. If a lossy cast is detected, it throws an error,
+unless it's been wrapped in <code>allow_lossy_cast()</code>. In that case, it
+returns the result silently.
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+
+# Most of the time, `maybe_lossy_cast()` returns its input normally:
+maybe_lossy_cast(c("foo", "bar"), NULL, "", lossy = c(FALSE, FALSE))
+
+# If `lossy` has any `TRUE`, an error is thrown:
+try(maybe_lossy_cast(c("foo", "bar"), NULL, "", lossy = c(FALSE, TRUE)))
+
+# Unless lossy casts are allowed:
+allow_lossy_cast(
+  maybe_lossy_cast(c("foo", "bar"), NULL, "", lossy = c(FALSE, TRUE))
+)
+
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>vctrs</em> version 0.2.0 <a href="00Index.html">Index</a>]</div>
+</body></html>

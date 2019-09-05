@@ -1,0 +1,78 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Execute R code after a specified number of milliseconds has...</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for delay {shinyjs}"><tr><td>delay {shinyjs}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Execute R code after a specified number of milliseconds has elapsed</h2>
+
+<h3>Description</h3>
+
+<p>You can use <code>delay</code> if you want to wait a specific amount of time before
+running code.  This function can be used in combination with other <code>shinyjs</code>
+functions, such as hiding or resetting an element in a few seconds, but it
+can also be used with any code as long as it's used inside a Shiny app.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+delay(ms, expr)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>ms</code></td>
+<td>
+<p>The number of milliseconds to wait (1000 milliseconds = 1 second)
+before running the expression.</p>
+</td></tr>
+<tr valign="top"><td><code>expr</code></td>
+<td>
+<p>The R expression to run after the specified number of milliseconds
+has elapsed.</p>
+</td></tr>
+</table>
+
+
+<h3>Note</h3>
+
+<p><code>shinyjs</code> must be initialized with a call to <code>useShinyjs()</code>
+in the app's ui.
+</p>
+
+
+<h3>See Also</h3>
+
+<p><code><a href="useShinyjs.html">useShinyjs</a></code>,
+<code><a href="runExample.html">runExample</a></code>
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+if (interactive()) {
+  library(shiny)
+  shinyApp(
+    ui = fluidPage(
+      useShinyjs(),
+      p(id = "text", "This text will disappear after 3 seconds"),
+      actionButton("close", "Close the app in half a second")
+    ),
+    server = function(input, output) {
+      delay(3000, hide("text"))
+      observeEvent(input$close, {
+        delay(500, stopApp())
+      })
+    }
+  )
+}
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>shinyjs</em> version 1.0 <a href="00Index.html">Index</a>]</div>
+</body></html>

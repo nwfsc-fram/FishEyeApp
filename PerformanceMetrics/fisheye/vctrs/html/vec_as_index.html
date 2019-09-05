@@ -1,0 +1,78 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Create an index</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for vec_as_index {vctrs}"><tr><td>vec_as_index {vctrs}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Create an index</h2>
+
+<h3>Description</h3>
+
+<p>This provides a means of standardizing common indexing methods such as
+integer, character or logical indexing. The input is a vector of one
+of these three types, and the output is always an integer vector that can
+be used for subsetting.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+vec_as_index(i, n, names = NULL)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>i</code></td>
+<td>
+<p>An integer, character or logical vector specifying the positions or
+names of the observations to get/set.
+Specify <code>TRUE</code> to index all elements (as in <code>x[]</code>), or <code>NULL</code>, <code>FALSE</code> or
+<code>integer()</code> to index none (as in <code>x[NULL]</code>).</p>
+</td></tr>
+<tr valign="top"><td><code>n</code></td>
+<td>
+<p>A single integer representing the total size of the
+object that <code>i</code> is meant to index into.</p>
+</td></tr>
+<tr valign="top"><td><code>names</code></td>
+<td>
+<p>If <code>i</code> is a character vector, <code>names</code> should be a character
+vector that <code>i</code> will be matched against to construct the index. Otherwise,
+not used. The default value of <code>NULL</code> will result in an error
+if <code>i</code> is a character vector.</p>
+</td></tr>
+</table>
+
+
+<h3>Value</h3>
+
+<p>An integer vector that can be used as an index in a subsetting operation.
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+x &lt;- array(1:6, c(2, 3))
+dimnames(x) &lt;- list(c("r1", "r2"), c("c1", "c2", "c3"))
+
+# The most common use case validates row indices
+vec_as_index(1, vec_size(x))
+
+# Negative indices can be used to index from the back
+vec_as_index(-1, vec_size(x))
+
+# Character vectors can be used if `names` are provided
+vec_as_index("r2", vec_size(x), rownames(x))
+
+# You can also construct an index for dimensions other than the first
+vec_as_index(c("c2", "c1"), ncol(x), colnames(x))
+
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>vctrs</em> version 0.2.0 <a href="00Index.html">Index</a>]</div>
+</body></html>

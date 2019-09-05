@@ -1,0 +1,153 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Use 'bs4Dash' in 'shiny'</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for useBs4Dash {shinyWidgets}"><tr><td>useBs4Dash {shinyWidgets}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Use 'bs4Dash' in 'shiny'</h2>
+
+<h3>Description</h3>
+
+<p>Allow to use functions from 'bs4Dash' into a classic 'shiny' app,
+specifically <code>bs4ValueBox</code>, <code>bs4InfoBox</code> and <code>bs4Card</code>.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+useBs4Dash(old_school = FALSE)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>old_school</code></td>
+<td>
+<p>FALSE by default. Experimental.</p>
+</td></tr>
+</table>
+
+
+<h3>Examples</h3>
+
+<pre>
+## Not run: 
+if (interactive()) {
+
+library(shiny)
+library(bs4Dash)
+library(shinyWidgets)
+
+ui &lt;- fluidPage(
+  h1("Import bs4Dash elements inside shiny!", align = "center"),
+  h5("Don't need any sidebar, navbar, ...", align = "center"),
+  h5("Only focus on basic elements for a pure interface", align = "center"),
+
+  # use this in non dashboard app
+  setBackgroundColor(color = "ghostwhite"),
+  useBs4Dash(old_school = FALSE),
+
+  # infoBoxes
+  fluidRow(
+    bs4InfoBox(
+      title = "Messages",
+      value = 1410,
+      icon = "envelope"
+      ),
+      bs4InfoBox(
+        title = "Bookmarks",
+        status = "info",
+        value = 240,
+        icon = "bookmark"
+      ),
+      bs4InfoBox(
+        title = "Comments",
+        gradientColor = "danger",
+        value = 41410,
+        icon = "comments"
+      )
+  ),
+
+  # valueBoxes
+  fluidRow(
+    bs4ValueBox(
+      value = uiOutput("orderNum"),
+      subtitle = "New Orders",
+      icon = "credit-card",
+      href = "http://google.com"
+    ),
+    bs4ValueBox(
+      value = "60%",
+      subtitle = "Approval Rating",
+      icon = "line-chart",
+      status = "success"
+    ),
+    bs4ValueBox(
+      value = htmlOutput("progress"),
+      subtitle = "Progress",
+      icon = "users",
+      status = "danger"
+    )
+  ),
+
+  # Boxes
+  fluidRow(
+    bs4Card(
+     status = "primary",
+     sliderInput("orders", "Orders", min = 1, max = 2000, value = 650),
+     selectInput(
+      "progress",
+      "Progress",
+       choices = c(
+         "0%" = 0, "20%" = 20, "40%" = 40,
+          "60%" = 60, "80%" = 80, "100%" = 100
+       )
+      )
+    ),
+   bs4Card(
+    title = "Histogram box title",
+    status = "warning",
+    solidHeader = TRUE,
+    collapsible = TRUE,
+    plotOutput("plot", height = 250)
+    )
+  )
+)
+
+server &lt;- function(input, output, session) {
+
+  output$orderNum &lt;- renderText({
+    prettyNum(input$orders, big.mark=",")
+  })
+
+  output$orderNum2 &lt;- renderText({
+    prettyNum(input$orders, big.mark=",")
+  })
+
+  output$progress &lt;- renderUI({
+    tagList(input$progress, tags$sup(style="font-size: 20px", "%"))
+  })
+
+  output$progress2 &lt;- renderUI({
+    paste0(input$progress)
+  })
+
+
+  output$plot &lt;- renderPlot({
+    hist(rnorm(input$orders))
+  })
+
+}
+
+shinyApp(ui, server)
+
+}
+
+## End(Not run)
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>shinyWidgets</em> version 0.4.8 <a href="00Index.html">Index</a>]</div>
+</body></html>

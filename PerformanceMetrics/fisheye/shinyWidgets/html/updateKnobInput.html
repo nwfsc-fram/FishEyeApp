@@ -1,0 +1,125 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Change the value of a knob input on the client</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for updateKnobInput {shinyWidgets}"><tr><td>updateKnobInput {shinyWidgets}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Change the value of a knob input on the client</h2>
+
+<h3>Description</h3>
+
+<p>Change the value of a knob input on the client
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+updateKnobInput(session, inputId, label = NULL, value = NULL,
+  options = NULL)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>session</code></td>
+<td>
+<p>Standard shiny <code>session</code>.</p>
+</td></tr>
+<tr valign="top"><td><code>inputId</code></td>
+<td>
+<p>The id of the input object.</p>
+</td></tr>
+<tr valign="top"><td><code>label</code></td>
+<td>
+<p>The label to set for the input object.</p>
+</td></tr>
+<tr valign="top"><td><code>value</code></td>
+<td>
+<p>The value to set for the input object.</p>
+</td></tr>
+<tr valign="top"><td><code>options</code></td>
+<td>
+<p>List of additional parameters to update, use <code>knobInput</code>'s arguments.</p>
+</td></tr>
+</table>
+
+
+<h3>Examples</h3>
+
+<pre>
+## Not run: 
+
+if (interactive()) {
+
+library("shiny")
+library("shinyWidgets")
+
+ui &lt;- fluidPage(
+  tags$h1("knob update examples"),
+  br(),
+
+  fluidRow(
+
+    column(
+      width = 6,
+      knobInput(
+        inputId = "knob1", label = "Update value:",
+        value = 75, angleOffset = 90, lineCap = "round"
+      ),
+      verbatimTextOutput(outputId = "res1"),
+      sliderInput(
+        inputId = "upknob1", label = "Update knob:",
+        min = 0, max = 100, value = 75
+      )
+    ),
+
+    column(
+      width = 6,
+      knobInput(
+        inputId = "knob2", label = "Update label:",
+        value = 50, angleOffset = -125, angleArc = 250
+      ),
+      verbatimTextOutput(outputId = "res2"),
+      textInput(inputId = "upknob2", label = "Update label:")
+    )
+
+  )
+)
+
+server &lt;- function(input, output, session) {
+
+  output$res1 &lt;- renderPrint(input$knob1)
+
+  observeEvent(input$upknob1, {
+    updateKnobInput(
+      session = session,
+      inputId = "knob1",
+      value = input$upknob1
+    )
+  }, ignoreInit = TRUE)
+
+
+  output$res2 &lt;- renderPrint(input$knob2)
+  observeEvent(input$upknob2, {
+    updateKnobInput(
+      session = session,
+      inputId = "knob2",
+      label = input$upknob2
+    )
+  }, ignoreInit = TRUE)
+
+}
+
+shinyApp(ui = ui, server = server)
+
+}
+
+
+## End(Not run)
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>shinyWidgets</em> version 0.4.8 <a href="00Index.html">Index</a>]</div>
+</body></html>
