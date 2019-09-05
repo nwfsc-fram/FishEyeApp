@@ -1,4 +1,4 @@
-.libPaths(c("/usr/lib64/R/shiny_library", .libPaths()))
+.libPaths(c("/usr/lib64/R/shiny_library/fisheye", .libPaths()))
 
 library(appFrame)
 library(shinyjs)
