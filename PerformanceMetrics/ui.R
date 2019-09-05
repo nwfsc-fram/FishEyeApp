@@ -1,4 +1,4 @@
-.libPaths(c("/usr/lib64/R/shiny_library", .libPaths()))
+.libPaths(c("/usr/lib64/R/shiny_library/fisheye", .libPaths()))
 
 library(appFrame)
 library(shinyjs)
@@ -294,6 +294,8 @@ function(request) {
                           source("external/explorer/explorerSourceFiles/definitions_metrics.R")$value),
                  tabPanel("Statistics",
                           source("external/explorer/explorerSourceFiles/definitions_statistics.R")$value),
+                 tabPanel("Participant category",
+                          source("external/explorer/explorerSourceFiles/definitions_participant.R")$value),
                  tabPanel("Filters",
                           source("external/explorer/explorerSourceFiles/definitions_filters.R")$value),
                  tabPanel("Display",
