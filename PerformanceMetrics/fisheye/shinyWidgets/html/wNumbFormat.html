@@ -1,0 +1,126 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Format numbers in noUiSliderInput</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for wNumbFormat {shinyWidgets}"><tr><td>wNumbFormat {shinyWidgets}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Format numbers in noUiSliderInput</h2>
+
+<h3>Description</h3>
+
+<p>Format numbers in noUiSliderInput
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+wNumbFormat(decimals = NULL, mark = NULL, thousand = NULL,
+  prefix = NULL, suffix = NULL, negative = NULL)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>decimals</code></td>
+<td>
+<p>The number of decimals to include in
+the result. Limited to 7.</p>
+</td></tr>
+<tr valign="top"><td><code>mark</code></td>
+<td>
+<p>The decimal separator. Defaults to <code>'.'</code>
+if thousand isn't already set to <code>'.'</code>.</p>
+</td></tr>
+<tr valign="top"><td><code>thousand</code></td>
+<td>
+<p>Separator for large numbers. For example: <code>' '</code>
+would result in a formatted number of 1 000 000.</p>
+</td></tr>
+<tr valign="top"><td><code>prefix</code></td>
+<td>
+<p>A string to prepend to the number. Use cases
+include prefixing with money symbols such as <code>'$'</code> or <code>'€'</code>.</p>
+</td></tr>
+<tr valign="top"><td><code>suffix</code></td>
+<td>
+<p>A number to append to a number. For example: <code>',-'</code>.</p>
+</td></tr>
+<tr valign="top"><td><code>negative</code></td>
+<td>
+<p>The prefix for negative values. Defaults to <code>'-'</code>.</p>
+</td></tr>
+</table>
+
+
+<h3>Value</h3>
+
+<p>a named list.
+</p>
+
+
+<h3>Note</h3>
+
+<p>Performed via wNumb JavaScript library : <a href="https://refreshless.com/wnumb/">https://refreshless.com/wnumb/</a>.
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+## Not run: 
+
+if (interactive()) {
+
+library( shiny )
+library( shinyWidgets )
+
+ui &lt;- fluidPage(
+  tags$h3("Format numbers"),
+  tags$br(),
+
+  noUiSliderInput(
+    inputId = "form1",
+    min = 0, max = 10000,
+    value = 800,
+    format = wNumbFormat(decimals = 3,
+                         thousand = ".",
+                         suffix = " (US $)")
+  ),
+  verbatimTextOutput(outputId = "res1"),
+
+  tags$br(),
+
+  noUiSliderInput(
+    inputId = "form2",
+    min = 1988, max = 2018,
+    value = 1988,
+    format = wNumbFormat(decimals = 0,
+                         thousand = "",
+                         prefix = "Year: ")
+  ),
+  verbatimTextOutput(outputId = "res2"),
+
+  tags$br()
+
+)
+
+server &lt;- function(input, output, session) {
+
+  output$res1 &lt;- renderPrint(input$form1)
+  output$res2 &lt;- renderPrint(input$form2)
+
+}
+
+shinyApp(ui, server)
+
+}
+
+
+## End(Not run)
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>shinyWidgets</em> version 0.4.8 <a href="00Index.html">Index</a>]</div>
+</body></html>

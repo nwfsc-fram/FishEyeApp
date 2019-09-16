@@ -1,0 +1,88 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Popover</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for bs_embed_popover {bsplus}"><tr><td>bs_embed_popover {bsplus}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Popover</h2>
+
+<h3>Description</h3>
+
+<p>A popover can be a useful way to add a somewhat-verbose explanation to a tag.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+bs_embed_popover(tag, title = NULL, content = NULL, placement = "top",
+  ...)
+
+use_bs_popover()
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>tag</code></td>
+<td>
+<p><code>htmltools::<a href="../../htmltools/html/tag.html">tag</a></code>, generally
+<code>&lt;button/&gt;</code> or <code>&lt;a/&gt;</code>, into which to embed the popover</p>
+</td></tr>
+<tr valign="top"><td><code>title</code></td>
+<td>
+<p>character, title for the popover, generally text</p>
+</td></tr>
+<tr valign="top"><td><code>content</code></td>
+<td>
+<p>character, content for the popover body, can be HTML</p>
+</td></tr>
+<tr valign="top"><td><code>placement</code></td>
+<td>
+<p>character, placement of the popover with respect to <code>tag</code></p>
+</td></tr>
+<tr valign="top"><td><code>...</code></td>
+<td>
+<p>other named arguments, passed to <code>bs_set_data()</code></p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>To activate the use of popovers in your page, you will need to call
+the <code>use_bs_popover()</code> function somewhere.
+</p>
+<p>The verb <em>embed</em> is used to signify that you are embedding information
+into a <code>tag</code>. This implies that you can embed, at most, one &quot;thing&quot;
+into a particular <code>tag</code>. You should not, for example, expect to embed both a tooltip
+and a popover into a <code>tag</code>.
+</p>
+
+
+<h3>Value</h3>
+
+<p><code>htmltools::<a href="../../htmltools/html/tag.html">tag</a></code>, modified copy of <code>tag</code>
+</p>
+
+
+<h3>See Also</h3>
+
+<p><code><a href="bs_embed_tooltip.html">bs_embed_tooltip</a></code>,
+<a href="http://getbootstrap.com/javascript/#popovers">http://getbootstrap.com/javascript/#popovers</a>
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+library("htmltools")
+
+bs_button("A button") %&gt;%
+  bs_embed_popover(title = "I'm a popover", content = "Really!")
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>bsplus</em> version 0.1.1 <a href="00Index.html">Index</a>]</div>
+</body></html>

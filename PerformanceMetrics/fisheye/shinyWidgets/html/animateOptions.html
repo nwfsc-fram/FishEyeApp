@@ -1,0 +1,73 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Animate options</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for animateOptions {shinyWidgets}"><tr><td>animateOptions {shinyWidgets}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Animate options</h2>
+
+<h3>Description</h3>
+
+<p>Animate options
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+animateOptions(enter = "fadeInDown", exit = "fadeOutUp",
+  duration = 1)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>enter</code></td>
+<td>
+<p>Animation name on appearance</p>
+</td></tr>
+<tr valign="top"><td><code>exit</code></td>
+<td>
+<p>Animation name on disappearance</p>
+</td></tr>
+<tr valign="top"><td><code>duration</code></td>
+<td>
+<p>Duration of the animation</p>
+</td></tr>
+</table>
+
+
+<h3>Value</h3>
+
+<p>a list
+</p>
+
+
+<h3>See Also</h3>
+
+<p><code><a href="animations.html">animations</a></code>
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+## Not run: 
+## Only run examples in interactive R sessions
+if (interactive()) {
+
+dropdown(
+ "Your contents goes here ! You can pass several elements",
+ circle = TRUE, status = "danger", icon = icon("gear"), width = "300px",
+ animate = animateOptions(enter = "fadeInDown", exit = "fadeOutUp", duration = 3)
+)
+
+}
+
+## End(Not run)
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>shinyWidgets</em> version 0.4.8 <a href="00Index.html">Index</a>]</div>
+</body></html>

@@ -1,0 +1,69 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Print any JavaScript console.log messages in the R console</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for showLog {shinyjs}"><tr><td>showLog {shinyjs}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Print any JavaScript console.log messages in the R console</h2>
+
+<h3>Description</h3>
+
+<p>When developing and debugging a Shiny that uses custom JavaScript code,
+it can be helpful to use <code>console.log()</code> messages in JavaScript. This
+function allows you to see these messages printed in the R console directly
+rather than having to open the JavaScript console in the browser to view the
+messages.<br /><br />
+This function must be called in a Shiny app's server function, and you also
+need to pass the <code>showLog=TRUE</code> parameter to <code>useShinyjs()</code>.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+showLog()
+</pre>
+
+
+<h3>Note</h3>
+
+<p>Due to an issue in shiny (see
+https://github.com/rstudio/shiny/issues/928), duplicated consecutive log
+messages will not get printed in R.
+</p>
+<p>Log messages that cannot be serialized in JavaScript (such as many
+JavaScript Event objects that are cyclic) will not be printed in R.
+</p>
+
+
+<h3>See Also</h3>
+
+<p><code><a href="logjs.html">logjs</a></code>
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+if (interactive()) {
+  library(shiny)
+
+  shinyApp(
+    ui = fluidPage(
+      useShinyjs(),
+      textInput("text", "Type something")
+    ),
+    server = function(input, output) {
+      showLog()
+      logjs("App started")
+      observe({
+        logjs(paste("Length of text:", nchar(input$text)))
+      })
+    }
+  )
+}
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>shinyjs</em> version 1.0 <a href="00Index.html">Index</a>]</div>
+</body></html>

@@ -1,0 +1,85 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Mutate Vertical Tabset Panel</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for appendVerticalTab {shinyWidgets}"><tr><td>appendVerticalTab {shinyWidgets}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Mutate Vertical Tabset Panel</h2>
+
+<h3>Description</h3>
+
+<p>Mutate Vertical Tabset Panel
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+appendVerticalTab(inputId, tab,
+  session = shiny::getDefaultReactiveDomain())
+
+removeVerticalTab(inputId, index,
+  session = shiny::getDefaultReactiveDomain())
+
+reorderVerticalTabs(inputId, newOrder,
+  session = shiny::getDefaultReactiveDomain())
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>inputId</code></td>
+<td>
+<p>The id of the <code>verticalTabsetPanel</code> object.</p>
+</td></tr>
+<tr valign="top"><td><code>tab</code></td>
+<td>
+<p>The verticalTab to append.</p>
+</td></tr>
+<tr valign="top"><td><code>session</code></td>
+<td>
+<p>The <code>session</code> object passed to function given to <code>shinyServer.</code></p>
+</td></tr>
+<tr valign="top"><td><code>index</code></td>
+<td>
+<p>The index of the the tab to remove.</p>
+</td></tr>
+<tr valign="top"><td><code>newOrder</code></td>
+<td>
+<p>The new index order.</p>
+</td></tr>
+</table>
+
+
+<h3>Examples</h3>
+
+<pre>
+if (interactive()) {
+library(shiny)
+library(shinyWidgets)
+
+ui &lt;- fluidPage(
+
+  verticalTabsetPanel(
+    verticalTabPanel("blaa","foo"),
+    verticalTabPanel("yarp","bar"),
+    id="hippi"
+  )
+)
+
+server &lt;- function(input, output, session) {
+  appendVerticalTab("hippi", verticalTabPanel("bipi","long"))
+  removeVerticalTab("hippi", 1)
+  appendVerticalTab("hippi", verticalTabPanel("howdy","fair"))
+  reorderVerticalTabs("hippi", c(3,2,1))
+}
+
+# Run the application
+shinyApp(ui = ui, server = server)
+}
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>shinyWidgets</em> version 0.4.8 <a href="00Index.html">Index</a>]</div>
+</body></html>

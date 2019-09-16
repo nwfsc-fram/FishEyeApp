@@ -1,0 +1,120 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Display a spinner above an output when this one recalculate</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for addSpinner {shinyWidgets}"><tr><td>addSpinner {shinyWidgets}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Display a spinner above an output when this one recalculate</h2>
+
+<h3>Description</h3>
+
+<p>Display a spinner above an output when this one recalculate
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+addSpinner(output, spin = "double-bounce", color = "#112446")
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>output</code></td>
+<td>
+<p>An output element, typically the result of <code>renderPlot</code>.</p>
+</td></tr>
+<tr valign="top"><td><code>spin</code></td>
+<td>
+<p>Style of the spinner, choice between : <code>circle</code>, <code>bounce</code>, <code>folding-cube</code>,
+<code>rotating-plane</code>, <code>cube-grid</code>, <code>fading-circle</code>, <code>double-bounce</code>, <code>dots</code>, <code>cube</code>.</p>
+</td></tr>
+<tr valign="top"><td><code>color</code></td>
+<td>
+<p>Color for the spinner.</p>
+</td></tr>
+</table>
+
+
+<h3>Value</h3>
+
+<p>a list of tags
+</p>
+
+
+<h3>Note</h3>
+
+<p>The spinner don't disappear from the page, it's only masked by the plot,
+so the plot must have a non-transparent background. For a more robust way to
+insert loaders, see package &quot;shinycssloaders&quot;.
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+# wrap an output:
+addSpinner(shiny::plotOutput("plot"))
+
+# Complete demo:
+
+if (interactive()) {
+
+library(shiny)
+library(shinyWidgets)
+
+ui &lt;- fluidPage(
+  tags$h2("Exemple spinners"),
+  actionButton(inputId = "refresh", label = "Refresh", width = "100%"),
+  fluidRow(
+    column(
+      width = 5, offset = 1,
+      addSpinner(plotOutput("plot1"), spin = "circle", color = "#E41A1C"),
+      addSpinner(plotOutput("plot3"), spin = "bounce", color = "#377EB8"),
+      addSpinner(plotOutput("plot5"), spin = "folding-cube", color = "#4DAF4A"),
+      addSpinner(plotOutput("plot7"), spin = "rotating-plane", color = "#984EA3"),
+      addSpinner(plotOutput("plot9"), spin = "cube-grid", color = "#FF7F00")
+    ),
+    column(
+      width = 5,
+      addSpinner(plotOutput("plot2"), spin = "fading-circle", color = "#FFFF33"),
+      addSpinner(plotOutput("plot4"), spin = "double-bounce", color = "#A65628"),
+      addSpinner(plotOutput("plot6"), spin = "dots", color = "#F781BF"),
+      addSpinner(plotOutput("plot8"), spin = "cube", color = "#999999")
+    )
+  ),
+  actionButton(inputId = "refresh2", label = "Refresh", width = "100%")
+)
+
+server &lt;- function(input, output, session) {
+
+  dat &lt;- reactive({
+    input$refresh
+    input$refresh2
+    Sys.sleep(3)
+    Sys.time()
+  })
+
+  lapply(
+    X = seq_len(9),
+    FUN = function(i) {
+      output[[paste0("plot", i)]] &lt;- renderPlot({
+        dat()
+        plot(sin, -pi, i*pi)
+      })
+    }
+  )
+
+}
+
+shinyApp(ui, server)
+
+}
+
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>shinyWidgets</em> version 0.4.8 <a href="00Index.html">Index</a>]</div>
+</body></html>

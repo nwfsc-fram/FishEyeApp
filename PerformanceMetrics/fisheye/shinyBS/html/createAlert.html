@@ -1,0 +1,87 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: createAlert</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for createAlert {shinyBS}"><tr><td>createAlert {shinyBS}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>createAlert</h2>
+
+<h3>Description</h3>
+
+<p><code>createAlert</code> is used within the Server logic of your Shiny app to display
+an alert to the user.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+createAlert(session, anchorId, alertId = NULL, title = NULL,
+  content = NULL, style = NULL, dismiss = TRUE, append = TRUE)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>session</code></td>
+<td>
+<p>The session object passed to function given to shinyServer.</p>
+</td></tr>
+<tr valign="top"><td><code>anchorId</code></td>
+<td>
+<p>The unique identifier of the anchor where the alert should be
+displayed.</p>
+</td></tr>
+<tr valign="top"><td><code>alertId</code></td>
+<td>
+<p><b>Optional</b> A unique identifier for the Alert.</p>
+</td></tr>
+<tr valign="top"><td><code>title</code></td>
+<td>
+<p><b>Optional</b> A title for the Alert.</p>
+</td></tr>
+<tr valign="top"><td><code>content</code></td>
+<td>
+<p>The main body of the Alert. HTML tags are allowed.</p>
+</td></tr>
+<tr valign="top"><td><code>style</code></td>
+<td>
+<p>A bootstrap style to apply. Defaults to <code>info</code>.</p>
+</td></tr>
+<tr valign="top"><td><code>dismiss</code></td>
+<td>
+<p><code>logical</code> Should the Alert be user dismissable? Defaults to <code>TRUE</code>.</p>
+</td></tr>
+<tr valign="top"><td><code>append</code></td>
+<td>
+<p><code>logical</code> Should the Alert be appended below existing Alerts? Default to <code>TRUE</code>.</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>See <a href="Alerts.html">Alerts</a> for more information about how to use <code>createAlert</code> with the
+rest of the Alerts family.
+</p>
+
+
+<h3>Note</h3>
+
+<p>Run <code>bsExample("Alerts")</code> for an example
+of <code>createAlert</code> functionality.
+</p>
+
+
+<h3>See Also</h3>
+
+<p><a href="http://getbootstrap.com">Twitter Bootstrap 3</a>
+</p>
+<p>Other Alerts: <code><a href="Alerts.html">Alerts</a></code>; <code><a href="bsAlert.html">bsAlert</a></code>;
+<code><a href="closeAlert.html">closeAlert</a></code>
+</p>
+
+<hr /><div style="text-align: center;">[Package <em>shinyBS</em> version 0.61 <a href="00Index.html">Index</a>]</div>
+</body></html>

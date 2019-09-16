@@ -1,0 +1,124 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Use 'shinydashboard' in 'shiny'</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for useShinydashboard {shinyWidgets}"><tr><td>useShinydashboard {shinyWidgets}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Use 'shinydashboard' in 'shiny'</h2>
+
+<h3>Description</h3>
+
+<p>Allow to use functions from 'shinydashboard' into a classic 'shiny' app,
+specifically <code>valueBox</code>, <code>infoBox</code> and <code>box</code>.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+useShinydashboard()
+</pre>
+
+
+<h3>Examples</h3>
+
+<pre>
+## Not run: 
+
+if (interactive()) {
+
+library(shiny)
+library(shinydashboard)
+library(shinyWidgets)
+
+# example taken from ?box
+
+ui &lt;- fluidPage(
+  tags$h2("Classic shiny"),
+
+  # use this in non shinydashboard app
+  setBackgroundColor(color = "ghostwhite"),
+  useShinydashboard(),
+  # -----------------
+
+  # infoBoxes
+  fluidRow(
+    infoBox(
+      "Orders", uiOutput("orderNum2"), "Subtitle", icon = icon("credit-card")
+    ),
+    infoBox(
+      "Approval Rating", "60%", icon = icon("line-chart"), color = "green",
+      fill = TRUE
+    ),
+    infoBox(
+      "Progress", uiOutput("progress2"), icon = icon("users"), color = "purple"
+    )
+  ),
+
+  # valueBoxes
+  fluidRow(
+    valueBox(
+      uiOutput("orderNum"), "New Orders", icon = icon("credit-card"),
+      href = "http://google.com"
+    ),
+    valueBox(
+      tagList("60", tags$sup(style="font-size: 20px", "%")),
+      "Approval Rating", icon = icon("line-chart"), color = "green"
+    ),
+    valueBox(
+      htmlOutput("progress"), "Progress", icon = icon("users"), color = "purple"
+    )
+  ),
+
+  # Boxes
+  fluidRow(
+    box(status = "primary",
+        sliderInput("orders", "Orders", min = 1, max = 2000, value = 650),
+        selectInput("progress", "Progress",
+                    choices = c("0%" = 0, "20%" = 20, "40%" = 40, "60%" = 60, "80%" = 80,
+                                "100%" = 100)
+        )
+    ),
+    box(title = "Histogram box title",
+        status = "warning", solidHeader = TRUE, collapsible = TRUE,
+        plotOutput("plot", height = 250)
+    )
+  )
+)
+
+server &lt;- function(input, output, session) {
+
+  output$orderNum &lt;- renderText({
+    prettyNum(input$orders, big.mark=",")
+  })
+
+  output$orderNum2 &lt;- renderText({
+    prettyNum(input$orders, big.mark=",")
+  })
+
+  output$progress &lt;- renderUI({
+    tagList(input$progress, tags$sup(style="font-size: 20px", "%"))
+  })
+
+  output$progress2 &lt;- renderUI({
+    paste0(input$progress, "%")
+  })
+
+
+  output$plot &lt;- renderPlot({
+    hist(rnorm(input$orders))
+  })
+
+}
+
+shinyApp(ui, server)
+
+}
+
+
+## End(Not run)
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>shinyWidgets</em> version 0.4.8 <a href="00Index.html">Index</a>]</div>
+</body></html>

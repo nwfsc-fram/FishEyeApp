@@ -1,0 +1,136 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Modals</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for Modals {shinyBS}"><tr><td>Modals {shinyBS}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Modals</h2>
+
+<h3>Description</h3>
+
+<p>Modal windows are similar to popups but are rendered within the
+original window. They can contain any combination of shiny inputs, shiny
+outputs, and html. Possible uses include extra controls that you don't want
+cluttering up the main app display or help pages to explain your apps
+operation.
+</p>
+
+
+<h3>Details</h3>
+
+<p>Use <code><a href="bsModal.html">bsModal</a></code> in your UI to create a modal window. It works
+like <code><a href="Collapses.html">Collapses</a></code> or <code><a href="../../shiny/html/tabPanel.html">tabPanel</a></code>, any non-named arguments
+will be passed as content for the modal.
+</p>
+<p>Create a button or link and assign its <code>inputId</code> as the <code>trigger</code>
+in <code><a href="bsModal.html">bsModal</a></code>.
+</p>
+
+
+<h3>Components</h3>
+
+<p>There are only two functions in the Modals family:
+</p>
+
+<dl>
+<dt><code><a href="bsModal.html">bsModal</a></code></dt><dd><p>Used in the UI to create a modal window.</p>
+</dd>
+<dt><code><a href="toggleModal.html">toggleModal</a></code></dt><dd><p>Used in the Server logic to open or
+close a modal window programmatically.</p>
+</dd>
+</dl>
+
+
+
+<h3>Changes</h3>
+
+<p>There is now a <code>toggle</code> argument in <code><a href="toggleModal.html">toggleModal</a></code> that allows
+you to specify whether you want the modal to open or close.
+</p>
+<p>The <code>size</code> argument in <code><a href="bsModal.html">bsModal</a></code> allows you to specify the
+size of the modal window. Either <code>small</code> or <code>large</code>.
+</p>
+
+
+<h3>Note</h3>
+
+<p>Run <code>bsExample("Modals")</code> for an example
+of <code>Modals</code> functionality.
+</p>
+
+
+<h3>See Also</h3>
+
+<p><a href="http://getbootstrap.com">Twitter Bootstrap 3</a>
+</p>
+<p>Other Modals: <code><a href="bsModal.html">bsModal</a></code>;
+<code><a href="toggleModal.html">toggleModal</a></code>
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+library(shiny)
+library(shinyBS)
+
+app = shinyApp(
+ ui =
+ fluidPage(
+   sidebarLayout(
+     sidebarPanel(
+       sliderInput("bins",
+                   "Number of bins:",
+                   min = 1,
+                   max = 50,
+                   value = 30),
+       actionButton("tabBut", "View Table")
+     ),
+
+     mainPanel(
+       plotOutput("distPlot"),
+       bsModal("modalExample", "Data Table", "tabBut", size = "large",
+         dataTableOutput("distTable"))
+     )
+   )
+ ),
+ server =
+ function(input, output, session) {
+
+   output$distPlot &lt;- renderPlot({
+
+     x    &lt;- faithful[, 2]
+     bins &lt;- seq(min(x), max(x), length.out = input$bins + 1)
+
+     # draw the histogram with the specified number of bins
+     hist(x, breaks = bins, col = 'darkgray', border = 'white')
+
+   })
+
+   output$distTable &lt;- renderDataTable({
+
+     x    &lt;- faithful[, 2]
+     bins &lt;- seq(min(x), max(x), length.out = input$bins + 1)
+
+     # draw the histogram with the specified number of bins
+     tab &lt;- hist(x, breaks = bins, plot = FALSE)
+     tab$breaks &lt;- sapply(seq(length(tab$breaks) - 1), function(i) {
+       paste0(signif(tab$breaks[i], 3), "-", signif(tab$breaks[i+1], 3))
+     })
+     tab &lt;- as.data.frame(do.call(cbind, tab))
+     colnames(tab) &lt;- c("Bins", "Counts", "Density")
+     return(tab[, 1:3])
+
+   }, options = list(pageLength=10))
+
+ }
+)
+## Not run: 
+ runApp(app)
+
+## End(Not run)
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>shinyBS</em> version 0.61 <a href="00Index.html">Index</a>]</div>
+</body></html>

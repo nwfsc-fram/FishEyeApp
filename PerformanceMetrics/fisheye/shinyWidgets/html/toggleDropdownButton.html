@@ -1,0 +1,96 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Toggle a dropdown menu</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for toggleDropdownButton {shinyWidgets}"><tr><td>toggleDropdownButton {shinyWidgets}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Toggle a dropdown menu</h2>
+
+<h3>Description</h3>
+
+<p>Open or close a dropdown menu server-side.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+toggleDropdownButton(inputId, session = getDefaultReactiveDomain())
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>inputId</code></td>
+<td>
+<p>Id for the dropdown to toggle.</p>
+</td></tr>
+<tr valign="top"><td><code>session</code></td>
+<td>
+<p>Standard shiny <code>session</code>.</p>
+</td></tr>
+</table>
+
+
+<h3>Examples</h3>
+
+<pre>
+## Not run: 
+
+if (interactive()) {
+
+library("shiny")
+library("shinyWidgets")
+
+ui &lt;- fluidPage(
+  tags$h2("Toggle Dropdown Button"),
+  br(),
+  fluidRow(
+    column(
+      width = 6,
+      dropdownButton(
+        tags$h3("List of Inputs"),
+        selectInput(inputId = 'xcol',
+                    label = 'X Variable',
+                    choices = names(iris)),
+        sliderInput(inputId = 'clusters',
+                    label = 'Cluster count',
+                    value = 3,
+                    min = 1,
+                    max = 9),
+        actionButton(inputId = "toggle2",
+                     label = "Close dropdown"),
+        circle = TRUE, status = "danger",
+        inputId = "mydropdown",
+        icon = icon("gear"), width = "300px"
+      )
+    ),
+    column(
+      width = 6,
+      actionButton(inputId = "toggle1",
+                   label = "Open dropdown")
+    )
+  )
+)
+
+server &lt;- function(input, output, session) {
+
+  observeEvent(list(input$toggle1, input$toggle2), {
+    toggleDropdownButton(inputId = "mydropdown")
+  }, ignoreInit = TRUE)
+
+}
+
+shinyApp(ui = ui, server = server)
+
+}
+
+
+
+## End(Not run)
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>shinyWidgets</em> version 0.4.8 <a href="00Index.html">Index</a>]</div>
+</body></html>

@@ -1,0 +1,125 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Alerts</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for Alerts {shinyBS}"><tr><td>Alerts {shinyBS}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Alerts</h2>
+
+<h3>Description</h3>
+
+<p>Alerts allow you to communicate information to the user on the fly. Standard
+Bootstrap styling options give the user a hint at the type of information
+contained in the Alert.
+</p>
+
+
+<h3>Details</h3>
+
+<p>To create alerts in your Shiny app you must place <code>bsAlert</code> in your ui.
+This serves as an anchor that tells shinyBS where to place the alerts created
+with <code>createAlert</code>.
+</p>
+<p>Use <code>createAlert</code> in your server script to add alerts to the anchor
+you created with <code>bsAlert</code> in your ui. You can place <code>createAlert</code>
+in observers, reactives, or outputs. A common usage may be to have logic that
+validates a user's inputs. If they are valid produce the requested output, if
+not use <code>createAlert</code> to give the user info about what they need to
+change.
+</p>
+
+
+<h3>Components</h3>
+
+<p>There are three functions in the Alerts family:
+</p>
+
+<dl>
+<dt><code><a href="bsAlert.html">bsAlert</a></code></dt><dd><p>Used in the UI to create an anchor where your
+Alerts will be displayed.</p>
+</dd>
+<dt><code><a href="createAlert.html">createAlert</a></code></dt><dd><p>Used in the Server logic to create
+alerts. This would be used within a reactive context to display error
+or success messages to the user based on the status of that context.</p>
+</dd>
+<dt><code><a href="closeAlert.html">closeAlert</a></code></dt><dd><p>Used in the Server logic to close an alert
+that is already open. By default, Alerts are dismissable by the user,
+but this offers you a way to close them programmatically.</p>
+</dd>
+</dl>
+
+
+
+<h3>Changes</h3>
+
+<p><code>style</code> was called <code>type</code> in previous versions of shinyBS.
+</p>
+<p><code>anchorId</code> was called <code>inputId</code> in previous versions of shinyBS.
+</p>
+<p><code>content</code> was called <code>message</code> in previous versions of shinyBS.
+</p>
+
+
+<h3>Note</h3>
+
+<p>Run <code>bsExample("Alerts")</code> for an example
+of <code>Alerts</code> functionality.
+</p>
+
+
+<h3>See Also</h3>
+
+<p><a href="http://getbootstrap.com">Twitter Bootstrap 3</a>
+</p>
+<p>Other Alerts: <code><a href="bsAlert.html">bsAlert</a></code>;
+<code><a href="closeAlert.html">closeAlert</a></code>; <code><a href="createAlert.html">createAlert</a></code>
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+library(shiny)
+library(shinyBS)
+app = shinyApp(
+ ui =
+   fluidPage(
+     sidebarLayout(
+       sidebarPanel(textInput("num1", NULL, value = 100),
+         "divided by", textInput("num2", NULL, value = 20),
+         "equals", textOutput("exampleOutput")),
+       mainPanel(
+         bsAlert("alert")
+       )
+     )
+ ),
+ server =
+   function(input, output, session) {
+     output$exampleOutput &lt;- renderText({
+       num1 &lt;- as.numeric(input$num1)
+       num2 &lt;- as.numeric(input$num2)
+
+       if(is.na(num1) | is.na(num2)) {
+         createAlert(session, "alert", "exampleAlert", title = "Oops",
+           content = "Both inputs should be numeric.", append = FALSE)
+       } else if(num2 == 0) {
+         createAlert(session, "alert", "exampleAlert", title = "Oops",
+           content = "You cannot divide by 0.", append = FALSE)
+       } else {
+         closeAlert(session, "exampleAlert")
+         return(num1/num2)
+       }
+
+     })
+   }
+)
+
+## Not run: 
+ runApp(app)
+
+## End(Not run)
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>shinyBS</em> version 0.61 <a href="00Index.html">Index</a>]</div>
+</body></html>

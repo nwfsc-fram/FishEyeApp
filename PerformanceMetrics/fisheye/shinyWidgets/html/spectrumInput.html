@@ -1,0 +1,118 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Palette Color Picker with Spectrum Library</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for spectrumInput {shinyWidgets}"><tr><td>spectrumInput {shinyWidgets}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Palette Color Picker with Spectrum Library</h2>
+
+<h3>Description</h3>
+
+<p>A widget to select a color within palettes, and with more options if needed.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+spectrumInput(inputId, label, choices = NULL, selected = NULL,
+  flat = FALSE, options = list(), update_on = c("move", "dragstop",
+  "change"), width = NULL)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>inputId</code></td>
+<td>
+<p>The <code>input</code> slot that will be used to access the value.</p>
+</td></tr>
+<tr valign="top"><td><code>label</code></td>
+<td>
+<p>Display label for the control, or <code>NULL</code> for no label.</p>
+</td></tr>
+<tr valign="top"><td><code>choices</code></td>
+<td>
+<p>List of colors to display in the menu.</p>
+</td></tr>
+<tr valign="top"><td><code>selected</code></td>
+<td>
+<p>The initially selected value.</p>
+</td></tr>
+<tr valign="top"><td><code>flat</code></td>
+<td>
+<p>Display the menu inline.</p>
+</td></tr>
+<tr valign="top"><td><code>options</code></td>
+<td>
+<p>Additional options to pass to spectrum,
+possible values are described here : <a href="https://bgrins.github.io/spectrum/#options">https://bgrins.github.io/spectrum/#options</a>.</p>
+</td></tr>
+<tr valign="top"><td><code>update_on</code></td>
+<td>
+<p>When to update value server-side: <code>"move"</code> (default, each time a new color is selected),
+<code>"dragstop"</code> (when use user stop dragging cursor), <code>"change"</code> (when the input is closed).</p>
+</td></tr>
+<tr valign="top"><td><code>width</code></td>
+<td>
+<p>The width of the input, e.g. <code>400px</code>, or <code>100%</code>.</p>
+</td></tr>
+</table>
+
+
+<h3>Value</h3>
+
+<p>The selected color in Hex format server-side
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+## Not run: 
+
+if (interactive()) {
+
+library("shiny")
+library("shinyWidgets")
+library("RColorBrewer")
+
+ui &lt;- fluidPage(
+  tags$h1("Spectrum color picker"),
+
+  br(),
+
+  spectrumInput(
+    inputId = "myColor",
+    label = "Pick a color:",
+    choices = list(
+      list('black', 'white', 'blanchedalmond', 'steelblue', 'forestgreen'),
+      as.list(brewer.pal(n = 9, name = "Blues")),
+      as.list(brewer.pal(n = 9, name = "Greens")),
+      as.list(brewer.pal(n = 11, name = "Spectral")),
+      as.list(brewer.pal(n = 8, name = "Dark2"))
+    ),
+    options = list(`toggle-palette-more-text` = "Show more")
+  ),
+  verbatimTextOutput(outputId = "res")
+
+)
+
+server &lt;- function(input, output, session) {
+
+  output$res &lt;- renderPrint(input$myColor)
+
+}
+
+shinyApp(ui, server)
+
+}
+
+
+## End(Not run)
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>shinyWidgets</em> version 0.4.8 <a href="00Index.html">Index</a>]</div>
+</body></html>

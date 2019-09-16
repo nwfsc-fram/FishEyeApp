@@ -1,0 +1,144 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Add/remove CSS class</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for classFuncs {shinyjs}"><tr><td>classFuncs {shinyjs}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Add/remove CSS class</h2>
+
+<h3>Description</h3>
+
+<p>Add or remove a CSS class from an HTML element.<br /><br />
+<strong><code>addClass</code></strong> adds a CSS class, <strong><code>removeClass</code></strong>
+removes a CSS class, <strong><code>toggleClass</code></strong> adds the class if it is
+not set and removes the class if it is already set.<br /><br />
+<strong><code>addCssClass</code></strong>, <strong><code>removeCssClass</code></strong>, and
+<strong><code>toggleCssClass</code></strong> are synonyms that may be safer to use if you're
+working with S4 classes (since they don't mask any existing S4 functions).<br /><br />
+If <code>condition</code> is given to <code>toggleClass</code>, that condition will be used
+to determine if to add or remove the class. The class will be added if the
+condition evaluates to <code>TRUE</code> and removed otherwise. If you find
+yourself writing code such as <code>if (test()) addClass(id, cl) else removeClass(id, cl)</code>
+then you can use <code>toggleClass</code> instead: <code>toggleClass(id, cl, test())</code>.<br /><br />
+CSS is a simple way to describe how elements on a web page should be
+displayed (position, colour, size, etc.).  You can learn the basics
+at <a href="http://www.w3schools.com/css/">W3Schools</a>.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+addClass(id = NULL, class = NULL, selector = NULL)
+
+addCssClass(id = NULL, class = NULL, selector = NULL)
+
+removeClass(id = NULL, class = NULL, selector = NULL)
+
+removeCssClass(id = NULL, class = NULL, selector = NULL)
+
+toggleClass(id = NULL, class = NULL, condition = NULL, selector = NULL)
+
+toggleCssClass(id = NULL, class = NULL, condition = NULL,
+  selector = NULL)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>id</code></td>
+<td>
+<p>The id of the element/Shiny tag</p>
+</td></tr>
+<tr valign="top"><td><code>class</code></td>
+<td>
+<p>The CSS class to add/remove</p>
+</td></tr>
+<tr valign="top"><td><code>selector</code></td>
+<td>
+<p>JQuery selector of the elements to target. Ignored if the <code>id</code>
+argument is given. For example, to add a certain class to all inputs with class x,
+use <code>selector = "input.x"</code></p>
+</td></tr>
+<tr valign="top"><td><code>condition</code></td>
+<td>
+<p>An optional argument to <code>toggleClass</code>, see 'Details' below.</p>
+</td></tr>
+</table>
+
+
+<h3>Note</h3>
+
+<p>If you use S4 classes, you should be aware of the fact that both S4 and
+<code>shinyjs</code> use the <code>removeClass()</code> function. This means that when using S4,
+it is recommended to use <code>removeCssClass()</code> from <code>shinyjs</code>, and to
+use <code>methods::removeClass()</code> for S4 object.
+</p>
+<p><code>shinyjs</code> must be initialized with a call to <code>useShinyjs()</code>
+in the app's ui.
+</p>
+
+
+<h3>See Also</h3>
+
+<p><code><a href="useShinyjs.html">useShinyjs</a></code>,
+<code><a href="runExample.html">runExample</a></code>,
+<code><a href="inlineCSS.html">inlineCSS</a></code>,
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+if (interactive()) {
+  library(shiny)
+
+  shinyApp(
+    ui = fluidPage(
+      useShinyjs(),  # Set up shinyjs
+      # Add a CSS class for red text colour
+      inlineCSS(list(.red = "background: red")),
+      actionButton("btn", "Click me"),
+      p(id = "element", "Watch what happens to me")
+    ),
+    server = function(input, output) {
+      observeEvent(input$btn, {
+        # Change the following line for more examples
+        toggleClass("element", "red")
+      })
+    }
+  )
+}
+## Not run: 
+  # The shinyjs function call in the above app can be replaced by
+  # any of the following examples to produce similar Shiny apps
+  toggleClass(class = "red", id = "element")
+  addClass("element", "red")
+  removeClass("element", "red")
+
+## End(Not run)
+
+## toggleClass can be given an optional `condition` argument, which
+## determines if to add or remove the class
+if (interactive()) {
+  shinyApp(
+    ui = fluidPage(
+      useShinyjs(),
+      inlineCSS(list(.red = "background: red")),
+      checkboxInput("checkbox", "Make it red"),
+      p(id = "element", "Watch what happens to me")
+    ),
+    server = function(input, output) {
+      observe({
+        toggleClass(id = "element", class = "red",
+                    condition = input$checkbox)
+      })
+    }
+  )
+}
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>shinyjs</em> version 1.0 <a href="00Index.html">Index</a>]</div>
+</body></html>

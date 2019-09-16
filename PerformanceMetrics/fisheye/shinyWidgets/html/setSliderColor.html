@@ -1,0 +1,98 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Color editor for sliderInput</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for setSliderColor {shinyWidgets}"><tr><td>setSliderColor {shinyWidgets}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Color editor for sliderInput</h2>
+
+<h3>Description</h3>
+
+<p>Edit the color of the original shiny's sliderInputs
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+setSliderColor(color, sliderId)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>color</code></td>
+<td>
+<p>The <code>color</code> to apply. This can also be a vector of colors if you want to customize more than 1 slider. Either
+pass the name of the color such as 'Chartreuse ' and 'Chocolate 'or the HEX notation such as <code>'#7FFF00'</code> and <code>'#D2691E'</code>.</p>
+</td></tr>
+<tr valign="top"><td><code>sliderId</code></td>
+<td>
+<p>The <code>id</code> of the customized slider(s). This can be a vector like <code>c(1, 2)</code>, if you want to modify the 2 first sliders.
+However, if you only want to modify the second slider, just use the value 2.</p>
+</td></tr>
+</table>
+
+
+<h3>Note</h3>
+
+<p>See also <a href="https://www.w3schools.com/colors/colors_names.asp">https://www.w3schools.com/colors/colors_names.asp</a> to have an overview of all colors.
+</p>
+
+
+<h3>See Also</h3>
+
+<p>See <code><a href="chooseSliderSkin.html">chooseSliderSkin</a></code> to update the global skin of your sliders.
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+## Not run: 
+
+if (interactive()) {
+
+library(shiny)
+library(shinyWidgets)
+
+ui &lt;- fluidPage(
+
+  # only customize the 2 first sliders and the last one
+  # the color of the third one is empty
+  setSliderColor(c("DeepPink ", "#FF4500", "", "Teal"), c(1, 2, 4)),
+  sliderInput("obs", "My pink slider:",
+              min = 0, max = 100, value = 50
+  ),
+  sliderInput("obs2", "My orange slider:",
+              min = 0, max = 100, value = 50
+  ),
+  sliderInput("obs3", "My basic slider:",
+              min = 0, max = 100, value = 50
+  ),
+  sliderInput("obs3", "My teal slider:",
+              min = 0, max = 100, value = 50
+  ),
+  plotOutput("distPlot")
+)
+
+server &lt;- function(input, output) {
+
+  output$distPlot &lt;- renderPlot({
+    hist(rnorm(input$obs))
+  })
+}
+
+shinyApp(ui, server)
+
+}
+
+
+
+## End(Not run)
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>shinyWidgets</em> version 0.4.8 <a href="00Index.html">Index</a>]</div>
+</body></html>

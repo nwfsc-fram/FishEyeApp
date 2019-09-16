@@ -1,0 +1,166 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Tooltips and Popovers</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for Tooltips_and_Popovers {shinyBS}"><tr><td>Tooltips_and_Popovers {shinyBS}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Tooltips and Popovers</h2>
+
+<h3>Description</h3>
+
+<p>Tooltips and Popovers allow you to add additional information about controls
+or outputs without cluttering up your user interface. You can add a tooltip to
+a button that displays on hover and better explains what the button will do, or
+you could add a popover to an output providing further analysis of that output.
+</p>
+
+
+<h3>Details</h3>
+
+<p>You can create tooltips and popovers from either the UI script or within the
+Server logic. <code><a href="bsTooltip.html">bsTooltip</a></code> and <code><a href="bsPopover.html">bsPopover</a></code> are used in
+the UI, and <code><a href="addTooltip.html">addTooltip</a></code> and <code><a href="addPopover.html">addPopover</a></code> are used in
+the Server logic. <code><a href="tipify.html">tipify</a></code> and <code><a href="popify.html">popify</a></code> can be used
+within the UI or from within a <code><a href="../../shiny/html/renderUI.html">renderUI</a></code> in the Server logic. They
+also have the added advantage of not requiring that the UI element have an ID
+attribute.
+</p>
+
+
+<h3>Components</h3>
+
+<p>There are eight functions in the Tooltips and Popovers family:
+</p>
+
+<dl>
+<dt><code><a href="bsTooltip.html">bsTooltip</a></code></dt><dd><p>Used in the UI to add a tooltip to an element
+in your UI.</p>
+</dd>
+<dt><code><a href="bsPopover.html">bsPopover</a></code></dt><dd><p>Used in the UI to add a popover to an element
+in your UI.</p>
+</dd>
+<dt><code><a href="tipify.html">tipify</a></code></dt><dd><p>Wrap any UI element in <code>tipify</code> to add a
+tooltip to the wrapped element. Preferred for elemented created with
+<code><a href="../../shiny/html/renderUI.html">renderUI</a></code>.</p>
+</dd>
+<dt><code><a href="popify.html">popify</a></code></dt><dd><p>Wrap any UI element in <code>popify</code> to add a
+popover to the wrapped element. Preferred for elements created with
+<code><a href="../../shiny/html/renderUI.html">renderUI</a></code>.</p>
+</dd>
+<dt><code><a href="addTooltip.html">addTooltip</a></code></dt><dd><p>Used in the Server logic to add a tooltip
+to an element in your UI.</p>
+</dd>
+<dt><code><a href="addPopover.html">addPopover</a></code></dt><dd><p>Used in the Server logic to add a popover
+to an element in your UI.</p>
+</dd>
+<dt><code><a href="removeTooltip.html">removeTooltip</a></code></dt><dd><p>Used in the Server logic to remove a
+tooltip from an element in your UI.</p>
+</dd>
+<dt><code><a href="removePopover.html">removePopover</a></code></dt><dd><p>Used in the Server logic to remove a
+popover from an element in your UI.</p>
+</dd>
+</dl>
+
+
+
+<h3>Changes</h3>
+
+<p>An <code>options</code> argument has been added to the creation functions to allow
+advanced users more control over how the tooltips and popovers appear. See
+the <a href="http://getbootstrap.com">Twitter Bootstrap 3 documentation</a> for more
+details.
+</p>
+
+
+<h3>Note</h3>
+
+<p>Tooltips and Popovers cannot contain shiny inputs or outputs.
+</p>
+<p>There must be at least one <code>shinyBS</code> component in the UI of your
+app in order for the necessary dependencies to be loaded. Because of this,
+<code><a href="addTooltip.html">addTooltip</a></code> and <code><a href="addPopover.html">addPopover</a></code> will not work if they
+are the only shinyBS components in your app.
+</p>
+<p>Tooltips and popovers may not work on some of the more complex shiny inputs
+or outputs. If you encounter a problem with tooltips or popovers not appearing
+please file a issue on the github page so I can fix it.
+</p>
+<p>Run <code>bsExample("Tooltips_and_Popovers")</code> for an example
+of <code>Tooltips_and_Popovers</code> functionality.
+</p>
+
+
+<h3>See Also</h3>
+
+<p><a href="http://getbootstrap.com">Twitter Bootstrap 3</a>
+</p>
+<p>Other Tooltips_and_Popovers: <code><a href="addPopover.html">addPopover</a></code>;
+<code><a href="addTooltip.html">addTooltip</a></code>; <code><a href="bsPopover.html">bsPopover</a></code>;
+<code><a href="bsTooltip.html">bsTooltip</a></code>; <code><a href="popify.html">popify</a></code>;
+<code><a href="removePopover.html">removePopover</a></code>; <code><a href="removeTooltip.html">removeTooltip</a></code>;
+<code><a href="tipify.html">tipify</a></code>
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+library(shiny)
+library(shinyBS)
+
+app = shinyApp(
+ ui =
+ fluidPage(
+   sidebarLayout(
+     sidebarPanel(
+       sliderInput("bins",
+                   "Number of bins:",
+                   min = 1,
+                   max = 50,
+                   value = 30),
+       bsTooltip("bins", "The wait times will be broken into this many equally spaced bins",
+         "right", options = list(container = "body"))
+     ),
+     mainPanel(
+       plotOutput("distPlot"),
+       uiOutput("uiExample")
+     )
+   )
+ ),
+ server =
+ function(input, output, session) {
+   output$distPlot &lt;- renderPlot({
+
+     # generate bins based on input$bins from ui.R
+     x    &lt;- faithful[, 2]
+     bins &lt;- seq(min(x), max(x), length.out = input$bins + 1)
+
+     # draw the histogram with the specified number of bins
+     hist(x, breaks = bins, col = 'darkgray', border = 'white')
+
+   })
+   output$uiExample &lt;- renderUI({
+     tags$span(
+       popify(bsButton("pointlessButton", "Button", style = "primary", size = "large"),
+         "A Pointless Button",
+         "This button is &lt;b&gt;pointless&lt;/b&gt;. It does not do &lt;em&gt;anything&lt;/em&gt;!"),
+       tipify(bsButton("pB2", "Button", style = "inverse", size = "extra-small"),
+         "This button is pointless too!")
+     )
+   })
+   addPopover(session, "distPlot", "Data", content = paste0("&lt;p&gt;Waiting time between ",
+     "eruptions and the duration of the eruption for the Old Faithful geyser ",
+     "in Yellowstone National Park, Wyoming, USA.&lt;/p&gt;&lt;p&gt;Azzalini, A. and ",
+     "Bowman, A. W. (1990). A look at some data on the Old Faithful geyser. ",
+     "Applied Statistics 39, 357-365.&lt;/p&gt;"), trigger = 'click')
+ }
+)
+## Not run: 
+ runApp(app)
+
+## End(Not run)
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>shinyBS</em> version 0.61 <a href="00Index.html">Index</a>]</div>
+</body></html>

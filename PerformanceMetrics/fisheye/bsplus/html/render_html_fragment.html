@@ -1,0 +1,69 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Renders and returns an HTML fragment</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for render_html_fragment {bsplus}"><tr><td>render_html_fragment {bsplus}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Renders and returns an HTML fragment</h2>
+
+<h3>Description</h3>
+
+<p>This is a wrapper around the <code>rmarkdown::<a href="../../rmarkdown/html/render.html">render</a></code>
+function. The principal difference is that the function is designed to
+return an HTML fragment (rather than writing to a file). This function is
+useful to populate the content of a modal window.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+render_html_fragment(input, output_format = rmarkdown::html_fragment(), ...)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>input</code></td>
+<td>
+<p>character, path to input file</p>
+</td></tr>
+<tr valign="top"><td><code>output_format</code></td>
+<td>
+<p>rmarkdown output format, provided so you can specify arguments</p>
+</td></tr>
+<tr valign="top"><td><code>...</code></td>
+<td>
+<p>other arguments passed to
+<code>rmarkdown::<a href="../../rmarkdown/html/render.html">render</a></code></p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>This function is being deprecated in favor of
+<code>shiny::<a href="../../shiny/html/includeMarkdown.html">includeMarkdown</a></code>
+</p>
+
+
+<h3>Value</h3>
+
+<p><code>htmltools::<a href="../../htmltools/html/tag.html">tag</a></code>
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+## Not run: 
+my_file &lt;- system.file("markdown", "modal.md", package = "bsplus")
+render_html_fragment(my_file)
+
+## End(Not run)
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>bsplus</em> version 0.1.1 <a href="00Index.html">Index</a>]</div>
+</body></html>

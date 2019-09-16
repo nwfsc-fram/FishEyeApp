@@ -1,0 +1,261 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Select picker Input Control</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for pickerInput {shinyWidgets}"><tr><td>pickerInput {shinyWidgets}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Select picker Input Control</h2>
+
+<h3>Description</h3>
+
+<p>Create a select picker (<a href="https://developer.snapappointments.com/bootstrap-select/">https://developer.snapappointments.com/bootstrap-select/</a>)
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+pickerInput(inputId, label = NULL, choices, selected = NULL,
+  multiple = FALSE, options = list(), choicesOpt = NULL,
+  width = NULL, inline = FALSE)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>inputId</code></td>
+<td>
+<p>The <code>input</code> slot that will be used to access the value.</p>
+</td></tr>
+<tr valign="top"><td><code>label</code></td>
+<td>
+<p>Display a text in the center of the switch.</p>
+</td></tr>
+<tr valign="top"><td><code>choices</code></td>
+<td>
+<p>List of values to select from. If elements of the
+list are named then that name rather than the value is displayed to the user.</p>
+</td></tr>
+<tr valign="top"><td><code>selected</code></td>
+<td>
+<p>The initially selected value (or multiple values if multiple = TRUE).
+If not specified then defaults to the first value for single-select lists
+and no values for multiple select lists.</p>
+</td></tr>
+<tr valign="top"><td><code>multiple</code></td>
+<td>
+<p>Is selection of multiple items allowed?</p>
+</td></tr>
+<tr valign="top"><td><code>options</code></td>
+<td>
+<p>List of options, see <a href="pickerOptions.html">pickerOptions</a> for all available options.
+For limit the number of selections, see example below.</p>
+</td></tr>
+<tr valign="top"><td><code>choicesOpt</code></td>
+<td>
+<p>Options for choices in the dropdown menu.</p>
+</td></tr>
+<tr valign="top"><td><code>width</code></td>
+<td>
+<p>The width of the input : 'auto', 'fit', '100px', '75%'.</p>
+</td></tr>
+<tr valign="top"><td><code>inline</code></td>
+<td>
+<p>Put the label and the picker on the same line.</p>
+</td></tr>
+</table>
+
+
+<h3>Value</h3>
+
+<p>A select control that can be added to a UI definition.
+</p>
+
+
+<h3>See Also</h3>
+
+<p><a href="updatePickerInput.html">updatePickerInput</a> to update value server-side.
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+## Not run: 
+## Only run examples in interactive R sessions
+if (interactive()) {
+
+# You can run the gallery to see other examples
+shinyWidgetsGallery()
+
+
+# Simple example
+library("shiny")
+ui &lt;- fluidPage(
+  pickerInput(inputId = "somevalue", label = "A label", choices = c("a", "b")),
+  verbatimTextOutput("value")
+)
+server &lt;- function(input, output) {
+  output$value &lt;- renderPrint({ input$somevalue })
+}
+shinyApp(ui, server)
+
+
+### Add actions box for selecting
+# deselecting all options
+
+library("shiny")
+library("shinyWidgets")
+
+ui &lt;- fluidPage(
+  br(),
+  pickerInput(
+    inputId = "p1",
+    label = "Select all option",
+    choices = rownames(mtcars),
+    multiple = TRUE,
+    options = list(`actions-box` = TRUE)
+  ),
+  br(),
+  pickerInput(
+    inputId = "p2",
+    label = "Select all option / custom text",
+    choices = rownames(mtcars),
+    multiple = TRUE,
+    options = list(
+      `actions-box` = TRUE,
+      `deselect-all-text` = "None...",
+      `select-all-text` = "Yeah, all !",
+      `none-selected-text` = "zero"
+    )
+  )
+)
+
+server &lt;- function(input, output, session) {
+
+}
+
+shinyApp(ui = ui, server = server)
+
+
+
+### Customize the values displayed in the box ----
+
+library("shiny")
+library("shinyWidgets")
+
+ui &lt;- fluidPage(
+  br(),
+  pickerInput(
+    inputId = "p1",
+    label = "Default",
+    multiple = TRUE,
+    choices = rownames(mtcars),
+    selected = rownames(mtcars)[1:5]
+  ),
+  br(),
+  pickerInput(
+    inputId = "p1b",
+    label = "Default with | separator",
+    multiple = TRUE,
+    choices = rownames(mtcars),
+    selected = rownames(mtcars)[1:5],
+    options = list(`multiple-separator` = " | ")
+  ),
+  br(),
+  pickerInput(
+    inputId = "p2",
+    label = "Static",
+    multiple = TRUE,
+    choices = rownames(mtcars),
+    selected = rownames(mtcars)[1:5],
+    options = list(`selected-text-format`= "static",
+                   title = "Won't change")
+  ),
+  br(),
+  pickerInput(
+    inputId = "p3",
+    label = "Count",
+    multiple = TRUE,
+    choices = rownames(mtcars),
+    selected = rownames(mtcars)[1:5],
+    options = list(`selected-text-format`= "count")
+  ),
+  br(),
+  pickerInput(
+    inputId = "p3",
+    label = "Customize count",
+    multiple = TRUE,
+    choices = rownames(mtcars),
+    selected = rownames(mtcars)[1:5],
+    options = list(
+      `selected-text-format`= "count",
+      `count-selected-text` = "{0} models choosed (on a total of {1})"
+    )
+  )
+)
+
+server &lt;- function(input, output, session) {
+
+}
+
+shinyApp(ui = ui, server = server)
+
+
+
+### Limit the number of selections ----
+
+library(shiny)
+library(shinyWidgets)
+ui &lt;- fluidPage(
+  pickerInput(
+    inputId = "groups",
+    label = "Select one from each group below:",
+    choices = list(
+      Group1 = c("1", "2", "3", "4"),
+      Group2 = c("A", "B", "C", "D")
+    ),
+    multiple = TRUE,
+    options =  list("max-options-group" = 1)
+  ),
+  verbatimTextOutput(outputId = "res_grp"),
+  pickerInput(
+    inputId = "groups_2",
+    label = "Select two from each group below:",
+    choices = list(
+      Group1 = c("1", "2", "3", "4"),
+      Group2 = c("A", "B", "C", "D")
+    ),
+    multiple = TRUE,
+    options =  list("max-options-group" = 2)
+  ),
+  verbatimTextOutput(outputId = "res_grp_2"),
+  pickerInput(
+    inputId = "classic",
+    label = "Select max two option below:",
+    choices = c("A", "B", "C", "D"),
+    multiple = TRUE,
+    options =  list(
+      "max-options" = 2,
+      "max-options-text" = "No more!"
+    )
+  ),
+  verbatimTextOutput(outputId = "res_classic")
+)
+server &lt;- function(input, output) {
+  output$res_grp &lt;- renderPrint(input$groups)
+  output$res_grp_2 &lt;- renderPrint(input$groups_2)
+  output$res_classic &lt;- renderPrint(input$classic)
+}
+shinyApp(ui, server)
+
+}
+
+## End(Not run)
+
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>shinyWidgets</em> version 0.4.8 <a href="00Index.html">Index</a>]</div>
+</body></html>

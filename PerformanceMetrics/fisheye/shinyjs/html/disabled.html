@@ -1,0 +1,83 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Initialize a Shiny input as disabled</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for disabled {shinyjs}"><tr><td>disabled {shinyjs}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Initialize a Shiny input as disabled</h2>
+
+<h3>Description</h3>
+
+<p>Create a Shiny input that is disabled when the Shiny app starts. The input can
+be enabled later with <code>shinyjs::toggleState</code> or <code>shinyjs::enable</code>.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+disabled(...)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>...</code></td>
+<td>
+<p>Shiny input (or tagList or list of of tags that include inputs) to
+disable.</p>
+</td></tr>
+</table>
+
+
+<h3>Value</h3>
+
+<p>The tag (or tags) that was given as an argument in a disabled state.
+</p>
+
+
+<h3>Note</h3>
+
+<p><code>shinyjs</code> must be initialized with a call to <code>useShinyjs()</code>
+in the app's ui.
+</p>
+
+
+<h3>See Also</h3>
+
+<p><code><a href="useShinyjs.html">useShinyjs</a></code>,
+<code><a href="toggleState.html">toggleState</a></code>,
+<code><a href="enable.html">enable</a></code>,
+<code><a href="disable.html">disable</a></code>
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+if (interactive()) {
+  library(shiny)
+  shinyApp(
+    ui = fluidPage(
+      useShinyjs(),  # Set up shinyjs
+      actionButton("btn", "Click me"),
+      disabled(
+        textInput("element", NULL, "I was born disabled")
+      )
+    ),
+    server = function(input, output) {
+      observeEvent(input$btn, {
+        enable("element")
+      })
+    }
+  )
+}
+
+library(shiny)
+disabled(numericInput("num", NULL, 5), dateInput("date", NULL))
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>shinyjs</em> version 1.0 <a href="00Index.html">Index</a>]</div>
+</body></html>

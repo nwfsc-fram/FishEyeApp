@@ -1,0 +1,205 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Numeric range slider</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for noUiSliderInput {shinyWidgets}"><tr><td>noUiSliderInput {shinyWidgets}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Numeric range slider</h2>
+
+<h3>Description</h3>
+
+<p>A minimal numeric range slider with a lot of features.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+noUiSliderInput(inputId, label = NULL, min, max, value, step = NULL,
+  tooltips = TRUE, connect = TRUE, padding = 0, margin = NULL,
+  limit = NULL, orientation = c("horizontal", "vertical"),
+  direction = c("ltr", "rtl"), behaviour = "tap", range = NULL,
+  pips = NULL, format = wNumbFormat(), update_on = c("end",
+  "change"), color = NULL, inline = FALSE, width = NULL,
+  height = NULL)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>inputId</code></td>
+<td>
+<p>The <code>input</code> slot that will be used to access the value.</p>
+</td></tr>
+<tr valign="top"><td><code>label</code></td>
+<td>
+<p>Display label for the control, or NULL for no label.</p>
+</td></tr>
+<tr valign="top"><td><code>min</code></td>
+<td>
+<p>Minimal value that can be selected.</p>
+</td></tr>
+<tr valign="top"><td><code>max</code></td>
+<td>
+<p>Maximal value that can be selected.</p>
+</td></tr>
+<tr valign="top"><td><code>value</code></td>
+<td>
+<p>The initial value of the slider. as many cursors will be created as values provided.</p>
+</td></tr>
+<tr valign="top"><td><code>step</code></td>
+<td>
+<p>numeric, by default, the slider slides fluently.
+In order to make the handles jump between intervals, you can use
+the step option.</p>
+</td></tr>
+<tr valign="top"><td><code>tooltips</code></td>
+<td>
+<p>logical, display slider's value in a tooltip above slider.</p>
+</td></tr>
+<tr valign="top"><td><code>connect</code></td>
+<td>
+<p>logical, vector of length <code>value</code> + 1, color slider between handle(s).</p>
+</td></tr>
+<tr valign="top"><td><code>padding</code></td>
+<td>
+<p>numeric, padding limits how close to the slider edges handles can be.</p>
+</td></tr>
+<tr valign="top"><td><code>margin</code></td>
+<td>
+<p>numeric, when using two handles, the minimum distance between
+the handles can be set using the margin option.</p>
+</td></tr>
+<tr valign="top"><td><code>limit</code></td>
+<td>
+<p>numeric, the limit option is the opposite of the <code>margin</code> option,
+limiting the maximum distance between two handles.</p>
+</td></tr>
+<tr valign="top"><td><code>orientation</code></td>
+<td>
+<p>The orientation setting can be used to set the
+slider to <code>"vertical"</code> or <code>"horizontal"</code>.</p>
+</td></tr>
+<tr valign="top"><td><code>direction</code></td>
+<td>
+<p><code>"ltr"</code> or <code>"rtl"</code>, By default the sliders are top-to-bottom and left-to-right,
+but you can change this using the direction option,
+which decides where the upper side of the slider is.</p>
+</td></tr>
+<tr valign="top"><td><code>behaviour</code></td>
+<td>
+<p>Option to handle user interaction, a value or several between
+<code>"drag"</code>, <code>"tap"</code>, <code>"fixed"</code>, <code>"snap"</code> or <code>"none"</code>.
+See <a href="https://refreshless.com/nouislider/behaviour-option/">https://refreshless.com/nouislider/behaviour-option/</a> for more examples.</p>
+</td></tr>
+<tr valign="top"><td><code>range</code></td>
+<td>
+<p>list, can be used to define non-linear sliders.</p>
+</td></tr>
+<tr valign="top"><td><code>pips</code></td>
+<td>
+<p>list, used to generate points along the slider.</p>
+</td></tr>
+<tr valign="top"><td><code>format</code></td>
+<td>
+<p>numbers format, see <code><a href="wNumbFormat.html">wNumbFormat</a></code>.</p>
+</td></tr>
+<tr valign="top"><td><code>update_on</code></td>
+<td>
+<p>When to send value to server: <code>"end"</code> (when slider is released) or <code>"update"</code> (each time value changes).</p>
+</td></tr>
+<tr valign="top"><td><code>color</code></td>
+<td>
+<p>color in Hex format for the slider.</p>
+</td></tr>
+<tr valign="top"><td><code>inline</code></td>
+<td>
+<p>If <code>TRUE</code>, it's possible to position sliders side-by-side.</p>
+</td></tr>
+<tr valign="top"><td><code>width</code></td>
+<td>
+<p>The width of the input, e.g. <code>400px</code>, or <code>100%</code>.</p>
+</td></tr>
+<tr valign="top"><td><code>height</code></td>
+<td>
+<p>The height of the input, e.g. <code>400px</code>, or <code>100%</code>.</p>
+</td></tr>
+</table>
+
+
+<h3>Value</h3>
+
+<p>a ui definition
+</p>
+
+
+<h3>Note</h3>
+
+<p>See <code><a href="updateNoUiSliderInput.html">updateNoUiSliderInput</a></code> for updating slider value server-side.
+And <code><a href="demoNoUiSlider.html">demoNoUiSlider</a></code> for examples.
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+## Not run: 
+
+if (interactive()) {
+
+### examples ----
+
+# see ?demoNoUiSlider
+demoNoUiSlider("more")
+
+
+###  basic usage ----
+
+library( shiny )
+library( shinyWidgets )
+
+
+ui &lt;- fluidPage(
+
+  tags$br(),
+
+  noUiSliderInput(
+    inputId = "noui1",
+    min = 0, max = 100,
+    value = 20
+  ),
+  verbatimTextOutput(outputId = "res1"),
+
+  tags$br(),
+
+  noUiSliderInput(
+    inputId = "noui2", label = "Slider vertical:",
+    min = 0, max = 1000, step = 50,
+    value = c(100, 400), margin = 100,
+    orientation = "vertical",
+    width = "100px", height = "300px"
+  ),
+  verbatimTextOutput(outputId = "res2")
+
+)
+
+server &lt;- function(input, output, session) {
+
+  output$res1 &lt;- renderPrint(input$noui1)
+  output$res2 &lt;- renderPrint(input$noui2)
+
+}
+
+shinyApp(ui, server)
+
+
+}
+
+
+## End(Not run)
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>shinyWidgets</em> version 0.4.8 <a href="00Index.html">Index</a>]</div>
+</body></html>

@@ -1,0 +1,61 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Comparison proxy</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for vec_proxy_compare {vctrs}"><tr><td>vec_proxy_compare {vctrs}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Comparison proxy</h2>
+
+<h3>Description</h3>
+
+<p>Returns a proxy object (i.e. an atomic vector or data frame of atomic
+vectors). For <a href="new_vctr.html">vctr</a>s, this determins the behaviour of <code><a href="../../base/html/order.html">order()</a></code> and
+<code><a href="../../base/html/sort.html">sort()</a></code> (via <code><a href="../../base/html/xtfrm.html">xtfrm()</a></code>); <code>&lt;</code>, <code>&gt;</code>, <code>&gt;=</code> and <code>&lt;=</code> (via <code><a href="vec_compare.html">vec_compare()</a></code>);
+and <code><a href="../../base/html/Extremes.html">min()</a></code>, <code><a href="../../base/html/Extremes.html">max()</a></code>, <code><a href="../../stats/html/median.html">median()</a></code>, and <code><a href="../../stats/html/quantile.html">quantile()</a></code>.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+vec_proxy_compare(x, ..., relax = FALSE)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>x</code></td>
+<td>
+<p>A vector x.</p>
+</td></tr>
+<tr valign="top"><td><code>...</code></td>
+<td>
+<p>These dots are for future extensions and must be empty.</p>
+</td></tr>
+<tr valign="top"><td><code>relax</code></td>
+<td>
+<p>If <code>TRUE</code>, and <code>x</code> is otherwise non-comparable, will return
+<code>vec_seq_along(x)</code>. This allows a data frame to be orderable, even if
+one of its components is not. This is experimental and may change in the
+future.</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>The default method assumes that all classes built on top of atomic
+vectors or records are orderable. If your class is not, you will need
+to provide a <code>vec_proxy_compare()</code> method that throws an error.
+</p>
+
+
+<h3>Value</h3>
+
+<p>A 1d atomic vector or a data frame.
+</p>
+
+<hr /><div style="text-align: center;">[Package <em>vctrs</em> version 0.2.0 <a href="00Index.html">Index</a>]</div>
+</body></html>

@@ -1,0 +1,181 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Change the value of a checkboxes group buttons input on the...</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for updateCheckboxGroupButtons {shinyWidgets}"><tr><td>updateCheckboxGroupButtons {shinyWidgets}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Change the value of a checkboxes group buttons input on the client</h2>
+
+<h3>Description</h3>
+
+<p>Change the value of a radio group buttons input on the client
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+updateCheckboxGroupButtons(session, inputId, label = NULL,
+  choices = NULL, selected = NULL, status = "default",
+  size = "normal", checkIcon = list(), choiceNames = NULL,
+  choiceValues = NULL)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>session</code></td>
+<td>
+<p>The session object passed to function given to shinyServer.</p>
+</td></tr>
+<tr valign="top"><td><code>inputId</code></td>
+<td>
+<p>The id of the input object.</p>
+</td></tr>
+<tr valign="top"><td><code>label</code></td>
+<td>
+<p>The label to set.</p>
+</td></tr>
+<tr valign="top"><td><code>choices</code></td>
+<td>
+<p>The new choices for the input.</p>
+</td></tr>
+<tr valign="top"><td><code>selected</code></td>
+<td>
+<p>The values selected.</p>
+</td></tr>
+<tr valign="top"><td><code>status</code></td>
+<td>
+<p>Status, only used if choices is not NULL.</p>
+</td></tr>
+<tr valign="top"><td><code>size</code></td>
+<td>
+<p>Size, only used if choices is not NULL.</p>
+</td></tr>
+<tr valign="top"><td><code>checkIcon</code></td>
+<td>
+<p>Icon, only used if choices is not NULL.</p>
+</td></tr>
+<tr valign="top"><td><code>choiceNames, choiceValues</code></td>
+<td>
+<p>List of names and values, an alternative to choices.</p>
+</td></tr>
+</table>
+
+
+<h3>See Also</h3>
+
+<p><code><a href="checkboxGroupButtons.html">checkboxGroupButtons</a></code>
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+## Not run: 
+if (interactive()) {
+
+library(shiny)
+library(shinyWidgets)
+
+# Example 1 ----
+
+ui &lt;- fluidPage(
+
+  radioButtons(inputId = "up", label = "Update button :", choices = c("All", "None")),
+
+  checkboxGroupButtons(
+    inputId = "btn", label = "Power :",
+    choices = c("Nuclear", "Hydro", "Solar", "Wind"),
+    selected = "Hydro"
+  ),
+
+  verbatimTextOutput(outputId = "res")
+
+)
+
+server &lt;- function(input,output, session){
+
+  observeEvent(input$up, {
+    if (input$up == "All"){
+      updateCheckboxGroupButtons(session, "btn", selected = c("Nuclear", "Hydro", "Solar", "Wind"))
+    } else {
+      updateCheckboxGroupButtons(session, "btn", selected = character(0))
+    }
+  }, ignoreInit = TRUE)
+
+  output$res &lt;- renderPrint({
+    input$btn
+  })
+}
+
+shinyApp(ui = ui, server = server)
+
+
+# Example 2 ----
+
+library("shiny")
+library("shinyWidgets")
+
+ui &lt;- fluidPage(
+  checkboxGroupButtons(
+    inputId = "somevalue",
+    choices = c("A", "B", "C"),
+    label = "My label"
+  ),
+
+  verbatimTextOutput(outputId = "res"),
+
+  actionButton(inputId = "updatechoices", label = "Random choices"),
+  pickerInput(
+    inputId = "updateselected", label = "Update selected:",
+    choices = c("A", "B", "C"), multiple = TRUE
+  ),
+  textInput(inputId = "updatelabel", label = "Update label")
+)
+
+server &lt;- function(input, output, session) {
+
+  output$res &lt;- renderPrint({
+    input$somevalue
+  })
+
+  observeEvent(input$updatechoices, {
+    newchoices &lt;- sample(letters, sample(2:6))
+    updateCheckboxGroupButtons(
+      session = session, inputId = "somevalue",
+      choices = newchoices
+    )
+    updatePickerInput(
+      session = session, inputId = "updateselected",
+      choices = newchoices
+    )
+  })
+
+  observeEvent(input$updateselected, {
+    updateCheckboxGroupButtons(
+      session = session, inputId = "somevalue",
+      selected = input$updateselected
+    )
+  }, ignoreNULL = TRUE, ignoreInit = TRUE)
+
+  observeEvent(input$updatelabel, {
+    updateCheckboxGroupButtons(
+      session = session, inputId = "somevalue",
+      label = input$updatelabel
+    )
+  }, ignoreInit = TRUE)
+
+}
+
+shinyApp(ui = ui, server = server)
+
+}
+
+## End(Not run)
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>shinyWidgets</em> version 0.4.8 <a href="00Index.html">Index</a>]</div>
+</body></html>

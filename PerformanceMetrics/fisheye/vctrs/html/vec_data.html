@@ -1,0 +1,116 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Extract underlying data</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for vec_data {vctrs}"><tr><td>vec_data {vctrs}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Extract underlying data</h2>
+
+<h3>Description</h3>
+
+<p>Extract the data underlying an S3 vector object, i.e. the underlying
+(named) atomic vector or list.
+</p>
+
+<ul>
+<li> <p><code>vec_data()</code> returns unstructured data. The only attributes
+preserved are names, dims, and dimnames.
+</p>
+<p>Currently, due to the underlying memory architecture of R, this
+creates a full copy of the data.
+</p>
+</li>
+<li> <p><code>vec_proxy()</code> may return structured data. This generic is the
+main customisation point in vctrs, along with <code><a href="vec_cast.html">vec_restore()</a></code>.
+See the section below to learn when you should implement
+<code>vec_proxy()</code>.
+</p>
+<p>Methods must return a vector type. Records and data frames will
+be processed rowwise.
+</p>
+</li></ul>
+
+
+
+<h3>Usage</h3>
+
+<pre>
+vec_data(x)
+
+vec_proxy(x, ...)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>x</code></td>
+<td>
+<p>A vector or object implementing <code>vec_proxy()</code>.</p>
+</td></tr>
+<tr valign="top"><td><code>...</code></td>
+<td>
+<p>These dots are for future extensions and must be empty.</p>
+</td></tr>
+</table>
+
+
+<h3>Value</h3>
+
+<p>The data underlying <code>x</code>, free from any attributes except the names.
+</p>
+
+
+<h3>When should you proxy your type</h3>
+
+<p>You should only implement <code>vec_proxy()</code> when your type is designed
+around a non-vector class. I.e. anything that is not either:
+</p>
+
+<ul>
+<li><p> An atomic vector
+</p>
+</li>
+<li><p> A bare list
+</p>
+</li>
+<li><p> A data frame
+</p>
+</li></ul>
+
+<p>In this case, implement <code>vec_proxy()</code> to return such a vector
+class. The vctrs operations such as <code><a href="vec_slice.html">vec_slice()</a></code> are applied on
+the proxy and <code>vec_restore()</code> is called to restore the original
+representation of your type.
+</p>
+<p>The most common case where you need to implement <code>vec_proxy()</code> is
+for S3 lists. In vctrs, S3 lists are treated as scalars by
+default. This way we don't treat objects like model fits as
+vectors. To prevent vctrs from treating your S3 list as a scalar,
+unclass it in the <code>vec_proxy()</code> method. For instance, here is the
+definition for <code>list_of</code>:</p>
+<pre>vec_proxy.vctrs_list_of &lt;- function(x) {
+  unclass(x)
+}
+</pre>
+<p>Another case where you need to implement a proxy is <a href="new_rcrd.html">record types</a>. Record types should return a data frame, as in
+the <code>POSIXlt</code> method:</p>
+<pre>vec_proxy.POSIXlt &lt;- function(x) {
+  new_data_frame(unclass(x))
+}
+</pre>
+<p>Note that you don't need to implement <code>vec_proxy()</code> when your class
+inherits from <code>vctrs_vctr</code> or <code>vctrs_rcrd</code>.
+</p>
+
+
+<h3>See Also</h3>
+
+<p>See <code><a href="vec_cast.html">vec_restore()</a></code> for the inverse operation: it restores
+attributes given a bare vector and a prototype;
+<code>vec_restore(vec_data(x), x)</code> will always yield <code>x</code>.
+</p>
+
+<hr /><div style="text-align: center;">[Package <em>vctrs</em> version 0.2.0 <a href="00Index.html">Index</a>]</div>
+</body></html>

@@ -1,0 +1,95 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Reset input elements to their original values</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for reset {shinyjs}"><tr><td>reset {shinyjs}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Reset input elements to their original values</h2>
+
+<h3>Description</h3>
+
+<p>Reset any input element back to its original value. You can either reset
+one specific input at a time by providing the id of a shiny input, or reset
+all inputs within an HTML tag by providing the id of an HTML tag.<br /><br />
+Reset can be performed on any traditional Shiny input widget, which
+includes: textInput, numericInput, sliderInput, selectInput,
+selectizeInput, radioButtons, dateInput, dateRangeInput, checkboxInput,
+checkboxGroupInput, colourInput, passwordInput, textAreaInput. Note that
+<code>actionButton</code> is not supported, meaning that you cannot reset
+the value of a button back to 0.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+reset(id)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>id</code></td>
+<td>
+<p>The id of the input element to reset or the id of an HTML
+tag to reset all input elements inside it.</p>
+</td></tr>
+</table>
+
+
+<h3>Note</h3>
+
+<p><code>shinyjs</code> must be initialized with a call to <code>useShinyjs()</code>
+in the app's ui.
+</p>
+
+
+<h3>See Also</h3>
+
+<p><code><a href="useShinyjs.html">useShinyjs</a></code>,
+<code><a href="runExample.html">runExample</a></code>
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+if (interactive()) {
+  library(shiny)
+
+  shinyApp(
+    ui = fluidPage(
+      useShinyjs(),
+      div(
+        id = "form",
+        textInput("name", "Name", "Dean"),
+        radioButtons("gender", "Gender", c("Male", "Female")),
+        selectInput("letter", "Favourite letter", LETTERS)
+      ),
+      actionButton("resetAll", "Reset all"),
+      actionButton("resetName", "Reset name"),
+      actionButton("resetGender", "Reset Gender"),
+      actionButton("resetLetter", "Reset letter")
+    ),
+    server = function(input, output) {
+      observeEvent(input$resetName, {
+        reset("name")
+      })
+      observeEvent(input$resetGender, {
+        reset("gender")
+      })
+      observeEvent(input$resetLetter, {
+        reset("letter")
+      })
+      observeEvent(input$resetAll, {
+        reset("form")
+      })
+    }
+  )
+}
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>shinyjs</em> version 1.0 <a href="00Index.html">Index</a>]</div>
+</body></html>

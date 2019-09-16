@@ -1,0 +1,118 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Awesome action button</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for actionBttn {shinyWidgets}"><tr><td>actionBttn {shinyWidgets}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Awesome action button</h2>
+
+<h3>Description</h3>
+
+<p>Like <code>actionButton</code> but awesome, via <a href="https://bttn.surge.sh/">https://bttn.surge.sh/</a>
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+actionBttn(inputId, label = NULL, icon = NULL, style = "unite",
+  color = "default", size = "md", block = FALSE, no_outline = TRUE)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>inputId</code></td>
+<td>
+<p>The <code>input</code> slot that will be used to access the value.</p>
+</td></tr>
+<tr valign="top"><td><code>label</code></td>
+<td>
+<p>The contents of the button, usually a text label.</p>
+</td></tr>
+<tr valign="top"><td><code>icon</code></td>
+<td>
+<p>An optional icon to appear on the button.</p>
+</td></tr>
+<tr valign="top"><td><code>style</code></td>
+<td>
+<p>Style of the button, to choose between <code>simple</code>, <code>bordered</code>,
+<code>minimal</code>, <code>stretch</code>, <code>jelly</code>, <code>gradient</code>, <code>fill</code>,
+<code>material-circle</code>, <code>material-flat</code>, <code>pill</code>, <code>float</code>, <code>unite</code>.</p>
+</td></tr>
+<tr valign="top"><td><code>color</code></td>
+<td>
+<p>Color of the button : <code>default</code>, <code>primary</code>, <code>warning</code>,
+<code>danger</code>, <code>success</code>, <code>royal</code>.</p>
+</td></tr>
+<tr valign="top"><td><code>size</code></td>
+<td>
+<p>Size of the button : <code>xs</code>,<code>sm</code>, <code>md</code>, <code>lg</code>.</p>
+</td></tr>
+<tr valign="top"><td><code>block</code></td>
+<td>
+<p>Logical, full width button.</p>
+</td></tr>
+<tr valign="top"><td><code>no_outline</code></td>
+<td>
+<p>Logical, don't show outline when navigating with
+keyboard/interact using mouse or touch.</p>
+</td></tr>
+</table>
+
+
+<h3>See Also</h3>
+
+<p><a href="downloadBttn.html">downloadBttn</a>
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+## Not run: 
+if (interactive()) {
+
+library(shiny)
+library(shinyWidgets)
+
+ui &lt;- fluidPage(
+  tags$h2("Awesome action button"),
+  tags$br(),
+  actionBttn(
+    inputId = "bttn1",
+    label = "Go!",
+    color = "primary",
+    style = "bordered"
+  ),
+  tags$br(),
+  verbatimTextOutput(outputId = "res_bttn1"),
+  tags$br(),
+  actionBttn(
+    inputId = "bttn2",
+    label = "Go!",
+    color = "success",
+    style = "material-flat",
+    icon = icon("sliders"),
+    block = TRUE
+  ),
+  tags$br(),
+  verbatimTextOutput(outputId = "res_bttn2")
+)
+
+server &lt;- function(input, output, session) {
+  output$res_bttn1 &lt;- renderPrint(input$bttn1)
+  output$res_bttn2 &lt;- renderPrint(input$bttn2)
+}
+
+shinyApp(ui = ui, server = server)
+
+}
+
+## End(Not run)
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>shinyWidgets</em> version 0.4.8 <a href="00Index.html">Index</a>]</div>
+</body></html>

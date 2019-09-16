@@ -1,0 +1,174 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Knob Input</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for knobInput {shinyWidgets}"><tr><td>knobInput {shinyWidgets}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Knob Input</h2>
+
+<h3>Description</h3>
+
+<p>Knob Input
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+knobInput(inputId, label, value, min = 0, max = 100, step = 1,
+  angleOffset = 0, angleArc = 360, cursor = FALSE,
+  thickness = NULL, lineCap = c("default", "round"),
+  displayInput = TRUE, displayPrevious = FALSE,
+  rotation = c("clockwise", "anticlockwise"), fgColor = NULL,
+  inputColor = NULL, bgColor = NULL, readOnly = FALSE, skin = NULL,
+  width = NULL, height = NULL, immediate = TRUE)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>inputId</code></td>
+<td>
+<p>The <code>input</code> slot that will be used to access the value.</p>
+</td></tr>
+<tr valign="top"><td><code>label</code></td>
+<td>
+<p>Display label for the control, or NULL for no label.</p>
+</td></tr>
+<tr valign="top"><td><code>value</code></td>
+<td>
+<p>Initial value.</p>
+</td></tr>
+<tr valign="top"><td><code>min</code></td>
+<td>
+<p>Minimum allowed value, default to <code>0</code>.</p>
+</td></tr>
+<tr valign="top"><td><code>max</code></td>
+<td>
+<p>Maximum allowed value, default to <code>100</code>.</p>
+</td></tr>
+<tr valign="top"><td><code>step</code></td>
+<td>
+<p>Specifies the interval between each selectable value, default to <code>1</code>.</p>
+</td></tr>
+<tr valign="top"><td><code>angleOffset</code></td>
+<td>
+<p>Starting angle in degrees, default to <code>0</code>.</p>
+</td></tr>
+<tr valign="top"><td><code>angleArc</code></td>
+<td>
+<p>Arc size in degrees, default to <code>360</code>.</p>
+</td></tr>
+<tr valign="top"><td><code>cursor</code></td>
+<td>
+<p>Display mode &quot;cursor&quot;, don't work properly if <code>width</code> is not set in pixel, (<code>TRUE</code> or <code>FALSE</code>).</p>
+</td></tr>
+<tr valign="top"><td><code>thickness</code></td>
+<td>
+<p>Gauge thickness, numeric value.</p>
+</td></tr>
+<tr valign="top"><td><code>lineCap</code></td>
+<td>
+<p>Gauge stroke endings, 'default' or 'round'.</p>
+</td></tr>
+<tr valign="top"><td><code>displayInput</code></td>
+<td>
+<p>Hide input in the middle of the knob (<code>TRUE</code> or <code>FALSE</code>).</p>
+</td></tr>
+<tr valign="top"><td><code>displayPrevious</code></td>
+<td>
+<p>Display the previous value with transparency (<code>TRUE</code> or <code>FALSE</code>).</p>
+</td></tr>
+<tr valign="top"><td><code>rotation</code></td>
+<td>
+<p>Direction of progression, 'clockwise' or 'anticlockwise'.</p>
+</td></tr>
+<tr valign="top"><td><code>fgColor</code></td>
+<td>
+<p>Foreground color.</p>
+</td></tr>
+<tr valign="top"><td><code>inputColor</code></td>
+<td>
+<p>Input value (number) color.</p>
+</td></tr>
+<tr valign="top"><td><code>bgColor</code></td>
+<td>
+<p>Background color.</p>
+</td></tr>
+<tr valign="top"><td><code>readOnly</code></td>
+<td>
+<p>Disable knob (<code>TRUE</code> or <code>FALSE</code>).</p>
+</td></tr>
+<tr valign="top"><td><code>skin</code></td>
+<td>
+<p>Change Knob skin, only one option available : 'tron'.</p>
+</td></tr>
+<tr valign="top"><td><code>width</code></td>
+<td>
+<p>The width of the input, e.g. <code>400px</code>, or <code>100%</code>.</p>
+</td></tr>
+<tr valign="top"><td><code>height</code></td>
+<td>
+<p>The height of the input, e.g. <code>400px</code>, or <code>100%</code>.</p>
+</td></tr>
+<tr valign="top"><td><code>immediate</code></td>
+<td>
+<p>If <code>TRUE</code> (default), server-side value is updated each time value change,
+if <code>FALSE</code> value is updated when user release the widget.</p>
+</td></tr>
+</table>
+
+
+<h3>Value</h3>
+
+<p>Numeric value server-side.
+</p>
+
+
+<h3>See Also</h3>
+
+<p><code><a href="updateKnobInput.html">updateKnobInput</a></code> for updating the value server-side.
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+## Not run: 
+
+if (interactive()) {
+
+library("shiny")
+library("shinyWidgets")
+
+ui &lt;- fluidPage(
+  knobInput(
+    inputId = "myKnob",
+    label = "Display previous:",
+    value = 50,
+    min = -100,
+    displayPrevious = TRUE,
+    fgColor = "#428BCA",
+    inputColor = "#428BCA"
+  ),
+  verbatimTextOutput(outputId = "res")
+)
+
+server &lt;- function(input, output, session) {
+
+  output$res &lt;- renderPrint(input$myKnob)
+
+}
+
+shinyApp(ui = ui, server = server)
+
+}
+
+
+## End(Not run)
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>shinyWidgets</em> version 0.4.8 <a href="00Index.html">Index</a>]</div>
+</body></html>

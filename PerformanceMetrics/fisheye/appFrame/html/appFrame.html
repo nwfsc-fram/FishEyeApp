@@ -1,0 +1,126 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Display NOAA header and footer for framing Shiny apps</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for appFrame {appFrame}"><tr><td>appFrame {appFrame}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Display NOAA header and footer for framing Shiny apps</h2>
+
+<h3>Description</h3>
+
+<p>Display scrolling or non-scrolling NOAA banner header and footer elements
+for framing Shiny apps.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+appFrameFooterFixed(displayAppsURL="https://dataexplorer.nwfsc.noaa.gov",
+    contactURL="https://www.nwfsc.noaa.gov/contact/feedback.cfm")
+appFrameFooterScrolling(displayAppsURL="https://dataexplorer.nwfsc.noaa.gov",
+    contactURL="https://www.nwfsc.noaa.gov/contact/feedback.cfm")
+appFrameHeaderFixed(overlapHeight=7, includeBanner=FALSE)
+appFrameHeaderScrolling(overlapHeight=7, includeBanner=FALSE)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>contactURL</code></td>
+<td>
+<p>URL in the &quot;Problems with site?&quot; footer link.</p>
+</td></tr>
+<tr valign="top"><td><code>displayAppsURL</code></td>
+<td>
+<p>URL in the &quot;Display apps&quot; footer link.</p>
+</td></tr>
+<tr valign="top"><td><code>overlapHeight</code></td>
+<td>
+<p>height in em of blank div that lies
+beneath header to prevent normally-flowing content from being hidden
+by header.  The larger the value of <code>overlapHeight</code>, the farther
+down the page the content will appear.</p>
+</td></tr>
+<tr valign="top"><td><code>includeBanner</code></td>
+<td>
+<p>if TRUE, display contents of banner.html 
+immediately below header logos; if FALSE, do not display banner.</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>These functions return lists of HTML tags which render the NOAA banner
+header and contact links footer for display above and below Shiny app
+interfaces.  <code>appFrameHeaderFixed</code> and <code>appFrameFooterFixed</code>
+render elements that do not scroll with the contents of the browser
+window, while headers and footers created with
+<code>appFrameHeaderScrolling</code> and <code>appFrameFooterScrolling</code> will
+scroll along with the rest of the browser window contents.
+</p>
+<p>To display a banner message beneath the header, set <code>includeBanner</code>
+to TRUE.  The contents of banner.html will be displayed beneath the
+header logos.  Current banner contents announce the changeover of the
+site from HTTP to HTTPS.  Changing the banner requires editing banner.html
+and rebuilding the package.
+</p>
+<p>If a banner is displayed, <code>overlapHeight</code> will probably need to be
+increased.
+</p>
+<p>The functions have so far been tested with <code>navbarPage</code> and
+<code>fluidPage</code>-embedded <code>sidebarLayout</code> layout schemes.  Using
+<code>sidebarLayout</code>, <code>appFrameHeaderFixed</code> should be included as
+an argument to <code>fluidPage</code> before <code>sidebarLayout</code> and
+<code>appFrameFooterFixed</code> should be included as an argument following
+the end of the <code>sidebarLayout</code> definition.  This results in a
+header that remains visible at the top of the browser window and a
+footer that remains visible at the bottom when the window is scrolled.
+</p>
+<p>Non-scrolling headers don't work properly in <code>navbarPage</code> layouts;
+to display a scrolling header and a fixed footer, pass
+<code>appFrameHeaderScrolling()</code> as the <code>header</code> argument to
+<code>navbarPage</code> and <code>appFrameFooterFixed()</code> as the <code>footer</code>
+argument.  This results in a header element displayed below the
+<code>navbarPage</code> menu but above the contents of each tab, which scrolls
+with the contents of the tab.  The footer remains visible at the bottom
+of the browser window.
+</p>
+
+
+<h3>Value</h3>
+
+<p>Each function returns a <code>tagList</code> containing the HTML and CSS
+elements necessary for rendering its element.
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+## Not run: 
+library(appFrame)
+fluidPage(
+  appFrameHeaderFixed()
+  sidebarLayout(...)
+  appFrameFooterFixed(displayAppsURL="http://apps.home.page/url")
+)
+
+library(appFrame)
+navbarPage(
+  "NavBar Title",
+  tabPanel(...),
+  ...,
+  header=appFrameHeaderScrolling(),
+  footer=appFrameFooterScrolling(contactURL="http://report.a.problem/issues")
+)
+
+
+## End(Not run)
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>appFrame</em> version 0.1.8 <a href="00Index.html">Index</a>]</div>
+</body></html>

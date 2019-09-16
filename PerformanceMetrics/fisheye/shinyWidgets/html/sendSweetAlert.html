@@ -1,0 +1,187 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Display a Sweet Alert to the user</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for sendSweetAlert {shinyWidgets}"><tr><td>sendSweetAlert {shinyWidgets}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Display a Sweet Alert to the user</h2>
+
+<h3>Description</h3>
+
+<p>Send a message from the server and launch a sweet alert in the UI.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+sendSweetAlert(session, title = "Title", text = NULL, type = NULL,
+  btn_labels = "Ok", html = FALSE, closeOnClickOutside = TRUE)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>session</code></td>
+<td>
+<p>The <code>session</code> object passed to function given to shinyServer.</p>
+</td></tr>
+<tr valign="top"><td><code>title</code></td>
+<td>
+<p>Title of the alert.</p>
+</td></tr>
+<tr valign="top"><td><code>text</code></td>
+<td>
+<p>Text of the alert.</p>
+</td></tr>
+<tr valign="top"><td><code>type</code></td>
+<td>
+<p>Type of the alert : info, success, warning or error.</p>
+</td></tr>
+<tr valign="top"><td><code>btn_labels</code></td>
+<td>
+<p>Label(s) for button(s), can be of length 2,
+in which case the alert will have two buttons.</p>
+</td></tr>
+<tr valign="top"><td><code>html</code></td>
+<td>
+<p>Does <code>text</code> contains HTML tags ?</p>
+</td></tr>
+<tr valign="top"><td><code>closeOnClickOutside</code></td>
+<td>
+<p>Decide whether the user should be able to dismiss
+the modal by clicking outside of it, or not.</p>
+</td></tr>
+</table>
+
+
+<h3>See Also</h3>
+
+<p><code><a href="confirmSweetAlert.html">confirmSweetAlert</a></code>, <code><a href="inputSweetAlert.html">inputSweetAlert</a></code>
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+## Not run: 
+if (interactive()) {
+
+library(shiny)
+library(shinyWidgets)
+
+ui &lt;- fluidPage(
+  tags$h2("Sweet Alert examples"),
+  actionButton(
+    inputId = "success",
+    label = "Launch a success sweet alert",
+    icon = icon("check")
+  ),
+  actionButton(
+    inputId = "error",
+    label = "Launch an error sweet alert",
+    icon = icon("remove")
+  ),
+  actionButton(
+    inputId = "sw_html",
+    label = "Sweet alert with HTML",
+    icon = icon("thumbs-up")
+  )
+)
+
+server &lt;- function(input, output, session) {
+
+  observeEvent(input$success, {
+    sendSweetAlert(
+      session = session,
+      title = "Success !!",
+      text = "All in order",
+      type = "success"
+    )
+  })
+
+  observeEvent(input$error, {
+    sendSweetAlert(
+      session = session,
+      title = "Error !!",
+      text = "It's broken...",
+      type = "error"
+    )
+  })
+
+  observeEvent(input$sw_html, {
+    sendSweetAlert(
+      session = session,
+      title = NULL,
+      text = tags$span(
+        tags$h3("With HTML tags",
+                style = "color: steelblue;"),
+        "In", tags$b("bold"), "and", tags$em("italic"),
+        tags$br(),
+        "and",
+        tags$br(),
+        "line",
+        tags$br(),
+        "breaks",
+        tags$br(),
+        "and an icon", icon("thumbs-up")
+      ),
+      html = TRUE
+    )
+  })
+
+}
+
+shinyApp(ui, server)
+
+
+# output in Sweet Alert #
+
+library("shiny")
+library("shinyWidgets")
+
+shinyApp(
+  ui = fluidPage(
+    tags$h1("Click the button"),
+    actionButton(
+      inputId = "sw_html",
+      label = "Sweet alert with plot"
+    ),
+    # SweetAlert width
+    tags$style(".swal-modal {width: 80%;}")
+  ),
+  server = function(input, output, session) {
+    observeEvent(input$sw_html, {
+      sendSweetAlert(
+        session = session,
+        title = "Yay a plot!",
+        text = tags$div(
+          plotOutput(outputId = "plot"),
+          sliderInput(
+            inputId = "clusters",
+            label = "Number of clusters",
+            min = 2, max = 6, value = 3, width = "100%"
+          )
+        ),
+        html = TRUE
+      )
+    })
+    output$plot &lt;- renderPlot({
+      plot(Sepal.Width ~ Sepal.Length,
+           data = iris, col = Species,
+           pch = 20, cex = 2)
+      points(kmeans(iris[, 1:2], input$clusters)$centers,
+             pch = 4, cex = 4, lwd = 4)
+    })
+  }
+)
+
+}
+
+## End(Not run)
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>shinyWidgets</em> version 0.4.8 <a href="00Index.html">Index</a>]</div>
+</body></html>

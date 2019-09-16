@@ -1,0 +1,118 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Collapsible element</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for bs_collapse {bsplus}"><tr><td>bs_collapse {bsplus}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Collapsible element</h2>
+
+<h3>Description</h3>
+
+<p>This is useful for content that you may wish to be hidden when the page is
+initialized, but that can be revealed (and subsequently hidden)
+by clicking a button or a link.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+bs_collapse(id, content = NULL, show = FALSE)
+
+bs_attach_collapse(tag, id_collapse)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>id</code></td>
+<td>
+<p>character, unique id for the collapsible <code>&lt;div/&gt;</code></p>
+</td></tr>
+<tr valign="top"><td><code>content</code></td>
+<td>
+<p>character (HTML) or
+<code>htmltools::<a href="../../htmltools/html/tagList.html">tagList</a></code>,
+content for the collapsible <code>&lt;div/&gt;</code></p>
+</td></tr>
+<tr valign="top"><td><code>show</code></td>
+<td>
+<p>logical, indicates if collapsible <code>&lt;div/&gt;</code>
+is shown when page is initialized</p>
+</td></tr>
+<tr valign="top"><td><code>tag</code></td>
+<td>
+<p><code>htmltools::<a href="../../htmltools/html/tag.html">tag</a></code>,
+button or link to which to attach a collapsible <code>&lt;div/&gt;</code></p>
+</td></tr>
+<tr valign="top"><td><code>id_collapse</code></td>
+<td>
+<p>character, <code>id</code> of
+the collapsible <code>&lt;div/&gt;</code> to attach</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>There are two parts to this system:
+</p>
+
+<ol>
+<li><p>A collapsible <code>&lt;div/&gt;</code>, created using <code>bs_collapse()</code>
+</p>
+</li>
+<li><p>At least one button (<code>&lt;button/&gt;</code>) or link (<code>&lt;a/&gt;</code>)
+to which the <code>id</code> of the collapsible <code>&lt;div/&gt;</code> is attached,
+using <code>bs_attach_collapse()</code>
+</p>
+</li></ol>
+
+<p>The verb <em>attach</em> is used to signify that we are attaching the
+<code>id</code> of our collapsible
+<code>&lt;div/&gt;</code> to the tag in question (a button or a link).
+Note that you can attach the <code>id</code> of a collapsible
+<code>&lt;div/&gt;</code> to more than one button or link.
+</p>
+<p>It is your responsibility to ensure that <code>id</code> is unique
+among HTML elements in your page. If you have non-unique <code>id</code>'s,
+strange things may happen to your page.
+</p>
+
+
+<h3>Value</h3>
+
+
+<dl>
+<dt><code>bs_collapse()</code></dt><dd><p><code>htmltools::<a href="../../htmltools/html/tag.html">tag</a></code>,
+<code>&lt;div/&gt;</code></p>
+</dd>
+<dt><code>bs_attach_collapse()</code></dt><dd><p><code>htmltools::<a href="../../htmltools/html/tag.html">tag</a></code>,
+modified copy of <code>tag</code> (button or link)</p>
+</dd>
+</dl>
+
+
+
+<h3>See Also</h3>
+
+<p><a href="https://getbootstrap.com/javascript/#collapse">https://getbootstrap.com/javascript/#collapse</a>
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+library("htmltools")
+
+bs_collapse(id = "id_yeah", "Yeah Yeah Yeah")
+
+bs_button("She Loves You", button_type = "primary") %&gt;%
+  bs_attach_collapse("id_yeah")
+
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>bsplus</em> version 0.1.1 <a href="00Index.html">Index</a>]</div>
+</body></html>

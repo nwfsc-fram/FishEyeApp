@@ -1,0 +1,84 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Panel</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for bs_panel {bsplus}"><tr><td>bs_panel {bsplus}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Panel</h2>
+
+<h3>Description</h3>
+
+<p>This function makes it a little easier to make Bootstrap-friendly panels;
+it wraps the [htmltools::tags()] function for panels
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+bs_panel(id = NULL, panel_type = c("default", "primary", "success", "info",
+  "warning", "danger"), heading = NULL, body = NULL, ..., footer = NULL)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>id</code></td>
+<td>
+<p>character, unique identifier</p>
+</td></tr>
+<tr valign="top"><td><code>panel_type</code></td>
+<td>
+<p>character, one of the standard Bootstrap types</p>
+</td></tr>
+<tr valign="top"><td><code>heading</code></td>
+<td>
+<p>character (HTML) or [htmltools::tagList()],
+content for the heading</p>
+</td></tr>
+<tr valign="top"><td><code>body</code></td>
+<td>
+<p>character (HTML) or [htmltools::tagList()],
+content for the body</p>
+</td></tr>
+<tr valign="top"><td><code>...</code></td>
+<td>
+<p>character (HTML) or [htmltools::tagList()],
+other content</p>
+</td></tr>
+<tr valign="top"><td><code>footer</code></td>
+<td>
+<p>character (HTML) or [htmltools::tagList()],
+content for the footer</p>
+</td></tr>
+</table>
+
+
+<h3>Value</h3>
+
+<p>[htmltools::tag()], '&lt;button/&gt;'
+</p>
+
+
+<h3>See Also</h3>
+
+<p><a href="http://getbootstrap.com/css/#panels">http://getbootstrap.com/css/#panels</a>
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+library("htmltools")
+
+bs_panel(
+  panel_type = "primary",
+  heading = tags$h3("title"),
+  body = tags$p("Some very important content")
+)
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>bsplus</em> version 0.1.1 <a href="00Index.html">Index</a>]</div>
+</body></html>

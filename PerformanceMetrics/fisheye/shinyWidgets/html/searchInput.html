@@ -1,0 +1,109 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Search Input</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for searchInput {shinyWidgets}"><tr><td>searchInput {shinyWidgets}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Search Input</h2>
+
+<h3>Description</h3>
+
+<p>A text input only triggered when Enter key is pressed or search button clicked
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+searchInput(inputId, label = NULL, value = "", placeholder = NULL,
+  btnSearch = NULL, btnReset = NULL, resetValue = "", width = NULL)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>inputId</code></td>
+<td>
+<p>The input slot that will be used to access the value.</p>
+</td></tr>
+<tr valign="top"><td><code>label</code></td>
+<td>
+<p>Display label for the control, or NULL for no label.</p>
+</td></tr>
+<tr valign="top"><td><code>value</code></td>
+<td>
+<p>Initial value.</p>
+</td></tr>
+<tr valign="top"><td><code>placeholder</code></td>
+<td>
+<p>A character string giving the user a hint as to what can be entered into the control.</p>
+</td></tr>
+<tr valign="top"><td><code>btnSearch</code></td>
+<td>
+<p>An icon for the button which validate the search.</p>
+</td></tr>
+<tr valign="top"><td><code>btnReset</code></td>
+<td>
+<p>An icon for the button which reset the search.</p>
+</td></tr>
+<tr valign="top"><td><code>resetValue</code></td>
+<td>
+<p>Value used when reset button is clicked, default to <code>""</code>,
+if <code>NULL</code> value is not reset.</p>
+</td></tr>
+<tr valign="top"><td><code>width</code></td>
+<td>
+<p>The width of the input, e.g. '400px', or '100%'.</p>
+</td></tr>
+</table>
+
+
+<h3>Note</h3>
+
+<p>The two buttons ('search' and 'reset') act like <code>actionButton</code>, you can
+retrieve their value server-side with <code>input$&lt;INPUTID&gt;_search</code> and <code>input$&lt;INPUTID&gt;_reset</code>.
+</p>
+
+
+<h3>See Also</h3>
+
+<p><a href="updateSearchInput.html">updateSearchInput</a> to update value server-side.
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+## Not run: 
+if (interactive()) {
+  ui &lt;- fluidPage(
+    tags$h1("Search Input"),
+    br(),
+    searchInput(
+      inputId = "search", label = "Enter your text",
+      placeholder = "A placeholder",
+      btnSearch = icon("search"),
+      btnReset = icon("remove"),
+      width = "450px"
+    ),
+    br(),
+    verbatimTextOutput(outputId = "res")
+  )
+
+  server &lt;- function(input, output, session) {
+    output$res &lt;- renderPrint({
+      input$search
+    })
+  }
+
+  shinyApp(ui = ui, server = server)
+}
+
+## End(Not run)
+
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>shinyWidgets</em> version 0.4.8 <a href="00Index.html">Index</a>]</div>
+</body></html>

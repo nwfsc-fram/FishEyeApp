@@ -1,0 +1,167 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Round, floor and ceiling methods for date-time objects.</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for round_date {lubridate}"><tr><td>round_date {lubridate}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Round, floor and ceiling methods for date-time objects.</h2>
+
+<h3>Description</h3>
+
+<p>Rounding to the nearest unit or multiple of a unit are supported. All
+meaningfull specifications in English language are supported - secs, min,
+mins, 2 minutes, 3 years etc.
+<br />
+<code>round_date</code> takes a date-time object and rounds it to the nearest value
+of the specified time unit. For rounding date-times which is exactly halfway
+between two consecutive units, the convention is to round up. Note that this
+is in line with the behavior of R's base <a href="../../base/html/round.POSIXt.html">round.POSIXt</a> function
+but does not follow the convention of the base <a href="../../base/html/round.html">round</a> function
+which &quot;rounds to the even digit&quot; per IEC 60559.
+<br />
+<code>floor_date</code> takes a date-time object and rounds it down to the nearest
+boundary of the specified  time unit.
+<br />
+<code>ceiling_date</code> takes a date-time object and rounds it up to the nearest
+boundary of the specified time unit.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+round_date(x, unit = "second")
+
+floor_date(x, unit = "seconds")
+
+ceiling_date(x, unit = "seconds", change_on_boundary = NULL)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>x</code></td>
+<td>
+<p>a vector of date-time objects</p>
+</td></tr>
+<tr valign="top"><td><code>unit</code></td>
+<td>
+<p>a character string specifying the time unit or a multiple of a
+unit to be rounded to. Valid base units are second, minute, hour, day,
+week, month, bimonth, quarter, halfyear, or year. Arbitrary unique English
+abbreviations as in <code><a href="period.html">period</a></code> constructor are also
+supported. Rounding to multiple of units (except weeks) is supported from
+<code>v1.6.0</code>.</p>
+</td></tr>
+<tr valign="top"><td><code>change_on_boundary</code></td>
+<td>
+<p>If NULL (the default) don't change instants on the
+boundary (<code>ceiling_date(ymd_hms('2000-01-01 00:00:00'))</code> is
+<code>2000-01-01 00:00:00</code>), but round up <code>Date</code> objects to the next
+boundary (<code>ceiling_date(ymd("2000-01-01"), "month")</code> is
+<code>"2000-02-01"</code>). When <code>TRUE</code>, instants on the boundary are
+rounded up to the next boundary. When <code>FALSE</code>, date-time on the
+boundary are never rounded up (this was the default for <code>lubridate</code>
+prior to <code>v1.6.0</code>. See section <code>Rounding Up Date Objects</code> below
+for more details.</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>In <code>lubridate</code> rounding of a date-time objects tries to preserve the
+class of the input object whenever it is meaningful. This is done by first
+rounding to an instant and then converting to the original class by usual R
+conventions.
+</p>
+
+
+<h3>Rounding Up Date Objects</h3>
+
+<p>By default rounding up <code>Date</code> objects follows 3 steps:
+</p>
+
+<ol>
+<li><p> Convert to an instant representing lower bound of the Date:
+<code>2000-01-01</code> &ndash;&gt; <code>2000-01-01 00:00:00</code>
+</p>
+</li>
+<li><p> Round up to the <strong>next</strong> closest rounding unit boundary. For
+example, if the rounding unit is <code>month</code> then next boundary
+for <code>2000-01-01</code> will be <code>2000-02-01 00:00:00</code>.
+</p>
+<p>The motivation for this behavior is that <code>2000-01-01</code> is
+conceptually an interval <code>(2000-01-01 00:00:00 -- 2000-01-02
+          00:00:00)</code> and the day hasn't started clocking yet at the exact
+boundary <code>00:00:00</code>. Thus, it seems wrong to round up a day to
+its lower boundary.
+</p>
+</li>
+<li><p> If rounding unit is smaller than a day, return the instant from
+step 2 above (<code>POSIXct</code>), otherwise return the <code>Date</code>
+immediately following that instant.
+</p>
+</li></ol>
+
+<p>The behavior on the boundary in the second step above can be changed by
+setting <code>change_on_boundary</code> to a non-<code>NULL</code> value.
+</p>
+
+
+<h3>See Also</h3>
+
+<p><a href="../../base/html/round.html">round</a>
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+x &lt;- as.POSIXct("2009-08-03 12:01:59.23")
+round_date(x, "second")
+round_date(x, "minute")
+round_date(x, "5 mins")
+round_date(x, "hour")
+round_date(x, "2 hours")
+round_date(x, "day")
+round_date(x, "week")
+round_date(x, "month")
+round_date(x, "bimonth")
+round_date(x, "quarter") == round_date(x, "3 months")
+round_date(x, "halfyear")
+round_date(x, "year")
+
+x &lt;- as.POSIXct("2009-08-03 12:01:59.23")
+floor_date(x, "second")
+floor_date(x, "minute")
+floor_date(x, "hour")
+floor_date(x, "day")
+floor_date(x, "week")
+floor_date(x, "month")
+floor_date(x, "bimonth")
+floor_date(x, "quarter")
+floor_date(x, "halfyear")
+floor_date(x, "year")
+
+x &lt;- as.POSIXct("2009-08-03 12:01:59.23")
+ceiling_date(x, "second")
+ceiling_date(x, "minute")
+ceiling_date(x, "5 mins")
+ceiling_date(x, "hour")
+ceiling_date(x, "day")
+ceiling_date(x, "week")
+ceiling_date(x, "month")
+ceiling_date(x, "bimonth") == ceiling_date(x, "2 months")
+ceiling_date(x, "quarter")
+ceiling_date(x, "halfyear")
+ceiling_date(x, "year")
+x &lt;- ymd("2000-01-01")
+ceiling_date(x, "month")
+ceiling_date(x, "month", change_on_boundary = TRUE)
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>lubridate</em> version 1.6.0 <a href="00Index.html">Index</a>]</div>
+</body></html>

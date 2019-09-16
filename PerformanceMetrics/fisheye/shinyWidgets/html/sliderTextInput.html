@@ -1,0 +1,152 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Slider Text Input Widget</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for sliderTextInput {shinyWidgets}"><tr><td>sliderTextInput {shinyWidgets}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Slider Text Input Widget</h2>
+
+<h3>Description</h3>
+
+<p>Constructs a slider widget with characters instead of numeric values.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+sliderTextInput(inputId, label, choices, selected = NULL,
+  animate = FALSE, grid = FALSE, hide_min_max = FALSE,
+  from_fixed = FALSE, to_fixed = FALSE, from_min = NULL,
+  from_max = NULL, to_min = NULL, to_max = NULL,
+  force_edges = FALSE, width = NULL, pre = NULL, post = NULL,
+  dragRange = TRUE)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>inputId</code></td>
+<td>
+<p>The <code>input</code> slot that will be used to access the value.</p>
+</td></tr>
+<tr valign="top"><td><code>label</code></td>
+<td>
+<p>Display label for the control, or <code>NULL</code> for no label.</p>
+</td></tr>
+<tr valign="top"><td><code>choices</code></td>
+<td>
+<p>Character vector to select a value from.</p>
+</td></tr>
+<tr valign="top"><td><code>selected</code></td>
+<td>
+<p>The initially selected value, if length &gt; 1, create a range slider.</p>
+</td></tr>
+<tr valign="top"><td><code>animate</code></td>
+<td>
+<p>TRUE to show simple animation controls with default settings, for more details see <code><a href="../../shiny/html/sliderInput.html">sliderInput</a></code>.</p>
+</td></tr>
+<tr valign="top"><td><code>grid</code></td>
+<td>
+<p>Logical, show or hide ticks marks.</p>
+</td></tr>
+<tr valign="top"><td><code>hide_min_max</code></td>
+<td>
+<p>Hides min and max labels.</p>
+</td></tr>
+<tr valign="top"><td><code>from_fixed</code></td>
+<td>
+<p>Fix position of left (or single) handle.</p>
+</td></tr>
+<tr valign="top"><td><code>to_fixed</code></td>
+<td>
+<p>Fix position of right handle.</p>
+</td></tr>
+<tr valign="top"><td><code>from_min</code></td>
+<td>
+<p>Set minimum limit for left handle.</p>
+</td></tr>
+<tr valign="top"><td><code>from_max</code></td>
+<td>
+<p>Set the maximum limit for left handle.</p>
+</td></tr>
+<tr valign="top"><td><code>to_min</code></td>
+<td>
+<p>Set minimum limit for right handle.</p>
+</td></tr>
+<tr valign="top"><td><code>to_max</code></td>
+<td>
+<p>Set the maximum limit for right handle.</p>
+</td></tr>
+<tr valign="top"><td><code>force_edges</code></td>
+<td>
+<p>Slider will be always inside it's container.</p>
+</td></tr>
+<tr valign="top"><td><code>width</code></td>
+<td>
+<p>The width of the input, e.g. <code>400px</code>, or <code>100%</code>.</p>
+</td></tr>
+<tr valign="top"><td><code>pre</code></td>
+<td>
+<p>A prefix string to put in front of the value.</p>
+</td></tr>
+<tr valign="top"><td><code>post</code></td>
+<td>
+<p>A suffix string to put after the value.</p>
+</td></tr>
+<tr valign="top"><td><code>dragRange</code></td>
+<td>
+<p>See the same argument in <code><a href="../../shiny/html/sliderInput.html">sliderInput</a></code>.</p>
+</td></tr>
+</table>
+
+
+<h3>Value</h3>
+
+<p>The value retrieved server-side is a character vector.
+</p>
+
+
+<h3>See Also</h3>
+
+<p><a href="updateSliderTextInput.html">updateSliderTextInput</a> to update value server-side.
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+## Not run: 
+
+if (interactive()) {
+
+library("shiny")
+library("shinyWidgets")
+
+ui &lt;- fluidPage(
+  br(),
+  sliderTextInput(
+    inputId = "mySliderText",
+    label = "Month range slider:",
+    choices = month.name,
+    selected = month.name[c(4, 7)]
+  ),
+  verbatimTextOutput(outputId = "result")
+)
+
+server &lt;- function(input, output, session) {
+  output$result &lt;- renderPrint(str(input$mySliderText))
+}
+
+shinyApp(ui = ui, server = server)
+
+}
+
+
+## End(Not run)
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>shinyWidgets</em> version 0.4.8 <a href="00Index.html">Index</a>]</div>
+</body></html>

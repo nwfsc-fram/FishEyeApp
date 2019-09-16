@@ -1,0 +1,103 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Construct to let you run arbitrary R code live in a Shiny app</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for runcode {shinyjs}"><tr><td>runcode {shinyjs}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Construct to let you run arbitrary R code live in a Shiny app</h2>
+
+<h3>Description</h3>
+
+<p>Sometimes when developing a Shiny app, it's useful to be able to run some R
+code on-demand. This construct provides your app with a text input where you
+can enter any R code and run it immediately.<br /><br />
+This can be useful for testing
+and while developing an app locally, but it <strong>should not be included in
+an app that is accessible to other people</strong>, as letting others run arbitrary R
+code can open you up to security attacks.<br /><br />
+To use this construct, you must add a call to <code>runcodeUI()</code> in the UI
+of your app, and a call to <code>runcodeServer()</code> in the server function. You
+also need to initialize shinyjs with a call to <code>useShinyjs()</code> in the UI.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+runcodeUI(code = "", type = c("text", "textarea", "ace"), width = NULL,
+  height = NULL, includeShinyjs = FALSE)
+
+runcodeServer()
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>code</code></td>
+<td>
+<p>The initial R code to show in the text input when the app loads</p>
+</td></tr>
+<tr valign="top"><td><code>type</code></td>
+<td>
+<p>One of <code>"text"</code> (default), <code>"textarea"</code>, or <code>"ace"</code>.
+When using a text input, the R code will be limited to be typed within a single line,
+and is the recommended option. Textarea should be used if you want to write
+long multi-line R code. Note that you can run multiple expressions even in
+a single line by appending each R expression with a semicolon.
+Use of the <code>"ace"</code> option requires the <code>shinyAce</code> package.</p>
+</td></tr>
+<tr valign="top"><td><code>width</code></td>
+<td>
+<p>The width of the editable code input (ignored when
+<code>type="ace"</code>)</p>
+</td></tr>
+<tr valign="top"><td><code>height</code></td>
+<td>
+<p>The height of the editable code input (ignored when
+<code>type="text"</code>)</p>
+</td></tr>
+<tr valign="top"><td><code>includeShinyjs</code></td>
+<td>
+<p>Set this to <code>TRUE</code> only if your app does not have
+a call to <code>useShinyjs()</code>. If you are already calling <code>useShinyjs()</code>
+in your app, do not use this parameter.</p>
+</td></tr>
+</table>
+
+
+<h3>Note</h3>
+
+<p>You can only have one <code>runcode</code> construct in your shiny app.
+Calling this function multiple times within the same app will result in
+unpredictable behaviour.
+</p>
+
+
+<h3>See Also</h3>
+
+<p><code><a href="useShinyjs.html">useShinyjs</a></code>
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+if (interactive()) {
+  library(shiny)
+
+  shinyApp(
+    ui = fluidPage(
+      useShinyjs(),  # Set up shinyjs
+      runcodeUI(code = "shinyjs::alert('Hello!')")
+    ),
+    server = function(input, output) {
+      runcodeServer()
+    }
+  )
+}
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>shinyjs</em> version 1.0 <a href="00Index.html">Index</a>]</div>
+</body></html>

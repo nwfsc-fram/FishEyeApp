@@ -1,0 +1,156 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Progress Bars</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for progress-bar {shinyWidgets}"><tr><td>progress-bar {shinyWidgets}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Progress Bars</h2>
+
+<h3>Description</h3>
+
+<p>Create a progress bar to provide feedback on calculation.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+progressBar(id, value, total = NULL, display_pct = FALSE,
+  size = NULL, status = NULL, striped = FALSE, title = NULL,
+  range_value = NULL, unit_mark = "%")
+
+updateProgressBar(session, id, value, total = NULL, title = NULL,
+  status = NULL, range_value = NULL, unit_mark = "%")
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>id</code></td>
+<td>
+<p>An id used to update the progress bar.</p>
+</td></tr>
+<tr valign="top"><td><code>value</code></td>
+<td>
+<p>Value of the progress bar between 0 and 100, if &gt;100 you must provide total.</p>
+</td></tr>
+<tr valign="top"><td><code>total</code></td>
+<td>
+<p>Used to calculate percentage if value &gt; 100, force an indicator to appear on top right of the progress bar.</p>
+</td></tr>
+<tr valign="top"><td><code>display_pct</code></td>
+<td>
+<p>logical, display percentage on the progress bar.</p>
+</td></tr>
+<tr valign="top"><td><code>size</code></td>
+<td>
+<p>Size, &lsquo;NULL' by default or a value in &rsquo;xxs', 'xs', 'sm', only work with package 'shinydashboard'.</p>
+</td></tr>
+<tr valign="top"><td><code>status</code></td>
+<td>
+<p>Color, must be a valid Bootstrap status : primary, info, success, warning, danger.</p>
+</td></tr>
+<tr valign="top"><td><code>striped</code></td>
+<td>
+<p>logical, add a striped effect.</p>
+</td></tr>
+<tr valign="top"><td><code>title</code></td>
+<td>
+<p>character, optional title.</p>
+</td></tr>
+<tr valign="top"><td><code>range_value</code></td>
+<td>
+<p>Default is to display percentage (<code>[0, 100]</code>), but you can specify a custom range, e.g. <code>-50, 50</code>.</p>
+</td></tr>
+<tr valign="top"><td><code>unit_mark</code></td>
+<td>
+<p>Unit for value displayed on the progress bar, default to <code>"%"</code>.</p>
+</td></tr>
+<tr valign="top"><td><code>session</code></td>
+<td>
+<p>The 'session' object passed to function given to shinyServer.</p>
+</td></tr>
+</table>
+
+
+<h3>Value</h3>
+
+<p>A progress bar that can be added to a UI definition.
+</p>
+
+
+<h3>See Also</h3>
+
+<p><a href="progressSweetAlert.html">progressSweetAlert</a> for progress bar in a sweet alert
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+## Not run: 
+if (interactive()) {
+
+library("shiny")
+library("shinyWidgets")
+
+ui &lt;- fluidPage(
+  column(
+    width = 7,
+    tags$b("Default"), br(),
+    progressBar(id = "pb1", value = 50),
+    sliderInput(
+      inputId = "up1",
+      label = "Update",
+      min = 0,
+      max = 100,
+      value = 50
+    ),
+    br(),
+    tags$b("Other options"), br(),
+    progressBar(
+      id = "pb2",
+      value = 0,
+      total = 100,
+      title = "",
+      display_pct = TRUE
+    ),
+    actionButton(
+      inputId = "go",
+      label = "Launch calculation"
+    )
+  )
+)
+
+server &lt;- function(input, output, session) {
+  observeEvent(input$up1, {
+    updateProgressBar(
+      session = session,
+      id = "pb1",
+      value = input$up1
+    )
+  })
+  observeEvent(input$go, {
+    for (i in 1:100) {
+      updateProgressBar(
+        session = session,
+        id = "pb2",
+        value = i, total = 100,
+        title = paste("Process", trunc(i/10))
+      )
+      Sys.sleep(0.1)
+    }
+  })
+}
+
+shinyApp(ui = ui, server = server)
+
+}
+
+## End(Not run)
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>shinyWidgets</em> version 0.4.8 <a href="00Index.html">Index</a>]</div>
+</body></html>

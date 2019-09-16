@@ -1,0 +1,70 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Roll back date to last day of previous month</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for rollback {lubridate}"><tr><td>rollback {lubridate}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Roll back date to last day of previous month</h2>
+
+<h3>Description</h3>
+
+<p>rollback changes a date to the last day of the previous month or to the first
+day of the month. Optionally, the new date can retain the same hour, minute,
+and second information.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+rollback(dates, roll_to_first = FALSE, preserve_hms = TRUE)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>dates</code></td>
+<td>
+<p>A POSIXct, POSIXlt or Date class object.</p>
+</td></tr>
+<tr valign="top"><td><code>roll_to_first</code></td>
+<td>
+<p>Rollback to the first day of the month instead of the
+last day of the previous month</p>
+</td></tr>
+<tr valign="top"><td><code>preserve_hms</code></td>
+<td>
+<p>Retains the same hour, minute, and second information? If
+FALSE, the new date will be at 00:00:00.</p>
+</td></tr>
+</table>
+
+
+<h3>Value</h3>
+
+<p>A date-time object of class POSIXlt, POSIXct or Date, whose day has
+been adjusted to the last day of the previous month, or to the first day of
+the month.
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+date &lt;- ymd("2010-03-03")
+rollback(date)
+
+dates &lt;- date + months(0:2)
+rollback(dates)
+
+date &lt;- ymd_hms("2010-03-03 12:44:22")
+rollback(date)
+rollback(date, roll_to_first = TRUE)
+rollback(date, preserve_hms = FALSE)
+rollback(date, roll_to_first = TRUE, preserve_hms = FALSE)
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>lubridate</em> version 1.6.0 <a href="00Index.html">Index</a>]</div>
+</body></html>

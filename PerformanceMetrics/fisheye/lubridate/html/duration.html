@@ -1,0 +1,115 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Create a duration object.</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for duration {lubridate}"><tr><td>duration {lubridate}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Create a duration object.</h2>
+
+<h3>Description</h3>
+
+<p><code>duration</code> creates a duration object with the specified values. Entries
+for different units are cumulative. durations display as the number of
+seconds in a time span. When this number is large, durations also display an
+estimate in larger units,; however, the underlying object is always recorded
+as a fixed number of seconds. For display and creation purposes, units are
+converted to seconds using their most common lengths in seconds. Minutes = 60
+seconds, hours = 3600 seconds, days = 86400 seconds, weeks = 604800. Units
+larger than weeks are not used due to their variability.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+duration(num = NULL, units = "seconds", ...)
+
+is.duration(x)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>num</code></td>
+<td>
+<p>the number of time units to include in the duration. From v1.6.0
+<code>num</code> can also be a character vector that specifies durations in a
+convenient shorthand format. All unambiguous name units and abbreviations
+are supported. See examples.</p>
+</td></tr>
+<tr valign="top"><td><code>units</code></td>
+<td>
+<p>a character string that specifies the type of units that num
+refers to. When <code>num</code> is character, this argument is ignored.</p>
+</td></tr>
+<tr valign="top"><td><code>...</code></td>
+<td>
+<p>a list of time units to be included in the duration and their
+amounts. Seconds, minutes, hours, days, and weeks are supported.</p>
+</td></tr>
+<tr valign="top"><td><code>x</code></td>
+<td>
+<p>an R object</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>Durations record the exact number of seconds in a time span. They measure the
+exact passage of time but do not always align with measurements
+made in larger units of time such as hours, months and years.
+This is because the length of larger time units can be affected
+by conventions such as leap years
+and Daylight Savings Time. Base R provides a second class for measuring
+durations, the difftime class.
+</p>
+<p>Duration objects can be easily created with the helper functions
+<code><a href="quick_durations.html">dweeks</a></code>, <code><a href="quick_durations.html">ddays</a></code>, <code><a href="quick_durations.html">dminutes</a></code>,
+<code><a href="quick_durations.html">dseconds</a></code>. These objects can be added to and subtracted to date-
+times to create a user interface similar to object oriented programming.
+</p>
+
+
+<h3>Value</h3>
+
+<p>a duration object
+</p>
+
+
+<h3>See Also</h3>
+
+<p><code><a href="as.duration.html">as.duration</a></code>
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+duration(day = -1)
+# -86400s (~-1 days)
+duration(90, "seconds")
+duration(1.5, "minutes")
+duration(-1, "days")
+# -86400s (~-1 days)
+duration(second = 90)
+duration(minute = 1.5)
+duration(mins = 1.5)
+duration(second = 3, minute = 1.5, hour = 2, day = 6, week = 1)
+duration(hour = 1, minute = -60)
+duration("2M 1sec")
+duration("2hours 2minutes 1second")
+duration("2d 2H 2M 2S")
+duration("2days 2hours 2mins 2secs")
+# Missing numerals default to 1. Repeated units are added up.
+duration("day day")
+# Comparison with characters is supported from v1.6.0.
+duration("day 2 sec") &gt; "day 1sec"
+is.duration(as.Date("2009-08-03")) # FALSE
+is.duration(duration(days = 12.4)) # TRUE
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>lubridate</em> version 1.6.0 <a href="00Index.html">Index</a>]</div>
+</body></html>

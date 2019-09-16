@@ -1,0 +1,147 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Pretty Switch Input</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for prettySwitch {shinyWidgets}"><tr><td>prettySwitch {shinyWidgets}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Pretty Switch Input</h2>
+
+<h3>Description</h3>
+
+<p>A toggle switch to replace checkbox
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+prettySwitch(inputId, label, value = FALSE, status = "default",
+  slim = FALSE, fill = FALSE, bigger = FALSE, inline = FALSE,
+  width = NULL)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>inputId</code></td>
+<td>
+<p>The <code>input</code> slot that will be used to access the value.</p>
+</td></tr>
+<tr valign="top"><td><code>label</code></td>
+<td>
+<p>Display label for the control, or <code>NULL</code> for no label.</p>
+</td></tr>
+<tr valign="top"><td><code>value</code></td>
+<td>
+<p>Initial value (<code>TRUE</code> or <code>FALSE</code>).</p>
+</td></tr>
+<tr valign="top"><td><code>status</code></td>
+<td>
+<p>Add a class to the switch, you can use Bootstrap status like 'info', 'primary', 'danger', 'warning' or 'success'.</p>
+</td></tr>
+<tr valign="top"><td><code>slim</code></td>
+<td>
+<p>Change the style of the switch (<code>TRUE</code> or <code>FALSE</code>), see examples.</p>
+</td></tr>
+<tr valign="top"><td><code>fill</code></td>
+<td>
+<p>Change the style of the switch (<code>TRUE</code> or <code>FALSE</code>), see examples.</p>
+</td></tr>
+<tr valign="top"><td><code>bigger</code></td>
+<td>
+<p>Scale the switch a bit bigger (<code>TRUE</code> or <code>FALSE</code>).</p>
+</td></tr>
+<tr valign="top"><td><code>inline</code></td>
+<td>
+<p>Display the input inline, if you want to place switch next to each other.</p>
+</td></tr>
+<tr valign="top"><td><code>width</code></td>
+<td>
+<p>The width of the input, e.g. <code>400px</code>, or <code>100%</code>.</p>
+</td></tr>
+</table>
+
+
+<h3>Value</h3>
+
+<p><code>TRUE</code> or <code>FALSE</code> server-side.
+</p>
+
+
+<h3>Note</h3>
+
+<p>Appearance is better in a browser such as Chrome than in RStudio Viewer
+</p>
+
+
+<h3>See Also</h3>
+
+<p>See <code><a href="updatePrettySwitch.html">updatePrettySwitch</a></code> to update the value server-side.
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+## Not run: 
+
+if (interactive()) {
+
+library(shiny)
+library(shinyWidgets)
+
+ui &lt;- fluidPage(
+  tags$h1("Pretty switches"),
+  br(),
+
+  fluidRow(
+    column(
+      width = 4,
+      prettySwitch(inputId = "switch1", label = "Default:"),
+      verbatimTextOutput(outputId = "res1"),
+      br(),
+      prettySwitch(inputId = "switch4",
+                   label = "Fill switch with status:",
+                   fill = TRUE, status = "primary"),
+      verbatimTextOutput(outputId = "res4")
+    ),
+    column(
+      width = 4,
+      prettySwitch(inputId = "switch2",
+                   label = "Danger status:",
+                   status = "danger"),
+      verbatimTextOutput(outputId = "res2")
+    ),
+    column(
+      width = 4,
+      prettySwitch(inputId = "switch3",
+                   label = "Slim switch:",
+                   slim = TRUE),
+      verbatimTextOutput(outputId = "res3")
+    )
+  )
+
+)
+
+server &lt;- function(input, output, session) {
+
+  output$res1 &lt;- renderPrint(input$switch1)
+  output$res2 &lt;- renderPrint(input$switch2)
+  output$res3 &lt;- renderPrint(input$switch3)
+  output$res4 &lt;- renderPrint(input$switch4)
+
+}
+
+shinyApp(ui, server)
+
+}
+
+
+
+## End(Not run)
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>shinyWidgets</em> version 0.4.8 <a href="00Index.html">Index</a>]</div>
+</body></html>

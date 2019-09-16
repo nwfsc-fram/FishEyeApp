@@ -1,0 +1,212 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Cast a vector to specified type</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for vec_cast {vctrs}"><tr><td>vec_cast {vctrs}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Cast a vector to specified type</h2>
+
+<h3>Description</h3>
+
+<p><code>vec_cast()</code> provides general coercions from one type of vector to another,
+and along with <code><a href="vec_ptype2.html">vec_ptype2()</a></code> forms the foundation of the vctrs type system.
+It should generally not be called by R users, but is important for R
+developers. <code>vec_restore()</code> is designed specifically for casting a bare
+vector to the original type; it's useful when relying <code>NextMethod()</code> for
+the actual implementation. <code>vec_cast_common(...)</code> casts a collection to
+vectors to the same type.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+vec_cast(x, to, ..., x_arg = "x", to_arg = "to")
+
+vec_cast_common(..., .to = NULL)
+
+vec_restore(x, to, ..., n = NULL)
+
+## S3 method for class 'logical'
+vec_cast(x, to, ...)
+
+## S3 method for class 'integer'
+vec_cast(x, to, ...)
+
+## S3 method for class 'double'
+vec_cast(x, to, ...)
+
+## S3 method for class 'complex'
+vec_cast(x, to, ...)
+
+## S3 method for class 'raw'
+vec_cast(x, to, ...)
+
+## S3 method for class 'character'
+vec_cast(x, to, ...)
+
+## S3 method for class 'list'
+vec_cast(x, to, ...)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>x</code></td>
+<td>
+<p>Vectors to cast.</p>
+</td></tr>
+<tr valign="top"><td><code>to, .to</code></td>
+<td>
+<p>Type to cast to. If <code>NULL</code>, <code>x</code> will be returned as is.</p>
+</td></tr>
+<tr valign="top"><td><code>...</code></td>
+<td>
+<p>For <code>vec_cast_common()</code>, vectors to cast. For
+<code>vec_cast()</code> and <code>vec_restore()</code>, these dots are only for future
+extensions and should be empty.</p>
+</td></tr>
+<tr valign="top"><td><code>x_arg, to_arg</code></td>
+<td>
+<p>Argument names for <code>x</code> and <code>to</code>. These are used
+in error messages to inform the user about the locations of
+incompatible types (see <code><a href="vctrs-conditions.html">stop_incompatible_type()</a></code>).</p>
+</td></tr>
+<tr valign="top"><td><code>n</code></td>
+<td>
+<a href='https://www.tidyverse.org/lifecycle/#experimental'><img src='figures/lifecycle-experimental.svg' alt='Experimental lifecycle'></a>
+<p>The total size to restore to. This is currently passed by
+<code>vec_slice()</code> to solve edge cases arising in data frame
+restoration. In most cases you don't need this information and
+can safely ignore that argument. This parameter should be
+considered internal and experimental, it might change in the
+future.</p>
+</td></tr>
+</table>
+
+
+<h3>Value</h3>
+
+<p>A vector the same length as <code>x</code> with the same type as <code>to</code>,
+or an error if the cast is not possible. An error is generated if
+information is lost when casting between compatible types (i.e. when
+there is no 1-to-1 mapping for a specific value).
+</p>
+
+
+<h3>Casting rules</h3>
+
+<p>Casting is more flexible than coercion, and allows for the possibility of
+information loss. This diagram summarises possible coercions. <code>vec_cast()</code>
+from any type connected to another type, provided that the arrows are
+followed in only one direction. For example you can cast from logical to
+character, and list to time, but you can not cast from logical to datetime.
+</p>
+<p><img src="../help/figures/cast.png" alt="cast.png" />
+</p>
+<p>Most casts are not symmetric: you can cast all integers to doubles, but you
+can only cast a subset of doubles back to integers. If a cast is potentially
+lossy, an error will be shown whenever an actual loss occurs.
+</p>
+<p>The rules for coercing from a list are fairly strict: each component of the
+list must be of length 1, and must be coercible to type <code>to</code>. This ensures
+that a round-trip to and form list is possible, without opening the door
+to very flexible list flattening (which should be the job of a more
+specialised function).
+</p>
+
+
+<h3>S3 dispatch</h3>
+
+<p><code>vec_cast()</code> dispatches on both arguments because casting depends on both
+the type of <code>x</code> and of <code>to</code>. This is implemented by having methods of
+<code>vec_cast()</code>, e.g. <code>vec_cast.integer()</code> also be S3 generics, which call
+e.g. <code>vec_cast.integer.double()</code>.
+</p>
+<p>Note that <code>vec_cast()</code> dispatches on its second argument, so that the name
+of the final method uses the same convention as <code>as.xyz()</code> methods, i.e.
+<code>vec_cast.integer.double()</code> casts double to integers, in the same way
+that <code>as.integer.double()</code> would.
+</p>
+<p>Whenever you implement a <code>vec_cast.new_class()</code> generic/method,
+make sure to always provide <code>vec_cast.new_class.default()</code> and
+call <code><a href="vec_default_cast.html">vec_default_cast()</a></code> from that method.
+</p>
+<p>See <code>vignette("s3-vector")</code> for full details.
+</p>
+
+
+<h3>Restoring attributes</h3>
+
+<p>A restore is a specialised type of cast, primarily used in
+conjunction with <code>NextMethod()</code> or a C-level function that works on
+the underlying data structure. A <code>vec_restore()</code> method can make
+the following assumptions about <code>x</code>:
+</p>
+
+<ul>
+<li><p> It has the correct type.
+</p>
+</li>
+<li><p> It has the correct names.
+</p>
+</li>
+<li><p> It has the correct <code>dim</code> and <code>dimnames</code> attributes.
+</p>
+</li>
+<li><p> It is unclassed. This way you can call vctrs generics with <code>x</code>
+without triggering an infinite loop of restoration.
+</p>
+</li></ul>
+
+<p>The length may be different (for example after <code><a href="vec_slice.html">vec_slice()</a></code> has
+been called), and all other attributes may have been lost. The
+method should restore all attributes so that after restoration,
+<code>vec_restore(vec_data(x), x)</code> yields <code>x</code>.
+</p>
+<p>To understand the difference between <code>vec_cast()</code> and <code>vec_restore()</code>
+think about factors: it doesn't make sense to cast an integer to a factor,
+but if <code>NextMethod()</code> or another low-level function has stripped attributes,
+you still need to be able to restore them.
+</p>
+<p>The default method copies across all attributes so you only need to
+provide your own method if your attributes require special care
+(i.e. they are dependent on the data in some way). When implementing
+your own method, bear in mind that many R users add attributes to track
+additional metadata that is important to them, so you should preserve any
+attributes that don't require special handling for your class.
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+# x is a double, but no information is lost
+vec_cast(1, integer())
+
+# When information is lost the cast fails
+try(vec_cast(c(1, 1.5), integer()))
+try(vec_cast(c(1, 2), logical()))
+
+# You can suppress this error and get the partial results
+allow_lossy_cast(vec_cast(c(1, 1.5), integer()))
+allow_lossy_cast(vec_cast(c(1, 2), logical()))
+
+# By default this suppress all lossy cast errors without
+# distinction, but you can be specific about what cast is allowed
+# by supplying prototypes
+allow_lossy_cast(vec_cast(c(1, 1.5), integer()), to_ptype = integer())
+try(allow_lossy_cast(vec_cast(c(1, 2), logical()), to_ptype = integer()))
+
+# No sensible coercion is possible so an error is generated
+try(vec_cast(1.5, factor("a")))
+
+# Cast to common type
+vec_cast_common(factor("a"), factor(c("a", "b")))
+vec_cast_common(factor("a"), Sys.Date(), .to = list())
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>vctrs</em> version 0.2.0 <a href="00Index.html">Index</a>]</div>
+</body></html>

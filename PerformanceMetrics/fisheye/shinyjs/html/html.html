@@ -1,0 +1,97 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Change the HTML (or text) inside an element</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for html {shinyjs}"><tr><td>html {shinyjs}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Change the HTML (or text) inside an element</h2>
+
+<h3>Description</h3>
+
+<p>Change the text or HTML inside an element.  The given HTML can be any
+R expression, and it can either be appended to the currentcontents of the element
+or overwrite it (default).
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+html(id = NULL, html = NULL, add = FALSE, selector = NULL)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>id</code></td>
+<td>
+<p>The id of the element/Shiny tag</p>
+</td></tr>
+<tr valign="top"><td><code>html</code></td>
+<td>
+<p>The HTML/text to place inside the element. Can be either simple
+plain text or valid HTML code.</p>
+</td></tr>
+<tr valign="top"><td><code>add</code></td>
+<td>
+<p>If <code>TRUE</code>, then append <code>html</code> to the contents of the element;
+otherwise overwrite it.</p>
+</td></tr>
+<tr valign="top"><td><code>selector</code></td>
+<td>
+<p>JQuery selector of the elements to target. Ignored if the <code>id</code>
+argument is given.</p>
+</td></tr>
+</table>
+
+
+<h3>Note</h3>
+
+<p><code>shinyjs</code> must be initialized with a call to <code>useShinyjs()</code>
+in the app's ui.
+</p>
+
+
+<h3>See Also</h3>
+
+<p><code><a href="useShinyjs.html">useShinyjs</a></code>,
+<code><a href="runExample.html">runExample</a></code>
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+if (interactive()) {
+  library(shiny)
+
+  shinyApp(
+    ui = fluidPage(
+      useShinyjs(),  # Set up shinyjs
+      actionButton("btn", "Click me"),
+      p(id = "element", "Watch what happens to me")
+    ),
+    server = function(input, output) {
+      observeEvent(input$btn, {
+        # Change the following line for more examples
+        html("element", paste0("The date is ", date()))
+      })
+    }
+  )
+}
+## Not run: 
+  # The shinyjs function call in the above app can be replaced by
+  # any of the following examples to produce similar Shiny apps
+  html("element", "Hello!")
+  html("element", " Hello!", TRUE)
+  html("element", "&lt;strong&gt;bold&lt;/strong&gt; that was achieved with HTML")
+  local({val &lt;- "some text"; html("element", val)})
+  html(id = "element", add = TRUE, html = input$btn)
+
+## End(Not run)
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>shinyjs</em> version 1.0 <a href="00Index.html">Index</a>]</div>
+</body></html>

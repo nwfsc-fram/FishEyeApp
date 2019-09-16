@@ -1,0 +1,105 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Convert an object to a date or date-time</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for as_date {lubridate}"><tr><td>as_date {lubridate}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Convert an object to a date or date-time</h2>
+
+<h3>Description</h3>
+
+<p>Convert an object to a date or date-time
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+as_date(x, ...)
+
+as_datetime(x, ...)
+
+## S4 method for signature 'POSIXt'
+as_date(x, tz = NULL)
+
+## S4 method for signature 'numeric'
+as_date(x, origin = lubridate::origin)
+
+## S4 method for signature 'POSIXt'
+as_datetime(x, tz = "UTC")
+
+## S4 method for signature 'numeric'
+as_datetime(x, origin = lubridate::origin, tz = "UTC")
+
+## S4 method for signature 'ANY'
+as_datetime(x, tz = "UTC")
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>x</code></td>
+<td>
+<p>a vector of <code><a href="../../base/html/DateTimeClasses.html">POSIXt</a></code>, numeric or character objects</p>
+</td></tr>
+<tr valign="top"><td><code>...</code></td>
+<td>
+<p>further arguments to be passed to specific methods (see above).</p>
+</td></tr>
+<tr valign="top"><td><code>tz</code></td>
+<td>
+<p>a time zone name (default: time zone of the POSIXt object
+<code>x</code>). See <code><a href="../../base/html/timezones.html">OlsonNames</a></code>.</p>
+</td></tr>
+<tr valign="top"><td><code>origin</code></td>
+<td>
+<p>a Date object, or something which can be coerced by
+<code>as.Date(origin, ...)</code> to such an object (default: the Unix epoch of
+&quot;1970-01-01&quot;). Note that in this instance, <code>x</code> is assumed to reflect
+the number of days since <code>origin</code> at <code>"UTC"</code>.</p>
+</td></tr>
+</table>
+
+
+<h3>Value</h3>
+
+<p>a vector of <code><a href="../../base/html/Dates.html">Date</a></code> objects corresponding to <code>x</code>.
+</p>
+
+
+<h3>Compare to base R</h3>
+
+<p>These are drop in replacements for <code>as.Date</code> and <code>as.POSIXct</code>,
+with a few tweaks to make them work more intuitively.
+</p>
+
+<ul>
+<li> <p><code>as_date</code> ignores the timezone attribute, resulting in
+a more intuitive conversion (see examples)
+</p>
+</li>
+<li><p> Both functions provide a default origin argument for numeric
+vectors.
+</p>
+</li>
+<li> <p><code>as_datetime</code> defaults to using UTC.
+</p>
+</li></ul>
+
+
+
+<h3>Examples</h3>
+
+<pre>
+dt_utc &lt;- ymd_hms("2010-08-03 00:50:50")
+dt_europe &lt;- ymd_hms("2010-08-03 00:50:50", tz="Europe/London")
+c(as_date(dt_utc), as.Date(dt_utc))
+c(as_date(dt_europe), as.Date(dt_europe))
+## need not suply origin
+as_date(10)
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>lubridate</em> version 1.6.0 <a href="00Index.html">Index</a>]</div>
+</body></html>

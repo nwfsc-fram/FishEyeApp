@@ -1,0 +1,79 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Find matching observations across vectors</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for vec_match {vctrs}"><tr><td>vec_match {vctrs}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Find matching observations across vectors</h2>
+
+<h3>Description</h3>
+
+<p><code>vec_in()</code> returns a logical vector based on whether <code>needle</code> is found in
+haystack. <code>vec_match()</code> returns an integer vector giving location of
+<code>needle</code> in <code>haystack</code>, or <code>NA</code> if it's not found.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+vec_match(needles, haystack)
+
+vec_in(needles, haystack)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>needles, haystack</code></td>
+<td>
+<p>Vector of <code>needles</code> to search for in vector haystack.
+<code>haystack</code> should usually be unique; if not <code>vec_match()</code> will only
+return the location of the first match.
+</p>
+<p><code>needles</code> and <code>haystack</code> are coerced to the same type prior to
+comparison.</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p><code>vec_in()</code> is equivalent to <a href="../../base/html/match.html">%in%</a>; <code>vec_match()</code> is equivalen to <code>match()</code>.
+</p>
+
+
+<h3>Value</h3>
+
+<p>A vector the same length as <code>needles</code>. <code>vec_in()</code> returns a
+logical vector; <code>vec_match()</code> returns an integer vector.
+</p>
+
+
+<h3>Missing values</h3>
+
+<p>In most cases, missing values are not considered to be equal, i.e.
+<code>NA == NA</code> is not <code>TRUE</code>. This behaviour would be unappealing here,
+so these functions consider all <code>NAs</code> to be equal. (Similarly,
+all <code>NaN</code> are also considered to be equal.)
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+hadley &lt;- strsplit("hadley", "")[[1]]
+vec_match(hadley, letters)
+
+vowels &lt;- c("a", "e", "i", "o", "u")
+vec_match(hadley, vowels)
+vec_in(hadley, vowels)
+
+# Only the first index of duplicates is returned
+vec_match(c("a", "b"), c("a", "b", "a", "b"))
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>vctrs</em> version 0.2.0 <a href="00Index.html">Index</a>]</div>
+</body></html>

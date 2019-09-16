@@ -1,0 +1,118 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Change the value of a search input on the client</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for updateSearchInput {shinyWidgets}"><tr><td>updateSearchInput {shinyWidgets}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Change the value of a search input on the client</h2>
+
+<h3>Description</h3>
+
+<p>Change the value of a search input on the client
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+updateSearchInput(session, inputId, label = NULL, value = NULL,
+  placeholder = NULL, trigger = FALSE)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>session</code></td>
+<td>
+<p>The <code>session</code> object passed to function given to <code>shinyServer</code>.</p>
+</td></tr>
+<tr valign="top"><td><code>inputId</code></td>
+<td>
+<p>The id of the input object.</p>
+</td></tr>
+<tr valign="top"><td><code>label</code></td>
+<td>
+<p>The label to set for the input object.</p>
+</td></tr>
+<tr valign="top"><td><code>value</code></td>
+<td>
+<p>The value to set for the input object.</p>
+</td></tr>
+<tr valign="top"><td><code>placeholder</code></td>
+<td>
+<p>The placeholder to set for the input object.</p>
+</td></tr>
+<tr valign="top"><td><code>trigger</code></td>
+<td>
+<p>Logical, update value server-side as well.</p>
+</td></tr>
+</table>
+
+
+<h3>Note</h3>
+
+<p>By default, only UI value is updated, use <code>trigger = TRUE</code> to update both UI and Server value.
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+## Not run: 
+
+if (interactive()) {
+
+library(shiny)
+library(shinyWidgets)
+
+ui &lt;- fluidPage(
+  tags$h2("Update searchinput"),
+  searchInput(
+    inputId = "search", label = "Enter your text",
+    placeholder = "A placeholder",
+    btnSearch = icon("search"),
+    btnReset = icon("remove"),
+    width = "450px"
+  ),
+  br(),
+  verbatimTextOutput(outputId = "res"),
+  br(),
+  textInput(
+    inputId = "update_search",
+    label = "Update search"
+  ),
+  checkboxInput(
+    inputId = "trigger_search",
+    label = "Trigger update search",
+    value = TRUE
+  )
+)
+
+server &lt;- function(input, output, session) {
+
+  output$res &lt;- renderPrint({
+    input$search
+  })
+
+  observeEvent(input$update_search, {
+    updateSearchInput(
+      session = session,
+      inputId = "search",
+      value = input$update_search,
+      trigger = input$trigger_search
+    )
+  }, ignoreInit = TRUE)
+}
+
+shinyApp(ui, server)
+
+}
+
+
+## End(Not run)
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>shinyWidgets</em> version 0.4.8 <a href="00Index.html">Index</a>]</div>
+</body></html>

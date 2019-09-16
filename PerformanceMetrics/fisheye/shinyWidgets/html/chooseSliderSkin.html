@@ -1,0 +1,121 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Theme selector for 'sliderInput'</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for chooseSliderSkin {shinyWidgets}"><tr><td>chooseSliderSkin {shinyWidgets}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Theme selector for <code>sliderInput</code></h2>
+
+<h3>Description</h3>
+
+<p>Customize the appearance of the original shiny's <code>sliderInput</code>
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+chooseSliderSkin(skin = c("Shiny", "Flat", "Modern", "Nice", "Simple",
+  "HTML5", "Round", "Square"), color = NULL)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>skin</code></td>
+<td>
+<p>The <code>skin</code> to apply. Choose among 5 different flavors,
+namely 'Shiny', 'Flat', 'Modern', 'Nice', 'Simple', 'HTML5', 'Round' and 'Square'.</p>
+</td></tr>
+<tr valign="top"><td><code>color</code></td>
+<td>
+<p>A color to apply to all sliders. Works with following skins:
+'Shiny', 'Flat', 'Modern', 'HTML5'. For 'Flat' a CSS filter is applied,
+desired color maybe a little offset.</p>
+</td></tr>
+</table>
+
+
+<h3>Note</h3>
+
+<p>It is not currently possible to apply multiple themes at the same time.
+</p>
+
+
+<h3>See Also</h3>
+
+<p>See <code><a href="setSliderColor.html">setSliderColor</a></code> to update the color of your sliderInput.
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+## Not run: 
+
+if (interactive()) {
+
+library(shiny)
+library(shinyWidgets)
+
+# With Modern design
+
+ui &lt;- fluidPage(
+  chooseSliderSkin("Modern"),
+  sliderInput("obs", "Customized single slider:",
+              min = 0, max = 100, value = 50
+  ),
+  sliderInput("obs2", "Customized range slider:",
+              min = 0, max = 100, value = c(40, 80)
+  ),
+  plotOutput("distPlot")
+)
+
+server &lt;- function(input, output) {
+
+  output$distPlot &lt;- renderPlot({
+    hist(rnorm(input$obs))
+  })
+
+}
+
+shinyApp(ui, server)
+
+
+
+# Use Flat design &amp; a custom color
+
+ui &lt;- fluidPage(
+  chooseSliderSkin("Flat", color = "#112446"),
+  sliderInput("obs", "Customized single slider:",
+              min = 0, max = 100, value = 50
+  ),
+  sliderInput("obs2", "Customized range slider:",
+              min = 0, max = 100, value = c(40, 80)
+  ),
+  sliderInput("obs3", "An other slider:",
+              min = 0, max = 100, value = 50
+  ),
+  plotOutput("distPlot")
+)
+
+server &lt;- function(input, output) {
+
+  output$distPlot &lt;- renderPlot({
+    hist(rnorm(input$obs))
+  })
+}
+
+shinyApp(ui, server)
+
+}
+
+
+
+## End(Not run)
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>shinyWidgets</em> version 0.4.8 <a href="00Index.html">Index</a>]</div>
+</body></html>

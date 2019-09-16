@@ -1,0 +1,144 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Modal window</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for bs_modal {bsplus}"><tr><td>bs_modal {bsplus}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Modal window</h2>
+
+<h3>Description</h3>
+
+<p>Modal windows are useful to make detailed explanations, and
+are typically attached to buttons or links. Thus,
+there are two parts to this system:
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+bs_modal(id, title, body, footer = bs_modal_closebutton(label = "Close"),
+  size = c("medium", "large", "small"))
+
+bs_modal_closebutton(label = "Close", title)
+
+bs_attach_modal(tag, id_modal)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>id</code></td>
+<td>
+<p>character, unique id for the modal window</p>
+</td></tr>
+<tr valign="top"><td><code>title</code></td>
+<td>
+<p>character, title for the modal window (this argument is deprecated
+for <code>bs_modal_closebutton</code>, use <code>label</code> instead)</p>
+</td></tr>
+<tr valign="top"><td><code>body</code></td>
+<td>
+<p>character (HTML) or <code>htmltools::<a href="../../htmltools/html/tagList.html">tagList</a></code>,
+content for the body of the modal window</p>
+</td></tr>
+<tr valign="top"><td><code>footer</code></td>
+<td>
+<p>character (HTML) or <code>htmltools::<a href="../../htmltools/html/tagList.html">tagList</a></code>,
+content for the footer of the modal window</p>
+</td></tr>
+<tr valign="top"><td><code>size</code></td>
+<td>
+<p>character, size of the modal window</p>
+</td></tr>
+<tr valign="top"><td><code>label</code></td>
+<td>
+<p>character (HTML), label for the close-button</p>
+</td></tr>
+<tr valign="top"><td><code>tag</code></td>
+<td>
+<p><code>htmltools::<a href="../../htmltools/html/tag.html">tag</a></code>,
+button or link to which to attach the modal window</p>
+</td></tr>
+<tr valign="top"><td><code>id_modal</code></td>
+<td>
+<p>character, unique id of modal window to attach</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+
+<ol>
+<li><p>A modal window, created using <code>bs_modal()</code>
+</p>
+</li>
+<li><p>At least one button or link to which the <code>id</code> of the
+modal window is attached, using <code>bs_attach_modal()</code>
+</p>
+</li></ol>
+
+<p>The verb <em>attach</em> is used to signify that we are attaching the <code>id</code> of our
+modal window to the <code>tag</code> in question (generally a button or a link). This implies that
+you can attach the <code>id</code> of a modal window to more than one button or link.
+</p>
+<p>It is your responsibility to ensure that <code>id</code> is unique
+among HTML elements in your page. If you have non-unique <code>id</code>'s, strange things may
+happen to your page.
+</p>
+<p>Your code may be cleaner if you can import the content for the modal body from
+an external source. Here, the function <code>shiny::<a href="../../shiny/html/includeMarkdown.html">includeMarkdown</a></code>
+be useful.
+</p>
+<p>If you want to compose your own footer for the modal window, the function
+<code>bs_modal_closebutton()</code> can be useful.
+</p>
+
+
+<h3>Value</h3>
+
+
+<dl>
+<dt><code>bs_modal()</code></dt><dd><p><code>htmltools::<a href="../../htmltools/html/tag.html">tag</a></code>, <code>&lt;div/&gt;</code></p>
+</dd>
+<dt><code>bs_attach_modal()</code></dt><dd><p><code>htmltools::<a href="../../htmltools/html/tag.html">tag</a></code>,
+modified copy of <code>tag</code></p>
+</dd>
+<dt><code>bs_modal_closebutton()</code></dt><dd><p><code>htmltools::<a href="../../htmltools/html/tag.html">tag</a></code>, <code>&lt;button/&gt;</code></p>
+</dd>
+</dl>
+
+
+
+<h3>See Also</h3>
+
+<p><code>shiny::<a href="../../shiny/html/includeMarkdown.html">includeMarkdown</a></code>
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+library("htmltools")
+library("shiny")
+
+bs_modal(id = "modal", title = "I'm a modal", body = "Yes, I am.")
+bs_button("Click for modal") %&gt;%
+  bs_attach_modal(id_modal = "modal")
+
+bs_modal(
+  id = "modal_large",
+  title = "I'm a modal",
+  size = "large",
+  body = includeMarkdown(system.file("markdown", "modal.md", package = "bsplus"))
+)
+bs_button("Click for modal") %&gt;%
+  bs_attach_modal(id_modal = "modal_large")
+
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>bsplus</em> version 0.1.1 <a href="00Index.html">Index</a>]</div>
+</body></html>

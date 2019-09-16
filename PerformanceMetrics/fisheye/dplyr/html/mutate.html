@@ -1,0 +1,207 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Create or transform variables</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for mutate {dplyr}"><tr><td>mutate {dplyr}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Create or transform variables</h2>
+
+<h3>Description</h3>
+
+<p><code>mutate()</code> adds new variables and preserves existing ones;
+<code>transmute()</code> adds new variables and drops existing ones.  Both
+functions preserve the number of rows of the input.
+New variables overwrite existing variables of the same name.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+mutate(.data, ...)
+
+transmute(.data, ...)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>.data</code></td>
+<td>
+<p>A tbl. All main verbs are S3 generics and provide methods
+for <code><a href="tbl_df.html">tbl_df()</a></code>, <code><a href="../../dtplyr/html/tbl_dt.html">dtplyr::tbl_dt()</a></code> and <code><a href="../../dbplyr/html/tbl_dbi.html">dbplyr::tbl_dbi()</a></code>.</p>
+</td></tr>
+<tr valign="top"><td><code>...</code></td>
+<td>
+<p>Name-value pairs of expressions, each with length 1 or the same
+length as the number of rows in the group (if using <code><a href="group_by.html">group_by()</a></code>) or in the entire
+input (if not using groups). The name of each argument will be the name of
+a new variable, and the value will be its corresponding value.  Use a <code>NULL</code>
+value in <code>mutate</code> to drop a variable.  New variables overwrite existing variables
+of the same name.
+</p>
+<p>The arguments in <code>...</code> are automatically <a href="../../rlang/html/quo.html">quoted</a> and
+<a href="../../rlang/html/eval_tidy.html">evaluated</a> in the context of the data
+frame. They support <a href="../../rlang/html/quasiquotation.html">unquoting</a> and
+splicing. See <code>vignette("programming")</code> for an introduction to
+these concepts.</p>
+</td></tr>
+</table>
+
+
+<h3>Value</h3>
+
+<p>An object of the same class as <code>.data</code>.
+</p>
+
+
+<h3>Useful functions available in calculations of variables</h3>
+
+
+<ul>
+<li> <p><code><a href="../../base/html/Arithmetic.html">+</a></code>, <code><a href="../../base/html/Arithmetic.html">-</a></code>, <code><a href="../../base/html/Log.html">log()</a></code>, etc., for their usual mathematical meanings
+</p>
+</li>
+<li> <p><code><a href="lead-lag.html">lead()</a></code>, <code><a href="lead-lag.html">lag()</a></code>
+</p>
+</li>
+<li> <p><code><a href="ranking.html">dense_rank()</a></code>, <code><a href="ranking.html">min_rank()</a></code>, <code><a href="ranking.html">percent_rank()</a></code>, <code><a href="ranking.html">row_number()</a></code>,
+<code><a href="ranking.html">cume_dist()</a></code>, <code><a href="ranking.html">ntile()</a></code>
+</p>
+</li>
+<li> <p><code><a href="../../base/html/cumsum.html">cumsum()</a></code>, <code><a href="cumall.html">cummean()</a></code>, <code><a href="../../base/html/cumsum.html">cummin()</a></code>, <code><a href="../../base/html/cumsum.html">cummax()</a></code>, <code><a href="cumall.html">cumany()</a></code>, <code><a href="cumall.html">cumall()</a></code>
+</p>
+</li>
+<li> <p><code><a href="na_if.html">na_if()</a></code>, <code><a href="coalesce.html">coalesce()</a></code>
+</p>
+</li>
+<li> <p><code><a href="if_else.html">if_else()</a></code>, <code><a href="recode.html">recode()</a></code>, <code><a href="case_when.html">case_when()</a></code>
+</p>
+</li></ul>
+
+
+
+<h3>Grouped tibbles</h3>
+
+<p>Because mutating expressions are computed within groups, they may
+yield different results on grouped tibbles. This will be the case
+as soon as an aggregating, lagging, or ranking function is
+involved. Compare this ungrouped mutate:</p>
+<pre>starwars %&gt;%
+  mutate(mass / mean(mass, na.rm = TRUE)) %&gt;%
+  pull()
+</pre>
+<p>With the grouped equivalent:</p>
+<pre>starwars %&gt;%
+  group_by(gender) %&gt;%
+  mutate(mass / mean(mass, na.rm = TRUE)) %&gt;%
+  pull()
+</pre>
+<p>The former normalises <code>mass</code> by the global average whereas the
+latter normalises by the averages within gender levels.
+</p>
+<p>Note that you can't overwrite a grouping variable within
+<code>mutate()</code>.
+</p>
+<p><code>mutate()</code> does not evaluate the expressions when the group is empty.
+</p>
+
+
+<h3>Scoped mutation and transmutation</h3>
+
+<p>The three <a href="scoped.html">scoped</a> variants of <code>mutate()</code> (<code><a href="mutate_all.html">mutate_all()</a></code>,
+<code><a href="mutate_all.html">mutate_if()</a></code> and <code><a href="mutate_all.html">mutate_at()</a></code>) and the three variants of
+<code>transmute()</code> (<code><a href="mutate_all.html">transmute_all()</a></code>, <code><a href="mutate_all.html">transmute_if()</a></code>,
+<code><a href="mutate_all.html">transmute_at()</a></code>) make it easy to apply a transformation to a
+selection of variables.
+</p>
+
+
+<h3>Tidy data</h3>
+
+<p>When applied to a data frame, row names are silently dropped. To preserve,
+convert to an explicit variable with <code><a href="../../tibble/html/rownames_to_column.html">tibble::rownames_to_column()</a></code>.
+</p>
+
+
+<h3>See Also</h3>
+
+<p>Other single table verbs: <code><a href="arrange.html">arrange</a></code>,
+<code><a href="filter.html">filter</a></code>, <code><a href="select.html">select</a></code>,
+<code><a href="slice.html">slice</a></code>, <code><a href="summarise.html">summarise</a></code>
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+# Newly created variables are available immediately
+mtcars %&gt;% as_tibble() %&gt;% mutate(
+  cyl2 = cyl * 2,
+  cyl4 = cyl2 * 2
+)
+
+# You can also use mutate() to remove variables and
+# modify existing variables
+mtcars %&gt;% as_tibble() %&gt;% mutate(
+  mpg = NULL,
+  disp = disp * 0.0163871 # convert to litres
+)
+
+
+# window functions are useful for grouped mutates
+mtcars %&gt;%
+ group_by(cyl) %&gt;%
+ mutate(rank = min_rank(desc(mpg)))
+# see `vignette("window-functions")` for more details
+
+# You can drop variables by setting them to NULL
+mtcars %&gt;% mutate(cyl = NULL)
+
+# mutate() vs transmute --------------------------
+# mutate() keeps all existing variables
+mtcars %&gt;%
+  mutate(displ_l = disp / 61.0237)
+
+# transmute keeps only the variables you create
+mtcars %&gt;%
+  transmute(displ_l = disp / 61.0237)
+
+
+# The mutate operation may yield different results on grouped
+# tibbles because the expressions are computed within groups.
+# The following normalises `mass` by the global average:
+starwars %&gt;%
+  mutate(mass / mean(mass, na.rm = TRUE)) %&gt;%
+  pull()
+
+# Whereas this normalises `mass` by the averages within gender
+# levels:
+starwars %&gt;%
+  group_by(gender) %&gt;%
+  mutate(mass / mean(mass, na.rm = TRUE)) %&gt;%
+  pull()
+
+# Note that you can't overwrite grouping variables:
+gdf &lt;- mtcars %&gt;% group_by(cyl)
+try(mutate(gdf, cyl = cyl * 100))
+
+
+# Refer to column names stored as strings with the `.data` pronoun:
+vars &lt;- c("mass", "height")
+mutate(starwars, prod = .data[[vars[[1]]]] * .data[[vars[[2]]]])
+
+# For more complex cases, knowledge of tidy evaluation and the
+# unquote operator `!!` is required. See https://tidyeval.tidyverse.org/
+#
+# One useful and simple tidy eval technique is to use `!!` to
+# bypass the data frame and its columns. Here is how to divide the
+# column `mass` by an object of the same name:
+mass &lt;- 100
+mutate(starwars, mass = mass / !!mass)
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>dplyr</em> version 0.8.3 <a href="00Index.html">Index</a>]</div>
+</body></html>

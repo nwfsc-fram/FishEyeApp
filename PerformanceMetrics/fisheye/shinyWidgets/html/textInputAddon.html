@@ -1,0 +1,84 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Text with Add-on Input Control</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for textInputAddon {shinyWidgets}"><tr><td>textInputAddon {shinyWidgets}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Text with Add-on Input Control</h2>
+
+<h3>Description</h3>
+
+<p>Create text field with add-on.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+textInputAddon(inputId, label, value = "", placeholder = NULL, addon,
+  width = NULL)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>inputId</code></td>
+<td>
+<p>The <code>input</code> slot that will be used to access the value.</p>
+</td></tr>
+<tr valign="top"><td><code>label</code></td>
+<td>
+<p>Display label for the control, or <code>NULL</code> for no label.</p>
+</td></tr>
+<tr valign="top"><td><code>value</code></td>
+<td>
+<p>Initial value..</p>
+</td></tr>
+<tr valign="top"><td><code>placeholder</code></td>
+<td>
+<p>A character string giving the user a hint as to what can be entered into the control.</p>
+</td></tr>
+<tr valign="top"><td><code>addon</code></td>
+<td>
+<p>An icon tag, created by <a href="../../shiny/html/icon.html">icon</a>.</p>
+</td></tr>
+<tr valign="top"><td><code>width</code></td>
+<td>
+<p>The width of the input : 'auto', 'fit', '100px', '75%'</p>
+</td></tr>
+</table>
+
+
+<h3>Value</h3>
+
+<p>A switch control that can be added to a UI definition.
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+## Not run: 
+## Only run examples in interactive R sessions
+if (interactive()) {
+shinyApp(
+  ui = fluidPage(
+    textInputAddon(inputId = "id", label = "Label", placeholder = "Username", addon = icon("at")),
+    verbatimTextOutput(outputId = "out")
+  ),
+  server = function(input, output) {
+    output$out &lt;- renderPrint({
+      input$id
+    })
+  }
+)
+}
+
+## End(Not run)
+
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>shinyWidgets</em> version 0.4.8 <a href="00Index.html">Index</a>]</div>
+</body></html>

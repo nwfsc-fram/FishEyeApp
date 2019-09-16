@@ -1,0 +1,107 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Update selected vertical tab</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for updateVerticalTabsetPanel {shinyWidgets}"><tr><td>updateVerticalTabsetPanel {shinyWidgets}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Update selected vertical tab</h2>
+
+<h3>Description</h3>
+
+<p>Update selected vertical tab
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+updateVerticalTabsetPanel(session, inputId, selected = NULL)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>session</code></td>
+<td>
+<p>The <code>session</code> object passed to function given to <code>shinyServer.</code></p>
+</td></tr>
+<tr valign="top"><td><code>inputId</code></td>
+<td>
+<p>The id of the <code>verticalTabsetPanel</code> object.</p>
+</td></tr>
+<tr valign="top"><td><code>selected</code></td>
+<td>
+<p>The name of the tab to make active.</p>
+</td></tr>
+</table>
+
+
+<h3>See Also</h3>
+
+<p><code><a href="vertical-tab.html">verticalTabsetPanel</a></code>
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+## Not run: 
+
+if (interactive()) {
+
+library(shiny)
+library(shinyWidgets)
+
+ui &lt;- fluidPage(
+  fluidRow(
+    column(
+      width = 10, offset = 1,
+      tags$h2("Update vertical tab panel example:"),
+      verbatimTextOutput("res"),
+      radioButtons(
+        inputId = "update", label = "Update selected:",
+        choices = c("Title 1", "Title 2", "Title 3"),
+        inline = TRUE
+      ),
+      verticalTabsetPanel(
+        id = "TABS",
+        verticalTabPanel(
+          title = "Title 1", icon = icon("home", "fa-2x"),
+          "Content panel 1"
+        ),
+        verticalTabPanel(
+          title = "Title 2", icon = icon("map", "fa-2x"),
+          "Content panel 2"
+        ),
+        verticalTabPanel(
+          title = "Title 3", icon = icon("rocket", "fa-2x"),
+          "Content panel 3"
+        )
+      )
+    )
+  )
+)
+
+server &lt;- function(input, output, session) {
+  output$res &lt;- renderPrint(input$TABS)
+  observeEvent(input$update, {
+    shinyWidgets:::updateVerticalTabsetPanel(
+      session = session,
+      inputId = "TABS",
+      selected = input$update
+    )
+  }, ignoreInit = TRUE)
+}
+
+shinyApp(ui, server)
+
+}
+
+
+## End(Not run)
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>shinyWidgets</em> version 0.4.8 <a href="00Index.html">Index</a>]</div>
+</body></html>

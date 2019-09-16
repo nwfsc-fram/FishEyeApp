@@ -1,0 +1,123 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Accordion panel-group</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for bs_accordion {bsplus}"><tr><td>bs_accordion {bsplus}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Accordion panel-group</h2>
+
+<h3>Description</h3>
+
+<p>An accordion is a set of collapsible panels where, at most, one panel-body is visible.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+bs_accordion(id)
+
+## S3 method for class 'bsplus_accordion'
+bs_append(tag, title, content, ...)
+
+## S3 method for class 'bsplus_accordion'
+bs_set_opts(tag, panel_type = "primary",
+  use_heading_link = TRUE, ...)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>id</code></td>
+<td>
+<p>character, unique id for accordion <code>&lt;div/&gt;</code>,
+also serves as root id for panels appended using <code>bs_append()</code></p>
+</td></tr>
+<tr valign="top"><td><code>tag</code></td>
+<td>
+<p><code>htmltools::<a href="../../htmltools/html/tag.html">tag</a></code>,
+accordion <code>&lt;div/&gt;</code> to which to append a panel</p>
+</td></tr>
+<tr valign="top"><td><code>title</code></td>
+<td>
+<p>character (HTML) or <code>htmltools::<a href="../../htmltools/html/tagList.html">tagList</a></code>,
+title for the panel heading</p>
+</td></tr>
+<tr valign="top"><td><code>content</code></td>
+<td>
+<p>character (HTML) or <code>htmltools::<a href="../../htmltools/html/tagList.html">tagList</a></code>,
+content for the panel body</p>
+</td></tr>
+<tr valign="top"><td><code>...</code></td>
+<td>
+<p>other arguments (not used)</p>
+</td></tr>
+<tr valign="top"><td><code>panel_type</code></td>
+<td>
+<p>character, one of the standard Bootstrap types
+<code>c("default", "primary", "success", "info", "warning", "danger")</code></p>
+</td></tr>
+<tr valign="top"><td><code>use_heading_link</code></td>
+<td>
+<p>logical, indicates whether to make the entire panel heading
+clickable.</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>All of these functions return a <code>bsplus_accordion</code> object
+(which is also an <code>htmltools::<a href="../../htmltools/html/tag.html">tag</a></code>, <code>&lt;div/&gt;</code>), so you can
+compose an accordion by piping. There are three parts to this system:
+</p>
+
+<ol>
+<li><p>A constructor function for the accordion, <code>bs_accordion()</code>
+</p>
+</li>
+<li><p>A function to set options for subsequent panels, <code>bs_set_opts()</code>
+</p>
+</li>
+<li><p>A function to append a panel to the group, <code>bs_append()</code>
+</p>
+</li></ol>
+
+<p>The verb <em>append</em> is used to signify that you can append an arbitrary
+number of panels to an accordion.
+</p>
+<p>For the constructor, <code>bs_accordion()</code>,
+it is your responsibility to ensure that <code>id</code> is unique
+among HTML elements in your page. If you have non-unique <code>id</code>'s, strange things may
+happen to your page.
+</p>
+
+
+<h3>Value</h3>
+
+<p><code>bsplus_accordion</code> object (<code>htmltools::<a href="../../htmltools/html/tag.html">tag</a></code>,
+<code>&lt;div/&gt;</code>)
+</p>
+
+
+<h3>See Also</h3>
+
+<p><a href="http://getbootstrap.com/javascript/#collapse-example-accordion">http://getbootstrap.com/javascript/#collapse-example-accordion</a>
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+bs_accordion(id = "meet_the_beatles") %&gt;%
+  bs_set_opts(panel_type = "success", use_heading_link = TRUE) %&gt;%
+  bs_append(title = "John Lennon", content = "Rhythm guitar, vocals") %&gt;%
+  bs_set_opts(panel_type = "info") %&gt;%
+  bs_append(title = "Paul McCartney", content = "Bass guitar, vocals")
+
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>bsplus</em> version 0.1.1 <a href="00Index.html">Index</a>]</div>
+</body></html>

@@ -1,0 +1,73 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: bsCollapse</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for bsCollapse {shinyBS}"><tr><td>bsCollapse {shinyBS}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>bsCollapse</h2>
+
+<h3>Description</h3>
+
+<p><code>bsCollapse</code> is used in your UI to create a collapse panel group. Use
+<code><a href="bsCollapsePanel.html">bsCollapsePanel</a></code> to populate this object with panels.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+bsCollapse(..., id = NULL, multiple = FALSE, open = NULL)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>id</code></td>
+<td>
+<p><b>Optional</b> You can use <code>input$id</code> in your Server logic to
+determine which panels are open, and <code><a href="updateCollapse.html">updateCollapse</a></code> to open/close
+panels.</p>
+</td></tr>
+<tr valign="top"><td><code>multiple</code></td>
+<td>
+<p>Can more than one panel be open at a time? Defaults to <code>FALSE</code>.</p>
+</td></tr>
+<tr valign="top"><td><code>open</code></td>
+<td>
+<p>The <code>value</code>, (or if none was supplied, the <code>title</code>) of
+the panel(s) you want open on load.</p>
+</td></tr>
+<tr valign="top"><td><code>...</code></td>
+<td>
+<p><code><a href="bsCollapsePanel.html">bsCollapsePanel</a></code> elements to include in the Collapse.</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>See <a href="Collapses.html">Collapses</a> for more information about how to use <code>bsCollapse</code> with the
+rest of the Collapses family.
+</p>
+
+
+<h3>Note</h3>
+
+<p>Run <code>bsExample("Collapses")</code> for an example
+of <code>bsCollapse</code> functionality.
+</p>
+
+
+<h3>See Also</h3>
+
+<p><a href="http://getbootstrap.com">Twitter Bootstrap 3</a>
+</p>
+<p>Other Collapses: <code><a href="Collapses.html">Collapses</a></code>;
+<code><a href="bsCollapsePanel.html">bsCollapsePanel</a></code>;
+<code><a href="updateCollapse.html">updateCollapse</a></code>
+</p>
+
+<hr /><div style="text-align: center;">[Package <em>shinyBS</em> version 0.61 <a href="00Index.html">Index</a>]</div>
+</body></html>

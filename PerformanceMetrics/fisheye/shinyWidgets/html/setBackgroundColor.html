@@ -1,0 +1,152 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Custom background color for your shinyapp</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for setBackgroundColor {shinyWidgets}"><tr><td>setBackgroundColor {shinyWidgets}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Custom background color for your shinyapp</h2>
+
+<h3>Description</h3>
+
+<p>Allow to change the background color of your shinyapp.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+setBackgroundColor(color = "ghostwhite", gradient = c("linear",
+  "radial"), direction = c("bottom", "top", "right", "left"))
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>color</code></td>
+<td>
+<p>Background color. Use either the fullname or the Hex code
+(<a href="https://www.w3schools.com/colors/colors_hex.asp">https://www.w3schools.com/colors/colors_hex.asp</a>). If more than one color is used,
+a gradient background is set.</p>
+</td></tr>
+<tr valign="top"><td><code>gradient</code></td>
+<td>
+<p>Type of gradient: <code>linear</code> or <code>radial</code>.</p>
+</td></tr>
+<tr valign="top"><td><code>direction</code></td>
+<td>
+<p>Direction for gradient, by default to <code>bottom</code>.
+Possibles choices are <code>bottom</code>, <code>top</code>, <code>right</code> or
+<code>left</code>, two values can be used, e.g. <code>c("bottom", "right")</code>.</p>
+</td></tr>
+</table>
+
+
+<h3>Examples</h3>
+
+<pre>
+## Not run: 
+
+if (interactive()) {
+
+### Uniform color background :
+
+library(shiny)
+library(shinyWidgets)
+
+ui &lt;- fluidPage(
+  tags$h2("Change shiny app background"),
+  setBackgroundColor("ghostwhite")
+)
+
+server &lt;- function(input, output, session) {
+
+}
+
+shinyApp(ui, server)
+
+
+### linear gradient background :
+
+library(shiny)
+library(shinyWidgets)
+
+ui &lt;- fluidPage(
+
+  # use a gradient in background
+  setBackgroundColor(
+    color = c("#F7FBFF", "#2171B5"),
+    gradient = "linear",
+    direction = "bottom"
+  ),
+
+  titlePanel("Hello Shiny!"),
+  sidebarLayout(
+    sidebarPanel(
+      sliderInput("obs",
+                  "Number of observations:",
+                  min = 0,
+                  max = 1000,
+                  value = 500)
+    ),
+    mainPanel(
+      plotOutput("distPlot")
+    )
+  )
+)
+
+server &lt;- function(input, output, session) {
+  output$distPlot &lt;- renderPlot({
+    hist(rnorm(input$obs))
+  })
+}
+
+shinyApp(ui, server)
+
+
+### radial gradient background :
+
+library(shiny)
+library(shinyWidgets)
+
+ui &lt;- fluidPage(
+
+  # use a gradient in background
+  setBackgroundColor(
+    color = c("#F7FBFF", "#2171B5"),
+    gradient = "radial",
+    direction = c("top", "left")
+  ),
+
+  titlePanel("Hello Shiny!"),
+  sidebarLayout(
+    sidebarPanel(
+      sliderInput("obs",
+                  "Number of observations:",
+                  min = 0,
+                  max = 1000,
+                  value = 500)
+    ),
+    mainPanel(
+      plotOutput("distPlot")
+    )
+  )
+)
+
+server &lt;- function(input, output, session) {
+  output$distPlot &lt;- renderPlot({
+    hist(rnorm(input$obs))
+  })
+}
+
+shinyApp(ui, server)
+
+}
+
+
+## End(Not run)
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>shinyWidgets</em> version 0.4.8 <a href="00Index.html">Index</a>]</div>
+</body></html>

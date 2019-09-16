@@ -1,0 +1,75 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Embed an element into the label of a Shiny-input tag</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for shinyInput_label_embed {bsplus}"><tr><td>shinyInput_label_embed {bsplus}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Embed an element into the label of a Shiny-input tag</h2>
+
+<h3>Description</h3>
+
+<p>The element embedded into the Shiny input will be pulled to the
+right edge of the label.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+shinyInput_label_embed(tag, element)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>tag</code></td>
+<td>
+<p>Shiny input, such as <code>shiny::<a href="../../shiny/html/numericInput.html">numericInput</a></code></p>
+</td></tr>
+<tr valign="top"><td><code>element</code></td>
+<td>
+<p><code>htmltools::<a href="../../htmltools/html/tag.html">tag</a></code> to be embedded
+into label of <code>tag</code></p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>To promote consistency, the following convention is proposed:
+</p>
+<p>For links (activated by clicking), embed a <code>shiny::icon("info-circle")</code>;
+this is the default for <code><a href="shiny_iconlink.html">shiny_iconlink</a></code>. For elements activated
+by hovering, embed a <code>shiny::icon("info")</code>.
+</p>
+
+
+<h3>Value</h3>
+
+<p>Shiny input, modified copy of <code>tag</code>
+</p>
+
+
+<h3>See Also</h3>
+
+<p><code><a href="shiny_iconlink.html">shiny_iconlink</a></code>
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+library("shiny")
+
+numericInput(inputId = "foo", label = "Enter a number", value = 0) %&gt;%
+  shinyInput_label_embed(
+    shiny_iconlink() %&gt;%
+    bs_embed_popover(title = "Number", content = "Not a complex number")
+  )
+
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>bsplus</em> version 0.1.1 <a href="00Index.html">Index</a>]</div>
+</body></html>

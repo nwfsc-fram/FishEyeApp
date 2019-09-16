@@ -1,0 +1,115 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Run R code when an event is triggered on an element</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for onevent {shinyjs}"><tr><td>onevent {shinyjs}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Run R code when an event is triggered on an element</h2>
+
+<h3>Description</h3>
+
+<p><code>onclick</code> runs an R expression (either a <code>shinyjs</code> function or any other code)
+when an element is clicked.<br /><br />
+<code>onevent</code> is similar, but can be used when any event is triggered on the element,
+not only a mouse click. See below for a list of possible event types. Using &quot;click&quot;
+results in the same behaviour as calling <code>onclick</code>.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+onclick(id, expr, add = FALSE)
+
+onevent(event, id, expr, add = FALSE)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>id</code></td>
+<td>
+<p>The id of the element/Shiny tag</p>
+</td></tr>
+<tr valign="top"><td><code>expr</code></td>
+<td>
+<p>The R expression or function to run after the event is triggered.
+If a function with an argument is provided, it will be called with the
+JavaScript Event details as its argument. Using a function can be useful
+when you want to know for example what key was pressed on a &quot;keypress&quot; event.</p>
+</td></tr>
+<tr valign="top"><td><code>add</code></td>
+<td>
+<p>If <code>TRUE</code>, then add <code>expr</code> to be executed after any
+other code that was previously set using <code>onevent</code> or <code>onclick</code>; otherwise
+<code>expr</code> will overwrite any previous expressions. Note that this parameter
+works well in web browsers but is buggy when using the RStudio Viewer.</p>
+</td></tr>
+<tr valign="top"><td><code>event</code></td>
+<td>
+<p>The event that needs to be triggered to run the code. See below
+for a list of possible event types.</p>
+</td></tr>
+</table>
+
+
+<h3>Possible event types</h3>
+
+<p>Any <a href="http://api.jquery.com/category/events/mouse-events/">mouse</a> or
+<a href="http://api.jquery.com/category/events/keyboard-events/">keyboard</a> events
+that are supported by JQuery can be used. The full list of events that can be used is:
+<code>click</code>, <code>dblclick</code>, <code>hover</code>, <code>mousedown</code>, <code>mouseenter</code>,
+<code>mouseleave</code>, <code>mousemove</code>, <code>mouseout</code>, <code>mouseover</code>, <code>mouseup</code>,
+<code>keydown</code>, <code>keypress</code>, <code>keyup</code>.
+</p>
+
+
+<h3>Note</h3>
+
+<p><code>shinyjs</code> must be initialized with a call to <code>useShinyjs()</code>
+in the app's ui.
+</p>
+
+
+<h3>See Also</h3>
+
+<p><code><a href="useShinyjs.html">useShinyjs</a></code>,
+<code><a href="runExample.html">runExample</a></code>
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+if (interactive()) {
+  library(shiny)
+
+  shinyApp(
+    ui = fluidPage(
+      useShinyjs(),  # Set up shinyjs
+      p(id = "date", "Click me to see the date"),
+      p(id = "coords", "Click me to see the mouse coordinates"),
+      p(id = "disappear", "Move your mouse here to make the text below disappear"),
+      p(id = "text", "Hello")
+    ),
+    server = function(input, output) {
+      onclick("date", alert(date()))
+      onclick("coords", function(event) { alert(event) })
+      onevent("mouseenter", "disappear", hide("text"))
+      onevent("mouseleave", "disappear", show("text"))
+    }
+  )
+}
+## Not run: 
+  # The shinyjs function call in the above app can be replaced by
+  # any of the following examples to produce similar Shiny apps
+  onclick("disappear", toggle("text"))
+  onclick(expr = text("date", date()), id = "date")
+
+## End(Not run)
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>shinyjs</em> version 1.0 <a href="00Index.html">Index</a>]</div>
+</body></html>

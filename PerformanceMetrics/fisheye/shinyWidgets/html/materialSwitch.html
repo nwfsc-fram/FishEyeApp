@@ -1,0 +1,93 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Material Design Switch Input Control</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for materialSwitch {shinyWidgets}"><tr><td>materialSwitch {shinyWidgets}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Material Design Switch Input Control</h2>
+
+<h3>Description</h3>
+
+<p>A toggle switch to turn a selection on or off.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+materialSwitch(inputId, label = NULL, value = FALSE,
+  status = "default", right = FALSE, inline = FALSE, width = NULL)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>inputId</code></td>
+<td>
+<p>The <code>input</code> slot that will be used to access the value.</p>
+</td></tr>
+<tr valign="top"><td><code>label</code></td>
+<td>
+<p>Input label.</p>
+</td></tr>
+<tr valign="top"><td><code>value</code></td>
+<td>
+<p>TRUE or FALSE.</p>
+</td></tr>
+<tr valign="top"><td><code>status</code></td>
+<td>
+<p>Color, must be a valid Bootstrap status : default, primary, info, success, warning, danger.</p>
+</td></tr>
+<tr valign="top"><td><code>right</code></td>
+<td>
+<p>Should the the label be on the right? default to FALSE.</p>
+</td></tr>
+<tr valign="top"><td><code>inline</code></td>
+<td>
+<p>Display the input inline, if you want to place buttons next to each other.</p>
+</td></tr>
+<tr valign="top"><td><code>width</code></td>
+<td>
+<p>The width of the input, e.g. '400px', or '100%'.</p>
+</td></tr>
+</table>
+
+
+<h3>Value</h3>
+
+<p>A switch control that can be added to a UI definition.
+</p>
+
+
+<h3>See Also</h3>
+
+<p><code><a href="updateMaterialSwitch.html">updateMaterialSwitch</a></code>, <code><a href="switchInput.html">switchInput</a></code>
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+materialSwitch(inputId = "somevalue", label = "")
+## Not run: 
+## Only run examples in interactive R sessions
+if (interactive()) {
+
+ui &lt;- fluidPage(
+  materialSwitch(inputId = "somevalue", label = ""),
+  verbatimTextOutput("value")
+)
+server &lt;- function(input, output) {
+  output$value &lt;- renderText({ input$somevalue })
+}
+shinyApp(ui, server)
+}
+
+## End(Not run)
+
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>shinyWidgets</em> version 0.4.8 <a href="00Index.html">Index</a>]</div>
+</body></html>
