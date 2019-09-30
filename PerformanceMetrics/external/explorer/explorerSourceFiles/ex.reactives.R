@@ -170,14 +170,7 @@ DatVars <- reactive({
           'Buildings',
           'Equipment',
           'Other fixed costs'),
-      PRODUCTION = c('Purchase cost',
-                     'Purchase weight',
-                     'Purchase price per lb', 
-                     'Production value', 
-                     'Production weight', 
-                     'Production value per lb', 
-                     'Markup', 
-                     'Recovery rate')
+      IMPACT = c("")
       )
     )
   } else if (input$Sect_sel == "M") {
@@ -363,9 +356,6 @@ metricstatselections <- reactive({
   } else if(input$Ind_sel == 'Cost')  {
     stat   = input$costStats
     metric = input$costSelect
-  } else if(input$Ind_sel == 'Purchase/Production') {
-    stat = input$prodStats
-    metric = input$prodSelect
   } else if(input$Ind_sel == 'Other') {
     if(any(input$otherSelect %in% c(
       'Gini coefficient', 

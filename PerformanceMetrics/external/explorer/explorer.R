@@ -180,7 +180,6 @@ output$TableMain <- renderDataTable({
 output$dlTable <- downloadHandler(
     filename = function() { 'perfmetricsTable.csv' },
     content = function(file) {
-      table = as.data.frame(table)
       table <- DatSubTable()
       row.names(table) <- NULL
       table$source <- ""
