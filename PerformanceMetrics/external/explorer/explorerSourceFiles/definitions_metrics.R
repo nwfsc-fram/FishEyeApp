@@ -79,7 +79,7 @@ tags$div(style = "margin: 15px 15px 30px; width: 60%",
                    ),
                    tags$br(),
                    tags$ul(
-                     tags$p("Fixed costs (FC), variable costs (VC) and other costs (AS IS) are described by sector below:"),
+                     tags$p("Fixed costs (FC), variable costs (VC) are described by sector below. Some cost categories are included as ‘other variable costs’ or ‘other fixed costs’:"),
                      tags$img(src='Costs_table.jpg', height=600)),
                    tags$p(tags$em("A note about total costs:"), "There are a variety of costs that are associated with operating a vessel or processing facility that are not requested on the form because it is difficult to 
                      determine the share of the cost associated with the vessel or facility. These costs include items that can be used for activities other than fishing, or are too difficult to allocate to a particular 
