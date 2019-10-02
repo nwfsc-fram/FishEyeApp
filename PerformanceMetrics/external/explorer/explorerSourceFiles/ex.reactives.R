@@ -122,7 +122,9 @@ DatVars <- reactive({
       list(
         YEAR = 2004:currentyear,
         NRlist = nrcomponents,
-        CATEGORY = c("Production activities" = "Fisheries", "Region", "Processor size"),
+        CATEGORY = c("Production activities" = "Fisheries", 
+                     "Region", 
+                     "Processor size"),
         whitingv = c(
           "All processors",
           "Whiting processors",
@@ -412,7 +414,7 @@ DatSubRaw <- reactive({
   dat <- DatMain()
 
   # data filter differs whether it is CV/FR module or CP/MS module
-  if (input$Sect_sel == "CV" | input$Sect_sel == "FR") {
+  if (input$Sect_sel == "CV") {
     datSubforSector <-
       subset(dat,
         YEAR %in% seq(input$YearSelect[1], input$YearSelect[2], 1) &
@@ -420,7 +422,25 @@ DatSubRaw <- reactive({
           VARIABLE %in% input$VariableSelect &
           whitingv %in% input$FishWhitingSelect
       )
-  } else {
+  } else if (input$Sect_sel == 'FR') {
+    if (input$Ind_sel != 'Purchase/Production') {
+      datSubforSector <-
+        subset(dat,
+               YEAR %in% seq(input$YearSelect[1], input$YearSelect[2], 1) &
+                 CATEGORY == input$CategorySelect &
+                 VARIABLE %in% input$VariableSelect &
+                 whitingv %in% input$FishWhitingSelect
+        )
+    } else {
+      datSubforSector <-
+        subset(dat,
+               YEAR %in% seq(input$YearSelect[1], input$YearSelect[2], 1) &
+                 CATEGORY == input$CategorySelect &
+                 VARIABLE %in% input$VariableSelect
+        )
+    }
+  }
+  else {
     datSubforSector <-
       subset(dat, 
         YEAR %in% seq(input$YearSelect[1], input$YearSelect[2], 1))
@@ -556,11 +576,46 @@ if (!input$LayoutSelect) {
       }# End CV
       else if (input$Sect_sel == 'FR') {
         if (input$CategorySelect == "Fisheries") {
+          # if (input$Ind_sel != 'Purchase/Production') {
           datSub$sort <- ifelse(datSub$VARIABLE == "All production", 1,
-            ifelse(datSub$VARIABLE == "Non-whiting groundfish production", 2,
-              ifelse(datSub$VARIABLE == "Pacific whiting production", 3, 4)
-            )
+            ifelse(datSub$VARIABLE == 'Groundfish production', 2,
+              ifelse(datSub$VARIABLE == "Non-whiting groundfish production", 3,
+                ifelse(datSub$VARIABLE == "Pacific whiting production", 3, 4)
+            ))
           )
+          # } else if (input$Ind_sel == 'Purchase/Production') {
+          # datSub$sort <- case_when(datSub$VARIABLE == 'All production' ~ 1,
+          #                          datSub$VARIABLE == 'Groundfish production' ~ 2,
+          #                          datSub$VARIABLE == 'Pacific whiting' ~ 3,
+          #                          datSub$VARIABLE == 'Non-whiting groundfish' ~ 4,
+          #                          datsub$VARIABLE == 'Sablefish' ~ 5,
+          #                          datSub$VARIABLE == 'Rockfish' ~ 6,
+          #                          datSub$VARIABLE == 'Dover sole' ~ 7,
+          #                          datSub$VARIABLE == 'English sole' ~ 8,
+          #                          datSub$VARIABLE == 'Petrale sole' ~ 9,
+          #                          datSub$VARIABLE == 'Rex sole' ~ 10,
+          #                          datSub$VARIABLE == 'Thornyheads' ~ 11,
+          #                          datSub$VARIABLE == 'Lingcod' ~ 12,
+          #                          datSub$VARIABLE == 'Arrowtooth flounder' ~ 13,
+          #                          datSub$VARIABLE == 'Sharks, skates and rays' ~ 14,
+          #                          datSub$VARIABLE == 'Other species production' ~ 15,
+          #                          datSub$VARIABLE == 'Shrimp' ~ 16,
+          #                          datSub$VARIABLE == 'Crab' ~ 17,
+          #                          datSub$VARIABLE == 'Salmon' ~ 18,
+          #                          datSub$VARIABLE == 'Squid' ~ 19,
+          #                          datSub$VARIABLE == 'Sturgeon' ~ 20,
+          #                          datSub$VARIABLE == 'Tuna' ~ 21,
+          #                          datSub$VARIABLE == 'Sanddab' ~ 22,
+          #                          datSub$VARIABLE == 'California halibut' ~ 21,
+          #                          datSub$VARIABLE == 'Coastal pelagics' ~ 22,
+          #                          datSub$VARIABLE == 'Echinoderms' ~ 23, 
+          #                          datSub$VARIABLE == 'Other shellfish' ~ 24,
+          #                          datSub$VARIABLE == 'Pacific halibut' ~ 25,
+          #                          datSub$VARIABLE == 'Pacific herring' ~ 26,
+          #                          datSub$VARIABLE == 'Other species' ~ 27,
+          #                          T ~ 28
+          #                          )
+        # }
         } else if (input$CategorySelect == "Region") {
           datSub$sort <-
             ifelse(datSub$VARIABLE == "Washington and Oregon", 1, 2)

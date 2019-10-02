@@ -100,7 +100,15 @@ doPlot <- function(dat, x, y) {
           }
         } else if (input$Ind_sel == 'Impacts') {
     dat4plot$VALUE
-  }
+        } else if (input$Ind_sel == 'Purchase/Production') {
+          if(input$prodStats == 'Mean') {
+            dat4plot$VALUE + dat4plot$VARIANCE
+          } else if (input$prodStats == 'Total') {
+            dat4plot$VALUE
+          } else {
+            dat4plot$q75
+          }
+        }
     
     
     dat4plot$lower <-
@@ -146,71 +154,74 @@ doPlot <- function(dat, x, y) {
         }
       } else if (input$Ind_sel == 'Impacts') {
     dat4plot$VALUE
-  }
+      } else if (input$Ind_sel == 'Purchase/Production') {
+        if(input$prodStats == 'Mean') {
+          dat4plot$VALUE - dat4plot$VARIANCE
+        } else if (input$prodStats == 'Total') {
+          dat4plot$VALUE
+        } else {
+          dat4plot$q25
+        }
+      }
+    
     
     upper <- function() {
-      if (input$Ind_sel == "Economic") {
-        if (input$PlotSelect == T) {
+      if (input$PlotSelect == T) {
+        if (input$Ind_sel == "Economic") {
           if (input$AVE_MED == 'A') {
             max(dat4plot$VALUE + dat4plot$VARIANCE, na.rm = T)
           } else if (input$AVE_MED == 'M') {
             max(dat4plot$q75, na.rm = T)
           } else  {
             max(dat4plot$VALUE, na.rm = T)
-          } } else {
-            max(dat4plot$VALUE, na.rm = T)
-          }
+          } 
       } else if (input$Ind_sel == 'Cost') {
-        if (input$PlotSelect == T) {
           if (input$AVE_MED_COSTS == 'A') {
             max(dat4plot$VALUE + dat4plot$VARIANCE, na.rm = T)
           } else if (input$AVE_MED_COSTS == 'M') {
             max(dat4plot$q75, na.rm = T)
           } else  {
             max(dat4plot$VALUE, na.rm = T)
-          } } else {
-            max(dat4plot$VALUE, na.rm = T)
-          }
+          } 
       } else if (input$Ind_sel == 'Other') {
-        if (input$PlotSelect == T) {
           if (input$otherStats == 'Mean') {
             max(dat4plot$VALUE + dat4plot$VARIANCE, na.rm = T)
           } else if (input$otherStats == 'Median') {
             max(dat4plot$q75, na.rm = T)
           } else {
             max(dat4plot$VALUE, na.rm = T)
-          } } else {
-            max(dat4plot$VALUE, na.rm = T)
-          }
+          } 
       } else if (input$Ind_sel == 'Labor') {
-        if (input$PlotSelect == T) {
           if (input$crewStats == 'Mean') {
             max(dat4plot$VALUE + dat4plot$VARIANCE, na.rm = T)
           } else if (input$crewStats == 'Median') {
             max(dat4plot$q75, na.rm = T)
           } else {
             max(dat4plot$VALUE, na.rm = T)
-          }
-        } else {
-          max(dat4plot$VALUE, na.rm = T)
-        }
-      } else if (input$Ind_sel == 'Vessel characteristics' || input$Ind_sel == 'Processor characteristics') {
-        if (input$PlotSelect == T) {
+      }
+        } else if (input$Ind_sel == 'Vessel characteristics' || input$Ind_sel == 'Processor characteristics') {
           if (input$demStats == 'Mean') {
             max(dat4plot$VALUE + dat4plot$VARIANCE, na.rm = T)
           } else if (input$demStats == 'Median') {
             max(dat4plot$q75, na.rm = T)
           } else {
-            max(dat4plot$VALUE, na.rm = T) 
-          } } else {
             max(dat4plot$VALUE, na.rm = T)
-          }
       }
       ##All options are total onnly##
-      else if (input$Ind_sel == 'Impacts') {
+       } else if (input$Ind_sel == 'Impacts') {
         max(dat4plot$VALUE, na.rm = T)
-      }
-      }
+    } else if (input$Ind_sel == 'Purchase/Production') {
+        if (input$prodStats == 'Mean') {
+          max(dat4plot$VALUE + dat4plot$VARIANCE, na.rm = T)
+        } else if (input$prodStats == 'Median') {
+          max(dat4plot$q75, na.rm = T)
+        } else {
+          max(dat4plot$VALUE, na.rm = T) 
+        } } } 
+      else {
+          max(dat4plot$VALUE, na.rm = T)
+        }
+    }
     
     yaxislabel <- function () {
       if (input$LayoutSelect) {

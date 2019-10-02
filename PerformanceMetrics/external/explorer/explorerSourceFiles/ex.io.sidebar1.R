@@ -6,20 +6,26 @@
 # Defines the name of the tab, the names of the lists of metrics, and the names of the lists of the statistics
 output$metrics <- renderUI({
   if (input$Sect_sel != "FR") {
-    name = "Vessel characteristics"
+    tabsetPanel(
+      tabPanel("Vessel characteristics",       uiOutput("demSelect"),   uiOutput("demStats")),
+      tabPanel("Economic", uiOutput("econSelect"),  uiOutput("econStats")),
+      tabPanel("Labor",    uiOutput("crewSelect"),  uiOutput("crewStats")),
+      tabPanel("Cost",     uiOutput("costSelect"),  uiOutput("costStats")),
+      tabPanel("Impacts", uiOutput("impactSelect"), uiOutput("impactStats")),
+      tabPanel("Other",    uiOutput("otherSelect"), uiOutput("otherStats")),
+      id = "Ind_sel", type = c("tabs")
+    )
   } else {
-    name = "Processor characteristics"
-  }   
   tabsetPanel(
-    tabPanel(name,       uiOutput("demSelect"),   uiOutput("demStats")),
+    tabPanel("Processor characteristics",       uiOutput("demSelect"),   uiOutput("demStats")),
     tabPanel("Economic", uiOutput("econSelect"),  uiOutput("econStats")),
     tabPanel("Labor",    uiOutput("crewSelect"),  uiOutput("crewStats")),
     tabPanel("Cost",     uiOutput("costSelect"),  uiOutput("costStats")),
-    tabPanel("Impacts", uiOutput("impactSelect"), uiOutput("impactStats")),
     tabPanel("Purchase/Production", uiOutput("prodSelect"), uiOutput("prodStats")),
     tabPanel("Other",    uiOutput("otherSelect"), uiOutput("otherStats")),
     id = "Ind_sel", type = c("tabs")
   )
+  }
 })
 
 # SET UP THE METRIC CHECKBOXES/RADIO BUTTONS FOR EACH TAB ####
@@ -441,8 +447,8 @@ prod.var <- c(
 prod.var.species <- c( 
   'All production',
   'Groundfish production',
-  'Pacific whiting production',
-  'Non-whiting groundfish production',
+  'Pacific whiting',
+  'Non-whiting groundfish',
   "Sablefish",
   "Rockfish",
   "Dover sole",
@@ -455,19 +461,19 @@ prod.var.species <- c(
   "Sharks, skates and rays",
   'Other species production',
   "Shrimp",
+  "Crab",
+  "Salmon",
+  "Pacific halibut",
+  "California halibut",
   "Squid",                  
   "Sturgeon",
   "Tuna",
   "Sanddab",
-  "California halibut",
   "Coastal pelagics",
-  "Crab",
   "Echinoderms",
   "Other shellfish",
-  "Other species",
-  "Pacific halibut",
   "Pacific herring",
-  "Salmon")
+  "Other species")
                        
 
 # list of production types to filter by when using other categories (region, size)
@@ -661,8 +667,8 @@ output$Variableselect <- renderUI({
             checkboxGroupInput("VariableSelect", NULL, choices = prod.var, selected = "All production"))
           } else {
             tags$div(
-              class = 'FRprod',
-              checkboxGroupInput("VariableSelect",NULL, choicdes = prod.var.species, selected = 'All production')
+              class = 'ckbox',
+              checkboxGroupInput("VariableSelect", NULL, choices = prod.var.species, selected = 'All production')
             )
           }
         } else  if (input$Ind_sel != 'Purchase/Production') {
@@ -670,7 +676,7 @@ output$Variableselect <- renderUI({
             radioButtons("VariableSelect", NULL, choices = prod.var, selected = "All production"))
         } else {
           tags$div(
-            class = 'rbutton2',
+            class = 'radio',
             radioButtons("VariableSelect", NULL, choices = prod.var.species, selected = 'All production')
           )
         }
@@ -825,7 +831,24 @@ if(input$Ind_sel == 'Impacts') {
       right = TRUE,
       value = TRUE
     )
-    }} else if(input$Ind_sel %in% c('Vessel characteristics', 'Processor characteristics')){
+    }
+  } else if(input$Ind_sel == 'Purchase/Production'){
+    if(input$prodStats == 'Total'){
+      hidden(materialSwitch(
+        inputId = "PlotSelect",
+        label = "Show variance",
+        right = TRUE,
+        value = TRUE
+      ))
+    } else {
+      materialSwitch(
+        inputId = "PlotSelect",
+        label = "Show variance",
+        right = TRUE,
+        value = TRUE
+      )
+    }
+    } else if(input$Ind_sel %in% c('Vessel characteristics', 'Processor characteristics')){
       if(input$demStats == 'Total') {
       hidden(materialSwitch(
         inputId = "PlotSelect",
