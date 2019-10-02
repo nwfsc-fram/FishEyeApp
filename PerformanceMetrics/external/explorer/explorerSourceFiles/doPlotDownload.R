@@ -38,7 +38,7 @@ doPlotDownload <- function(dat, x, y){
       length(unique(dat$YEAR<=2010))
     } else if(input$Ind_sel!="Economic"){ 
       if(input$LayoutSelect){   
-        if(input$PlotSelect==T&!is.na(max(dat$VARIANCE))) { 
+        if(is.na(max(dat$VARIANCE))) { 
           data.frame(dat %>% 
                        group_by(METRIC) %>% 
                        mutate(threshold=max(VALUE, na.rm=T)+max(VARIANCE, na.rm=T)+max(VALUE, na.rm=T)/10))%>% 
@@ -141,60 +141,44 @@ doPlotDownload <- function(dat, x, y){
     
     upper <- function() {
       if (input$Ind_sel == "Economic") {
-        if (input$PlotSelect == T) {
           if (input$AVE_MED == 'A') {
             max(dat$VALUE + dat$VARIANCE, na.rm = T)
           } else if (input$AVE_MED == 'M') {
             max(dat$q75, na.rm = T)
           } else  {
             max(dat$VALUE, na.rm = T)
-          } } else {
-            max(dat$VALUE, na.rm = T)
           }
       } else if (input$Ind_sel == 'Cost') {
-        if (input$PlotSelect == T) {
           if (input$AVE_MED_COSTS == 'A') {
             max(dat$VALUE + dat$VARIANCE, na.rm = T)
           } else if (input$AVE_MED_COSTS == 'M') {
             max(dat$q75, na.rm = T)
           } else  {
             max(dat$VALUE, na.rm = T)
-          } } else {
-            max(dat$VALUE, na.rm = T)
           }
       } else if (input$Ind_sel == 'Other') {
-        if (input$PlotSelect == T) {
           if (input$otherStats == 'Mean') {
             max(dat$VALUE + dat$VARIANCE, na.rm = T)
           } else if (input$otherStats == 'Median') {
             max(dat$q75, na.rm = T)
           } else {
             max(dat$VALUE, na.rm = T)
-          } } else {
-            max(dat$VALUE, na.rm = T)
           }
       } else if (input$Ind_sel == 'Labor') {
-        if (input$PlotSelect == T) {
           if (input$crewStats == 'Mean') {
             max(dat$VALUE + dat$VARIANCE, na.rm = T)
           } else if (input$crewStats == 'Median') {
             max(dat$q75, na.rm = T)
           } else {
             max(dat$VALUE, na.rm = T)
-          }
-        } else {
-          max(dat$VALUE, na.rm = T)
         }
       } else if (input$Ind_sel == 'Vessel characteristics' || input$Ind_sel == 'Processor characteristics') {
-        if (input$PlotSelect == T) {
           if (input$demStats == 'Mean') {
             max(dat$VALUE + dat$VARIANCE, na.rm = T)
           } else if (input$demStats == 'Median') {
             max(dat$q75, na.rm = T)
           } else {
             max(dat$VALUE, na.rm = T) 
-          } } else {
-            max(dat$VALUE, na.rm = T)
           }
       } }
     
@@ -401,7 +385,7 @@ xlab <- function() {
      geom_point(aes_string(colour = groupVar), size = 2)
 
 #------ Add variance ------#    
-    if(input$PlotSelect==T& !exists('ssn')) { 
+    if(!exists('ssn')) { 
       g <- g + geom_ribbon(aes(ymax=upper, ymin=lower, fill=whitingv), alpha=.25)#show.legend = FALSE, 
     } else {
       g <- g
