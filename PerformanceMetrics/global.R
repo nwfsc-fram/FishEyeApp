@@ -1,2 +1,2 @@
 enableBookmarking(store="url")
-currentyear <- 2017
+currentyear <- 2018
