@@ -25,7 +25,7 @@ tags$div(style = "margin: 15px 15px 30px; width: 60%",
                       tags$li(strong("Number of species purchased:"),"Count of the number of species purchased."),
                       tags$li(strong("Proportion of revenue from catch share fishery:"), "The proportion of a vessels total revenue that comes from 
                               fish caught in the West Coast Groundfish Trawl Catch Share Program (and pre-catch shares, the Limited Entry Trawl Fishery) 
-                              compared to all West Coast fishing activities. User can select “Alaskan Fisheries” to calculate the proportion of limited 
+                              compared to all West Coast fishing activities. User can select Alaskan Fisheries to calculate the proportion of limited 
                               entry/catch share fishery revenue compared to all fishing activities."),
                       tags$li(strong("Proportion of production value from West Coast groundfish:"), 'The proportion of a processors revenue from production 
                               that comes from fish in the catch share fishery.'),
@@ -79,8 +79,8 @@ tags$div(style = "margin: 15px 15px 30px; width: 60%",
                    ),
                    tags$br(),
                    tags$ul(
-                     tags$p("Fixed costs (FC), variable costs (VC) and other costs (AS IS) are described by sector below:"),
-                     tags$img(src='Costs_table.jpg', height=600)),
+                     tags$p("Fixed costs (FC), variable costs (VC) are described by sector below. Some cost categories are included as other variable costs or other fixed costs:"),
+                     tags$img(src='fisheye_costs_table.jpg', height=700)),
                    tags$p(tags$em("A note about total costs:"), "There are a variety of costs that are associated with operating a vessel or processing facility that are not requested on the form because it is difficult to 
                      determine the share of the cost associated with the vessel or facility. These costs include items that can be used for activities other than fishing, or are too difficult to allocate to a particular 
                      vessel or facility in a multi-vessel company. These expenses include office space, vehicles, storage of equipment, professional fees, and marketing. In general, the EDC form aims to capture costs that are 

@@ -42,7 +42,7 @@ doPlot <- function(dat, x, y) {
         length(unique(dat4plot$YEAR <= 2010))
       }    else if (input$Ind_sel != "Economic") {
         if (input$LayoutSelect) {
-          if (input$PlotSelect == T & !is.na(max(dat4plot$VARIANCE))) {
+          if (!is.na(max(dat4plot$VARIANCE))) {
             data.frame(dat4plot %>% group_by(METRIC) %>% mutate(
               threshold = max(VALUE, na.rm = T) + max(VARIANCE, na.rm = T) + max(VALUE, na.rm =
                   T) / 10
@@ -150,60 +150,44 @@ doPlot <- function(dat, x, y) {
     
     upper <- function() {
       if (input$Ind_sel == "Economic") {
-        if (input$PlotSelect == T) {
           if (input$AVE_MED == 'A') {
             max(dat4plot$VALUE + dat4plot$VARIANCE, na.rm = T)
           } else if (input$AVE_MED == 'M') {
             max(dat4plot$q75, na.rm = T)
           } else  {
             max(dat4plot$VALUE, na.rm = T)
-          } } else {
-            max(dat4plot$VALUE, na.rm = T)
-          }
+          } 
       } else if (input$Ind_sel == 'Cost') {
-        if (input$PlotSelect == T) {
           if (input$AVE_MED_COSTS == 'A') {
             max(dat4plot$VALUE + dat4plot$VARIANCE, na.rm = T)
           } else if (input$AVE_MED_COSTS == 'M') {
             max(dat4plot$q75, na.rm = T)
           } else  {
             max(dat4plot$VALUE, na.rm = T)
-          } } else {
-            max(dat4plot$VALUE, na.rm = T)
           }
       } else if (input$Ind_sel == 'Other') {
-        if (input$PlotSelect == T) {
           if (input$otherStats == 'Mean') {
             max(dat4plot$VALUE + dat4plot$VARIANCE, na.rm = T)
           } else if (input$otherStats == 'Median') {
             max(dat4plot$q75, na.rm = T)
           } else {
             max(dat4plot$VALUE, na.rm = T)
-          } } else {
-            max(dat4plot$VALUE, na.rm = T)
           }
       } else if (input$Ind_sel == 'Labor') {
-        if (input$PlotSelect == T) {
           if (input$crewStats == 'Mean') {
             max(dat4plot$VALUE + dat4plot$VARIANCE, na.rm = T)
           } else if (input$crewStats == 'Median') {
             max(dat4plot$q75, na.rm = T)
           } else {
             max(dat4plot$VALUE, na.rm = T)
-          }
-        } else {
-          max(dat4plot$VALUE, na.rm = T)
         }
       } else if (input$Ind_sel == 'Vessel characteristics' || input$Ind_sel == 'Processor characteristics') {
-        if (input$PlotSelect == T) {
           if (input$demStats == 'Mean') {
             max(dat4plot$VALUE + dat4plot$VARIANCE, na.rm = T)
           } else if (input$demStats == 'Median') {
             max(dat4plot$q75, na.rm = T)
           } else {
             max(dat4plot$VALUE, na.rm = T) 
-          } } else {
-            max(dat4plot$VALUE, na.rm = T)
           }
       }
       ##All options are total onnly##
@@ -385,7 +369,7 @@ doPlot <- function(dat, x, y) {
 
     
     # add 'data variability' band ####
-    if (input$PlotSelect == T & !exists('ssn')) {
+    if (!exists('ssn')) {
       g <-
         g + geom_ribbon(aes(
           ymax = upper,
