@@ -21,6 +21,7 @@ DatMain <- reactive({
 
 nrcomponents <- c('Revenue', 'Variable costs', 'Fixed costs', 'Variable cost net revenue', 'Total cost net revenue')
 
+
 # DatVars: sidebar inputs ####
 DatVars <- reactive({
   outputOptions(output, "filters", suspendWhenHidden = FALSE)
@@ -33,6 +34,9 @@ DatVars <- reactive({
   
   # create a list of variable names used in the sidebar inputs
   dat <- DatMain()
+  
+  currentyear = 2016
+  
   if (input$Sect_sel == "CV") {
     datVars <- with(
       dat,
