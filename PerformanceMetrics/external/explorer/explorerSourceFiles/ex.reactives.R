@@ -5,6 +5,11 @@
 
 # DatMain: data load ####
 DatMain <- reactive({
+load("data/CVperfmetrics.RData")
+load("data/factorOrder.RData")
+load("data/Mperfmetrics.RData")
+load("data/CPperfmetrics.RData")
+load("data/FRperfmetrics.RData")
   # data load moved to serverhead
   # data is loaded from serverHead.R load call
   if (input$Sect_sel == "CV") {
