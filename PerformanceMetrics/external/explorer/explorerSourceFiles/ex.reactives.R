@@ -40,7 +40,7 @@ DatVars <- reactive({
   # create a list of variable names used in the sidebar inputs
   dat <- DatMain()
   
-  currentyear = 2016
+  currentyear = 2018
   
   if (input$Sect_sel == "CV") {
     datVars <- with(
