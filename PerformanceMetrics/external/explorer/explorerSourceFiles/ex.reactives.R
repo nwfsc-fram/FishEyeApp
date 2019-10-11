@@ -139,13 +139,13 @@ DatVars <- reactive({
         ),
         STAT =  c(
           "Mean per processor",
-          "Mean per processor/metric ton of groundfish products produced" = "Mean per processor/metric ton produced",
+          "Mean per processor/metric ton produced",
           "Mean per processor/dollar of revenue",
           "Median per processor",
-          "Median per processor/metric ton of groundfish products produced" = "Median per processor/metric ton produced",
+          "Median per processor/metric ton produced",
           "Median per processor/dollar of revenue",
           "Industry-wide total",
-          "Industry-wide average/metric ton of groundfish products produced" = "Industry-wide average/metric ton produced",
+          "Industry-wide average/metric ton produced",
           "Industry-wide average/dollar of revenue"
         ),
         ##Processor characteristic metrics##
@@ -157,7 +157,7 @@ DatVars <- reactive({
           ),
         ##Labor metrics##
         METRIC2 = c(
-          'Annual mean number of workers',
+          'Monthly average number of workers',
           'Max number of workers',
           "Hourly compensation"
         ),
