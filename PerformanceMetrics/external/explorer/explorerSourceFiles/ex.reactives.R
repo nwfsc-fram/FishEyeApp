@@ -179,8 +179,7 @@ DatVars <- reactive({
       "All fixed costs",
           'Buildings',
           'Equipment',
-          'Other fixed costs'),
-      IMPACT = c("")
+          'Other fixed costs')
       )
     )
   } else if (input$Sect_sel == "M") {
