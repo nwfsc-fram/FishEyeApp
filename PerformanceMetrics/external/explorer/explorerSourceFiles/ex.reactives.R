@@ -152,12 +152,13 @@ DatVars <- reactive({
         METRIC1 =  c(
           'Number of processors',
           "Number of species purchased",
-          "Proportion of production value from West Coast groundfish" = "Proportion of revenue from catch share species",
+          "Proportion of production value from West Coast groundfish",
           "Revenue diversification"
           ),
         ##Labor metrics##
         METRIC2 = c(
-          'Number of workers',
+          'Annual mean number of workers',
+          'Max number of workers',
           "Hourly compensation"
         ),
         ##Other metrics##
