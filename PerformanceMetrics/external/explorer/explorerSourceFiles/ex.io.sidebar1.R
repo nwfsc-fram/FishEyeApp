@@ -215,6 +215,7 @@ output$econStats <- renderUI({
           "<div> Statistic: <button id='istat' type='button' class='btn btn-default action-button shiny-bound-input'> <i class='fa fa-info-circle fa-fw' ></i></button> </div>"
         ),
         c(Mean = "A", Median = "M", Total = "T"),
+        selected = 'M',
         selectize = F
       ),
       tags$div(class = "statbox", 
@@ -227,6 +228,7 @@ output$econStats <- renderUI({
           "<div> Statistic: <button id='istat' type='button' class='btn btn-default action-button shiny-bound-input'> <i class='fa fa-info-circle fa-fw' ></i></button> </div>"
         ),
         c(Mean = "A", Median = "M", Total = "T"),
+        selected = 'M',
         selectize = F
       ),
       tags$div(
@@ -245,7 +247,8 @@ selectinputavemedcosts <- selectInput(
   HTML("<div> Statistic: <button id='istat' type='button' class='btn btn-default action-button shiny-bound-input'> 
                                         <i class='fa fa-info-circle fa-fw' ></i></button> </div>"), 
   c(Mean="A", Median="M", Total="T"), 
-  selectize = F)
+  selectize = F,
+  selected = 'M')
 
 # Cost tab: statistic radiobuttons ####
 output$costStats <- renderUI({
