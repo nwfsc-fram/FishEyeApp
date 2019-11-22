@@ -16,7 +16,7 @@ output$metrics <- renderUI({
     id = "Ind_sel", type = c("tabs"))
   } else {
     tabsetPanel(
-    tabPanel('Vessel characteristics', uiOutput("demSelect"),   uiOutput("demStats")),
+    tabPanel('Processor characteristics', uiOutput("demSelect"),   uiOutput("demStats")),
     tabPanel("Economic", uiOutput("econSelect"),  uiOutput("econStats")),
     tabPanel("Labor",    uiOutput("crewSelect"),  uiOutput("crewStats")),
     tabPanel("Cost",     uiOutput("costSelect"),  uiOutput("costStats")),
