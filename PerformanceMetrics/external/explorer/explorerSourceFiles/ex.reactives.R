@@ -194,16 +194,19 @@ DatVars <- reactive({
         STAT =  c(
           "Mean per vessel",
           "Mean per vessel/day",
-          "Mean per vessel/metric ton produced",
           "Mean per vessel/dollar of revenue",
+          "Mean per vessel/metric ton purchased",
+          "Mean per vessel/metric ton produced",
           "Median per vessel",
           "Median per vessel/day",
-          "Median per vessel/metric ton produced",
           "Median per vessel/dollar of revenue",
+          "Median per vessel/metric ton purchased",
+          "Median per vessel/metric ton produced",
           "Fleet-wide total",
           'Fleet-wide average/day',
-          'Fleet-wide average/metric ton produced',
-          'Fleet-wide average/dollar of revenue'
+          'Fleet-wide average/dollar of revenue',
+          'Fleet-wide average/metric ton purchased',
+          'Fleet-wide average/metric ton produced'
         ),
         ##Vessel characteristic metrics##
         METRIC1 =  c(

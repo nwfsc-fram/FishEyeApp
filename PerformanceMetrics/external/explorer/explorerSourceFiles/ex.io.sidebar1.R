@@ -221,6 +221,19 @@ output$econStats <- renderUI({
       tags$div(class = "statbox", 
         radioButtons("econStats", "",  choices = c(DatVars()$STAT[5:6])))
     )
+  } else if (input$Sect_sel == "M") {
+    tagList(
+      selectInput("AVE_MED",
+                  HTML(
+                    "<div> Statistic: <button id='istat' type='button' class='btn btn-default action-button shiny-bound-input'> <i class='fa fa-info-circle fa-fw' ></i></button> </div>"
+                  ),
+                  c(Mean = "A", Median = "M", Total = "T"),
+                  selected = 'M',
+                  selectize = F
+      ),
+      tags$div(
+        class = "statbox",
+        radioButtons("econStats", "", choices = c(DatVars()$STAT[6:8]), selected = DatVars()$STAT[6])))
   } else {
     tagList(
       selectInput("AVE_MED",
@@ -256,11 +269,16 @@ output$costStats <- renderUI({
     tagList(
       selectinputavemedcosts,
       tags$div(class="statbox", radioButtons("costStats","", choices = DatVars()$STAT[4:6])))
-  } else if (input$Sect_sel=='CP'|input$Sect_sel=='M') {
+  } else if (input$Sect_sel=='CP') {
     tagList(
       selectinputavemedcosts,
       tags$div(class="statbox", 
         radioButtons("costStats","",  choices = c(DatVars()$STAT[5:8]), selected=DatVars()$STAT[5])))
+  } else if (input$Sect_sel=='M') {
+    tagList(
+      selectinputavemedcosts,
+      tags$div(class="statbox", 
+               radioButtons("costStats","",  choices = c(DatVars()$STAT[6:10]), selected=DatVars()$STAT[6])))
   }else {
     tagList(
       selectinputavemedcosts,
@@ -729,35 +747,53 @@ observe({
     return()
   }
   else
-    if (input$Sect_sel != 'FR') {
+    if (input$Sect_sel == 'FR') {
       if (input$AVE_MED == "M") {
-        updateRadioButtons(session, "econStats", choices = c(DatVars()$STAT[5:7]))
+        updateRadioButtons(session, "econStats", choices = c(DatVars()$STAT[4:5]))
+      }  else if (input$AVE_MED == "A") {
+        updateRadioButtons(session, "econStats",   choices = c(DatVars()$STAT[1:2]))
+      } else  if (input$AVE_MED == "T") {
+        updateRadioButtons(session, "econStats", choices = c(DatVars()$STAT[7:8]))
+      }
+    } else if (input$Sect_sel == 'M') {
+      if (input$AVE_MED == "M") {
+        updateRadioButtons(session, "econStats", choices = c(DatVars()$STAT[6:8]))
       }  else if (input$AVE_MED == "A") {
         updateRadioButtons(session, "econStats",   choices = c(DatVars()$STAT[1:3]))
       } else  if (input$AVE_MED == "T") {
-        updateRadioButtons(session, "econStats", choices = c(DatVars()$STAT[9:11]))
+        updateRadioButtons(session, "econStats", choices = c(DatVars()$STAT[11:13]))
       }
-    } else if (input$AVE_MED == "M") {
-      updateRadioButtons(session, "econStats", choices = c(DatVars()$STAT[4:5]))
+    } else {
+      if (input$AVE_MED == "M") {
+      updateRadioButtons(session, "econStats", choices = c(DatVars()$STAT[5:7]))
     }  else if (input$AVE_MED == "A") {
-      updateRadioButtons(session, "econStats",   choices = c(DatVars()$STAT[1:2]))
+      updateRadioButtons(session, "econStats",   choices = c(DatVars()$STAT[1:3]))
     } else  if (input$AVE_MED == "T") {
-      updateRadioButtons(session, "econStats", choices = c(DatVars()$STAT[7:8]))
+      updateRadioButtons(session, "econStats", choices = c(DatVars()$STAT[9:11]))
     }
-})
+}
+  })
 
 #select whether to show values per vessel, /vessel/day, or /vessel/metric-ton # COSTS
 observe({
   if (is.null(input$AVE_MED_COSTS)) return()
   else 
-    if(input$Sect_sel=='CP'|input$Sect_sel=='M'){
+    if(input$Sect_sel=='CP'){
       if(input$AVE_MED_COSTS=="M"){
         updateRadioButtons(session,"costStats", choices = c(DatVars()$STAT[5:8]))
       }  else if(input$AVE_MED_COSTS=="A"){
         updateRadioButtons(session,"costStats",   choices = c(DatVars()$STAT[1:4]))
       } else  if(input$AVE_MED_COSTS=="T"){
         updateRadioButtons(session,"costStats", choices = c(DatVars()$STAT[9:12]))
-      } 
+      }
+    } else if(input$Sect_sel=='M') {
+      if(input$AVE_MED_COSTS=="M"){
+        updateRadioButtons(session,"costStats", choices = c(DatVars()$STAT[6:10]))
+      }  else if(input$AVE_MED_COSTS=="A"){
+        updateRadioButtons(session,"costStats",   choices = c(DatVars()$STAT[1:5]))
+      } else  if(input$AVE_MED_COSTS=="T"){
+        updateRadioButtons(session,"costStats", choices = c(DatVars()$STAT[11:15]))
+      }
     } else if(input$Sect_sel=='CV'){
       if(input$AVE_MED_COSTS=="M"){
         updateRadioButtons(session,"costStats", choices = c(DatVars()$STAT[5:8]))
