@@ -162,7 +162,7 @@ output$otherSelect <- renderUI({
 
     } else if(input$Sect_sel %in% c('CP', 'M')) {
       tags$div(class = "ckbox", 
-               checkboxGroupInput("otherSelect", NULL, choices = c(DatVars()$METRIC3a), selected = "Alaska days at sea"))
+               checkboxGroupInput("otherSelect", NULL, choices = c(DatVars()$METRIC3a), selected = 'Days fishing, processing, and steaming in AK'))
     } else {
       tags$div(class = "ckbox", 
                checkboxGroupInput("otherSelect", NULL, choices = c(DatVars()$METRIC3a), selected = "Gini coefficient"))
@@ -175,7 +175,7 @@ output$otherSelect <- renderUI({
      } else if(input$Sect_sel %in% c('CP','M')) {
        tags$div(
          class = "ckbox", 
-         radioButtons("otherSelect", NULL, choices = c(DatVars()$METRIC3), selected = "Alaska days at sea"))
+         radioButtons("otherSelect", NULL, choices = c(DatVars()$METRIC3), selected = 'Days fishing, processing, and steaming in AK'))
      } else {
        tags$div(
          class = "ckbox", 
@@ -221,7 +221,7 @@ output$econStats <- renderUI({
       tags$div(class = "statbox", 
         radioButtons("econStats", "",  choices = c(DatVars()$STAT[5:6])))
     )
-  } else if (input$Sect_sel == "M") {
+  } else if (input$Sect_sel == "M" || input$Sect_sel == 'CP') {
     tagList(
       selectInput("AVE_MED",
                   HTML(
@@ -233,7 +233,7 @@ output$econStats <- renderUI({
       ),
       tags$div(
         class = "statbox",
-        radioButtons("econStats", "", choices = c(DatVars()$STAT[6:8]), selected = DatVars()$STAT[6])))
+        radioButtons("econStats", "", choices = c(DatVars()$STAT[6:9]), selected = DatVars()$STAT[6])))
   } else {
     tagList(
       selectInput("AVE_MED",
@@ -269,12 +269,7 @@ output$costStats <- renderUI({
     tagList(
       selectinputavemedcosts,
       tags$div(class="statbox", radioButtons("costStats","", choices = DatVars()$STAT[4:6])))
-  } else if (input$Sect_sel=='CP') {
-    tagList(
-      selectinputavemedcosts,
-      tags$div(class="statbox", 
-        radioButtons("costStats","",  choices = c(DatVars()$STAT[5:8]), selected=DatVars()$STAT[5])))
-  } else if (input$Sect_sel=='M') {
+  } else if (input$Sect_sel=='CP' || input$Sect_sel == 'M') {
     tagList(
       selectinputavemedcosts,
       tags$div(class="statbox", 
@@ -755,13 +750,13 @@ observe({
       } else  if (input$AVE_MED == "T") {
         updateRadioButtons(session, "econStats", choices = c(DatVars()$STAT[7:8]))
       }
-    } else if (input$Sect_sel == 'M') {
+    } else if (input$Sect_sel == 'M'|| input$Sect_sel == 'CP') {
       if (input$AVE_MED == "M") {
-        updateRadioButtons(session, "econStats", choices = c(DatVars()$STAT[6:8]))
+        updateRadioButtons(session, "econStats", choices = c(DatVars()$STAT[6:9]))
       }  else if (input$AVE_MED == "A") {
-        updateRadioButtons(session, "econStats",   choices = c(DatVars()$STAT[1:3]))
+        updateRadioButtons(session, "econStats",   choices = c(DatVars()$STAT[1:4]))
       } else  if (input$AVE_MED == "T") {
-        updateRadioButtons(session, "econStats", choices = c(DatVars()$STAT[11:13]))
+        updateRadioButtons(session, "econStats", choices = c(DatVars()$STAT[11:14]))
       }
     } else {
       if (input$AVE_MED == "M") {
@@ -778,15 +773,7 @@ observe({
 observe({
   if (is.null(input$AVE_MED_COSTS)) return()
   else 
-    if(input$Sect_sel=='CP'){
-      if(input$AVE_MED_COSTS=="M"){
-        updateRadioButtons(session,"costStats", choices = c(DatVars()$STAT[5:8]))
-      }  else if(input$AVE_MED_COSTS=="A"){
-        updateRadioButtons(session,"costStats",   choices = c(DatVars()$STAT[1:4]))
-      } else  if(input$AVE_MED_COSTS=="T"){
-        updateRadioButtons(session,"costStats", choices = c(DatVars()$STAT[9:12]))
-      }
-    } else if(input$Sect_sel=='M') {
+    if(input$Sect_sel=='M' || input$Sect_sel == 'CP') {
       if(input$AVE_MED_COSTS=="M"){
         updateRadioButtons(session,"costStats", choices = c(DatVars()$STAT[6:10]))
       }  else if(input$AVE_MED_COSTS=="A"){

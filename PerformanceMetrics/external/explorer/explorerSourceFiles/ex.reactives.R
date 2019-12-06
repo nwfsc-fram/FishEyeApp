@@ -194,19 +194,19 @@ DatVars <- reactive({
         STAT =  c(
           "Mean per vessel",
           "Mean per vessel/day",
-          "Mean per vessel/dollar of revenue",
           "Mean per vessel/metric ton purchased",
           "Mean per vessel/metric ton produced",
+          "Mean per vessel/dollar of revenue",
           "Median per vessel",
           "Median per vessel/day",
-          "Median per vessel/dollar of revenue",
           "Median per vessel/metric ton purchased",
           "Median per vessel/metric ton produced",
+          "Median per vessel/dollar of revenue",
           "Fleet-wide total",
           'Fleet-wide average/day',
-          'Fleet-wide average/dollar of revenue',
           'Fleet-wide average/metric ton purchased',
-          'Fleet-wide average/metric ton produced'
+          'Fleet-wide average/metric ton produced',
+          'Fleet-wide average/dollar of revenue'
         ),
         ##Vessel characteristic metrics##
         METRIC1 =  c(
@@ -236,16 +236,20 @@ DatVars <- reactive({
         ),
         ##Other metrics##
         METRIC3 = c(
-          "Alaska days at sea",
-          'West Coast days at sea',
+          'Days fishing, processing, and steaming in AK',
+          'Days fishing, processing, and steaming on the WC',
+          'Days offloading on the WC',
+          'Days steaming between the WC and AK', 
           'Fuel use per day',
           "Gini coefficient",
           "Seasonality"
         ),
         ##When grouping by Metrics, don't include 'Seasonsality'
         METRIC3a = c(
-          "Alaska days at sea",
-          'West Coast days at sea',
+          'Days fishing, processing, and steaming in AK',
+          'Days fishing, processing, and steaming on the WC',
+          'Days offloading on the WC',
+          'Days steaming between the WC and AK', 
           'Fuel use per day',
           'Gini coefficient',
           'Seasonality'
@@ -279,14 +283,17 @@ DatVars <- reactive({
         "Mean per vessel",
         "Mean per vessel/day",
         "Mean per vessel/metric ton produced",
+        "Mean per vessel/metric ton caught",
         "Mean per vessel/dollar of revenue",
         "Median per vessel",
         "Median per vessel/day",
         "Median per vessel/metric ton produced",
+        "Median per vessel/metric ton caught",
         "Median per vessel/dollar of revenue",
         "Fleet-wide total",
         'Fleet-wide average/day',
         'Fleet-wide average/metric ton produced',
+        'Fleet-wide average/metric ton caught',
         'Fleet-wide average/dollar of revenue'
       ),
       ##Vessel characteristic metrics##
@@ -317,16 +324,20 @@ DatVars <- reactive({
       ),
       ##Other metrics##
       METRIC3 = c(
-        "Alaska days at sea",
-        'West Coast days at sea',
+        'Days fishing, processing, and steaming in AK',
+        'Days fishing, processing, and steaming on the WC',
+        'Days offloading on the WC',
+        'Days steaming between the WC and AK',
         'Fuel use per day',
         "Gini coefficient",
         "Seasonality"
       ),
       ##When grouping by Metrics, don't include 'Seasonsality'
       METRIC3a = c(
-        "Alaska days at sea",
-        'West Coast days at sea',
+        'Days fishing, processing, and steaming in AK',
+        'Days fishing, processing, and steaming on the WC',
+        'Days offloading on the WC',
+        'Days steaming between the WC and AK',
         'Fuel use per day',
         'Gini coefficient',
         'Seasonality'
