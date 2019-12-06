@@ -105,7 +105,10 @@ tags$div(style = "margin: 15px 15px 30px; width: 60%",
                    h4("Other"),
                    p("These metrics describe effort, productivity, inequality, and the temporal and spatial distribution of landings."),
                    tags$ul(
-                     tags$li(strong("Days at sea:"), "The number of days at sea."),
+                     tags$li(strong("Days fishing, processing, and steaming in AK:"), "The number of days at sea operating in Alaska fisheries."),
+                     tags$li(strong('Days fishing, processing, and steaming on the WC:'), "The number of days at sea operating in West Coast fisheries."),
+                     tags$li(strong('Days offloading on the WC:'), "The number of days spent offloading in West Coast fisheries."),
+                     tags$li(strong('Days steaming between the WC and AK:'), "The number of days spent steaming between Alaska and the West Coast."),
                      tags$li(strong("Fuel use per day:"), "Fuel use (gallons) per vessel per day."),
                      tags$li(strong("Speed while fishing:"), "Speed (knots) while fishing."),
                      tags$li(strong("Gini coefficient:"), "Measures the degree of catch share revenue concentration among vessels. A value of zero would represent all vessels earning 

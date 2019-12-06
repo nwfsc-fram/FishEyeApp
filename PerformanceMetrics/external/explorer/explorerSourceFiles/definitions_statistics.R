@@ -19,7 +19,9 @@ tags$div(style = "margin: 15px 15px 30px; width: 60%",
                     tags$ul(
                       tags$li(strong("Per vessel or processor:"),'Median or Mean for all vessels or processors that participated in the catch share program.'),
                       tags$li(strong("Per vessel or processor per day:"), "Median or Mean per day for all vessels or processors that participated in the catch share program."),
-                      tags$li(strong("Per vessel or processor per metric ton:"), "Median or Mean per metric ton of fish caught or processed for all vessels or processors 
+                      tags$li(strong("Per vessel or processor per metric ton caught/purchased:"), "Median or Mean per metric ton of fish caught or purchased for all vessels or processors 
+                              that participated in the catch share program."),
+                      tags$li(strong("Per vessel or processor per metric ton produced:"), "Median or Mean per metric ton of fish products for all vessels or processors 
                               that participated in the catch share program.")
                        ), tags$br(),             
                     h4('Fleet-wide total'),
