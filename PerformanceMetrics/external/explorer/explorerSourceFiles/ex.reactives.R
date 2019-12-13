@@ -151,7 +151,8 @@ DatVars <- reactive({
         ##Processor characteristic metrics##
         METRIC1 =  c(
           'Number of processors',
-          "Number of species purchased",
+          "Number of species processed",
+          "Number of species sold",
           "Proportion of production value from West Coast groundfish",
           "Revenue diversification"
           ),
@@ -167,16 +168,23 @@ DatVars <- reactive({
         METRIC3a = c(
           "Gini coefficient"),
         COSTS = c(
-      "All variable costs",
+      'All variable costs',
           'Fish purchases',
-          'Freight',
+          'Additives',
+          'Production Supplies',
+          'Freight & trucking',
           'Labor',
           'Monitoring',
+          'Taxes',
+          'Offloading',
           'Off-site freezing & storage',
-          'Packing materials', 
-          'Utilities',
+          'Packing materials',
+          'Electricity',
+          'Gas',
+          'Waste & Byproduct Disposal',
+          'Water',
           'Other variable costs',
-      "All fixed costs",
+      'All fixed costs',
           'Buildings',
           'Equipment',
           'Other fixed costs')
