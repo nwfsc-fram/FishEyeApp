@@ -130,7 +130,7 @@ DatVars <- reactive({
       dat,
       list(
         YEAR = 2004:currentyear,
-        NRlist = nrcomponents,
+        NRlist = c(nrcomponents, 'Offload revenue'),
         CATEGORY = c("Production activities" = "Fisheries", "Region", "Processor size"),
         whitingv = c(
           "All processors",
@@ -154,13 +154,16 @@ DatVars <- reactive({
           "Number of species processed",
           "Number of species sold",
           "Proportion of production value from West Coast groundfish",
+          'Percentage of purchases from non-vessel sources',
           "Revenue diversification"
           ),
         ##Labor metrics##
         METRIC2 = c(
-          'Monthly average number of workers',
-          'Max number of workers',
-          "Hourly compensation"
+          'Average number of production employees per month', 
+          'Max number of production employees per month',
+          'Number of non-production employees',
+          'Hourly compensation per production employee',
+          'Annual compensation per non-production employee'
         ),
         ##Other metrics##
         METRIC3 = c(
