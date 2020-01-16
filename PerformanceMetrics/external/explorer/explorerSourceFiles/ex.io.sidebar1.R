@@ -397,7 +397,6 @@ tagsdiv2004 <- tags$div(
   }
 })
 
-# lists of fisheries to display in the filter by fisheries tab these should probably be added to factorOrder.RData####
 fish.var <- c(
     "All fisheries combined" = "All fisheries",
     " All catch share fisheries combined" = "All catch share fisheries",
@@ -450,6 +449,23 @@ vsssize <- c(
   "Large vessel (> 80 ft)",
   "Medium vessel (> 60ft, <= 80ft)",
   "Small vessel (<= 60 ft)")
+
+# state
+vss.st <- c('Washington','Oregon','California')
+
+# port
+vss.port <- c('Puget Sound',
+              'South and central WA coast',
+              'Astoria',
+              'Tillamook',
+              'Newport',
+              'Coos Bay',
+              'Brookings',
+              'Crescent City',
+              'Eureka',
+              'Fort Bragg',
+              'San Francisco',
+              'Morro Bay-Monterey')
 
 # CATEGORY SELECTION - chooses the grouping filter (fishery, port, size) ####
 # I don't think we use this anymore av 08/20/19
@@ -509,12 +525,12 @@ output$Variableselect <- renderUI({
       if (input$CategorySelect == "State") {
         if (!input$LayoutSelect) {
           tagList(
-            checkboxGroupInput("VariableSelect", NULL, choices = factorOrder$state, selected = factorOrder$state[1]))
+            checkboxGroupInput("VariableSelect", NULL, choices = vss.st, selected = vss.st[1]))
         } else {
           tagList(
             tags$div(
               class = "rbutton3",
-              radioButtons("VariableSelect", NULL, choices = c(factorOrder$state), selected = factorOrder$state[1])))
+              radioButtons("VariableSelect", NULL, choices = vss.st, selected = vss.st[1])))
         }
       } #state
       else if (input$CategorySelect == "Vessel length class") {
@@ -531,13 +547,13 @@ output$Variableselect <- renderUI({
         if (!input$LayoutSelect) {
           tagList(
             tags$div(
-              checkboxGroupInput("VariableSelect", NULL, choices = factorOrder$port, selected = factorOrder$port[1]))
+              checkboxGroupInput("VariableSelect", NULL, choices = vss.port, selected = vss.port[1]))
           )
         } else {
           tagList(
             tags$div(
               class = "rbutton3",
-              radioButtons("VariableSelect", NULL, choices = factorOrder$port, selected = factorOrder$port[1]))
+              radioButtons("VariableSelect", NULL, choices = vss.port, selected = vss.port[1]))
           )
         }
       } #end homeport

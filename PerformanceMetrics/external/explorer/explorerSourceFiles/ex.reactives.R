@@ -6,7 +6,6 @@
 # DatMain: data load ####
 DatMain <- reactive({
 load("data/CVperfmetrics.RData")
-load("data/factorOrder.RData")
 load("data/Mperfmetrics.RData")
 load("data/CPperfmetrics.RData")
 load("data/FRperfmetrics.RData")
