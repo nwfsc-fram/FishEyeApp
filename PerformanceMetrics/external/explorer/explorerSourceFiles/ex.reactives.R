@@ -130,7 +130,7 @@ DatVars <- reactive({
       dat,
       list(
         YEAR = 2004:currentyear,
-        NRlist = c(nrcomponents, 'Offload revenue'),
+        NRlist = c(nrcomponents, 'Offload revenue *', 'Custom Processing Revenue *'),
         CATEGORY = c("Production activities" = "Fisheries", "Region", "Processor size"),
         whitingv = c(
           "All processors",
@@ -151,19 +151,25 @@ DatVars <- reactive({
         ##Processor characteristic metrics##
         METRIC1 =  c(
           'Number of processors',
-          "Number of species processed",
+          "Number of species processed *",
           "Number of species sold",
-          "Proportion of production value from West Coast groundfish",
-          'Percentage of purchases from non-vessel sources',
-          "Revenue diversification"
+          "Revenue diversification",
+          "Proportion of production value from West Coast groundfish *",
+          'Percentage of purchases from non-vessel sources *',
+          'Number of processors who fillet non-whiting groundfish *', 
+          'Percentage of production processed *',
+          'Proportion of Purchase Weight from West Coast groundfish purchased by Catch Share Processors *',
+          'Proportion of Purchase Value from West Coast groundfish purchased by Catch Share Processors *'
           ),
         ##Labor metrics##
         METRIC2 = c(
-          'Average number of production employees per month', 
-          'Max number of production employees per month',
-          'Number of non-production employees',
+          'Average number of production employees per month',
           'Hourly compensation per production employee',
-          'Annual compensation per non-production employee'
+          'Number of non-production employees *',
+          'Max number of production employees per month *',
+          'Annual compensation per non-production employee *',
+          'Ratio of Wage to Value Added in Production *',
+          'Ratio of Wage to Value Added in Production Including Custom Processing *'
         ),
         ##Other metrics##
         METRIC3 = c(
@@ -173,19 +179,19 @@ DatVars <- reactive({
         COSTS = c(
       'All variable costs',
           'Fish purchases',
-          'Additives',
-          'Production Supplies',
+          'Additives *',
+          'Production Supplies *',
           'Freight & trucking',
           'Labor',
           'Monitoring',
-          'Taxes',
-          'Offloading',
+          'Taxes *',
+          'Offloading *',
           'Off-site freezing & storage',
           'Packing materials',
-          'Electricity',
-          'Gas',
-          'Waste & Byproduct Disposal',
-          'Water',
+          'Electricity *',
+          'Gas *',
+          'Waste & Byproduct Disposal *',
+          'Water *',
           'Other variable costs',
       'All fixed costs',
           'Buildings',
