@@ -156,11 +156,7 @@ DatVars <- reactive({
           "Number of species sold",
           "Revenue diversification",
           "Proportion of production value from West Coast groundfish *",
-          'Percentage of purchases from non-vessel sources *',
-          'Number of processors who fillet non-whiting groundfish *', 
-          'Percentage of production processed *',
-          'Proportion of Purchase Weight from West Coast groundfish purchased by Catch Share Processors *',
-          'Proportion of Purchase Value from West Coast groundfish purchased by Catch Share Processors *'
+          'Number of non-whiting groundfish fillet operations *'
           ),
         ##Labor metrics##
         METRIC2 = c(
@@ -174,9 +170,17 @@ DatVars <- reactive({
         ),
         ##Other metrics##
         METRIC3 = c(
-          "Gini coefficient"),
+          "Gini coefficient",
+          'Percentage of purchases from non-vessel sources *',
+          'Percentage of production processed *',
+          'Proportion of Purchase Weight from West Coast groundfish purchased by Catch Share Processors *',
+          'Proportion of Purchase Value from West Coast groundfish purchased by Catch Share Processors *'),
         METRIC3a = c(
-          "Gini coefficient"),
+          "Gini coefficient",
+          'Percentage of purchases from non-vessel sources *',
+          'Percentage of production processed *',
+          'Proportion of Purchase Weight from West Coast groundfish purchased by Catch Share Processors *',
+          'Proportion of Purchase Value from West Coast groundfish purchased by Catch Share Processors *'),
         COSTS = c(
       'All variable costs',
           'Fish purchases',
