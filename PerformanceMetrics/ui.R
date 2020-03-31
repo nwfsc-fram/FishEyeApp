@@ -67,6 +67,7 @@ function(request) {
                                      .ckbox2 .checkbox:first-child label,
                                      .ckbox2 .checkbox:nth-child(2) label,
                                      .ckbox2 .checkbox:nth-child(12) label{font-weight:bold;}
+                                     
                                      .statboxC .checkbox:nth-child(-n+14) label,
                                      .statboxF .checkbox:nth-child(-n+20) label,
                                      .statboxM .checkbox:nth-child(-n+12) label,
@@ -83,6 +84,12 @@ function(request) {
                                     .ckbox5 .radio:nth-child(4) label,
                                     .ckbox5 .radio:nth-child(5) label,
                                     .ckbox5 .radio:nth-child(6) label,
+                                    .ckbox6 .radio:nth-child(2) label,
+                                    .ckbox6 .radio:nth-child(3) label,
+                                    .ckbox6 .radio:nth-child(4) label,
+                                    .ckbox7 .checkbox:nth-child(2) label,
+                                    .ckbox7 .checkbox:nth-child(3) label,
+                                    .ckbox7 .checkbox:nth-child(4) label,
                                     .ckbox2 .radio:nth-child(-n+15) label,
                                     .ckbox3 .radio:nth-child(-n+15) label,
                                     .ckbox3 .radio:nth-child(3) label,

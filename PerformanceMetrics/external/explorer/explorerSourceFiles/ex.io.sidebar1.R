@@ -72,16 +72,31 @@ output$demSelect <- renderUI({
 })
 # Economics tab: metric checkbox/radiobutton set up ####
 # (doesn't need all of the customization as characteristics because all of the metrics have the same characteristics)
+# We added offloading revenue and custom processing revenue for FR so the metrics and layout will be different
 output$econSelect <- renderUI({
   if (input$LayoutSelect) {
-    tags$div(
-      class = "ckbox",
-      checkboxGroupInput("econSelect", NULL, choices = DatVars()$NRlist, selected = DatVars()$NRlist)
+    if (input$Sect_sel == 'FR') {
+      tags$div(
+        class = "ckbox7",
+        checkboxGroupInput("econSelect", NULL, choices = DatVars()$NRlist, selected = DatVars()$NRlist[1])
     )
+    } else {
+      tags$div(
+        class = "ckbox",
+        checkboxGroupInput("econSelect", NULL, choices = DatVars()$NRlist, selected = DatVars()$NRlist[1])
+      )
+    }
   } else {
-    tags$div(
-      class = "ckbox",
-      radioButtons("econSelect", NULL, choices = DatVars()$NRlist, selected = DatVars()$NRlist[1]))
+    if (input$Sect_sel == 'FR') {
+      tags$div(
+        class = "ckbox6",
+        radioButtons("econSelect", NULL, choices = DatVars()$NRlist, selected = DatVars()$NRlist[1]))
+    } else {
+      tags$div(
+        class = "ckbox",
+        radioButtons("econSelect", NULL, choices = DatVars()$NRlist, selected = DatVars()$NRlist[1])
+      )
+    }
   }
 })
 

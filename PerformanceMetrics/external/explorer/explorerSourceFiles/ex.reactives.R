@@ -130,7 +130,8 @@ DatVars <- reactive({
       dat,
       list(
         YEAR = 2004:currentyear,
-        NRlist = c(nrcomponents, 'Offload revenue *', 'Custom Processing Revenue *'),
+        NRlist = c('Revenue', 'Seafood sales revenue *', 'Offload revenue *', 'Custom Processing Revenue *',
+                   'Variable costs', 'Fixed costs', 'Variable cost net revenue', 'Total cost net revenue'),
         CATEGORY = c("Production activities" = "Fisheries", "Region", "Processor size"),
         whitingv = c(
           "All processors",
