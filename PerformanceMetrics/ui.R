@@ -137,6 +137,8 @@ function(request) {
                                       .ckbox3 .radio:nth-child(-n+16) label,
                                       .FRprod .checkbox:nth-child(4) label,
                                       .FRprod .checkbox:nth-child(3) label,
+                                      .FRprod2 .radio:nth-child(3) label,
+                                      .FRprod2 .radio:nth-child(4) label,
                                       .rbutton .radio:nth-child(-n+14) label,
                                       .rbutton2 .radio:nth-child(4) label,
                                       .rbutton2 .radio:nth-child(5) label{margin-left:17px;}

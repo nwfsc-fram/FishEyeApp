@@ -643,7 +643,7 @@ output$Variableselect <- renderUI({
             class = 'FRprod',
             checkboxGroupInput("VariableSelect", NULL, choices = prod.var, selected = "All production"))
           } else {
-          tags$div(class = 'rbutton2',
+          tags$div(class = 'FRprod2',
             radioButtons("VariableSelect", NULL, choices = prod.var, selected = "All production"))
         }
       }
