@@ -156,7 +156,7 @@ DatVars <- reactive({
           "Number of species sold",
           "Revenue diversification",
           "Proportion of production value from West Coast groundfish *",
-          'Number of non-whiting groundfish fillet operations *'
+          'Number of processors who fillet non-whiting groundfish *'
           ),
         ##Labor metrics##
         METRIC2 = c(
@@ -455,7 +455,12 @@ DatSubRaw <- reactive({
           VARIABLE %in% input$VariableSelect &
           whitingv %in% input$FishWhitingSelect
       )
-  } else {
+    if(metricstatselections()$metric == 'Number of processors') {
+      datSubforSector <- datSubforSector %>%
+        select(-N_TOTAL)
+    } else {
+      datSubforSector <- datSubforSector
+  }} else {
     datSubforSector <-
       subset(dat, 
         YEAR %in% seq(input$YearSelect[1], input$YearSelect[2], 1))
@@ -481,7 +486,7 @@ DatSubRaw <- reactive({
 DatSubTable <- reactive({
 
  datSub <- DatSubRaw()
-
+ 
  # table formatting for the data view tab
 
  datSub$sort <- 1:nrow(datSub)
