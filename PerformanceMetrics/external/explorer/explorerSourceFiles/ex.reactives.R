@@ -93,6 +93,7 @@ DatVars <- reactive({
         ##Other metrics###
         METRIC3 = c(
           "Days at sea", 
+          "Landed weight",
           "Fuel use per day", 
           "Speed while fishing",
           "Gini coefficient", 
@@ -102,6 +103,7 @@ DatVars <- reactive({
 ##When grouping by Metrics, don't include 'Share of landings by state'
         METRIC3a = c(
           "Days at sea", 
+          "Landed weight",
           "Fuel use per day", 
           "Speed while fishing"
         ),
