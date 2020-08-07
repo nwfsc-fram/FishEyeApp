@@ -457,7 +457,7 @@ DatSubRaw <- reactive({
       )
     if(metricstatselections()$metric == 'Number of processors') {
       datSubforSector <- datSubforSector %>%
-        select(-N_TOTAL)
+        select(-`Total number of processors`)
     } else {
       datSubforSector <- datSubforSector
   }} else {
