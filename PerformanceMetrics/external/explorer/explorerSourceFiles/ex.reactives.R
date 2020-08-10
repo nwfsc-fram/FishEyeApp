@@ -241,6 +241,8 @@ DatVars <- reactive({
           'Days fishing, processing, and steaming on the WC',
           'Days offloading on the WC',
           'Days steaming between the WC and AK', 
+          'Landed weight (Alaska)',
+          'Landed weight (West Coast)',
           'Fuel use per day',
           "Gini coefficient",
           "Seasonality"
@@ -251,6 +253,8 @@ DatVars <- reactive({
           'Days fishing, processing, and steaming on the WC',
           'Days offloading on the WC',
           'Days steaming between the WC and AK', 
+          'Landed weight (Alaska)',
+          'Landed weight (West Coast)',
           'Fuel use per day',
           'Gini coefficient',
           'Seasonality'
@@ -329,6 +333,8 @@ DatVars <- reactive({
         'Days fishing, processing, and steaming on the WC',
         'Days offloading on the WC',
         'Days steaming between the WC and AK',
+        'Landed weight (Alaska)',
+        'Landed weight (West Coast)',
         'Fuel use per day',
         "Gini coefficient",
         "Seasonality"
@@ -339,6 +345,8 @@ DatVars <- reactive({
         'Days fishing, processing, and steaming on the WC',
         'Days offloading on the WC',
         'Days steaming between the WC and AK',
+        'Landed weight (Alaska)',
+        'Landed weight (West Coast)',
         'Fuel use per day',
         'Gini coefficient',
         'Seasonality'
