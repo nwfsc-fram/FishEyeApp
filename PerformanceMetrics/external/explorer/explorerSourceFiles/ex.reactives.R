@@ -131,7 +131,8 @@ DatVars <- reactive({
       dat,
       list(
         YEAR = 2004:currentyear,
-        NRlist = nrcomponents,
+        NRlist = c('Revenue', 'Seafood sales revenue', 'Offload revenue', 'Custom processing revenue',
+                   'Variable costs', 'Fixed costs', 'Variable cost net revenue', 'Total cost net revenue'),
         CATEGORY = c("Production activities" = "Fisheries", "Region", "Processor size"),
         whitingv = c(
           "All processors",
@@ -152,32 +153,53 @@ DatVars <- reactive({
         ##Processor characteristic metrics##
         METRIC1 =  c(
           'Number of processors',
-          "Number of species purchased",
+          "Number of species processed",
+          "Number of species sold",
+          "Revenue diversification",
           "Proportion of production value from West Coast groundfish",
-          "Revenue diversification"
+          'Number of processors who fillet non-whiting groundfish'
           ),
         ##Labor metrics##
         METRIC2 = c(
-          'Monthly average number of workers',
-          'Max number of workers',
-          "Hourly compensation"
+          'Average number of production employees per month',
+          'Hourly compensation per production employee',
+          'Number of non-production employees',
+          'Max number of production employees per month',
+          'Annual compensation per non-production employee',
+          #'Ratio of Wage to Value Added in Production',
+          'Ratio of Wage to Value Added in Production Including Custom Processing'
         ),
         ##Other metrics##
         METRIC3 = c(
-          "Gini coefficient"),
+          "Gini coefficient",
+          'Percentage of purchases from non-vessel sources',
+          'Percentage of production processed',
+          'Proportion of Purchase Weight from West Coast groundfish purchased by Catch Share Processors',
+          'Proportion of Purchase Value from West Coast groundfish purchased by Catch Share Processors'),
         METRIC3a = c(
-          "Gini coefficient"),
+          "Gini coefficient",
+          'Percentage of purchases from non-vessel sources',
+          'Percentage of production processed',
+          'Proportion of Purchase Weight from West Coast groundfish purchased by Catch Share Processors',
+          'Proportion of Purchase Value from West Coast groundfish purchased by Catch Share Processors'),
         COSTS = c(
-      "All variable costs",
+      'All variable costs',
           'Fish purchases',
-          'Freight',
+          'Additives',
+          'Production Supplies',
+          'Freight & trucking',
           'Labor',
           'Monitoring',
+          'Taxes',
+          'Offloading',
           'Off-site freezing & storage',
-          'Packing materials', 
-          'Utilities',
+          'Packing materials',
+          'Electricity',
+          'Gas',
+          'Waste & Byproduct Disposal',
+          'Water',
           'Other variable costs',
-      "All fixed costs",
+      'All fixed costs',
           'Buildings',
           'Equipment',
           'Other fixed costs')
@@ -442,7 +464,12 @@ DatSubRaw <- reactive({
           VARIABLE %in% input$VariableSelect &
           whitingv %in% input$FishWhitingSelect
       )
-  } else {
+    if(metricstatselections()$metric == 'Number of processors') {
+      datSubforSector <- datSubforSector %>%
+        select(-`Total number of processors`)
+    } else {
+      datSubforSector <- datSubforSector
+  }} else {
     datSubforSector <-
       subset(dat, 
         YEAR %in% seq(input$YearSelect[1], input$YearSelect[2], 1))
@@ -468,7 +495,7 @@ DatSubRaw <- reactive({
 DatSubTable <- reactive({
 
  datSub <- DatSubRaw()
-
+ 
  # table formatting for the data view tab
 
  datSub$sort <- 1:nrow(datSub)

@@ -80,16 +80,31 @@ output$demSelect <- renderUI({
 })
 # Economics tab: metric checkbox/radiobutton set up ####
 # (doesn't need all of the customization as characteristics because all of the metrics have the same characteristics)
+# We added offloading revenue and custom processing revenue for FR so the metrics and layout will be different
 output$econSelect <- renderUI({
   if (input$LayoutSelect) {
-    tags$div(
-      class = "ckbox",
-      checkboxGroupInput("econSelect", NULL, choices = DatVars()$NRlist, selected = DatVars()$NRlist)
+    if (input$Sect_sel == 'FR') {
+      tags$div(
+        class = "ckbox7",
+        checkboxGroupInput("econSelect", NULL, choices = DatVars()$NRlist, selected = DatVars()$NRlist[1])
     )
+    } else {
+      tags$div(
+        class = "ckbox",
+        checkboxGroupInput("econSelect", NULL, choices = DatVars()$NRlist, selected = DatVars()$NRlist[1])
+      )
+    }
   } else {
-    tags$div(
-      class = "ckbox",
-      radioButtons("econSelect", NULL, choices = DatVars()$NRlist, selected = DatVars()$NRlist[1]))
+    if (input$Sect_sel == 'FR') {
+      tags$div(
+        class = "ckbox6",
+        radioButtons("econSelect", NULL, choices = DatVars()$NRlist, selected = DatVars()$NRlist[1]))
+    } else {
+      tags$div(
+        class = "ckbox",
+        radioButtons("econSelect", NULL, choices = DatVars()$NRlist, selected = DatVars()$NRlist[1])
+      )
+    }
   }
 })
 
@@ -119,7 +134,7 @@ output$crewSelect <- renderUI({
         tags$div(
           class = 'ckbox',
           checkboxGroupInput("crewSelect", NULL, choices = c(DatVars()$METRIC2), 
-            selected = 'Monthly average number of workers'))
+            selected = 'Average number of production employees per month'))
   }}
   else {
     if (input$Sect_sel == 'CV') {
@@ -137,7 +152,7 @@ output$crewSelect <- renderUI({
     } else {
       tags$div(
         class = "ckbox",
-        radioButtons("crewSelect", NULL, choices = c(DatVars()$METRIC2), selected = "Monthly average number of workers"))
+        radioButtons("crewSelect", NULL, choices = c(DatVars()$METRIC2), selected = 'Average number of production employees per month'))
     }
   }
 })
@@ -647,16 +662,41 @@ output$Variableselect <- renderUI({
         }
       } else  {
         if (!input$LayoutSelect) {
+          if (input$Ind_sel == 'Other') {
+          if (input$otherSelect %in% c('Proportion of Purchase Weight from West Coast groundfish purchased by Catch Share Processors',
+                                      'Proportion of Purchase Value from West Coast groundfish purchased by Catch Share Processors')) {
+            tags$div(
+              class = 'FRprod',
+              checkboxGroupInput("VariableSelect", NULL, choices = prod.var, selected = "Groundfish production"))
+          } else {
           tags$div(
             class = 'FRprod',
             checkboxGroupInput("VariableSelect", NULL, choices = prod.var, selected = "All production"))
+          }
           } else {
-          tags$div(class = 'FRprod2',
-            radioButtons("VariableSelect", NULL, choices = prod.var, selected = "All production"))
-        }
-      }
+            tags$div(
+              class = 'FRprod',
+              checkboxGroupInput("VariableSelect", NULL, choices = prod.var, selected = "All production")) 
+          }
+          } 
+        else {
+          if (input$Ind_sel == 'Other') {
+          if (input$otherSelect %in% c('Proportion of Purchase Weight from West Coast groundfish purchased by Catch Share Processors *',
+                                       'Proportion of Purchase Value from West Coast groundfish purchased by Catch Share Processors *')) {
+          tags$div(class = 'rbutton2',
+            radioButtons("VariableSelect", NULL, choices = prod.var, selected = "Groundfish production"))
+          } else {
+          tags$div(class = 'rbutton2',
+                   radioButtons("VariableSelect", NULL, choices = prod.var, selected = "All production"))
+          }
+          } else {
+            tags$div(class = 'rbutton2',
+                     radioButtons("VariableSelect", NULL, choices = prod.var, selected = "All production"))
+          }
     }
   }
+  }
+    }
   }) 
 
 # Select inclAK ####
