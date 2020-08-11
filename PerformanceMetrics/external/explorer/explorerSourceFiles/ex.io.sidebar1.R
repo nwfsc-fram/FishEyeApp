@@ -5,7 +5,7 @@
 
 # Defines the name of the tab, the names of the lists of metrics, and the names of the lists of the statistics
 output$metrics <- renderUI({
-  if (input$Sect_sel != "FR") {
+  if (input$Sect_sel == 'CV') {
   tabsetPanel(
     tabPanel('Vessel characteristics', uiOutput("demSelect"),   uiOutput("demStats")),
     tabPanel("Economic", uiOutput("econSelect"),  uiOutput("econStats")),
@@ -14,7 +14,7 @@ output$metrics <- renderUI({
     tabPanel("Impacts", uiOutput("impactSelect"), uiOutput("impactStats")),
     tabPanel("Other",    uiOutput("otherSelect"), uiOutput("otherStats")),
     id = "Ind_sel", type = c("tabs"))
-  } else {
+  } else if (input$Sect_sel == 'FR') {
     tabsetPanel(
     tabPanel('Processor characteristics', uiOutput("demSelect"),   uiOutput("demStats")),
     tabPanel("Economic", uiOutput("econSelect"),  uiOutput("econStats")),
@@ -22,6 +22,14 @@ output$metrics <- renderUI({
     tabPanel("Cost",     uiOutput("costSelect"),  uiOutput("costStats")),
     tabPanel("Other",    uiOutput("otherSelect"), uiOutput("otherStats")),
     id = "Ind_sel", type = c("tabs"))
+  } else {
+    tabsetPanel(
+      tabPanel('Vessel characteristics', uiOutput("demSelect"),   uiOutput("demStats")),
+      tabPanel("Economic", uiOutput("econSelect"),  uiOutput("econStats")),
+      tabPanel("Labor",    uiOutput("crewSelect"),  uiOutput("crewStats")),
+      tabPanel("Cost",     uiOutput("costSelect"),  uiOutput("costStats")),
+      tabPanel("Other",    uiOutput("otherSelect"), uiOutput("otherStats")),
+      id = "Ind_sel", type = c("tabs"))
   }
 })
 
