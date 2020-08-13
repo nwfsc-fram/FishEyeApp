@@ -74,6 +74,19 @@ output$BlogUpdates <- renderUI({
   withTags(
   div(style = "margin-top:0; padding-top:0;background-color:#F8F8E9;",
            h3("Updates"),
+      # New FR metrics
+      div( class='date', style='height:45px;width:30px; font-family:Arial; font-weight:bold;background-color:#ffffff;text-align:center; border-top:1px solid #c0c0c0;
+       border-left:1px solid #c0c0c0;border-right:1px solid #c0c0c0;position:absolute;z-index:3;line-height: 13px;',
+           # step 1: update date
+           HTML("<span class='month' style='text-transform:uppercase;font-size:11px;'>Aug</span><br />
+            <span class='day' style='font-size:16px;'>13</span><br />
+            <span class='year' style='font-size:11px;line-height: 10px;'>2020</span>")
+      ),
+      # step 2: update title
+      p(HTML("<span style='margin-left:60px;font-size:18px;font-weight:bold'>NEW metrics for first receivers and shorebased processors!</span>")), 
+      # step 3: update message
+      p(br(),"The first receiver and shorebased processors sector now includes new metrics including more detailed cost categories, wages for production and non-production employees, and more!"),
+      hr(),
       # 2018 data for cv, ms, cp
       div( class='date', style='height:45px;width:30px; font-family:Arial; font-weight:bold;background-color:#ffffff;text-align:center; border-top:1px solid #c0c0c0;
        border-left:1px solid #c0c0c0;border-right:1px solid #c0c0c0;position:absolute;z-index:3;line-height: 13px;',
