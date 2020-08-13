@@ -83,7 +83,7 @@ output$BlogUpdates <- renderUI({
             <span class='year' style='font-size:11px;line-height: 10px;'>2020</span>")
       ),
       # step 2: update title
-      p(HTML("<span style='margin-left:60px;font-size:18px;font-weight:bold'>NEW metrics for first receivers and shorebased processors!</span>")), 
+      p(HTML("<span style='margin-left:60px;font-size:18px;font-weight:bold'>NEW metrics!</span>")), 
       # step 3: update message
       p(br(),"The first receiver and shorebased processors sector now includes new metrics including more detailed cost categories, wages for production and non-production employees, and more!"),
       hr(),
