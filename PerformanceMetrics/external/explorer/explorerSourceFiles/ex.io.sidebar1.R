@@ -474,7 +474,7 @@ vsssize <- c(
   "Small vessel (<= 60 ft)")
 
 # state
-vss.st <- c('Washington','Oregon','California')
+vss.st <- c('Washington & Alaska','Oregon','California')
 
 # port
 vss.port <- c('Puget Sound',
