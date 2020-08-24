@@ -661,42 +661,11 @@ output$Variableselect <- renderUI({
               radioButtons("VariableSelect", NULL, choices = c("Large", 'Medium', 'Small'), selected = "Large")))
         }
       } else  {
-        if (!input$LayoutSelect) {
-          if (input$Ind_sel == 'Other') {
-          if (input$otherSelect %in% c('Proportion of Purchase Weight from West Coast groundfish purchased by Catch Share Processors',
-                                      'Proportion of Purchase Value from West Coast groundfish purchased by Catch Share Processors')) {
-            tags$div(
-              class = 'FRprod',
-              checkboxGroupInput("VariableSelect", NULL, choices = prod.var, selected = "Groundfish production"))
-          } else {
-          tags$div(
-            class = 'FRprod',
-            checkboxGroupInput("VariableSelect", NULL, choices = prod.var, selected = "All production"))
-          }
-          } else {
-            tags$div(
-              class = 'FRprod',
-              checkboxGroupInput("VariableSelect", NULL, choices = prod.var, selected = "All production")) 
-          }
-          } 
-        else {
-          if (input$Ind_sel == 'Other') {
-          if (input$otherSelect %in% c('Proportion of Purchase Weight from West Coast groundfish purchased by Catch Share Processors *',
-                                       'Proportion of Purchase Value from West Coast groundfish purchased by Catch Share Processors *')) {
-          tags$div(class = 'rbutton2',
-            radioButtons("VariableSelect", NULL, choices = prod.var, selected = "Groundfish production"))
-          } else {
-          tags$div(class = 'rbutton2',
-                   radioButtons("VariableSelect", NULL, choices = prod.var, selected = "All production"))
-          }
-          } else {
             tags$div(class = 'rbutton2',
                      radioButtons("VariableSelect", NULL, choices = prod.var, selected = "All production"))
           }
     }
   }
-  }
-    }
   }) 
 
 # Select inclAK ####
