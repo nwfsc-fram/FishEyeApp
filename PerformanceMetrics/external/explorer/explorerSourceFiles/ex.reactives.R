@@ -173,15 +173,11 @@ DatVars <- reactive({
         METRIC3 = c(
           "Gini coefficient",
           'Percentage of purchases from non-vessel sources',
-          'Percentage of production processed',
-          'Proportion of Purchase Weight from West Coast groundfish purchased by Catch Share Processors',
-          'Proportion of Purchase Value from West Coast groundfish purchased by Catch Share Processors'),
+          'Percentage of production processed'),
         METRIC3a = c(
           "Gini coefficient",
           'Percentage of purchases from non-vessel sources',
-          'Percentage of production processed',
-          'Proportion of Purchase Weight from West Coast groundfish purchased by Catch Share Processors',
-          'Proportion of Purchase Value from West Coast groundfish purchased by Catch Share Processors'),
+          'Percentage of production processed'),
         COSTS = c(
       'All variable costs',
           'Fish purchases',
