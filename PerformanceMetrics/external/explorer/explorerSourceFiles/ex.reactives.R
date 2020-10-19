@@ -5,10 +5,19 @@
 
 # DatMain: data load ####
 DatMain <- reactive({
-load("data/CVperfmetrics.RData")
-load("data/Mperfmetrics.RData")
-load("data/CPperfmetrics.RData")
-load("data/FRperfmetrics.RData")
+load("data/CVperfmetrics.RData") %>% 
+    data.table()
+load("data/Mperfmetrics.RData") %>%
+  data.table()
+load("data/CPperfmetrics.RData") %>%
+  data.table()
+load("data/FRperfmetrics.RData") %>%
+  data.table()
+
+load("data/datvars_cv.RData")
+load("data/datvars_fr.RData")
+load("data/datvars_ms.RData")
+load("data/datvars_cp.RData")
   # data load moved to serverhead
   # data is loaded from serverHead.R load call
   if (input$Sect_sel == "CV") {
@@ -37,354 +46,19 @@ DatVars <- reactive({
   outputOptions(output, "FishAkselect", suspendWhenHidden = FALSE)
   
   # create a list of variable names used in the sidebar inputs
+  # The lists are creating elsewhere (datvars.R) and loaded/called here
   dat <- DatMain()
   
   currentyear = 2019
   
   if (input$Sect_sel == "CV") {
-    datVars <- with(
-      dat,
-      list(
-        YEAR = 2004:currentyear,
-        NRlist = nrcomponents,
-        CATEGORY = c(
-          "Fisheries",
-          "Homeport",
-          "State of homeport" = "State",
-          "Vessel length class"
-        ),
-        inclAK = unique(inclAK),
-        whitingv = c("All vessels", "Non-whiting vessels", "Whiting vessels"),
-        STAT =  c(
-          "Mean per vessel",
-          "Mean per vessel/day",
-          "Mean per vessel/metric ton caught",
-          "Mean per vessel/dollar revenue",
-          "Median per vessel",
-          "Median per vessel/day",
-          "Median per vessel/metric ton caught",
-          "Median per vessel/dollar revenue",
-          "Fleet-wide total",
-          "Fleet-wide average/day",
-          "Fleet-wide average/metric ton caught",
-          "Fleet-wide average/dollar revenue"
-        ),
-        ##Vessel characteristics metrics##
-        METRIC1 =  c(
-          'Number of vessels',
-          "Vessel length", 
-          "Vessel replacement value",
-          "Vessel market value",
-          "Vessel horsepower",
-          "Vessel fuel capacity",
-          "Number of fisheries", 
-          "Proportion of revenue from catch share fishery" = "Proportion of revenue from CS fishery", 
-          "Revenue diversification"
-          ), 
-        ##Labor metrics###
-        METRIC2 = c(
-          "Number of crew", 
-          "Number of crew-days",
-          "Crew wage per year",
-          "Crew wage per day",
-          "Crew wage per dollar revenue",
-          "Revenue per crew-day"
-          ),
-        ##Other metrics###
-        METRIC3 = c(
-          "Days at sea", 
-          "Landed weight",
-          "Fuel use per day", 
-          "Speed while fishing",
-          "Gini coefficient", 
-          "Share of landings by state",
-          "Seasonality"
-        ),
-##When grouping by Metrics, don't include 'Share of landings by state'
-        METRIC3a = c(
-          "Days at sea", 
-          "Landed weight",
-          "Fuel use per day", 
-          "Speed while fishing"
-        ),
-        COSTS = c(
-          'All variable costs',
-            'Buyback fees',
-            'Captain',
-            'Cost recovery fees',
-            'Crew',
-            'Fuel',
-            'Observers/EM', 
-            'Other variable costs', 
-          'All fixed costs',
-            'Fishing gear',
-            'On-board equipment',
-            'Other fixed costs'),
-        IMPACT = c(
-          'Income impacts',
-          'Employment impacts'
-        )
-        )
-      )
+    datVars <- datVars_cv
   } else if (input$Sect_sel == "FR") {
-    datVars <- with(
-      dat,
-      list(
-        YEAR = 2004:currentyear,
-        NRlist = c('Revenue', 'Seafood sales revenue', 'Offload revenue', 'Custom processing and other revenue',
-                   'Variable costs', 'Fixed costs', 'Variable cost net revenue', 'Total cost net revenue'),
-        CATEGORY = c("Production activities" = "Fisheries", "Region", "Processor size"),
-        whitingv = c(
-          "All processors",
-          "Whiting processors",
-          "Non-whiting processors"
-        ),
-        STAT =  c(
-          "Mean per processor",
-          "Mean per processor/metric ton produced",
-          "Mean per processor/dollar of revenue",
-          "Median per processor",
-          "Median per processor/metric ton produced",
-          "Median per processor/dollar of revenue",
-          "Industry-wide total",
-          "Industry-wide average/metric ton produced",
-          "Industry-wide average/dollar of revenue"
-        ),
-        ##Processor characteristic metrics##
-        METRIC1 =  c(
-          'Number of processors',
-          "Number of species processed",
-          "Number of species sold",
-          "Revenue diversification",
-          "Proportion of production value from West Coast groundfish",
-          'Number of processors who fillet non-whiting groundfish'
-          ),
-        ##Labor metrics##
-        METRIC2 = c(
-          'Average number of production employees per month',
-          'Hourly compensation per production employee',
-          'Number of non-production employees',
-          'Max number of production employees per month',
-          'Annual compensation per non-production employee',
-          #'Ratio of Wage to Value Added in Production',
-          'Ratio of Wage to Value Added in Production Including Custom Processing'
-        ),
-        ##Other metrics##
-        METRIC3 = c(
-          "Gini coefficient",
-          'Percentage of purchases from non-vessel sources',
-          'Percentage of production processed'),
-        METRIC3a = c(
-          "Gini coefficient",
-          'Percentage of purchases from non-vessel sources',
-          'Percentage of production processed'),
-        COSTS = c(
-      'All variable costs',
-          'Fish purchases',
-          'Additives',
-          'Production Supplies',
-          'Freight & trucking',
-          'Labor',
-          'Monitoring',
-          'Taxes',
-          'Offloading',
-          'Off-site freezing & storage',
-          'Packing materials',
-          'Electricity',
-          'Gas',
-          'Waste & Byproduct Disposal',
-          'Water',
-          'Other variable costs',
-      'All fixed costs',
-          'Buildings',
-          'Equipment',
-          'Other fixed costs')
-      )
-    )
+    datVars <- datVars_fr
   } else if (input$Sect_sel == "M") {
-    datVars <- with(
-      dat,
-      list(
-        YEAR = 2004:currentyear,
-        NRlist = nrcomponents,
-        CATEGORY = "Fisheries",
-        inclAK = unique(inclAK),
-        whitingv = "Whiting vessels",
-        STAT =  c(
-          "Mean per vessel",
-          "Mean per vessel/day",
-          "Mean per vessel/metric ton purchased",
-          "Mean per vessel/metric ton produced",
-          "Mean per vessel/dollar of revenue",
-          "Median per vessel",
-          "Median per vessel/day",
-          "Median per vessel/metric ton purchased",
-          "Median per vessel/metric ton produced",
-          "Median per vessel/dollar of revenue",
-          "Fleet-wide total",
-          'Fleet-wide average/day',
-          'Fleet-wide average/metric ton purchased',
-          'Fleet-wide average/metric ton produced',
-          'Fleet-wide average/dollar of revenue'
-        ),
-        ##Vessel characteristic metrics##
-        METRIC1 =  c(
-          'Number of vessels',
-          "Vessel length",
-          'Vessel replacement value',
-          'Vessel market value',
-          'Vessel horsepower',
-          'Vessel fuel capacity',
-          "Proportion of landings from catch share fishery" =
-          "Proportion of landings from CS fishery"
-          ),
-        ##processing crew metrics##
-        METRIC2 = c(
-          'Number of processing crew',
-          'Number of processing crew-days',
-          'Processing crew wage per year',
-          'Processing crew wage per day',
-          'Processing crew wage per dollar revenue'),
-        ##non-processing crew metrics
-        METRIC2a = c(
-          'Number of non-processing crew',
-          'Number of non-processing crew-days',
-          'Non-processing crew wage per year',
-          'Non-processing crew wage per day',
-          'Non-processing crew wage per dollar revenue'
-        ),
-        ##Other metrics##
-        METRIC3 = c(
-          'Days fishing, processing, and steaming in AK',
-          'Days fishing, processing, and steaming on the WC',
-          'Days offloading on the WC',
-          'Days steaming between the WC and AK', 
-          'Purchase weight (Alaska)',
-          'Purchase weight (West Coast)',
-          'Fuel use per day',
-          "Gini coefficient",
-          "Seasonality"
-        ),
-        ##When grouping by Metrics, don't include 'Seasonsality'
-        METRIC3a = c(
-          'Days fishing, processing, and steaming in AK',
-          'Days fishing, processing, and steaming on the WC',
-          'Days offloading on the WC',
-          'Days steaming between the WC and AK', 
-          'Purchase weight (Alaska)',
-          'Purchase weight (West Coast)',
-          'Fuel use per day',
-          'Gini coefficient',
-          'Seasonality'
-        ),
-        COSTS = c(
-        "All variable costs",
-          "Fish purchases",
-          "Fuel",
-          "Non-processing crew",
-          "Observers",
-          "Processing crew",
-          "Other variable costs",
-        "All fixed costs",
-          "Fishing gear",
-          "On-board equipment",
-          "Processing equipment",
-          'Other fixed costs'),
-        IMPACT = c("")
-        )
-      )
+    datVars <- datVars_ms
 } else if (input$Sect_sel == "CP") {
-  datVars <- with(
-    dat,
-    list(
-      YEAR = 2004:currentyear,
-      NRlist = nrcomponents,
-      CATEGORY = "Fisheries",
-      inclAK = unique(inclAK),
-      whitingv = "Whiting vessels",
-      STAT =  c(
-        "Mean per vessel",
-        "Mean per vessel/day",
-        "Mean per vessel/metric ton produced",
-        "Mean per vessel/metric ton caught",
-        "Mean per vessel/dollar of revenue",
-        "Median per vessel",
-        "Median per vessel/day",
-        "Median per vessel/metric ton produced",
-        "Median per vessel/metric ton caught",
-        "Median per vessel/dollar of revenue",
-        "Fleet-wide total",
-        'Fleet-wide average/day',
-        'Fleet-wide average/metric ton produced',
-        'Fleet-wide average/metric ton caught',
-        'Fleet-wide average/dollar of revenue'
-      ),
-      ##Vessel characteristic metrics##
-      METRIC1 =  c(
-        'Number of vessels',
-        "Vessel length",
-        'Vessel replacement value',
-        'Vessel market value',
-        'Vessel horsepower',
-        'Vessel fuel capacity',
-        "Proportion of landings from catch share fishery" =
-          "Proportion of landings from CS fishery"
-      ),
-      ##processing crew metrics##
-      METRIC2 = c(
-        'Number of processing crew',
-        'Number of processing crew-days',
-        'Processing crew wage per year',
-        'Processing crew wage per day',
-        'Processing crew wage per dollar revenue'),
-      ##non-processing crew metrics
-      METRIC2a = c(
-        'Number of non-processing crew',
-        'Number of non-processing crew-days',
-        'Non-processing crew wage per year',
-        'Non-processing crew wage per day',
-        'Non-processing crew wage per dollar revenue'
-      ),
-      ##Other metrics##
-      METRIC3 = c(
-        'Days fishing, processing, and steaming in AK',
-        'Days fishing, processing, and steaming on the WC',
-        'Days offloading on the WC',
-        'Days steaming between the WC and AK',
-        'Catch weight (Alaska)',
-        'Catch weight (West Coast)',
-        'Fuel use per day',
-        "Gini coefficient",
-        "Seasonality"
-      ),
-      ##When grouping by Metrics, don't include 'Seasonsality'
-      METRIC3a = c(
-        'Days fishing, processing, and steaming in AK',
-        'Days fishing, processing, and steaming on the WC',
-        'Days offloading on the WC',
-        'Days steaming between the WC and AK',
-        'Catch weight (Alaska)',
-        'Catch weight (West Coast)',
-        'Fuel use per day',
-        'Gini coefficient',
-        'Seasonality'
-      ),
-      COSTS = c(
-      "All variable costs",
-        'Cost recovery fees', 
-        "Fuel",
-        "Non-processing crew",
-        "Observers",
-        "Processing crew",
-        "Other variable costs",
-      "All fixed costs",
-        "Fishing gear",
-        "On-board equipment",
-        "Processing equipment",
-        'Other fixed costs'),
-      IMPACT = c("")
-    )
-  )
+    datVars <- datVars_cp
 }
 })
 
@@ -428,7 +102,9 @@ metricstatselections <- reactive({
 
 akselections <- reactive({
   if(input$Sect_sel == 'CV') {
-    if(any(metricstatselections()$metric %in% c('Revenue diversification', 'Proportion of revenue from CS fishery', 'Number of fisheries'))) {
+    if(any(metricstatselections()$metric %in% c('Revenue diversification', 
+                                                'Proportion of revenue from CS fishery', 
+                                                'Number of fisheries'))) {
       if(!input$LayoutSelect) {
     return(ifelse(input$FishAkSelect == TRUE, 'YES', 'NO'))
   } else return('')
@@ -453,37 +129,32 @@ DatSubRaw <- reactive({
 
   # data filter differs whether it is CV/FR module or CP/MS module
   if (input$Sect_sel == "CV" | input$Sect_sel == "FR") {
-    datSubforSector <-
-      subset(dat,
-        YEAR %in% seq(input$YearSelect[1], input$YearSelect[2], 1) &
-          CATEGORY == input$CategorySelect &
-          VARIABLE %in% input$VariableSelect &
-          whitingv %in% input$FishWhitingSelect
-      )
+    datSubforSector <- subset(dat, YEAR %in% seq(input$YearSelect[1], input$YearSelect[2], 1) &
+                              CATEGORY == input$CategorySelect &
+                              VARIABLE %in% input$VariableSelect &
+                              whitingv %in% input$FishWhitingSelect)
     if(metricstatselections()$metric == 'Number of processors') {
       datSubforSector <- datSubforSector %>%
         select(-`Total number of processors`)
     } else {
       datSubforSector <- datSubforSector
   }} else {
-    datSubforSector <-
-      subset(dat, 
-        YEAR %in% seq(input$YearSelect[1], input$YearSelect[2], 1))
+    datSubforSector <- subset(dat,YEAR %in% seq(input$YearSelect[1], input$YearSelect[2], 1))
   }
 #if(input$demSelect == 'Vessel length') browser()
   
- datSubMetric <- subset(datSubforSector,
-   METRIC %in% metricstatselections()$metric)
+ datSubMetric <- subset(datSubforSector, METRIC %in% metricstatselections()$metric)
+   
  
  # stat <- ifelse(any(datSubMetric$STAT %in% metricstatselections()$stat), 
  #     metricstatselections()$stat,
  #     as.character(subset(datSubMetric, METRIC %in% metricstatselections()$metric, STAT)[2,1]))
  
   # subset the sector specific data according to all of the fisheye toggles
- datSub <- subset(datSubMetric,
-   STAT   %in% metricstatselections()$stat &
-   inclAK %in% akselections() &
-   CS     %in% csselections())
+ datSub <- subset(datSubMetric, STAT   %in% metricstatselections()$stat &
+                              inclAK %in% akselections() &
+                              CS     %in% csselections())
+
 
 })
 

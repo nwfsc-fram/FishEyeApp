@@ -7,6 +7,7 @@ library(ggplot2)
 library(grid)
 library(dplyr)
 library(scales)
+library(data.table)
 
 #options(error=browser) # debugging
 source("external/serverHead.R")
