@@ -14,10 +14,7 @@ load("data/CPperfmetrics.RData") %>%
 load("data/FRperfmetrics.RData") %>%
   data.table()
 
-load("data/datvars_cv.RData")
-load("data/datvars_fr.RData")
-load("data/datvars_ms.RData")
-load("data/datvars_cp.RData")
+
   # data load moved to serverhead
   # data is loaded from serverHead.R load call
   if (input$Sect_sel == "CV") {
@@ -47,6 +44,10 @@ DatVars <- reactive({
   
   # create a list of variable names used in the sidebar inputs
   # The lists are creating elsewhere (datvars.R) and loaded/called here
+  load("data/datvars_cv.RData")
+  load("data/datvars_fr.RData")
+  load("data/datvars_ms.RData")
+  load("data/datvars_cp.RData")
   dat <- DatMain()
   
   currentyear = 2018
