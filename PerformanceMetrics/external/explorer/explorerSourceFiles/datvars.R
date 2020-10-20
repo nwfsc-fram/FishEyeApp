@@ -1,13 +1,10 @@
-load("PerformanceMetrics/data/CVperfmetrics.RData") %>% 
-  data.table()
-load("PerformanceMetrics/data/Mperfmetrics.RData") %>%
-  data.table()
-load("PerformanceMetrics/data/CPperfmetrics.RData") %>%
-  data.table()
-load("PerformanceMetrics/data/FRperfmetrics.RData") %>%
-  data.table()
+load("PerformanceMetrics/data/CVperfmetrics.RData") 
+load("PerformanceMetrics/data/Mperfmetrics.RData") 
+load("PerformanceMetrics/data/CPperfmetrics.RData")
+load("PerformanceMetrics/data/FRperfmetrics.RData") 
 
 currentyear <- 2019
+currentyearFR <- 2018
 nrcomponents <- c('Revenue', 'Variable costs', 'Fixed costs', 'Variable cost net revenue', 'Total cost net revenue')
 
 # CV 
@@ -102,7 +99,7 @@ save(datVars_cv, file = "PerformanceMetrics/data/datvars_cv.RData")
   datVars_fr <- with(
     FRperfmetrics,
     list(
-      YEAR = 2004:currentyear,
+      YEAR = 2004:currentyearFR,
       NRlist = c('Revenue', 'Seafood sales revenue', 'Offload revenue', 'Custom processing and other revenue',
                  'Variable costs', 'Fixed costs', 'Variable cost net revenue', 'Total cost net revenue'),
       CATEGORY = c("Production activities" = "Fisheries", "Region", "Processor size"),
