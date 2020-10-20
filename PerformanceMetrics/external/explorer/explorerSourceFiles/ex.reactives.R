@@ -5,31 +5,33 @@
 
 # DatMain: data load ####
 DatMain <- reactive({
-load("data/CVperfmetrics.RData") %>% 
-    data.table()
-load("data/Mperfmetrics.RData") %>%
-  data.table()
-load("data/CPperfmetrics.RData") %>%
-  data.table()
-load("data/FRperfmetrics.RData") %>%
-  data.table()
+load("data/CVperfmetrics.RData") 
+load("data/Mperfmetrics.RData") 
+load("data/CPperfmetrics.RData") 
+load("data/FRperfmetrics.RData") 
 
 
   # data load moved to serverhead
   # data is loaded from serverHead.R load call
   if (input$Sect_sel == "CV") {
-    dat <- CVperfmetrics
+    dat <- CVperfmetrics %>%
+      data.table()
   } else if (input$Sect_sel == "M") {
-    dat <- Mperfmetrics
+    dat <- Mperfmetrics %>%
+      data.table()
   } else if (input$Sect_sel == "CP") {
-    dat <- CPperfmetrics
+    dat <- CPperfmetrics %>%
+      data.table()
   } else if (input$Sect_sel == "FR") {
-    dat <- FRperfmetrics
+    dat <- FRperfmetrics %>%
+      data.table()
   }
 
 })
 
-nrcomponents <- c('Revenue', 'Variable costs', 'Fixed costs', 'Variable cost net revenue', 'Total cost net revenue')
+nrcomponents <- c('Revenue', 'Variable costs', 
+                  'Fixed costs', 'Variable cost net revenue', 
+                  'Total cost net revenue')
 
 
 # DatVars: sidebar inputs ####
@@ -48,6 +50,7 @@ DatVars <- reactive({
   load("data/datvars_fr.RData")
   load("data/datvars_ms.RData")
   load("data/datvars_cp.RData")
+  
   dat <- DatMain()
   
   currentyear = 2018
@@ -130,21 +133,20 @@ DatSubRaw <- reactive({
 
   # data filter differs whether it is CV/FR module or CP/MS module
   if (input$Sect_sel == "CV" | input$Sect_sel == "FR") {
-    datSubforSector <- subset(dat, YEAR %in% seq(input$YearSelect[1], input$YearSelect[2], 1) &
+    datSubforSector <- dat[YEAR %in% seq(input$YearSelect[1], input$YearSelect[2], 1) &
                               CATEGORY == input$CategorySelect &
                               VARIABLE %in% input$VariableSelect &
-                              whitingv %in% input$FishWhitingSelect)
+                              whitingv %in% input$FishWhitingSelect]
     if(metricstatselections()$metric == 'Number of processors') {
-      datSubforSector <- datSubforSector %>%
-        select(-`Total number of processors`)
+      datSubforSector <- datSubforSector[, !`Total number of processors`]
     } else {
       datSubforSector <- datSubforSector
   }} else {
-    datSubforSector <- subset(dat,YEAR %in% seq(input$YearSelect[1], input$YearSelect[2], 1))
+    datSubforSector <- dat[YEAR %in% seq(input$YearSelect[1], input$YearSelect[2], 1)]
   }
 #if(input$demSelect == 'Vessel length') browser()
   
- datSubMetric <- subset(datSubforSector, METRIC %in% metricstatselections()$metric)
+ datSubMetric <- datSubforSector[METRIC %in% metricstatselections()$metric]
    
  
  # stat <- ifelse(any(datSubMetric$STAT %in% metricstatselections()$stat), 
@@ -152,9 +154,9 @@ DatSubRaw <- reactive({
  #     as.character(subset(datSubMetric, METRIC %in% metricstatselections()$metric, STAT)[2,1]))
  
   # subset the sector specific data according to all of the fisheye toggles
- datSub <- subset(datSubMetric, STAT   %in% metricstatselections()$stat &
+ datSub <- datSubMetric[STAT   %in% metricstatselections()$stat &
                               inclAK %in% akselections() &
-                              CS     %in% csselections())
+                              CS     %in% csselections()]
 
 
 })
@@ -231,77 +233,77 @@ datSub <- DatSubRaw()
 if (!input$LayoutSelect) {
     if (input$Ind_sel == 'Other' &&
         input$otherSelect == 'Share of landings by state') {
-      datSub$sort <- as.character(datSub$AGID)
+      datSub[, sort := as.character(AGID)]
     } else {
       if (input$Sect_sel == "CV") {
         if (input$CategorySelect == "Fisheries") {
-          datSub$sort <- case_when(
-            datSub$VARIABLE == "All fisheries" ~ 1,
-            datSub$VARIABLE == "All catch share fisheries" ~ 2,
-            datSub$VARIABLE == "Pacific whiting" ~ 3,
-            datSub$VARIABLE == "At-sea Pacific whiting" ~ 4,
-            datSub$VARIABLE == "Shoreside Pacific whiting" ~ 5,
-            datSub$VARIABLE == "Groundfish with trawl gear" ~ 6,
-            datSub$VARIABLE == "DTS trawl with trawl endorsement" ~ 7,
-            datSub$VARIABLE == "Non-whiting midwater trawl" ~ 8,
-            datSub$VARIABLE == "Non-whiting, non-DTS trawl with trawl endorsement" ~ 9,
-            datSub$VARIABLE == "Groundfish fixed gear with trawl endorsement" ~ 10,
-            datSub$VARIABLE == "All non-catch share fisheries" ~ 11,
-            datSub$VARIABLE == "Other fisheries" ~ 12,
-            datSub$VARIABLE == "Crab" ~ 13,
-            datSub$VARIABLE == "Shrimp" ~ 14,  
-            T ~ 15)
+          datSub[, sort := case_when(
+            VARIABLE == "All fisheries" ~ 1,
+            VARIABLE == "All catch share fisheries" ~ 2,
+            VARIABLE == "Pacific whiting" ~ 3,
+            VARIABLE == "At-sea Pacific whiting" ~ 4,
+            VARIABLE == "Shoreside Pacific whiting" ~ 5,
+            VARIABLE == "Groundfish with trawl gear" ~ 6,
+            VARIABLE == "DTS trawl with trawl endorsement" ~ 7,
+            VARIABLE == "Non-whiting midwater trawl" ~ 8,
+            VARIABLE == "Non-whiting, non-DTS trawl with trawl endorsement" ~ 9,
+            VARIABLE == "Groundfish fixed gear with trawl endorsement" ~ 10,
+            VARIABLE == "All non-catch share fisheries" ~ 11,
+            VARIABLE == "Other fisheries" ~ 12,
+            VARIABLE == "Crab" ~ 13,
+            VARIABLE == "Shrimp" ~ 14,  
+            T ~ 15)]
           
         } else if (input$CategorySelect == "Homeport") {
           
-          datSub$sort <- case_when(
-              datSub$VARIABLE == "Puget Sound" ~ 1,
-              datSub$VARIABLE == "South and central WA coast" ~ 2,
-              datSub$VARIABLE == "Astoria" ~ 3,
-              datSub$VARIABLE == "Tillamook" ~ 4,
-              datSub$VARIABLE == "Newport" ~ 5,
-              datSub$VARIABLE == "Coos Bay" ~ 6,
-              datSub$VARIABLE == "Brookings" ~ 7,
-              datSub$VARIABLE == "Crescent City" ~ 8,
-              datSub$VARIABLE == "Eureka" ~ 9,
-              datSub$VARIABLE == "Fort Bragg" ~ 10,
-              datSub$VARIABLE == "San Francisco" ~ 11, 
-              T ~ 12)
+          datSub[, sort := case_when(
+              VARIABLE == "Puget Sound" ~ 1,
+              VARIABLE == "South and central WA coast" ~ 2,
+              VARIABLE == "Astoria" ~ 3,
+              VARIABLE == "Tillamook" ~ 4,
+              VARIABLE == "Newport" ~ 5,
+              VARIABLE == "Coos Bay" ~ 6,
+              VARIABLE == "Brookings" ~ 7,
+              VARIABLE == "Crescent City" ~ 8,
+              VARIABLE == "Eureka" ~ 9,
+              VARIABLE == "Fort Bragg" ~ 10,
+              VARIABLE == "San Francisco" ~ 11, 
+              T ~ 12)]
         } else {
-          datSub$sort <- datSub$VARIABLE
+          datSub[, sort := VARIABLE]
         }
       }# End CV
       else if (input$Sect_sel == 'FR') {
         if (input$CategorySelect == "Fisheries") {
-          datSub$sort <- ifelse(datSub$VARIABLE == "All production", 1,
-            ifelse(datSub$VARIABLE == "Non-whiting groundfish production", 2,
-              ifelse(datSub$VARIABLE == "Pacific whiting production", 3, 4)
+          datSub[, sort := ifelse(VARIABLE == "All production", 1,
+            ifelse(VARIABLE == "Non-whiting groundfish production", 2,
+              ifelse(VARIABLE == "Pacific whiting production", 3, 4)
             )
-          )
+          )]
         } else if (input$CategorySelect == "Region") {
-          datSub$sort <-
-            ifelse(datSub$VARIABLE == "Washington and Oregon", 1, 2)
+          datSub[, sort :=
+            ifelse(VARIABLE == "Washington and Oregon", 1, 2)]
         } else {
-          datSub$sort <- as.character(datSub$VARIABLE)
+          datSub[, sort := as.character(VARIABLE)]
         }
       } #end FR
       else {
-        datSub$sort <- datSub$VARIABLE
+        datSub[, sort := VARIABLE]
       } #end MS and CP
     }#end not Other
   } #end not Metrics
   else {
     if (input$Ind_sel == "Economic") {
-      datSub$sort <- ifelse(
-        datSub$METRIC == "Revenue", 1,
-        ifelse(datSub$METRIC == "Variable costs", 2,
-          ifelse(datSub$METRIC == "Fixed costs", 3,
-            ifelse(datSub$METRIC == "Variable cost net revenue", 4,  5)
+      datSub[, sort := ifelse(
+        METRIC == "Revenue", 1,
+        ifelse(METRIC == "Variable costs", 2,
+          ifelse(METRIC == "Fixed costs", 3,
+            ifelse(METRIC == "Variable cost net revenue", 4,  5)
           )
         )
-      )
+      )]
     } else {
-      datSub$sort <- as.character(datSub$METRIC)
+      datSub[, sort := as.character(METRIC)]
     }
   }
  # end SORT ####
