@@ -115,14 +115,23 @@ selectinputprnprcrew <- selectInput(
   c(`Processing crew` = "PR", `Non-processing crew` = 'NPR'),
   selectize = F)
 
+#select input box for captain and crew
+selectinputcptcrew <- selectInput(
+  inputId = 'CPT_CREW',
+  HTML(""),
+  c(`Crew` = 'CREW', `Captain` = 'CPT'),
+  selectize = F
+)
 # Labor tab: metric checkbox/radiobutton set up ####
 output$crewSelect <- renderUI({
   if (input$LayoutSelect) {
     if (input$Sect_sel == 'CV') {
+      tagList(
+        selectinputcptcrew,
         tags$div(
           class = "ckbox",
           checkboxGroupInput("crewSelect", NULL, choices = c(DatVars()$METRIC2), 
-            selected = "Number of crew"))
+            selected = "Number of crew")))
     } else if (input$Sect_sel == 'M' | input$Sect_sel == 'CP') {
         tagList(
           selectinputprnprcrew,
@@ -138,9 +147,11 @@ output$crewSelect <- renderUI({
   }}
   else {
     if (input$Sect_sel == 'CV') {
+      tagList(
+        selectinputcptcrew,
       tags$div(
         class = "ckbox",
-        radioButtons("crewSelect", NULL, choices = c(DatVars()$METRIC2), selected = "Number of crew"))
+        radioButtons("crewSelect", NULL, choices = c(DatVars()$METRIC2), selected = "Number of crew")))
     }
     else if (input$Sect_sel == 'M' | input$Sect_sel == 'CP') {
         tagList(
@@ -661,11 +672,10 @@ output$Variableselect <- renderUI({
               radioButtons("VariableSelect", NULL, choices = c("Large", 'Medium', 'Small'), selected = "Large")))
         }
       } else {
-        if(input$Ind_sel == 'Labor') {
         if (!input$LayoutSelect) {
           tagList(
             tags$div(
-              checkboxGroupInput("VariableSelect", NULL, choices = 'All production', selected = 'All production')
+              checkboxGroupInput("VariableSelect", NULL, choices = prod.var, selected = 'All production')
             ))
            } else {
              tagList(
@@ -674,7 +684,7 @@ output$Variableselect <- renderUI({
           }
       }
     }
-  }
+}
   }) 
 
 # Select inclAK ####
@@ -760,6 +770,7 @@ output$Layoutselect <- renderUI({
 })
 
 # OBSERVER ####
+# processing or non-processing crew for cp/ms
 observe({
   if(is.null(input$PR_NPR_CREW)) {
     return()
@@ -771,6 +782,25 @@ observe({
   else {
     updateRadioButtons(session, "crewSelect", choices = c(DatVars()$METRIC2))
   }
+  } else if(input$LayoutSelect) {
+    updateCheckboxGroupInput(session, 'crewSelect', choices = c(DatVars()$METRIC2a))
+  } else {
+    updateRadioButtons(session, 'crewSelect', choices = c(DatVars()$METRIC2a))
+  }
+})
+
+# observer for labor - captain and crew
+observe({
+  if(is.null(input$CPT_CREW)) {
+    return()
+  }
+  else if(input$CPT_CREW == 'CREW') {
+    if(input$LayoutSelect) {
+      updateCheckboxGroupInput(session, 'crewSelect', choices = c(DatVars()$METRIC2))
+    }
+    else {
+      updateRadioButtons(session, "crewSelect", choices = c(DatVars()$METRIC2))
+    }
   } else if(input$LayoutSelect) {
     updateCheckboxGroupInput(session, 'crewSelect', choices = c(DatVars()$METRIC2a))
   } else {
