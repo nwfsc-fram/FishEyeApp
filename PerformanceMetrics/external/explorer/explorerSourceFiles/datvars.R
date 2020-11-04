@@ -47,7 +47,7 @@ nrcomponents <- c('Revenue', 'Variable costs', 'Fixed costs', 'Variable cost net
         "Proportion of revenue from catch share fishery" = "Proportion of revenue from CS fishery", 
         "Revenue diversification"
       ), 
-      ##Labor metrics###
+      ##Labor - crew metrics###
       METRIC2 = c(
         "Number of crew", 
         "Number of crew-days",
@@ -55,6 +55,12 @@ nrcomponents <- c('Revenue', 'Variable costs', 'Fixed costs', 'Variable cost net
         "Crew wage per day",
         "Crew wage per dollar revenue",
         "Revenue per crew-day"
+      ),
+      # Labor - captain metrics #
+      METRIC2a = c(
+        'Captain wage per year',
+        'Captain wage per day',
+        'Captain wage per dollar revenue'
       ),
       ##Other metrics###
       METRIC3 = c(
@@ -76,9 +82,8 @@ nrcomponents <- c('Revenue', 'Variable costs', 'Fixed costs', 'Variable cost net
       COSTS = c(
         'All variable costs',
         'Buyback fees',
-        'Captain',
+        'Labor',
         'Cost recovery fees',
-        'Crew',
         'Fuel',
         'Observers/EM', 
         'Other variable costs', 

@@ -138,7 +138,8 @@ DatSubRaw <- reactive({
                               VARIABLE %in% input$VariableSelect &
                               whitingv %in% input$FishWhitingSelect]
     if(metricstatselections()$metric == 'Number of processors') {
-      datSubforSector <- datSubforSector[, !`Total number of processors`]
+      datSubforSector <- datSubforSector %>%
+        select(-`Total number of processors`)
     } else {
       datSubforSector <- datSubforSector
   }} else {
