@@ -122,6 +122,13 @@ selectinputcptcrew <- selectInput(
   c(`Crew` = 'CREW', `Captain` = 'CPT'),
   selectize = F
 )
+# select input box for production/non-production employees
+selectinputprdnonprod <- selectInput(
+  inputId = "PRD_NONPRD",
+  HTML(""),
+  c(`Production employees` = "PRD", `Non-production employees` = "NONPRD"),
+  selectize = F
+)
 # Labor tab: metric checkbox/radiobutton set up ####
 output$crewSelect <- renderUI({
   if (input$LayoutSelect) {
@@ -140,10 +147,12 @@ output$crewSelect <- renderUI({
             checkboxGroupInput("crewSelect", NULL, choices = c(DatVars()$METRIC2), 
               selected = "Number of processing crew")))
   } else {
+    tagList(
+      selectinputprdnonprod,
         tags$div(
           class = 'ckbox',
           checkboxGroupInput("crewSelect", NULL, choices = c(DatVars()$METRIC2), 
-            selected = 'Average number of production employees per month'))
+            selected = 'Average number of production employees per month')))
   }}
   else {
     if (input$Sect_sel == 'CV') {
@@ -161,9 +170,12 @@ output$crewSelect <- renderUI({
         radioButtons("crewSelect", NULL, choices = c(DatVars()$METRIC2), 
           selected = "Number of processing crew")))
     } else {
+      tagList(
+        selectinputprdnonprod,
       tags$div(
         class = "ckbox",
-        radioButtons("crewSelect", NULL, choices = c(DatVars()$METRIC2), selected = 'Average number of production employees per month'))
+        radioButtons("crewSelect", NULL, choices = c(DatVars()$METRIC2), 
+                     selected = 'Average number of production employees per month')))
     }
   }
 })
@@ -672,19 +684,20 @@ output$Variableselect <- renderUI({
               radioButtons("VariableSelect", NULL, choices = c("Large", 'Medium', 'Small'), selected = "Large")))
         }
       } else {
-        if (!input$LayoutSelect) {
-          tagList(
-            tags$div(
-              checkboxGroupInput("VariableSelect", NULL, choices = prod.var, selected = 'All production')
-            ))
-           } else {
-             tagList(
-            tags$div(class = 'rbutton2',
-                     radioButtons("VariableSelect", NULL, choices = prod.var, selected = "All production")))
+        if(input$Ind_sel == 'Labor') {
+          if (!input$LayoutSelect) {
+            tagList(
+              tags$div(
+                checkboxGroupInput("VariableSelect", NULL, choices = 'All production', selected = 'All production')
+              ))
+          } else {
+            tagList(
+              tags$div(class = 'rbutton2',
+                       radioButtons("VariableSelect", NULL, choices = prod.var, selected = "All production")))
           }
-      }
+        }
+      }}
     }
-}
   }) 
 
 # Select inclAK ####
@@ -795,6 +808,25 @@ observe({
     return()
   }
   else if(input$CPT_CREW == 'CREW') {
+    if(input$LayoutSelect) {
+      updateCheckboxGroupInput(session, 'crewSelect', choices = c(DatVars()$METRIC2))
+    }
+    else {
+      updateRadioButtons(session, "crewSelect", choices = c(DatVars()$METRIC2))
+    }
+  } else if(input$LayoutSelect) {
+    updateCheckboxGroupInput(session, 'crewSelect', choices = c(DatVars()$METRIC2a))
+  } else {
+    updateRadioButtons(session, 'crewSelect', choices = c(DatVars()$METRIC2a))
+  }
+})
+
+# observer for labor - captain and crew
+observe({
+  if(is.null(input$PRD_NONPRD)) {
+    return()
+  }
+  else if(input$PRD_NONPRD == 'PRD') {
     if(input$LayoutSelect) {
       updateCheckboxGroupInput(session, 'crewSelect', choices = c(DatVars()$METRIC2))
     }

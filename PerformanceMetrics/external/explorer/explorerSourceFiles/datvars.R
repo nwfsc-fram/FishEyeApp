@@ -137,11 +137,13 @@ save(datVars_cv, file = "PerformanceMetrics/data/datvars_cv.RData")
       METRIC2 = c(
         'Average number of production employees per month',
         'Hourly compensation per production employee',
-        'Number of non-production employees',
         'Max number of production employees per month',
-        'Annual compensation per non-production employee',
         #'Ratio of Wage to Value Added in Production',
         'Ratio of Wage to Value Added in Production Including Custom Processing'
+      ),
+      METRIC2a = c(
+        'Number of non-production employees',
+        'Annual compensation per non-production employee'
       ),
       ##Other metrics##
       METRIC3 = c(
