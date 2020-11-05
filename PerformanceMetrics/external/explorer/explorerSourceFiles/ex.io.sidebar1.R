@@ -684,20 +684,31 @@ output$Variableselect <- renderUI({
               radioButtons("VariableSelect", NULL, choices = c("Large", 'Medium', 'Small'), selected = "Large")))
         }
       } else {
-        if(input$Ind_sel == 'Labor') {
+        if(input$Ind_sel != 'Labor') {
           if (!input$LayoutSelect) {
             tagList(
               tags$div(
-                checkboxGroupInput("VariableSelect", NULL, choices = 'All production', selected = 'All production')
+                checkboxGroupInput("VariableSelect", NULL, choices = prod.var, selected = 'All production')
               ))
           } else {
             tagList(
               tags$div(class = 'rbutton2',
                        radioButtons("VariableSelect", NULL, choices = prod.var, selected = "All production")))
           }
+        } else {
+          if (!input$LayoutSelect) {
+            tagList(
+              tags$div(
+                checkboxGroupInput("VariableSelect", NULL, choices = "All production", selected = 'All production')
+              ))
+          } else {
+            tagList(
+              tags$div(class = 'rbutton2',
+                       radioButtons("VariableSelect", NULL, choices = "All production", selected = "All production")))
         }
       }}
     }
+  }
   }) 
 
 # Select inclAK ####
