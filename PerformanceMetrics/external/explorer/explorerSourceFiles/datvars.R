@@ -137,8 +137,8 @@ save(datVars_cv, file = "PerformanceMetrics/data/datvars_cv.RData")
       ##Labor metrics##
       METRIC2 = c(
         'Average number of production employees per month',
-        'Production employee payments',
         'Max number of production employees per month',
+        'Production employee payments',
         'Hourly compensation per production employee',
         'Ratio of wage to value added in production including custom processing'
       ),
