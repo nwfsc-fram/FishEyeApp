@@ -692,24 +692,36 @@ output$Variableselect <- renderUI({
               ))
           } else {
             tagList(
+              tags$div(
+                radioButtons("VariableSelect", NULL, choices = prod.var, selected = 'All production')))
+          } } else {
+            if(!input$LayoutSelect) {
+            if(input$crewSelect %in% c('Total production employee payments',
+                                       'Total non-production employee payments')){
+            tagList(
               tags$div(class = 'rbutton2',
-                       radioButtons("VariableSelect", NULL, choices = prod.var, selected = "All production")))
-          }
-        } else {
-          if (!input$LayoutSelect) {
+                       checkboxGroupInput("VariableSelect", NULL, choices = prod.var, selected = "All production")))
+            } else {
+              tagList(
+                tags$div(
+                  checkboxGroupInput("VariableSelect", NULL, choices = "All production", selected = 'All production')))
+            
+          } }  else {
+          if(input$crewSelect %in% c('Total production employee payments',
+                                     'Total non-production employee payments')){
             tagList(
               tags$div(
-                checkboxGroupInput("VariableSelect", NULL, choices = "All production", selected = 'All production')
-              ))
+                radioButtons("VariableSelect", NULL, choices = prod.var, selected = 'All production')))
           } else {
             tagList(
               tags$div(class = 'rbutton2',
                        radioButtons("VariableSelect", NULL, choices = "All production", selected = "All production")))
         }
-      }}
+        }}
+      }
     }
   }
-  }) 
+    }) 
 
 # Select inclAK ####
 output$FishAkselect <- renderUI({

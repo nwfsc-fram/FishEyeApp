@@ -51,6 +51,7 @@ nrcomponents <- c('Revenue', 'Variable costs', 'Fixed costs', 'Variable cost net
       METRIC2 = c(
         "Number of crew", 
         "Number of crew-days",
+        'Crew payments',
         "Crew wage per year",
         "Crew wage per day",
         "Crew wage per dollar revenue",
@@ -136,13 +137,14 @@ save(datVars_cv, file = "PerformanceMetrics/data/datvars_cv.RData")
       ##Labor metrics##
       METRIC2 = c(
         'Average number of production employees per month',
+        'Production employee payments',
         'Max number of production employees per month',
         'Hourly compensation per production employee',
-        #'Ratio of Wage to Value Added in Production',
-        'Ratio of Wage to Value Added in Production Including Custom Processing'
+        'Ratio of wage to value added in production including custom processing'
       ),
       METRIC2a = c(
         'Number of non-production employees',
+        'Non-production employee payments',
         'Annual compensation per non-production employee'
       ),
       ##Other metrics##
@@ -221,6 +223,7 @@ save(datVars_cv, file = "PerformanceMetrics/data/datvars_cv.RData")
       METRIC2 = c(
         'Number of processing crew',
         'Number of processing crew-days',
+        'Processing crew payments',
         'Processing crew wage per year',
         'Processing crew wage per day',
         'Processing crew wage per dollar revenue'),
@@ -228,6 +231,7 @@ save(datVars_cv, file = "PerformanceMetrics/data/datvars_cv.RData")
       METRIC2a = c(
         'Number of non-processing crew',
         'Number of non-processing crew-days',
+        'Non-processing crew payments',
         'Non-processing crew wage per year',
         'Non-processing crew wage per day',
         'Non-processing crew wage per dollar revenue'
@@ -316,6 +320,7 @@ save(datVars_cv, file = "PerformanceMetrics/data/datvars_cv.RData")
       METRIC2 = c(
         'Number of processing crew',
         'Number of processing crew-days',
+        'Processing crew payments',
         'Processing crew wage per year',
         'Processing crew wage per day',
         'Processing crew wage per dollar revenue'),
@@ -323,6 +328,7 @@ save(datVars_cv, file = "PerformanceMetrics/data/datvars_cv.RData")
       METRIC2a = c(
         'Number of non-processing crew',
         'Number of non-processing crew-days',
+        'Non-processing crew payments',
         'Non-processing crew wage per year',
         'Non-processing crew wage per day',
         'Non-processing crew wage per dollar revenue'
