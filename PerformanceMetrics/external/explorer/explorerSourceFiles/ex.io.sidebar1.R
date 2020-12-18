@@ -730,7 +730,7 @@ output$FishAkselect <- renderUI({
       if(!is.null(input[["demSelect"]])) {
         if (input$demSelect %in% c(
           'Revenue diversification',
-          'Proportion of revenue from CS fishery',
+          'Proportion of ex-vessel revenue from CS fishery',
           'Number of fisheries'
         )) {
           tagList(

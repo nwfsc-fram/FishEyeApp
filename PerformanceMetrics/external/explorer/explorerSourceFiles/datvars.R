@@ -44,7 +44,7 @@ nrcomponents <- c('Revenue', 'Variable costs', 'Fixed costs', 'Variable cost net
         "Vessel horsepower",
         "Vessel fuel capacity",
         "Number of fisheries", 
-        "Proportion of revenue from catch share fishery" = "Proportion of revenue from CS fishery", 
+        "Proportion of ex-vessel revenue from catch share fishery" = "Proportion of ex-vessel revenue from CS fishery", 
         "Revenue diversification"
       ), 
       ##Labor - crew metrics###
