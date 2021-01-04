@@ -688,33 +688,35 @@ output$Variableselect <- renderUI({
           if (!input$LayoutSelect) {
             tagList(
               tags$div(
+                class = 'ckboxFR',
                 checkboxGroupInput("VariableSelect", NULL, choices = prod.var, selected = 'All production')
               ))
           } else {
             tagList(
               tags$div(
+                class = 'rbFR',
                 radioButtons("VariableSelect", NULL, choices = prod.var, selected = 'All production')))
           } } else {
             if(!input$LayoutSelect) {
             if(input$crewSelect %in% c('Total production employee payments',
                                        'Total non-production employee payments')){
             tagList(
-              tags$div(class = 'rbutton2',
+              tags$div(class = 'ckboxFR',
                        checkboxGroupInput("VariableSelect", NULL, choices = prod.var, selected = "All production")))
             } else {
               tagList(
-                tags$div(
+                tags$div(class = 'ckboxFR',
                   checkboxGroupInput("VariableSelect", NULL, choices = "All production", selected = 'All production')))
             
           } }  else {
           if(input$crewSelect %in% c('Total production employee payments',
                                      'Total non-production employee payments')){
             tagList(
-              tags$div(
+              tags$div(class = 'rbFR',
                 radioButtons("VariableSelect", NULL, choices = prod.var, selected = 'All production')))
           } else {
             tagList(
-              tags$div(class = 'rbutton2',
+              tags$div(class = 'rbFR',
                        radioButtons("VariableSelect", NULL, choices = "All production", selected = "All production")))
         }
         }}
