@@ -5,6 +5,7 @@ library(shinyjs)
 library(shinyWidgets)
 library(shinyBS)
 library(bsplus)
+library(shinycssloaders)
 #options(shiny.server = NULL)
 #options(shiny.error = browser)
 # custom css functions
@@ -243,7 +244,7 @@ function(request) {
               ),
 
               # Metrics
-              tags$div(class="header collapsed", "Metric")%>% bs_attach_collapse("collapse1"),
+              tags$div(class="header collapsed", "Metric") %>% bs_attach_collapse("collapse1"),
               bs_collapse(id = "collapse1",
                           content = tags$div(column(12, uiOutput('metrics'),
                                                     style = "background:white; padding: 10px;margin-below:4px;border-color: #bce8f1;")),
@@ -300,7 +301,7 @@ function(request) {
 
           mainPanel(
             tabsetPanel(id = "tabs",
-                        tabPanel("Visualize the Data", value="Panel1", plotOutput("PlotMain"), style ="min-height: 1600px;"),
+                        tabPanel("Visualize the Data", value="Panel1", plotOutput("PlotMain") %>% withSpinner(color="#0dc5c1"), style ="min-height: 1600px;"),
                         tabPanel("Dataset", value="Panel2", dataTableOutput("TableMain"))
             ))
           
