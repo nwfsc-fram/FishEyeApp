@@ -74,6 +74,19 @@ output$BlogUpdates <- renderUI({
   withTags(
   div(style = "margin-top:0; padding-top:0;background-color:#F8F8E9;",
            h3("Updates"),
+      # 2019 vessel data
+      div( class='date', style='height:45px;width:30px; font-family:Arial; font-weight:bold;background-color:#ffffff;text-align:center; border-top:1px solid #c0c0c0;
+       border-left:1px solid #c0c0c0;border-right:1px solid #c0c0c0;position:absolute;z-index:3;line-height: 13px;',
+           # step 1: update date
+           HTML("<span class='month' style='text-transform:uppercase;font-size:11px;'>Jan</span><br />
+            <span class='day' style='font-size:16px;'>6</span><br />
+            <span class='year' style='font-size:11px;line-height: 10px;'>2021</span>")
+      ),
+      # step 2: update title
+      p(HTML("<span style='margin-left:60px;font-size:18px;font-weight:bold'>2019 vessel data now available</span>")), 
+      # step 3: update message
+      p(br(),"2019 data are now available for catcher vessels, catcher processors, and motherships."),
+      hr(),
       # New FR metrics
       div( class='date', style='height:45px;width:30px; font-family:Arial; font-weight:bold;background-color:#ffffff;text-align:center; border-top:1px solid #c0c0c0;
        border-left:1px solid #c0c0c0;border-right:1px solid #c0c0c0;position:absolute;z-index:3;line-height: 13px;',
