@@ -421,7 +421,7 @@ tagsdiv2004 <- tags$div(
   else if (input$Ind_sel == 'Other') {
     if (input$Sect_sel == "CV" &
         input$CategorySelect == 'Fisheries' &
-        input$otherSelect %in% c('Seasonality', 'Share of landings by state', 'Gini coefficient')) {
+        input$otherSelect %in% c('Seasonality', 'Share of landings by state', 'Gini coefficient', 'Landed weight')) {
       tagsdiv2004
     }
     else {
