@@ -65,7 +65,8 @@ nrcomponents <- c('Revenue', 'Variable costs', 'Fixed costs', 'Variable cost net
       ),
       ##Other metrics###
       METRIC3 = c(
-        "Days at sea", 
+        "Days at sea",
+        'Trips',
         "Landed weight",
         "Fuel use per day", 
         "Speed while fishing",
@@ -76,6 +77,7 @@ nrcomponents <- c('Revenue', 'Variable costs', 'Fixed costs', 'Variable cost net
       ##When grouping by Metrics, don't include 'Share of landings by state'
       METRIC3a = c(
         "Days at sea", 
+        'Trips',
         "Landed weight",
         "Fuel use per day", 
         "Speed while fishing"
