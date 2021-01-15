@@ -193,7 +193,7 @@ return(val)
  Ntitle <- ifelse(input$Sect_sel == "FR", 'Number of responses', 'Number of vessels')
  valuetitle <- ifelse(any(datSub$STAT == ''), 'Value', as.character(unique(datSub$STAT)))
  vartitle <- ifelse(metricstatselections()$stat %in% c('Total', ''), 'VARIANCE',
-   ifelse(metricstatselections()$stat == 'Median', 'Mean average deviation',
+   ifelse(metricstatselections()$stat == 'Median', 'Median absolute deviation',
      'Standard deviation'))
  typetitle <- ifelse(input$Sect_sel == "FR", 'Processor type', 'Vessel type')
 
