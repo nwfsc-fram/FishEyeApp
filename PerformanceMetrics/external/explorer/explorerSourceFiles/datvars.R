@@ -69,6 +69,7 @@ nrcomponents <- c('Revenue', 'Variable costs', 'Fixed costs', 'Variable cost net
         'Trips',
         "Landed weight",
         "Fuel use per day", 
+        "Annual fuel use",
         "Speed while fishing",
         "Gini coefficient", 
         "Share of landings by state",
@@ -80,6 +81,7 @@ nrcomponents <- c('Revenue', 'Variable costs', 'Fixed costs', 'Variable cost net
         'Trips',
         "Landed weight",
         "Fuel use per day", 
+        "Annual fuel use",
         "Speed while fishing"
       ),
       COSTS = c(
