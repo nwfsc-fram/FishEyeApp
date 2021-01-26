@@ -249,6 +249,7 @@ save(datVars_cv, file = "PerformanceMetrics/data/datvars_cv.RData")
         'Purchase weight (Alaska)',
         'Purchase weight (West Coast)',
         'Fuel use per day',
+        'Annual fuel use',
         "Gini coefficient",
         "Seasonality"
       ),
@@ -261,6 +262,7 @@ save(datVars_cv, file = "PerformanceMetrics/data/datvars_cv.RData")
         'Purchase weight (Alaska)',
         'Purchase weight (West Coast)',
         'Fuel use per day',
+        'Annual fuel use',
         'Gini coefficient',
         'Seasonality'
       ),
@@ -346,6 +348,7 @@ save(datVars_cv, file = "PerformanceMetrics/data/datvars_cv.RData")
         'Catch weight (Alaska)',
         'Catch weight (West Coast)',
         'Fuel use per day',
+        'Annual fuel use',
         "Gini coefficient",
         "Seasonality"
       ),
@@ -358,6 +361,7 @@ save(datVars_cv, file = "PerformanceMetrics/data/datvars_cv.RData")
         'Catch weight (Alaska)',
         'Catch weight (West Coast)',
         'Fuel use per day',
+        'Annual fuel use',
         'Gini coefficient',
         'Seasonality'
       ),
