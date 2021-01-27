@@ -152,7 +152,7 @@ output$crewSelect <- renderUI({
         tags$div(
           class = 'ckbox',
           checkboxGroupInput("crewSelect", NULL, choices = c(DatVars()$METRIC2), 
-            selected = 'Average number of production employees per month')))
+            selected = 'Average monthly number of production employees')))
   }}
   else {
     if (input$Sect_sel == 'CV') {
@@ -175,7 +175,7 @@ output$crewSelect <- renderUI({
       tags$div(
         class = "ckbox",
         radioButtons("crewSelect", NULL, choices = c(DatVars()$METRIC2), 
-                     selected = 'Average number of production employees per month')))
+                     selected = 'Average monthly number of production employees')))
     }
   }
 })

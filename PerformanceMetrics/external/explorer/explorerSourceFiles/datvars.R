@@ -140,11 +140,11 @@ save(datVars_cv, file = "PerformanceMetrics/data/datvars_cv.RData")
       ),
       ##Labor metrics##
       METRIC2 = c(
-        'Average number of production employees per month',
-        'Max number of production employees per month',
+        'Average monthly number of production employees',
+        'Maximum monthly number of production employees',
         'Production employee payments',
         'Hourly compensation per production employee',
-        'Ratio of wage to value added in production including custom processing'
+        'Processing wage per value-added'
       ),
       METRIC2a = c(
         'Number of non-production employees',
@@ -167,7 +167,7 @@ save(datVars_cv, file = "PerformanceMetrics/data/datvars_cv.RData")
         'Production Supplies',
         'Freight & trucking',
         'Labor',
-        'Monitoring',
+        'Shoreside monitoring costs',
         'Taxes',
         'Offloading',
         'Off-site freezing & storage',
