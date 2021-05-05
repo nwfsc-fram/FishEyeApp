@@ -242,29 +242,29 @@ save(datVars_cv, file = "PerformanceMetrics/data/datvars_cv.RData")
       ),
       ##Other metrics##
       METRIC3 = c(
-        'Days fishing, processing, and steaming in AK',
         'Days fishing, processing, and steaming on the WC',
         'Days offloading on the WC',
-        'Days steaming between the WC and AK', 
-        'Purchase weight (Alaska)',
         'Purchase weight (West Coast)',
         'Fuel use per day',
         'Annual fuel use',
         "Gini coefficient",
-        "Seasonality"
+        "Seasonality",
+        'Days fishing, processing, and steaming in AK',
+        'Days steaming between the WC and AK', 
+        'Purchase weight (Alaska)'
       ),
       ##When grouping by Metrics, don't include 'Seasonsality'
       METRIC3a = c(
-        'Days fishing, processing, and steaming in AK',
         'Days fishing, processing, and steaming on the WC',
         'Days offloading on the WC',
-        'Days steaming between the WC and AK', 
-        'Purchase weight (Alaska)',
         'Purchase weight (West Coast)',
         'Fuel use per day',
         'Annual fuel use',
         'Gini coefficient',
-        'Seasonality'
+        'Seasonality',
+        'Days fishing, processing, and steaming in AK',
+        'Days steaming between the WC and AK', 
+        'Purchase weight (Alaska)'
       ),
       COSTS = c(
         "All variable costs",
@@ -341,29 +341,29 @@ save(datVars_cv, file = "PerformanceMetrics/data/datvars_cv.RData")
       ),
       ##Other metrics##
       METRIC3 = c(
-        'Days fishing, processing, and steaming in AK',
         'Days fishing, processing, and steaming on the WC',
         'Days offloading on the WC',
-        'Days steaming between the WC and AK',
-        'Catch weight (Alaska)',
         'Catch weight (West Coast)',
         'Fuel use per day',
         'Annual fuel use',
         "Gini coefficient",
-        "Seasonality"
+        "Seasonality",
+        'Days fishing, processing, and steaming in AK',
+        'Days steaming between the WC and AK',
+        'Catch weight (Alaska)'
       ),
       ##When grouping by Metrics, don't include 'Seasonsality'
       METRIC3a = c(
-        'Days fishing, processing, and steaming in AK',
         'Days fishing, processing, and steaming on the WC',
         'Days offloading on the WC',
-        'Days steaming between the WC and AK',
-        'Catch weight (Alaska)',
         'Catch weight (West Coast)',
         'Fuel use per day',
         'Annual fuel use',
         'Gini coefficient',
-        'Seasonality'
+        'Seasonality',
+        'Days fishing, processing, and steaming in AK',
+        'Days steaming between the WC and AK',
+        'Catch weight (Alaska)'
       ),
       COSTS = c(
         "All variable costs",

@@ -208,7 +208,7 @@ output$otherSelect <- renderUI({
 
     } else if(input$Sect_sel %in% c('CP', 'M')) {
       tags$div(class = "ckbox", 
-               checkboxGroupInput("otherSelect", NULL, choices = c(DatVars()$METRIC3a), selected = 'Days fishing, processing, and steaming in AK'))
+               checkboxGroupInput("otherSelect", NULL, choices = c(DatVars()$METRIC3a), selected = 'Days fishing, processing, and steaming on the WC'))
     } else {
       tags$div(class = "ckbox", 
                checkboxGroupInput("otherSelect", NULL, choices = c(DatVars()$METRIC3a), selected = "Gini coefficient"))
@@ -221,7 +221,7 @@ output$otherSelect <- renderUI({
      } else if(input$Sect_sel %in% c('CP','M')) {
        tags$div(
          class = "ckbox", 
-         radioButtons("otherSelect", NULL, choices = c(DatVars()$METRIC3), selected = 'Days fishing, processing, and steaming in AK'))
+         radioButtons("otherSelect", NULL, choices = c(DatVars()$METRIC3), selected = 'Days fishing, processing, and steaming on the WC'))
      } else {
        tags$div(
          class = "ckbox", 
