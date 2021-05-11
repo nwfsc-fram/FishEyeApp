@@ -278,7 +278,9 @@ save(datVars_cv, file = "PerformanceMetrics/data/datvars_cv.RData")
         "On-board equipment",
         "Processing equipment",
         'Other fixed costs'),
-      IMPACT = c("")
+      IMPACT = c(
+        'Income impacts',
+        'Employment impacts')
     )
   )
   
@@ -377,7 +379,9 @@ save(datVars_cv, file = "PerformanceMetrics/data/datvars_cv.RData")
         "On-board equipment",
         "Processing equipment",
         'Other fixed costs'),
-      IMPACT = c("")
+      IMPACT = c(
+        'Income impacts',
+        'Employment impacts')
     )
   )
   save(datVars_cp, file = "PerformanceMetrics/data/datvars_cp.RData") 
