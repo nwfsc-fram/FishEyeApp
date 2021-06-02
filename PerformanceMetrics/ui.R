@@ -13,6 +13,7 @@ library(shinycssloaders)
 wellPanelSub <- function(...){div(class = "well-sub", ...)}
 # calls .css selector for radioButton header
 wellPanelHeading <- function(...){div(class = "well-radioHeading", ...)} 
+link <- "#vesselattributes"
 
 
 function(request) {
@@ -302,7 +303,11 @@ function(request) {
           mainPanel(
             tabsetPanel(id = "tabs",
                         tabPanel("Visualize the Data", value="Panel1", plotOutput("PlotMain") %>% withSpinner(color="#0dc5c1"), style ="min-height: 1600px;"),
-                        tabPanel("Dataset", value="Panel2", dataTableOutput("TableMain"))
+                        tabPanel("Dataset", value="Panel2", dataTableOutput("TableMain")),
+                        tabPanel("Description", value = "Panel3", 
+                                 tags$a(href= paste0("pmtechmemo.html", link),
+                                        "Description of metric")
+                                 )
             ))
           
         )),
