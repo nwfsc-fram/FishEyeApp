@@ -1,0 +1,47 @@
+METRIC,link
+All fixed costs,costs
+All variable costs,costs
+Annual fuel use,otherfuel
+Buyback fees,costsbuyback
+Captain wage per day,laborrate
+Captain wage per dollar revenue,laborrate
+Captain wage per year,laborrate
+Cost recovery fees,costscr
+Crew payments,laborpayments
+Crew wage per day,laborrate
+Crew wage per dollar revenue,laborrate
+Crew wage per year,laborrate
+Days at sea,otherdays
+Employment impacts,impacts
+Fishing gear,costsfishinggear
+Fixed costs,econcosts
+Fuel,costsfuel
+Fuel use per day,otherfuel
+Gini coefficient,othergini
+Income impacts,impacts
+Labor,costslabor
+Landed weight,otherweight
+Number of crew,labornumber
+Number of crew-days,labornumber
+Number of fisheries,descfisheries
+Number of vessels,descnumber
+Observers/EM,costsobservers
+On-board equipment,costsonboardequipment
+Other fixed costs,costsotherfixed
+Other variable costs,costsothervariable
+Proportion of ex-vessel revenue from CS fishery,desccsrevenue
+Revenue,econrevenue
+Revenue diversification,descdiversity
+Revenue per crew-day,laborproductivity
+Seasonality,otherseasonality
+Share of landings by state,othersharelandings
+Speed while fishing,otherspeed
+Total cost net revenue,econtcnr
+Trips,othertrips
+Variable cost net revenue,econvcnr
+Variable costs,econcosts
+Vessel fuel capacity,descattributes
+Vessel horsepower,descattributes
+Vessel length,descattributes
+Vessel market value,descvalue
+Vessel replacement value,descvalue

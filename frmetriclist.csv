@@ -1,0 +1,48 @@
+METRIC,link
+Additives,costsotherfr
+All fixed costs,costs
+All variable costs,costs
+Annual compensation per non-production employee,laborratefr
+Average monthly number of production employees,labornumberfr
+Buildings,costsfixedfr
+Custom processing and other revenue,econrevenue
+Electricity,costsotherfr
+Equipment,costsfixedfr
+Fish purchases,costsfishpurchases
+Fixed costs,econcosts
+Freight & trucking,costsotherfr
+Gas,costsotherfr
+Gini coefficient,othergini
+Hourly compensation per production employee,laborratefr
+Labor,costslabor
+Maximum monthly number of production employees,labornumberfr
+Non-production employee payments,laborpayments
+Number of non-production employees,labornumberfr
+Number of processors,descnumber
+Number of processors who fillet non-whiting groundfish,descfillet
+Number of species processed,descprocessed
+Number of species sold,descsold
+Offload revenue,econrevenue
+Offloading,costsotherfr
+Off-site freezing & storage,costsotherfr
+Other fixed costs,costsotherfixed
+Other variable costs,costsothervariable
+Packing materials,costsotherfr
+Percentage of production processed,otherproductionprocessed
+Percentage of purchases from non-vessel sources,othernonvessel
+Processing wage per value-added,laborvalueadded
+Production employee payments,laborpayments
+Production Supplies,costsotherfr
+Proportion of production value from West Coast groundfish,descproduction
+Proportion of Purchase Value from West Coast groundfish purchased by Catch Share Processors,othercoverage
+Proportion of Purchase Weight from West Coast groundfish purchased by Catch Share Processors,othercoverage
+Revenue,econrevenue
+Revenue diversification,descdiversity
+Seafood sales revenue,econrevenue
+Shoreside monitoring costs,costsmonitoring
+Taxes,costsotherfr
+Total cost net revenue,econtcnr
+Variable cost net revenue,econvcnr
+Variable costs,econcosts
+Waste & Byproduct Disposal,costsotherfr
+Water,costsotherfr

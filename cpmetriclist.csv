@@ -1,0 +1,46 @@
+METRIC,link
+All fixed costs,costs
+All variable costs,costs
+Annual fuel use,otherfuel
+Catch weight (Alaska),otherweight
+Catch weight (West Coast),otherweight
+Cost recovery fees,costscr
+"Days fishing, processing, and steaming in AK",otherdays
+"Days fishing, processing, and steaming on the WC",otherdays
+Days offloading on the WC,otherdays
+Days steaming between the WC and AK,otherdays
+Fishing gear,costsfishinggear
+Fixed costs,econcosts
+Fuel,costsfuel
+Fuel use per day,otherfuel
+Gini coefficient,othergini
+Labor,costslabor
+Non-processing crew payments,laborpayments
+Non-processing crew wage per day,laborrate
+Non-processing crew wage per dollar revenue,laborrate
+Non-processing crew wage per year,laborrate
+Number of non-processing crew,labornumber
+Number of non-processing crew-days,labornumber
+Number of processing crew,labornumber
+Number of processing crew-days,labornumber
+Number of vessels,descnumber
+Observers,costsobservers
+On-board equipment,costsonboardequipment
+Other fixed costs,costsotherfixed
+Other variable costs,costsothervariable
+Processing crew payments,laborpayments
+Processing crew wage per day,laborrate
+Processing crew wage per dollar revenue,laborrate
+Processing crew wage per year,laborrate
+Processing equipment,costsprocessingequipment
+Proportion of landings from CS fishery,desccslbs
+Revenue,econrevenue
+Seasonality,otherseasonality
+Total cost net revenue,econtcnr
+Variable cost net revenue,econvcnr
+Variable costs,econcosts
+Vessel fuel capacity,descattributes
+Vessel horsepower,descattributes
+Vessel length,descattributes
+Vessel market value,descvalue
+Vessel replacement value,descvalue
