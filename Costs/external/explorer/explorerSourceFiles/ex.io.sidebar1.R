@@ -12,7 +12,7 @@
 ###################################################
 output$Sectorselect <- renderUI({
   tags$div(class="sectselect", selectInput("Sect_sel", span("Select a sector:", style="font-style:strong;display:inline-block;vertical-align:middle"), 
-                                           c('Catcher Vessels'="CV", 'Mothership Vessels'="M", 'Catcher-Processor Vessels'="CP", 'First Receivers and Shorebased Processors'="FR"), 
+                                           c('Catcher Vessels'="CV", 'Mothership Vessels'="M", 'Catcher-Processor Vessels'="CP", 'Shorebased Processors'="FR"), 
                                            "CV", width='90%')
   )
 })
@@ -26,7 +26,7 @@ output$SectPrint <- renderUI({
            } else if(input$Sect_sel=="CP"){
              'West Coast Trawl Catch Share Program:  Catcher-Processor Vessels'
            } else {
-             'West Coast Trawl Catch Share Program:  First Receivers and Shorebased Processors'
+             'West Coast Trawl Catch Share Program:  Shorebased Processors'
            }
   )
 })

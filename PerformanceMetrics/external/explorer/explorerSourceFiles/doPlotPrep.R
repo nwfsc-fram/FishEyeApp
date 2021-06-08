@@ -71,7 +71,7 @@ doPlotPrep <- reactive({
       } else if (input$Sect_sel == "CP") {
         return("West Coast Catcher-Processor Vessels")
       } else if (input$Sect_sel == "FR") {
-        return("West Coast First Receivers and Shorebased Processors")
+        return("Shorebased Processors")
       }
     }
     

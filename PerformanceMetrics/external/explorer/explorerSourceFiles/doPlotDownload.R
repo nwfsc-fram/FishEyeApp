@@ -225,7 +225,7 @@ doPlotDownload <- function(dat, x, y){
       } else if(input$Sect_sel == "CP"){
         return("Catcher-Processors")
       } else if (input$Sect_sel == "FR"){
-        return("First Receivers")
+        return("Shorebased Processors")
       }}
     
       # Plot header construction ####
@@ -238,7 +238,7 @@ doPlotDownload <- function(dat, x, y){
         } else if (input$Sect_sel == "CP") {
           return("West Coast Catcher-Processor Vessels")
         } else if (input$Sect_sel == "FR") {
-          return("West Coast First Receivers and Shorebased Processors")
+          return("Shorebased Processors")
         }
       }
       

@@ -685,6 +685,7 @@ output$Variableselect <- renderUI({
         }
       } else {
         if(input$Ind_sel != 'Labor') {
+          if(input$Ind_sel != 'Other') {
           if (!input$LayoutSelect) {
             tagList(
               tags$div(
@@ -697,6 +698,28 @@ output$Variableselect <- renderUI({
                 class = 'rbFR',
                 radioButtons("VariableSelect", NULL, choices = prod.var, selected = 'All production')))
           } } else {
+            if(!input$LayoutSelect) {
+            if(input$otherSelect %in% c('Percentage of West Coast groundfish landed value purchased',
+                                       'Percentage of West Coast groundfish landed weight purchased')){
+              tagList(
+                tags$div(class = 'ckboxFR',
+                         checkboxGroupInput("VariableSelect", NULL, choices = prod.var, selected = "Groundfish production")))
+            } else {
+              tagList(
+                tags$div(class = 'ckboxFR',
+                         checkboxGroupInput("VariableSelect", NULL, choices = prod.var, selected = "All production")))
+            } } else {
+              if(input$otherSelect %in% c('Percentage of West Coast groundfish landed value purchased',
+                                         'Percentage of West Coast groundfish landed weight purchased')){
+                tagList(
+                  tags$div(class = 'rbFR',
+                           checkboxGroupInput("VariableSelect", NULL, choices = prod.var, selected = "Groundfish production")))
+              } else {
+                tagList(
+                  tags$div(class = 'rbFR',
+                           checkboxGroupInput("VariableSelect", NULL, choices = prod.var, selected = "All production")))
+          }
+          } } } else {
             if(!input$LayoutSelect) {
             if(input$crewSelect %in% c('Total production employee payments',
                                        'Total non-production employee payments')){

@@ -239,7 +239,7 @@ function(request) {
               
               # Select a vessel/Processor Type
               radioGroupButtons("Sect_sel", label = NULL,
-                                choices = c('Catcher Vessels'="CV", 'Mothership Vessels'="M", 'Catcher-Processor Vessels'="CP", 'First Receivers and Shorebased Processors'="FR"),
+                                choices = c('Catcher Vessels'="CV", 'Mothership Vessels'="M", 'Catcher-Processor Vessels'="CP", 'Shorebased Processors'="FR"),
                                 individual = TRUE
               ),
 
