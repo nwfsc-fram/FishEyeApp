@@ -1,6 +1,25 @@
 <!DOCTYPE html>
 <html>
 <head>
+  <script>
+  function myFunction() {
+    document.getElementById("applist").classList.toggle("show");
+  }
+  
+  // Close the dropdown menu if the user clicks outside of it
+  window.onclick = function(event) {
+    if (!event.target.matches('.dropbtn')) {
+      var dropdowns = document.getElementsByClassName("dropdown-content");
+      var i;
+      for (i = 0; i < dropdowns.length; i++) {
+        var openDropdown = dropdowns[i];
+        if (openDropdown.classList.contains('show')) {
+          openDropdown.classList.remove('show');
+        }
+      }
+    }
+  }
+  </script>
   <meta charset="utf-8">
   <link rel="stylesheet" href="fisheye-styles.css">
   <header>
@@ -8,35 +27,22 @@
     <img src="www/header_noaa_l.png">
   </div>
 </header>
-  <div class="navbar"> 
-    <div class="dropdown_div">
-    <button class="dropbtn"> Applications</button>  
-    <div class="dropdown_content">  
-    <a href="./PerformanceMetrics">Performance Metrics</a>  
-    <a href="./whiting">Whiting Purchase & Production</a>  
-    <a href="./landings_tracker">Landings Tracker</a>  
-    </div>
-    </div>
-
-    <div class="dropdown_div">
-    <button class="othrbtn">
-      <a href="About.html">About</a>
-    </button> 
-    </div>
-
-    <div class="dropdown_div">
-    <button class="othrbtn">
-      <a href="Resources.html">Resources</a>
-    </button> 
-    </div>
-
-    <div class="dropdown_div">
-    <button class="othrbtn">
-      <a href="contact.html">Contact Us</a>
+<div class="navbar">
+  <div class="dropdown">
+    <button onclick="myFunction()" class="dropbtn">Applications
+      <i class="fa fa-caret-down"></i>
     </button>
+    <div id="applist" class="dropdown-content">
+      <a href="./PerformanceMetrics">Performance Metrics</a>  
+      <a href="./whiting">Whiting Purchase & Production</a>  
+      <a href="./landings_tracker">Landings Tracker</a>  
     </div>
-    
-    </div> 
+  </div>
+  <a href="About.html">About</a>
+  <a href="Resources.html">Resources</a>
+  <a href="contact.html">Contact Us</a>
+
+</div>
 </head>
 
 <body>
