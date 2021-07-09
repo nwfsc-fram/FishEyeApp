@@ -29,20 +29,21 @@ ul#navbar_ul {
 
     
 }
-nav>ul>li {
-    display: inline-block;
-    font-weight: bold;
-    padding-right: 1.5vw;
-    padding-top: 1.25em;
-    font-size: 14px;
 
-
-    
- 
+.dropdown_content {
+    display: none; /* remove this to show all links before hovering */
+    position: absolute;
+    background-color: #f9f9f9; /* dropdown items - background colour */
+    width: 100%; /* can remove this if you want to make the menu wider/narrower  */
+    /* min-width: 180px; can add this if you need to change the minimu width of menu */
+    box-shadow: 0px 6px 14px 0px rgba(0,0,0,0.3);
 }
-
-nav>ul>li>a {
-    color:white;
+.dropdown_content a {
+    font-family:Arial;
+    color: #000000;
+    padding: 12px 18px;
+    text-decoration: none;
+    display: block;
 }
 
 
@@ -57,13 +58,13 @@ body {
 }
 div#header {
     margin-top: 11em;
-    margin-left: 15vw;
-    margin-right: 15vw;
+    margin-left: 17vw;
+    margin-right: 17vw;
 }
 
 div#hr {
-    margin-left: 15vw;
-    margin-right:15vw;
+    margin-left: 17vw;
+    margin-right:17vw;
 
 }
 
